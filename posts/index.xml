@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on MD98 page</title>
+    <link>http://makerdark98.dev/posts/</link>
+    <description>Recent content in Posts on MD98 page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Sun, 05 Apr 2020 12:31:29 +0900</lastBuildDate>
+    
+	<atom:link href="http://makerdark98.dev/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Test</title>
+      <link>http://makerdark98.dev/posts/test/</link>
+      <pubDate>Sun, 05 Apr 2020 12:31:29 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/posts/test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Second</title>
+      <link>http://makerdark98.dev/posts/second/</link>
+      <pubDate>Sun, 05 Apr 2020 12:27:55 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/posts/second/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>My First Post</title>
+      <link>http://makerdark98.dev/posts/my-first-post/</link>
+      <pubDate>Sun, 05 Apr 2020 10:14:48 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/posts/my-first-post/</guid>
+      <description>test</description>
+    </item>
+    
+  </channel>
+</rss>

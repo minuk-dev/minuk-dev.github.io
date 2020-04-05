@@ -1,0 +1,15 @@
+{{ partial "header" . }}
+
+<main>
+
+    <h2>{{ .Title }}</h2>
+
+    {{ range .Pages.ByLastmod.Reverse }}
+      {{ partial "list-item" . }}
+    {{ end }}
+
+</main>
+
+{{ partial "wikilink" . }}
+{{ partial "paginator" . }}
+{{ partial "footer" . }}
