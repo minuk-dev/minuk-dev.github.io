@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-04-07 23:03:19 +0900
+lastmod: 2020-04-07 23:59:16 +0900
 ---
 # Front Page
 ## 개인 생각
@@ -20,10 +20,12 @@ lastmod: 2020-04-07 23:03:19 +0900
  * [[설대회]]
 ### 논문 스터디
  * [[F2FS]]
-## 미정리
- * [[web]]
+# 개발
+  * [[web]]
  * [[개발_TODO]]
- * [[SSD]]
+ * [[SSD 공부자료 모음]]
+ * [[Nexus]]
+## 미정리
  * [[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]
  * [[송편대회]]
  * [[Memory_Leak]]
@@ -33,7 +35,6 @@ lastmod: 2020-04-07 23:03:19 +0900
  * [[버스 시간 메모]]
  * [[Pintos]]
  * [[SSD(Solid-State Drive)]]
- * [[Nexus]]
  * [[Javascript]]
  * [[Typescript]]
  * [[SQL]]

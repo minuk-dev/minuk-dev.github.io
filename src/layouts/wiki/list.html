@@ -29,7 +29,7 @@
       var pageNumberElem = document.querySelector("#pageNumber");
       function displayItem(page) {
         for (var i = 0; i < itemList.length; i += 1) {
-          if (i % perPage === now - 1) {
+          if (Math.floor(i / perPage) + 1 === now ) {
             itemList[i].style.display = "inherit";
           } else {
             itemList[i].style.display = "none";

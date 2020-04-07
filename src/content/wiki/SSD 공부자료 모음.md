@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : 
+title   : SSD 공부 자료 모음
 summary : 
 date    : 2020-04-07 20:14:30 +0900
-lastmod : 2020-04-07 20:14:32 +0900
+lastmod : 2020-04-07 23:52:19 +0900
 tags    : 
 toc     : true
 public  : true

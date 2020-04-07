@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : 
+title   : nginx
 summary : 
 date    : 2020-04-07 22:51:14 +0900
-lastmod : 2020-04-07 22:51:59 +0900
+lastmod : 2020-04-07 23:53:14 +0900
 tags    : 
 toc     : true
 public  : true
