@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="ko-kr">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: red;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+ 
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/cpp.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/c.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/javascript.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/typescript.min.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+
+        
+            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#"></a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/wiki/">Wiki</a></li>
+                            
+                                <li><a href="/posts/">Posts</a></li>
+                            
+                                <li><a href="/projects/">Projects</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
+                            
+                            <li>
+                              <div style="max-width:300px;display:inline-block;max-height:40px;">
+                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
+<div class="gcse-search"></div>
+
+                              </div>
+                            </li>
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div>
+        <h2></h2>
+        <h5>created : Tue, 07 Apr 2020 20:44:17 &#43;0900</h5>
+        <h5>modified : Tue, 07 Apr 2020 20:44:38 &#43;0900</h5>
+        
+
+    </div>
+
+    <div align="start" class="content"><ul>
+<li>TOC
+{:toc}</li>
+</ul>
+<h2 id="crtpcuriously-recurring-template-pattern">CRTP(Curiously Recurring Template Pattern)</h2>
+<pre><code>struct Foo : SomeBase&lt;Foo&gt;
+{
+ ... 
+}
+
+template &lt;typename Derived&gt;
+struct SomeBase
+{
+  void foo()
+  {
+    for (auto&amp; item : *static_cast&lt;Derived*&gt;(this))
+    {
+    ...
+    }
+  }
+}
+</code></pre>
+<h2 id="property">Property</h2>
+<pre><code>class Person
+{
+private:
+  int age_;
+public:
+  int get_age() const {return age_; }
+  void set_age(int value) {age_ = value; }
+  __declspec(property(get=get_age, put=set_age)) int age;
+}
+
+Person p;
+p.age = 20; // calls p.set_age(20)
+</code></pre>
+<h1 id="factory">Factory</h1>
+<h2 id="factory-method">Factory Method</h2>
+<pre><code>struct Point 
+{
+protected:
+    Point(const float x, const float y)
+        : x {x}, y {y}
+    {}
+
+public:
+    static Point NewCartesian(float x, float y) 
+    {
+        return {x, y};
+    }
+    static Point NewPolar(float r, float theta)
+    {
+        return {r * cos(theta), r * sin(theta)};
+    }
+    // skip
+};
+</code></pre>
+<h2 id="solid-design-principle">SOLID Design Principle</h2>
+<ul>
+<li>SRP(Single Responsibility Principle)
+<ul>
+<li>If you need to edit a few classes(or little more?) in some very small retouching, there is an omen of something problem. It is named <code>code smell</code></li>
+</ul>
+</li>
+<li>OCP(Open-Closed Principle)</li>
+<li>LSP(Liskove Substitution Principle)</li>
+<li>ISP(Interface Segregation Principle)</li>
+<li>DIP(Dependency Inversion Principle)</li>
+</ul>
+<hr>
+<h1 id="generator-pattern">Generator Pattern</h1>
+<h2 id="builder-pattern">Builder Pattern</h2>
+<h3 id="simple-builder">Simple Builder</h3>
+<pre><code>struct HtmlBuilder
+{
+  HtmlElement root;
+
+  HtmlBuilder(string root_name) { root.name = root_name; }
+
+  void add_child(string child_name string child_text)
+  {
+    HtmlElement e{ child_name, child_text };
+    root.elements.emplace_back(e);
+  }
+  string str() { return root.str(); }
+};
+</code></pre>
+<h3 id="fluent-builder">Fluent Builder</h3>
+<pre><code>struct HtmlBuilder
+{
+  HtmlElement root;
+  HtmlBuilder(string root_name) { root.name = root_name; }
+  HtmlBuilder&amp; add_child(string child_name string child_text)
+  {
+    HtmlElement e{ child_name child_text };
+    root.elements.emplace_back(e);
+    return *this;
+  }
+  /* skip */
+};
+
+HtmlBuilder builder{ &quot;ul&quot; };
+builder.add_child(&quot;li&quot;, &quot;Hello&quot;).add_child(&quot;li&quot;, &quot;world&quot;);
+cout &lt;&lt; builder.str() &lt;&lt; endl;
+</code></pre>
+<ul>
+<li>Fluence Builder Method can return whatever in reference(&amp;) or pointer (*). Just do what you want.</li>
+</ul>
+<h3 id="force-to-use-builder-class">Force to use Builder Class</h3>
+<ul>
+<li>
+<p>delete public constructor</p>
+<p>struct HtmlElement
+{
+string name;
+string text;
+vector<!-- raw HTML omitted --> elements;
+const size_t indent_size = 2;</p>
+<pre><code>static unique_ptr&lt;HtmlBuilder&gt; build(const string&amp; root_name)
+{
+  return make_unique&lt;HtmlBuilder&gt;(root_name);
+}
+</code></pre>
+<p>protected:
+HtmlElement() {}
+HtmlElement(const string&amp; name, const string &amp;text)
+: name{name}, text{text} {}
+};</p>
+<p>struct HtmlBuilder
+{
+operator HtmlElement() const { return root; }
+HtmlElement root;
+/* skip */
+};</p>
+<p>/* Can use move semantic */
+HtmlElement HtmlBuilder::build() const
+{
+return root;
+}</p>
+</li>
+</ul>
+<h3 id="groovy---style-builder"><code>Groovy</code> - style builder</h3>
+<pre><code>struct Tag
+{
+  string name;
+  string text;
+  vector&lt;Tag&gt; children;
+  vector&lt;pair&lt;string, string&gt; &gt; sttributes;
+
+  friend ostream&amp; operator &lt;&lt; (std::ostream&amp; os, const Tag&amp; tag)
+  {
+  /* skip implementation */
+  }
+
+protected:
+  Tag(const string&amp; name, const string&amp; text)
+    : name {name}, text{text} {}
+
+  Tag(const string &amp;name, const vector&lt;Tag&gt;&amp; children)
+    : name{name}, children{children} {}
+};
+
+struct P : Tag
+{
+  explicit P(const string&amp; text)
+    : Tag{&quot;p&quot;, text} {}
+
+  P(initializer_list&lt;Tag&gt; children)
+    : Tag{&quot;p&quot;, children} {}
+};
+
+struct IMG : Tag
+{
+  explicit IMG(const string&amp; url
+    : Tag{&quot;img&quot;, &quot;&quot;}
+  {
+        attributes.emplace_back({&quot;src&quot;, url});
+  }
+};
+
+std::cout &lt;&lt;
+  P {
+    IMG { &quot;http://pokemon.com/pikachu.png&quot; }
+  }
+&lt;&lt; std::endl;
+</code></pre>
+<h3 id="composite-builder">Composite Builder</h3>
+<pre><code>class PersonBuilderBase
+{
+protected:
+  Person&amp; person;
+  explicit PersonBuilderBase(Person&amp; person)
+    : person{ person } {}
+public:
+  operator Person()
+  {
+    return std::move(person);
+  }
+
+  PersonAddressBuilder lives() const;
+  PersonJobBuilder works() const;
+};
+
+class PersonBiulder : public PersonBuilderBase
+{
+  Person p;
+public:
+  PersonBuilder() : PersonBuilderBase{p} {}
+};
+
+
+class PersonAddressBuilder : public PersonBuilderBase
+{
+  typedef PersonAddressBuilder self;
+public:
+  explicit PersonAddressBuilder(Person&amp; person)
+    : PersonBuilderBase { person } {}
+  
+  self&amp; at(std::string street_address)
+  {
+    person.street_address = street_address;
+    return *this;
+  }
+
+  self&amp; with_postcode(std::string post_code) { /* skip */ }
+  
+  self&amp; in(std::string city) { /* skip */ }
+};
+
+Person p = Person::create()
+  .lives().at(&quot;123 London Road&quot;)
+          .with_postcode(&quot;SW1 1GB&quot;)
+          .in(&quot;London&quot;)
+  .works().at(&quot;PragmaSoft&quot;)
+          .as_a(&quot;Consultant&quot;)
+          .earning(10e6);
+</code></pre>
+<h3 id="summary">Summary</h3>
+<ul>
+<li>The purpose of <code>Builder Pattern</code> is to create a complicate object, which needs a combination of many items.</li>
+<li>Properties of Builder Pattern
+<ul>
+<li>If you use the influence interface builder, just need only one call chain. Of course, the builder methods are constructed to return <code>this</code>(pointer) or <code>*this</code>(reference).</li>
+<li>Hide public outter constructor of target object to force using builder class or method. Also can define good operators to achieve this.</li>
+<li>Awesome <code>groovy</code>-style builder can be constructed with uniform initialiing syntax.</li>
+<li>A Builder interface can expose other sub builders. (refer to composite builder)</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="factory-class">Factory Class</h2>
+<pre><code>struct Point
+{
+    float x, y;
+    friend class PointFacotry;
+private:
+    Point(float x, float y) 
+        : x(x), y(y) 
+    {}
+};
+
+struct PointFactory
+{
+    static Point NewCartesian(float x, float y)
+    {
+        return Point{x, y};
+    }
+    static Point NewPolar(float r, flaot theta)
+    {
+        return Point{r * cos(theta), r * sin (theta)};
+    }
+};
+</code></pre>
+<h2 id="inner-factory">Inner Factory</h2>
+<pre><code>struct Point
+{
+private:
+    Point(float x, float y)
+    : x(x), y(y)
+    {}
+    struct PointFactory
+    {
+    private:
+        PointFactory() {}
+    public :
+        static Point NewCartesian (float x, float y)
+        {
+            return {x, y};
+        }
+        static Point NewPolar (float r, float theta)
+        {
+            return {r * cos(theta), r * sin (theta)};
+        }
+    };
+
+public:
+    float x, y;
+    static pointFactory Factory;
+};
+</code></pre>
+<h2 id="abstract-factory">Abstract Factory</h2>
+<pre><code>struct HotDrink
+{
+    virtual void prepare (int volume) = 0;
+};
+struct Tea: HotDrink
+{
+    void prepare (int volume) override
+    {
+        cout &lt;&lt; &quot;Take tea bag, boil water, pour&quot; &lt;&lt; volume
+                &lt;&lt; &quot;ml, add some lemon&quot; &lt;&lt; endl;
+    }
+};
+
+class DrinkFactory
+{
+    map&lt;string, unique_ptr&lt;HotDrinkFactory&gt;&gt; hot_factories;
+public:
+    DrinkFactory()
+    {
+        hot_factories[&quot;coffee&quot;] = make_unique&lt;CoffeeFactory&gt;();
+        hot_factories[&quot;tea&quot;] = make_unique&lt;TeaFactory&gt;();
+    }
+    unique_ptr&lt;HotDrink&gt; make_drink(const string&amp; name)
+    {
+        auto drink = hot_factories[name] -&gt; make();
+        drink-&gt;prepare(200);  // 200 must be changed other constant variable
+        return drink;
+    }
+};
+</code></pre>
+<h2 id="functional-factory">Functional Factory</h2>
+<pre><code>class DrinkWithVolumeFactory
+{
+    map&lt;string, function&lt;unique_ptr&lt;HotDrink&gt;()&gt;&gt; factories;
+public:
+    DrinkWithVolumeFactory()
+    {
+        factories[&quot;tea&quot;]= [] [
+            auto tea = make_unique&lt;Tea&gt;();
+            tea-&gt;prepare(200);
+            return tea;
+        };
+    }
+};
+inline unique_ptr&lt;HotDrink&gt;
+DrinkWithVolumeFactory:: make_drink(const string&amp; name)
+{
+    return factories[name]();
+}
+</code></pre>
+<h2 id="summary-1">Summary</h2>
+<ul>
+<li>&ldquo;Factory Method&rdquo;, which is member function of creation type, create object and return it.</li>
+<li>Factory, which is a separate class, must know the way how to create object. So if a function that know it is called factory.</li>
+<li>Abstract Factory is abstract class which is super class that inherit implementation class. It is used in the situation that Factory must create multiple type Family, not only one type.</li>
+<li>Props
+<ul>
+<li>Factory can deny creation call. It is naturally failed to return <code>nullptr</code>.</li>
+<li>It can be named with high readability. Constructor must be same name with class, but it can be allocate a name that present usage well.</li>
+<li>Only One Factory, Multiple type Object.</li>
+<li>Factory Pattern also supports polymorphism.</li>
+<li>Factory can be implemented with memory optimization like &ldquo;caching&rdquo;. It provide very atural code that can be applied &ldquo;pooling&rdquo; or &ldquo;Singleton Pattern&rdquo;.</li>
+</ul>
+</li>
+<li>Factory and Builder is different : Factory create object at once. But Builder create with passing multiple stage that need stage information.</li>
+</ul>
+<hr>
+<h1 id="singleton">Singleton</h1>
+<pre><code>static Database database{}; /* not recommended */
+
+/**
+ * This method is only secured about MT(Multi Thread)-Safe on C++11 or Higher.
+ */
+Database&amp; get_database()
+{
+    static Database databse;
+  return database;
+}
+</code></pre>
+<h2 id="traditional-implementation">Traditional Implementation</h2>
+<pre><code>struct Database
+{
+protected:
+  Database() { /* Do something */ }
+public:
+  static Database&amp; get()
+  {
+    // MT-Safe on C++11 or Higher
+    static Database database;
+    return database;
+  }
+  Database(Database const&amp;) = delete;
+  Database(Database &amp;&amp;) = delete;
+  Database&amp; operator=(Database const&amp;) = delete;
+  Database&amp; operator=(Database &amp;&amp;) = delete;
+};
+</code></pre>
+<ul>
+<li>
+<p>You can think over inheritance of <code>boost::noncopyable</code> class if you don&rsquo;t perfer to this by your hands. This way can hide all constructors except <code>move constructor</code> and <code>move operator</code>.</p>
+</li>
+<li>
+<p>You can also like this</p>
+<pre><code>  static Database&amp; get() {
+    static Database* database = new Database();
+    return *database;
+  }
+  /* No Memory Leak, because static variable only once initializes in runtime */
+</code></pre>
+</li>
+</ul>
+<h2 id="multi-thread-safety">Multi-Thread Safety</h2>
+<ul>
+<li>Skip this content. C++11 already secure it.</li>
+</ul>
+<h2 id="well-known-issue-of-singleton">Well-Known Issue of Singleton</h2>
+<ul>
+<li>
+<p>It is a situation which is A singleton object refer to another singleton object.</p>
+<pre><code>  class Database
+  {
+  public:
+    virtual int get_population(const std::string&amp; name) = 0;
+  };
+    
+  class SingletonDatabase : public Database
+  {
+  protected:
+    SingletonDatabase() { /* Read Data from db */ }
+    std::map&lt;std::string, int&gt; capitals;
+  public:
+    SingletonDatabase(SingletonDatabase const&amp;) = delete;
+    void operator=(SingletonDatabase const&amp;) = delete;
+    
+    static SingletonDatabase&amp; get()
+    {
+      static SingletonDatabase db;
+      return db;
+    }
+    
+    int get_population(const std::string&amp; name) override
+    {
+      return capitals[name];
+    }
+  };
+    
+  struct SingletonRecordFinder
+  {
+    int total_population(std::vector&lt;std::string&gt; names)
+    {
+      int result = 0;
+      for (auto&amp; name : names)
+        result += SingletonDatabase::get().get_population(name);
+      return result;
+    }
+  };
+</code></pre>
+<ul>
+<li>
+<p>This code can create issue, data can be changed in unit test. A solution is to make configuraion class like this.</p>
+<pre><code>  struct ConfigurableRecordFinder
+  {
+    explicit ConfigurableRecordFinder(Database&amp; db)
+      : db{db} {}
+          
+    int total_population(std::vector&lt;std::string&gt; names)
+    {
+      int result = 0;
+      for (auto&amp; name : names)
+        result += db.get_population(name);
+      return result;
+    }
+        
+    Database&amp; db;
+  };
+        
+  class DummyDatabase : public Database
+  {
+    std::map&lt;std::string, int&gt; capitals;
+  public:
+    DummyDatabase()
+    {
+      capitals[&quot;alpha&quot;] = 1;
+      capitals[&quot;beta&quot;] = 2;
+      capitals[&quot;gamma&quot;] = 3;
+    }
+        
+    int get_population(const std::string&amp; name) override {
+      return capitals[name];
+    }
+  };
+        
+  TEST(RecordFinderTests, DummyTotalPopulationTest)
+  {
+    DummyDatabase db{};
+    ConfigurableRecordFinder rf{ db};
+    EXPECT_EQ(4, rf.total_population(
+      std::vector&lt;std::string&gt;{&quot;alpha&quot;, &quot;gamma&quot;}));
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="inversion-of-control">Inversion of Control</h2>
+<ul>
+<li>
+<p>Actually, I haven&rsquo;t use <code>Boost.DI</code>. But for someday which I learn about this, note it.</p>
+<p>auto injector = di::make_injector(
+di::bind<!-- raw HTML omitted -->.to<!-- raw HTML omitted -->.in(di::singleton),
+// Other configuration
+};</p>
+</li>
+</ul>
+<h2 id="monostate">Monostate</h2>
+<pre><code>class Printer
+{
+  static int id;
+public:
+  int get_id() const { return id; }
+  void set_id(int value) { id = value; }
+};
+</code></pre>
+<ul>
+<li>I think Monostate Pattern is different from Singleton.</li>
+</ul>
+<h2 id="summary-2">Summary</h2>
+<ul>
+<li>Avoid directly usage. (SomeComponenet.getInstance().foo())</li>
+</ul>
+<hr>
+<h1 id="structure-pattern">Structure Pattern</h1>
+<ul>
+<li>In design step, we use well-known three ways.
+<ul>
+<li>Inheritance</li>
+<li>Composition</li>
+<li>Aggregation : One object can be independant nevertheless the  object refer to another object. For example, <code>T*</code> or <code>shared_ptr&lt;T&gt;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="adapter-pattern">Adapter Pattern</h2>
+<ul>
+<li>
+<p>We use a example case, drawiing geometric shape.</p>
+<p>struct Point
+{
+int x, y;
+};</p>
+<p>struct Line{
+Point start, end;
+};</p>
+<p>struct VectorObject
+{
+virtual std::vector<!-- raw HTML omitted -->::iterator begin() = 0;
+virtual std::vector<!-- raw HTML omitted -->::iterator end() = 0;
+};</p>
+<p>struct VectorRectangle : VectorObject
+{
+VectorRectangle(int x, int y, int width, int height)
+{
+lines.emplace_back(Line{ Point{x, y}, Point{x + width, y} });
+lines.emplace_back(Line{ Point{x + width, y}, Point {x + width, y + height} });
+lines.emplace_back(Line{ Point{x,y}, Point{x, y + height} });
+lines.emplace_back(Line{ Point{ x, y + height }, Point {x + width, y + height} });
+}</p>
+<pre><code>std::vecotr&lt;Line&gt;::iterator begin() override {
+  return lines.begin();
+}
+std::vector&lt;Line&gt;::iterator end() override {
+  return lines.end();
+}
+</code></pre>
+<p>private:
+std::vector<!-- raw HTML omitted --> lines;
+};</p>
+<p>void DrawPoints(CPaintDC&amp; dc,
+std::vector<!-- raw HTML omitted -->::iterator start,
+std::vector<!-- raw HTML omitted -->::iterator end)
+{
+for (auto i = start; i != end; ++i)
+dc.SetPixel(i-&gt;x, i-&gt;y , 0);
+}</p>
+</li>
+</ul>
+<h2 id="adapter">Adapter</h2>
+<ul>
+<li>
+<p>Let&rsquo;s draw a few rectangles.</p>
+<p>vector&lt;shared_ptr<!-- raw HTML omitted -->&gt; vectorObjects{
+make_shared<!-- raw HTML omitted -->(10, 10, 100, 100),
+make_shared<!-- raw HTML omitted -->(30, 30, 60, 60)
+}</p>
+<p>struct LineToPointAdapter
+{
+typedef vector<!-- raw HTML omitted --> Points;</p>
+<pre><code>LineToPointAdapter(Line&amp; line);
+  
+virtual Points::iterator begin() { return points.begin(); }
+virtual Points::iterator end() { return points.end(); }
+</code></pre>
+<p>private:
+Points points;
+};</p>
+<p>LineToPointAdapter::LineToPointAdapter(Line&amp; line)
+{
+int left = min(line.start.x, line.end.x);
+int right = max(line.start.x, line.end.x);
+int top = min(line.start.y, line.end.y);
+int bottom = max(line.start.y, line.end.y);
+int dx = right - left;
+int dy = line.end.y - line.start.y;</p>
+<pre><code>if (dx == 0)
+{
+  for (int y = top; y &lt;= bottom; ++y)
+  {
+    points.emplace_back(Point{ left, y });
+  }
+}
+else if (dy == 0)
+{
+  for (int x = left; x &lt;= right; ++x)
+  {
+    points.emplace_back(Point{ x, top });
+  }
+}
+</code></pre>
+<p>}</p>
+<p>for (auto&amp; obj : vectorObjects)
+{
+for (auto&amp; line : *obj)
+{
+LineToPointAdapter lpo{ line };
+DrawPoints(dc, lpo.begin(), lpo.end());
+}
+}</p>
+</li>
+</ul>
+<h2 id="temporary-adapter">Temporary Adapter</h2>
+<ul>
+<li>
+<p>How about above method is called in every display update despite no change?</p>
+<ul>
+<li>
+<p>One of the solutions is to use cache.</p>
+<p>vector<!-- raw HTML omitted --> points;
+for (auto&amp; o : vectorObjects)
+{
+for (auto&amp; l : *o)
+{
+LineToPointAdapter lpo{ l };
+for (auto&amp; p : lp)
+points.push_back(p);
+}
+}</p>
+</li>
+<li>
+<p>Of course, this solution cause another problem. That is original vectorOjbects is changed.</p>
+<p>struct Point
+{
+int x, y;
+friend std:: size_t hash_value(const POint&amp; obj)
+{
+std::size_t send = 0x825C696F;
+boost::hash_combine(seed, obj.x);
+boost::hash_combine(seed, obj.y);
+return seed;
+}
+};</p>
+<p>struct Line
+{
+Point start, end;
+friend std::size_t hash_value(const Line&amp; obj)
+{
+std::size_t seed = 0x719E6B16;
+boost::hash_combine(seed, obj.start);
+boost::hash_combine(seed, obj.end);
+return seed;
+}
+};</p>
+<p>static map&lt;size_t, Points&gt; cache;</p>
+<p>virtual Points::iterator begin() { return cache[line_hash].begin(); }
+virtual Points::iterator end() { return cache[line_hash].end(); }</p>
+<p>LineToPointCachingAdapter(Line&amp; line){
+static boost::hash<!-- raw HTML omitted --> hash;
+line_hash = hash(line);
+if (cache.find(line_hash) != cache.end())
+return;</p>
+<pre><code>Points points;
+    
+/* before code */
+/* remove before cached point */
+cache[line_hash] = points;
+</code></pre>
+<p>}</p>
+</li>
+</ul>
+<hr>
+<h2 id="bridge-pattern">Bridge Pattern</h2>
+<h3 id="pimpl-pointer-to-implmentation">Pimpl (Pointer to Implmentation)</h3>
+<pre><code>  struct Person
+  {
+    string name;
+    void greet();
+    
+    Person();
+    ~Person();
+    
+    class PersonImpl;
+    PersonImpl *impl; // refer to gsl::owner&lt;T&gt;
+  };
+    
+  struct Person:PersonImpl
+  {
+    void greet(Person* p);
+  }
+    
+  Person::Person()
+    : impl(new PersonImpl) {}
+    
+  Person::~Person() { delete imple; }
+    
+  void Person::greet()
+  {
+    impl-&gt;greet(this);
+  }
+    
+  void Person::PersonImpl::greet(Person* p)
+  {
+    printf(&quot;hello %s&quot;, p-&gt;name.c_str());
+  }
+</code></pre>
+<ul>
+<li>Props
+<ul>
+<li>Hide implementation. If <code>Person</code> class has many private/protected member variable, it is exposed though the header file to client.</li>
+<li>Ensure binary compatiblity.</li>
+<li>Include some header file needed.</li>
+</ul>
+</li>
+</ul>
+<h2 id="bridge-pattern-1">Bridge Pattern</h2>
+<pre><code>  struct Renderer
+  {
+    virtual void render_circle(float x, float y, float radius) = 0;
+  };
+    
+  struct VectorRenderer : Renderer
+  {
+    void render_circle(float x, float y, float radius) override
+    {
+      cout &lt;&lt; &quot;Rasterizing circle of radius &quot; &lt;&lt; radius &lt;&lt; endl;
+    }
+  };
+    
+  struct RasterRenderer : Renderer
+  {
+    void render_circle(float x, float y, float radius) override
+    {
+      cout &lt;&lt; &quot;Drawing a vector circle of radius &quot; &lt;&lt; radius &lt;&lt; endl;
+    }
+  };
+    
+  struct Shape
+  {
+  protected:
+    Renderer&amp; renderer;
+    Shape(Renderer&amp; renderer) : renderer{ renderer } {}
+  public:
+    virtual void draw() = 0;
+    virtual void resize(float factor) = 0;
+  };
+    
+  struct Circle : Shape
+  {
+    float x, y, radius;
+    
+    void draw() override
+    {
+      renderer.render_circle(x, y, radius);
+    }
+    
+    void resize(float factor) override
+    {
+      radius += factor;
+    }
+    
+    Circle(Renderer&amp; renderer, float x, float y, float radius)
+      : Shape{renderer}, x{x}, y{y}, radius{radius} {}
+  };
+</code></pre>
+<h3 id="summary-3">Summary</h3>
+<ul>
+<li>The bridge pattern must to know each other class except implmentation. It is compared with Mediator Pattern.</li>
+</ul>
+<h2 id="composite-pattern">Composite Pattern</h2>
+<ul>
+<li>How to announce the object has multiple composite attributes? It is not easy.</li>
+</ul>
+<h3 id="properties-based-on-array">Properties based on array.</h3>
+<pre><code>  class Creature
+  {
+    int strength, agility, intelligence;
+  public:
+    int get_stringth() const
+    {
+      return strength;
+    }
+      
+    void set_strength(int strength)
+    {
+      Creture::strength = strength;
+    }
+    // Other getter/setter....
+      int sum() const {
+      return strength + agility + intelligence;
+    }
+    
+    double average() const {
+      return sum() / 3.0;
+    }
+    
+    int max() const {
+      return ::max(::max(strength, agility), intelligence);
+    }
+  };
+</code></pre>
+<ul>
+<li>
+<p>It is not pretty.</p>
+<p>class Creature
+{
+enum Abilitis { str, agl, intl, count };
+array&lt;int, count&gt; abilities;
+int get_strength() const { return abilities[str]; }
+void set_strength(int value) { abilities[str] = value; }
+// Other getter/setter &hellip;</p>
+<pre><code>int sum() const {
+  return accumulate(abilities.begin(), abilities.end(), 0);
+}
+    
+double average() const {
+  return sum() / (double) count;
+}
+    
+int max() const {
+  return *max_element(abilities.begin(), abilities.end());
+}
+</code></pre>
+<p>};</p>
+</li>
+</ul>
+<h3 id="grouping">Grouping</h3>
+<pre><code>  struct GraphicObject
+  {
+    virtual void draw() = 0;
+  };
+    
+  struct Circle : GraphicObject
+  {
+    void draw() override
+    {
+      cout &lt;&lt; &quot;Circle&quot; &lt;&lt; endl;
+    }
+  };
+    
+  struct Group : GraphicObject
+  {
+    string name;
+    
+    explicit Group(const string&amp; name)
+      : name{name} {}
+    
+    void draw() override
+    {
+      cout &lt;&lt; &quot;Group &quot; &lt;&lt; name.c_str() &lt;&lt; &quot; containes:&quot; &lt;&lt; endl;
+      for (auto&amp;&amp; o : objects)
+        o-&gt;draw();
+    }
+    
+    vector&lt;GraphicObject*&gt; objects;
+  };
+    
+  Group root(&quot;root&quot;);
+  Circle c1, c2;
+  root.objects.push_back(&amp;c1);
+    
+  Group subgroup(&quot;sub&quot;);
+  subgroup.objects.push_back(&amp;c2);
+    
+  root.objects.push_back(&amp;subgroup);
+    
+  root.draw();
+</code></pre>
+<h2 id="decorator">Decorator</h2>
+<ul>
+<li>Dynamic Composition</li>
+<li>Static Composition</li>
+</ul>
+<h3 id="dynamic-decorator">Dynamic Decorator</h3>
+<pre><code>  struct ColoredShape : Shape
+  {
+    Shape&amp; shape;
+    string color;
+    
+    ColoredShape(Shape&amp; shape, const string&amp; color)
+      : shape{shape}, color{color} {}
+    
+    stinrg str() const override
+    {
+      ostringstream oss;
+      oss &lt;&lt; shape.str() &lt;, &quot; Has the color &quot; &lt;&lt; color;
+      return oss.str();
+    }
+  };
+    
+  // Example Code
+  Circle circle{0.5f};
+  ColoredShape redCircle{circle, &quot;red&quot;};
+  cout &lt;&lt; redCircle.str();
+    
+  struct TransparentShape : Shape
+  {
+    Shape&amp; shape;
+    uint8_t transparency;
+    
+    TransparentShape(Shape&amp; shape, const uint8_t transparency)
+      : shape{shape}, transparency{transparency} {}
+    
+    string str() const override
+    {
+      ostringstream oss;
+      oss &lt;&lt; shape.str() &lt;&lt; &quot; has &quot;
+          &lt;&lt; static_cast&lt;float&gt;(transparency) / 255.f * 100.f
+          &lt;&lt; &quot;% transparency&quot;;
+      return oss.str();
+    }
+  };
+    
+  // Exmaple Code
+  Squre square{3};
+  TransparentShape demiSquare{square, 85};
+  cout &lt;&lt; demiSqure.str();
+    
+  // Composition Exmaple
+  TransparentShape myCircle {
+    ColoredShape {
+      Circle{23}, &quot;green&quot;,
+    }, 64
+  };
+    
+  cout &lt;&lt; myCircle.str();
+</code></pre>
+<h3 id="static-decorator">Static Decorator</h3>
+<pre><code>  template &lt;typename T&gt; struct ColoredShape : T
+  {
+    static_assert(is_base_of&lt;Shape, T&gt;::value,
+      &quot;Tempalte argument must be a Shape&quot;);
+    
+    string color;
+    
+    string str() const override
+    {
+      ostringstream oss;
+      oss &lt;&lt; T::str() &lt;&lt; &quot; has the color &quot; &lt;&lt; color;
+      return oss.str();
+    }
+    
+    template&lt;typename...Args&gt;
+    ColoredShape(const string&amp; color, Args ...args)
+      : T(std::forward&lt;Args&gt;(args)...), color{ color } {}
+  };
+</code></pre>
+<h3 id="funtional-decorator">Funtional Decorator</h3>
+<pre><code>  template &lt;typename&gt; class Logger;
+  template &lt;typename R, typename... Args&gt;
+  struct Logger&lt;R(Args...)&gt;
+  {
+    Logger(function&lt;R(Args...)&gt; func, const string&amp; name)
+      : func{func}, name{name} {}
+      
+    R operator() (Args ...args)
+    {
+      cout &lt;&lt; &quot;Enter &quot; &lt;&lt; name &lt;&lt; endl;
+      R result = func(args...);
+      cout &lt;&lt; &quot;Exiting &quot; &lt;&lt; name &lt;&lt; endl;
+      return result;
+    }
+    
+    function&lt;R(Args ...)&gt; func;
+    string name;
+  };
+    
+  template &lt;typename R, typename... Args&gt;
+  auto make_logger(R (*func)(Args...), const string&amp; name)
+  {
+    return Logger&lt;R(Args...)&gt;(
+      function&lt;R(Args...)&gt;(func),
+      name);
+  }
+    
+  auto logged_add = make_logger(add, &quot;add&quot;);
+  auto result = logged_add(2, 3);
+</code></pre>
+<h3 id="summary-4">Summary</h3>
+<ul>
+<li>Dynamic Decorator
+<ul>
+<li>Store decoreated object, compose dynamically in runtime. However, original object member cannot access member variable.</li>
+</ul>
+</li>
+<li>Static Decorator
+<ul>
+<li>Using mixin inheritance, compose in compile time. So, this method cannot compose again in runtime. However, it can access member variable. And using constructor forwarding, completely initialize object.</li>
+</ul>
+</li>
+<li>Functional Decorator
+<ul>
+<li>Can overwrap a code block or other specific function to compose.</li>
+</ul>
+</li>
+</ul>
+<h2 id="facade-pattern">Facade Pattern</h2>
+<ul>
+<li>Facade pattern is needed in situation, when use complicated subsystems.</li>
+<li>It provides a simple interface that control this subsystems.</li>
+</ul>
+<h2 id="flywieight">Flywieight</h2>
+</li>
+</ul>
+</div>
+
+  <script>
+      ;(function() {
+              var content = document.querySelector('.content');
+              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
+              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
+          })();
+</script>
+
+  <div style="min-width:500px;">
+<script src="https://utteranc.es/client.js"
+        repo="makerdark98/makerdark98.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+
+</main>
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+

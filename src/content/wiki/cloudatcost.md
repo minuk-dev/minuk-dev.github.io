@@ -1,23 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : cloudatcost
 summary : 
-date    : 2020-04-07 20:13:32 +0900
-lastmod : 2020-04-07 22:19:05 +0900
+date    : 2020-04-07 22:55:20 +0900
+lastmod : 2020-04-07 22:55:31 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-
-# Nginx 관련
-
-## Nginx log위치
-
-    /var/log/nginx/access.log
-    /var/log/nginx/error.log
-
 # CloudatCost
 
 ## panel 주소
@@ -29,11 +21,3 @@ latex   : false
     아이디는 네이버 메일, 패스워드는 네이버 메일에서 cloudatcost 검색하면 최근에 reset한 메일이 있다.
     panel 은 패스워드가 다르다 맨마지막쯔음에 저장되어 있다.
 
-# Gandi.net
-
-    https://www.gandi.net/en
-
-## ID/PW
-
-    id는 makerdark98
-    pw는 항상쓰는 비번(알+숫+특)

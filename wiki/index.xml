@@ -1,15 +1,574 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Wiki List on MD98 page</title>
+    <title>Front Page on MD98 page</title>
     <link>http://makerdark98.dev/wiki/</link>
-    <description>Recent content in Wiki List on MD98 page</description>
+    <description>Recent content in Front Page on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
     <lastBuildDate>Sun, 05 Apr 2020 12:31:29 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/wiki/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>cloudatcost</title>
+      <link>http://makerdark98.dev/wiki/cloudatcost/</link>
+      <pubDate>Tue, 07 Apr 2020 22:55:20 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/cloudatcost/</guid>
+      <description>CloudatCost panel 주소 https://panel.cloudatcost.com/index.php#  ID/PW 아이디는 네이버 메일, 패스워드는 네이버 메일에서 cloudatcost 검색하면 최근에 reset한 메일이 있다. panel 은 패스워드가 다르다 맨마지막쯔음에 저장되어 있다.  </description>
+    </item>
+    
+    <item>
+      <title>web</title>
+      <link>http://makerdark98.dev/wiki/web/</link>
+      <pubDate>Tue, 07 Apr 2020 22:52:05 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/web/</guid>
+      <description> [[nginx]] [[cloudatcost]] [[gandi.net]]  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/nginx/</link>
+      <pubDate>Tue, 07 Apr 2020 22:51:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/nginx/</guid>
+      <description>Nginx 관련 Nginx log위치 /var/log/nginx/access.log /var/log/nginx/error.log  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/%EC%A0%95%EC%9A%B0-%EB%8C%80%ED%9A%8C/</link>
+      <pubDate>Tue, 07 Apr 2020 20:49:06 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%A0%95%EC%9A%B0-%EB%8C%80%ED%9A%8C/</guid>
+      <description>TOC {:toc}  #include  #include &amp;lt;vector&amp;gt; #include &amp;lt;string&amp;gt; #include &amp;lt;set&amp;gt; #include &amp;lt;algorithm&amp;gt; using namespace std; set&amp;lt;string&amp;gt; visited; bool chk(string data, vector&amp;lt;int&amp;gt; count) { for (auto&amp;amp; c : data) count[c-&#39;a&#39;] --; for(int i=0;i&amp;lt;26;i++) if (count[i] != 0) return false; return true; } vector&amp;lt;string&amp;gt; gen(string data) { vector&amp;lt;string&amp;gt; retval; string f, b, f_r, b_r; vector&amp;lt;string&amp;gt; r; if (data.size() == 1) retval.push_back(data); else if (data.size() % 2 == 0) { f = data.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/operating-system-summary/</link>
+      <pubDate>Tue, 07 Apr 2020 20:48:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/operating-system-summary/</guid>
+      <description> TOC {:toc}  # 1. Computer System Overview  Basic Elements : Processor, Main memory, I/O modules, System bus Basic Instruction Cycle  Start → (Fetch next instruction → Execute instruction) → HALT Processor-memory, Processor-I/O, Data processing, Control     </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/understanding-linux-kernel/</link>
+      <pubDate>Tue, 07 Apr 2020 20:48:28 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/understanding-linux-kernel/</guid>
+      <description>TOC {:toc}  # 1. Introduction  Linux pros  Monolithic kernel Compiled and statically linked traditional Unix kernels Kernel threading Multithreaded application support - lightweight processes(LWP) Preemptive kernel Multiprocessor support - symmetric multiprocessing(SMP) Filesystem STREAMS    Basic Operating System Concepts  Interact with the hardware components, servicing all low-level programmable elements included in the hardware platform. Provide an execution environment to the applications that run on the computer system (the so-called user programs)  Multiuser Systems  An authentication mechanism for verifying the user&amp;rsquo;s identity A protection mechanism against buggy user programs that could block other applications running in the system A protection mechanism against malicious user programs that could interfere with or spy on the activity of others users An accounting mechanism that limits the amount of resource units assigned to each user  Users and Groups  User ID(UID), Group ID(GID) superuser  Processes  Process : An instance of a program in execution or execution context Multi Processing operating system with preemptable processes.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/mathematical-statistics/</link>
+      <pubDate>Tue, 07 Apr 2020 20:48:25 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/mathematical-statistics/</guid>
+      <description>TOC {:toc}  # Chapter 7 Sampling distribution Definition 7.1 (Statistic)  A statistic is a function of the observations in a sample and known constants. The distribution of a statistic is called the sampling distribution of the statistic.  $$\bar Y: \text{sample mean}$$
+$$S^2 : \text{sample variance}$$
+$$Y_{(1)}, Y_{(n)} : \text{minimum and maximum (order statistics)}$$
+$$\hat p : \text{sample proportion}$$
+Theorem 7.1 $$\text{Suppose }Y_i \overset{iid}{\sim} N\left(0, 1^2 \right)$$</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:40 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/</guid>
+      <description> TOC {:toc}  [[Effective Debugging/Chapter 1. 고차원 전략]] [[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]] [[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]] [[Effective Debugging/Chatper 4. 디버거 활용법]] [[Effective Debugging/Chapter 5. 프로그래밍 기법]] [[Effective Debugging/Chatper 6. 컴파일 시간 기법]] </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/</guid>
+      <description>TOC {:toc}  CRTP(Curiously Recurring Template Pattern) struct Foo : SomeBase&amp;lt;Foo&amp;gt; { ... } template &amp;lt;typename Derived&amp;gt; struct SomeBase { void foo() { for (auto&amp;amp; item : *static_cast&amp;lt;Derived*&amp;gt;(this)) { ... } } }  Property class Person { private: int age_; public: int get_age() const {return age_; } void set_age(int value) {age_ = value; } __declspec(property(get=get_age, put=set_age)) int age; } Person p; p.age = 20; // calls p.set_age(20)  Factory Factory Method struct Point { protected: Point(const float x, const float y) : x {x}, y {y} {} public: static Point NewCartesian(float x, float y) { return {x, y}; } static Point NewPolar(float r, float theta) { return {r * cos(theta), r * sin(theta)}; } // skip };  SOLID Design Principle  SRP(Single Responsibility Principle)  If you need to edit a few classes(or little more?</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/book-reviews/</link>
+      <pubDate>Tue, 07 Apr 2020 20:43:34 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/book-reviews/</guid>
+      <description> TOC {:toc}  ## 정리 끝난거 정리 하는 중 [[Modern C++ Design Pattern]]
+[[Effective Debugging]]
+정리 보류한거 [[Mathematical Statistics]]
+[[Understanding Linux Kernel]]
+[[Operating System Summary]]
+정리하기로 생각해둔거  Effective Modern C++ Clean Code Pragmatic Programmer Algorithm Coding Interview Data Application   </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/lectures/</link>
+      <pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/lectures/</guid>
+      <description> TOC {:toc}  [[lectures/algorithm]] [[lectures/computer architecture]] [[lectures/image processing]]  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/lectures/algorithm/</link>
+      <pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/lectures/algorithm/</guid>
+      <description>Basic Sorting algorithm The most common uses of sorted sequences are   making lookup or search efficient; making merging of sequences efficient enable processing of data in a defined order  Sorting algorithm The output of any sorting algorithm must satisfy two conditions
+ The output is in non-decreasing order: each element is no smaller than the previous element according to the desired total order The output is a permutation meaning that a reordering, yet retaining all of the original elements of the input.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/tool-configuration/</link>
+      <pubDate>Tue, 07 Apr 2020 20:36:45 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/tool-configuration/</guid>
+      <description>TOC {:toc}  - Neovim - `.vimrc` &amp;quot; vim-bootstrap &amp;quot;***************************************************************************** &amp;quot;&amp;quot; Vim-PLug core &amp;quot;***************************************************************************** let vimplug_exists=expand(&#39;~/.config/nvim/autoload/plug.vim&#39;) let g:vim_bootstrap_langs = &amp;quot;c,html,javascript,python&amp;quot; let g:vim_bootstrap_editor = &amp;quot;nvim&amp;quot;	&amp;quot; nvim or vim if !filereadable(vimplug_exists) if !executable(&amp;quot;curl&amp;quot;) echoerr &amp;quot;You have to install curl or first install vim-plug yourself!&amp;quot; execute &amp;quot;q!&amp;quot; endif echo &amp;quot;Installing Vim-Plug...&amp;quot; echo &amp;quot;&amp;quot; silent exec &amp;quot;!\curl -fLo &amp;quot; . vimplug_exists . &amp;quot; --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&amp;quot; let g:not_finish_vimplug = &amp;quot;yes&amp;quot; autocmd VimEnter * PlugInstall endif &amp;quot; Required: call plug#begin(expand(&#39;~/.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/ssh-server/</link>
+      <pubDate>Tue, 07 Apr 2020 20:36:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ssh-server/</guid>
+      <description> TOC {:toc}  - Installation sudo apt install openssh-server sudo vim /etc/ssh/sshd_config    generate key
+ssh-keygen -R {id}@{host}
+PermitRootLogin prohibit-password
+  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/firewall/</link>
+      <pubDate>Tue, 07 Apr 2020 20:36:02 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/firewall/</guid>
+      <description> TOC {:toc}  - iptables #iptables -nL  save firewall configuration #iptalbes-save &amp;gt; save_data.rules  config firwall   아이피 111.222.111.222에 대해서 destination port 가 22이면 ACCEPT 하여라.
+#iptables -A INPUT -s 111.222.111.222/32 -p tcp -m state &amp;ndash;state NEW -m tcp &amp;ndash;dport 22 -j ACCEPT-
+  save configuration persistent #apt install iptables-persistent    rule directory : /etc/iptables/rules.v4
+#iptables-save &amp;gt; /etc/iptables/rules.v4
+  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/ftp/</link>
+      <pubDate>Tue, 07 Apr 2020 20:35:51 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ftp/</guid>
+      <description> TOC {:toc}  - use vsftpd(Very Secure FTP Server Daemon) Installation # apt install vsftpd  check vsftpd status # service vsftpd status  check network port # netstat -natp | grep ftp  Configuration vsftpd # vi /etc/vsftpd.conf #/etc/vsftpd.conf listen=YES listen_ipv6=NO anonymous_enable=NO port_enable=NO pasv_enable=YES local_enable=YES write_enable=YES use_localtime=YES xferlog_enable=YES chroot_local_user=YES allow_writeable_chroot=YES secure_chroot_dir=/var/run/vsftpd/empty pam_service_name=vsftpd ftpd_banner=Welcom to My FTP Server! ssl_enable=YES rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem rsa_private_key=/etc/ssl/private/ssl-cert-snakeoil.key listen_port=21 pasv_min_port=60020 pasv_max_port=60030 #utf8_filesystem=YES #local_umask=022  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/user/</link>
+      <pubDate>Tue, 07 Apr 2020 20:35:41 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/user/</guid>
+      <description> TOC {:toc}  - check username cat /etc/passwd | grep {username}    create user &amp;amp; select default shell
+useradd {username} -m -s /bin/bash
+  password
+echo {password} | passwd &amp;ndash;stdin {username}
+  home directory
+mkhomedir_helper {username}
+  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/brightness/</link>
+      <pubDate>Tue, 07 Apr 2020 20:35:31 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/brightness/</guid>
+      <description> TOC {:toc}  echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/wifi-command-line/</link>
+      <pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/wifi-command-line/</guid>
+      <description>TOC {:toc}  - Wifi Adapter 찾기 iw dev    Adapter status
+ip link show wlp2s0
+  Adapter Start
+ip link set wlp2s0 up
+When Operation fail because of rfkill $rfkill list $sudo rfkill unblock wifi   Wifi Adapter interface check
+iw wlp2s0 link
+  Wifi Scan
+iw wlp2s0 scan
+  Public Wifi Connect
+sudo iw dev wlp2s0 connect iptime
+  WPA/WPA2 Wifi Connect</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/linux-command/</link>
+      <pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/linux-command/</guid>
+      <description>TOC {:toc}   [[wifi command line]] [[brightness]] [[user]] [[ftp]] [[firewall]] [[ssh server]]</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/docker/</link>
+      <pubDate>Tue, 07 Apr 2020 20:34:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/docker/</guid>
+      <description>TOC {:toc}  - install curl -fsSL https://get.docker.com/ | sudo sh    user 추가
+sudo useradd {username} -m -s /bin/bash -G docker
+  docker container run
+docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]
+  -d : detached mode (background mode)
+-p : port forwarding from host port to container
+-v : mount host directory
+-name : configure container name
+-rm : remove automatically when process terminated</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/sql/</link>
+      <pubDate>Tue, 07 Apr 2020 20:34:32 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/sql/</guid>
+      <description> TOC {:toc}  ## Mysql User Create create user &#39;username&#39;@&#39;localhost&#39; identified by &#39;password&#39;  Grant privileges grant all privileges on *.* to &#39;username&#39;@&#39;localhost&#39;; grant all privileges on &#39;DBname&#39;.* to &#39;username&#39;@&#39;localhost&#39;;  Drop User drop user &#39;username&#39;@&#39;localhost&#39;;  Create Database CREATE DATABASE &#39;DBname&#39;;  Create Table CREATE TABLE table_name ( column1 data_type(size), column2 data_type(size), column3 data_type(size), ... )  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/function/</link>
+      <pubDate>Tue, 07 Apr 2020 20:34:09 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/function/</guid>
+      <description>TOC {:toc}  ## Functions Types Typing the function function add(x: number, y: number): number { return x + y; } let myAdd = function(x: number, y: number): number { return x + y; };  Writing the function type let myAdd: (x: number, y: number) =&amp;gt; number = function (x: number, y: number): number { return x + y; }; let myAdd: (baseValue: number, increment: number) =&amp;gt; number = function(x: number y: number): number { return x + y; };  Inferring the types let myAdd = function(x: number, y: number): number { return x + y; }; let myAdd: (baseValue: number, increment: number) =&amp;gt; number = function(x, y) { return x + y; };  Optional and Default Parameters function buildName(firstName: string, lastName: string) { return firstName + &amp;quot; &amp;quot; + lastName; } let result1 = buildName(&amp;quot;Bob&amp;quot;); // Error let result2 = buildName(&amp;quot;Bob&amp;quot;, &amp;quot;Adams&amp;quot;, &amp;quot;Sr.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/class/</link>
+      <pubDate>Tue, 07 Apr 2020 20:33:57 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/class/</guid>
+      <description>TOC {:toc}  class Greeter {  greeting: string; constructor(message: string) { this.greeting = message; } greet() { return &amp;quot;Hello, &amp;quot; + this.greeting; } } let greeter = new Greeter(&amp;quot;world&amp;quot;);  Inheritance class Animal { move(distanceInMeters: number = 0) { console.log(`Animal moved ${distanceInMeters}m.`); } } class Dog extends Animal { bark() { console.log(&amp;quot;Woof! Woof!&amp;quot;); } } const dog = new Dog(); dog.bark(); dog.move(10); dog.bark(); class Animal { name: string; constructor(theName: string) { this.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/interface/</link>
+      <pubDate>Tue, 07 Apr 2020 20:33:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/interface/</guid>
+      <description>TOC {:toc}  - duck typing   structural subtyping
+interface LabelledValue { label: string; }
+function printLabel(labeledObj: LabelledValue) { console.log(labelledObj.label); }
+let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabel(myObj);
+  Optional Properties interface SquareConfig { color?: string; width?: number; } function createSquare(config: SquareConfig): { color: string; area: number } { let newSquare = { color: &amp;quot;white&amp;quot;, area: 100 }; if (config.color) { newSquare.color = config.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/variable-declaration/</link>
+      <pubDate>Tue, 07 Apr 2020 20:33:29 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/variable-declaration/</guid>
+      <description>TOC {:toc}  # var declarations var a = 10; function f() { var message = &amp;quot;Hello, world!&amp;quot;; return message; } function f() { var a = 10; return function g() { var b = a + 1; return b; } } var g = f(); g();  Scoping rules function f(suoldInitialize: boolean) { if (shouldInitialize) { var x = 10; } return x; } f(true); // return 10 f(false); // return undefined  Variable capturing quirks for (var i = 0; i &amp;lt; 10; i++) { setTimeout(function() { console.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/types/</link>
+      <pubDate>Tue, 07 Apr 2020 20:33:02 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/types/</guid>
+      <description>TOC {:toc}  ## Boolean let isDone: boolean = false  Number let decimal: number = 6; let hex: number = 0xf00d; let binary: number = 0b1010; let octal: number = 0o744  String let color: string = &amp;quot;blue&amp;quot;; color = &#39;red&#39;; let fullName: string = `Bob Bobbingto`; let age: number = 37; let sentence: string = `Hello, myname is ${ fullName }. I&#39;ll be ${ age + 1 } years old next month.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/typescript/</link>
+      <pubDate>Tue, 07 Apr 2020 20:32:54 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/typescript/</guid>
+      <description>TOC {:toc}   [[Types]] [[Variable Declaration]] [[Interface]] [[Class]] [[Function]]</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/graphql-typescript/</link>
+      <pubDate>Tue, 07 Apr 2020 20:32:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/graphql-typescript/</guid>
+      <description> TOC {:toc}  yarn add type-graphql yarn add typescript @types/node --dev yarn add reflect-metadata  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/winston/</link>
+      <pubDate>Tue, 07 Apr 2020 20:32:24 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/winston/</guid>
+      <description>TOC {:toc}  import * as config from &amp;ldquo;config&amp;rdquo;; import { Logger, LoggerInstance, LoggerOptions, transports } from &amp;quot;winston&amp;quot;; require(&amp;quot;winston-daily-rotate-file&amp;quot;); const defaultLevel = process.env.LOG_LEVEL; // We might want to do something on rotation? // rotateTransport.on(&amp;quot;rotate&amp;quot;, (oldFailename, newFilename) =&amp;gt; { // // do something fun // }); const options: LoggerOptions = { exitOnError: false, level: defaultLevel, transports: [ new transports.DailyRotateFile({ name: &amp;quot;info&amp;quot;, filename: config.logging.default, datePattern: &amp;quot;YYYY-MM-DD-HH&amp;quot;, zippedArchive: true, maxSize: &amp;quot;20m&amp;quot;, maxFiles: &amp;quot;14d&amp;quot;, showLevel: true, timestamp: true, level: &amp;quot;info&amp;quot;, // info and below to rotate }), new transports.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/jest/</link>
+      <pubDate>Tue, 07 Apr 2020 20:32:13 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/jest/</guid>
+      <description>TOC {:toc}  # Installation yarn add --dev jest npm install --dev jest yarn add --dev @types/jest npm install --dev @types/jest  Configuration &amp;quot;scripts&amp;quot;: { &amp;quot;test&amp;quot;: &amp;quot;jest&amp;quot; },  Write test code test(`test name`, () =&amp;gt; { expect(1).toBe(1); });  Test Matcher toEqual() test(&#39;return a user object&#39;, () =&amp;gt; { expect(getUser(1)).toEqual({ id: 1, email: &#39;user1@test.com&#39; }); });  toBeTruthy(), toBeFalsy() test(&#39;number 0 is falsy but string 0 is truthy&#39;, () =&amp;gt; { expect(0).</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/sequelize/</link>
+      <pubDate>Tue, 07 Apr 2020 20:31:57 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/sequelize/</guid>
+      <description>TOC {:toc}  # Installation npm install --save sequelize # One of the following npm install --save pg pg-hstore # Postgres npm install -save mysql2 # mysql npm install --save mariadb # mariadb npm install --save sqlite3 # sqlite npm install --save tedious # Microsoft SQL Server  Configuration (Typescript) Setting up a connection import { Sequelize } from &#39;sequelize&#39;; interface DBConfituration { database: string; user: string; password: string; host: string; dialect: &amp;quot;mysql&amp;quot; | &amp;quot;postgres&amp;quot; | &amp;quot;sqlite&amp;quot; | &amp;quot;mariadb&amp;quot; | &amp;quot;msqle&amp;quot; | undefined; } const dbConfiguration : DBConfiguration = { database: &amp;quot;graph&amp;quot;, user: &amp;quot;graph&amp;quot;, password: &amp;quot;graph&amp;quot;, host: &amp;quot;localhost&amp;quot;, dialect: &amp;quot;mysql&amp;quot; }; const sequelize = new Sequelize( dbConfiguration.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/fetch/</link>
+      <pubDate>Tue, 07 Apr 2020 20:22:29 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/fetch/</guid>
+      <description> TOC {:toc}  # Basic Usage const queryData = { query:` query { hello, persons { name, } }` }; const headers = new Headers({ &amp;quot;Accept&amp;quot; : &amp;quot;application/json&amp;quot;, &amp;quot;Content-Type&amp;quot; : &amp;quot;application/json&amp;quot; }); const fetchPromise = fetch(&#39;/graphql&#39;, { headers, method: &amp;quot;POST&amp;quot;, body: JSON.stringify(queryData), }); fetchPromise .then(response =&amp;gt; response.clone().json()) // avoid reponse lock .then(data =&amp;gt; console.log);  </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/promise/</link>
+      <pubDate>Tue, 07 Apr 2020 20:22:09 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/promise/</guid>
+      <description>TOC {:toc}  ## Synchronous vs Asynchronous Callback hell CallEndpoint(&amp;quot;api/getidbyusername/hotcakes&amp;quot;, function(result) { CallEndpoint(&amp;quot;api/getfollowersbyid/&amp;quot; + result.userID, function(result) { CallEndpoint(&amp;quot;api/someothercall/&amp;quot; + result.followers, function(result) { CallEndpoint(&amp;quot;api/someothercall/&amp;quot; + result, function(result) { // do something... }); }); }); });  Promise Async, Await References
+The Great Escape from Callback Hell</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/javascript/</link>
+      <pubDate>Tue, 07 Apr 2020 20:22:03 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/javascript/</guid>
+      <description>TOC {:toc}   [[Promise]] [[Fetch]] [[Sequelize]] [[Jest]] [[Winston]] [[graphql-typescript]]</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/docker-volume/</link>
+      <pubDate>Tue, 07 Apr 2020 20:21:35 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/docker-volume/</guid>
+      <description>TOC {:toc}  # 1. 데이터 볼륨 도커는 하나의 이미지로 부터 여러 컨테이너를 만들기 위해서
+Union File system
+을 사용한다. 유니온 파일 시스템은 원본 이미지에 변경된 내용(diff)를 추가하는 방식이므로, 다른 컨테이너에서 사용 할 수 없다. 애플리케이션에 따라서는 데이터를 다른 컨테이너와 공유 하거나 혹은 호스트에서 접근 할 수 있어야 하는 경우가 있는데, 이때 데이터 볼륨을 사용한다. 데이터 볼륨은 호스트의 파일 시스템을 컨테이너에서 마운트 하는 방식으로 사용한다. 아래와 같은 특징이 있다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/nexus/</link>
+      <pubDate>Tue, 07 Apr 2020 20:21:19 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/nexus/</guid>
+      <description>TOC {:toc}  - docker 설치 sudo apt install apt-transport-https ca-certificates curl software-properties-common curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&amp;quot; sudo apt update sudo apt install docker-ce -y    nexus 실행
+sudo docker volume create &amp;ndash;name nexus-data sudo docker run -d -p 8081:8081 &amp;ndash;name nexus -v nexus-data:/nexus-data sonatype/nexus3
+  nexus bash 실행
+sudo docker exec -it 7f1dc6675c11 /bin/bash [[Docker Volume]]</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/ssdsolid-state-drive/</link>
+      <pubDate>Tue, 07 Apr 2020 20:21:10 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ssdsolid-state-drive/</guid>
+      <description>TOC {:toc}  # 1. SSD의 구조 1.1. SSD(Solid-State Drive)  Flash Memory를 기반으로 한 저장 매체 비트들은 Floating-Gate Transistor로 구성된 Cell에 저장됨. 모든 컴포넌트가 전기 장치 대부분 NAND사용 (cf. NOR VS NAND)  1.1.1. NAND Flash Memory Property  Lifecycle is wearing-off(수명이 제한적이다.)  이유 : P/E(Program &amp;amp; Erase) 사이클마다 일부 전자가 오류로 인해 쌓이게 되어 트랜지스터에 갇힘. 이로 인해 갇힌 전자가 일정 수준을 넘어가면 사용 불가해짐.    1.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/pintos/</link>
+      <pubDate>Tue, 07 Apr 2020 20:20:28 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/pintos/</guid>
+      <description>TOC {:toc}  0. The purpose of this article 이 글을 쓰고 있는 나에게는 영어로 글을 쓰는 연습을 하고 체계적으로 무언가를 정리하는 연습이 됬으면 한다. 그리고 이 글을 읽고있는 누군가 (아마도 Pintos과제를 학교에서 진행하는?)가 이 글을 읽으면서 문제를 해결해 나갔으면 한다.
+그래서 일단 한글로 쓰고 영어로 번역하는 식으로 글을 쓸 예정이다. (지금 이 글을 쓰는 도중에는 이제 막 Project 3 - Virtual Memory 를 다했다. Project 3 까지는 어쩌다보니 반강제적으로 오로지 Pintos Project PDF와 소스코드만 가지고 작업했는데 죽을맛이었다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/%EB%B2%84%EC%8A%A4-%EC%8B%9C%EA%B0%84-%EB%A9%94%EB%AA%A8/</link>
+      <pubDate>Tue, 07 Apr 2020 20:20:03 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EB%B2%84%EC%8A%A4-%EC%8B%9C%EA%B0%84-%EB%A9%94%EB%AA%A8/</guid>
+      <description> TOC {:toc}  목요일 11월 28일 14시 900A 출발 </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/5-articles-per-week/</link>
+      <pubDate>Tue, 07 Apr 2020 20:19:37 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/5-articles-per-week/</guid>
+      <description>TOC {:toc}  # 하루 1개씩을 목표로, 하지만 못하는 날을 감안해서 일주일에 5개를 하는 것을 목표로 2020.01 Dec 29, 2019 11:17pm Tips I use to avoid burnout Tips I use to avoid burnout
+순간 해커뉴스에서 보다가 눈길이 갔다. burnout은 항상 존재하는 두려움이다. 언제 추진력을 잃을지 걱정된다.
+Tips I use to avoid burnout:
+ no 라고 자주 말해라. 너한테도 한계가 있다. 할수 있는 것까지만 하자 시간이 가장 소중하다. 더 중요한것에 사용해라 도와달라고 말해라.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/%EC%8D%A9%EC%96%B4%EB%B2%84%EB%A6%B0-query-language/</link>
+      <pubDate>Tue, 07 Apr 2020 20:18:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%8D%A9%EC%96%B4%EB%B2%84%EB%A6%B0-query-language/</guid>
+      <description>TOC {:toc}  # 1. SQL (Structured Query Language)?  관계형 데이터베이스들에서 원하는 데이터를 가져오기 위한 언어 우리는 왜 이걸 사용하고 있을까?  데이터베이스의 역사  관계형 데이터베이스가 데이터베이스 전쟁의 승자이기 때문이다. 계층형 데이터베이스를 비롯한 수많은 종류들의 데이터베이스가 있었으나 문제들이 많아 점점 관계형 데이터베이스들만이 살아남았다. (대부분 성능상의 문제) 관계형이 살아남은 이유는 질의 최적화기 (query optimizer)이다.  Query Optimizer  쿼리를 최적화해주는 무언가 이걸 발전시키기 위해 수많은 연구가 진행되어 현재의 성능을 가지게 된다.</description>
+    </item>
+    
+    <item>
+      <title>회고(구)</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/</link>
+      <pubDate>Tue, 07 Apr 2020 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/</guid>
+      <description>2020년 3월 회고</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/ucpc_2018_%EC%98%88%EC%84%A0/</link>
+      <pubDate>Tue, 07 Apr 2020 20:17:47 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ucpc_2018_%EC%98%88%EC%84%A0/</guid>
+      <description>TOC {:toc}  # boj15894 - 수학은 체육과목 입니다.   n*4를 출력하면 된다.
+#include #define scl(n) scanf(&amp;quot;%lld&amp;rdquo;, &amp;amp;(n)) using lld = long long; using namespace std; int main(){ lld n; scl(n); printf(&amp;quot;%lld&amp;rdquo;, 4*n); return 0; }
+  boj15903 - 카드 합체 놀이   현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.
+#include #include #include #include #define sci(n) scanf(&amp;quot;%d&amp;rdquo;, &amp;amp;(n)) using namespace std; using lld = long long;</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/memory_leak/</link>
+      <pubDate>Tue, 07 Apr 2020 20:16:46 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/memory_leak/</guid>
+      <description>TOC {:toc}  # 주제 후보  메모리 누수란 왜 일어나는가? - garbage collector의 동작방식, javascript 에서 메모리 누수 없이 코딩하는 습관 가지기 비동기처리하기 - javascript callback, promise, async-await 웹사이트에서 원하는 정보 추출하기 - 웹사이트 크롤링, 파싱하기 나무위키 유의어, 반의어 - Word2Vec를 통한 나무위키 데이터 학습  → 익명의 대학 동기에게 재밋는 주제를 고르라고 해서 진행되었습니다.
+메모리 누수란 왜 일어나는가? 결론부터 말하자면 프로그래머의 실수. 코딩 습관을 잘 들이자.  Garbage Collection 의 필요성   C언어에서 메모리를 직접 할당하고 해제하는 malloc, free 라는 방식을 사용하였다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/%EC%86%A1%ED%8E%B8%EB%8C%80%ED%9A%8C/</link>
+      <pubDate>Tue, 07 Apr 2020 20:16:06 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%86%A1%ED%8E%B8%EB%8C%80%ED%9A%8C/</guid>
+      <description>TOC {:toc}  추석을 맞아 송편을 창의적으로 출력하기 대회가 열렸다. 먼가 인공지능으로 가장 완벽한 송편을 출력해보고 싶어졌다. 0. Configuration 먼저 인공지능 스택으로 배운건 Tensorflow, Keras이기 때문에 언어는 편하게 모두 python으로 하기로 결정했다.
+그렇게 언어를 정하고 과정을 다음과 같이 나눴다.
+ 송편 이미지 크롤링 하기 Keras를 통해 GAN모델을 구현해서 한번 테스트 해보기 나온 결과를 확인하고 모델을 학습 데이터 특성에 맞춰서 재설계, 데이터 가공, 통계적으로 분석&amp;hellip; 등등 원하는 결과를 내도록 설계  이렇게 정하고 나니 필요한 라이브러리는 다음과 같았다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/endurable_transient_inconsistency_in_byte_addressable_persistent_b&#43;-tree/</link>
+      <pubDate>Tue, 07 Apr 2020 20:15:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/endurable_transient_inconsistency_in_byte_addressable_persistent_b&#43;-tree/</guid>
+      <description>TOC {:toc}  - 논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨. Abstract   Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨.
+  쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다.
+  B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/ssd/</link>
+      <pubDate>Tue, 07 Apr 2020 20:14:30 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ssd/</guid>
+      <description>TOC {:toc}   An In-Depth Study of Next Generation Interface for Emerging Non-Volatile Memories
+
+F2FS: A New File System for Flash Storage
+
+The new ext4 filesystem: current status and future plans
+
+개발자를 위한 SSD (Coding for SSD) – Part 5 : 접근 방법과 시스템 최적화
+개발자를 위한 SSD (Coding for SSD) - Part 5 : 접근 방법과 시스템 최적화
+개발자를 위한 SSD (Coding for SSD) – Part 6 : A Summary – What every programmer should know about solid-state drives</description>
+    </item>
+    
+    <item>
+      <title>개발 TODO</title>
+      <link>http://makerdark98.dev/wiki/%EA%B0%9C%EB%B0%9C_todo/</link>
+      <pubDate>Tue, 07 Apr 2020 20:13:56 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EA%B0%9C%EB%B0%9C_todo/</guid>
+      <description>TOC {:toc}  shorter url todo list
+offline editor with md &amp;amp; my page like blog
+hackernews articles
+my favorite musics (includes video song, mp3 files and whatever)
+diary
+언제라도 내가 원하는 서비스를 바로 바로 찍어낼수 있게 디자인이 거의 다 되어있는 framework
+golang으로 만드는 db</description>
+    </item>
+    
+    <item>
+      <title>완벽한 삶</title>
+      <link>http://makerdark98.dev/wiki/%EC%99%84%EB%B2%BD%ED%95%9C%EC%82%B6/</link>
+      <pubDate>Tue, 07 Apr 2020 20:12:48 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%99%84%EB%B2%BD%ED%95%9C%EC%82%B6/</guid>
+      <description>회고를 하다가 갑자기 내가 생각한 완벽한 삶이 무엇인가가 주제로 나와서 이렇게 글을 쓰게된다.
+결론부터 말하자면, 내가 생각한 완벽한 삶은 자살로 맺어지는 것이다.
+사람은 완벽해질 수 없다. 왜냐하면 완벽이란 것은 사람마다 기준이 다르기 떄문이다. 누군가에게는 완벽이 누군가에게는 허점투성일 수 있다. 또한 누군가에게는 좋았던 일이 누군가에게는 안좋을 수도 있다. 그렇기 때문에 완벽하다라는 것은 존재할수 없다고 생각한다. 그렇기 떄문에 나는 내멋대로 완벽이라는 것을 정의해보는 게 어떤가라고 생각했고, 나름대로 정의하게 되었다.
+완벽이란 계획적인 것이다. 물론 모든걸 계획하고 움직여야한다는 것이 아니다.</description>
+    </item>
+    
+    <item>
+      <title>F2FS</title>
+      <link>http://makerdark98.dev/wiki/f2fs/</link>
+      <pubDate>Tue, 07 Apr 2020 00:01:51 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/f2fs/</guid>
+      <description>논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.  Abstract   Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨.
+  쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다.
+  B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.</description>
+    </item>
+    
+    <item>
+      <title>사지방 개발기</title>
+      <link>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9_%EA%B0%9C%EB%B0%9C%EA%B8%B0/</link>
+      <pubDate>Mon, 06 Apr 2020 23:42:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9_%EA%B0%9C%EB%B0%9C%EA%B8%B0/</guid>
+      <description>TOC {:toc}  TODO Lists [ ] API Server-authorization [ ] API Server-Short URL [ ] Deployment 자동화 [ ] SSR directory 정리 [ ] DB-mlab db connection test [ ] MongoDB offline에서 돌아가도록 세팅하기 [ ] Redux Component Test [ ] lets encrypt [ ] Code Splitting [O] makerdark98.dev [O] SSR [O] cloudatcost [O] API Server-Test-generateToken [O] API Server-jwt [O] API Server-Test-signup [O] API Server-Test-validateToken [O] koa routing [O] DB-User Schema [O] 성능 Issue - MUI의 chunk size가 너무 큼 [O] React Framework [O] API Server [O] DB [O] koa configuration [O] test code 작성</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9_%EA%B0%9C%EB%B0%9C%EA%B0%9C%EB%B0%9C%EA%B8%B0/</link>
+      <pubDate>Mon, 06 Apr 2020 23:42:02 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9_%EA%B0%9C%EB%B0%9C%EA%B0%9C%EB%B0%9C%EA%B8%B0/</guid>
+      <description> TOC {:toc}   </description>
+    </item>
     
     <item>
       <title></title>
@@ -53,7 +612,7 @@
       <pubDate>Sun, 05 Apr 2020 12:31:29 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/front/</guid>
-      <description>Front Page Todo List  [[daily]] [[weekly]]  Current Sandbox  [[links]]  </description>
+      <description>Front Page 개인 생각 군생활 회고  [[회고/2019.09.18]] [[회고/2019.09.19]] [[회고/2019.10.19]] [[회고/2019.11.24~25]] [[회고/2020.01.01]] [[회고/2020.01.17]] [[회고]]  잡생각  [[완벽한삶]]  계룡 개발 모임 이벤트  [[설대회]]  논문 스터디  [[F2FS]]  미정리  [[web]] [[개발_TODO]] [[SSD]] [[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]] [[송편대회]] [[Memory_Leak]] [[UCPC_2018_예선]] [[썩어버린 Query Language]] [[5 articles per week]] [[버스 시간 메모]] [[Pintos]] [[SSD(Solid-State Drive)]] [[Nexus]] [[Javascript]] [[Typescript]] [[SQL]] [[docker]] [[linux command]] [[tool configuration]] [[lectures]] [[Book reviews]] [[정우 대회]]  Todo List  [[사지방_개발기]] [[daily]] [[weekly]]  Current Sandbox  [[links]]  </description>
     </item>
     
     <item>
@@ -66,12 +625,166 @@
     </item>
     
     <item>
+      <title>설대회</title>
+      <link>http://makerdark98.dev/wiki/%EC%84%A4%EB%8C%80%ED%9A%8C/</link>
+      <pubDate>Sun, 26 Jan 2020 23:57:47 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EC%84%A4%EB%8C%80%ED%9A%8C/</guid>
+      <description>1. 생각의 흐름  설 대회로는 설 그 자체를 표현하라고 했다. 사실 원래 계획은 Word2Vec를 통해서 9월 (혹은 10월) : 추석 = 1월 (혹은 2월) : 설 이라던가 송편과 떡국 간의 관계를 통해서 설이라는 단어를 결과값으로 뽑고 싶었다. 체계단 내에서 누군가가 konlpy로 무언가를 하고 있는 것을 봤다. NLP라는 영역이 겹치는 것 같아서 뭔가 아이디어가 겹친다고 생각되어 처음부터 다시 생각하기로 했다.   과연 설은 무엇일까?  구글 번역기에 영어로 돌려봤다. New Year&amp;rsquo;s Day라고 나온다.</description>
+    </item>
+    
+    <item>
+      <title>회고/2020.01.01</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.01.01/</link>
+      <pubDate>Wed, 01 Jan 2020 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.01.01/</guid>
+      <description>Jan 01, 2020 1:42am 흐음&amp;hellip; 사실 지금 회고를 쓰는데 좀 졸린 부분이 있다. 신년이 밝아왔다. 사실 신년을 이렇게 보낼줄은 몰랐지만(지금 듣고 있는 음악은 강지가 커버한 레몬 - 유튜브 영상 제목은 감사했어오 앞으로&amp;hellip;.)이다.
+오늘은 코딩으로 React Redux를 했다. 빨리 Redux-action을 익혀서 적용해야겠다.
+요즘 다시 코딩 욕구? 동기부여가 됬다. 잘됬으면 좋겠다.
+지금은 shorturl을 제일 먼저 만들어 보려고 하는데 일단 Page Layout 구성을 빠르게 해볼려고 한다.
+React 의 유명한 Framework인 Material-UI를 사용해서 해봐야겠다.</description>
+    </item>
+    
+    <item>
+      <title>회고/2020.01.17</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.01.17/</link>
+      <pubDate>Wed, 01 Jan 2020 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.01.17/</guid>
+      <description>Jan 17, 2020 11:48pm 화가 나서 머리를 비우고자 글을 쓴다. 담정너 진짜 너무 싫다. 정말 화가 치밀어 올라서 욕을 막 갈기고 싶은데 참는다.
+먼저 화가 난 이유는 다음과 같다.
+무언가 올바르지 않은 일에 대해서 어떻게 하는게 좋을지를 조언을 구하려고 왔다. 나는 성심성의껏 대답을 했는데, 결국 답정너라는 걸 알았다.
+주 논리가 뭐였냐면, 연좌제라는게 잘못되었다고 나는 주장했고 그러니 어떠한 방법으로 하는게 좀더 올바른것 같다라고 말했는데
+후&amp;hellip;. 군대니까 어쩔수 없다느니 왜 지난번 사례때는 아무말 안하고 나한테 이러냐느니 식으로 이야기했다.</description>
+    </item>
+    
+    <item>
+      <title>회고/2019.11.24~25</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.11.24~25/</link>
+      <pubDate>Mon, 25 Nov 2019 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.11.24~25/</guid>
+      <description>Sunday~Monday, 24~25 November 휴가 나와서 이렇게 또다시 회고를 쓰게될 시간이 생겼다. 요즘은 훨씬 힘을 빼고 있는 중이다. 본호형이나 영서형, 재형이 형에게 크게 영향을 받았다. 특히 본호형의 영향을 많이 받게 되었다.
+요즘 평일같은 경우 계속 같은 루틴으로 흘러가는데
+ 6시 30분 기상 점호~7시 45분까지 다시 잠 8시 15분 상번 점심시간 노가리 혹은 휴식 일과 종료 후 휴대폰 7시 쯤 본호형과 안광은 병장님과 보드게임 9시부터 청소 10시부터 다시 보드게임(보통 마이티나 티츄) 자기 전에 TED나 3B1B  한마디로 공부란게 거의 없다.</description>
+    </item>
+    
+    <item>
+      <title>회고/2019.10.19</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.10.19/</link>
+      <pubDate>Sat, 19 Oct 2019 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.10.19/</guid>
+      <description>Monday, 19 October 흐음 그냥 생각나서 회고를 쓰려고보니 딱 한달만에 회고를 쓰는게 됬다. 별생각은 없었는데ㅎㅎ
+요즘 공부하는 거에 슬럼프가 왔다. 지금 하고 있는 공부가 과연 쓸모있는 공부인가에 대한 생각이 계속해서 든다. 그리고 과연 나는 뭘로 취직을 할것인데 이런 지식들을 배우고 있는가 괴리감이 드는 것도 사실이다.
+예를 들어, 지금 공부하고 있는건 크게 3개? 4개 정도인데, React, 알고리즘, 운영체제(Pintos), 데이터중심 설계, Effective Debugging 이다.
+Effective Debugging은 2회독 마치고 notion에 정리하면서 다시 3회독 하고 있는 중이라 사실 공부가 아니라 요약, 정리에 가까운 거지만 나머지들은 너무 다른 트렉인 느낌이 있다.</description>
+    </item>
+    
+    <item>
+      <title>회고/2019.09.19</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.09.19/</link>
+      <pubDate>Thu, 19 Sep 2019 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.09.19/</guid>
+      <description>Thursday, 19 September 서희강 예비역님은 계룡 전산 한마당을 주로 추진하셨는데, 그 추진력에 놀랐다. 굉장히 깔끔한 진행이였고 준비기간이 짧았음에도 불구하고 높은 완성도를 이뤄내기 위해서 많은 노력을 하셨다. 정말 본받을 점이다. 또한 발표 내용도 인상 깊었는데, 목표를 이뤄내기 위해서 하신 노력들, 그 노력들을 위한 설계(만다라트 등) 본받을 점이 많았다. 일종의 뽕을 받고 만다라트를 만들려고 노력했는데 실패했지만 다시 한번 시도해볼것이다.
+안상태 예비역님은 개발에 대한 열정에 관해 많은 영향을 받았다. 특히 상태형은 컴퓨터관련학과를 전공하지 않았지만, 복수전공으로 엄청난 열정을 가지고 공부했다고 느꼇다.</description>
+    </item>
+    
+    <item>
+      <title>회고/2019.09.18</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.09.18/</link>
+      <pubDate>Wed, 18 Sep 2019 20:18:14 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.09.18/</guid>
+      <description>## Wednesday, 18 September 이때까지 군 입대 이후를 간략하게 정리해보려고 한다.
+먼저 입대는 2월 17일? 18일 월요일 입대했다. mysql코드를 계속보다가 입대했다.
+기훈단에서는 육체적으로는 힘들었지만 정신적으로는 회복할수 있는 좋은 시기였다고 생각한다. 4주차때부터는 인편으로 백준 문제를 받아서 풀었다. 풀게 없었을때는 직전학기에 배운것중에서 가장 중요하다고 생각했던게 컴퓨터구조론이라서 CPU개략적 구조도를 외웠던 걸 계속 그렸다. 기훈단에서 배운것들은 솔직히 말해서 앞으로 써먹을게 없을 지식과 경험이라고 생각해서 리마인드를 의도적으로 안하기 위해서 최대한 안적겠다.
+2박 3일로 수료외박을 나왔을때는 나와서 짜장면을 먹었고, 정통학교에서 필요한 기본적 물품(컵, 핫초코)을 샀고 둘쨰날에는 맘스터치에서 햄버거를 먹고 못했던 연락들을 하고 밀렸던 웹툰같은걸 봤다.</description>
+    </item>
+    
+    <item>
       <title></title>
       <link>http://makerdark98.dev/wiki/auto/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://makerdark98.dev/wiki/auto/</guid>
       <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chapter-1.-%EA%B3%A0%EC%B0%A8%EC%9B%90-%EC%A0%84%EB%9E%B5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-1.-%EA%B3%A0%EC%B0%A8%EC%9B%90-%EC%A0%84%EB%9E%B5/</guid>
+      <description>Item 1. Issue Tracking (모든 문제를 이슈 추적 시스템으로 관리하기)  Github, GitLab JIRA, Bugzilla, Launchpad, OTRS, Redmine, Trac  장점  디버깅 작업 과정을 명확하게 파악할 수 있다. 릴리즈 일정을 수립하게 추적할 수 있다. 작업의 우선순위를 정할 수 있다. 자주 발생하는 이슈나 해결책을 문서로 정리할 수 있다. 해결해야 할 문제를 실수로 빼먹지 않을 수 있다. 릴리즈 노트를 자동으로 생성할 수 있다. 결함을 측정하고, 이를 되돌아보며 교훈을 얻을 수 있는 저장소로 활용할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chapter-2.-%EB%B2%94%EC%9A%A9%EC%A0%81%EC%9D%B8-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B8%B0%EB%B2%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-2.-%EB%B2%94%EC%9A%A9%EC%A0%81%EC%9D%B8-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B8%B0%EB%B2%95/</guid>
+      <description>Item 9. 성공적인 디버깅을 위한 마음가짐  소프트웨어에서 발생한 문제는 항상 찾아서 고칠수 있다고 믿는다. 시간을 충분히 판단한다. 고도로 집중한다. 어려운 문제를 만나면 잠을 자는것도 좋다.  기억할 사항  모든 문제는 찾아서 고칠 수 있다고 믿는다. 디버깅 작업에 필요한 시간을 충분히 확보한다. 작업에 최대한 집중할 수 있도록 환경을 마련한다. 힘든 문제를 해결할 때는 효과적인 수면을 취한다. 포기하지 않는다. 디버깅 환경, 도구, 기법을 익히는 데 꾸준히 노력한다.  Item 10. 효율적으로 문제 상황 재현하기 효율적으로 문제 상황을 재현하는 것이 가지는 장점  오류를 만들어 내기 위해 시간을 낭비할 필요 없이 곧바로 원인을 해결하는데 집중할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chapter-3.-%EB%B2%94%EC%9A%A9-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EA%B8%B0%EB%B2%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-3.-%EB%B2%94%EC%9A%A9-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EA%B8%B0%EB%B2%95/</guid>
+      <description>읽을거리
+ The Art of Command Line(https://github.com/jlevy/the-art-of-command-line)  Item 22. 유닉스 명령줄 도구로 디버깅 데이터 분석하기  아래와 같은 순서로 스크립트를 작성한다.  가져오기(Fetching) 선택하기(Selecting) 처리하기(Processing) 정리하기(Summarizing)   읽을거리를 참고해서 CLI 사용법을 좀 더 잘 익히자  기억할 사항  텍스트 형태의 레코드를 가져오고, 선택하고, 처리하고, 정리하는 유닉스 명령어를 이용하여 디버깅 데이터를 분석한다. 여러 가지 유닉스 명령을 파이프라인으로 조합하는 방식으로 복잡한 분석 작업을 간단히 처리할 수 있다.  Item 23.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chapter-5.-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B2%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-5.-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B2%95/</guid>
+      <description>Item 38. 의심스런 코드를 검토하고 손으로 실행해보기  코드를 작성할 때 흔히 저지르는 실수를 하지 않았는지 살펴본다. 코드가 정확하게 동작하는지 직접 손으로 실행해서 확인한다. 복잡한 자료구조는 그림으로 쉽게 표현한다. 복잡한 코드를 쉽게 표현할 때는 종이나 화이트보드의 공간을 넉넉히 확보하고 색깔도 적절히 활용한다. 실제 물체를 활용하면 문제에 좀 더 집중할 수 있다.  Item 39. 동료 검토하기  자신이 작성한 코드를 고무 오리에게 설명한다. 동료 검토를 비롯한 코드 리뷰 과정을 거친다. 다양한 개체가 엮인 코드에서 발생한 오류를 디버익할 떄는 역할 놀이 방식을 적용한다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chatper-4.-%EB%94%94%EB%B2%84%EA%B1%B0-%ED%99%9C%EC%9A%A9%EB%B2%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chatper-4.-%EB%94%94%EB%B2%84%EA%B1%B0-%ED%99%9C%EC%9A%A9%EB%B2%95/</guid>
+      <description>Item 28. 디버깅 버전으로 컴파일 하기  이클립스에서 자바 코드를 디버깅할 때 기본적으로 심볼 정보가 생성된다. 옵션을 다르게 줘서 원하는 설정으로 바꿀수 있다. 오라클 JDK 컴파일러에서는 -g 옵션으로 디버깅 정보와 이를 제어하기 위한 다양한 인수를 추가할 수 있다. 유닉스 컴파일러는 대부분 -g 옵션으로 디버깅 정보를 추가할 수 있다. 마이크로소프트에서 제공하는 컴파일러에서는 /Zi 옵션을 지정하면 디버깅 정보가 추가된다.  팁  최신 컴파일러는 상당히 높은 수준으로 최적화하기 때문에 코드의 형태가 완전히 바뀌기도 한다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chatper-6.-%EC%BB%B4%ED%8C%8C%EC%9D%BC-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chatper-6.-%EC%BB%B4%ED%8C%8C%EC%9D%BC-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</guid>
+      <description>Item 50. 생성된 코드 확인하기  컴파일러에서 생성한 코드를 살펴보면 컴팡리 및 실행 시간에 발생한 문제가 소스 코드의 어느 부분에 관련이 있는지 찾아낼 수 있다. 컴파일러로 생성된 코드를 좀 더 읽기 좋게 표현하려면 컴파일러에 적절한 옵션을 지정하거나 특수한 도구를 사용한다.  Item 51. 정적 분석 도구 활용하기 자주하는 실수 모음  널 포인터 참조 동시성 오류 및 경쟁 상태 철자 오류 (변수를 명시적으로 선언하지 않아도 되는 언어에서 주로 발생함) 배열이나 메모리 버퍼에 대한 잘못된 인덱스 참조 잘못된 조건문, 반복문, case문으로 인해 실행될 수 없는 문장 처리하지 않은 예외 사용하지 않는 변수나 루틴 수식 오류 중복된 코드 C++에서의 3의 법칙이나 0의 법칙을 따르지 않거나, 자바에서 클래스를 정의할 때 equals/HashCode 메서드를 일고나성이 없는 형태로 구현한 경우 자원 누수 보안 취약점 문법 오류  기억할 사항  정적 프로그램 분석 도구를 활용하면 컴파일러 경고 메시지로 찾지 못한 잠재적인 버그를 발견할 수 있다.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/lectures/computer-architecture/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/lectures/computer-architecture/</guid>
+      <description>Large and Fast : Exploiting Memory Hierarchy5.  Principle of Locality  Temporal locality Spatial locality  Taking Advantage of Locality  Memory hierarchy  Store everything on disk (lowest level) Copy recently accessed (and nearby) items from disk to smaller DRAM(e.g. Main Memory) copy more recently accessed (and nearby) items from DRAM to smaller SRAM memory(e.g. Cache memory attached to CPU)    Memory Hierarchy Levels  A block (aka line) : unit of copying If accessed data is present in upper level  Hit : access satisfied by upper level  Hit ratio: hits/accesses     If accessed data is absent  Miss : block copied from lower level  Time taken : miss penalty Miss ratio : misses/accesses = 1 - hit ratio   Then accessed data supplied from upper level    Memory Technology  Static RAM (SRAM) : 0.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/lectures/image-processing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/lectures/image-processing/</guid>
+      <description>PCA (Principal Components Analysis)
+Eigenvalues and Eigenvectors  The prefix eigen- is adopted from the German word eigen for &amp;ldquo;proper&amp;rdquo;, &amp;ldquo;characteristic&amp;rdquo; Eigenvalues are a special set of scalars associated with a linear system of equations that are sometimes also known as characteristic roots, characteristic values Each eigenvalue is paired with a corresponding so-called eigen vector. Eigenvectors are a special set of vectors associated with a linear system of equations that are sometimes also known as characteristic vectors The Lanczos algorithm is an algorithm for computing the eigenvalues and eigenvectors Eigenvalues and eigenvectors feature prominently in the analysis of transformations  Covariance matrix  The covariance matrix consists of the variances of the variables along the main diagonal and the covariance between each pair of variables in the other matrix positions  Face Recognition   obtain face images I_1, &amp;hellip; , I_m (training faces) (very important : the face images must be centered and of the same size)</description>
     </item>
     
   </channel>
