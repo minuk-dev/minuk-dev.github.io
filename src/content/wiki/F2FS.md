@@ -3,15 +3,11 @@ layout  : wiki
 title   : F2FS
 summary : 
 date    : 2020-04-07 00:01:51 +0900
-lastmod : 2020-04-07 00:02:11 +0900
+lastmod : 2020-04-07 22:18:13 +0900
 tags    : 
-toc     : true
-public  : true
+draft   : false
 parent  : 
-latex   : false
 ---
-* TOC
-{:toc}
 
 [](https://www.usenix.org/system/files/conference/fast18/fast18-hwang.pdf)
 

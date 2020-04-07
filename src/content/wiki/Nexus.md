@@ -3,7 +3,7 @@ layout  : wiki
 title   : 
 summary : 
 date    : 2020-04-07 20:21:19 +0900
-lastmod : 2020-04-07 20:21:25 +0900
+lastmod : 2020-04-07 22:23:57 +0900
 tags    : 
 toc     : true
 public  : true
@@ -29,3 +29,4 @@ latex   : false
 - nexus bash 실행
 
     sudo docker exec -it 7f1dc6675c11 /bin/bash
+[[Docker Volume]]

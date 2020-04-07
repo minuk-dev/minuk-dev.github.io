@@ -13,7 +13,7 @@
     {{ end }}
     {{ with .Params.link }} {{ $.Scratch.Set "link" . }} {{ end }}
 
-    {{ .Date.Format (.Site.Params.dateFormat | default "Mon, 02 Jan 2006 15:04:05 -0700") | $.Scratch.Set "subheader" }}
+    {{ .Lastmod.Format (.Site.Params.dateFormat | default "Mon, 02 Jan 2006 15:04:05 -0700") | $.Scratch.Set "subheader" }}
     {{ with .Description }} {{ $.Scratch.Set "subheader" . }} {{ end }}
 
     <h4><a href="{{ .Scratch.Get "link" }}">{{ .Title }}</a></h4>
