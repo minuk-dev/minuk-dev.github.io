@@ -1,17 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : 썩어버린 Query Language
 summary : 
 date    : 2020-04-07 20:18:38 +0900
-lastmod : 2020-04-07 20:18:50 +0900
+lastmod : 2020-04-08 12:44:29 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
 #  # 1. SQL (Structured Query Language)?
 

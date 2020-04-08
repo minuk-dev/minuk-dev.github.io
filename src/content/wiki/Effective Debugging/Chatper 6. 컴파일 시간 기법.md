@@ -1,3 +1,15 @@
+---
+layout  : wiki
+title   : Effective Debugging/Chatper 6. 컴파일 시간 기법
+summary : 
+date    : 2020-04-07 20:44:40 +0900
+lastmod : 2020-04-08 13:27:45 +0900
+tags    : 
+toc     : true
+public  : true
+parent  : 
+latex   : false
+---
 # Item 50. 생성된 코드 확인하기
 
 - 컴파일러에서 생성한 코드를 살펴보면 컴팡리 및 실행 시간에 발생한 문제가 소스 코드의 어느 부분에 관련이 있는지 찾아낼 수 있다.

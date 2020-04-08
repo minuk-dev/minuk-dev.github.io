@@ -1,19 +1,16 @@
 ---
 layout  : wiki
-title   : 
+title   : Typescript/Variable Declaration
 summary : 
 date    : 2020-04-07 20:33:29 +0900
-lastmod : 2020-04-07 20:33:30 +0900
+lastmod : 2020-04-08 12:53:55 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
-# # var declarations
+# var declarations
 
     var a = 10;
     

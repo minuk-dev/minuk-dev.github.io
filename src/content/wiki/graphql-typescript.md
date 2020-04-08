@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : 
+title   : graphql typescript (deprecated)
 summary : 
 date    : 2020-04-07 20:32:43 +0900
-lastmod : 2020-04-07 20:32:44 +0900
+lastmod : 2020-04-08 12:52:05 +0900
 tags    : 
 toc     : true
 public  : true

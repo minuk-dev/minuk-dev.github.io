@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : 
+title   : lectures/algorithm
 summary : 
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2020-04-07 20:41:15 +0900
+lastmod : 2020-04-08 13:21:07 +0900
 tags    : 
 toc     : true
 public  : true

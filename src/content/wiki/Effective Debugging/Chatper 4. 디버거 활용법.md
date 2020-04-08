@@ -1,3 +1,15 @@
+---
+layout  : wiki
+title   : Effective Debugging/Chatper 4. 디버거 활용법
+summary : 
+date    : 2020-04-07 20:44:40 +0900
+lastmod : 2020-04-08 13:27:22 +0900
+tags    : 
+toc     : true
+public  : true
+parent  : 
+latex   : false
+---
 # Item 28. 디버깅 버전으로 컴파일 하기
 
 - 이클립스에서 자바 코드를 디버깅할 때 기본적으로 심볼 정보가 생성된다. 옵션을 다르게 줘서 원하는 설정으로 바꿀수 있다.

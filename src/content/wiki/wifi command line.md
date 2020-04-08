@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : Wifi commands
 summary : 
 date    : 2020-04-07 20:35:07 +0900
-lastmod : 2020-04-07 20:35:18 +0900
+lastmod : 2020-04-08 12:58:44 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# - Wifi Adapter 찾기
+- Wifi Adapter 찾기
 
     iw dev
 

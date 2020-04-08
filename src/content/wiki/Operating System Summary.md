@@ -1,19 +1,16 @@
 ---
 layout  : wiki
-title   : 
+title   : Operating System Summary
 summary : 
 date    : 2020-04-07 20:48:43 +0900
-lastmod : 2020-04-07 20:48:49 +0900
+lastmod : 2020-04-08 13:11:03 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
-# # 1. Computer System Overview
+# 1. Computer System Overview
 
 - Basic Elements : Processor, Main memory, I/O modules, System bus
 - Basic Instruction Cycle

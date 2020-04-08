@@ -3,17 +3,14 @@ layout  : wiki
 title   : Docker Volume
 summary : 
 date    : 2020-04-07 20:21:35 +0900
-lastmod : 2020-04-07 23:58:24 +0900
+lastmod : 2020-04-08 12:57:20 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
-# # [1.](https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc) 데이터 볼륨
+# [1.](https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc) 데이터 볼륨
 
 도커는 하나의 이미지로 부터 여러 컨테이너를 만들기 위해서
 

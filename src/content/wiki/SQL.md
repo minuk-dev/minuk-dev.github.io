@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : SQL
 summary : 
 date    : 2020-04-07 20:34:32 +0900
-lastmod : 2020-04-07 20:34:33 +0900
+lastmod : 2020-04-08 12:56:35 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# ## Mysql User Create
+## Mysql User Create
 
     create user 'username'@'localhost' identified by 'password'
 

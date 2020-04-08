@@ -1,18 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Tool configuration
 summary : 
 date    : 2020-04-07 20:36:45 +0900
-lastmod : 2020-04-07 22:23:57 +0900
+lastmod : 2020-04-08 12:57:39 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
 # - Neovim
     - `.vimrc`
 

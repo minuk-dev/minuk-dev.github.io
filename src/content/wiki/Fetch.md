@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : Fetch 문법 간단 정리
 summary : 
 date    : 2020-04-07 20:22:29 +0900
-lastmod : 2020-04-07 20:22:31 +0900
+lastmod : 2020-04-08 12:49:10 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# # Basic Usage
+# Basic Usage
 
     const queryData = {
     	query:`

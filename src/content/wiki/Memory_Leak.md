@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : Javascript Memory Leak
 summary : 
 date    : 2020-04-07 20:16:46 +0900
-lastmod : 2020-04-07 20:16:47 +0900
+lastmod : 2020-04-08 12:43:07 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# # 주제 후보
+# 주제 후보
 
 - 메모리 누수란 왜 일어나는가? - garbage collector의 동작방식, javascript 에서 메모리 누수 없이 코딩하는 습관 가지기
 - 비동기처리하기 - javascript callback, promise, async-await

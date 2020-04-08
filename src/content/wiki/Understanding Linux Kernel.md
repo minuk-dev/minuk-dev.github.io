@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : Understandign Linux Kernel
 summary : 
 date    : 2020-04-07 20:48:28 +0900
-lastmod : 2020-04-07 20:48:41 +0900
+lastmod : 2020-04-08 13:10:47 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# # 1. Introduction
+# 1. Introduction
 
 - Linux pros
     - Monolithic kernel

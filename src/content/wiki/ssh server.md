@@ -1,19 +1,16 @@
 ---
 layout  : wiki
-title   : 
+title   : SSH Server Configuration
 summary : 
 date    : 2020-04-07 20:36:17 +0900
-lastmod : 2020-04-07 20:36:19 +0900
+lastmod : 2020-04-08 13:05:04 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
-# - Installation
+- Installation
 
     sudo apt install openssh-server
 

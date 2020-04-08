@@ -1,3 +1,15 @@
+---
+layout  : wiki
+title   : Effective Debugging/Chapter 3. 범용 도구를 활용한 기법
+summary : 
+date    : 2020-04-07 20:44:40 +0900
+lastmod : 2020-04-08 13:27:14 +0900
+tags    : 
+toc     : true
+public  : true
+parent  : 
+latex   : false
+---
 읽을거리
 
 - `The Art of Command Line`(https://github.com/jlevy/the-art-of-command-line)

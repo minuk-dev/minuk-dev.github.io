@@ -1,18 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : 5 articles per week
 summary : 
 date    : 2020-04-07 20:19:37 +0900
-lastmod : 2020-04-07 20:19:39 +0900
+lastmod : 2020-04-08 12:45:32 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
 # # 하루 1개씩을 목표로, 하지만 못하는 날을 감안해서 일주일에 5개를 하는 것을 목표로
 
 # 2020.01

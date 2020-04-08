@@ -1,19 +1,16 @@
 ---
 layout  : wiki
-title   : 
+title   : Typescript/Function
 summary : 
 date    : 2020-04-07 20:34:09 +0900
-lastmod : 2020-04-07 20:34:09 +0900
+lastmod : 2020-04-08 12:55:01 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
-# ## Functions Types
+## Functions Types
 
 ### Typing the function
 

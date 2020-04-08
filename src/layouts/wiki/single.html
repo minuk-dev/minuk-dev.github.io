@@ -2,6 +2,9 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
         <h2>{{ .Title }}</h2>
         <h5>created : {{ .Date.Format (.Site.Params.dateFormat | default "Mon, 02 Jan 2006 15:04:05 -0700") }}</h5>

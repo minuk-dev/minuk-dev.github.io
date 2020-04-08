@@ -1,17 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Jest
 summary : 
 date    : 2020-04-07 20:32:13 +0900
-lastmod : 2020-04-07 20:32:14 +0900
+lastmod : 2020-04-08 12:51:30 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
 # # Installation
 

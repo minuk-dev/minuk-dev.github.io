@@ -1,3 +1,15 @@
+---
+layout  : wiki
+title   : Effective Debugging/Chapter 2. 범용적인 디버깅 기법
+summary : 
+date    : 2020-04-07 20:44:40 +0900
+lastmod : 2020-04-08 13:27:03 +0900
+tags    : 
+toc     : true
+public  : true
+parent  : 
+latex   : false
+---
 # Item 9. 성공적인 디버깅을 위한 마음가짐
 
 - 소프트웨어에서 발생한 문제는 항상 찾아서 고칠수 있다고 믿는다.

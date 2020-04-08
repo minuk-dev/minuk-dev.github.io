@@ -1,3 +1,15 @@
+---
+layout  : wiki
+title   : lectures/image processing
+summary : 
+date    : 2020-04-07 20:37:08 +0900
+lastmod : 2020-04-08 13:22:02 +0900
+tags    : 
+toc     : true
+public  : true
+parent  : 
+latex   : false
+---
 PCA (Principal Components Analysis)
 
 # Eigenvalues and Eigenvectors

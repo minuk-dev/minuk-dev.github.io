@@ -1,18 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Pintos
 summary : 
 date    : 2020-04-07 20:20:28 +0900
-lastmod : 2020-04-07 20:20:31 +0900
+lastmod : 2020-04-08 13:30:24 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
 ## 0. The purpose of this article
 
 이 글을 쓰고 있는 나에게는 영어로 글을 쓰는 연습을 하고 체계적으로 무언가를 정리하는 연습이 됬으면 한다. 그리고 이 글을 읽고있는 누군가 (아마도 Pintos과제를 학교에서 진행하는?)가 이 글을 읽으면서 문제를 해결해 나갔으면 한다.

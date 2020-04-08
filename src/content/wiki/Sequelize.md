@@ -1,17 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Sequelize
 summary : 
 date    : 2020-04-07 20:31:57 +0900
-lastmod : 2020-04-07 20:31:59 +0900
+lastmod : 2020-04-08 12:51:20 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
 # # Installation
 

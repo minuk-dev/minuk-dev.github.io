@@ -1,19 +1,16 @@
 ---
 layout  : wiki
-title   : 
+title   : ftp server command
 summary : 
 date    : 2020-04-07 20:35:51 +0900
-lastmod : 2020-04-07 20:35:52 +0900
+lastmod : 2020-04-08 13:04:00 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
-# - use vsftpd(Very Secure FTP Server Daemon)
+- use vsftpd(Very Secure FTP Server Daemon)
 
 ## Installation
 

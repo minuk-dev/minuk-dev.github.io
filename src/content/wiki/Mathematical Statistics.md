@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : Mathematical Statistics
 summary : 
 date    : 2020-04-07 20:48:25 +0900
-lastmod : 2020-04-07 20:48:26 +0900
+lastmod : 2020-04-08 13:10:29 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# # Chapter 7 Sampling distribution
+# Chapter 7 Sampling distribution
 
 ## Definition 7.1 (Statistic)
 

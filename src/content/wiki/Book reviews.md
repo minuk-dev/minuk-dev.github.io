@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : 
+title   : Book Review
 summary : 
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2020-04-07 20:44:14 +0900
+lastmod : 2020-04-08 13:06:44 +0900
 tags    : 
 toc     : true
 public  : true

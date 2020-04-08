@@ -1,18 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Modern C++ Design Pattern
 summary : 
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-07 20:44:38 +0900
+lastmod : 2020-04-08 13:09:31 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
-
 ## CRTP(Curiously Recurring Template Pattern)
 
     struct Foo : SomeBase<Foo>

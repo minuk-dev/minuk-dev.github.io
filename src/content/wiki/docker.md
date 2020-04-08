@@ -1,19 +1,17 @@
 ---
 layout  : wiki
-title   : 
+title   : docker
 summary : 
 date    : 2020-04-07 20:34:43 +0900
-lastmod : 2020-04-07 20:34:44 +0900
+lastmod : 2020-04-08 12:56:58 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
-# - install
+- install
 
     curl -fsSL https://get.docker.com/ | sudo sh
 

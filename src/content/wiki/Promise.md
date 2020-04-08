@@ -1,17 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Promise 정리
 summary : 
 date    : 2020-04-07 20:22:09 +0900
-lastmod : 2020-04-07 20:22:15 +0900
+lastmod : 2020-04-08 12:48:44 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
 # ## Synchronous vs Asynchronous
 

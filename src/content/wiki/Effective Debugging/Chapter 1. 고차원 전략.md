@@ -1,3 +1,15 @@
+---
+layout  : wiki
+title   : Effective Debugging/Chapter 1. 고차원 전략
+summary : 
+date    : 2020-04-07 20:44:40 +0900
+lastmod : 2020-04-08 13:26:53 +0900
+tags    : 
+toc     : true
+public  : true
+parent  : 
+latex   : false
+---
 # Item 1. Issue Tracking (모든 문제를 이슈 추적 시스템으로 관리하기)
 
 - Github, GitLab

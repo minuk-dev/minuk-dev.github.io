@@ -1,17 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : winston
 summary : 
 date    : 2020-04-07 20:32:24 +0900
-lastmod : 2020-04-07 20:32:25 +0900
+lastmod : 2020-04-08 12:51:39 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
 # import * as config from "config";
     import { Logger, LoggerInstance, LoggerOptions, transports } from "winston";

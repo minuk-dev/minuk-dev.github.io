@@ -1,17 +1,15 @@
 ---
 layout  : wiki
-title   : 
+title   : Typescript/Interface
 summary : 
 date    : 2020-04-07 20:33:43 +0900
-lastmod : 2020-04-07 20:33:44 +0900
+lastmod : 2020-04-08 12:54:02 +0900
 tags    : 
 toc     : true
 public  : true
 parent  : 
 latex   : false
 ---
-* TOC
-{:toc}
 
 # - duck typing
 - structural subtyping
