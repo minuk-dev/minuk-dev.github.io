@@ -5,7 +5,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
+        <title>Effective Debugging</title>
         
         <style>
 
@@ -97,7 +97,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#"></a>
+                    <a class="navbar-brand visible-xs" href="#">Effective Debugging</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -149,32 +149,35 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
-        <h2></h2>
+        <h2>Effective Debugging</h2>
         <h5>created : Tue, 07 Apr 2020 20:44:40 &#43;0900</h5>
-        <h5>modified : Tue, 07 Apr 2020 22:23:57 &#43;0900</h5>
+        <h5>modified : Wed, 08 Apr 2020 13:09:47 &#43;0900</h5>
         
 
     </div>
 
     <div align="start" class="content"><ul>
-<li>TOC
-{:toc}</li>
+<li>[[Effective Debugging/Chapter 1. 고차원 전략]]</li>
+<li>[[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]]</li>
+<li>[[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]]</li>
+<li>[[Effective Debugging/Chatper 4. 디버거 활용법]]</li>
+<li>[[Effective Debugging/Chapter 5. 프로그래밍 기법]]</li>
+<li>[[Effective Debugging/Chatper 6. 컴파일 시간 기법]]</li>
 </ul>
-<h1 id="effective-debuggingchapter-1-고차원-전략">[[Effective Debugging/Chapter 1. 고차원 전략]]</h1>
-<h1 id="effective-debuggingchapter-2-범용적인-디버깅-기법">[[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]]</h1>
-<h1 id="effective-debuggingchapter-3-범용-도구를-활용한-기법">[[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]]</h1>
-<h1 id="effective-debuggingchatper-4-디버거-활용법">[[Effective Debugging/Chatper 4. 디버거 활용법]]</h1>
-<h1 id="effective-debuggingchapter-5-프로그래밍-기법">[[Effective Debugging/Chapter 5. 프로그래밍 기법]]</h1>
-<h1 id="effective-debuggingchatper-6-컴파일-시간-기법">[[Effective Debugging/Chatper 6. 컴파일 시간 기법]]</h1>
 </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
-          })();
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+      })();
 </script>
 
   <div style="min-width:500px;">

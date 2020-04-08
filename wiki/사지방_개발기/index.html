@@ -149,19 +149,18 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
         <h2>사지방 개발기</h2>
         <h5>created : Mon, 06 Apr 2020 23:42:14 &#43;0900</h5>
-        <h5>modified : Mon, 06 Apr 2020 23:56:03 &#43;0900</h5>
+        <h5>modified : Wed, 08 Apr 2020 13:23:49 &#43;0900</h5>
         
 
     </div>
 
-    <div align="start" class="content"><ul>
-<li>TOC
-{:toc}</li>
-</ul>
-<h1 id="todo-lists">TODO Lists</h1>
+    <div align="start" class="content"><h1 id="todo-lists">TODO Lists</h1>
 <p>[ ] API Server-authorization
 [ ] API Server-Short URL
 [ ] Deployment 자동화
@@ -191,9 +190,11 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
-          })();
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+      })();
 </script>
 
   <div style="min-width:500px;">

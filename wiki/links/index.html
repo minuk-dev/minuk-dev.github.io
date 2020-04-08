@@ -149,6 +149,9 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
         <h2>Link Test</h2>
         <h5>created : Sun, 05 Apr 2020 15:23:05 &#43;0900</h5>
@@ -167,9 +170,11 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
-          })();
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+      })();
 </script>
 
   <div style="min-width:500px;">

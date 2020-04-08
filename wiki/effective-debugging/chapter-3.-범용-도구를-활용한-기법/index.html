@@ -5,7 +5,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
+        <title>Effective Debugging/Chapter 3. 범용 도구를 활용한 기법</title>
         
         <style>
 
@@ -97,7 +97,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#"></a>
+                    <a class="navbar-brand visible-xs" href="#">Effective Debugging/Chapter 3. 범용 도구를 활용한 기법</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -149,10 +149,13 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
-        <h2></h2>
-        <h5>created : Mon, 01 Jan 0001 00:00:00 &#43;0000</h5>
-        <h5>modified : Mon, 01 Jan 0001 00:00:00 &#43;0000</h5>
+        <h2>Effective Debugging/Chapter 3. 범용 도구를 활용한 기법</h2>
+        <h5>created : Tue, 07 Apr 2020 20:44:40 &#43;0900</h5>
+        <h5>modified : Wed, 08 Apr 2020 13:27:14 &#43;0900</h5>
         
 
     </div>
@@ -244,9 +247,11 @@ git stash pop</p>
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
-          })();
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+      })();
 </script>
 
   <div style="min-width:500px;">

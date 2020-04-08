@@ -3,218 +3,268 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://makerdark98.dev/</loc>
+    <lastmod>2020-04-08T13:51:54+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.04.08/</loc>
+    <lastmod>2020-04-08T13:51:54+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/gandi.net/</loc>
+    <lastmod>2020-04-07T22:56:16+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://makerdark98.dev/wiki/cloudatcost/</loc>
     <lastmod>2020-04-07T22:55:31+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/</loc>
-    <lastmod>2020-04-07T23:03:19+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/web/</loc>
-    <lastmod>2020-04-07T22:58:11+09:00</lastmod>
+    <lastmod>2020-04-07T23:53:09+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/nginx/</loc>
-    <lastmod>2020-04-07T22:51:59+09:00</lastmod>
+    <lastmod>2020-04-07T23:53:14+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/%EC%A0%95%EC%9A%B0-%EB%8C%80%ED%9A%8C/</loc>
-    <lastmod>2020-04-07T20:49:09+09:00</lastmod>
+    <lastmod>2020-04-08T13:12:17+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/operating-system-summary/</loc>
-    <lastmod>2020-04-07T20:48:49+09:00</lastmod>
+    <lastmod>2020-04-08T13:11:03+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/understanding-linux-kernel/</loc>
-    <lastmod>2020-04-07T20:48:41+09:00</lastmod>
+    <lastmod>2020-04-08T13:10:47+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/mathematical-statistics/</loc>
-    <lastmod>2020-04-07T20:48:26+09:00</lastmod>
+    <lastmod>2020-04-08T13:10:29+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/effective-debugging/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-08T13:09:47+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-1.-%EA%B3%A0%EC%B0%A8%EC%9B%90-%EC%A0%84%EB%9E%B5/</loc>
+    <lastmod>2020-04-08T13:26:53+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-2.-%EB%B2%94%EC%9A%A9%EC%A0%81%EC%9D%B8-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B8%B0%EB%B2%95/</loc>
+    <lastmod>2020-04-08T13:27:03+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-3.-%EB%B2%94%EC%9A%A9-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EA%B8%B0%EB%B2%95/</loc>
+    <lastmod>2020-04-08T13:27:14+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-5.-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B2%95/</loc>
+    <lastmod>2020-04-08T13:27:34+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/effective-debugging/chatper-4.-%EB%94%94%EB%B2%84%EA%B1%B0-%ED%99%9C%EC%9A%A9%EB%B2%95/</loc>
+    <lastmod>2020-04-08T13:27:22+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/effective-debugging/chatper-6.-%EC%BB%B4%ED%8C%8C%EC%9D%BC-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</loc>
+    <lastmod>2020-04-08T13:27:45+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/</loc>
-    <lastmod>2020-04-07T20:44:38+09:00</lastmod>
+    <lastmod>2020-04-08T13:09:31+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/book-reviews/</loc>
-    <lastmod>2020-04-07T20:44:14+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/lectures/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-08T13:51:54+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/lectures/algorithm/</loc>
-    <lastmod>2020-04-07T20:41:15+09:00</lastmod>
+    <lastmod>2020-04-08T13:21:07+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/lectures/computer-architecture/</loc>
+    <lastmod>2020-04-08T13:21:51+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/lectures/image-processing/</loc>
+    <lastmod>2020-04-08T13:22:02+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/lectures/</loc>
+    <lastmod>2020-04-08T13:05:44+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/tool-configuration/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-08T12:57:39+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/ssh-server/</loc>
-    <lastmod>2020-04-07T20:36:19+09:00</lastmod>
+    <lastmod>2020-04-08T13:05:04+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/firewall/</loc>
-    <lastmod>2020-04-07T20:36:03+09:00</lastmod>
+    <lastmod>2020-04-08T13:04:48+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/ftp/</loc>
-    <lastmod>2020-04-07T20:35:52+09:00</lastmod>
+    <lastmod>2020-04-08T13:04:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/user/</loc>
-    <lastmod>2020-04-07T20:35:42+09:00</lastmod>
+    <lastmod>2020-04-08T13:03:45+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/brightness/</loc>
-    <lastmod>2020-04-07T20:35:33+09:00</lastmod>
+    <lastmod>2020-04-08T12:59:03+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/wifi-command-line/</loc>
-    <lastmod>2020-04-07T20:35:18+09:00</lastmod>
+    <lastmod>2020-04-08T12:58:44+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/linux-command/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-08T12:58:28+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/docker/</loc>
-    <lastmod>2020-04-07T20:34:44+09:00</lastmod>
+    <lastmod>2020-04-08T12:56:58+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/sql/</loc>
-    <lastmod>2020-04-07T20:34:33+09:00</lastmod>
+    <lastmod>2020-04-08T12:56:35+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/function/</loc>
-    <lastmod>2020-04-07T20:34:09+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/typescript/function/</loc>
+    <lastmod>2020-04-08T12:55:01+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/class/</loc>
-    <lastmod>2020-04-07T20:33:58+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/typescript/class/</loc>
+    <lastmod>2020-04-08T12:54:30+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/interface/</loc>
-    <lastmod>2020-04-07T20:33:44+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/typescript/interface/</loc>
+    <lastmod>2020-04-08T12:54:02+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/variable-declaration/</loc>
-    <lastmod>2020-04-07T20:33:30+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/typescript/variable-declaration/</loc>
+    <lastmod>2020-04-08T12:53:55+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/types/</loc>
-    <lastmod>2020-04-07T20:33:04+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/typescript/types/</loc>
+    <lastmod>2020-04-08T12:53:07+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/typescript/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-08T12:54:41+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/graphql-typescript/</loc>
-    <lastmod>2020-04-07T20:32:44+09:00</lastmod>
+    <lastmod>2020-04-08T12:52:05+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/winston/</loc>
-    <lastmod>2020-04-07T20:32:25+09:00</lastmod>
+    <lastmod>2020-04-08T12:51:39+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/jest/</loc>
-    <lastmod>2020-04-07T20:32:14+09:00</lastmod>
+    <lastmod>2020-04-08T12:51:30+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/sequelize/</loc>
-    <lastmod>2020-04-07T20:31:59+09:00</lastmod>
+    <lastmod>2020-04-08T12:51:20+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/fetch/</loc>
-    <lastmod>2020-04-07T20:22:31+09:00</lastmod>
+    <lastmod>2020-04-08T12:49:10+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/promise/</loc>
-    <lastmod>2020-04-07T20:22:15+09:00</lastmod>
+    <lastmod>2020-04-08T12:48:44+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/javascript/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-08T12:48:20+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/docker-volume/</loc>
-    <lastmod>2020-04-07T20:21:45+09:00</lastmod>
+    <lastmod>2020-04-08T12:57:20+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/nexus/</loc>
-    <lastmod>2020-04-07T22:23:57+09:00</lastmod>
+    <lastmod>2020-04-07T23:58:16+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/ssdsolid-state-drive/</loc>
-    <lastmod>2020-04-07T20:21:12+09:00</lastmod>
+    <lastmod>2020-04-08T12:47:05+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/pintos/</loc>
-    <lastmod>2020-04-07T20:20:31+09:00</lastmod>
+    <lastmod>2020-04-08T13:30:24+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/%EB%B2%84%EC%8A%A4-%EC%8B%9C%EA%B0%84-%EB%A9%94%EB%AA%A8/</loc>
-    <lastmod>2020-04-07T20:20:13+09:00</lastmod>
+    <lastmod>2020-04-08T12:46:45+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/5-articles-per-week/</loc>
-    <lastmod>2020-04-07T20:19:39+09:00</lastmod>
+    <lastmod>2020-04-08T12:45:32+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/%EC%8D%A9%EC%96%B4%EB%B2%84%EB%A6%B0-query-language/</loc>
-    <lastmod>2020-04-07T20:18:50+09:00</lastmod>
+    <lastmod>2020-04-08T12:44:29+09:00</lastmod>
   </url>
   
   <url>
@@ -224,27 +274,27 @@
   
   <url>
     <loc>http://makerdark98.dev/wiki/ucpc_2018_%EC%98%88%EC%84%A0/</loc>
-    <lastmod>2020-04-07T20:17:49+09:00</lastmod>
+    <lastmod>2020-04-08T12:44:10+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/memory_leak/</loc>
-    <lastmod>2020-04-07T20:16:47+09:00</lastmod>
+    <lastmod>2020-04-08T12:43:07+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/%EC%86%A1%ED%8E%B8%EB%8C%80%ED%9A%8C/</loc>
-    <lastmod>2020-04-07T20:16:28+09:00</lastmod>
+    <lastmod>2020-04-08T12:41:51+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/endurable_transient_inconsistency_in_byte_addressable_persistent_b&#43;-tree/</loc>
-    <lastmod>2020-04-07T20:15:48+09:00</lastmod>
+    <lastmod>2020-04-08T12:41:03+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/ssd/</loc>
-    <lastmod>2020-04-07T20:14:32+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/ssd-%EA%B3%B5%EB%B6%80%EC%9E%90%EB%A3%8C-%EB%AA%A8%EC%9D%8C/</loc>
+    <lastmod>2020-04-07T23:52:19+09:00</lastmod>
   </url>
   
   <url>
@@ -264,12 +314,7 @@
   
   <url>
     <loc>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9_%EA%B0%9C%EB%B0%9C%EA%B8%B0/</loc>
-    <lastmod>2020-04-06T23:56:03+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9_%EA%B0%9C%EB%B0%9C%EA%B0%9C%EB%B0%9C%EA%B8%B0/</loc>
-    <lastmod>2020-04-06T23:42:02+09:00</lastmod>
+    <lastmod>2020-04-08T13:23:49+09:00</lastmod>
   </url>
   
   <url>
@@ -294,17 +339,32 @@
   
   <url>
     <loc>http://makerdark98.dev/wiki/</loc>
-    <lastmod>2020-04-07T23:03:19+09:00</lastmod>
+    <lastmod>2020-04-08T13:40:28+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/front/</loc>
-    <lastmod>2020-04-07T22:58:40+09:00</lastmod>
+    <loc>http://makerdark98.dev/posts/</loc>
+    <lastmod>2020-04-05T12:31:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/posts/test/</loc>
+    <lastmod>2020-04-05T12:31:29+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/test/</loc>
     <lastmod>2020-04-05T12:31:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/posts/second/</loc>
+    <lastmod>2020-04-05T12:27:55+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/posts/my-first-post/</loc>
+    <lastmod>2020-04-05T10:14:48+09:00</lastmod>
   </url>
   
   <url>
@@ -343,43 +403,11 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/wiki/auto/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-1.-%EA%B3%A0%EC%B0%A8%EC%9B%90-%EC%A0%84%EB%9E%B5/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-2.-%EB%B2%94%EC%9A%A9%EC%A0%81%EC%9D%B8-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B8%B0%EB%B2%95/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-3.-%EB%B2%94%EC%9A%A9-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EA%B8%B0%EB%B2%95/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/effective-debugging/chapter-5.-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B2%95/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/effective-debugging/chatper-4.-%EB%94%94%EB%B2%84%EA%B1%B0-%ED%99%9C%EC%9A%A9%EB%B2%95/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/effective-debugging/chatper-6.-%EC%BB%B4%ED%8C%8C%EC%9D%BC-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/lectures/computer-architecture/</loc>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/wiki/lectures/image-processing/</loc>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/about/</loc>
   </url>
   
   <url>

@@ -5,7 +5,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
+        <title>SSD(Solid-State Drive)</title>
         
         <style>
 
@@ -97,7 +97,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#"></a>
+                    <a class="navbar-brand visible-xs" href="#">SSD(Solid-State Drive)</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -149,19 +149,18 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
-        <h2></h2>
+        <h2>SSD(Solid-State Drive)</h2>
         <h5>created : Tue, 07 Apr 2020 20:21:10 &#43;0900</h5>
-        <h5>modified : Tue, 07 Apr 2020 20:21:12 &#43;0900</h5>
+        <h5>modified : Wed, 08 Apr 2020 12:47:05 &#43;0900</h5>
         
 
     </div>
 
-    <div align="start" class="content"><ul>
-<li>TOC
-{:toc}</li>
-</ul>
-<h1 id="-1-ssd의-구조"># 1. SSD의 구조</h1>
+    <div align="start" class="content"><h1 id="1-ssd의-구조">1. SSD의 구조</h1>
 <h2 id="11-ssdsolid-state-drive">1.1. SSD(Solid-State Drive)</h2>
 <ul>
 <li>Flash Memory를 기반으로 한 저장 매체</li>
@@ -203,9 +202,11 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
-          })();
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+      })();
 </script>
 
   <div style="min-width:500px;">

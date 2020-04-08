@@ -5,7 +5,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title></title>
+        <title>Docker Volume</title>
         
         <style>
 
@@ -97,7 +97,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#"></a>
+                    <a class="navbar-brand visible-xs" href="#">Docker Volume</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -149,19 +149,18 @@
 
 <main>
 
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
     <div>
-        <h2></h2>
+        <h2>Docker Volume</h2>
         <h5>created : Tue, 07 Apr 2020 20:21:35 &#43;0900</h5>
-        <h5>modified : Tue, 07 Apr 2020 20:21:45 &#43;0900</h5>
+        <h5>modified : Wed, 08 Apr 2020 12:57:20 &#43;0900</h5>
         
 
     </div>
 
-    <div align="start" class="content"><ul>
-<li>TOC
-{:toc}</li>
-</ul>
-<h1 id="-1httpswwwjoinccokrwman12dockerguidedatawithcontainertoc데이터-볼륨"># <a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">1.</a> 데이터 볼륨</h1>
+    <div align="start" class="content"><h1 id="1httpswwwjoinccokrwman12dockerguidedatawithcontainertoc데이터-볼륨"><a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">1.</a> 데이터 볼륨</h1>
 <p>도커는 하나의 이미지로 부터 여러 컨테이너를 만들기 위해서</p>
 <p><strong>Union File system</strong></p>
 <p>을 사용한다. 유니온 파일 시스템은 원본 이미지에 변경된 내용(diff)를 추가하는 방식이므로, 다른 컨테이너에서 사용 할 수 없다. 애플리케이션에 따라서는 데이터를 다른 컨테이너와 공유 하거나 혹은 호스트에서 접근 할 수 있어야 하는 경우가 있는데, 이때 데이터 볼륨을 사용한다. 데이터 볼륨은 <strong>호스트의 파일 시스템</strong>을 컨테이너에서 마운트 하는 방식으로 사용한다. 아래와 같은 특징이 있다.</p>
@@ -272,9 +271,11 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, '<a href="../$1">$2</a>');
-              content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, '<a href="../$1">$1</a>');
-          })();
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-')}">${matching}</a>`);
+      })();
 </script>
 
   <div style="min-width:500px;">
