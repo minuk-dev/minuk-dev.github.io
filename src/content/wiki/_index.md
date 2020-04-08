@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-04-08 13:20:34 +0900
+lastmod: 2020-04-08 13:40:28 +0900
 ---
 # 개인 생각
 ## 군생활 회고
@@ -11,9 +11,11 @@ lastmod: 2020-04-08 13:20:34 +0900
  * [[회고/2019.11.24~25]]
  * [[회고/2020.01.01]]
  * [[회고/2020.01.17]]
+ * [[회고/2020.04.08]]
  * [[회고]]
 ## 잡생각
  * [[완벽한삶]]
+---
 # 계룡 개발 모임
 ## 이벤트
  * [[설대회]]
@@ -23,10 +25,12 @@ lastmod: 2020-04-08 13:20:34 +0900
 ## 논문 스터디
  * [[F2FS]]
  * [[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]
+---
 # Study
 ## Web
  * [[web]]
  * [[개발_TODO]]
+ * [[사지방_개발기]]
 ## OS
  * [[Pintos]]
 ## Tool
@@ -64,15 +68,8 @@ lastmod: 2020-04-08 13:20:34 +0900
  * Algorithm
  * Coding Interview
  * Data Application
+---
 # 잡스러운 것들 모음
  * [[버스 시간 메모]]
-## 미정리
-## Todo List
- * [[사지방_개발기]]
- * [[daily]]
- * [[weekly]]
-
-## Current
-
 ## Sandbox
 * [[links]]
