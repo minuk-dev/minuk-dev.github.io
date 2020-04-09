@@ -3,7 +3,7 @@ layout  : wiki
 title   : 개발 TODO
 summary : 
 date    : 2020-04-07 20:13:56 +0900
-lastmod : 2020-04-07 22:58:56 +0900
+lastmod : 2020-04-08 23:38:17 +0900
 tags    : 
 toc     : true
 public  : true
@@ -13,11 +13,11 @@ latex   : false
 * TOC
 {:toc}
 
-# shorter url
+* [ ] shorter url
 
 todo list
 
-offline editor with md & my page like blog
+* offline editor with md & my page like blog
 
 hackernews articles
 

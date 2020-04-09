@@ -1,8 +1,9 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-04-08 13:40:28 +0900
+lastmod: 2020-04-08 23:58:22 +0900
 ---
+[[TODO]]
 # 개인 생각
 ## 군생활 회고
  * [[회고/2019.09.18]]
@@ -34,6 +35,7 @@ lastmod: 2020-04-08 13:40:28 +0900
 ## OS
  * [[Pintos]]
 ## Tool
+ * [[vim]]
  * [[Nexus]]
  * [[docker]]
  * [[tool configuration]]

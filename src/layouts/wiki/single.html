@@ -12,6 +12,7 @@
         {{ partial "tags" . }}
     </div>
 
+    <aside class="navbar navbar-collapse" style="text-align:left;">{{ .TableOfContents }}</aside>
     <div align="start" class="content">{{ .Content }}</div>
 
   {{ partial "wikilink" . }}
