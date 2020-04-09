@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-04-08 23:58:22 +0900
+lastmod: 2020-04-09 22:40:17 +0900
 ---
 [[TODO]]
 # 개인 생각
@@ -56,9 +56,9 @@ lastmod: 2020-04-08 23:58:22 +0900
 ## Book Review
  * ~~[[Book reviews]] (Deprecated)~~
 ### 정리 끝난거
+ * [[Effective Debugging]]
 ### 정리 하는 중
  * [[Modern C++ Design Pattern]]
- * [[Effective Debugging]]
 ### 정리 보류한거
  * [[Mathematical Statistics]]
  * [[Understanding Linux Kernel]]
