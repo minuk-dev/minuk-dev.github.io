@@ -3,7 +3,7 @@ layout  : wiki
 title   : Effective Debugging
 summary : 
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-08 13:09:47 +0900
+lastmod : 2020-04-09 22:35:49 +0900
 tags    : 
 toc     : true
 public  : true
@@ -16,3 +16,5 @@ latex   : false
 * [[Effective Debugging/Chatper 4. 디버거 활용법]]
 * [[Effective Debugging/Chapter 5. 프로그래밍 기법]]
 * [[Effective Debugging/Chatper 6. 컴파일 시간 기법]]
+* [[Effective Debugging/Chapter 7. 실행 시간 기법]]
+* [[Effective Debugging/Chapter 8. 멀티스레드 코드 디버깅]]
