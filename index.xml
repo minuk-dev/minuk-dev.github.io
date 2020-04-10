@@ -6,10 +6,37 @@
     <description>Recent content on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Wed, 08 Apr 2020 23:56:59 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 09 Apr 2020 23:56:51 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title></title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</link>
+      <pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</guid>
+      <description> </description>
+    </item>
+    
+    <item>
+      <title>Effective Debugging/Chatper 7. 컴파일 시간 기법</title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chapter-7.-%EC%8B%A4%ED%96%89-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</link>
+      <pubDate>Thu, 09 Apr 2020 22:13:40 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-7.-%EC%8B%A4%ED%96%89-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</guid>
+      <description>Item 54. 테스트 케이스를 작성하여 오류 찾기  문제를 안정적으로 재현할 수 있도록 테스트 케이스 작성 테스트 케이스를 최소한으로 간소화 안정장치 확보 (찾아낸 문제만 걸러내는 단위 테스트나 회귀 테스트를 코드에 추가한다.)  기억할 사항  제대로 작성된 최소한의 테스트 케이스를 통해 오류가 발생하는 지점과 해결책을 찾을 수 있다. 사용한 테스트 케이스는 단위 테스트나 회귀 테스트 형태로 소프트웨어에 추가한다.  Item 55. 오류가 발생한 즉시 프로그램 중단하기  루틴의 입력값을 검사하거나 호출한 API가 정상적으로 실행됬는지 확인할 때 Assertion을 활용한다.</description>
+    </item>
+    
+    <item>
+      <title>Effective Debugging/Chatper 8. 멀티스레드 코드 디버깅</title>
+      <link>http://makerdark98.dev/wiki/effective-debugging/chapter-8.-%EB%A9%80%ED%8B%B0%EC%8A%A4%EB%A0%88%EB%93%9C-%EC%BD%94%EB%93%9C-%EB%94%94%EB%B2%84%EA%B9%85/</link>
+      <pubDate>Thu, 09 Apr 2020 22:13:40 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-8.-%EB%A9%80%ED%8B%B0%EC%8A%A4%EB%A0%88%EB%93%9C-%EC%BD%94%EB%93%9C-%EB%94%94%EB%B2%84%EA%B9%85/</guid>
+      <description>Item 60. 사후 디버깅으로 교착 상태 분석하기  교착상태를 디버깅할 때는 교착 상태에 빠진 시점의 프로그램 상태(스냅샵)를 구한 뒤, 스레드나 코드 흐름에서 자원을 기다리는 코드 지점을 찾아낸다.  Item 61. 프로그램의 실행 흐름을 기록한 뒤 재생하기  발생 빈도가 낮은 동시성 오류를 찾을때는 오류가 발생하는 상황을 기록하고, 그 내용을 분석해서, 기록된 데이터를 다시 디버거로 재생하는 방식으로 작업한다.  Item 62. 전문 도구로 교착 상태와 경쟁 상태 찾기  정적 분석 도구를 이용하여 멀티스레드 프로그램에 존재하는 동기화 및 잠금 관련 에러를 걸러낸다.</description>
+    </item>
     
     <item>
       <title>TODO Lists</title>
@@ -17,7 +44,7 @@
       <pubDate>Wed, 08 Apr 2020 23:56:59 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/todo/</guid>
-      <description>Blog  git blame을 사용해서 wiki diff 만들기 vim ultisnip 사용법 알아보기 table of contents 를 홈페이지 측면에 띄우기  </description>
+      <description>Blog  git blame을 사용해서 wiki diff 만들기 [.] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정  jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 뭔지 모르는 js , css(client.js 등)들 알아보기   table of contents 를 홈페이지 측면에 띄우기 vimwiki 와 hugo 연동한거 글쓰기 wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.  Vim  tagbar 알아서 잘 되도록 설정하기 vim ultisnip 사용법 알아보기  </description>
     </item>
     
     <item>
@@ -130,7 +157,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:40 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/effective-debugging/</guid>
-      <description> [[Effective Debugging/Chapter 1. 고차원 전략]] [[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]] [[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]] [[Effective Debugging/Chatper 4. 디버거 활용법]] [[Effective Debugging/Chapter 5. 프로그래밍 기법]] [[Effective Debugging/Chatper 6. 컴파일 시간 기법]]  </description>
+      <description>개인 생각  전체적으로 좋은 내용이 많았다고 생각된다. 하지만 실제로 디버깅할때 이 책의 모든 내용을 떠올리는 건 힘들다고 생각한다. 특히 중후반부부터 시작되는 툴들의 나열은 유의미하지 않았다. 맨 마지막에 상황별 도구 모음을 2~3 페이지에 걸쳐서 나열해줬으면 래퍼런스 북으로서 쓸수 있었을텐데 챕터별 요약  [[Effective Debugging/Chapter 1. 고차원 전략]] [[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]] [[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]] [[Effective Debugging/Chatper 4. 디버거 활용법]] [[Effective Debugging/Chapter 5. 프로그래밍 기법]] [[Effective Debugging/Chatper 6.</description>
     </item>
     
     <item>
@@ -194,7 +221,88 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/</guid>
-      <description>CRTP(Curiously Recurring Template Pattern) struct Foo : SomeBase&amp;lt;Foo&amp;gt; { ... } template &amp;lt;typename Derived&amp;gt; struct SomeBase { void foo() { for (auto&amp;amp; item : *static_cast&amp;lt;Derived*&amp;gt;(this)) { ... } } }  Property class Person { private: int age_; public: int get_age() const {return age_; } void set_age(int value) {age_ = value; } __declspec(property(get=get_age, put=set_age)) int age; } Person p; p.age = 20; // calls p.set_age(20)  Factory Factory Method struct Point { protected: Point(const float x, const float y) : x {x}, y {y} {} public: static Point NewCartesian(float x, float y) { return {x, y}; } static Point NewPolar(float r, float theta) { return {r * cos(theta), r * sin(theta)}; } // skip };  SOLID Design Principle  SRP(Single Responsibility Principle)  If you need to edit a few classes(or little more?</description>
+      <description>Summary  [[Modern C++ Design Pattern/Chapter 1. 개요]] 제 1부 생성 패턴  [[Modern C++ Design Pattern/Chapter 2. 빌더]] [[Modern C++ Design Pattern/Chapter 3. 팩토리]] [[Modern C++ Design Pattern/Chapter 4. 프로토타입]] [[Modern C++ Design Pattern/Chapter 5. 싱글턴]]   제 2부 구조 패턴  In design step, we use well-known three ways.  Inheritance Composition Aggregation : One object can be independant nevertheless the object refer to another object. For example, T* or shared_ptr&amp;lt;T&amp;gt;     [[Modern C++ Design Pattern/Chapter 6.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 1. 개요</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-1.-%EA%B0%9C%EC%9A%94/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-1.-%EA%B0%9C%EC%9A%94/</guid>
+      <description>CRTP(Curiously Recurring Template Pattern) struct Foo : SomeBase&amp;lt;Foo&amp;gt; { ... } template &amp;lt;typename Derived&amp;gt; struct SomeBase { void foo() { for (auto&amp;amp; item : *static_cast&amp;lt;Derived*&amp;gt;(this)) { ... } } } Property class Person { private: int age_; public: int get_age() const {return age_; } void set_age(int value) {age_ = value; } __declspec(property(get=get_age, put=set_age)) int age; } Person p; p.age = 20; // calls p.set_age(20) Factory Factory Method struct Point { protected: Point(const float x, const float y) : x {x}, y {y} {} public: static Point NewCartesian(float x, float y) { return {x, y}; } static Point NewPolar(float r, float theta) { return {r * cos(theta), r * sin(theta)}; } // skip  }; SOLID Design Principle  SRP(Single Responsibility Principle)  If you need to edit a few classes(or little more?</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 2. 빌더</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-2.-%EB%B9%8C%EB%8D%94/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-2.-%EB%B9%8C%EB%8D%94/</guid>
+      <description>Builder Pattern Simple Builder struct HtmlBuilder { HtmlElement root; HtmlBuilder(string root_name) { root.name = root_name; } void add_child(string child_name string child_text) { HtmlElement e{ child_name, child_text }; root.elements.emplace_back(e); } string str() { return root.str(); } }; Fluent Builder struct HtmlBuilder { HtmlElement root; HtmlBuilder(string root_name) { root.name = root_name; } HtmlBuilder&amp;amp; add_child(string child_name string child_text) { HtmlElement e{ child_name child_text }; root.elements.emplace_back(e); return *this; } /* skip */ }; HtmlBuilder builder{ &amp;#34;ul&amp;#34; }; builder.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 3. 팩토리</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-3.-%ED%8C%A9%ED%86%A0%EB%A6%AC/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-3.-%ED%8C%A9%ED%86%A0%EB%A6%AC/</guid>
+      <description>Factory Class struct Point { float x, y; friend class PointFacotry; private: Point(float x, float y) : x(x), y(y) {} }; struct PointFactory { static Point NewCartesian(float x, float y) { return Point{x, y}; } static Point NewPolar(float r, flaot theta) { return Point{r * cos(theta), r * sin (theta)}; } }; Inner Factory struct Point { private: Point(float x, float y) : x(x), y(y) {} struct PointFactory { private: PointFactory() {} public : static Point NewCartesian (float x, float y) { return {x, y}; } static Point NewPolar (float r, float theta) { return {r * cos(theta), r * sin (theta)}; } }; public: float x, y; static pointFactory Factory; }; Abstract Factory struct HotDrink { virtual void prepare (int volume) = 0; }; struct Tea: HotDrink { void prepare (int volume) override { cout &amp;lt;&amp;lt; &amp;#34;Take tea bag, boil water, pour&amp;#34; &amp;lt;&amp;lt; volume &amp;lt;&amp;lt; &amp;#34;ml, add some lemon&amp;#34; &amp;lt;&amp;lt; endl; } }; class DrinkFactory { map&amp;lt;string, unique_ptr&amp;lt;HotDrinkFactory&amp;gt;&amp;gt; hot_factories; public: DrinkFactory() { hot_factories[&amp;#34;coffee&amp;#34;] = make_unique&amp;lt;CoffeeFactory&amp;gt;(); hot_factories[&amp;#34;tea&amp;#34;] = make_unique&amp;lt;TeaFactory&amp;gt;(); } unique_ptr&amp;lt;HotDrink&amp;gt; make_drink(const string&amp;amp; name) { auto drink = hot_factories[name] -&amp;gt; make(); drink-&amp;gt;prepare(200); // 200 must be changed other constant variable  return drink; } }; Functional Factory class DrinkWithVolumeFactory { map&amp;lt;string, function&amp;lt;unique_ptr&amp;lt;HotDrink&amp;gt;()&amp;gt;&amp;gt; factories; public: DrinkWithVolumeFactory() { factories[&amp;#34;tea&amp;#34;]= [] [ auto tea = make_unique&amp;lt;Tea&amp;gt;(); tea-&amp;gt;prepare(200); return tea; }; } }; inline unique_ptr&amp;lt;HotDrink&amp;gt; DrinkWithVolumeFactory:: make_drink(const string&amp;amp; name) { return factories[name](); } Summary  &amp;ldquo;Factory Method&amp;rdquo;, which is member function of creation type, create object and return it.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 4. 프로토타입</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-4.-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-4.-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85/</guid>
+      <description>객체 생성 중복처리 직렬화(Serialization) 프로토타입 팩터리 요약 </description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 5. 싱글턴</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-5.-%EC%8B%B1%EA%B8%80%ED%84%B4/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-5.-%EC%8B%B1%EA%B8%80%ED%84%B4/</guid>
+      <description>Singleton static Database database{}; /* not recommended */ /** * This method is only secured about MT(Multi Thread)-Safe on C++11 or Higher. */ Database&amp;amp; get_database() { static Database databse; return database; } Traditional Implementation struct Database { protected: Database() { /* Do something */ } public: static Database&amp;amp; get() { // MT-Safe on C++11 or Higher  static Database database; return database; } Database(Database const&amp;amp;) = delete; Database(Database &amp;amp;&amp;amp;) = delete; Database&amp;amp; operator=(Database const&amp;amp;) = delete; Database&amp;amp; operator=(Database &amp;amp;&amp;amp;) = delete; };  You can think over inheritance of boost::noncopyable class if you don&amp;rsquo;t perfer to this by your hands.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 6. 어댑터</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-6.-%EC%96%B4%EB%8C%91%ED%84%B0/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-6.-%EC%96%B4%EB%8C%91%ED%84%B0/</guid>
+      <description>Adapter Pattern  We use a example case, drawiing geometric shape.  struct Point { int x, y; }; struct Line{ Point start, end; }; struct VectorObject { virtual std::vector&amp;lt;Line&amp;gt;::iterator begin() = 0; virtual std::vector&amp;lt;Line&amp;gt;::iterator end() = 0; }; struct VectorRectangle : VectorObject { VectorRectangle(int x, int y, int width, int height) { lines.emplace_back(Line{ Point{x, y}, Point{x + width, y} }); lines.emplace_back(Line{ Point{x + width, y}, Point {x + width, y + height} }); lines.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 7. 브릿지</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-7.-%EB%B8%8C%EB%A6%BF%EC%A7%80/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-7.-%EB%B8%8C%EB%A6%BF%EC%A7%80/</guid>
+      <description>Bridge Pattern Pimpl (Pointer to Implmentation) struct Person { string name; void greet(); Person(); ~Person(); class PersonImpl; PersonImpl *impl; // refer to gsl::owner&amp;lt;T&amp;gt;  }; struct Person:PersonImpl { void greet(Person* p); } Person::Person() : impl(new PersonImpl) {} Person::~Person() { delete imple; } void Person::greet() { impl-&amp;gt;greet(this); } void Person::PersonImpl::greet(Person* p) { printf(&amp;#34;hello %s&amp;#34;, p-&amp;gt;name.c_str()); }  Props  Hide implementation. If Person class has many private/protected member variable, it is exposed though the header file to client.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 8. 컴포지트</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-8.-%EC%BB%B4%ED%8F%AC%EC%A7%80%ED%8A%B8/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-8.-%EC%BB%B4%ED%8F%AC%EC%A7%80%ED%8A%B8/</guid>
+      <description>Composite Pattern  How to announce the object has multiple composite attributes? It is not easy.  Properties based on array. class Creature { int strength, agility, intelligence; public: int get_stringth() const { return strength; } void set_strength(int strength) { Creture::strength = strength; } // Other getter/setter....  int sum() const { return strength + agility + intelligence; } double average() const { return sum() / 3.0; } int max() const { return ::max(::max(strength, agility), intelligence); } };  It is not pretty.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 9. 데코레이터</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-9.-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0/</link>
+      <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-9.-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0/</guid>
+      <description>Decorator  Dynamic Composition Static Composition  Dynamic Decorator struct ColoredShape : Shape { Shape&amp;amp; shape; string color; ColoredShape(Shape&amp;amp; shape, const string&amp;amp; color) : shape{shape}, color{color} {} stinrg str() const override { ostringstream oss; oss &amp;lt;&amp;lt; shape.str() &amp;lt;, &amp;#34; Has the color &amp;#34; &amp;lt;&amp;lt; color; return oss.str(); } }; // Example Code  Circle circle{0.5f}; ColoredShape redCircle{circle, &amp;#34;red&amp;#34;}; cout &amp;lt;&amp;lt; redCircle.str(); struct TransparentShape : Shape { Shape&amp;amp; shape; uint8_t transparency; TransparentShape(Shape&amp;amp; shape, const uint8_t transparency) : shape{shape}, transparency{transparency} {} string str() const override { ostringstream oss; oss &amp;lt;&amp;lt; shape.</description>
     </item>
     
     <item>

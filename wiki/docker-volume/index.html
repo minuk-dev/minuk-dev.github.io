@@ -31,37 +31,21 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 
 
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
  
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/cpp.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/c.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/javascript.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/typescript.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
-    
+<link rel="stylesheet" href="/highlight/styles/default.css">
+
+
+
+
+<link rel="stylesheet" href="/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+
+
+<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+ 
+
+
+    <script src="/highlight/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
 
@@ -69,11 +53,12 @@
 
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script src="/jquery-3.4.1.min.js"></script>
 
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+<script src="/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
  <meta name="generator" content="Hugo 0.68.3" />
@@ -154,13 +139,15 @@
     </div>
     <div>
         <h2>Docker Volume</h2>
+        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Docker%20Volume.md">
         <h5>created : Tue, 07 Apr 2020 20:21:35 &#43;0900</h5>
-        <h5>modified : Wed, 08 Apr 2020 12:57:20 &#43;0900</h5>
+          <h5>modified : Wed, 08 Apr 2020 12:57:20 &#43;0900</h5>
+        </a>
         
 
     </div>
 
-    <aside class="navbar navbar-collapse" style="text-align:left;"><nav id="TableOfContents">
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
   <ul>
     <li><a href="#71httpswwwjoinccokrwman12dockerguidedatawithcontainertoc볼륨-만들기"><a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">7.1.</a> 볼륨 만들기</a></li>
     <li><a href="#72httpswwwjoinccokrwman12dockerguidedatawithcontainertoc볼륨-목록-확인"><a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">7.2.</a> 볼륨 목록 확인</a></li>
@@ -168,7 +155,8 @@
     <li><a href="#74httpswwwjoinccokrwman12dockerguidedatawithcontainertoc볼륨-정보-확인"><a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">7.4.</a> 볼륨 정보 확인</a></li>
   </ul>
 </nav></aside>
-    <div align="start" class="content"><h1 id="1httpswwwjoinccokrwman12dockerguidedatawithcontainertoc데이터-볼륨"><a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">1.</a> 데이터 볼륨</h1>
+    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
+      <h1 id="1httpswwwjoinccokrwman12dockerguidedatawithcontainertoc데이터-볼륨"><a href="https://www.joinc.co.kr/w/man/12/docker/Guide/DataWithContainer#toc">1.</a> 데이터 볼륨</h1>
 <p>도커는 하나의 이미지로 부터 여러 컨테이너를 만들기 위해서</p>
 <p><strong>Union File system</strong></p>
 <p>을 사용한다. 유니온 파일 시스템은 원본 이미지에 변경된 내용(diff)를 추가하는 방식이므로, 다른 컨테이너에서 사용 할 수 없다. 애플리케이션에 따라서는 데이터를 다른 컨테이너와 공유 하거나 혹은 호스트에서 접근 할 수 있어야 하는 경우가 있는데, 이때 데이터 볼륨을 사용한다. 데이터 볼륨은 <strong>호스트의 파일 시스템</strong>을 컨테이너에서 마운트 하는 방식으로 사용한다. 아래와 같은 특징이 있다.</p>
@@ -274,7 +262,8 @@
 <ul>
 <li><a href="https://www.joinc.co.kr/w/man/12/docker/InfrastructureForDocker/storage">도커를 위한 파일 시스템 구성</a></li>
 </ul>
-</div>
+
+    </div>
 
   <script>
       ;(function() {
