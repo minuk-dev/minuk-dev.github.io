@@ -3,7 +3,7 @@ layout  : wiki
 title   : Modern C++ Design Pattern
 summary : 
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:57:04 +0900
+lastmod : 2020-04-11 23:27:22 +0900
 tags    : 
 ---
 
@@ -24,6 +24,7 @@ tags    :
    * [[Modern C++ Design Pattern/Chapter 8. 컴포지트]]
    * [[Modern C++ Design Pattern/Chapter 9. 데코레이터]]
    * [[Modern C++ Design Pattern/Chapter 10. 퍼사드]]
+   * [[Modern C++ Design Pattern/Chapter 11. 플라이웨이트]]
 
 ---
 

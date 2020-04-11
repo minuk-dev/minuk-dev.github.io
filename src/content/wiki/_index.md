@@ -1,9 +1,13 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-04-11 00:19:03 +0900
+lastmod: 2020-04-11 23:25:42 +0900
 ---
-* [[TODO]]
+# 즐겨찾기
+  * [[TODO]]
+## 하고 있는거 
+ * [[vimwiki로 블로그 구축하기]]
+ * [[Modern C++ Design Pattern]]
 # 개인 글쓰기
  * [[vimwiki로 블로그 구축하기]]
 # 계룡 개발 모임
