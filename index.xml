@@ -6,10 +6,19 @@
     <description>Recent content on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Sat, 11 Apr 2020 00:19:04 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2020 23:28:27 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chapter 11. 플라이웨이트</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</link>
+      <pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</guid>
+      <description>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;quot;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.  사용자 이름 struct User { User(const string&amp;amp; first_name, const string&amp;amp; last_name) : first_name{add(first_anem)}, last_name{add(last_name)} {} protected: key first_name, last_name; static bimap&amp;lt;key, string&amp;gt; names; // boost:bimap(양방향 map)  static key seed; static key add(const string&amp;amp; s) { ...} }; static key add(const string&amp;amp; s) { auto it = names.right.find(s); if (it == names.</description>
+    </item>
     
     <item>
       <title>vimwiki로 블로그 구축하기</title>
@@ -21,12 +30,12 @@
     </item>
     
     <item>
-      <title></title>
+      <title>Modern C&#43;&#43; Design Pattern/Chapter 10. 퍼사드</title>
       <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</link>
       <pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</guid>
-      <description> </description>
+      <description>퍼사드는 어디에 있는가? struct Console { vector&amp;lt;Viewport*&amp;gt; viewports; Size charSize, gridSize; }; Console::Console(bool fullscreen, int char_width, int char_height, int width, int height, optional&amp;lt;Size&amp;gt; client_size) { // Implement } Console::Console(const ConsoleCreateionParamters* ccp) { ... } struct ConsoleCreationParameters { optional&amp;lt;Size&amp;gt; client_size; int character_width{10}; int character_height{14}; int width{20}; int height{30}; bool fullscreen{false}; bool create_default_view_and_buffer{true}; }; 요약  하나 이상의 복잡한 서브 시스템 앞에 단순한 인터페이스를 두기 위한 방법  </description>
     </item>
     
     <item>
