@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-11 23:01:07 +0900
+lastmod : 2020-04-11 23:56:16 +0900
 tags    : 
 draft   : true
 parent  : 
@@ -14,6 +14,7 @@ parent  :
  * [o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
    * [X] jquery, bootstrap, font-awesome, highlight 만 적용
    * [X] mathjax 적용
+   * [ ] mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자
    * [ ] 뭔지 모르는 js , css(`client.js` 등)들 알아보기
  * [ ] table of contents 를 홈페이지 측면에 띄우기
  * [.] vimwiki 와 hugo 연동한거 글쓰기
