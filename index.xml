@@ -6,10 +6,37 @@
     <description>Recent content on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Sat, 11 Apr 2020 23:28:27 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2020 20:41:09 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>hugo</title>
+      <link>http://makerdark98.dev/wiki/hugo/</link>
+      <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/hugo/</guid>
+      <description>draft가 true인 것들 보기 $ hugo list drafts </description>
+    </item>
+    
+    <item>
+      <title>tee (Linux Command)</title>
+      <link>http://makerdark98.dev/wiki/tee/</link>
+      <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/tee/</guid>
+      <description>사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
+    </item>
+    
+    <item>
+      <title>rm (Linux Command)</title>
+      <link>http://makerdark98.dev/wiki/rm/</link>
+      <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/rm/</guid>
+      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일  $ rm -v !(&amp;#34;filename&amp;#34;)  다중  $ rm -v !(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;) Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
+    </item>
     
     <item>
       <title>Modern C&#43;&#43; Design Pattern/Chapter 11. 플라이웨이트</title>
@@ -18,15 +45,6 @@
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</guid>
       <description>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;quot;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.  사용자 이름 struct User { User(const string&amp;amp; first_name, const string&amp;amp; last_name) : first_name{add(first_anem)}, last_name{add(last_name)} {} protected: key first_name, last_name; static bimap&amp;lt;key, string&amp;gt; names; // boost:bimap(양방향 map)  static key seed; static key add(const string&amp;amp; s) { ...} }; static key add(const string&amp;amp; s) { auto it = names.right.find(s); if (it == names.</description>
-    </item>
-    
-    <item>
-      <title>vimwiki로 블로그 구축하기</title>
-      <link>http://makerdark98.dev/wiki/vimwiki%EB%A1%9C-%EB%B8%94%EB%A1%9C%EA%B7%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/</link>
-      <pubDate>Sat, 11 Apr 2020 00:19:04 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/wiki/vimwiki%EB%A1%9C-%EB%B8%94%EB%A1%9C%EA%B7%B8-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0/</guid>
-      <description>계기  불편하다. 딱 이말이 가장 적합할거 같다. 원래 사용하던 것들이 전부 불편했다. 내가 써봤던건 jekyll을 통한 깃허브 포스트, Notion인데, 각각 장단점이 도드라졌다. 오프라인에서도 똑같이 보이는 여부, 글을 쓸 수 있는지 여부, 내 컴퓨터가 아닌 곳에서도 언제나 빠르게 확인 가능한지, 이런 여러점에서 그리 좋지 않았다. (노션이 초기에는 좋았지만, 점점 오프라인 기능들이 싱크들의 문제로 인해서 잘 안되지 않았다.) vim을 쓰고 싶어졌다. 에디터로도 vim을 쓰고 chrome에서도 vimium, PC에서도 키보드로만 작업할수 있도록 i3로 작업하는데 왜 메모할때는 마우스를 써야하는가 라는 생각이 들었다.</description>
     </item>
     
     <item>
@@ -472,7 +490,7 @@ $ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
       <pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/linux-command/</guid>
-      <description>실생활  [[wifi command line]] [[brightness]]  Server  [[user]] [[ftp]] [[firewall]] [[ssh server]]  </description>
+      <description>command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]]  Server  [[user]] [[ftp]] [[firewall]] [[ssh server]]  </description>
     </item>
     
     <item>
@@ -852,38 +870,11 @@ golang으로 만드는 db</description>
     
     <item>
       <title>Test</title>
-      <link>http://makerdark98.dev/posts/test/</link>
-      <pubDate>Sun, 05 Apr 2020 12:31:29 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/posts/test/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Test</title>
       <link>http://makerdark98.dev/wiki/test/</link>
       <pubDate>Sun, 05 Apr 2020 12:31:29 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/test/</guid>
       <description>Test Updated</description>
-    </item>
-    
-    <item>
-      <title>Second</title>
-      <link>http://makerdark98.dev/posts/second/</link>
-      <pubDate>Sun, 05 Apr 2020 12:27:55 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/posts/second/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>My First Post</title>
-      <link>http://makerdark98.dev/posts/my-first-post/</link>
-      <pubDate>Sun, 05 Apr 2020 10:14:48 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/posts/my-first-post/</guid>
-      <description>test</description>
     </item>
     
     <item>
@@ -964,15 +955,6 @@ Effective Debugging은 2회독 마치고 notion에 정리하면서 다시 3회�
 먼저 입대는 2월 17일? 18일 월요일 입대했다. mysql코드를 계속보다가 입대했다.
 기훈단에서는 육체적으로는 힘들었지만 정신적으로는 회복할수 있는 좋은 시기였다고 생각한다. 4주차때부터는 인편으로 백준 문제를 받아서 풀었다. 풀게 없었을때는 직전학기에 배운것중에서 가장 중요하다고 생각했던게 컴퓨터구조론이라서 CPU개략적 구조도를 외웠던 걸 계속 그렸다. 기훈단에서 배운것들은 솔직히 말해서 앞으로 써먹을게 없을 지식과 경험이라고 생각해서 리마인드를 의도적으로 안하기 위해서 최대한 안적겠다.
 2박 3일로 수료외박을 나왔을때는 나와서 짜장면을 먹었고, 정통학교에서 필요한 기본적 물품(컵, 핫초코)을 샀고 둘쨰날에는 맘스터치에서 햄버거를 먹고 못했던 연락들을 하고 밀렸던 웹툰같은걸 봤다.</description>
-    </item>
-    
-    <item>
-      <title>Min-Uk.Lee</title>
-      <link>http://makerdark98.dev/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://makerdark98.dev/about/</guid>
-      <description>Courses  Chung-Ang University Major : Computer Science Minor : Statistics  Interests SSD Reading Lists filesystem Database Distributed System vim * vimwiki  Projects 2017 2017.08 ~ 2017.09 caucsescrape (slack notification chatbot, no screenshot) 2017.09 ~ 2018.03 caucsenotice - 중앙대 컴공 알려드립니다. 2018 2018.10 ~ 2018.11 Today&amp;rsquo;s Topic (오늘의 토픽) - 클라우드 파스-타 기반 데이터 활용 서비스 경진대회: 제1회 국회도서관 해커톤 대회 - 국회과학기술정보방송통신위원장상 (Korea Congrass Paas-TA Hackathon - Science and Technology Information Broadcasting Commission Chairman Award) 2018.</description>
     </item>
     
   </channel>

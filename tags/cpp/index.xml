@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cpp on MD98 page</title>
+    <link>http://makerdark98.dev/tags/cpp/</link>
+    <description>Recent content in cpp on MD98 page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Thu, 09 Apr 2020 23:56:51 +0900</lastBuildDate>
+    
+	<atom:link href="http://makerdark98.dev/tags/cpp/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chapter 10. 퍼사드</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</link>
+      <pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</guid>
+      <description>퍼사드는 어디에 있는가? struct Console { vector&amp;lt;Viewport*&amp;gt; viewports; Size charSize, gridSize; }; Console::Console(bool fullscreen, int char_width, int char_height, int width, int height, optional&amp;lt;Size&amp;gt; client_size) { // Implement } Console::Console(const ConsoleCreateionParamters* ccp) { ... } struct ConsoleCreationParameters { optional&amp;lt;Size&amp;gt; client_size; int character_width{10}; int character_height{14}; int width{20}; int height{30}; bool fullscreen{false}; bool create_default_view_and_buffer{true}; }; 요약  하나 이상의 복잡한 서브 시스템 앞에 단순한 인터페이스를 두기 위한 방법  </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tee on MD98 page</title>
+    <link>http://makerdark98.dev/tags/tee/</link>
+    <description>Recent content in tee on MD98 page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Sun, 12 Apr 2020 20:29:35 +0900</lastBuildDate>
+    
+	<atom:link href="http://makerdark98.dev/tags/tee/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>tee (Linux Command)</title>
+      <link>http://makerdark98.dev/wiki/tee/</link>
+      <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/tee/</guid>
+      <description>사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
+    </item>
+    
+  </channel>
+</rss>
