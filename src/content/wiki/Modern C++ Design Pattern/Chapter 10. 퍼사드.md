@@ -3,9 +3,9 @@ layout  : wiki
 title   : Modern C++ Design Pattern/Chapter 10. 퍼사드
 summary : 
 date    : 2020-04-09 23:56:51 +0900
-lastmod : 2020-04-11 23:25:36 +0900
-tags    : 
-draft   : true
+lastmod : 2020-04-12 20:46:32 +0900
+tags    : [cpp, design pattern, facade]
+draft   : false
 parent  : 
 ---
 

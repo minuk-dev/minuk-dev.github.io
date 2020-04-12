@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-04-11 23:25:42 +0900
+lastmod: 2020-04-12 20:42:29 +0900
 ---
 # 즐겨찾기
   * [[TODO]]
@@ -29,6 +29,7 @@ lastmod: 2020-04-11 23:25:42 +0900
  * [[Pintos]]
 ## Tool
  * [[vim]]
+ * [[hugo]]
  * [[Nexus]]
  * [[docker]]
  * [[tool configuration]]

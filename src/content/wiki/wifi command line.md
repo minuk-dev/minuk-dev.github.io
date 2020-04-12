@@ -3,8 +3,8 @@ layout  : wiki
 title   : Wifi commands
 summary : 
 date    : 2020-04-07 20:35:07 +0900
-lastmod : 2020-04-08 12:58:44 +0900
-tags    : 
+lastmod : 2020-04-12 20:36:51 +0900
+tags    : [linux, cli, command, iw, ip, dhclient]
 toc     : true
 public  : true
 parent  : 

@@ -3,9 +3,9 @@ layout  : wiki
 title   : vimwiki
 summary : 
 date    : 2020-04-08 22:51:20 +0900
-lastmod : 2020-04-08 23:44:57 +0900
-tags    : 
-draft   : true
+lastmod : 2020-04-12 20:44:38 +0900
+tags    : [vim, vimwiki]
+draft   : false
 parent  : 
 ---
 ## Vimwiki 설정

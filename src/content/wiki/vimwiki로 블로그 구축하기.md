@@ -3,7 +3,7 @@ layout  : wiki
 title   : vimwiki로 블로그 구축하기
 summary : 
 date    : 2020-04-11 00:19:04 +0900
-lastmod : 2020-04-11 00:46:34 +0900
+lastmod : 2020-04-12 20:40:00 +0900
 tags    : 
 draft   : true
 parent  : 

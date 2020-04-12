@@ -3,9 +3,9 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-11 23:56:16 +0900
-tags    : 
-draft   : true
+lastmod : 2020-04-12 20:39:50 +0900
+tags    : [todo]
+draft   : false
 parent  : 
 ---
 

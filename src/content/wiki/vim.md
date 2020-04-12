@@ -3,9 +3,9 @@ layout  : wiki
 title   : vim
 summary : 
 date    : 2020-04-08 23:44:39 +0900
-lastmod : 2020-04-08 23:56:29 +0900
-tags    : 
-draft   : true
+lastmod : 2020-04-12 20:42:54 +0900
+tags    : [vim]
+draft   : false
 parent  : 
 ---
 
