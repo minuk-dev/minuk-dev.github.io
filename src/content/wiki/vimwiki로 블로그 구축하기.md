@@ -3,7 +3,7 @@ layout  : wiki
 title   : vimwiki로 블로그 구축하기
 summary : 
 date    : 2020-04-11 00:19:04 +0900
-lastmod : 2020-04-12 20:40:00 +0900
+lastmod : 2020-04-13 00:00:20 +0900
 tags    : 
 draft   : true
 parent  : 
@@ -134,11 +134,26 @@ let g:startify_session_before_save = [
   * 리소스를 적게 먹고 빨라야한다. : 집에 있는 노트북은 i3, 4GB이고, 보통 접속해서 쓰는건 cloudatcost의 10000원짜리다. 성능이 좋을리가 없다.
   * 커스터마이징 문서가 좋아야한다 : 이건 단순히 찍어내기식 블로그가 많으면 좋겠다가 아니다. 그런 글들은 읽어봐도 다들 똑바로 알고있는게 없고 다들 테마 가져다가 쓴다. 순수하게 문서가 퀄리티가 좋아야한다. 혼자서도 찾아볼수 있게
 
-  이런 고민을 하다가 생각난게 옆에 있던 형이 말한 `hugo`라는게 생각 났다. 고민하는 것보다 해보고 아니면 마는게 더 시간이 적게 들거 같아서 그렇게 하기로했다. ~~(여차하면 아예 jekyll로 완전히 따라해도 되니까)~~
+  이런 고민을 하다가 생각난게 주변분이 권유한 `hugo`라는게 생각 났다. 고민하는 것보다 해보고 아니면 마는게 더 시간이 적게 들거 같아서 그렇게 하기로했다. ~~(여차하면 아예 jekyll로 완전히 따라해도 되니까)~~
 
 
 ## Hugo
+나는 어짜피 리눅스 기반에서 작업하고 있어서
+```bash
+$ snap install hugo
+$ hugo new site makerdark98.github.io
+```
+를 했다. ~~윈도우에서도 문제 없이 돈다는건 오늘 알았다.~~
 
+hugo document를 보니 그냥 테마 골라서 다운하면 된다고 한다.
+
+어짜피 나중에 테마도 직접 전부 짤 생각이니 대충 적당한거 고르기로 했다. 나는 예쁜것 보다 위키 시스템 구축이 목표니 디자인은 나중에 하면 된다. ~~(근데 지금 테마 나름 괜찮은듯?)~~
+```bash
+$ cd makerdark98.github.io
+$ git submodule add https://github.com/calintat/minimal.git thems/minimal 
+```
+
+## Github Page에 올리기
 
 ## Domain 연결하기
 ### Gandi.net

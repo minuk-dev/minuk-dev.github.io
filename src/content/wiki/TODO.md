@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-12 23:06:40 +0900
+lastmod : 2020-04-13 00:00:36 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -23,9 +23,9 @@ parent  :
  * [ ] table of contents 를 홈페이지 측면에 띄우기
  * [.] vimwiki 와 hugo 연동한거 글쓰기
    * [X] 초고쓰기 시작 위키에다가만 적음
-   * [ ] 계기
-   * [ ] 도메인 연결
+   * [X] 계기
    * [ ] 깃허브 페이지 연결
+   * [ ] 도메인 연결
    * [ ] 스크린샷들 첨부
    * [ ] 오프라인 삽질
    * [ ] blame 삽질
