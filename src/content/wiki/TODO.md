@@ -3,12 +3,16 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-12 20:39:50 +0900
+lastmod : 2020-04-12 23:06:40 +0900
 tags    : [todo]
 draft   : false
 parent  : 
 ---
 
+## 공부
+ * [ ] rm 명령어로 특정파일만 제외하고 삭제하기
+ * [ ] zsh 에서 regex 사용법 공부하기
+ * [ ] regex 공부하기
 ## Blog
  * [X] git blame을 사용해서 wiki diff 만들기
  * [o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
@@ -30,5 +34,6 @@ parent  :
  * [ ] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
  * [ ] 글을 자동배포하면 좋겠음. push까진 아니여도 commit이 자동으로 될 방법은 없나 생각해보자.
 ## Vim
- * [ ] tagbar 알아서 잘 되도록 설정하기
+ * [X] tagbar 알아서 잘 되도록 설정하기
+   * [X] markdown 에서 tagbar
  * [ ] vim ultisnip 사용법 알아보기

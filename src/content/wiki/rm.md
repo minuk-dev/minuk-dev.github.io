@@ -3,7 +3,7 @@ layout  : wiki
 title   : rm (Linux Command)
 summary : 
 date    : 2020-04-12 20:22:32 +0900
-lastmod : 2020-04-12 20:43:13 +0900
+lastmod : 2020-04-12 23:04:28 +0900
 tags    : [linux, rm, cli, command]
 draft   : false
 parent  : 
@@ -12,6 +12,7 @@ parent  :
 ## 자주 사용하는 거 모음
 
 ### 특정 파일 제외하고 지우기
+#### bash
 * 단일
 ```bash
 $ rm -v !("filename")
@@ -20,6 +21,7 @@ $ rm -v !("filename")
 ```bash
 $ rm -v !("filename1" | "filename2")
 ```
+#### zsh
 
 ## Delete Files Using Extended Pattern Matching Operators
 
