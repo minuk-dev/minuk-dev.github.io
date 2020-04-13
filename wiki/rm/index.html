@@ -142,7 +142,7 @@
         <h2>rm (Linux Command)</h2>
         <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/rm.md">
         <h5>created : Sun, 12 Apr 2020 20:22:32 &#43;0900</h5>
-          <h5>modified : Sun, 12 Apr 2020 20:43:13 &#43;0900</h5>
+          <h5>modified : Sun, 12 Apr 2020 23:04:28 &#43;0900</h5>
         </a>
         
 <a href="http://makerdark98.dev/tags/linux"><kbd class="item-tag">linux</kbd></a>
@@ -169,6 +169,7 @@
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
       <h2 id="자주-사용하는-거-모음">자주 사용하는 거 모음</h2>
 <h3 id="특정-파일-제외하고-지우기">특정 파일 제외하고 지우기</h3>
+<h4 id="bash">bash</h4>
 <ul>
 <li>단일</li>
 </ul>
@@ -177,7 +178,8 @@
 <li>다중</li>
 </ul>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rm -v !<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filename1&#34;</span> | <span style="color:#e6db74">&#34;filename2&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators</h2>
+</code></pre></div><h4 id="zsh">zsh</h4>
+<h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators</h2>
 <ul>
 <li><code>*(pattern-list)</code> : matches zero or more occurrences of the specified patterns</li>
 <li><code>?(pattern-list)</code> : matches zero or one occurence of the specified patterns</li>
@@ -191,8 +193,8 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();

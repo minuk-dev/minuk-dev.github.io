@@ -6,10 +6,19 @@
     <description>Recent content in cpp on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Thu, 09 Apr 2020 23:56:51 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2020 23:28:27 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/cpp/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chapter 11. 플라이웨이트</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</link>
+      <pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</guid>
+      <description>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;quot;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.  사용자 이름 struct User { User(const string&amp;amp; first_name, const string&amp;amp; last_name) : first_name{add(first_anem)}, last_name{add(last_name)} {} protected: key first_name, last_name; static bimap&amp;lt;key, string&amp;gt; names; // boost:bimap(양방향 map)  static key seed; static key add(const string&amp;amp; s) { ...} }; static key add(const string&amp;amp; s) { auto it = names.right.find(s); if (it == names.</description>
+    </item>
     
     <item>
       <title>Modern C&#43;&#43; Design Pattern/Chapter 10. 퍼사드</title>

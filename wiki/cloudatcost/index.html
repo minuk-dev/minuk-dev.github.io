@@ -169,8 +169,8 @@ panel 은 패스워드가 다르다 맨마지막쯔음에 저장되어 있다.
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();

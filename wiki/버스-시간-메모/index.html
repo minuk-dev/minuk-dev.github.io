@@ -157,8 +157,8 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();

@@ -142,7 +142,7 @@
         <h2>TODO Lists</h2>
         <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/TODO.md">
         <h5>created : Wed, 08 Apr 2020 23:56:59 &#43;0900</h5>
-          <h5>modified : Sun, 12 Apr 2020 20:39:50 &#43;0900</h5>
+          <h5>modified : Mon, 13 Apr 2020 00:00:36 &#43;0900</h5>
         </a>
         
 <a href="http://makerdark98.dev/tags/todo"><kbd class="item-tag">todo</kbd></a>
@@ -152,12 +152,19 @@
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
   <ul>
+    <li><a href="#공부">공부</a></li>
     <li><a href="#blog">Blog</a></li>
     <li><a href="#vim">Vim</a></li>
   </ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="blog">Blog</h2>
+      <h2 id="공부">공부</h2>
+<ul>
+<li><input disabled="" type="checkbox"> rm 명령어로 특정파일만 제외하고 삭제하기</li>
+<li><input disabled="" type="checkbox"> zsh 에서 regex 사용법 공부하기</li>
+<li><input disabled="" type="checkbox"> regex 공부하기</li>
+</ul>
+<h2 id="blog">Blog</h2>
 <ul>
 <li><input checked="" disabled="" type="checkbox"> git blame을 사용해서 wiki diff 만들기</li>
 <li>[o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
@@ -172,9 +179,9 @@
 <li>[.] vimwiki 와 hugo 연동한거 글쓰기
 <ul>
 <li><input checked="" disabled="" type="checkbox"> 초고쓰기 시작 위키에다가만 적음</li>
-<li><input disabled="" type="checkbox"> 계기</li>
-<li><input disabled="" type="checkbox"> 도메인 연결</li>
+<li><input checked="" disabled="" type="checkbox"> 계기</li>
 <li><input disabled="" type="checkbox"> 깃허브 페이지 연결</li>
+<li><input disabled="" type="checkbox"> 도메인 연결</li>
 <li><input disabled="" type="checkbox"> 스크린샷들 첨부</li>
 <li><input disabled="" type="checkbox"> 오프라인 삽질</li>
 <li><input disabled="" type="checkbox"> blame 삽질</li>
@@ -187,7 +194,11 @@
 </ul>
 <h2 id="vim">Vim</h2>
 <ul>
-<li><input disabled="" type="checkbox"> tagbar 알아서 잘 되도록 설정하기</li>
+<li><input checked="" disabled="" type="checkbox"> tagbar 알아서 잘 되도록 설정하기
+<ul>
+<li><input checked="" disabled="" type="checkbox"> markdown 에서 tagbar</li>
+</ul>
+</li>
 <li><input disabled="" type="checkbox"> vim ultisnip 사용법 알아보기</li>
 </ul>
 
@@ -196,8 +207,8 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();

@@ -142,9 +142,15 @@
         <h2>Modern C&#43;&#43; Design Pattern/Chapter 11. 플라이웨이트</h2>
         <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C&#43;&#43;%20Design%20Pattern/Chapter%2011.%20%ed%94%8c%eb%9d%bc%ec%9d%b4%ec%9b%a8%ec%9d%b4%ed%8a%b8.md">
         <h5>created : Sat, 11 Apr 2020 23:28:27 &#43;0900</h5>
-          <h5>modified : Sun, 12 Apr 2020 20:44:11 &#43;0900</h5>
+          <h5>modified : Sun, 12 Apr 2020 23:09:00 &#43;0900</h5>
         </a>
         
+<a href="http://makerdark98.dev/tags/cpp"><kbd class="item-tag">cpp</kbd></a>
+
+<a href="http://makerdark98.dev/tags/design-pattern"><kbd class="item-tag">design pattern</kbd></a>
+
+<a href="http://makerdark98.dev/tags/flyweight"><kbd class="item-tag">flyweight</kbd></a>
+
 
     </div>
 
@@ -244,8 +250,8 @@ TextRange<span style="color:#f92672">&amp;</span> get_range(<span style="color:#
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
