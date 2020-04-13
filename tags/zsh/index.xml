@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zsh on MD98 page</title>
+    <link>http://makerdark98.dev/tags/zsh/</link>
+    <description>Recent content in zsh on MD98 page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Mon, 13 Apr 2020 22:06:38 +0900</lastBuildDate>
+    
+	<atom:link href="http://makerdark98.dev/tags/zsh/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>glob</title>
+      <link>http://makerdark98.dev/wiki/glob/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/glob/</guid>
+      <description>glob Wikipedia In computer programming, glob patterns specify sets of filenames with wildcard characters. For example, the Unix Bash shell command mv *.txt textfiles/ moves (mv) all files with names ending in .txt from the current directory to the directory textfiles. Here, * is a wildcard standing for &amp;ldquo;any string of characters&amp;rdquo; and *.txt is a glob pattern. The other common wildcard is the question mark (?), which stands for one character.</description>
+    </item>
+    
+  </channel>
+</rss>

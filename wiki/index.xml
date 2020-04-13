@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>glob</title>
+      <link>http://makerdark98.dev/wiki/glob/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/glob/</guid>
+      <description>glob Wikipedia In computer programming, glob patterns specify sets of filenames with wildcard characters. For example, the Unix Bash shell command mv *.txt textfiles/ moves (mv) all files with names ending in .txt from the current directory to the directory textfiles. Here, * is a wildcard standing for &amp;ldquo;any string of characters&amp;rdquo; and *.txt is a glob pattern. The other common wildcard is the question mark (?), which stands for one character.</description>
+    </item>
+    
+    <item>
       <title>hugo</title>
       <link>http://makerdark98.dev/wiki/hugo/</link>
       <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
@@ -35,7 +44,7 @@
       <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/rm/</guid>
-      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기 bash  단일  $ rm -v !(&amp;#34;filename&amp;#34;)  다중  $ rm -v !(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;) zsh Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
+      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일  $ rm -v !(&amp;#34;filename&amp;#34;)  다중  $ rm -v !(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;)  만약 zsh을 쓰고 있다면  $ setopt extendedglob $ rm ^(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;) Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
     </item>
     
     <item>
@@ -80,7 +89,7 @@
       <pubDate>Wed, 08 Apr 2020 23:56:59 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/todo/</guid>
-      <description>공부  rm 명령어로 특정파일만 제외하고 삭제하기 zsh 에서 regex 사용법 공부하기 regex 공부하기  Blog  git blame을 사용해서 wiki diff 만들기 [o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정  jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자 뭔지 모르는 js , css(client.js 등)들 알아보기   table of contents 를 홈페이지 측면에 띄우기 [.</description>
+      <description>공부  rm 명령어로 특정파일만 제외하고 삭제하기 zsh 에서 glob 사용법 공부하기 regex 공부하기  Blog  git blame을 사용해서 wiki diff 만들기 [o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정  jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자 뭔지 모르는 js , css(client.js 등)들 알아보기   table of contents 를 홈페이지 측면에 띄우기 [.</description>
     </item>
     
     <item>
@@ -490,7 +499,7 @@ $ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
       <pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/linux-command/</guid>
-      <description>command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]]  Server  [[user]] [[ftp]] [[firewall]] [[ssh server]]  </description>
+      <description>command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]] [[glob]]  Server  [[user]] [[ftp]] [[firewall]] [[ssh server]]  </description>
     </item>
     
     <item>

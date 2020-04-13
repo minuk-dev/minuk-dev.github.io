@@ -6,10 +6,64 @@
     <description>Recent content in Tags on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Sun, 12 Apr 2020 20:41:09 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 13 Apr 2020 22:06:38 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>bash</title>
+      <link>http://makerdark98.dev/tags/bash/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/bash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cli</title>
+      <link>http://makerdark98.dev/tags/cli/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/cli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>glob</title>
+      <link>http://makerdark98.dev/tags/glob/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/glob/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linux</title>
+      <link>http://makerdark98.dev/tags/linux/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>regex</title>
+      <link>http://makerdark98.dev/tags/regex/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/regex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zsh</title>
+      <link>http://makerdark98.dev/tags/zsh/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/zsh/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>command</title>
@@ -26,24 +80,6 @@
       <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
       
       <guid>http://makerdark98.dev/tags/hugo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>cli</title>
-      <link>http://makerdark98.dev/tags/cli/</link>
-      <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/cli/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>linux</title>
-      <link>http://makerdark98.dev/tags/linux/</link>
-      <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/linux/</guid>
       <description></description>
     </item>
     
