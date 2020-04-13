@@ -3,15 +3,15 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-13 00:00:36 +0900
+lastmod : 2020-04-13 22:30:31 +0900
 tags    : [todo]
 draft   : false
 parent  : 
 ---
 
 ## 공부
- * [ ] rm 명령어로 특정파일만 제외하고 삭제하기
- * [ ] zsh 에서 regex 사용법 공부하기
+ * [X] rm 명령어로 특정파일만 제외하고 삭제하기
+ * [X] zsh 에서 glob 사용법 공부하기
  * [ ] regex 공부하기
 ## Blog
  * [X] git blame을 사용해서 wiki diff 만들기
