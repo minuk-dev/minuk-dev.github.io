@@ -3,7 +3,7 @@ layout  : wiki
 title   : vim
 summary : 
 date    : 2020-04-08 23:44:39 +0900
-lastmod : 2020-04-12 20:42:54 +0900
+lastmod : 2020-04-15 23:18:00 +0900
 tags    : [vim]
 draft   : false
 parent  : 
@@ -22,3 +22,6 @@ parent  :
  * 어캐쓰는지 아직 잘 모르겠다.ㅠ 더 읽어봐야겠다.
 ## vimwiki
  * [[vimwiki]]
+## coc
+ * 엄청 삽질해서 적용했다. ㅠ 나중에 글로 하나 뺴도 괜찮을 듯
+ * [[coc]]
