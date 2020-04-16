@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko-kr">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>coc (vim plugin coc)</title>
+        
+        <style>
+
+    html body {
+        font-family: 'Raleway', sans-serif;
+        background-color: white;
+    }
+
+    :root {
+        --accent: red;
+        --border-width:  5px ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+
+
+
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+
+ 
+
+<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
+
+
+
+
+<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+
+
+<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
+ 
+
+
+    <script src="/vendor/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="/vendor/jquery-3.4.1.min.js"></script>
+
+
+
+<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+ <meta name="generator" content="Hugo 0.68.3" />
+        
+
+        
+
+        
+            
+          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+
+        
+
+        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
+
+    </head>
+
+    <body>
+        
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">coc (vim plugin coc)</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="/">Home</a></li>
+                            
+                                <li><a href="/wiki/">Wiki</a></li>
+                            
+                                <li><a href="/posts/">Posts</a></li>
+                            
+                                <li><a href="/projects/">Projects</a></li>
+                            
+                                <li><a href="/about/">About</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
+                            
+                            <li>
+                              <div style="max-width:300px;display:inline-block;max-height:40px;">
+                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
+<div class="gcse-search"></div>
+
+                              </div>
+                            </li>
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
+    <div>
+        <h2>coc (vim plugin coc)</h2>
+        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/coc.md">
+        <h5>created : Wed, 15 Apr 2020 23:13:04 &#43;0900</h5>
+          <h5>modified : Wed, 15 Apr 2020 23:30:23 &#43;0900</h5>
+        </a>
+        
+
+    </div>
+
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#간단-설명">간단 설명</a></li>
+    <li><a href="#설치하기">설치하기</a>
+      <ul>
+        <li><a href="#설치-삽질기">설치 삽질기</a></li>
+      </ul>
+    </li>
+    <li><a href="#설정하기">설정하기</a></li>
+    <li><a href="#language-server-설치">Language Server 설치</a>
+      <ul>
+        <li><a href="#c-language-server-설치">C++ Language Server 설치</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></aside>
+    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
+      <h2 id="간단-설명">간단 설명</h2>
+<ul>
+<li>Visual Studio Code 와 동시에 나온 Language Server (동시에 나왔는지는 확실치 않음)을 vim에도 적용하는 플러그인이다.</li>
+<li>일부 언어들은 이미 이 플러그인을 만든 사람이 쉽게쉽게 설치 가능하도록 해놨다.</li>
+<li>다른 언어는 삽질을 해서 알아냈다.</li>
+</ul>
+<h2 id="설치하기">설치하기</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vim" data-lang="vim"><span style="color:#a6e22e">Plug</span> <span style="color:#e6db74">&#39;neoclide/coc.nvim&#39;</span>, { <span style="color:#e6db74">&#39;do&#39;</span>: <span style="color:#e6db74">&#39;./install.sh&#39;</span> }<span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><ul>
+<li>vimrc에 추가했다. 공식 github를 참고한거랑 다르게 썻는데, 공식에 나온대로 하니 잘 설치가 안되서 하다보니 저렇게 해서 됬다.</li>
+</ul>
+<h3 id="설치-삽질기">설치 삽질기</h3>
+<ul>
+<li>Vim-Plug가 말썽을 부린건지, git clone 과정에서 자꾸 실패했다. 그냥 vim 플러그인 디렉토리로 가서 디렉토리를 밀어버리고 다시 하니 정상적으로 됬다.</li>
+<li>vimrc에서 최하단에 추가했는데 Coc Command가 하나도 동작하지 않았다. vimrc의 맨 윗부분으로 올리니 잘 작동된다.</li>
+</ul>
+<h2 id="설정하기">설정하기</h2>
+<ul>
+<li>공식에 나와있는거 + 맨 아랫줄 delimitMate만 추가해줬다.(Q&amp;A에 있길래 하란대로 했다.)</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vim" data-lang="vim"><span style="color:#75715e">&#34; TextEdit might fail if hidden is not set.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">hidden</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Some servers have issues with backup files, see #649.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">nobackup</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">nowritebackup</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Give more space for displaying messages.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">cmdheight</span>=<span style="color:#ae81ff">2</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; delays and poor user experience.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">updatetime</span>=<span style="color:#ae81ff">300</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Don&#39;t pass messages to |ins-completion-menu|.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">shortmess</span>+=<span style="color:#a6e22e">c</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Always show the signcolumn, otherwise it would shift the text each time</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; diagnostics appear/become resolved.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">signcolumn</span>=<span style="color:#a6e22e">yes</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Use tab for trigger completion with characters ahead and navigate.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; NOTE: Use command &#39;:verbose imap &lt;tab&gt;&#39; to make sure tab is not mapped by</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; other plugin before putting this into your config.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">inoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt;&lt;<span style="color:#a6e22e">expr</span>&gt; &lt;<span style="color:#a6e22e">TAB</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>      \ <span style="color:#a6e22e">pumvisible</span>() ? <span style="color:#e6db74">&#34;\&lt;C-n&gt;&#34;</span> :<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>      \ &lt;<span style="color:#a6e22e">SID</span>&gt;<span style="color:#a6e22e">check_back_space</span>() ? <span style="color:#e6db74">&#34;\&lt;TAB&gt;&#34;</span> :<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>      \ <span style="color:#a6e22e">coc</span>#<span style="color:#a6e22e">refresh</span>()<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">inoremap</span> &lt;<span style="color:#a6e22e">expr</span>&gt;&lt;<span style="color:#a6e22e">S</span>-<span style="color:#a6e22e">TAB</span>&gt; <span style="color:#a6e22e">pumvisible</span>() ? <span style="color:#e6db74">&#34;\&lt;C-p&gt;&#34;</span> : <span style="color:#e6db74">&#34;\&lt;C-h&gt;&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">s</span>:<span style="color:#a6e22e">check_back_space</span>() <span style="color:#a6e22e">abort</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">col</span> = <span style="color:#a6e22e">col</span>(<span style="color:#e6db74">&#39;.&#39;</span>) - <span style="color:#ae81ff">1</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#a6e22e">return</span> !<span style="color:#a6e22e">col</span> || <span style="color:#a6e22e">getline</span>(<span style="color:#e6db74">&#39;.&#39;</span>)[<span style="color:#a6e22e">col</span> - <span style="color:#ae81ff">1</span>]  =~# <span style="color:#e6db74">&#39;\s&#39;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Use &lt;c-space&gt; to trigger completion.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">inoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt;&lt;<span style="color:#a6e22e">expr</span>&gt; &lt;<span style="color:#a6e22e">c</span>-<span style="color:#a6e22e">space</span>&gt; <span style="color:#a6e22e">coc</span>#<span style="color:#a6e22e">refresh</span>()<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Use &lt;cr&gt; to confirm completion, `&lt;C-g&gt;u` means break undo chain at current</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; position. Coc only does snippet and additional edit on confirm.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">if</span> <span style="color:#a6e22e">exists</span>(<span style="color:#e6db74">&#39;*complete_info&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#a6e22e">inoremap</span> &lt;<span style="color:#a6e22e">expr</span>&gt; &lt;<span style="color:#a6e22e">cr</span>&gt; <span style="color:#a6e22e">complete_info</span>()[<span style="color:#e6db74">&#34;selected&#34;</span>] != <span style="color:#e6db74">&#34;-1&#34;</span> ? <span style="color:#e6db74">&#34;\&lt;C-y&gt;&#34;</span> : <span style="color:#e6db74">&#34;\&lt;C-g&gt;u\&lt;CR&gt;&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">else</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#a6e22e">imap</span> &lt;<span style="color:#a6e22e">expr</span>&gt; &lt;<span style="color:#a6e22e">cr</span>&gt; <span style="color:#a6e22e">pumvisible</span>() ? <span style="color:#e6db74">&#34;\&lt;C-y&gt;&#34;</span> : <span style="color:#e6db74">&#34;\&lt;C-g&gt;u\&lt;CR&gt;&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Use `[g` and `]g` to navigate diagnostics</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; [<span style="color:#a6e22e">g</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">diagnostic</span>-<span style="color:#a6e22e">prev</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; ]<span style="color:#a6e22e">g</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">diagnostic</span>-<span style="color:#a6e22e">next</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; GoTo code navigation.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; <span style="color:#a6e22e">gd</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">definition</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; <span style="color:#a6e22e">gy</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">type</span>-<span style="color:#a6e22e">definition</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; <span style="color:#a6e22e">gi</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">implementation</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; <span style="color:#a6e22e">gr</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">references</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Use K to show documentation in preview window.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; <span style="color:#a6e22e">K</span> :<span style="color:#a6e22e">call</span> &lt;<span style="color:#a6e22e">SID</span>&gt;<span style="color:#a6e22e">show_documentation</span>()&lt;<span style="color:#a6e22e">CR</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">function</span>! <span style="color:#a6e22e">s</span>:<span style="color:#a6e22e">show_documentation</span>()<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">index</span>([<span style="color:#e6db74">&#39;vim&#39;</span>,<span style="color:#e6db74">&#39;help&#39;</span>], &amp;<span style="color:#a6e22e">filetype</span>) &gt;= <span style="color:#ae81ff">0</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">execute</span> <span style="color:#e6db74">&#39;h &#39;</span>.<span style="color:#a6e22e">expand</span>(<span style="color:#e6db74">&#39;&lt;cword&gt;&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">else</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>    <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">CocAction</span>(<span style="color:#e6db74">&#39;doHover&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#66d9ef">endif</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#66d9ef">endfunction</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Highlight the symbol and its references when holding the cursor.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">autocmd</span> <span style="color:#a6e22e">CursorHold</span> * <span style="color:#a6e22e">silent</span> <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">CocActionAsync</span>(<span style="color:#e6db74">&#39;highlight&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Symbol renaming.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">rn</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">rename</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Formatting selected code.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">xmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">f</span>  &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">format</span>-<span style="color:#a6e22e">selected</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">f</span>  &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">format</span>-<span style="color:#a6e22e">selected</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">augroup</span> <span style="color:#a6e22e">mygroup</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#a6e22e">autocmd</span>!<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">  &#34; Setup formatexpr specified filetype(s).</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#a6e22e">autocmd</span> <span style="color:#a6e22e">FileType</span> <span style="color:#a6e22e">typescript</span>,<span style="color:#a6e22e">json</span> <span style="color:#a6e22e">setl</span> <span style="color:#a6e22e">formatexpr</span>=<span style="color:#a6e22e">CocAction</span>(<span style="color:#e6db74">&#39;formatSelected&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">  &#34; Update signature help on jump placeholder.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span>  <span style="color:#a6e22e">autocmd</span> <span style="color:#a6e22e">User</span> <span style="color:#a6e22e">CocJumpPlaceholder</span> <span style="color:#a6e22e">call</span> <span style="color:#a6e22e">CocActionAsync</span>(<span style="color:#e6db74">&#39;showSignatureHelp&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">augroup</span> <span style="color:#a6e22e">end</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Applying codeAction to the selected region.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Example: `&lt;leader&gt;aap` for current paragraph</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">xmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">a</span>  &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">codeaction</span>-<span style="color:#a6e22e">selected</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">a</span>  &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">codeaction</span>-<span style="color:#a6e22e">selected</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Remap keys for applying codeAction to the current line.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">ac</span>  &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">codeaction</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Apply AutoFix to problem on the current line.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">leader</span>&gt;<span style="color:#a6e22e">qf</span>  &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">fix</span>-<span style="color:#a6e22e">current</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Introduce function text object</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; NOTE: Requires &#39;textDocument.documentSymbol&#39; support from the language server.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">xmap</span> <span style="color:#66d9ef">if</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">funcobj</span>-<span style="color:#a6e22e">i</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">xmap</span> <span style="color:#a6e22e">af</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">funcobj</span>-<span style="color:#a6e22e">a</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">omap</span> <span style="color:#66d9ef">if</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">funcobj</span>-<span style="color:#a6e22e">i</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">omap</span> <span style="color:#a6e22e">af</span> &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">funcobj</span>-<span style="color:#a6e22e">a</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Use &lt;TAB&gt; for selections ranges.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; NOTE: Requires &#39;textDocument/selectionRange&#39; support from the language server.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; coc-tsserver, coc-python are the examples of servers that support it.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">TAB</span>&gt; &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">range</span>-<span style="color:#a6e22e">select</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">xmap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">TAB</span>&gt; &lt;<span style="color:#a6e22e">Plug</span>&gt;(<span style="color:#a6e22e">coc</span>-<span style="color:#a6e22e">range</span>-<span style="color:#a6e22e">select</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Add `:Format` command to format current buffer.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">command</span>! -<span style="color:#a6e22e">nargs</span>=<span style="color:#ae81ff">0</span> <span style="color:#a6e22e">Format</span> :<span style="color:#a6e22e">call</span> <span style="color:#a6e22e">CocAction</span>(<span style="color:#e6db74">&#39;format&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Add `:Fold` command to fold current buffer.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">command</span>! -<span style="color:#a6e22e">nargs</span>=? <span style="color:#a6e22e">Fold</span> :<span style="color:#a6e22e">call</span>     <span style="color:#a6e22e">CocAction</span>(<span style="color:#e6db74">&#39;fold&#39;</span>, &lt;<span style="color:#a6e22e">f</span>-<span style="color:#a6e22e">args</span>&gt;)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Add `:OR` command for organize imports of the current buffer.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">command</span>! -<span style="color:#a6e22e">nargs</span>=<span style="color:#ae81ff">0</span> <span style="color:#a6e22e">OR</span>   :<span style="color:#a6e22e">call</span>     <span style="color:#a6e22e">CocAction</span>(<span style="color:#e6db74">&#39;runCommand&#39;</span>, <span style="color:#e6db74">&#39;editor.action.organizeImport&#39;</span>)<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Add (Neo)Vim&#39;s native statusline support.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; NOTE: Please see `:h coc-status` for integrations with external plugins that</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; provide custom statusline: lightline.vim, vim-airline.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">set</span> <span style="color:#a6e22e">statusline</span>^=%{<span style="color:#a6e22e">coc</span>#<span style="color:#a6e22e">status</span>()}%{<span style="color:#a6e22e">get</span>(<span style="color:#a6e22e">b</span>:,<span style="color:#e6db74">&#39;coc_current_function&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>)}<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">
+</span><span style="color:#75715e">&#34; Mappings using CoCList:</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Show all diagnostics.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">a</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocList</span> <span style="color:#a6e22e">diagnostics</span>&lt;<span style="color:#a6e22e">cr</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Manage extensions.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">e</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocList</span> <span style="color:#a6e22e">extensions</span>&lt;<span style="color:#a6e22e">cr</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Show commands.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">c</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocList</span> <span style="color:#a6e22e">commands</span>&lt;<span style="color:#a6e22e">cr</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Find symbol of current document.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">o</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocList</span> <span style="color:#a6e22e">outline</span>&lt;<span style="color:#a6e22e">cr</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Search workspace symbols.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">s</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocList</span> -<span style="color:#a6e22e">I</span> <span style="color:#a6e22e">symbols</span>&lt;<span style="color:#a6e22e">cr</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Do default action for next item.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">j</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocNext</span>&lt;<span style="color:#a6e22e">CR</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Do default action for previous item.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">k</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocPrev</span>&lt;<span style="color:#a6e22e">CR</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#75715e">&#34; Resume latest coc list.</span><span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">nnoremap</span> &lt;<span style="color:#a6e22e">silent</span>&gt; &lt;<span style="color:#a6e22e">space</span>&gt;<span style="color:#a6e22e">p</span>  :&lt;<span style="color:#a6e22e">C</span>-<span style="color:#a6e22e">u</span>&gt;<span style="color:#a6e22e">CocListResume</span>&lt;<span style="color:#a6e22e">CR</span>&gt;<span style="color:#960050;background-color:#1e0010">
+</span><span style="color:#960050;background-color:#1e0010"></span><span style="color:#a6e22e">imap</span> &lt;<span style="color:#a6e22e">expr</span>&gt; &lt;<span style="color:#a6e22e">cr</span>&gt; <span style="color:#a6e22e">pumvisible</span>() ? <span style="color:#e6db74">&#34;\&lt;C-y&gt;&#34;</span> : <span style="color:#e6db74">&#34;\&lt;C-g&gt;u\&lt;Plug&gt;delimitMateCR&#34;</span><span style="color:#960050;background-color:#1e0010">
+</span></code></pre></div><h2 id="language-server-설치">Language Server 설치</h2>
+<p>CocInstall coc-html
+CocInstall coc-snippet</p>
+<ul>
+<li>위에 있는 것 이외에도 공식 github에서 지원한다는거 그냥 다 깔았다. 귀찮더라</li>
+</ul>
+<h3 id="c-language-server-설치">C++ Language Server 설치</h3>
+<ul>
+<li>찾아보니 c++은 기본으로 되있는게 없어서 찾아보니 <code>ccls</code>라고 있어서 더 찾기도 귀찮고 깔아봐서 잘 되서 사용중이다.</li>
+<li>대부분 <code>brew</code>기반으로 알려주는데 나는 우분투 서버기반이라서, 다른 방법을 찾아봤다.</li>
+<li><code>snap install ccls --classic</code>을 실행했다.</li>
+<li>이제 언어서버를 연결해줘야한다.</li>
+<li>CocConfig 를 vim에서 실행한다.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;languageserver&#34;</span>: {
+        <span style="color:#f92672">&#34;ccls&#34;</span>: {
+            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;ccls&#34;</span>,
+            <span style="color:#f92672">&#34;filetypes&#34;</span>: [
+                <span style="color:#e6db74">&#34;c&#34;</span>,
+                <span style="color:#e6db74">&#34;cpp&#34;</span>,
+                <span style="color:#e6db74">&#34;objc&#34;</span>,
+                <span style="color:#e6db74">&#34;objcpp&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;rootPatterns&#34;</span>: [
+                <span style="color:#e6db74">&#34;.ccls&#34;</span>,
+                <span style="color:#e6db74">&#34;compile_commands.json&#34;</span>,
+                <span style="color:#e6db74">&#34;.vim/&#34;</span>,
+                <span style="color:#e6db74">&#34;.git/&#34;</span>,
+                <span style="color:#e6db74">&#34;.hg/&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;initializationOptions&#34;</span>: {
+                <span style="color:#f92672">&#34;cache&#34;</span>: {
+                    <span style="color:#f92672">&#34;directory&#34;</span>: <span style="color:#e6db74">&#34;/tmp/ccls&#34;</span>
+                }
+            }
+        }
+    }
+}
+</code></pre></div><ul>
+<li>찾아보니 프로젝트 폴더에서도 뭔가를 만들어 줘야한다고 하는데 따로 설정 안해도 잘 돌아서 냅뒀다.</li>
+</ul>
+
+    </div>
+
+  <script>
+      ;(function() {
+              var content = document.querySelector('.content');
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+      })();
+</script>
+
+  <div style="min-width:500px;">
+<script src="https://utteranc.es/client.js"
+        repo="makerdark98/makerdark98.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+</div>
+
+</main>
+        <footer>
+            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+        </footer>
+
+        
+
+        
+    </body>
+
+</html>
+
