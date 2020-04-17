@@ -6,10 +6,19 @@
     <description>Recent content in cpp on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Sat, 11 Apr 2020 23:28:27 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2020 23:10:03 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/cpp/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chapter 12. 프록시</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-12.-%ED%94%84%EB%A1%9D%EC%8B%9C/</link>
+      <pubDate>Sun, 12 Apr 2020 23:10:03 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-12.-%ED%94%84%EB%A1%9D%EC%8B%9C/</guid>
+      <description>스마트 포인터  가장 단순하면서도 직접적인 프록시 패턴의 예  속성 프록시  다른 프로그래밍 언어에서는 get/set 메서드를 지원하는 경우도 있음.  template &amp;lt;typename T&amp;gt; struct Property { T value; Property(const T initial_value) { *this = initial_value; } operate T() { return value; } T operator=(T new_value) { return value = new_value; } } struct Creature { Property&amp;lt;int&amp;gt; strength{ 10 }; Property&amp;lt;int&amp;gt; agility{ 5 }; } Creature creature; creature.agility = 20; auto x = creature.</description>
+    </item>
     
     <item>
       <title>Modern C&#43;&#43; Design Pattern/Chapter 11. 플라이웨이트</title>
