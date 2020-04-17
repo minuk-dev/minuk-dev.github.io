@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-16 21:11:00 +0900
+lastmod : 2020-04-17 00:02:30 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -14,6 +14,8 @@ parent  :
  * [X] zsh 에서 glob 사용법 공부하기
  * [ ] regex 공부하기
  * [ ] 백준 풀기
+   * [ ] 10830 제출
+   * [ ] 1300 풀기
  * [ ] `exa`, `bat`, `hexyl`, `fd`, `procs`, `ripgrep` 공부하기
 ## Blog
  * [X] git blame을 사용해서 wiki diff 만들기
