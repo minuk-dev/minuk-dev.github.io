@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-17 00:02:30 +0900
+lastmod : 2020-04-18 22:58:14 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -12,18 +12,23 @@ parent  :
 ## 공부
  * [X] rm 명령어로 특정파일만 제외하고 삭제하기
  * [X] zsh 에서 glob 사용법 공부하기
- * [ ] regex 공부하기
+ * [X] regex 공부하기
  * [ ] 백준 풀기
    * [ ] 10830 제출
    * [ ] 1300 풀기
  * [ ] `exa`, `bat`, `hexyl`, `fd`, `procs`, `ripgrep` 공부하기
+   * [ ] `exa`
+   * [ ] `bat`
+   * [ ] `hexyl`
+   * [ ] `fd`
+   * [ ] `ripgrep`
 ## Blog
  * [X] git blame을 사용해서 wiki diff 만들기
- * [o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
+ * [O] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
    * [X] jquery, bootstrap, font-awesome, highlight 만 적용
    * [X] mathjax 적용
    * [ ] mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자
-   * [ ] 뭔지 모르는 js , css(`client.js` 등)들 알아보기
+   * [X] 뭔지 모르는 js , css(`client.js` 등)들 알아보기 (댓글 기능이더라)
  * [ ] table of contents 를 홈페이지 측면에 띄우기
  * [.] vimwiki 와 hugo 연동한거 글쓰기
    * [X] 초고쓰기 시작 위키에다가만 적음
@@ -43,4 +48,5 @@ parent  :
 ## Vim
  * [X] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
+   * [X] universal tag 설치 
  * [ ] vim ultisnip 사용법 알아보기
