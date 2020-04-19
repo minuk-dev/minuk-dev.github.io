@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-18 22:58:14 +0900
+lastmod : 2020-04-19 23:26:54 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -15,7 +15,7 @@ parent  :
  * [X] regex 공부하기
  * [ ] 백준 풀기
    * [ ] 10830 제출
-   * [ ] 1300 풀기
+   * [ ] 1300 제출
  * [ ] `exa`, `bat`, `hexyl`, `fd`, `procs`, `ripgrep` 공부하기
    * [ ] `exa`
    * [ ] `bat`
