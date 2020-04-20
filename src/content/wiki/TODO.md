@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-19 23:26:54 +0900
+lastmod : 2020-04-20 20:51:53 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -13,9 +13,10 @@ parent  :
  * [X] rm 명령어로 특정파일만 제외하고 삭제하기
  * [X] zsh 에서 glob 사용법 공부하기
  * [X] regex 공부하기
- * [ ] 백준 풀기
-   * [ ] 10830 제출
-   * [ ] 1300 제출
+ * [X] 백준 풀기
+   * [X] 10830 제출 (MOD 주의하자)
+   * [X] 1300 제출 (long long 주의하자)
+   * [X] 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기)
  * [ ] `exa`, `bat`, `hexyl`, `fd`, `procs`, `ripgrep` 공부하기
    * [ ] `exa`
    * [ ] `bat`
