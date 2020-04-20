@@ -110,3 +110,7 @@ footer {
 main {
   max-width: 100%;
 }
+
+.content {
+  word-break: break-word;
+}
