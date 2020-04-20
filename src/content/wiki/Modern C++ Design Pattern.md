@@ -3,7 +3,7 @@ layout  : wiki
 title   : Modern C++ Design Pattern
 summary : 
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-19 21:40:22 +0900
+lastmod : 2020-04-20 22:46:51 +0900
 tags    : [cpp, design pattern]
 ---
 
@@ -28,5 +28,6 @@ tags    : [cpp, design pattern]
    * [[Modern C++ Design Pattern/Chapter 12. 프록시]]
    * [[Modern C++ Design Pattern/Chapter 13. 책임사슬(Chain of Responsibility)]]
    * [[Modern C++ Design Pattern/Chapter 14. 커맨드]]
+   * [[Modern C++ Design Pattern/Chapter 15. 인터프리터]]
 
 ---
