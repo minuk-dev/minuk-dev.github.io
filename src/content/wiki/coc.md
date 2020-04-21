@@ -3,7 +3,7 @@ layout  : wiki
 title   : coc (vim plugin coc)
 summary : 
 date    : 2020-04-15 23:13:04 +0900
-lastmod : 2020-04-15 23:30:23 +0900
+lastmod : 2020-04-21 23:11:22 +0900
 tags    : 
 draft   : false
 parent  : 
@@ -209,3 +209,38 @@ imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 ```
 * 찾아보니 프로젝트 폴더에서도 뭔가를 만들어 줘야한다고 하는데 따로 설정 안해도 잘 돌아서 냅뒀다.
 
+## 원하는 폴더 헤더파일로 잡아주기
+* `CocLocalConfig`라는 명령어로 local vim을 설정해줄수 있다.
+* 아래 나와있는 extraArgs 부분에 추가해줘서 적용했다.
+```json
+{
+    "languageserver": {
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": "/tmp/ccls"
+                },
+                "clang": {
+                  "resourceDir": ".",
+                  "extraArgs": ["-isystem./", "-isystem./lib/kernel", "-isystem./lib"]
+                }
+                
+            }
+        }
+    }
+}
+```
