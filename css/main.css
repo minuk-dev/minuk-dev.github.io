@@ -106,3 +106,11 @@ a:hover {
 footer {
     border-bottom: var(--border-width) solid var(--accent);
 }
+
+main {
+  max-width: 100%;
+}
+
+.content {
+  word-break: break-word;
+}

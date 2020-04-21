@@ -12,6 +12,42 @@
     
     
     <item>
+      <title>회고/2020.04.20</title>
+      <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.04.20/</link>
+      <pubDate>Mon, 20 Apr 2020 23:11:34 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.04.20/</guid>
+      <description>회고 고작 12일 만에 쓰는 회고다. 아무래도 위키를 계속 사용하다보니 회고가 눈에 띄여서 쓰게되는 것 같다. 지난 12일 간 큰 일은 없다. 아마도? 장혁진 선배에게 상장을 카톡으로 받았다. (실물로 받으면 좋겠지만) 여전히 휴가는 못나가는 상태이다. 코로나 사태가 생각보다 장기화 되고 있다 모각코(모여서 각자 코딩)을 오늘 시도했다. 현재는 도운이형만 같이 하고 있는데 나중에는 조금더 많은 사람들이 했으면 좋겠다. 이번에는 7시부터 9시까지 진행했다. 나는 백준을 풀었고, 도운이 형은 C++로 네트워크 프레임워크를 짜고있는 듯 하다.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 15. 인터프리터</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-15.-%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</link>
+      <pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-15.-%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</guid>
+      <description>인터프리터 디자인 패턴?  입력 데이터를 해석하는 것 대부분 텍스트이지만 텍스트에 한정되지는 않음.  요약  &amp;hellip; 이책에서 굳이 이 내용을 다루는 이유를 모르겠다. 차라리 Lex/Yacc를 보는게 좋다고 생각한다. 아마도 Boost.Spirit을 알려주고 싶어서 굳이 끼워넣은 느낌? 키워드만 정리하자면, AST, Lex/Yacc  </description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 14. 커맨드</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-14.-%EC%BB%A4%EB%A7%A8%EB%93%9C/</link>
+      <pubDate>Sun, 19 Apr 2020 21:40:23 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-14.-%EC%BB%A4%EB%A7%A8%EB%93%9C/</guid>
+      <description>필요성  어떤 객체를 활용할 때 직접 그 객체의 API를 호출하여 조작하는 대신, 작업을 어떻게 하라고 명령을 보내는 방식을 제안한다.  시나리오 struct BankAccount { int balance = 0; int overdraft_limit = -500; void deposit(int amount) { balance += amount; cout &amp;lt;&amp;lt; &amp;#34;deposited &amp;#34; &amp;lt;&amp;lt; amount &amp;lt;&amp;lt; &amp;#34;, balance is now &amp;#34; &amp;lt;&amp;lt; balance &amp;lt;&amp;lt; &amp;#34;\n&amp;#34;; } void withdraw(int amount) { if (balance - amount &amp;gt;= overdraft_limit) { balance -= amount; cout &amp;lt;&amp;lt; &amp;#34;withdrew &amp;#34; &amp;lt;&amp;lt; amount &amp;lt;&amp;lt; &amp;#34;, balance is now &amp;#34; &amp;lt;&amp;lt; balance &amp;lt;&amp;lt; &amp;#34;\n&amp;#34;; } } }; 커맨드 패턴의 구현 struct Command { virtual void call() const = 0; }; struct BankAccountCommand : Command { BankAccount&amp;amp; account; enum Action { deposit, withdraw } action; int amount; BankAccountCommand(BankAccount&amp;amp; account, const Action action, const int amount) : account(account), action(action), amount(amount) {} void call() const override { switch (action) { case deposit: account.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 13. 책임사슬(Chain of Responsibility)</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-13.-%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</link>
+      <pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-13.-%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</guid>
+      <description>시나리오 struct Creature { string name; int attack, defense; // Constructor, operator... }; 포인터 사슬 class CreatureModifier { CreatureModifier* next{nullptr}; protected: Creature&amp;amp; creture; // reference, pointer or shared_ptr public: explicit CreatureModifier(Creature&amp;amp; creature) : creature(creture) {} void add(CreatureModifier* cm) { if (next) next-&amp;gt;add(cm); else next =cm; } virtual void handle() { if (next) next-&amp;gt;handle(); } };  참조를 넘겨받아 저장하고 변경할 준비 추상 클래스가 아님 next는 다음 변경 작업을 가리킴 add()를 통해서 작업 사슬에 연결하여 추가 handle() 맴버 함수는 단순히 다음 항목을 처리한다.</description>
+    </item>
+    
+    <item>
       <title>coc (vim plugin coc)</title>
       <link>http://makerdark98.dev/wiki/coc/</link>
       <pubDate>Wed, 15 Apr 2020 23:13:04 +0900</pubDate>
@@ -116,7 +152,7 @@
       <pubDate>Wed, 08 Apr 2020 23:56:59 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/todo/</guid>
-      <description>공부  rm 명령어로 특정파일만 제외하고 삭제하기 zsh 에서 glob 사용법 공부하기 regex 공부하기 백준 풀기  10830 제출 1300 풀기   exa, bat, hexyl, fd, procs, ripgrep 공부하기  Blog  git blame을 사용해서 wiki diff 만들기 [o] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정  jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자 뭔지 모르는 js , css(client.</description>
+      <description>공부  rm 명령어로 특정파일만 제외하고 삭제하기 zsh 에서 glob 사용법 공부하기 regex 공부하기 백준 풀기  10830 제출 (MOD 주의하자) 1300 제출 (long long 주의하자) 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기)   exa, bat, hexyl, fd, procs, ripgrep 공부하기  exa bat hexyl fd ripgrep    Blog  git blame을 사용해서 wiki diff 만들기 [O] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정  jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다.</description>
     </item>
     
     <item>
@@ -765,10 +801,7 @@ Tips I use to avoid burnout:
       <pubDate>Tue, 07 Apr 2020 20:17:47 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ucpc_2018_%EC%98%88%EC%84%A0/</guid>
-      <description>TOC {:toc}  # boj15894 - 수학은 체육과목 입니다.   n*4를 출력하면 된다.
-#include #define scl(n) scanf(&amp;quot;%lld&amp;rdquo;, &amp;amp;(n)) using lld = long long; using namespace std; int main(){ lld n; scl(n); printf(&amp;quot;%lld&amp;rdquo;, 4*n); return 0; }
-  boj15903 - 카드 합체 놀이   현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.
-#include #include #include #include #define sci(n) scanf(&amp;quot;%d&amp;rdquo;, &amp;amp;(n)) using namespace std; using lld = long long;</description>
+      <description>boj15894 - 수학은 체육과목 입니다.  n*4를 출력하면 된다.  #include &amp;lt;iostream&amp;gt; #define scl(n) scanf(&amp;#34;%lld&amp;#34;, &amp;amp;(n))  using lld = long long; using namespace std; int main(){ lld n; scl(n); printf(&amp;#34;%lld&amp;#34;, 4*n); return 0; } boj15903 - 카드 합체 놀이  현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.  #include &amp;lt;iostream&amp;gt; #include &amp;lt;queue&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;algorithm&amp;gt; #define sci(n) scanf(&amp;#34;%d&amp;#34;, &amp;amp;(n))  using namespace std; using lld = long long; int main() { int n, m; sci(n), sci(m); priority_queue&amp;lt;int, vector&amp;lt;int&amp;gt;, greater&amp;lt;int&amp;gt; &amp;gt; q; for(int i=0;i&amp;lt;n;i++){ int t; sci(t); q.</description>
     </item>
     
     <item>
