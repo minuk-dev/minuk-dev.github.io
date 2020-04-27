@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-20 20:51:53 +0900
+lastmod : 2020-04-27 21:37:58 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -14,9 +14,6 @@ parent  :
  * [X] zsh 에서 glob 사용법 공부하기
  * [X] regex 공부하기
  * [X] 백준 풀기
-   * [X] 10830 제출 (MOD 주의하자)
-   * [X] 1300 제출 (long long 주의하자)
-   * [X] 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기)
  * [ ] `exa`, `bat`, `hexyl`, `fd`, `procs`, `ripgrep` 공부하기
    * [ ] `exa`
    * [ ] `bat`
@@ -41,11 +38,12 @@ parent  :
    * [ ] blame 삽질
    * [ ] partial 만들기
    * [ ] 최적화
- * [ ] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
+ * [X] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
  * [ ] 글을 자동배포하면 좋겠음. push까진 아니여도 commit이 자동으로 될 방법은 없나 생각해보자.
  * [ ] 자동 배포할떄 commit message 에 content, build 가 태그가 적히도록 해보자
    * [ ] 최신 변경 글 보는 기능에 github page 에서 content tag를 검색해서 보여주면 될듯?
  * [ ] anyenv 글쓰기
+ * [ ] pintos 글쓰기
 ## Vim
  * [X] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
