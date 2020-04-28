@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : 
+title   : boj
 summary : 
 date    : 2020-04-27 21:37:43 +0900
-lastmod : 2020-04-28 19:01:37 +0900
+lastmod : 2020-04-28 19:37:42 +0900
 tags    : 
 draft   : false
 parent  : 
@@ -16,3 +16,4 @@ parent  :
  * [X] 1167 dfs 를 주의하면서 짜자
  * [X] 11725
  * [X] 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자)
+ * [X] 1967 : 1167 하고 똑같네
