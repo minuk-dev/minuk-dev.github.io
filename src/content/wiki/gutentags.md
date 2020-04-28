@@ -3,9 +3,9 @@ layout  : wiki
 title   : gutentags
 summary : 
 date    : 2020-04-28 21:21:45 +0900
-lastmod : 2020-04-28 21:24:10 +0900
+lastmod : 2020-04-28 21:41:36 +0900
 tags    : [vim, gutentags]
-draft   : true
+draft   : false
 parent  : 
 ---
 

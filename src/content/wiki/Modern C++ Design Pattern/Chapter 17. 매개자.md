@@ -3,9 +3,9 @@ layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 17. 매개자
 summary : 
 date    : 2020-04-27 21:43:50 +0900
-lastmod : 2020-04-27 22:24:40 +0900
+lastmod : 2020-04-28 21:41:11 +0900
 tags    : [cpp, design pattern, mediator]
-draft   : true
+draft   : false
 parent  : 
 ---
 
