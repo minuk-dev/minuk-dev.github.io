@@ -6,7 +6,7 @@
     <description>Recent content in Tags on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Mon, 20 Apr 2020 22:46:23 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2020 23:12:43 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>cpp</title>
       <link>http://makerdark98.dev/tags/cpp/</link>
-      <pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate>
+      <pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/tags/cpp/</guid>
       <description></description>
@@ -23,9 +23,18 @@
     <item>
       <title>design pattern</title>
       <link>http://makerdark98.dev/tags/design-pattern/</link>
-      <pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate>
+      <pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/tags/design-pattern/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>iterator</title>
+      <link>http://makerdark98.dev/tags/iterator/</link>
+      <pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/iterator/</guid>
       <description></description>
     </item>
     

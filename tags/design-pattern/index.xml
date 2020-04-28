@@ -6,10 +6,19 @@
     <description>Recent content in design pattern on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Mon, 20 Apr 2020 22:46:23 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 21 Apr 2020 23:12:43 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 16. 반복자</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-16.-%EB%B0%98%EB%B3%B5%EC%9E%90/</link>
+      <pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-16.-%EB%B0%98%EB%B3%B5%EC%9E%90/</guid>
+      <description>간략 설명  복잡한 데이터 구조를 다루어야 할 때 데이터 순회 문제를 해결하는 방법  표준 라이브러리의 반복자  begin end rbegin rend cbegin cend crbegin crend  이진 트리의 탐색 template &amp;lt;typename U&amp;gt; struct PreOrderIterator; template &amp;lt;typename T&amp;gt; struct BinaryTree; template &amp;lt;typename T&amp;gt; struct Node { T value; Node&amp;lt;T&amp;gt; *left = nullptr; Node&amp;lt;T&amp;gt; *right = nullptr; Node&amp;lt;T&amp;gt; *parent = nullptr; BinaryTree&amp;lt;T&amp;gt;* tree = nullptr; explicit Node(const T&amp;amp; value) : value(value) {} Node(const T&amp;amp; value, Node&amp;lt;T&amp;gt;* const left, Node&amp;lt;T&amp;gt;* const right) : value(value), left(left), right(right) { this-&amp;gt;left-&amp;gt;tree =this-&amp;gt;right-&amp;gt;tree = tree; this-&amp;gt;left-&amp;gt;parent = this-&amp;gt;right-&amp;gt;parent = this; } void set_tree(BinaryTree&amp;lt;T&amp;gt;* t) { tree = t; if (left) left-&amp;gt;set_tree(t); if (right) right-&amp;gt;set_tree(t); } }; template &amp;lt;typename T&amp;gt; struct BinaryTree { Node&amp;lt;T&amp;gt;* root = nullptr; explicit BinaryTree(Node&amp;lt;T&amp;gt;* const root) : root{ root } { root-&amp;gt;set_tree(this); } typedef PreOrderIterator&amp;lt;T&amp;gt; iterator; iterator begin() { Node&amp;lt;T&amp;gt;* n = root; if (n) while (n-&amp;gt;left) n = n-&amp;gt;left; return iterator{ n } } iterator end() { return iteraotr { nullptr }; } }; template &amp;lt;typename U&amp;gt; struct PreOrderIterator { Node&amp;lt;U&amp;gt;* current; explicit PreOrderIterator(Node&amp;lt;U&amp;gt;* current) : current(current) { } bool operator!</description>
+    </item>
     
     <item>
       <title>Modern C&#43;&#43; Design Pattern/Chatper 15. 인터프리터</title>

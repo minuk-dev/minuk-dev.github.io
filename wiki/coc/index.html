@@ -142,7 +142,7 @@
         <h2>coc (vim plugin coc)</h2>
         <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/coc.md">
   <h5>created : Wed, 15 Apr 2020 23:13:04 &#43;0900</h5>
-  <h5>modified : Wed, 15 Apr 2020 23:30:23 &#43;0900</h5>
+  <h5>modified : Tue, 21 Apr 2020 23:11:22 &#43;0900</h5>
 </a>
 
         
@@ -163,6 +163,7 @@
         <li><a href="#c-language-server-설치">C++ Language Server 설치</a></li>
       </ul>
     </li>
+    <li><a href="#원하는-폴더-헤더파일로-잡아주기">원하는 폴더 헤더파일로 잡아주기</a></li>
   </ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
@@ -368,7 +369,42 @@ CocInstall coc-snippet</p>
 </code></pre></div><ul>
 <li>찾아보니 프로젝트 폴더에서도 뭔가를 만들어 줘야한다고 하는데 따로 설정 안해도 잘 돌아서 냅뒀다.</li>
 </ul>
-
+<h2 id="원하는-폴더-헤더파일로-잡아주기">원하는 폴더 헤더파일로 잡아주기</h2>
+<ul>
+<li><code>CocLocalConfig</code>라는 명령어로 local vim을 설정해줄수 있다.</li>
+<li>아래 나와있는 extraArgs 부분에 추가해줘서 적용했다.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;languageserver&#34;</span>: {
+        <span style="color:#f92672">&#34;ccls&#34;</span>: {
+            <span style="color:#f92672">&#34;command&#34;</span>: <span style="color:#e6db74">&#34;ccls&#34;</span>,
+            <span style="color:#f92672">&#34;filetypes&#34;</span>: [
+                <span style="color:#e6db74">&#34;c&#34;</span>,
+                <span style="color:#e6db74">&#34;cpp&#34;</span>,
+                <span style="color:#e6db74">&#34;objc&#34;</span>,
+                <span style="color:#e6db74">&#34;objcpp&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;rootPatterns&#34;</span>: [
+                <span style="color:#e6db74">&#34;.ccls&#34;</span>,
+                <span style="color:#e6db74">&#34;compile_commands.json&#34;</span>,
+                <span style="color:#e6db74">&#34;.vim/&#34;</span>,
+                <span style="color:#e6db74">&#34;.git/&#34;</span>,
+                <span style="color:#e6db74">&#34;.hg/&#34;</span>
+            ],
+            <span style="color:#f92672">&#34;initializationOptions&#34;</span>: {
+                <span style="color:#f92672">&#34;cache&#34;</span>: {
+                    <span style="color:#f92672">&#34;directory&#34;</span>: <span style="color:#e6db74">&#34;/tmp/ccls&#34;</span>
+                },
+                <span style="color:#f92672">&#34;clang&#34;</span>: {
+                  <span style="color:#f92672">&#34;resourceDir&#34;</span>: <span style="color:#e6db74">&#34;.&#34;</span>,
+                  <span style="color:#f92672">&#34;extraArgs&#34;</span>: [<span style="color:#e6db74">&#34;-isystem./&#34;</span>, <span style="color:#e6db74">&#34;-isystem./lib/kernel&#34;</span>, <span style="color:#e6db74">&#34;-isystem./lib&#34;</span>]
+                }
+                
+            }
+        }
+    }
+}
+</code></pre></div>
     </div>
 
   <script>
