@@ -3,7 +3,7 @@ layout  : wiki
 title   : vim
 summary : 
 date    : 2020-04-08 23:44:39 +0900
-lastmod : 2020-04-15 23:18:00 +0900
+lastmod : 2020-04-28 21:24:12 +0900
 tags    : [vim]
 draft   : false
 parent  : 
@@ -25,3 +25,5 @@ parent  :
 ## coc
  * 엄청 삽질해서 적용했다. ㅠ 나중에 글로 하나 뺴도 괜찮을 듯
  * [[coc]]
+## tag
+ * [[gutentags]]

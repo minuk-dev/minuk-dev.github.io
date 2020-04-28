@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-04-27 22:28:24 +0900
+lastmod : 2020-04-28 21:25:05 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -45,16 +45,8 @@ parent  :
  * [ ] anyenv 글쓰기
  * [ ] pintos 글쓰기
 ## Vim
- * [o] tagbar 알아서 잘 되도록 설정하기
+ * [O] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
    * [X] universal tag 설치 
-   * [ ] 아래 문제 해결하기
-    ```
-    hint: Waiting for your editor to close the file...
-    Error detected while processing DirChanged Autocommands for "*":
-    E475: Invalid argument: Channel doesn't exist
-    E475: Invalid argument: Channel doesn't exist
-    Error detected while processing function <SNR>149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job:
-    line   22:
-    ```
+   * [X] [[gutentags]] 문제 해결하기 : 링크 참고
  * [ ] vim ultisnip 사용법 알아보기
