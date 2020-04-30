@@ -7,10 +7,10 @@ googleAnalytics = ""
 publishDir = ".."
 
 [params]
-    author = "Calin Tataru"
-    description = "Personal blog theme powered by Hugo"
+    author = "Min-Uk.Lee"
+    description = "개발 위키와 기타 모음"
     githubUsername = "makerdark98"
-    accent = "red"
+    accent = "#00a3d2"
     showBorder = true
     backgroundColor = "white"
     font = "Raleway" # should match the name on Google Fonts!
