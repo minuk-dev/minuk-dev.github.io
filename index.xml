@@ -6,18 +6,63 @@
     <description>Recent content on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Mon, 27 Apr 2020 21:37:43 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 28 Apr 2020 21:48:13 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title></title>
+      <title>계룡 개발 모임</title>
+      <link>http://makerdark98.dev/wiki/%EA%B3%84%EB%A3%A1-%EA%B0%9C%EB%B0%9C-%EB%AA%A8%EC%9E%84/</link>
+      <pubDate>Tue, 28 Apr 2020 21:48:13 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/%EA%B3%84%EB%A3%A1-%EA%B0%9C%EB%B0%9C-%EB%AA%A8%EC%9E%84/</guid>
+      <description>이벤트  [[설대회]] [[송편대회]] [[Memory_Leak]] [[썩어버린 Query Language]]  논문 스터디  [[F2FS]] [[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]  군대에서 개발하던거  [[사지방_개발기]]  </description>
+    </item>
+    
+    <item>
+      <title>SSD</title>
+      <link>http://makerdark98.dev/wiki/ssd/</link>
+      <pubDate>Tue, 28 Apr 2020 21:46:46 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ssd/</guid>
+      <description> [[SSD 공부자료 모음]] [[SSD(Solid-State Drive)]]  </description>
+    </item>
+    
+    <item>
+      <title>gutentags</title>
+      <link>http://makerdark98.dev/wiki/gutentags/</link>
+      <pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/gutentags/</guid>
+      <description>발생한 문제점  git 에서 커밋할때마다 아래와 같은 에러로그가 뜬다  hint: Waiting for your editor to close the file... Error detected while processing DirChanged Autocommands for &amp;quot;*&amp;quot;: E475: Invalid argument: Channel doesn&#39;t exist E475: Invalid argument: Channel doesn&#39;t exist Error detected while processing function &amp;lt;SNR&amp;gt;149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job: line 22:  해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정  let g:gutentags_exclude_filetypes = [&amp;#39;gitcommit&amp;#39;]</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 18. 메멘토</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-18.-%EB%A9%94%EB%A9%98%ED%86%A0/</link>
+      <pubDate>Tue, 28 Apr 2020 21:07:07 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-18.-%EB%A9%94%EB%A9%98%ED%86%A0/</guid>
+      <description>간략 설명  커맨드 패턴에서 이론적으로 과거의 어떤 지점으로 상태를 되돌릴수 있다 메멘토 패턴은 모든 임의의 과거가 아니라 필요할 때 특정 시점으로 되돌리기만 하면 될때 사용한다. 특정 시점의 시스템 상태를 저장하고, 읽기 전용 속성을 가지고 자체적으로 아무 동작을 안하는 객체를 만든다 (이걸 토큰이라고 부르기도 한다)  특징  불변 속성을 가진다. 저장된 잔고 값이 나중에 변경될 수 있다면 존재한 적 없는 과거 상태로 되돌리는게 가능해져 버린다. 대상 객체에 friend로 선언한다. 필드 변수에 접근하기 위해 필수적으로 필요하다.</description>
+    </item>
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 17. 매개자</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-17.-%EB%A7%A4%EA%B0%9C%EC%9E%90/</link>
+      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-17.-%EB%A7%A4%EA%B0%9C%EC%9E%90/</guid>
+      <description>간단 설명  서로 다른 컴포넌트 간에 포인터나 직접적인 참조를 통한 커뮤니케이션이 필요하다 일부 경우 상대방 객체의 존재를 알아야하는점, 객체의 생성/소멸 시점에대한 관리 때문에 포인터나 참조로 접근하는게 불안정할 수 있다. 이를 위한 매커니즘 전역 정적 변수이거나 모든 컴포넌트에 그 참조가 노출되어야 한다.  내용  여기서는 Boost.Signals2 라이브러리를 사용해서 구현한다. 잘 모르겠다. 일단 요약부분만 적고 나중에 필요하면 찾아보자  요약  매개자 디자인 패턴은 시스탬 내 컴포넌트 모두가 참조할 수 있는 어떤 중간자를 컴포넌트 간에 서로 직접적으로 참조하지 않더라도 커뮤니케이션을 할수 있게 한다는 것을 기본아이디어로 한다.</description>
+    </item>
+    
+    <item>
+      <title>boj</title>
       <link>http://makerdark98.dev/wiki/boj/</link>
       <pubDate>Mon, 27 Apr 2020 21:37:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/boj/</guid>
-      <description>리스트  10830 제출 (MOD 주의하자) 1300 제출 (long long 주의하자) 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기) 1167 dfs 를 주의하면서 짜자 11725 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자)  </description>
+      <description>리스트  10830 제출 (MOD 주의하자) 1300 제출 (long long 주의하자) 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기) 1167 dfs 를 주의하면서 짜자 11725 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자) 1967 : 1167 하고 똑같네  </description>
     </item>
     
     <item>
@@ -179,7 +224,7 @@
       <pubDate>Wed, 08 Apr 2020 23:44:39 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/vim/</guid>
-      <description>까먹을만한 단축키 리스트  &amp;lt;Leader&amp;gt;ww : vimwiki index page (Leader는 ,으로 걸어놨다.) &amp;lt;F4&amp;gt; : 위키에서 단어 검색 &amp;lt;S-F4&amp;gt; : 현재 문서를 링크한 모든 문서 검색 &amp;lt;Leader&amp;gt;b : 열린 Buffer들 확인 &amp;lt;Leader&amp;gt;f : find pattern &amp;lt;Leader&amp;gt;e : find file by FZF &amp;lt;Leader&amp;gt;tt : toggle todo list   UltiSnip  어캐쓰는지 아직 잘 모르겠다.ㅠ 더 읽어봐야겠다.  vimwiki  [[vimwiki]]  coc  엄청 삽질해서 적용했다. ㅠ 나중에 글로 하나 뺴도 괜찮을 듯 [[coc]]  </description>
+      <description>까먹을만한 단축키 리스트  &amp;lt;Leader&amp;gt;ww : vimwiki index page (Leader는 ,으로 걸어놨다.) &amp;lt;F4&amp;gt; : 위키에서 단어 검색 &amp;lt;S-F4&amp;gt; : 현재 문서를 링크한 모든 문서 검색 &amp;lt;Leader&amp;gt;b : 열린 Buffer들 확인 &amp;lt;Leader&amp;gt;f : find pattern &amp;lt;Leader&amp;gt;e : find file by FZF &amp;lt;Leader&amp;gt;tt : toggle todo list   UltiSnip  어캐쓰는지 아직 잘 모르겠다.ㅠ 더 읽어봐야겠다.  vimwiki  [[vimwiki]]  coc  엄청 삽질해서 적용했다. ㅠ 나중에 글로 하나 뺴도 괜찮을 듯 [[coc]]  tag  [[gutentags]]  </description>
     </item>
     
     <item>
@@ -437,7 +482,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:43:34 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/book-reviews/</guid>
-      <description> TOC {:toc}  </description>
+      <description>정리 끝난거  [[Effective Debugging]]  정리 하는 중  [[Modern C++ Design Pattern]]  정리 보류한거  [[Mathematical Statistics]] [[Understanding Linux Kernel]] [[Operating System Summary]]  정리하기로 생각해둔거  Effective Modern C++ Clean Code Pragmatic Programmer Algorithm Coding Interview Data Application  </description>
     </item>
     
     <item>
@@ -804,12 +849,12 @@ Tips I use to avoid burnout:
     </item>
     
     <item>
-      <title>회고(구)</title>
+      <title>회고 모음</title>
       <link>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/</link>
       <pubDate>Tue, 07 Apr 2020 20:18:14 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/</guid>
-      <description>2020년 3월 회고</description>
+      <description>2019년  [[회고/2019.09.18]] [[회고/2019.09.19]] [[회고/2019.10.19]] [[회고/2019.11.24~25]]  2020년  [[회고/2020.01.01]] [[회고/2020.01.17]] [[회고/2020.04.08]] [[회고/2020.04.20]]  미정리 2020년 3월 회고</description>
     </item>
     
     <item>

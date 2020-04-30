@@ -6,10 +6,19 @@
     <description>Recent content in design pattern on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Tue, 21 Apr 2020 23:12:43 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 27 Apr 2020 21:43:50 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/design-pattern/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 17. 매개자</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-17.-%EB%A7%A4%EA%B0%9C%EC%9E%90/</link>
+      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-17.-%EB%A7%A4%EA%B0%9C%EC%9E%90/</guid>
+      <description>간단 설명  서로 다른 컴포넌트 간에 포인터나 직접적인 참조를 통한 커뮤니케이션이 필요하다 일부 경우 상대방 객체의 존재를 알아야하는점, 객체의 생성/소멸 시점에대한 관리 때문에 포인터나 참조로 접근하는게 불안정할 수 있다. 이를 위한 매커니즘 전역 정적 변수이거나 모든 컴포넌트에 그 참조가 노출되어야 한다.  내용  여기서는 Boost.Signals2 라이브러리를 사용해서 구현한다. 잘 모르겠다. 일단 요약부분만 적고 나중에 필요하면 찾아보자  요약  매개자 디자인 패턴은 시스탬 내 컴포넌트 모두가 참조할 수 있는 어떤 중간자를 컴포넌트 간에 서로 직접적으로 참조하지 않더라도 커뮤니케이션을 할수 있게 한다는 것을 기본아이디어로 한다.</description>
+    </item>
     
     <item>
       <title>Modern C&#43;&#43; Design Pattern/Chatper 16. 반복자</title>
