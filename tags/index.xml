@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on MD98 page</title>
@@ -6,121 +6,13 @@
     <description>Recent content in Tags on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Tue, 28 Apr 2020 21:46:46 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 13 Apr 2020 22:06:38 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>SSD</title>
-      <link>http://makerdark98.dev/tags/ssd/</link>
-      <pubDate>Tue, 28 Apr 2020 21:46:46 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/ssd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gutentags</title>
-      <link>http://makerdark98.dev/tags/gutentags/</link>
-      <pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/gutentags/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vim</title>
-      <link>http://makerdark98.dev/tags/vim/</link>
-      <pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/vim/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>cpp</title>
-      <link>http://makerdark98.dev/tags/cpp/</link>
-      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/cpp/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>design pattern</title>
-      <link>http://makerdark98.dev/tags/design-pattern/</link>
-      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/design-pattern/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mediator</title>
-      <link>http://makerdark98.dev/tags/mediator/</link>
-      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/mediator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>iterator</title>
-      <link>http://makerdark98.dev/tags/iterator/</link>
-      <pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/iterator/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>interpreter pattern</title>
-      <link>http://makerdark98.dev/tags/interpreter-pattern/</link>
-      <pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/interpreter-pattern/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>command</title>
-      <link>http://makerdark98.dev/tags/command/</link>
-      <pubDate>Sun, 19 Apr 2020 21:40:23 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/command/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>command pattern</title>
-      <link>http://makerdark98.dev/tags/command-pattern/</link>
-      <pubDate>Sun, 19 Apr 2020 21:40:23 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/command-pattern/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>chain of responsibility</title>
-      <link>http://makerdark98.dev/tags/chain-of-responsibility/</link>
-      <pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/chain-of-responsibility/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>regex</title>
-      <link>http://makerdark98.dev/tags/regex/</link>
-      <pubDate>Mon, 13 Apr 2020 23:48:20 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/regex/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>bash</title>
+      <title>Bash</title>
       <link>http://makerdark98.dev/tags/bash/</link>
       <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
       
@@ -129,115 +21,7 @@
     </item>
     
     <item>
-      <title>cli</title>
-      <link>http://makerdark98.dev/tags/cli/</link>
-      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/cli/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>glob</title>
-      <link>http://makerdark98.dev/tags/glob/</link>
-      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/glob/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>linux</title>
-      <link>http://makerdark98.dev/tags/linux/</link>
-      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/linux/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>zsh</title>
-      <link>http://makerdark98.dev/tags/zsh/</link>
-      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/zsh/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>proxy</title>
-      <link>http://makerdark98.dev/tags/proxy/</link>
-      <pubDate>Sun, 12 Apr 2020 23:10:03 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/proxy/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>hugo</title>
-      <link>http://makerdark98.dev/tags/hugo/</link>
-      <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/hugo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>tee</title>
-      <link>http://makerdark98.dev/tags/tee/</link>
-      <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/tee/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>rm</title>
-      <link>http://makerdark98.dev/tags/rm/</link>
-      <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/rm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>flyweight</title>
-      <link>http://makerdark98.dev/tags/flyweight/</link>
-      <pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/flyweight/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>facade</title>
-      <link>http://makerdark98.dev/tags/facade/</link>
-      <pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/facade/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>todo</title>
-      <link>http://makerdark98.dev/tags/todo/</link>
-      <pubDate>Wed, 08 Apr 2020 23:56:59 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/todo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vimwiki</title>
-      <link>http://makerdark98.dev/tags/vimwiki/</link>
-      <pubDate>Wed, 08 Apr 2020 22:51:20 +0900</pubDate>
-      
-      <guid>http://makerdark98.dev/tags/vimwiki/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>brightness</title>
+      <title>Brightness</title>
       <link>http://makerdark98.dev/tags/brightness/</link>
       <pubDate>Tue, 07 Apr 2020 20:35:31 +0900</pubDate>
       
@@ -246,7 +30,61 @@
     </item>
     
     <item>
-      <title>dhclient</title>
+      <title>Chain of Responsibility</title>
+      <link>http://makerdark98.dev/tags/chain-of-responsibility/</link>
+      <pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/chain-of-responsibility/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cli</title>
+      <link>http://makerdark98.dev/tags/cli/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/cli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Command</title>
+      <link>http://makerdark98.dev/tags/command/</link>
+      <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/command/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Command Pattern</title>
+      <link>http://makerdark98.dev/tags/command-pattern/</link>
+      <pubDate>Sun, 19 Apr 2020 21:40:23 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/command-pattern/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cpp</title>
+      <link>http://makerdark98.dev/tags/cpp/</link>
+      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/cpp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Design Pattern</title>
+      <link>http://makerdark98.dev/tags/design-pattern/</link>
+      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/design-pattern/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dhclient</title>
       <link>http://makerdark98.dev/tags/dhclient/</link>
       <pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate>
       
@@ -255,7 +93,79 @@
     </item>
     
     <item>
-      <title>ip</title>
+      <title>Ext4</title>
+      <link>http://makerdark98.dev/tags/ext4/</link>
+      <pubDate>Thu, 30 Apr 2020 19:42:16 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/ext4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Facade</title>
+      <link>http://makerdark98.dev/tags/facade/</link>
+      <pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/facade/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Filesystem</title>
+      <link>http://makerdark98.dev/tags/filesystem/</link>
+      <pubDate>Thu, 30 Apr 2020 20:17:00 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/filesystem/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Flyweight</title>
+      <link>http://makerdark98.dev/tags/flyweight/</link>
+      <pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/flyweight/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Glob</title>
+      <link>http://makerdark98.dev/tags/glob/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/glob/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gutentags</title>
+      <link>http://makerdark98.dev/tags/gutentags/</link>
+      <pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/gutentags/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hugo</title>
+      <link>http://makerdark98.dev/tags/hugo/</link>
+      <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Interpreter Pattern</title>
+      <link>http://makerdark98.dev/tags/interpreter-pattern/</link>
+      <pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/interpreter-pattern/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ip</title>
       <link>http://makerdark98.dev/tags/ip/</link>
       <pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate>
       
@@ -264,11 +174,137 @@
     </item>
     
     <item>
-      <title>iw</title>
+      <title>Iterator</title>
+      <link>http://makerdark98.dev/tags/iterator/</link>
+      <pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/iterator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Iw</title>
       <link>http://makerdark98.dev/tags/iw/</link>
       <pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate>
       
       <guid>http://makerdark98.dev/tags/iw/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>http://makerdark98.dev/tags/linux/</link>
+      <pubDate>Thu, 30 Apr 2020 20:17:00 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mediator</title>
+      <link>http://makerdark98.dev/tags/mediator/</link>
+      <pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/mediator/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mysql</title>
+      <link>http://makerdark98.dev/tags/mysql/</link>
+      <pubDate>Thu, 28 May 2020 07:48:47 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Proxy</title>
+      <link>http://makerdark98.dev/tags/proxy/</link>
+      <pubDate>Sun, 12 Apr 2020 23:10:03 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/proxy/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Regex</title>
+      <link>http://makerdark98.dev/tags/regex/</link>
+      <pubDate>Mon, 13 Apr 2020 23:48:20 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/regex/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Rm</title>
+      <link>http://makerdark98.dev/tags/rm/</link>
+      <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/rm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ssd</title>
+      <link>http://makerdark98.dev/tags/ssd/</link>
+      <pubDate>Tue, 28 Apr 2020 21:46:46 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/ssd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Storage Engine</title>
+      <link>http://makerdark98.dev/tags/storage-engine/</link>
+      <pubDate>Thu, 28 May 2020 07:48:47 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/storage-engine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tee</title>
+      <link>http://makerdark98.dev/tags/tee/</link>
+      <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/tee/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Todo</title>
+      <link>http://makerdark98.dev/tags/todo/</link>
+      <pubDate>Wed, 08 Apr 2020 23:56:59 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/todo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vim</title>
+      <link>http://makerdark98.dev/tags/vim/</link>
+      <pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/vim/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vimwiki</title>
+      <link>http://makerdark98.dev/tags/vimwiki/</link>
+      <pubDate>Wed, 08 Apr 2020 22:51:20 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/vimwiki/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Zsh</title>
+      <link>http://makerdark98.dev/tags/zsh/</link>
+      <pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/tags/zsh/</guid>
       <description></description>
     </item>
     

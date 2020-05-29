@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -149,108 +149,119 @@
 
     </div>
 
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents"></nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="계기">계기</h1>
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
 <ul>
-<li>정우가 학교에서 대회를 여는데 구현 위주의 문제이고, 한번 풀어봐달라고 해서 푼 코드</li>
+<li><a href="#계기">계기</a></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">  <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;set&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>  <span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;algorithm&gt;</span><span style="color:#75715e">
-</span><span style="color:#75715e"></span>  
-  <span style="color:#66d9ef">using</span> <span style="color:#66d9ef">namespace</span> std;
-  set<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span> visited;
-  <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">chk</span>(string data, vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> count)
-  {
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> c : data) count[c<span style="color:#f92672">-</span><span style="color:#e6db74">&#39;a&#39;</span>] <span style="color:#f92672">--</span>;
-  
-    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span><span style="color:#ae81ff">26</span>;i<span style="color:#f92672">++</span>) 
-      <span style="color:#66d9ef">if</span> (count[i] <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">return</span> false;
-  
-    <span style="color:#66d9ef">return</span> true;
+</nav></aside>
+    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
+      
+
+<h1 id="계기">계기</h1>
+
+<ul>
+<li><p>정우가 학교에서 대회를 여는데 구현 위주의 문제이고, 한번 풀어봐달라고 해서 푼 코드</p>
+
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;set&gt;
+#include &lt;algorithm&gt;
+    
+using namespace std;
+set&lt;string&gt; visited;
+bool chk(string data, vector&lt;int&gt; count)
+{
+  for (auto&amp; c : data) count[c-'a'] --;
+    
+  for(int i=0;i&lt;26;i++) 
+    if (count[i] != 0) return false;
+    
+  return true;
+}
+    
+vector&lt;string&gt; gen(string data) {
+  vector&lt;string&gt; retval;
+  string f, b, f_r, b_r;
+  vector&lt;string&gt; r;
+  if (data.size() == 1) 
+    retval.push_back(data);
+    
+  else if (data.size() % 2 == 0) {
+    f = data.substr(0, data.size() / 2); b = data.substr(data.size() / 2);
+    
+    r = gen(b); f_r = f; reverse(f_r.begin(), f_r.end());
+    for (auto&amp; d : r) retval.push_back(f_r+d);
+    
+    r = gen(f); b_r = b; reverse(b_r.begin(), b_r.end());
+    for (auto&amp; d : r) retval.push_back(d+b_r);
+    
+  } else {
+    f = data.substr(0, data.size() / 2); b = data.substr(data.size() / 2);
+    
+    r = gen(b); f_r = f; reverse(f_r.begin(), f_r.end());
+    for (auto&amp; d : r) retval.push_back(f_r+d);
+    
+    r = gen(f); string b_r = b; reverse(b_r.begin(), b_r.end());
+    for (auto&amp; d : r) retval.push_back(d+b_r);
+    
+    f = data.substr(0, data.size() / 2 + 1); b = data.substr(data.size() / 2 + 1);
+    
+    r = gen(b); f_r = f; reverse(f_r.begin(), f_r.end());
+    for (auto&amp; d : r) retval.push_back(f_r+d);
+    
+    r = gen(f); b_r = b; reverse(b_r.begin(), b_r.end());
+    for (auto&amp; d : r) retval.push_back(d+b_r);
   }
-  
-  vector<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span> gen(string data) {
-    vector<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span> retval;
-    string f, b, f_r, b_r;
-    vector<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span> r;
-    <span style="color:#66d9ef">if</span> (data.size() <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>) 
-      retval.push_back(data);
-  
-    <span style="color:#66d9ef">else</span> <span style="color:#a6e22e">if</span> (data.size() <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>) {
-      f <span style="color:#f92672">=</span> data.substr(<span style="color:#ae81ff">0</span>, data.size() <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>); b <span style="color:#f92672">=</span> data.substr(data.size() <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>);
-  
-      r <span style="color:#f92672">=</span> gen(b); f_r <span style="color:#f92672">=</span> f; reverse(f_r.begin(), f_r.end());
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : r) retval.push_back(f_r<span style="color:#f92672">+</span>d);
-  
-      r <span style="color:#f92672">=</span> gen(f); b_r <span style="color:#f92672">=</span> b; reverse(b_r.begin(), b_r.end());
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : r) retval.push_back(d<span style="color:#f92672">+</span>b_r);
-  
-    } <span style="color:#66d9ef">else</span> {
-      f <span style="color:#f92672">=</span> data.substr(<span style="color:#ae81ff">0</span>, data.size() <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>); b <span style="color:#f92672">=</span> data.substr(data.size() <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span>);
-  
-      r <span style="color:#f92672">=</span> gen(b); f_r <span style="color:#f92672">=</span> f; reverse(f_r.begin(), f_r.end());
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : r) retval.push_back(f_r<span style="color:#f92672">+</span>d);
-  
-      r <span style="color:#f92672">=</span> gen(f); string b_r <span style="color:#f92672">=</span> b; reverse(b_r.begin(), b_r.end());
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : r) retval.push_back(d<span style="color:#f92672">+</span>b_r);
-  
-      f <span style="color:#f92672">=</span> data.substr(<span style="color:#ae81ff">0</span>, data.size() <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>); b <span style="color:#f92672">=</span> data.substr(data.size() <span style="color:#f92672">/</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
-  
-      r <span style="color:#f92672">=</span> gen(b); f_r <span style="color:#f92672">=</span> f; reverse(f_r.begin(), f_r.end());
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : r) retval.push_back(f_r<span style="color:#f92672">+</span>d);
-  
-      r <span style="color:#f92672">=</span> gen(f); b_r <span style="color:#f92672">=</span> b; reverse(b_r.begin(), b_r.end());
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : r) retval.push_back(d<span style="color:#f92672">+</span>b_r);
-    }
-    <span style="color:#66d9ef">return</span> retval;
+  return retval;
+}
+    
+void solve(string data) {
+  vector&lt;string&gt; s = gen(data);
+  for(auto&amp; d : s) {
+    visited.insert(d);
   }
-  
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">solve</span>(string data) {
-    vector<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span> s <span style="color:#f92672">=</span> gen(data);
-    <span style="color:#66d9ef">for</span>(<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> d : s) {
-      visited.insert(d);
-    }
+}
+    
+    
+int main (){
+  int n, cnt, length;
+  string input;
+  char a;
+    
+  scanf(&quot;%d&quot;, &amp;n);
+  vector&lt;int&gt; count(26, 0);
+    
+  length = 0;
+  for (int i=0;i&lt;n;i++) {
+    scanf(&quot; %c %d&quot;, &amp;a, &amp;cnt);
+    count[a-'a'] += cnt;
+    length += cnt;
   }
-  
-  
-  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span> (){
-    <span style="color:#66d9ef">int</span> n, cnt, length;
-    string input;
-    <span style="color:#66d9ef">char</span> a;
-  
-    scanf(<span style="color:#e6db74">&#34;%d&#34;</span>, <span style="color:#f92672">&amp;</span>n);
-    vector<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> count(<span style="color:#ae81ff">26</span>, <span style="color:#ae81ff">0</span>);
-  
-    length <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;</span>n;i<span style="color:#f92672">++</span>) {
-      scanf(<span style="color:#e6db74">&#34; %c %d&#34;</span>, <span style="color:#f92672">&amp;</span>a, <span style="color:#f92672">&amp;</span>cnt);
-      count[a<span style="color:#f92672">-</span><span style="color:#e6db74">&#39;a&#39;</span>] <span style="color:#f92672">+=</span> cnt;
-      length <span style="color:#f92672">+=</span> cnt;
-    }
-  
-    cin <span style="color:#f92672">&gt;&gt;</span> input;
-  
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>;i<span style="color:#f92672">&lt;=</span>input.length() <span style="color:#f92672">-</span> length;i<span style="color:#f92672">++</span>){
-      string tmp <span style="color:#f92672">=</span> input.substr(i, length);
-      <span style="color:#66d9ef">if</span>(chk(tmp, count))
-        solve(tmp);
-    }
-  
-    printf(<span style="color:#e6db74">&#34;%d&#34;</span>, (<span style="color:#66d9ef">int</span>)visited.size());
-    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+    
+  cin &gt;&gt; input;
+    
+  for (int i=0;i&lt;=input.length() - length;i++){
+    string tmp = input.substr(i, length);
+    if(chk(tmp, count))
+      solve(tmp);
   }
-</code></pre></div>
+    
+  printf(&quot;%d&quot;, (int)visited.size());
+  return 0;
+}
+</code></pre></li>
+</ul>
+
     </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -268,7 +279,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

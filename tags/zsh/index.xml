@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>zsh on MD98 page</title>
+    <title>Zsh on MD98 page</title>
     <link>http://makerdark98.dev/tags/zsh/</link>
-    <description>Recent content in zsh on MD98 page</description>
+    <description>Recent content in Zsh on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
     <lastBuildDate>Mon, 13 Apr 2020 22:06:38 +0900</lastBuildDate>

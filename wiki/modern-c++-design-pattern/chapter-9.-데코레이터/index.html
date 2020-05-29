@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,142 +150,158 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#decorator">Decorator</a>
-      <ul>
-        <li><a href="#dynamic-decorator">Dynamic Decorator</a></li>
-        <li><a href="#static-decorator">Static Decorator</a></li>
-        <li><a href="#funtional-decorator">Funtional Decorator</a></li>
-        <li><a href="#summary">Summary</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#decorator">Decorator</a>
+<ul>
+<li><a href="#dynamic-decorator">Dynamic Decorator</a></li>
+<li><a href="#static-decorator">Static Decorator</a></li>
+<li><a href="#funtional-decorator">Funtional Decorator</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="decorator">Decorator</h2>
+      
+
+<h2 id="decorator">Decorator</h2>
+
 <ul>
 <li>Dynamic Composition</li>
 <li>Static Composition</li>
 </ul>
+
 <h3 id="dynamic-decorator">Dynamic Decorator</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">  <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ColoredShape</span> <span style="color:#f92672">:</span> Shape
+
+<pre><code class="language-cpp">  struct ColoredShape : Shape
   {
-    Shape<span style="color:#f92672">&amp;</span> shape;
+    Shape&amp; shape;
     string color;
   
-    ColoredShape(Shape<span style="color:#f92672">&amp;</span> shape, <span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> color)
-      <span style="color:#f92672">:</span> shape{shape}, color{color} {}
+    ColoredShape(Shape&amp; shape, const string&amp; color)
+      : shape{shape}, color{color} {}
   
-    stinrg <span style="color:#a6e22e">str</span>() <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">override</span>
+    stinrg str() const override
     {
       ostringstream oss;
-      oss <span style="color:#f92672">&lt;&lt;</span> shape.str() <span style="color:#f92672">&lt;</span>, <span style="color:#e6db74">&#34; Has the color &#34;</span> <span style="color:#f92672">&lt;&lt;</span> color;
-      <span style="color:#66d9ef">return</span> oss.str();
+      oss &lt;&lt; shape.str() &lt;, &quot; Has the color &quot; &lt;&lt; color;
+      return oss.str();
     }
   };
   
-  <span style="color:#75715e">// Example Code
-</span><span style="color:#75715e"></span>  Circle circle{<span style="color:#ae81ff">0.5f</span>};
-  ColoredShape redCircle{circle, <span style="color:#e6db74">&#34;red&#34;</span>};
-  cout <span style="color:#f92672">&lt;&lt;</span> redCircle.str();
+  // Example Code
+  Circle circle{0.5f};
+  ColoredShape redCircle{circle, &quot;red&quot;};
+  cout &lt;&lt; redCircle.str();
   
-  <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">TransparentShape</span> <span style="color:#f92672">:</span> Shape
+  struct TransparentShape : Shape
   {
-    Shape<span style="color:#f92672">&amp;</span> shape;
-    <span style="color:#66d9ef">uint8_t</span> transparency;
+    Shape&amp; shape;
+    uint8_t transparency;
   
-    TransparentShape(Shape<span style="color:#f92672">&amp;</span> shape, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint8_t</span> transparency)
-      <span style="color:#f92672">:</span> shape{shape}, transparency{transparency} {}
+    TransparentShape(Shape&amp; shape, const uint8_t transparency)
+      : shape{shape}, transparency{transparency} {}
   
-    string <span style="color:#a6e22e">str</span>() <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">override</span>
+    string str() const override
     {
       ostringstream oss;
-      oss <span style="color:#f92672">&lt;&lt;</span> shape.str() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; has &#34;</span>
-          <span style="color:#f92672">&lt;&lt;</span> <span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;</span>(transparency) <span style="color:#f92672">/</span> <span style="color:#ae81ff">255.f</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">100.f</span>
-          <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;% transparency&#34;</span>;
-      <span style="color:#66d9ef">return</span> oss.str();
+      oss &lt;&lt; shape.str() &lt;&lt; &quot; has &quot;
+          &lt;&lt; static_cast&lt;float&gt;(transparency) / 255.f * 100.f
+          &lt;&lt; &quot;% transparency&quot;;
+      return oss.str();
     }
   };
   
-  <span style="color:#75715e">// Exmaple Code
-</span><span style="color:#75715e"></span>  Squre square{<span style="color:#ae81ff">3</span>};
-  TransparentShape demiSquare{square, <span style="color:#ae81ff">85</span>};
-  cout <span style="color:#f92672">&lt;&lt;</span> demiSqure.str();
+  // Exmaple Code
+  Squre square{3};
+  TransparentShape demiSquare{square, 85};
+  cout &lt;&lt; demiSqure.str();
   
-  <span style="color:#75715e">// Composition Exmaple
-</span><span style="color:#75715e"></span>  TransparentShape myCircle {
+  // Composition Exmaple
+  TransparentShape myCircle {
     ColoredShape {
-      Circle{<span style="color:#ae81ff">23</span>}, <span style="color:#e6db74">&#34;green&#34;</span>,
-    }, <span style="color:#ae81ff">64</span>
+      Circle{23}, &quot;green&quot;,
+    }, 64
   };
   
-  cout <span style="color:#f92672">&lt;&lt;</span> myCircle.str();
-</code></pre></div><h3 id="static-decorator">Static Decorator</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">  <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ColoredShape</span> <span style="color:#f92672">:</span> T
+  cout &lt;&lt; myCircle.str();
+</code></pre>
+
+<h3 id="static-decorator">Static Decorator</h3>
+
+<pre><code class="language-cpp">  template &lt;typename T&gt; struct ColoredShape : T
   {
-    <span style="color:#66d9ef">static_assert</span>(is_base_of<span style="color:#f92672">&lt;</span>Shape, T<span style="color:#f92672">&gt;::</span>value,
-      <span style="color:#e6db74">&#34;Tempalte argument must be a Shape&#34;</span>);
+    static_assert(is_base_of&lt;Shape, T&gt;::value,
+      &quot;Tempalte argument must be a Shape&quot;);
   
     string color;
   
-    string <span style="color:#a6e22e">str</span>() <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">override</span>
+    string str() const override
     {
       ostringstream oss;
-      oss <span style="color:#f92672">&lt;&lt;</span> T<span style="color:#f92672">::</span>str() <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; has the color &#34;</span> <span style="color:#f92672">&lt;&lt;</span> color;
-      <span style="color:#66d9ef">return</span> oss.str();
+      oss &lt;&lt; T::str() &lt;&lt; &quot; has the color &quot; &lt;&lt; color;
+      return oss.str();
     }
   
-    <span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span>...Args<span style="color:#f92672">&gt;</span>
-    ColoredShape(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> color, Args ...args)
-      <span style="color:#f92672">:</span> T(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>Args<span style="color:#f92672">&gt;</span>(args)...), color{ color } {}
+    template&lt;typename...Args&gt;
+    ColoredShape(const string&amp; color, Args ...args)
+      : T(std::forward&lt;Args&gt;(args)...), color{ color } {}
   };
-</code></pre></div><h3 id="funtional-decorator">Funtional Decorator</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">  <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span><span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Logger</span>;
-  <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> R, <span style="color:#66d9ef">typename</span>... Args<span style="color:#f92672">&gt;</span>
-  <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Logger</span><span style="color:#f92672">&lt;</span>R(Args...)<span style="color:#f92672">&gt;</span>
+</code></pre>
+
+<h3 id="funtional-decorator">Funtional Decorator</h3>
+
+<pre><code class="language-cpp">  template &lt;typename&gt; class Logger;
+  template &lt;typename R, typename... Args&gt;
+  struct Logger&lt;R(Args...)&gt;
   {
-    Logger(function<span style="color:#f92672">&lt;</span>R(Args...)<span style="color:#f92672">&gt;</span> func, <span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> name)
-      <span style="color:#f92672">:</span> func{func}, name{name} {}
+    Logger(function&lt;R(Args...)&gt; func, const string&amp; name)
+      : func{func}, name{name} {}
     
-    R <span style="color:#a6e22e">operator</span>() (Args ...args)
+    R operator() (Args ...args)
     {
-      cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Enter &#34;</span> <span style="color:#f92672">&lt;&lt;</span> name <span style="color:#f92672">&lt;&lt;</span> endl;
-      R result <span style="color:#f92672">=</span> func(args...);
-      cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Exiting &#34;</span> <span style="color:#f92672">&lt;&lt;</span> name <span style="color:#f92672">&lt;&lt;</span> endl;
-      <span style="color:#66d9ef">return</span> result;
+      cout &lt;&lt; &quot;Enter &quot; &lt;&lt; name &lt;&lt; endl;
+      R result = func(args...);
+      cout &lt;&lt; &quot;Exiting &quot; &lt;&lt; name &lt;&lt; endl;
+      return result;
     }
   
-    function<span style="color:#f92672">&lt;</span>R(Args ...)<span style="color:#f92672">&gt;</span> func;
+    function&lt;R(Args ...)&gt; func;
     string name;
   };
   
-  <span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> R, <span style="color:#66d9ef">typename</span>... Args<span style="color:#f92672">&gt;</span>
-  <span style="color:#66d9ef">auto</span> make_logger(R (<span style="color:#f92672">*</span>func)(Args...), <span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> name)
+  template &lt;typename R, typename... Args&gt;
+  auto make_logger(R (*func)(Args...), const string&amp; name)
   {
-    <span style="color:#66d9ef">return</span> Logger<span style="color:#f92672">&lt;</span>R(Args...)<span style="color:#f92672">&gt;</span>(
-      function<span style="color:#f92672">&lt;</span>R(Args...)<span style="color:#f92672">&gt;</span>(func),
+    return Logger&lt;R(Args...)&gt;(
+      function&lt;R(Args...)&gt;(func),
       name);
   }
   
-  <span style="color:#66d9ef">auto</span> logged_add <span style="color:#f92672">=</span> make_logger(add, <span style="color:#e6db74">&#34;add&#34;</span>);
-  <span style="color:#66d9ef">auto</span> result <span style="color:#f92672">=</span> logged_add(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">3</span>);
-</code></pre></div><h3 id="summary">Summary</h3>
+  auto logged_add = make_logger(add, &quot;add&quot;);
+  auto result = logged_add(2, 3);
+</code></pre>
+
+<h3 id="summary">Summary</h3>
+
 <ul>
 <li>Dynamic Decorator
+
 <ul>
 <li>Store decoreated object, compose dynamically in runtime. However, original object member cannot access member variable.</li>
-</ul>
-</li>
+</ul></li>
 <li>Static Decorator
+
 <ul>
 <li>Using mixin inheritance, compose in compile time. So, this method cannot compose again in runtime. However, it can access member variable. And using constructor forwarding, completely initialize object.</li>
-</ul>
-</li>
+</ul></li>
 <li>Functional Decorator
+
 <ul>
 <li>Can overwrap a code block or other specific function to compose.</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 
     </div>
@@ -293,8 +309,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -312,7 +330,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

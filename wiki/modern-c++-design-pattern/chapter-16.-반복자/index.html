@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -156,19 +156,27 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#간략-설명">간략 설명</a></li>
-    <li><a href="#표준-라이브러리의-반복자">표준 라이브러리의 반복자</a></li>
-    <li><a href="#이진-트리의-탐색">이진 트리의 탐색</a></li>
-    <li><a href="#코루틴을-이용한-순회">코루틴을 이용한 순회</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#간략-설명">간략 설명</a></li>
+<li><a href="#표준-라이브러리의-반복자">표준 라이브러리의 반복자</a></li>
+<li><a href="#이진-트리의-탐색">이진 트리의 탐색</a></li>
+<li><a href="#코루틴을-이용한-순회">코루틴을 이용한 순회</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="간략-설명">간략 설명</h2>
+      
+
+<h2 id="간략-설명">간략 설명</h2>
+
 <ul>
 <li>복잡한 데이터 구조를 다루어야 할 때 데이터 순회 문제를 해결하는 방법</li>
 </ul>
+
 <h2 id="표준-라이브러리의-반복자">표준 라이브러리의 반복자</h2>
+
 <ul>
 <li><code>begin</code></li>
 <li><code>end</code></li>
@@ -179,102 +187,107 @@
 <li><code>crbegin</code></li>
 <li><code>crend</code></li>
 </ul>
-<h2 id="이진-트리의-탐색">이진 트리의 탐색</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> U<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">PreOrderIterator</span>;
-<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">BinaryTree</span>;
 
-<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Node</span>
+<h2 id="이진-트리의-탐색">이진 트리의 탐색</h2>
+
+<pre><code class="language-cpp">template &lt;typename U&gt; struct PreOrderIterator;
+template &lt;typename T&gt; struct BinaryTree;
+
+template &lt;typename T&gt; struct Node
 {
   T value;
-  Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">*</span>left <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
-  Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">*</span>right <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
-  Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> <span style="color:#f92672">*</span>parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
-  BinaryTree<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> tree <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
+  Node&lt;T&gt; *left = nullptr;
+  Node&lt;T&gt; *right = nullptr;
+  Node&lt;T&gt; *parent = nullptr;
+  BinaryTree&lt;T&gt;* tree = nullptr;
   
-  <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">Node</span>(<span style="color:#66d9ef">const</span> T<span style="color:#f92672">&amp;</span> value)
-    <span style="color:#f92672">:</span> value(value) {}
+  explicit Node(const T&amp; value)
+    : value(value) {}
     
-  Node(<span style="color:#66d9ef">const</span> T<span style="color:#f92672">&amp;</span> value, Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> <span style="color:#66d9ef">const</span> left, Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> <span style="color:#66d9ef">const</span> right)
-    <span style="color:#f92672">:</span> value(value), left(left), right(right)
+  Node(const T&amp; value, Node&lt;T&gt;* const left, Node&lt;T&gt;* const right)
+    : value(value), left(left), right(right)
   {
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>left<span style="color:#f92672">-&gt;</span>tree <span style="color:#f92672">=</span><span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>right<span style="color:#f92672">-&gt;</span>tree <span style="color:#f92672">=</span> tree;
-    <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>left<span style="color:#f92672">-&gt;</span>parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>right<span style="color:#f92672">-&gt;</span>parent <span style="color:#f92672">=</span> <span style="color:#66d9ef">this</span>;
+    this-&gt;left-&gt;tree =this-&gt;right-&gt;tree = tree;
+    this-&gt;left-&gt;parent = this-&gt;right-&gt;parent = this;
   }
   
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set_tree</span>(BinaryTree<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> t)
+  void set_tree(BinaryTree&lt;T&gt;* t)
   {
-    tree <span style="color:#f92672">=</span> t;
-    <span style="color:#66d9ef">if</span> (left) left<span style="color:#f92672">-&gt;</span>set_tree(t);
-    <span style="color:#66d9ef">if</span> (right) right<span style="color:#f92672">-&gt;</span>set_tree(t);
+    tree = t;
+    if (left) left-&gt;set_tree(t);
+    if (right) right-&gt;set_tree(t);
   }
 };
 
-<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">BinaryTree</span>
+template &lt;typename T&gt; struct BinaryTree
 {
-  Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> root <span style="color:#f92672">=</span> <span style="color:#66d9ef">nullptr</span>;
+  Node&lt;T&gt;* root = nullptr;
   
-  <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">BinaryTree</span>(Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> <span style="color:#66d9ef">const</span> root)
-    <span style="color:#f92672">:</span> root{ root }
+  explicit BinaryTree(Node&lt;T&gt;* const root)
+    : root{ root }
   {
-    root<span style="color:#f92672">-&gt;</span>set_tree(<span style="color:#66d9ef">this</span>);
+    root-&gt;set_tree(this);
   }
-  <span style="color:#66d9ef">typedef</span> PreOrderIterator<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> iterator;
+  typedef PreOrderIterator&lt;T&gt; iterator;
   
-  iterator <span style="color:#a6e22e">begin</span>()
+  iterator begin()
   {
-    Node<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;*</span> n <span style="color:#f92672">=</span> root;
+    Node&lt;T&gt;* n = root;
     
-    <span style="color:#66d9ef">if</span> (n)
-      <span style="color:#66d9ef">while</span> (n<span style="color:#f92672">-&gt;</span>left)
-        n <span style="color:#f92672">=</span> n<span style="color:#f92672">-&gt;</span>left;
-    <span style="color:#66d9ef">return</span> iterator{ n }
+    if (n)
+      while (n-&gt;left)
+        n = n-&gt;left;
+    return iterator{ n }
   }
   
-  iterator <span style="color:#a6e22e">end</span>()
+  iterator end()
   {
-    <span style="color:#66d9ef">return</span> iteraotr { <span style="color:#66d9ef">nullptr</span> };
+    return iteraotr { nullptr };
   }
 };
 
-<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> U<span style="color:#f92672">&gt;</span>
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">PreOrderIterator</span>
+template &lt;typename U&gt;
+struct PreOrderIterator
 {
-  Node<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;*</span> current;
-  <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">PreOrderIterator</span>(Node<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;*</span> current)
-    <span style="color:#f92672">:</span> current(current)
+  Node&lt;U&gt;* current;
+  explicit PreOrderIterator(Node&lt;U&gt;* current)
+    : current(current)
   {
   }
   
-  <span style="color:#66d9ef">bool</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">!=</span>(<span style="color:#66d9ef">const</span> PreOrderIterator<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;&amp;</span> other)
+  bool operator!=(const PreOrderIterator&lt;U&gt;&amp; other)
   {
-    <span style="color:#66d9ef">return</span> current <span style="color:#f92672">!=</span> other.current;
+    return current != other.current;
   }
   
-  Node<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;&amp;</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">*</span>() { <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span>current; }
+  Node&lt;U&gt;&amp; operator*() { return *current; }
   
-  PreOrderIterator<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;&amp;</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">++</span>()
+  PreOrderIterator&lt;U&gt;&amp; operator++()
   {
-    <span style="color:#66d9ef">if</span> (current<span style="color:#f92672">-&gt;</span>right)
+    if (current-&gt;right)
     {
-      current <span style="color:#f92672">=</span> current<span style="color:#f92672">-&gt;</span>right;
-      <span style="color:#66d9ef">while</span> (current<span style="color:#f92672">-&gt;</span>left)
-        current <span style="color:#f92672">=</span> current<span style="color:#f92672">-&gt;</span>left;
+      current = current-&gt;right;
+      while (current-&gt;left)
+        current = current-&gt;left;
     }
-    <span style="color:#66d9ef">else</span>
+    else
     {
-      Node<span style="color:#f92672">&lt;</span>U<span style="color:#f92672">&gt;*</span> p <span style="color:#f92672">=</span> current<span style="color:#f92672">-&gt;</span>parent;
-      <span style="color:#66d9ef">while</span> (p <span style="color:#f92672">&amp;&amp;</span> current <span style="color:#f92672">==</span> p<span style="color:#f92672">-&gt;</span>right)
+      Node&lt;U&gt;* p = current-&gt;parent;
+      while (p &amp;&amp; current == p-&gt;right)
       {
-        current <span style="color:#f92672">=</span> p;
-        p <span style="color:#f92672">=</span> p<span style="color:#f92672">-&gt;</span>parent;
+        current = p;
+        p = p-&gt;parent;
       }
-      current <span style="color:#f92672">=</span> p;
+      current = p;
     }
-    <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
+    return *this;
   }
 }
 
-</code></pre></div><h2 id="코루틴을-이용한-순회">코루틴을 이용한 순회</h2>
+</code></pre>
+
+<h2 id="코루틴을-이용한-순회">코루틴을 이용한 순회</h2>
+
 <ul>
 <li>흐음&hellip; 잘 모르겠다. 아직 이런 불편함을 안겪어봐서인듯</li>
 </ul>
@@ -284,8 +297,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -303,7 +318,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

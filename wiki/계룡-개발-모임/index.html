@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -142,7 +142,7 @@
         <h2>계룡 개발 모임</h2>
         <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/%ea%b3%84%eb%a3%a1%20%ea%b0%9c%eb%b0%9c%20%eb%aa%a8%ec%9e%84.md">
   <h5>created : Tue, 28 Apr 2020 21:48:13 &#43;0900</h5>
-  <h5>modified : Tue, 28 Apr 2020 21:49:36 &#43;0900</h5>
+  <h5>modified : Thu, 30 Apr 2020 19:44:28 &#43;0900</h5>
 </a>
 
         
@@ -150,28 +150,38 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#이벤트">이벤트</a></li>
-    <li><a href="#논문-스터디">논문 스터디</a></li>
-    <li><a href="#군대에서-개발하던거">군대에서 개발하던거</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#이벤트">이벤트</a></li>
+<li><a href="#논문-스터디">논문 스터디</a></li>
+<li><a href="#군대에서-개발하던거">군대에서 개발하던거</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="이벤트">이벤트</h2>
+      
+
+<h2 id="이벤트">이벤트</h2>
+
 <ul>
 <li>[[설대회]]</li>
 <li>[[송편대회]]</li>
 <li>[[Memory_Leak]]</li>
-<li>[[썩어버린 Query Language]]</li>
-</ul>
-<h2 id="논문-스터디">논문 스터디</h2>
-<ul>
-<li>[[F2FS]]</li>
-<li>[[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]</li>
-</ul>
-<h2 id="군대에서-개발하던거">군대에서 개발하던거</h2>
-<ul>
-<li>[[사지방_개발기]]</li>
+
+<li><p>[[썩어버린 Query Language]]</p>
+
+<h2 id="논문-스터디">논문 스터디</h2></li>
+
+<li><p>[[F2FS]]</p></li>
+
+<li><p>[[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]</p></li>
+
+<li><p>[[ext4]]{The new ext4 filesystem: current status and future plans}</p>
+
+<h2 id="군대에서-개발하던거">군대에서 개발하던거</h2></li>
+
+<li><p>[[사지방_개발기]]</p></li>
 </ul>
 
     </div>
@@ -179,8 +189,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -198,7 +210,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

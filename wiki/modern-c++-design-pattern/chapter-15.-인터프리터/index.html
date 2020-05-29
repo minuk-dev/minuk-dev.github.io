@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -156,18 +156,26 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#인터프리터-디자인-패턴">인터프리터 디자인 패턴?</a></li>
-    <li><a href="#요약">요약</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#인터프리터-디자인-패턴">인터프리터 디자인 패턴?</a></li>
+<li><a href="#요약">요약</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="인터프리터-디자인-패턴">인터프리터 디자인 패턴?</h2>
+      
+
+<h2 id="인터프리터-디자인-패턴">인터프리터 디자인 패턴?</h2>
+
 <ul>
 <li>입력 데이터를 해석하는 것</li>
 <li>대부분 텍스트이지만 텍스트에 한정되지는 않음.</li>
 </ul>
+
 <h2 id="요약">요약</h2>
+
 <ul>
 <li>&hellip; 이책에서 굳이 이 내용을 다루는 이유를 모르겠다. 차라리 <code>Lex/Yacc</code>를
 보는게 좋다고 생각한다.</li>
@@ -180,8 +188,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -199,7 +209,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

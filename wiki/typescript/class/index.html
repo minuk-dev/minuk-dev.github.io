@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,29 +150,34 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#inheritance">Inheritance</a></li>
-    <li><a href="#public-privateand-protected-modifiers"><code>public</code>, <code>private</code>and <code>protected</code> modifiers</a>
-      <ul>
-        <li><a href="#public-by-default">Public by default</a></li>
-        <li><a href="#understanding-private">Understanding <code>private</code></a></li>
-        <li><a href="#understanding-protected">Understanding <code>protected</code></a></li>
-      </ul>
-    </li>
-    <li><a href="#readonly-modifier">Readonly modifier</a></li>
-    <li><a href="#parameter-properties">Parameter properties</a></li>
-    <li><a href="#accessors">Accessors</a></li>
-    <li><a href="#static-properties">Static Properties</a></li>
-    <li><a href="#abstacrt-classes">Abstacrt Classes</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#constructor-functions">Constructor functions</a></li>
-    <li><a href="#using-a-class-as-an-interface">Using a class as an interface</a></li>
-  </ul>
+<ul>
+<li><a href="#class">Class</a>
+<ul>
+<li><a href="#inheritance">Inheritance</a></li>
+<li><a href="#public-private-and-protected-modifiers"><code>public</code>, <code>private</code>and <code>protected</code> modifiers</a>
+<ul>
+<li><a href="#public-by-default">Public by default</a></li>
+<li><a href="#understanding-private">Understanding <code>private</code></a></li>
+<li><a href="#understanding-protected">Understanding <code>protected</code></a></li>
+</ul></li>
+<li><a href="#readonly-modifier">Readonly modifier</a></li>
+<li><a href="#parameter-properties">Parameter properties</a></li>
+<li><a href="#accessors">Accessors</a></li>
+<li><a href="#static-properties">Static Properties</a></li>
+<li><a href="#abstacrt-classes">Abstacrt Classes</a></li>
+</ul></li>
+<li><a href="#advanced-techinques">Advanced Techinques</a>
+<ul>
+<li><a href="#constructor-functions">Constructor functions</a></li>
+<li><a href="#using-a-class-as-an-interface">Using a class as an interface</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="class">Class</h1>
+      
+
+<h1 id="class">Class</h1>
+
 <pre><code>class Greeter {
     greeting: string;
     constructor(message: string) {
@@ -185,7 +190,9 @@
 
 let greeter = new Greeter(&quot;world&quot;);
 </code></pre>
+
 <h2 id="inheritance">Inheritance</h2>
+
 <pre><code>class Animal {
     move(distanceInMeters: number = 0) {
         console.log(`Animal moved ${distanceInMeters}m.`);
@@ -233,8 +240,11 @@ let tom: Animal = new Horse(&quot;Tommy the Palomino&quot;);
 sam.move();
 tom.move();
 </code></pre>
-<h2 id="public-privateand-protected-modifiers"><code>public</code>, <code>private</code>and <code>protected</code> modifiers</h2>
+
+<h2 id="public-private-and-protected-modifiers"><code>public</code>, <code>private</code>and <code>protected</code> modifiers</h2>
+
 <h3 id="public-by-default">Public by default</h3>
+
 <pre><code>class Animal {
     public name: string;
     public constructor(theName: string) { this.name = theName; }
@@ -243,7 +253,9 @@ tom.move();
     }
 }
 </code></pre>
+
 <h3 id="understanding-private">Understanding <code>private</code></h3>
+
 <pre><code>class Animal {
     private name: string;
     constructor(theName: string_ { this.name = theName; }
@@ -272,7 +284,9 @@ let employee = new Employee(&quot;Bob&quot;);
 animal = rhino;
 animal = employee; // Error
 </code></pre>
+
 <h3 id="understanding-protected">Understanding <code>protected</code></h3>
+
 <pre><code>class Person {
     protected name: string;
     constructor(name: string) { this.name = name; }
@@ -316,7 +330,9 @@ class Employee extends Person {
 let howard = new Employee(&quot;Howard&quot;, &quot;Sales&quot;);
 let john = new Person(&quot;John&quot;);
 </code></pre>
+
 <h2 id="readonly-modifier">Readonly modifier</h2>
+
 <pre><code>class Octopus {
     readonly name: string;
     readonly numberOfLegs: number = 8;
@@ -328,14 +344,18 @@ let john = new Person(&quot;John&quot;);
 let dad = new Octopus(&quot;Man with the 8 strong legs&quot;);
 dad.name = &quot;Man with the 3-piece suit&quot;; // Error
 </code></pre>
+
 <h2 id="parameter-properties">Parameter properties</h2>
+
 <pre><code>class Octopus {
     readonly numberOfLegs: number = 8;
     constructor(readonly name: string) {
     }
 }
 </code></pre>
+
 <h2 id="accessors">Accessors</h2>
+
 <pre><code>class Employee {
     fullName: string;
 }
@@ -371,7 +391,9 @@ if (employee.fullName) {
         console.log(employee.fullName);
 }
 </code></pre>
+
 <h2 id="static-properties">Static Properties</h2>
+
 <pre><code>class Grid {
     static origin = { x: 0, y: 0 };
     calculateDistanceFromOrigin(point: { x: number; y: number; }) {
@@ -388,7 +410,9 @@ let grid2 = new Grid(5.0);
 console.log(grid1.calculateDistanceFromOrigin({x: 10, y: 10}));
 console.log(grid2.calculateDistanceFromOrigin({x: 10, y: 10}));
 </code></pre>
+
 <h2 id="abstacrt-classes">Abstacrt Classes</h2>
+
 <pre><code>abstract class Animal {
     abstract makeSound(): void;
     move(): void {
@@ -421,8 +445,11 @@ let department: Department;
 department = new Department();
 department = new AccountingDepartment();
 </code></pre>
+
 <h1 id="advanced-techinques">Advanced Techinques</h1>
+
 <h2 id="constructor-functions">Constructor functions</h2>
+
 <pre><code>class Greeter {
     greeting: string;
     constructor(message: string) {
@@ -460,7 +487,9 @@ greeterMaker.standardGreeting = &quot;Hey there!&quot;;
 let greeter2: Greeter = new greeterMaker();
 console.log(greeter2.greet());
 </code></pre>
+
 <h2 id="using-a-class-as-an-interface">Using a class as an interface</h2>
+
 <pre><code>class Point {
     x: number;
     y: number;
@@ -478,8 +507,10 @@ let point3d: Point3d = {x: 1, y:2, z: 3};
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -497,7 +528,7 @@ let point3d: Point3d = {x: 1, y:2, z: 3};
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

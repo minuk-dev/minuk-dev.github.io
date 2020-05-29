@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,272 +150,298 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#crtpcuriously-recurring-template-pattern">CRTP(Curiously Recurring Template Pattern)</a>
-      <ul>
-        <li><a href="#property">Property</a></li>
-      </ul>
-    </li>
-    <li><a href="#factory">Factory</a>
-      <ul>
-        <li><a href="#factory-method">Factory Method</a></li>
-        <li><a href="#solid-design-principle">SOLID Design Principle</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#crtp-curiously-recurring-template-pattern">CRTP(Curiously Recurring Template Pattern)</a>
+<ul>
+<li><a href="#property">Property</a></li>
+</ul></li>
+<li><a href="#factory">Factory</a>
+<ul>
+<li><a href="#factory-method">Factory Method</a></li>
+<li><a href="#solid-design-principle">SOLID Design Principle</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="crtpcuriously-recurring-template-pattern">CRTP(Curiously Recurring Template Pattern)</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Foo</span> <span style="color:#f92672">:</span> SomeBase<span style="color:#f92672">&lt;</span>Foo<span style="color:#f92672">&gt;</span>
+      
+
+<h2 id="crtp-curiously-recurring-template-pattern">CRTP(Curiously Recurring Template Pattern)</h2>
+
+<pre><code class="language-cpp">struct Foo : SomeBase&lt;Foo&gt;
 {
  ... 
 }
 
-<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> Derived<span style="color:#f92672">&gt;</span>
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">SomeBase</span>
+template &lt;typename Derived&gt;
+struct SomeBase
 {
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">foo</span>()
+  void foo()
   {
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> item : <span style="color:#f92672">*</span><span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>Derived<span style="color:#f92672">*&gt;</span>(<span style="color:#66d9ef">this</span>))
+    for (auto&amp; item : *static_cast&lt;Derived*&gt;(this))
     {
     ...
     }
   }
 }
-</code></pre></div><h3 id="property">Property</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span>
+</code></pre>
+
+<h3 id="property">Property</h3>
+
+<pre><code class="language-cpp">  class Person
   {
-  <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">int</span> age_;
-  <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">int</span> get_age() <span style="color:#66d9ef">const</span> {<span style="color:#66d9ef">return</span> age_; }
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">set_age</span>(<span style="color:#66d9ef">int</span> value) {age_ <span style="color:#f92672">=</span> value; }
-    <span style="color:#66d9ef">__declspec</span>(property(get<span style="color:#f92672">=</span>get_age, put<span style="color:#f92672">=</span>set_age)) <span style="color:#66d9ef">int</span> age;
+  private:
+    int age_;
+  public:
+    int get_age() const {return age_; }
+    void set_age(int value) {age_ = value; }
+    __declspec(property(get=get_age, put=set_age)) int age;
   }
   
   Person p;
-  p.age <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>; <span style="color:#75715e">// calls p.set_age(20)
-</span></code></pre></div><h2 id="factory">Factory</h2>
+  p.age = 20; // calls p.set_age(20)
+</code></pre>
+
+<h2 id="factory">Factory</h2>
+
 <h3 id="factory-method">Factory Method</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">  <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Point</span> 
+
+<pre><code class="language-cpp">  struct Point 
   {
-  <span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
-    Point(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">float</span> x, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">float</span> y)
-      <span style="color:#f92672">:</span> x {x}, y {y}
+  protected:
+    Point(const float x, const float y)
+      : x {x}, y {y}
     {}
   
-  <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-    <span style="color:#66d9ef">static</span> Point NewCartesian(<span style="color:#66d9ef">float</span> x, <span style="color:#66d9ef">float</span> y) 
+  public:
+    static Point NewCartesian(float x, float y) 
     {
-      <span style="color:#66d9ef">return</span> {x, y};
+      return {x, y};
     }
-    <span style="color:#66d9ef">static</span> Point <span style="color:#a6e22e">NewPolar</span>(<span style="color:#66d9ef">float</span> r, <span style="color:#66d9ef">float</span> theta)
+    static Point NewPolar(float r, float theta)
     {
-      <span style="color:#66d9ef">return</span> {r <span style="color:#f92672">*</span> cos(theta), r <span style="color:#f92672">*</span> sin(theta)};
+      return {r * cos(theta), r * sin(theta)};
     }
-    <span style="color:#75715e">// skip
-</span><span style="color:#75715e"></span>  };
-</code></pre></div><h3 id="solid-design-principle">SOLID Design Principle</h3>
+    // skip
+  };
+</code></pre>
+
+<h3 id="solid-design-principle">SOLID Design Principle</h3>
+
 <ul>
 <li>SRP(Single Responsibility Principle)
+
 <ul>
-<li>If you need to edit a few classes(or little more?) in some very small retouching, there is an omen of something problem. It is named <code>code smell</code></li>
-</ul>
-</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Journal</span>
+<li>If you need to edit a few classes(or little more?) in some very small retouching, there is an omen of something problem. It is named <code>code smell</code>
+```cpp
+struct Journal
 {
-  string title;
-  vector<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span> entries;
-  
-  <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">Journal</span> (<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> title) <span style="color:#f92672">:</span> title{title} {}
-};
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">void</span> Journal<span style="color:#f92672">::</span>add(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> entry)
+string title;
+vector<string> entries;
+<br /></li>
+</ul></li>
+</ul>
+
+<p>explicit Journal (const string&amp; title) : title{title} {}
+};</p>
+
+<pre><code>```cpp
+void Journal::add(const string&amp; entry)
 {
-  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>;
-  entries.push_back(boost<span style="color:#f92672">::</span>lexical_cast<span style="color:#f92672">&lt;</span>string<span style="color:#f92672">&gt;</span>(count<span style="color:#f92672">++</span>) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;: &#34;</span> <span style="color:#f92672">+</span> entry);
+  static int count = 1;
+  entries.push_back(boost::lexical_cast&lt;string&gt;(count++) + &quot;: &quot; + entry);
 }
 
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">Journal j{&#34;Dear Diary&#34;};
-</span><span style="color:#75715e">j.add(&#34;I cried today&#34;);
-</span><span style="color:#75715e">j.add(&#34;I ate a bug&#34;);
-</span><span style="color:#75715e">*/</span>
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">PersistenceManager</span>
+/*
+Journal j{&quot;Dear Diary&quot;};
+j.add(&quot;I cried today&quot;);
+j.add(&quot;I ate a bug&quot;);
+*/
+</code></pre>
+
+<pre><code class="language-cpp">struct PersistenceManager
 {
-  <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">save</span>(<span style="color:#66d9ef">const</span> Journal<span style="color:#f92672">&amp;</span> j, <span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> filename)
+  static void save(const Journal&amp; j, const string&amp; filename)
   {
     ofstream ofs(filename);
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> s : j.entries)
-      ofs <span style="color:#f92672">&lt;&lt;</span> s <span style="color:#f92672">&lt;&lt;</span> endl;
+    for (auto&amp; s : j.entries)
+      ofs &lt;&lt; s &lt;&lt; endl;
   }
 };
-</code></pre></div><ul>
-<li>OCP(Open-Closed Principle)</li>
+</code></pre>
+
+<ul>
+<li>OCP(Open-Closed Principle)
+```cpp
+template <typename T> struct Specification
+{
+virtual bool is_satisfied(T* item) = 0;
+};</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Specification</span>
-{
-  <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">is_satisfied</span>(T<span style="color:#f92672">*</span> item) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-};
 
-<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Filter</span>
+<p>template <typename T> struct Filter
 {
-  <span style="color:#66d9ef">virtual</span> vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">*&gt;</span> filter(
-    vector<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">*&gt;</span> items,
-    Specification<span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;&amp;</span> spec) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-};
+  virtual vector<T*> filter(
+    vector<T*> items,
+    Specification<T>&amp; spec) = 0;
+};</p>
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">BetterFilter</span> <span style="color:#f92672">:</span> Filter<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">&gt;</span>
+<p>struct BetterFilter : Filter<Product>
 {
-  vector<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">*&gt;</span> filter(
-    vector<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">*&gt;</span> items,
-    Specifiaction<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">&gt;&amp;</span> spec) <span style="color:#66d9ef">override</span>
+  vector<Product*> filter(
+    vector<Product*> items,
+    Specifiaction<Product>&amp; spec) override
   {
-    vector<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">*&gt;</span> result;
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> p : items)
-      <span style="color:#66d9ef">if</span> (spec.is_satisfied(p))
+    vector<Product*> result;
+    for (auto&amp; p : items)
+      if (spec.is_satisfied(p))
         result.push_back(p);
-    <span style="color:#66d9ef">return</span> result;
+    return result;
   }
-};
+};</p>
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ColorSpecification</span> <span style="color:#f92672">:</span> Specification<span style="color:#f92672">&lt;</span>Product<span style="color:#f92672">&gt;</span>
+<p>struct ColorSpecification : Specification<Product>
 {
-  Color color;
-  
-  <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">ColorSpecification</span>(cosnt Color color) <span style="color:#f92672">:</span> color{color} {}
-  
-  <span style="color:#66d9ef">bool</span> <span style="color:#a6e22e">is_stisfied</span>(Product<span style="color:#f92672">*</span> item) <span style="color:#66d9ef">override</span> {
-    <span style="color:#66d9ef">return</span> item<span style="color:#f92672">-&gt;</span>color <span style="color:#f92672">==</span> color;
+  Color color;</p>
+
+<p>explicit ColorSpecification(cosnt Color color) : color{color} {}</p>
+
+<p>bool is_stisfied(Product* item) override {
+    return item-&gt;color == color;
   }
+};</p>
+
+<p>/*
+Product apple{ &ldquo;Apple&rdquo;, Color::Green, Size::Small };
+Product tree{ &ldquo;Tree&rdquo;, Color::Green, Size::Large };
+Product house{ &ldquo;House&rdquo;, Color:Blue, Size::Large };</p>
+
+<p>vector<Product*> all{ &amp;apple, &amp;tree, &amp;house };</p>
+
+<p>BetterFilter bf;
+ColorSpecification green(Color::Green);</p>
+
+<p>auto green_things = bf.filter(all, green);
+for (auto&amp; x : green_things)
+  cout &lt;&lt; x-&gt;name &lt;&lt; &ldquo; is green&rdquo; &lt;&lt; endl;
+*/</p>
+
+<pre><code>- LSP(Liskove Substitution Principle)
+```cpp
+class RectangleFactory
+{
+  static Rectangle create_rectangle(int w, int h);
+  static Rectangle create_square(int size);
 };
 
-<span style="color:#75715e">/*
-</span><span style="color:#75715e">Product apple{ &#34;Apple&#34;, Color::Green, Size::Small };
-</span><span style="color:#75715e">Product tree{ &#34;Tree&#34;, Color::Green, Size::Large };
-</span><span style="color:#75715e">Product house{ &#34;House&#34;, Color:Blue, Size::Large };
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">vector&lt;Product*&gt; all{ &amp;apple, &amp;tree, &amp;house };
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">BetterFilter bf;
-</span><span style="color:#75715e">ColorSpecification green(Color::Green);
-</span><span style="color:#75715e">
-</span><span style="color:#75715e">auto green_things = bf.filter(all, green);
-</span><span style="color:#75715e">for (auto&amp; x : green_things)
-</span><span style="color:#75715e">  cout &lt;&lt; x-&gt;name &lt;&lt; &#34; is green&#34; &lt;&lt; endl;
-</span><span style="color:#75715e">*/</span>
-</code></pre></div><ul>
-<li>LSP(Liskove Substitution Principle)</li>
+bool Rectangle:is_square() const
+{
+  return width == height;
+}
+</code></pre>
+
+<ul>
+<li>ISP(Interface Segregation Principle)
+```cpp
+struct IPrinter
+{
+virtual void print(vector<Document*> docs) = 0;
+};</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RectangleFactory</span>
-{
-  <span style="color:#66d9ef">static</span> Rectangle <span style="color:#a6e22e">create_rectangle</span>(<span style="color:#66d9ef">int</span> w, <span style="color:#66d9ef">int</span> h);
-  <span style="color:#66d9ef">static</span> Rectangle <span style="color:#a6e22e">create_square</span>(<span style="color:#66d9ef">int</span> size);
-};
 
-<span style="color:#66d9ef">bool</span> Rectangle:is_square() <span style="color:#66d9ef">const</span>
+<p>struct IScanner
 {
-  <span style="color:#66d9ef">return</span> width <span style="color:#f92672">==</span> height;
-}
-</code></pre></div><ul>
-<li>ISP(Interface Segregation Principle)</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">IPrinter</span>
+  virtual void scan(vector<Document*> docs) = 0;
+}</p>
+
+<p>struct Printer : IPrinter
 {
-  <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>(vector<span style="color:#f92672">&lt;</span>Document<span style="color:#f92672">*&gt;</span> docs) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-};
+  void print(vector<Document*> docs) override;
+}</p>
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">IScanner</span>
+<p>struct Scanner : IScanner
 {
-  <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">scan</span>(vector<span style="color:#f92672">&lt;</span>Document<span style="color:#f92672">*&gt;</span> docs) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-}
+  void scan(vector<Document*> docs) override;
+}</p>
 
-
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Printer</span> <span style="color:#f92672">:</span> IPrinter
+<p>struct IMachine: IPrinter, IScanner
 {
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>(vector<span style="color:#f92672">&lt;</span>Document<span style="color:#f92672">*&gt;</span> docs) <span style="color:#66d9ef">override</span>;
-}
+};</p>
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Scanner</span> <span style="color:#f92672">:</span> IScanner
+<p>struct Machine : IMachine
 {
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">scan</span>(vector<span style="color:#f92672">&lt;</span>Document<span style="color:#f92672">*&gt;</span> docs) <span style="color:#66d9ef">override</span>;
-}
+  IPrinter&amp; printer;
+  IScanner&amp; scanner;</p>
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">IMachine</span><span style="color:#f92672">:</span> IPrinter, IScanner
-{
-};
-
-
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Machine</span> <span style="color:#f92672">:</span> IMachine
-{
-  IPrinter<span style="color:#f92672">&amp;</span> printer;
-  IScanner<span style="color:#f92672">&amp;</span> scanner;
-  
-  Machine(IPrinter<span style="color:#f92672">&amp;</span> printer, IScanner<span style="color:#f92672">&amp;</span> scanner)
-    <span style="color:#f92672">:</span> printer{printer},
+<p>Machine(IPrinter&amp; printer, IScanner&amp; scanner)
+    : printer{printer},
       scanner{scanner}
   {
-  }
-  
-  
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>(vector<span style="color:#f92672">&lt;</span>Document<span style="color:#f92672">*&gt;</span> docs) <span style="color:#66d9ef">override</span> {
+  }</p>
+
+<p>void print(vector<Document*> docs) override {
     printer.print(docs);
   }
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">scan</span>(vector<span style="color:#f92672">&lt;</span>Document<span style="color:#f92672">*&gt;</span> docs) <span style="color:#66d9ef">override</span> {
+  void scan(vector<Document*> docs) override {
     scanner.scan(docs);
   }
-}
-</code></pre></div><ul>
-<li>DIP(Dependency Inversion Principle)</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ILogger</span>
+}</p>
+
+<pre><code>- DIP(Dependency Inversion Principle)
+```cpp
+struct ILogger
 {
-  <span style="color:#66d9ef">virtual</span> <span style="color:#f92672">~</span>ILogger() {}
-  <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Log</span>(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> s) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+  virtual ~ILogger() {}
+  virtual void Log(const string&amp; s) = 0;
 };
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ConsoleLogger</span> <span style="color:#f92672">:</span> ILogger
+struct ConsoleLogger : ILogger
 {
   ConsoleLogger() {}
   
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Log</span>(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> s) <span style="color:#66d9ef">override</span>
+  void Log(const string&amp; s) override
   {
-    cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;LOG: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.c_str() <span style="color:#f92672">&lt;&lt;</span> endl;
+    cout &lt;&lt; &quot;LOG: &quot; &lt;&lt; s.c_str() &lt;&lt; endl;
   }
 };
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Car</span>
+struct Car
 {
-  unique_ptr<span style="color:#f92672">&lt;</span>Engine<span style="color:#f92672">&gt;</span> engine;
-  shared_ptr<span style="color:#f92672">&lt;</span>ILogger<span style="color:#f92672">&gt;</span> logger;
+  unique_ptr&lt;Engine&gt; engine;
+  shared_ptr&lt;ILogger&gt; logger;
   
-  Car(unique_ptr<span style="color:#f92672">&lt;</span>Engine<span style="color:#f92672">&gt;</span> engine,
-      <span style="color:#66d9ef">const</span> shared_ptr<span style="color:#f92672">&lt;</span>ILogger<span style="color:#f92672">&gt;&amp;</span> logger)
-    <span style="color:#f92672">:</span> engine{move(engine)},
+  Car(unique_ptr&lt;Engine&gt; engine,
+      const shared_ptr&lt;ILogger&gt;&amp; logger)
+    : engine{move(engine)},
       logger{logger}
   {
-    logger<span style="color:#f92672">-&gt;</span>Log(<span style="color:#e6db74">&#34;making a car&#34;</span>);
+    logger-&gt;Log(&quot;making a car&quot;);
   }
   
-  <span style="color:#66d9ef">friend</span> ostream<span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">operator</span><span style="color:#f92672">&lt;&lt;</span>(ostream<span style="color:#f92672">&amp;</span> os, <span style="color:#66d9ef">const</span> Car<span style="color:#f92672">&amp;</span> obj)
+  friend ostream&amp; operator&lt;&lt;(ostream&amp; os, const Car&amp; obj)
   {
-    <span style="color:#66d9ef">return</span> os <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;car with engine: &#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#f92672">*</span>obj.engine;
+    return os &lt;&lt; &quot;car with engine: &quot; &lt;&lt; *obj.engine;
   }
 }
 
-<span style="color:#66d9ef">auto</span> injector <span style="color:#f92672">=</span> di<span style="color:#f92672">::</span>maker_injector(
-  di<span style="color:#f92672">::</span>bind<span style="color:#f92672">&lt;</span>ILogger<span style="color:#f92672">&gt;</span>().to<span style="color:#f92672">&lt;</span>ConsoleLogger<span style="color:#f92672">&gt;</span>()
+auto injector = di::maker_injector(
+  di::bind&lt;ILogger&gt;().to&lt;ConsoleLogger&gt;()
 );
 
-<span style="color:#66d9ef">auto</span> car <span style="color:#f92672">=</span>injector.create<span style="color:#f92672">&lt;</span>shared_ptr<span style="color:#f92672">&lt;</span>Car<span style="color:#f92672">&gt;&gt;</span>();
-</code></pre></div>
+auto car =injector.create&lt;shared_ptr&lt;Car&gt;&gt;();
+</code></pre>
+
     </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -433,7 +459,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

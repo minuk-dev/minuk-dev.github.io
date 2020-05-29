@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>tee on MD98 page</title>
+    <title>Tee on MD98 page</title>
     <link>http://makerdark98.dev/tags/tee/</link>
-    <description>Recent content in tee on MD98 page</description>
+    <description>Recent content in Tee on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
     <lastBuildDate>Sun, 12 Apr 2020 20:29:35 +0900</lastBuildDate>
@@ -17,7 +17,7 @@
       <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/tee/</guid>
-      <description>사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
+      <description> 사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
     </item>
     
   </channel>

@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -162,22 +162,31 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#glob">glob</a>
-      <ul>
-        <li><a href="#wikipedia">Wikipedia</a></li>
-        <li><a href="#내-나름-요약">내 나름 요약</a></li>
-        <li><a href="#특이한-거">특이한 거</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#glob">glob</a>
+<ul>
+<li><a href="#wikipedia">Wikipedia</a></li>
+<li><a href="#내-나름-요약">내 나름 요약</a></li>
+<li><a href="#특이한-거">특이한 거</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="glob">glob</h2>
+      
+
+<h2 id="glob">glob</h2>
+
 <h3 id="wikipedia">Wikipedia</h3>
+
 <p>In computer programming, glob patterns specify sets of filenames with wildcard characters. For example, the Unix Bash shell command mv *.txt textfiles/ moves (mv) all files with names ending in .txt from the current directory to the directory textfiles. Here, * is a wildcard standing for &ldquo;any string of characters&rdquo; and *.txt is a glob pattern. The other common wildcard is the question mark (?), which stands for one character.  In addition to matching filenames, globs are also used widely for matching arbitrary strings (wildcard matching).  In this capacity a common interface is fnmatch.</p>
+
 <h3 id="내-나름-요약">내 나름 요약</h3>
+
 <p><code>glob</code> 패턴은 컴퓨터 프로그래밍에서 와일드카드를 사용해서 파일을 선택할때 사용한다.</p>
+
 <table>
 <thead>
 <tr>
@@ -188,6 +197,7 @@
 <th>Does not match</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>*</td>
@@ -196,6 +206,7 @@
 <td>Law, Laws or Lawyer</td>
 <td>GrokLaw</td>
 </tr>
+
 <tr>
 <td>?</td>
 <td>아무 문자 매칭</td>
@@ -203,6 +214,7 @@
 <td>Cat, cat, Bat or bat</td>
 <td>La or Law</td>
 </tr>
+
 <tr>
 <td>[abc]</td>
 <td>괄호 안 문자 중 하나</td>
@@ -210,6 +222,7 @@
 <td>Cat or Bat</td>
 <td>cat or bat</td>
 </tr>
+
 <tr>
 <td>[a-z]</td>
 <td>괄호 범위 문자 중 하나</td>
@@ -219,7 +232,9 @@
 </tr>
 </tbody>
 </table>
+
 <h3 id="특이한-거">특이한 거</h3>
+
 <ul>
 <li><code>bash</code> 에서 not 은 <code>!</code>, <code>zsh</code> 에서 not 은 <code>^</code></li>
 <li><code>regex</code>랑 비교하면 <code>?</code> 은 <code>.</code>, <code>*</code> 은 <code>.*</code> 와 동일</li>
@@ -230,8 +245,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -249,7 +266,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

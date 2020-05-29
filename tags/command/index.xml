@@ -1,12 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>command on MD98 page</title>
+    <title>Command on MD98 page</title>
     <link>http://makerdark98.dev/tags/command/</link>
-    <description>Recent content in command on MD98 page</description>
+    <description>Recent content in Command on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
-    <lastBuildDate>Sun, 19 Apr 2020 21:40:23 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 12 Apr 2020 20:41:09 +0900</lastBuildDate>
     
 	<atom:link href="http://makerdark98.dev/tags/command/index.xml" rel="self" type="application/rss+xml" />
     
@@ -17,7 +17,7 @@
       <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/hugo/</guid>
-      <description>draft가 true인 것들 보기 $ hugo list drafts </description>
+      <description> draft가 true인 것들 보기 $ hugo list drafts  </description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/tee/</guid>
-      <description>사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
+      <description> 사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@
       <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/rm/</guid>
-      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일  $ rm -v !(&amp;#34;filename&amp;#34;)  다중  $ rm -v !(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;)  만약 zsh을 쓰고 있다면  $ setopt extendedglob $ rm ^(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;) Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
+      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일 bash $ rm -v !(&amp;quot;filename&amp;quot;)  다중 bash $ rm -v !(&amp;quot;filename1&amp;quot; | &amp;quot;filename2&amp;quot;)  만약 zsh을 쓰고 있다면 zsh $ setopt extendedglob $ rm ^(&amp;quot;filename1&amp;quot; | &amp;quot;filename2&amp;quot;)   Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@
       <pubDate>Tue, 07 Apr 2020 20:35:31 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/brightness/</guid>
-      <description>echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness </description>
+      <description> echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness </description>
     </item>
     
     <item>
@@ -55,18 +55,19 @@
       <guid>http://makerdark98.dev/wiki/wifi-command-line/</guid>
       <description>Wifi Adapter 찾기
 iw dev
-  Adapter status
+ Adapter status
 ip link show wlp2s0
-  Adapter Start
+ Adapter Start
 ip link set wlp2s0 up
-When Operation fail because of rfkill $rfkill list $sudo rfkill unblock wifi   Wifi Adapter interface check
+When Operation fail because of rfkill $rfkill list $sudo rfkill unblock wifi Wifi Adapter interface check
 iw wlp2s0 link
-  Wifi Scan
+ Wifi Scan
 iw wlp2s0 scan
-  Public Wifi Connect
+ Public Wifi Connect
 sudo iw dev wlp2s0 connect iptime
-  WPA/WPA2 Wifi Connect
-$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
+ WPA/WPA2 Wifi Connect
+$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.conf ${password}
+$ sudo wpa_supplicant -B -i wlp2s0 -c wpa_supplicant.</description>
     </item>
     
     <item>
@@ -75,7 +76,12 @@ $ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
       <pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/linux-command/</guid>
-      <description>command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]] [[glob]]  Server  [[user]] [[ftp]] [[firewall]] [[ssh server]]  </description>
+      <description> command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]] [[glob]]
+Server [[user]]
+ [[ftp]]
+ [[firewall]]
+ [[ssh server]]
+  </description>
     </item>
     
   </channel>

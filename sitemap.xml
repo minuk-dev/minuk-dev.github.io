@@ -1,20 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://makerdark98.dev/</loc>
-    <lastmod>2020-04-28T21:54:05+09:00</lastmod>
+    <loc>http://makerdark98.dev/wiki/mysql/</loc>
+    <lastmod>2020-05-29T16:13:17+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/block-group/</loc>
+    <lastmod>2020-04-30T20:46:33+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/group-descriptor-table/</loc>
+    <lastmod>2020-04-30T20:19:53+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/inode/</loc>
+    <lastmod>2020-04-30T20:15:55+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/superblock/</loc>
+    <lastmod>2020-04-30T20:16:06+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/wiki/ext4/</loc>
+    <lastmod>2020-05-01T23:11:40+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/%EA%B3%84%EB%A3%A1-%EA%B0%9C%EB%B0%9C-%EB%AA%A8%EC%9E%84/</loc>
-    <lastmod>2020-04-28T21:49:36+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/ssd/</loc>
-    <lastmod>2020-04-28T21:47:03+09:00</lastmod>
+    <lastmod>2020-04-30T19:44:28+09:00</lastmod>
   </url>
   
   <url>
@@ -23,43 +43,13 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/</loc>
-    <lastmod>2020-04-28T21:47:03+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/gutentags/</loc>
-    <lastmod>2020-04-28T21:41:36+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/gutentags/</loc>
-    <lastmod>2020-04-28T21:41:36+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/vim/</loc>
     <lastmod>2020-04-28T21:41:36+09:00</lastmod>
   </url>
   
   <url>
     <loc>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-18.-%EB%A9%94%EB%A9%98%ED%86%A0/</loc>
     <lastmod>2020-04-28T21:41:17+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/cpp/</loc>
-    <lastmod>2020-04-28T21:41:11+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/design-pattern/</loc>
-    <lastmod>2020-04-28T21:41:11+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/mediator/</loc>
-    <lastmod>2020-04-28T21:41:11+09:00</lastmod>
   </url>
   
   <url>
@@ -73,11 +63,6 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/iterator/</loc>
-    <lastmod>2020-04-21T23:28:04+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-16.-%EB%B0%98%EB%B3%B5%EC%9E%90/</loc>
     <lastmod>2020-04-21T23:28:04+09:00</lastmod>
   </url>
@@ -88,33 +73,13 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/interpreter-pattern/</loc>
-    <lastmod>2020-04-20T22:56:33+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-15.-%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</loc>
     <lastmod>2020-04-20T22:56:33+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/command/</loc>
-    <lastmod>2020-04-19T22:22:20+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/command-pattern/</loc>
-    <lastmod>2020-04-19T22:22:20+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-14.-%EC%BB%A4%EB%A7%A8%EB%93%9C/</loc>
     <lastmod>2020-04-19T22:22:20+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/chain-of-responsibility/</loc>
-    <lastmod>2020-04-20T23:01:43+09:00</lastmod>
   </url>
   
   <url>
@@ -128,42 +93,12 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/regex/</loc>
-    <lastmod>2020-04-18T01:27:04+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/regex/</loc>
     <lastmod>2020-04-18T01:27:04+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/bash/</loc>
-    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/cli/</loc>
-    <lastmod>2020-04-13T22:29:58+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/glob/</loc>
-    <lastmod>2020-04-13T22:29:58+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/glob/</loc>
-    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/linux/</loc>
-    <lastmod>2020-04-13T22:29:58+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/zsh/</loc>
     <lastmod>2020-04-13T22:28:56+09:00</lastmod>
   </url>
   
@@ -173,23 +108,8 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/proxy/</loc>
-    <lastmod>2020-04-18T01:16:53+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/hugo/</loc>
-    <lastmod>2020-04-12T20:42:25+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/hugo/</loc>
     <lastmod>2020-04-12T20:42:25+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/tee/</loc>
-    <lastmod>2020-04-12T20:43:07+09:00</lastmod>
   </url>
   
   <url>
@@ -198,28 +118,13 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/rm/</loc>
-    <lastmod>2020-04-13T22:29:58+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/rm/</loc>
     <lastmod>2020-04-13T22:29:58+09:00</lastmod>
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/flyweight/</loc>
-    <lastmod>2020-04-12T23:09:00+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</loc>
     <lastmod>2020-04-12T23:09:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/facade/</loc>
-    <lastmod>2020-04-12T20:46:32+09:00</lastmod>
   </url>
   
   <url>
@@ -238,11 +143,6 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/todo/</loc>
-    <lastmod>2020-04-28T21:25:05+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/todo/</loc>
     <lastmod>2020-04-28T21:25:05+09:00</lastmod>
   </url>
@@ -250,11 +150,6 @@
   <url>
     <loc>http://makerdark98.dev/wiki/vim/</loc>
     <lastmod>2020-04-28T21:24:12+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/vimwiki/</loc>
-    <lastmod>2020-04-12T20:44:38+09:00</lastmod>
   </url>
   
   <url>
@@ -443,28 +338,8 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/brightness/</loc>
-    <lastmod>2020-04-12T20:43:42+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/brightness/</loc>
     <lastmod>2020-04-12T20:43:42+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/dhclient/</loc>
-    <lastmod>2020-04-12T20:36:51+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/ip/</loc>
-    <lastmod>2020-04-12T20:36:51+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://makerdark98.dev/tags/iw/</loc>
-    <lastmod>2020-04-12T20:36:51+09:00</lastmod>
   </url>
   
   <url>
@@ -588,11 +463,6 @@
   </url>
   
   <url>
-    <loc>http://makerdark98.dev/tags/%ED%9A%8C%EA%B3%A0/</loc>
-    <lastmod>2020-04-28T21:45:56+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/</loc>
     <lastmod>2020-04-28T21:45:56+09:00</lastmod>
   </url>
@@ -664,7 +534,7 @@
   
   <url>
     <loc>http://makerdark98.dev/wiki/</loc>
-    <lastmod>2020-04-28T21:54:05+09:00</lastmod>
+    <lastmod>2020-05-28T07:49:25+09:00</lastmod>
   </url>
   
   <url>
@@ -705,6 +575,222 @@
   <url>
     <loc>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2019.09.18/</loc>
     <lastmod>2020-04-07T22:25:11+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/bash/</loc>
+    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/brightness/</loc>
+    <lastmod>2020-04-12T20:43:42+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/chain-of-responsibility/</loc>
+    <lastmod>2020-04-20T23:01:43+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/cli/</loc>
+    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/command/</loc>
+    <lastmod>2020-04-12T20:42:25+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/command-pattern/</loc>
+    <lastmod>2020-04-19T22:22:20+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/cpp/</loc>
+    <lastmod>2020-04-28T21:41:11+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/design-pattern/</loc>
+    <lastmod>2020-04-28T21:41:11+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/dhclient/</loc>
+    <lastmod>2020-04-12T20:36:51+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/ext4/</loc>
+    <lastmod>2020-05-01T23:11:40+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/facade/</loc>
+    <lastmod>2020-04-12T20:46:32+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/filesystem/</loc>
+    <lastmod>2020-04-30T20:19:53+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/flyweight/</loc>
+    <lastmod>2020-04-12T23:09:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/glob/</loc>
+    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/gutentags/</loc>
+    <lastmod>2020-04-28T21:41:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/hugo/</loc>
+    <lastmod>2020-04-12T20:42:25+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/interpreter-pattern/</loc>
+    <lastmod>2020-04-20T22:56:33+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/ip/</loc>
+    <lastmod>2020-04-12T20:36:51+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/iterator/</loc>
+    <lastmod>2020-04-21T23:28:04+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/iw/</loc>
+    <lastmod>2020-04-12T20:36:51+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/linux/</loc>
+    <lastmod>2020-04-30T20:19:53+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/</loc>
+    <lastmod>2020-05-29T16:13:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/mediator/</loc>
+    <lastmod>2020-04-28T21:41:11+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/mysql/</loc>
+    <lastmod>2020-05-29T16:13:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/proxy/</loc>
+    <lastmod>2020-04-18T01:16:53+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/regex/</loc>
+    <lastmod>2020-04-18T01:27:04+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/rm/</loc>
+    <lastmod>2020-04-13T22:29:58+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/ssd/</loc>
+    <lastmod>2020-04-28T21:47:03+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/storage-engine/</loc>
+    <lastmod>2020-05-29T16:13:17+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/</loc>
+    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/tee/</loc>
+    <lastmod>2020-04-12T20:43:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/todo/</loc>
+    <lastmod>2020-04-28T21:25:05+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/vim/</loc>
+    <lastmod>2020-04-28T21:41:36+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/vimwiki/</loc>
+    <lastmod>2020-04-12T20:44:38+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/zsh/</loc>
+    <lastmod>2020-04-13T22:28:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/%ED%9A%8C%EA%B3%A0/</loc>
+    <lastmod>2020-04-28T21:45:56+09:00</lastmod>
+    <priority>0</priority>
   </url>
   
 </urlset>

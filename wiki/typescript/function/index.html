@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,47 +150,60 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#functions-types">Functions Types</a>
-      <ul>
-        <li><a href="#typing-the-function">Typing the function</a></li>
-        <li><a href="#writing-the-function-type">Writing the function type</a></li>
-        <li><a href="#inferring-the-types">Inferring the types</a></li>
-      </ul>
-    </li>
-    <li><a href="#optional-and-default-parameters">Optional and Default Parameters</a></li>
-    <li><a href="#rest-parameters">Rest Parameters</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#this-and-arrow-functions"><code>this</code> and arrow functions</a></li>
-    <li><a href="#this-parameters"><code>this</code> parameters</a></li>
-    <li><a href="#this-parameters-in-callbacks"><code>this</code> parameters in callbacks</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#functions-types">Functions Types</a>
+<ul>
+<li><a href="#typing-the-function">Typing the function</a></li>
+<li><a href="#writing-the-function-type">Writing the function type</a></li>
+<li><a href="#inferring-the-types">Inferring the types</a></li>
+</ul></li>
+<li><a href="#optional-and-default-parameters">Optional and Default Parameters</a></li>
+<li><a href="#rest-parameters">Rest Parameters</a></li>
+</ul></li>
+<li><a href="#this"><code>this</code></a>
+<ul>
+<li><a href="#this-and-arrow-functions"><code>this</code> and arrow functions</a></li>
+<li><a href="#this-parameters"><code>this</code> parameters</a></li>
+<li><a href="#this-parameters-in-callbacks"><code>this</code> parameters in callbacks</a></li>
+</ul></li>
+<li><a href="#overloads">Overloads</a></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="functions-types">Functions Types</h2>
+      
+
+<h2 id="functions-types">Functions Types</h2>
+
 <h3 id="typing-the-function">Typing the function</h3>
+
 <pre><code>function add(x: number, y: number): number {
     return x + y;
 }
 
 let myAdd = function(x: number, y: number): number { return x + y; };
 </code></pre>
+
 <h3 id="writing-the-function-type">Writing the function type</h3>
+
 <pre><code>let myAdd: (x: number, y: number) =&gt; number =
     function (x: number, y: number): number { return x + y; };
 
 let myAdd: (baseValue: number, increment: number) =&gt; number =
     function(x: number y: number): number { return x + y; };
 </code></pre>
+
 <h3 id="inferring-the-types">Inferring the types</h3>
+
 <pre><code>let myAdd = function(x: number, y: number): number { return x + y; };
 
 let myAdd: (baseValue: number, increment: number) =&gt; number = 
     function(x, y) { return x + y; };
 </code></pre>
+
 <h2 id="optional-and-default-parameters">Optional and Default Parameters</h2>
+
 <pre><code>function buildName(firstName: string, lastName: string) {
     return firstName + &quot; &quot; + lastName;
 }
@@ -219,15 +232,20 @@ let result2 = buildName(&quot;Bob&quot;, undefined);
 let result3 = buildName(&quot;Bob&quot; &quot;Adams&quot;, &quot;Sr.&quot;); // Error-
 let result4 = buildName(&quot;Bob&quot;, &quot;Adams&quot;);
 </code></pre>
+
 <h2 id="rest-parameters">Rest Parameters</h2>
+
 <pre><code>function buildName(firstName: string, ...restOfName: string[]) {
     return firstName + &quot; &quot; + restOfName.join(&quot; &quot;);
 }
 
 let employeeName = buildName(&quot;Joseph&quot;, &quot;Samuel&quot;, &quot;Lucas&quot;, &quot;MacKinzie&quot;);
 </code></pre>
+
 <h1 id="this"><code>this</code></h1>
+
 <h2 id="this-and-arrow-functions"><code>this</code> and arrow functions</h2>
+
 <pre><code>let deck = {
     suits: [&quot;hears&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;].
     cards: Array(52),
@@ -246,7 +264,9 @@ let pickedCard = cardPicker();
 
 alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickedCard.suit);
 </code></pre>
+
 <h2 id="this-parameters"><code>this</code> parameters</h2>
+
 <pre><code>interface Card {
     suit: string;
     card: nmber;
@@ -264,7 +284,7 @@ let deck: Deck = {
         return () =&gt; {
             let pickedCard = Math.floor(Math.random() * 52);
             let pickedSuit = Math.floor(pickedCard / 13);
-		
+
             return { shit: this.suits[pickedSuit], card: pickedCard % 13};
         }
     }
@@ -275,7 +295,9 @@ let pickedCard = cardPikcer();
 
 alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickerCard.suit);
 </code></pre>
+
 <h2 id="this-parameters-in-callbacks"><code>this</code> parameters in callbacks</h2>
+
 <pre><code>interface UIElement {
     addClickListener(onclick: (this: void, e: Event) =&gt; void): void;
 }
@@ -294,7 +316,9 @@ class Handler {
     onClickGood = (e: Event) =&gt; { this.info = e.message }
 }
 </code></pre>
+
 <h1 id="overloads">Overloads</h1>
+
 <pre><code>let suits = [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;];
 
 function pickCard(x): any {
@@ -321,8 +345,10 @@ alert(&quot;card: &quot; + pickedCard2.card + &quot; of &quot; + pickedCard2.sui
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -340,7 +366,7 @@ alert(&quot;card: &quot; + pickedCard2.card + &quot; of &quot; + pickedCard2.sui
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

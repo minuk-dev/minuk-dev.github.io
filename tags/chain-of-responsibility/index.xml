@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chain of Responsibility on MD98 page</title>
+    <link>http://makerdark98.dev/tags/chain-of-responsibility/</link>
+    <description>Recent content in Chain of Responsibility on MD98 page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Sat, 18 Apr 2020 22:14:11 +0900</lastBuildDate>
+    
+	<atom:link href="http://makerdark98.dev/tags/chain-of-responsibility/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Modern C&#43;&#43; Design Pattern/Chatper 13. 책임사슬(Chain of Responsibility)</title>
+      <link>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-13.-%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</link>
+      <pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-13.-%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</guid>
+      <description>시나리오 struct Creature { string name; int attack, defense; // Constructor, operator... };  포인터 사슬 class CreatureModifier { CreatureModifier* next{nullptr}; protected: Creature&amp;amp; creture; // reference, pointer or shared_ptr public: explicit CreatureModifier(Creature&amp;amp; creature) : creature(creture) {} void add(CreatureModifier* cm) { if (next) next-&amp;gt;add(cm); else next =cm; } virtual void handle() { if (next) next-&amp;gt;handle(); } };   참조를 넘겨받아 저장하고 변경할 준비 추상 클래스가 아님 next는 다음 변경 작업을 가리킴 add()를 통해서 작업 사슬에 연결하여 추가 handle() 맴버 함수는 단순히 다음 항목을 처리한다.</description>
+    </item>
+    
+  </channel>
+</rss>

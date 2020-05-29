@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,51 +150,62 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#write-test-code">Write test code</a></li>
-    <li><a href="#test-matcher">Test Matcher</a>
-      <ul>
-        <li><a href="#toequal">toEqual()</a></li>
-        <li><a href="#tobetruthy-tobefalsy">toBeTruthy(), toBeFalsy()</a></li>
-        <li><a href="#tohavelength-tocontain">toHaveLength(), toContain()</a></li>
-        <li><a href="#tomatch">toMatch()</a></li>
-        <li><a href="#tothrow">toThrow()</a></li>
-      </ul>
-    </li>
-    <li><a href="#async-example">Async Example</a>
-      <ul>
-        <li><a href="#resolves">.resolves</a></li>
-        <li><a href="#async--await">async / await</a></li>
-      </ul>
-    </li>
-    <li><a href="#error-handling">Error handling</a>
-      <ul>
-        <li><a href="#rejects">.rejects</a></li>
-        <li><a href="#rejects-1">.rejects</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li><a href="#installation"># Installation</a></li>
+<li><a href="#configuration">Configuration</a>
+<ul>
+<li><a href="#write-test-code">Write test code</a></li>
+<li><a href="#test-matcher">Test Matcher</a>
+<ul>
+<li><a href="#toequal">toEqual()</a></li>
+<li><a href="#tobetruthy-tobefalsy">toBeTruthy(), toBeFalsy()</a></li>
+<li><a href="#tohavelength-tocontain">toHaveLength(), toContain()</a></li>
+<li><a href="#tomatch">toMatch()</a></li>
+<li><a href="#tothrow">toThrow()</a></li>
+</ul></li>
+<li><a href="#async-example">Async Example</a>
+<ul>
+<li><a href="#resolves">.resolves</a></li>
+<li><a href="#async-await">async / await</a></li>
+</ul></li>
+<li><a href="#error-handling">Error handling</a>
+<ul>
+<li><a href="#rejects">.rejects</a></li>
+<li><a href="#rejects-1">.rejects</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="-installation"># Installation</h1>
+      
+
+<h1 id="installation"># Installation</h1>
+
 <pre><code>yarn add --dev jest
 npm install --dev jest
 
 yarn add --dev @types/jest
 npm install --dev @types/jest
 </code></pre>
+
 <h1 id="configuration">Configuration</h1>
+
 <pre><code>&quot;scripts&quot;: {
     &quot;test&quot;: &quot;jest&quot;
 }, 
 </code></pre>
+
 <h2 id="write-test-code">Write test code</h2>
+
 <pre><code>test(`test name`, () =&gt; {
     expect(1).toBe(1);
 });
 </code></pre>
+
 <h2 id="test-matcher">Test Matcher</h2>
+
 <h3 id="toequal">toEqual()</h3>
+
 <pre><code>test('return a user object', () =&gt; {
     expect(getUser(1)).toEqual({
         id: 1,
@@ -202,13 +213,17 @@ npm install --dev @types/jest
     });
 });
 </code></pre>
+
 <h3 id="tobetruthy-tobefalsy">toBeTruthy(), toBeFalsy()</h3>
+
 <pre><code>test('number 0 is falsy but string 0 is truthy', () =&gt; {
     expect(0).toBeFalsy();
     expect('0').toBeTruthy();
 });
 </code></pre>
+
 <h3 id="tohavelength-tocontain">toHaveLength(), toContain()</h3>
+
 <pre><code>test('array', () =&gt; {
     const coloers = ['Red', 'Yellow', 'Blue'];
     expect(colors).toHaveLength(3);
@@ -216,13 +231,17 @@ npm install --dev @types/jest
     expect(colors).not.toContain('Green');
 });
 </code></pre>
+
 <h3 id="tomatch">toMatch()</h3>
+
 <pre><code>test('string', ()=&gt; {
     expect(getUser(1).email).toBe('user1@test.com');
     expect(getUser(2).email).toMatch(/.*test.com$/);
 });
 </code></pre>
+
 <h3 id="tothrow">toThrow()</h3>
+
 <pre><code>function getUser(id) {
     if (id &lt;= 0) throw new Error('Invalid ID');
     return {
@@ -236,15 +255,21 @@ test('throw when id is non negative', () =&gt; {
   expect(() =&gt; getUser(-1).toThrow('Invalid ID'));
 });
 </code></pre>
+
 <p><a href="https://jestjs.io/docs/en/tutorial-async">An Async Example · Jest</a></p>
+
 <h2 id="async-example">Async Example</h2>
+
 <h3 id="resolves">.resolves</h3>
+
 <pre><code>it('works with resolves', )_ =&gt; {
     expect.assrtions(1);
     return expect(user.getUserName(5)).resolves.toEqual('Paul');
 });
 </code></pre>
-<h3 id="async--await">async / await</h3>
+
+<h3 id="async-await">async / await</h3>
+
 <pre><code>it('works with async/awit', async () =&gt; {
     expect.assertions(1);
     const data = await user.getUserName(4);
@@ -256,8 +281,11 @@ it('works with aysnc/await and resolves', aysnc() =&gt; {
     await expect(user.getUserName(5)).resolves.toEqual('Paul');
 });
 </code></pre>
+
 <h2 id="error-handling">Error handling</h2>
+
 <h3 id="rejects">.rejects</h3>
+
 <pre><code>// Testing for async errors using Promise.catch.
 test('tests error with promises', () =&gt; {
   expect.assertions(1);
@@ -280,7 +308,9 @@ it('tests error with async/await', async () =&gt; {
   }
 });
 </code></pre>
+
 <h3 id="rejects-1">.rejects</h3>
+
 <pre><code>// Testing for async errors using `.rejects`.
 it('tests error with rejects', () =&gt; {
   expect.assertions(1);
@@ -303,8 +333,10 @@ it('tests error with async/await and rejects', async () =&gt; {
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -322,7 +354,7 @@ it('tests error with async/await and rejects', async () =&gt; {
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

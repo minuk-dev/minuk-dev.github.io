@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,112 +150,124 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#bridge-pattern">Bridge Pattern</a>
-      <ul>
-        <li><a href="#pimpl-pointer-to-implmentation">Pimpl (Pointer to Implmentation)</a></li>
-      </ul>
-    </li>
-    <li><a href="#bridge-pattern-1">Bridge Pattern</a>
-      <ul>
-        <li><a href="#summary">Summary</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#bridge-pattern">Bridge Pattern</a>
+<ul>
+<li><a href="#pimpl-pointer-to-implmentation">Pimpl (Pointer to Implmentation)</a></li>
+</ul></li>
+<li><a href="#bridge-pattern-1">Bridge Pattern</a>
+<ul>
+<li><a href="#summary">Summary</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="bridge-pattern">Bridge Pattern</h2>
+      
+
+<h2 id="bridge-pattern">Bridge Pattern</h2>
+
 <h3 id="pimpl-pointer-to-implmentation">Pimpl (Pointer to Implmentation)</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Person</span>
+
+<pre><code class="language-cpp">    struct Person
     {
       string name;
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">greet</span>();
+      void greet();
     
       Person();
-      <span style="color:#f92672">~</span>Person();
+      ~Person();
     
-      <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PersonImpl</span>;
-      PersonImpl <span style="color:#f92672">*</span>impl; <span style="color:#75715e">// refer to gsl::owner&lt;T&gt;
-</span><span style="color:#75715e"></span>    };
+      class PersonImpl;
+      PersonImpl *impl; // refer to gsl::owner&lt;T&gt;
+    };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Person</span><span style="color:#f92672">:</span>PersonImpl
+    struct Person:PersonImpl
     {
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">greet</span>(Person<span style="color:#f92672">*</span> p);
+      void greet(Person* p);
     }
     
-    Person<span style="color:#f92672">::</span>Person()
-      <span style="color:#f92672">:</span> impl(<span style="color:#66d9ef">new</span> PersonImpl) {}
+    Person::Person()
+      : impl(new PersonImpl) {}
     
-    Person<span style="color:#f92672">::~</span>Person() { <span style="color:#66d9ef">delete</span> imple; }
+    Person::~Person() { delete imple; }
     
-    <span style="color:#66d9ef">void</span> Person<span style="color:#f92672">::</span>greet()
+    void Person::greet()
     {
-      impl<span style="color:#f92672">-&gt;</span>greet(<span style="color:#66d9ef">this</span>);
+      impl-&gt;greet(this);
     }
     
-    <span style="color:#66d9ef">void</span> Person<span style="color:#f92672">::</span>PersonImpl<span style="color:#f92672">::</span>greet(Person<span style="color:#f92672">*</span> p)
+    void Person::PersonImpl::greet(Person* p)
     {
-      printf(<span style="color:#e6db74">&#34;hello %s&#34;</span>, p<span style="color:#f92672">-&gt;</span>name.c_str());
+      printf(&quot;hello %s&quot;, p-&gt;name.c_str());
     }
-</code></pre></div><ul>
+</code></pre>
+
+<ul>
 <li>Props
+
 <ul>
 <li>Hide implementation. If <code>Person</code> class has many private/protected member variable, it is exposed though the header file to client.</li>
 <li>Ensure binary compatiblity.</li>
 <li>Include some header file needed.</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <h2 id="bridge-pattern-1">Bridge Pattern</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Renderer</span>
+
+<pre><code class="language-cpp">    struct Renderer
     {
-      <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render_circle</span>(<span style="color:#66d9ef">float</span> x, <span style="color:#66d9ef">float</span> y, <span style="color:#66d9ef">float</span> radius) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+      virtual void render_circle(float x, float y, float radius) = 0;
     };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">VectorRenderer</span> <span style="color:#f92672">:</span> Renderer
+    struct VectorRenderer : Renderer
     {
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render_circle</span>(<span style="color:#66d9ef">float</span> x, <span style="color:#66d9ef">float</span> y, <span style="color:#66d9ef">float</span> radius) <span style="color:#66d9ef">override</span>
+      void render_circle(float x, float y, float radius) override
       {
-        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Rasterizing circle of radius &#34;</span> <span style="color:#f92672">&lt;&lt;</span> radius <span style="color:#f92672">&lt;&lt;</span> endl;
+        cout &lt;&lt; &quot;Rasterizing circle of radius &quot; &lt;&lt; radius &lt;&lt; endl;
       }
     };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">RasterRenderer</span> <span style="color:#f92672">:</span> Renderer
+    struct RasterRenderer : Renderer
     {
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">render_circle</span>(<span style="color:#66d9ef">float</span> x, <span style="color:#66d9ef">float</span> y, <span style="color:#66d9ef">float</span> radius) <span style="color:#66d9ef">override</span>
+      void render_circle(float x, float y, float radius) override
       {
-        cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Drawing a vector circle of radius &#34;</span> <span style="color:#f92672">&lt;&lt;</span> radius <span style="color:#f92672">&lt;&lt;</span> endl;
+        cout &lt;&lt; &quot;Drawing a vector circle of radius &quot; &lt;&lt; radius &lt;&lt; endl;
       }
     };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Shape</span>
+    struct Shape
     {
-    <span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
-      Renderer<span style="color:#f92672">&amp;</span> renderer;
-      Shape(Renderer<span style="color:#f92672">&amp;</span> renderer) <span style="color:#f92672">:</span> renderer{ renderer } {}
-    <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-      <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> draw() <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-      <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">resize</span>(<span style="color:#66d9ef">float</span> factor) <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    protected:
+      Renderer&amp; renderer;
+      Shape(Renderer&amp; renderer) : renderer{ renderer } {}
+    public:
+      virtual void draw() = 0;
+      virtual void resize(float factor) = 0;
     };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Circle</span> <span style="color:#f92672">:</span> Shape
+    struct Circle : Shape
     {
-      <span style="color:#66d9ef">float</span> x, y, radius;
+      float x, y, radius;
     
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">draw</span>() <span style="color:#66d9ef">override</span>
+      void draw() override
       {
         renderer.render_circle(x, y, radius);
       }
     
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">resize</span>(<span style="color:#66d9ef">float</span> factor) <span style="color:#66d9ef">override</span>
+      void resize(float factor) override
       {
-        radius <span style="color:#f92672">+=</span> factor;
+        radius += factor;
       }
     
-      Circle(Renderer<span style="color:#f92672">&amp;</span> renderer, <span style="color:#66d9ef">float</span> x, <span style="color:#66d9ef">float</span> y, <span style="color:#66d9ef">float</span> radius)
-        <span style="color:#f92672">:</span> Shape{renderer}, x{x}, y{y}, radius{radius} {}
+      Circle(Renderer&amp; renderer, float x, float y, float radius)
+        : Shape{renderer}, x{x}, y{y}, radius{radius} {}
     };
-</code></pre></div><h3 id="summary">Summary</h3>
+</code></pre>
+
+<h3 id="summary">Summary</h3>
+
 <ul>
 <li>The bridge pattern must to know each other class except implmentation. It is compared with Mediator Pattern.</li>
 </ul>
@@ -265,8 +277,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -284,7 +298,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

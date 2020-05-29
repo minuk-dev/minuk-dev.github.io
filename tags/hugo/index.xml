@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>hugo on MD98 page</title>
+    <title>Hugo on MD98 page</title>
     <link>http://makerdark98.dev/tags/hugo/</link>
-    <description>Recent content in hugo on MD98 page</description>
+    <description>Recent content in Hugo on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
     <lastBuildDate>Sun, 12 Apr 2020 20:41:09 +0900</lastBuildDate>
@@ -17,7 +17,7 @@
       <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/hugo/</guid>
-      <description>draft가 true인 것들 보기 $ hugo list drafts </description>
+      <description> draft가 true인 것들 보기 $ hugo list drafts  </description>
     </item>
     
   </channel>

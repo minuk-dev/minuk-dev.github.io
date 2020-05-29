@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ext4 on MD98 page</title>
+    <link>http://makerdark98.dev/tags/ext4/</link>
+    <description>Recent content in Ext4 on MD98 page</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ko-kr</language>
+    <lastBuildDate>Thu, 30 Apr 2020 19:42:16 +0900</lastBuildDate>
+    
+	<atom:link href="http://makerdark98.dev/tags/ext4/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The new ext4 filesystem: current status and future plans</title>
+      <link>http://makerdark98.dev/wiki/ext4/</link>
+      <pubDate>Thu, 30 Apr 2020 19:42:16 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ext4/</guid>
+      <description>Abstract  주요 키워드 : scalability, performance, reliability, stability 2007 년 논문임을 가만하고 읽으면 좋다.  1. Introduction  ext3의 장점 : 안정성(stable), 엄격성(robust) ext3의 단점 : 큰 규모에 한계 (큰 파일과 많은 파일)  단점 극복에 관한 기존 방안  ext3는 최대 16TB 만 지원가능 이미 기업에선 한계점이 보임 (디스크 최대 용량은 매년 2배가 되고 있음) 물론, larger filesystem capacity와 extents mapping을 담고 있는 패치를 2006년 선보였으나, 이 패치는 결국 disk의 형식을 변경하고 호환성을 버릴수 밖에 없었다.</description>
+    </item>
+    
+  </channel>
+</rss>

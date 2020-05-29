@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -154,25 +154,31 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#vimwiki-설정">Vimwiki 설정</a>
-      <ul>
-        <li><a href="#단축키-설정">단축키 설정</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#vimwiki-설정">Vimwiki 설정</a>
+<ul>
+<li><a href="#단축키-설정">단축키 설정</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="vimwiki-설정">Vimwiki 설정</h2>
+      
+
+<h2 id="vimwiki-설정">Vimwiki 설정</h2>
+
 <ul>
 <li>Vimwiki를 메인으로 쓰기로 결정한 이상, 훨씬 더 잘 활용해서 (예를 들어 단축키같이) 사용하고 싶어졋다.</li>
 <li>찾아보니 한국어 자료로는 기계인간님의 위키가 압도적으로 자료가 많아서 거기를 참고하기로 했다.</li>
-<li>설정도 그분이 그렇게 쓰는데에는 이유가 있다고 생각해서 그렇게 하기로 했다. <del>나보다는 훨씬 더 vim을 잘쓰실테니</del></li>
-</ul>
-<h3 id="단축키-설정">단축키 설정</h3>
-<ul>
-<li>기계 인간 님의 위키에 있는걸 그대로 따라하기로 했다. 겸사겸사 <code>FZF</code>도 설치만 해놓고 안썻는데 설정도 해봐야겠다.</li>
-</ul>
+
+<li><p>설정도 그분이 그렇게 쓰는데에는 이유가 있다고 생각해서 그렇게 하기로 했다. <del>나보다는 훨씬 더 vim을 잘쓰실테니</del></p>
+
+<h3 id="단축키-설정">단축키 설정</h3></li>
+
+<li><p>기계 인간 님의 위키에 있는걸 그대로 따라하기로 했다. 겸사겸사 <code>FZF</code>도 설치만 해놓고 안썻는데 설정도 해봐야겠다.</p>
+
 <pre><code>&quot; vimwiki conceallevel
 let g:vimwiki_conceallevel = 0
 &quot;자주 사용하는 명령어에 단축키를 취향대로 매핑해둔다
@@ -183,14 +189,18 @@ nmap &lt;Leader&gt;ww &lt;Plug&gt;VimwikiIndex
 nnoremap &lt;F4&gt; :execute &quot;VWS /&quot; . expand(&quot;&lt;cword&gt;&quot;) . &quot;/&quot; &lt;Bar&gt; :lopen&lt;CR&gt;
 &quot; Shift F4 키를 누르면 현재 문서를 링크한 모든 문서를 검색한다
 nnoremap &lt;S-F4&gt; :execute &quot;VWB&quot; &lt;Bar&gt; :lopen&lt;CR&gt;
-</code></pre>
+</code></pre></li>
+</ul>
+
     </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -208,7 +218,7 @@ nnoremap &lt;S-F4&gt; :execute &quot;VWB&quot; &lt;Bar&gt; :lopen&lt;CR&gt;
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -152,74 +152,91 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#공부">공부</a></li>
-    <li><a href="#blog">Blog</a></li>
-    <li><a href="#vim">Vim</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#공부">공부</a></li>
+<li><a href="#blog">Blog</a></li>
+<li><a href="#vim">Vim</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="공부">공부</h2>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> rm 명령어로 특정파일만 제외하고 삭제하기</li>
-<li><input checked="" disabled="" type="checkbox"> zsh 에서 glob 사용법 공부하기</li>
-<li><input checked="" disabled="" type="checkbox"> regex 공부하기</li>
-<li><input checked="" disabled="" type="checkbox"> 백준 풀기</li>
-<li><input disabled="" type="checkbox"> <code>exa</code>, <code>bat</code>, <code>hexyl</code>, <code>fd</code>, <code>procs</code>, <code>ripgrep</code> 공부하기
-<ul>
-<li><input disabled="" type="checkbox"> <code>exa</code></li>
-<li><input disabled="" type="checkbox"> <code>bat</code></li>
-<li><input disabled="" type="checkbox"> <code>hexyl</code></li>
-<li><input disabled="" type="checkbox"> <code>fd</code></li>
-<li><input disabled="" type="checkbox"> <code>ripgrep</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="blog">Blog</h2>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> git blame을 사용해서 wiki diff 만들기</li>
-<li>[O] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
-<ul>
-<li><input checked="" disabled="" type="checkbox"> jquery, bootstrap, font-awesome, highlight 만 적용</li>
-<li><input checked="" disabled="" type="checkbox"> mathjax 적용</li>
-<li><input disabled="" type="checkbox"> mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자</li>
-<li><input checked="" disabled="" type="checkbox"> 뭔지 모르는 js , css(<code>client.js</code> 등)들 알아보기 (댓글 기능이더라)</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> table of contents 를 홈페이지 측면에 띄우기</li>
-<li>[.] vimwiki 와 hugo 연동한거 글쓰기
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 초고쓰기 시작 위키에다가만 적음</li>
-<li><input checked="" disabled="" type="checkbox"> 계기</li>
-<li><input disabled="" type="checkbox"> 깃허브 페이지 연결</li>
-<li><input disabled="" type="checkbox"> 도메인 연결</li>
-<li><input disabled="" type="checkbox"> 스크린샷들 첨부</li>
-<li><input disabled="" type="checkbox"> 오프라인 삽질</li>
-<li><input disabled="" type="checkbox"> blame 삽질</li>
-<li><input disabled="" type="checkbox"> partial 만들기</li>
-<li><input disabled="" type="checkbox"> 최적화</li>
-</ul>
-</li>
-<li><input checked="" disabled="" type="checkbox"> wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.</li>
-<li><input disabled="" type="checkbox"> 글을 자동배포하면 좋겠음. push까진 아니여도 commit이 자동으로 될 방법은 없나 생각해보자.</li>
-<li><input disabled="" type="checkbox"> 자동 배포할떄 commit message 에 content, build 가 태그가 적히도록 해보자
-<ul>
-<li><input disabled="" type="checkbox"> 최신 변경 글 보는 기능에 github page 에서 content tag를 검색해서 보여주면 될듯?</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> anyenv 글쓰기</li>
-<li><input disabled="" type="checkbox"> pintos 글쓰기</li>
-</ul>
-<h2 id="vim">Vim</h2>
-<ul>
-<li>[O] tagbar 알아서 잘 되도록 설정하기
-<ul>
-<li><input checked="" disabled="" type="checkbox"> markdown 에서 tagbar</li>
-<li><input checked="" disabled="" type="checkbox"> universal tag 설치</li>
-<li><input checked="" disabled="" type="checkbox"> [[gutentags]] 문제 해결하기 : 링크 참고</li>
-</ul>
-</li>
-<li><input disabled="" type="checkbox"> vim ultisnip 사용법 알아보기</li>
+      
+
+<h2 id="공부">공부</h2>
+
+<ul class="task-list">
+<li><label><input type="checkbox" checked disabled class="task-list-item"> rm 명령어로 특정파일만 제외하고 삭제하기</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> zsh 에서 glob 사용법 공부하기</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> regex 공부하기</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 백준 풀기</label></li>
+
+<li><p>[ ] <code>exa</code>, <code>bat</code>, <code>hexyl</code>, <code>fd</code>, <code>procs</code>, <code>ripgrep</code> 공부하기</p>
+
+<ul class="task-list">
+<li><label><input type="checkbox" disabled class="task-list-item"> <code>exa</code></label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> <code>bat</code></label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> <code>hexyl</code></label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> <code>fd</code></label></li>
+
+<li><p>[ ] <code>ripgrep</code></p>
+
+<h2 id="blog">Blog</h2></li>
+</ul></li>
+
+<li><p>[X] git blame을 사용해서 wiki diff 만들기</p></li>
+
+<li><p>[O] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정</p>
+
+<ul class="task-list">
+<li><label><input type="checkbox" checked disabled class="task-list-item"> jquery, bootstrap, font-awesome, highlight 만 적용</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> mathjax 적용</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다. 줄여보자</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 뭔지 모르는 js , css(<code>client.js</code> 등)들 알아보기 (댓글 기능이더라)</label></li>
+</ul></li>
+
+<li><p>[ ] table of contents 를 홈페이지 측면에 띄우기</p></li>
+
+<li><p>[.] vimwiki 와 hugo 연동한거 글쓰기</p>
+
+<ul class="task-list">
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 초고쓰기 시작 위키에다가만 적음</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 계기</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> 깃허브 페이지 연결</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> 도메인 연결</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> 스크린샷들 첨부</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> 오프라인 삽질</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> blame 삽질</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> partial 만들기</label></li>
+<li><label><input type="checkbox" disabled class="task-list-item"> 최적화</label></li>
+</ul></li>
+
+<li><p>[X] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.</p></li>
+
+<li><p>[ ] 글을 자동배포하면 좋겠음. push까진 아니여도 commit이 자동으로 될 방법은 없나 생각해보자.</p></li>
+
+<li><p>[ ] 자동 배포할떄 commit message 에 content, build 가 태그가 적히도록 해보자</p>
+
+<ul class="task-list">
+<li><label><input type="checkbox" disabled class="task-list-item"> 최신 변경 글 보는 기능에 github page 에서 content tag를 검색해서 보여주면 될듯?</label></li>
+</ul></li>
+
+<li><p>[ ] anyenv 글쓰기</p></li>
+
+<li><p>[ ] pintos 글쓰기</p>
+
+<h2 id="vim">Vim</h2></li>
+
+<li><p>[O] tagbar 알아서 잘 되도록 설정하기</p>
+
+<ul class="task-list">
+<li><label><input type="checkbox" checked disabled class="task-list-item"> markdown 에서 tagbar</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> universal tag 설치</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> [[gutentags]] 문제 해결하기 : 링크 참고</label></li>
+</ul></li>
+
+<li><p>[ ] vim ultisnip 사용법 알아보기</p></li>
 </ul>
 
     </div>
@@ -227,8 +244,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -246,7 +265,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -154,33 +154,38 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#summary">Summary</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#summary">Summary</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="summary">Summary</h2>
+      
+
+<h2 id="summary">Summary</h2>
+
 <ul>
 <li>[[Modern C++ Design Pattern/Chapter 1. 개요]]</li>
 <li>제 1부 생성 패턴
+
 <ul>
 <li>[[Modern C++ Design Pattern/Chapter 2. 빌더]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 3. 팩토리]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 4. 프로토타입]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 5. 싱글턴]]</li>
-</ul>
-</li>
+</ul></li>
 <li>제 2부 구조 패턴
+
 <ul>
 <li>In design step, we use well-known three ways.
+
 <ul>
 <li>Inheritance</li>
 <li>Composition</li>
 <li>Aggregation : One object can be independant nevertheless the  object refer to another object. For example, <code>T*</code> or <code>shared_ptr&lt;T&gt;</code></li>
-</ul>
-</li>
-</ul>
-<ul>
+</ul></li>
 <li>[[Modern C++ Design Pattern/Chapter 6. 어댑터]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 7. 브릿지]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 8. 컴포지트]]</li>
@@ -194,18 +199,20 @@
 <li>[[Modern C++ Design Pattern/Chapter 16. 반복자]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 17. 매개자]]</li>
 <li>[[Modern C++ Design Pattern/Chapter 18. 메멘토]]</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<hr>
+
+<hr />
 
     </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -223,7 +230,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

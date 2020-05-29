@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Front Page on MD98 page</title>
@@ -12,12 +12,73 @@
     
     
     <item>
+      <title>mysql (storage engine)</title>
+      <link>http://makerdark98.dev/wiki/mysql/</link>
+      <pubDate>Thu, 28 May 2020 07:48:47 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/mysql/</guid>
+      <description>참고용 홈페이지  https://dev.mysql.com/doc/internals/en/custom-engine.html mysql architecture    https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PFS_PSI.html  환경 설정  일단 지금 집에다가 예전에 썻던 삼성 노트북을 wol 으로 설정하고 (완전히 꺼지면 안켜지니까 shutdown 을 alias 해놓고, suspend를 사용하는 식으로 했다.휴가 때 마다 혹은 가끔씩 reboot 해주면 되겠지?) github 에서 다운로드 해서 private repository 에다가 올려놨다. bash $ git clone https://github.com/mysql/mysql-server  참고용 홈페이지 1을 보면 알 수 있듯이 storage/example 을 똑같이 카피했다. 일단 지금 목표는 custom engine 을 만들어 보는 거고 가능하다면 2018년 FAST 에 나온 논문인 FAST_PAIR 를 만들어보는거다.</description>
+    </item>
+    
+    <item>
+      <title>block group</title>
+      <link>http://makerdark98.dev/wiki/block-group/</link>
+      <pubDate>Thu, 30 Apr 2020 20:45:01 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/block-group/</guid>
+      <description> 간략 설명  ext2 에서는 블록들의 모임으로, 같은 파일에 속하는 데이터 블록은 같은 블록 그룹에 저장하려고 노력하기 때문에 단편화 현상을 줄일수 있다.  </description>
+    </item>
+    
+    <item>
+      <title>group descriptor table</title>
+      <link>http://makerdark98.dev/wiki/group-descriptor-table/</link>
+      <pubDate>Thu, 30 Apr 2020 20:17:00 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/group-descriptor-table/</guid>
+      <description> 설명  슈퍼블록 바로 다음에 위치하며, 파일 시스템의 블록 그룹들에 대한 정보를 가지고 있다. Group Descriptor의 크기는 32bytes로, 블록 크기가 1KB이라면 하나의 블록에 총 32개의 Group Descriptor가 기록될수 있다.
+포함하는 주요 정보 Block Bitmap의 블록 번호, Inode Bitmap의 블록 번호, 첫번째 Inode Table Block의 블록번호, 그룹안에 있는 빈블록 수, 그룹 안에 있는 inode 수, 그룹 안에 있는 빈 디렉토리 수 등이다.
+  </description>
+    </item>
+    
+    <item>
+      <title>inode</title>
+      <link>http://makerdark98.dev/wiki/inode/</link>
+      <pubDate>Thu, 30 Apr 2020 20:08:55 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/inode/</guid>
+      <description> 설명  Unix에서 사용하는 전통적 파일 시스템에서 사용하는 자료 구조 정규파일, 디렉토리 등 파일시스템에 대한 정보를 가지고 있다. 일반적으로 inode에 포함된 정보     비트 내용     12-15 파일 형식(일반, 디렉터리, 문자 또는 블록 특별, 선입선출 파이프)   9-11 실행 플레그   8 소유자 읽기 권한   7 소유자 쓰기 권한   6 소유자 실행 권한   5 그룹 읽기 권한   4 그룹 쓰기 권한   3 그룹 실행 권한   2 다른 사용자 읽기 권한   1 다른 사용자 쓰기 권한   0 다른 사용자 실행 권한     링크 수 : 이 아이노드에 대한 디렉터리 참조수 소유자 아이디 그룹 아이디 파일 크기 파일 주소 (주소 정보 39바이트) 마지막 접근 시각 마지막 수정 시각 아이노드 수정 시각  </description>
+    </item>
+    
+    <item>
+      <title>Superblock</title>
+      <link>http://makerdark98.dev/wiki/superblock/</link>
+      <pubDate>Thu, 30 Apr 2020 20:07:08 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/superblock/</guid>
+      <description> 설명  파일시스템을 대표하는 블록, 파일시스템의 주요 설정이 들어가있다. 주로 블록의 크기(1KB인지 4KB인지&amp;hellip;), 총 블록의 개수, 블록 그룹의 개수, [[inode]]의 개수, 그룹당 block의 개수  </description>
+    </item>
+    
+    <item>
+      <title>The new ext4 filesystem: current status and future plans</title>
+      <link>http://makerdark98.dev/wiki/ext4/</link>
+      <pubDate>Thu, 30 Apr 2020 19:42:16 +0900</pubDate>
+      
+      <guid>http://makerdark98.dev/wiki/ext4/</guid>
+      <description>Abstract  주요 키워드 : scalability, performance, reliability, stability 2007 년 논문임을 가만하고 읽으면 좋다.  1. Introduction  ext3의 장점 : 안정성(stable), 엄격성(robust) ext3의 단점 : 큰 규모에 한계 (큰 파일과 많은 파일)  단점 극복에 관한 기존 방안  ext3는 최대 16TB 만 지원가능 이미 기업에선 한계점이 보임 (디스크 최대 용량은 매년 2배가 되고 있음) 물론, larger filesystem capacity와 extents mapping을 담고 있는 패치를 2006년 선보였으나, 이 패치는 결국 disk의 형식을 변경하고 호환성을 버릴수 밖에 없었다.</description>
+    </item>
+    
+    <item>
       <title>계룡 개발 모임</title>
       <link>http://makerdark98.dev/wiki/%EA%B3%84%EB%A3%A1-%EA%B0%9C%EB%B0%9C-%EB%AA%A8%EC%9E%84/</link>
       <pubDate>Tue, 28 Apr 2020 21:48:13 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%EA%B3%84%EB%A3%A1-%EA%B0%9C%EB%B0%9C-%EB%AA%A8%EC%9E%84/</guid>
-      <description>이벤트  [[설대회]] [[송편대회]] [[Memory_Leak]] [[썩어버린 Query Language]]  논문 스터디  [[F2FS]] [[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]  군대에서 개발하던거  [[사지방_개발기]]  </description>
+      <description> 이벤트  [[설대회]] [[송편대회]] [[Memory_Leak]] [[썩어버린 Query Language]]
+논문 스터디 [[F2FS]]
+ [[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]
+ [[ext4]]{The new ext4 filesystem: current status and future plans}
+군대에서 개발하던거 [[사지방_개발기]]
+  </description>
     </item>
     
     <item>
@@ -26,7 +87,7 @@
       <pubDate>Tue, 28 Apr 2020 21:46:46 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ssd/</guid>
-      <description> [[SSD 공부자료 모음]] [[SSD(Solid-State Drive)]]  </description>
+      <description> [[SSD 공부자료 모음]]  [[SSD(Solid-State Drive)]]   </description>
     </item>
     
     <item>
@@ -35,7 +96,9 @@
       <pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/gutentags/</guid>
-      <description>발생한 문제점  git 에서 커밋할때마다 아래와 같은 에러로그가 뜬다  hint: Waiting for your editor to close the file... Error detected while processing DirChanged Autocommands for &amp;quot;*&amp;quot;: E475: Invalid argument: Channel doesn&#39;t exist E475: Invalid argument: Channel doesn&#39;t exist Error detected while processing function &amp;lt;SNR&amp;gt;149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job: line 22:  해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정  let g:gutentags_exclude_filetypes = [&amp;#39;gitcommit&amp;#39;]</description>
+      <description> 발생한 문제점  git 에서 커밋할때마다 아래와 같은 에러로그가 뜬다
+hint: Waiting for your editor to close the file... Error detected while processing DirChanged Autocommands for &amp;quot;*&amp;quot;: E475: Invalid argument: Channel doesn&#39;t exist E475: Invalid argument: Channel doesn&#39;t exist Error detected while processing function &amp;lt;SNR&amp;gt;149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job: line 22:  해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정
+let g:gutentags_exclude_filetypes = [&#39;gitcommit&#39;]   </description>
     </item>
     
     <item>
@@ -44,7 +107,7 @@
       <pubDate>Tue, 28 Apr 2020 21:07:07 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-18.-%EB%A9%94%EB%A9%98%ED%86%A0/</guid>
-      <description>간략 설명  커맨드 패턴에서 이론적으로 과거의 어떤 지점으로 상태를 되돌릴수 있다 메멘토 패턴은 모든 임의의 과거가 아니라 필요할 때 특정 시점으로 되돌리기만 하면 될때 사용한다. 특정 시점의 시스템 상태를 저장하고, 읽기 전용 속성을 가지고 자체적으로 아무 동작을 안하는 객체를 만든다 (이걸 토큰이라고 부르기도 한다)  특징  불변 속성을 가진다. 저장된 잔고 값이 나중에 변경될 수 있다면 존재한 적 없는 과거 상태로 되돌리는게 가능해져 버린다. 대상 객체에 friend로 선언한다. 필드 변수에 접근하기 위해 필수적으로 필요하다.</description>
+      <description>간략 설명  커맨드 패턴에서 이론적으로 과거의 어떤 지점으로 상태를 되돌릴수 있다 메멘토 패턴은 모든 임의의 과거가 아니라 필요할 때 특정 시점으로 되돌리기만 하면 될때 사용한다. 특정 시점의 시스템 상태를 저장하고, 읽기 전용 속성을 가지고 자체적으로 아무 동작을 안하는 객체를 만든다 (이걸 토큰이라고 부르기도 한다)  특징  불변 속성을 가진다. 저장된 잔고 값이 나중에 변경될 수 있다면 존재한 적 없는 과거 상태로 되돌리는게 가능해져 버린다. 대상 객체에 friend로 선언한다.</description>
     </item>
     
     <item>
@@ -62,7 +125,7 @@
       <pubDate>Mon, 27 Apr 2020 21:37:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/boj/</guid>
-      <description>리스트  10830 제출 (MOD 주의하자) 1300 제출 (long long 주의하자) 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기) 1167 dfs 를 주의하면서 짜자 11725 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자) 1967 : 1167 하고 똑같네  </description>
+      <description> 리스트 10830 제출 (MOD 주의하자) 1300 제출 (long long 주의하자) 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기) 1167 dfs 를 주의하면서 짜자 11725 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자) 1967 : 1167 하고 똑같네  </description>
     </item>
     
     <item>
@@ -89,7 +152,7 @@
       <pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-15.-%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</guid>
-      <description>인터프리터 디자인 패턴?  입력 데이터를 해석하는 것 대부분 텍스트이지만 텍스트에 한정되지는 않음.  요약  &amp;hellip; 이책에서 굳이 이 내용을 다루는 이유를 모르겠다. 차라리 Lex/Yacc를 보는게 좋다고 생각한다. 아마도 Boost.Spirit을 알려주고 싶어서 굳이 끼워넣은 느낌? 키워드만 정리하자면, AST, Lex/Yacc  </description>
+      <description> 인터프리터 디자인 패턴?  입력 데이터를 해석하는 것 대부분 텍스트이지만 텍스트에 한정되지는 않음.  요약  &amp;hellip; 이책에서 굳이 이 내용을 다루는 이유를 모르겠다. 차라리 Lex/Yacc를 보는게 좋다고 생각한다. 아마도 Boost.Spirit을 알려주고 싶어서 굳이 끼워넣은 느낌? 키워드만 정리하자면, AST, Lex/Yacc  </description>
     </item>
     
     <item>
@@ -98,7 +161,7 @@
       <pubDate>Sun, 19 Apr 2020 21:40:23 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-14.-%EC%BB%A4%EB%A7%A8%EB%93%9C/</guid>
-      <description>필요성  어떤 객체를 활용할 때 직접 그 객체의 API를 호출하여 조작하는 대신, 작업을 어떻게 하라고 명령을 보내는 방식을 제안한다.  시나리오 struct BankAccount { int balance = 0; int overdraft_limit = -500; void deposit(int amount) { balance += amount; cout &amp;lt;&amp;lt; &amp;#34;deposited &amp;#34; &amp;lt;&amp;lt; amount &amp;lt;&amp;lt; &amp;#34;, balance is now &amp;#34; &amp;lt;&amp;lt; balance &amp;lt;&amp;lt; &amp;#34;\n&amp;#34;; } void withdraw(int amount) { if (balance - amount &amp;gt;= overdraft_limit) { balance -= amount; cout &amp;lt;&amp;lt; &amp;#34;withdrew &amp;#34; &amp;lt;&amp;lt; amount &amp;lt;&amp;lt; &amp;#34;, balance is now &amp;#34; &amp;lt;&amp;lt; balance &amp;lt;&amp;lt; &amp;#34;\n&amp;#34;; } } }; 커맨드 패턴의 구현 struct Command { virtual void call() const = 0; }; struct BankAccountCommand : Command { BankAccount&amp;amp; account; enum Action { deposit, withdraw } action; int amount; BankAccountCommand(BankAccount&amp;amp; account, const Action action, const int amount) : account(account), action(action), amount(amount) {} void call() const override { switch (action) { case deposit: account.</description>
+      <description>필요성  어떤 객체를 활용할 때 직접 그 객체의 API를 호출하여 조작하는 대신, 작업을 어떻게 하라고 명령을 보내는 방식을 제안한다.  시나리오 struct BankAccount { int balance = 0; int overdraft_limit = -500; void deposit(int amount) { balance += amount; cout &amp;lt;&amp;lt; &amp;quot;deposited &amp;quot; &amp;lt;&amp;lt; amount &amp;lt;&amp;lt; &amp;quot;, balance is now &amp;quot; &amp;lt;&amp;lt; balance &amp;lt;&amp;lt; &amp;quot;\n&amp;quot;; } void withdraw(int amount) { if (balance - amount &amp;gt;= overdraft_limit) { balance -= amount; cout &amp;lt;&amp;lt; &amp;quot;withdrew &amp;quot; &amp;lt;&amp;lt; amount &amp;lt;&amp;lt; &amp;quot;, balance is now &amp;quot; &amp;lt;&amp;lt; balance &amp;lt;&amp;lt; &amp;quot;\n&amp;quot;; } } };  커맨드 패턴의 구현 struct Command { virtual void call() const = 0; }; struct BankAccountCommand : Command { BankAccount&amp;amp; account; enum Action { deposit, withdraw } action; int amount; BankAccountCommand(BankAccount&amp;amp; account, const Action action, const int amount) : account(account), action(action), amount(amount) {} void call() const override { switch (action) { case deposit: account.</description>
     </item>
     
     <item>
@@ -107,7 +170,7 @@
       <pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-13.-%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</guid>
-      <description>시나리오 struct Creature { string name; int attack, defense; // Constructor, operator... }; 포인터 사슬 class CreatureModifier { CreatureModifier* next{nullptr}; protected: Creature&amp;amp; creture; // reference, pointer or shared_ptr public: explicit CreatureModifier(Creature&amp;amp; creature) : creature(creture) {} void add(CreatureModifier* cm) { if (next) next-&amp;gt;add(cm); else next =cm; } virtual void handle() { if (next) next-&amp;gt;handle(); } };  참조를 넘겨받아 저장하고 변경할 준비 추상 클래스가 아님 next는 다음 변경 작업을 가리킴 add()를 통해서 작업 사슬에 연결하여 추가 handle() 맴버 함수는 단순히 다음 항목을 처리한다.</description>
+      <description>시나리오 struct Creature { string name; int attack, defense; // Constructor, operator... };  포인터 사슬 class CreatureModifier { CreatureModifier* next{nullptr}; protected: Creature&amp;amp; creture; // reference, pointer or shared_ptr public: explicit CreatureModifier(Creature&amp;amp; creature) : creature(creture) {} void add(CreatureModifier* cm) { if (next) next-&amp;gt;add(cm); else next =cm; } virtual void handle() { if (next) next-&amp;gt;handle(); } };   참조를 넘겨받아 저장하고 변경할 준비 추상 클래스가 아님 next는 다음 변경 작업을 가리킴 add()를 통해서 작업 사슬에 연결하여 추가 handle() 맴버 함수는 단순히 다음 항목을 처리한다.</description>
     </item>
     
     <item>
@@ -116,7 +179,7 @@
       <pubDate>Wed, 15 Apr 2020 23:13:04 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/coc/</guid>
-      <description>간단 설명  Visual Studio Code 와 동시에 나온 Language Server (동시에 나왔는지는 확실치 않음)을 vim에도 적용하는 플러그인이다. 일부 언어들은 이미 이 플러그인을 만든 사람이 쉽게쉽게 설치 가능하도록 해놨다. 다른 언어는 삽질을 해서 알아냈다.  설치하기 Plug &amp;#39;neoclide/coc.nvim&amp;#39;, { &amp;#39;do&amp;#39;: &amp;#39;./install.sh&amp;#39; } vimrc에 추가했다. 공식 github를 참고한거랑 다르게 썻는데, 공식에 나온대로 하니 잘 설치가 안되서 하다보니 저렇게 해서 됬다.  설치 삽질기  Vim-Plug가 말썽을 부린건지, git clone 과정에서 자꾸 실패했다.</description>
+      <description>간단 설명  Visual Studio Code 와 동시에 나온 Language Server (동시에 나왔는지는 확실치 않음)을 vim에도 적용하는 플러그인이다. 일부 언어들은 이미 이 플러그인을 만든 사람이 쉽게쉽게 설치 가능하도록 해놨다. 다른 언어는 삽질을 해서 알아냈다.  설치하기 Plug &#39;neoclide/coc.nvim&#39;, { &#39;do&#39;: &#39;./install.sh&#39; }   vimrc에 추가했다. 공식 github를 참고한거랑 다르게 썻는데, 공식에 나온대로 하니 잘 설치가 안되서 하다보니 저렇게 해서 됬다.  설치 삽질기  Vim-Plug가 말썽을 부린건지, git clone 과정에서 자꾸 실패했다.</description>
     </item>
     
     <item>
@@ -125,7 +188,7 @@
       <pubDate>Mon, 13 Apr 2020 23:48:20 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/regex/</guid>
-      <description>정규 표현식 문법  ^x : x문자로 시작됨 x$ : x문자로 종료됨 .x : 임의의 문자  자주 쓰는 정규표현식 이메일 : ^[a-z0-9_+.-]+@([a-z0-9]+\.)+[a-z0-9]{2,4}$ URL : ^(file|gopher|news|nntp|telnet|https?|ftps?|sftp):\/\/([a-z0-9-]+\.)+[a-z0-9]{2,4}.*$ HTML : \&amp;lt;(/?[^\&amp;gt;]+)\&amp;gt;/ 전화번호 : (\d{3}).*(\d{3, 4}).*(\d{4}) 특정 확장자를 가진 파일명 : ([^\s]+(?=\.(jpg|png|mp3))\.\2) 1부터 50 사이의 번호 - 1과 50 포함 : ^[1-9]{1}|^[1-4]{1}[0-9]{1}$|^50 16 진수 색 코드 : #?([A-Fa-f0-9]){3}(([A-Fa-f0-9]){3})? 적어도 소문자 하나, 대문자 하나, 숫자 하나가 포함되어 있는 8글자~15글자 : (?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15} </description>
+      <description> 정규 표현식 문법  ^x : x문자로 시작됨 x$ : x문자로 종료됨 .x : 임의의 문자  자주 쓰는 정규표현식 이메일 : ^[a-z0-9_+.-]+@([a-z0-9]+\.)+[a-z0-9]{2,4}$ URL : ^(file|gopher|news|nntp|telnet|https?|ftps?|sftp):\/\/([a-z0-9-]+\.)+[a-z0-9]{2,4}.*$ HTML : \&amp;lt;(/?[^\&amp;gt;]+)\&amp;gt;/ 전화번호 : (\d{3}).*(\d{3, 4}).*(\d{4}) 특정 확장자를 가진 파일명 : ([^\s]+(?=\.(jpg|png|mp3))\.\2) 1부터 50 사이의 번호 - 1과 50 포함 : ^[1-9]{1}|^[1-4]{1}[0-9]{1}$|^50 16 진수 색 코드 : #?([A-Fa-f0-9]){3}(([A-Fa-f0-9]){3})? 적어도 소문자 하나, 대문자 하나, 숫자 하나가 포함되어 있는 8글자~15글자 : (?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15} </description>
     </item>
     
     <item>
@@ -143,7 +206,8 @@
       <pubDate>Sun, 12 Apr 2020 23:10:03 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-12.-%ED%94%84%EB%A1%9D%EC%8B%9C/</guid>
-      <description>스마트 포인터  가장 단순하면서도 직접적인 프록시 패턴의 예  속성 프록시  다른 프로그래밍 언어에서는 get/set 메서드를 지원하는 경우도 있음.  template &amp;lt;typename T&amp;gt; struct Property { T value; Property(const T initial_value) { *this = initial_value; } operate T() { return value; } T operator=(T new_value) { return value = new_value; } } struct Creature { Property&amp;lt;int&amp;gt; strength{ 10 }; Property&amp;lt;int&amp;gt; agility{ 5 }; } Creature creature; creature.agility = 20; auto x = creature.</description>
+      <description>스마트 포인터  가장 단순하면서도 직접적인 프록시 패턴의 예  속성 프록시  다른 프로그래밍 언어에서는 get/set 메서드를 지원하는 경우도 있음. ```cpp template struct Property { T value; Property(const T initial_value) { *this = initial_value; } operate T() { return value; } T operator=(T new_value) { return value = new_value; } }  struct Creature { Property strength{ 10 }; Property agility{ 5 }; }
+Creature creature; creature.agility = 20; auto x = creature.</description>
     </item>
     
     <item>
@@ -152,7 +216,7 @@
       <pubDate>Sun, 12 Apr 2020 20:41:09 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/hugo/</guid>
-      <description>draft가 true인 것들 보기 $ hugo list drafts </description>
+      <description> draft가 true인 것들 보기 $ hugo list drafts  </description>
     </item>
     
     <item>
@@ -161,7 +225,7 @@
       <pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/tee/</guid>
-      <description>사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
+      <description> 사용 용도  stdin을 stdout 과 파일로 모두 보내고 싶을때  </description>
     </item>
     
     <item>
@@ -170,7 +234,7 @@
       <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/rm/</guid>
-      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일  $ rm -v !(&amp;#34;filename&amp;#34;)  다중  $ rm -v !(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;)  만약 zsh을 쓰고 있다면  $ setopt extendedglob $ rm ^(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;) Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
+      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일 bash $ rm -v !(&amp;quot;filename&amp;quot;)  다중 bash $ rm -v !(&amp;quot;filename1&amp;quot; | &amp;quot;filename2&amp;quot;)  만약 zsh을 쓰고 있다면 zsh $ setopt extendedglob $ rm ^(&amp;quot;filename1&amp;quot; | &amp;quot;filename2&amp;quot;)   Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
     </item>
     
     <item>
@@ -179,7 +243,9 @@
       <pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-11.-%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</guid>
-      <description>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;quot;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.  사용자 이름 struct User { User(const string&amp;amp; first_name, const string&amp;amp; last_name) : first_name{add(first_anem)}, last_name{add(last_name)} {} protected: key first_name, last_name; static bimap&amp;lt;key, string&amp;gt; names; // boost:bimap(양방향 map)  static key seed; static key add(const string&amp;amp; s) { ...} }; static key add(const string&amp;amp; s) { auto it = names.right.find(s); if (it == names.</description>
+      <description>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;rdquo;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.
+사용자 이름 ```cpp struct User { User(const string&amp;amp; first_name, const string&amp;amp; last_name)
+ first_name{add(first_anem)}, last_name{add(last_name)} {} protected: key first_name, last_name; static bimapnames; // boost:bimap(양방향 map) static key seed; static key add(const string&amp;amp; s) { &amp;hellip;} };   static key add(const string&amp;amp; s) { auto it = names.right.find(s); if (it == names.</description>
     </item>
     
     <item>
@@ -188,7 +254,7 @@
       <pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-10.-%ED%8D%BC%EC%82%AC%EB%93%9C/</guid>
-      <description>퍼사드는 어디에 있는가? struct Console { vector&amp;lt;Viewport*&amp;gt; viewports; Size charSize, gridSize; }; Console::Console(bool fullscreen, int char_width, int char_height, int width, int height, optional&amp;lt;Size&amp;gt; client_size) { // Implement } Console::Console(const ConsoleCreateionParamters* ccp) { ... } struct ConsoleCreationParameters { optional&amp;lt;Size&amp;gt; client_size; int character_width{10}; int character_height{14}; int width{20}; int height{30}; bool fullscreen{false}; bool create_default_view_and_buffer{true}; }; 요약  하나 이상의 복잡한 서브 시스템 앞에 단순한 인터페이스를 두기 위한 방법  </description>
+      <description> 퍼사드는 어디에 있는가? struct Console { vector&amp;lt;Viewport*&amp;gt; viewports; Size charSize, gridSize; }; Console::Console(bool fullscreen, int char_width, int char_height, int width, int height, optional&amp;lt;Size&amp;gt; client_size) { // Implement } Console::Console(const ConsoleCreateionParamters* ccp) { ... } struct ConsoleCreationParameters { optional&amp;lt;Size&amp;gt; client_size; int character_width{10}; int character_height{14}; int width{20}; int height{30}; bool fullscreen{false}; bool create_default_view_and_buffer{true}; };  요약  하나 이상의 복잡한 서브 시스템 앞에 단순한 인터페이스를 두기 위한 방법  </description>
     </item>
     
     <item>
@@ -197,7 +263,10 @@
       <pubDate>Thu, 09 Apr 2020 22:13:40 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-7.-%EC%8B%A4%ED%96%89-%EC%8B%9C%EA%B0%84-%EA%B8%B0%EB%B2%95/</guid>
-      <description>Item 54. 테스트 케이스를 작성하여 오류 찾기  문제를 안정적으로 재현할 수 있도록 테스트 케이스 작성 테스트 케이스를 최소한으로 간소화 안정장치 확보 (찾아낸 문제만 걸러내는 단위 테스트나 회귀 테스트를 코드에 추가한다.)  기억할 사항  제대로 작성된 최소한의 테스트 케이스를 통해 오류가 발생하는 지점과 해결책을 찾을 수 있다. 사용한 테스트 케이스는 단위 테스트나 회귀 테스트 형태로 소프트웨어에 추가한다.  Item 55. 오류가 발생한 즉시 프로그램 중단하기  루틴의 입력값을 검사하거나 호출한 API가 정상적으로 실행됬는지 확인할 때 Assertion을 활용한다.</description>
+      <description>Item 54. 테스트 케이스를 작성하여 오류 찾기  문제를 안정적으로 재현할 수 있도록 테스트 케이스 작성 테스트 케이스를 최소한으로 간소화 안정장치 확보 (찾아낸 문제만 걸러내는 단위 테스트나 회귀 테스트를 코드에 추가한다.)
+기억할 사항 제대로 작성된 최소한의 테스트 케이스를 통해 오류가 발생하는 지점과 해결책을 찾을 수 있다.
+ 사용한 테스트 케이스는 단위 테스트나 회귀 테스트 형태로 소프트웨어에 추가한다.
+  Item 55. 오류가 발생한 즉시 프로그램 중단하기  루틴의 입력값을 검사하거나 호출한 API가 정상적으로 실행됬는지 확인할 때 Assertion을 활용한다.</description>
     </item>
     
     <item>
@@ -215,7 +284,11 @@
       <pubDate>Wed, 08 Apr 2020 23:56:59 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/todo/</guid>
-      <description>공부  rm 명령어로 특정파일만 제외하고 삭제하기 zsh 에서 glob 사용법 공부하기 regex 공부하기 백준 풀기 exa, bat, hexyl, fd, procs, ripgrep 공부하기  exa bat hexyl fd ripgrep    Blog  git blame을 사용해서 wiki diff 만들기 [O] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정  jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다.</description>
+      <description>공부 rm 명령어로 특정파일만 제외하고 삭제하기 zsh 에서 glob 사용법 공부하기 regex 공부하기 백준 풀기 [ ] exa, bat, hexyl, fd, procs, ripgrep 공부하기
+exa bat hexyl fd [ ] ripgrep
+Blog  [X] git blame을 사용해서 wiki diff 만들기
+ [O] vimwiki offline 에서 cache 날려도 사용할수 있도록 cdn에서 static file을 안가져오도록 설정
+jquery, bootstrap, font-awesome, highlight 만 적용 mathjax 적용 mathjax를 offline으로 적용하니까 리소스가 너무 많은지 빌드타임이 3초나 걸린다.</description>
     </item>
     
     <item>
@@ -224,7 +297,11 @@
       <pubDate>Wed, 08 Apr 2020 23:44:39 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/vim/</guid>
-      <description>까먹을만한 단축키 리스트  &amp;lt;Leader&amp;gt;ww : vimwiki index page (Leader는 ,으로 걸어놨다.) &amp;lt;F4&amp;gt; : 위키에서 단어 검색 &amp;lt;S-F4&amp;gt; : 현재 문서를 링크한 모든 문서 검색 &amp;lt;Leader&amp;gt;b : 열린 Buffer들 확인 &amp;lt;Leader&amp;gt;f : find pattern &amp;lt;Leader&amp;gt;e : find file by FZF &amp;lt;Leader&amp;gt;tt : toggle todo list   UltiSnip  어캐쓰는지 아직 잘 모르겠다.ㅠ 더 읽어봐야겠다.  vimwiki  [[vimwiki]]  coc  엄청 삽질해서 적용했다. ㅠ 나중에 글로 하나 뺴도 괜찮을 듯 [[coc]]  tag  [[gutentags]]  </description>
+      <description>까먹을만한 단축키 리스트  &amp;lt;Leader&amp;gt;ww : vimwiki index page (Leader는 ,으로 걸어놨다.) &amp;lt;F4&amp;gt; : 위키에서 단어 검색 &amp;lt;S-F4&amp;gt; : 현재 문서를 링크한 모든 문서 검색 &amp;lt;Leader&amp;gt;b : 열린 Buffer들 확인 &amp;lt;Leader&amp;gt;f : find pattern &amp;lt;Leader&amp;gt;e : find file by FZF &amp;lt;Leader&amp;gt;tt : toggle todo list UltiSnip 어캐쓰는지 아직 잘 모르겠다.ㅠ 더 읽어봐야겠다.
+vimwiki [[vimwiki]]
+coc 엄청 삽질해서 적용했다. ㅠ 나중에 글로 하나 뺴도 괜찮을 듯
+ [[coc]]
+tag [[gutentags]]</description>
     </item>
     
     <item>
@@ -233,7 +310,9 @@
       <pubDate>Wed, 08 Apr 2020 22:51:20 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/vimwiki/</guid>
-      <description>Vimwiki 설정  Vimwiki를 메인으로 쓰기로 결정한 이상, 훨씬 더 잘 활용해서 (예를 들어 단축키같이) 사용하고 싶어졋다. 찾아보니 한국어 자료로는 기계인간님의 위키가 압도적으로 자료가 많아서 거기를 참고하기로 했다. 설정도 그분이 그렇게 쓰는데에는 이유가 있다고 생각해서 그렇게 하기로 했다. 나보다는 훨씬 더 vim을 잘쓰실테니  단축키 설정  기계 인간 님의 위키에 있는걸 그대로 따라하기로 했다. 겸사겸사 FZF도 설치만 해놓고 안썻는데 설정도 해봐야겠다.  &amp;quot; vimwiki conceallevel let g:vimwiki_conceallevel = 0 &amp;quot;자주 사용하는 명령어에 단축키를 취향대로 매핑해둔다 &amp;quot; vimwiki command!</description>
+      <description>Vimwiki 설정  Vimwiki를 메인으로 쓰기로 결정한 이상, 훨씬 더 잘 활용해서 (예를 들어 단축키같이) 사용하고 싶어졋다. 찾아보니 한국어 자료로는 기계인간님의 위키가 압도적으로 자료가 많아서 거기를 참고하기로 했다. 설정도 그분이 그렇게 쓰는데에는 이유가 있다고 생각해서 그렇게 하기로 했다. 나보다는 훨씬 더 vim을 잘쓰실테니
+단축키 설정 기계 인간 님의 위키에 있는걸 그대로 따라하기로 했다. 겸사겸사 FZF도 설치만 해놓고 안썻는데 설정도 해봐야겠다.
+&amp;quot; vimwiki conceallevel let g:vimwiki_conceallevel = 0 &amp;quot;자주 사용하는 명령어에 단축키를 취향대로 매핑해둔다 &amp;quot; vimwiki command!</description>
     </item>
     
     <item>
@@ -242,7 +321,7 @@
       <pubDate>Wed, 08 Apr 2020 13:38:46 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020.04.08/</guid>
-      <description>2020.04.08 회고</description>
+      <description>회고가 참 어려운것 같다. 노션에서 위키로 옮기고서 회고가 보여서 쓰려고 켜고 나니 막상 적을말이 없다. 오즘은 한참 영어공부다. 토마토 토플 단어 책 한권이랑 리딩 책 한권을 끝냈다. 동시에 산 듣기 책은 아직 새책이긴 하지만 나름 만족스럽다. 달력에 하루하루 한일을 적으면서 지내고 있다. 이렇게 지내니 나름 괜찮게 공부량이 나오는 것 같다. 병홈 개발은 점점 손을 놓게 된다. 나 스스로에게 추진력이 약하다는 생각을 많이 하게 된다. 남들 눈치 안보면서 마음껏해야하는데 배포를 해야할때 눈치를 보니 이렇게 추진력을 잃어버렸다.</description>
     </item>
     
     <item>
@@ -251,7 +330,7 @@
       <pubDate>Tue, 07 Apr 2020 22:55:59 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/gandi.net/</guid>
-      <description>Gandi.net https://www.gandi.net/en  </description>
+      <description> Gandi.net https://www.gandi.net/en  </description>
     </item>
     
     <item>
@@ -260,7 +339,7 @@
       <pubDate>Tue, 07 Apr 2020 22:55:20 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/cloudatcost/</guid>
-      <description>CloudatCost panel 주소 https://panel.cloudatcost.com/index.php#  ID/PW 아이디는 네이버 메일, 패스워드는 네이버 메일에서 cloudatcost 검색하면 최근에 reset한 메일이 있다. panel 은 패스워드가 다르다 맨마지막쯔음에 저장되어 있다.  </description>
+      <description> CloudatCost panel 주소 https://panel.cloudatcost.com/index.php#  ID/PW 아이디는 네이버 메일, 패스워드는 네이버 메일에서 cloudatcost 검색하면 최근에 reset한 메일이 있다. panel 은 패스워드가 다르다 맨마지막쯔음에 저장되어 있다.  </description>
     </item>
     
     <item>
@@ -269,7 +348,7 @@
       <pubDate>Tue, 07 Apr 2020 22:52:05 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/web/</guid>
-      <description> [[nginx]] [[cloudatcost]] [[gandi.net]]  </description>
+      <description> [[nginx]]  [[cloudatcost]] [[gandi.net]]   </description>
     </item>
     
     <item>
@@ -278,7 +357,7 @@
       <pubDate>Tue, 07 Apr 2020 22:51:14 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/nginx/</guid>
-      <description>Nginx 관련 Nginx log위치 /var/log/nginx/access.log /var/log/nginx/error.log  </description>
+      <description> Nginx 관련 Nginx log위치 /var/log/nginx/access.log /var/log/nginx/error.log  </description>
     </item>
     
     <item>
@@ -287,7 +366,8 @@
       <pubDate>Tue, 07 Apr 2020 20:49:06 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%EC%A0%95%EC%9A%B0-%EB%8C%80%ED%9A%8C/</guid>
-      <description>계기  정우가 학교에서 대회를 여는데 구현 위주의 문제이고, 한번 풀어봐달라고 해서 푼 코드  #include &amp;lt;iostream&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;string&amp;gt; #include &amp;lt;set&amp;gt; #include &amp;lt;algorithm&amp;gt; using namespace std; set&amp;lt;string&amp;gt; visited; bool chk(string data, vector&amp;lt;int&amp;gt; count) { for (auto&amp;amp; c : data) count[c-&amp;#39;a&amp;#39;] --; for(int i=0;i&amp;lt;26;i++) if (count[i] != 0) return false; return true; } vector&amp;lt;string&amp;gt; gen(string data) { vector&amp;lt;string&amp;gt; retval; string f, b, f_r, b_r; vector&amp;lt;string&amp;gt; r; if (data.size() == 1) retval.</description>
+      <description>계기  정우가 학교에서 대회를 여는데 구현 위주의 문제이고, 한번 풀어봐달라고 해서 푼 코드
+#include &amp;lt;iostream&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;string&amp;gt; #include &amp;lt;set&amp;gt; #include &amp;lt;algorithm&amp;gt; using namespace std; set&amp;lt;string&amp;gt; visited; bool chk(string data, vector&amp;lt;int&amp;gt; count) { for (auto&amp;amp; c : data) count[c-&#39;a&#39;] --; for(int i=0;i&amp;lt;26;i++) if (count[i] != 0) return false; return true; } vector&amp;lt;string&amp;gt; gen(string data) { vector&amp;lt;string&amp;gt; retval; string f, b, f_r, b_r; vector&amp;lt;string&amp;gt; r; if (data.size() == 1) retval.</description>
     </item>
     
     <item>
@@ -296,7 +376,7 @@
       <pubDate>Tue, 07 Apr 2020 20:48:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/operating-system-summary/</guid>
-      <description>1. Computer System Overview  Basic Elements : Processor, Main memory, I/O modules, System bus Basic Instruction Cycle  Start → (Fetch next instruction → Execute instruction) → HALT Processor-memory, Processor-I/O, Data processing, Control     </description>
+      <description> 1. Computer System Overview  Basic Elements : Processor, Main memory, I/O modules, System bus Basic Instruction Cycle  Start → (Fetch next instruction → Execute instruction) → HALT Processor-memory, Processor-I/O, Data processing, Control -   </description>
     </item>
     
     <item>
@@ -305,7 +385,7 @@
       <pubDate>Tue, 07 Apr 2020 20:48:28 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/understanding-linux-kernel/</guid>
-      <description>1. Introduction  Linux pros  Monolithic kernel Compiled and statically linked traditional Unix kernels Kernel threading Multithreaded application support - lightweight processes(LWP) Preemptive kernel Multiprocessor support - symmetric multiprocessing(SMP) Filesystem STREAMS    Basic Operating System Concepts  Interact with the hardware components, servicing all low-level programmable elements included in the hardware platform. Provide an execution environment to the applications that run on the computer system (the so-called user programs)  Multiuser Systems  An authentication mechanism for verifying the user&amp;rsquo;s identity A protection mechanism against buggy user programs that could block other applications running in the system A protection mechanism against malicious user programs that could interfere with or spy on the activity of others users An accounting mechanism that limits the amount of resource units assigned to each user  Users and Groups  User ID(UID), Group ID(GID) superuser  Processes  Process : An instance of a program in execution or execution context Multi Processing operating system with preemptable processes.</description>
+      <description>1. Introduction  Linux pros  Monolithic kernel Compiled and statically linked traditional Unix kernels Kernel threading Multithreaded application support - lightweight processes(LWP) Preemptive kernel Multiprocessor support - symmetric multiprocessing(SMP) Filesystem STREAMS   Basic Operating System Concepts  Interact with the hardware components, servicing all low-level programmable elements included in the hardware platform. Provide an execution environment to the applications that run on the computer system (the so-called user programs)  Multiuser Systems  An authentication mechanism for verifying the user&amp;rsquo;s identity A protection mechanism against buggy user programs that could block other applications running in the system A protection mechanism against malicious user programs that could interfere with or spy on the activity of others users An accounting mechanism that limits the amount of resource units assigned to each user  Users and Groups  User ID(UID), Group ID(GID) superuser  Processes  Process : An instance of a program in execution or execution context Multi Processing operating system with preemptable processes.</description>
     </item>
     
     <item>
@@ -316,7 +396,7 @@
       <guid>http://makerdark98.dev/wiki/mathematical-statistics/</guid>
       <description>Chapter 7 Sampling distribution Definition 7.1 (Statistic)  A statistic is a function of the observations in a sample and known constants. The distribution of a statistic is called the sampling distribution of the statistic.  $$\bar Y: \text{sample mean}$$
 $$S^2 : \text{sample variance}$$
-$$Y_{(1)}, Y_{(n)} : \text{minimum and maximum (order statistics)}$$
+$$Y{(1)}, Y{(n)} : \text{minimum and maximum (order statistics)}$$
 $$\hat p : \text{sample proportion}$$
 Theorem 7.1 $$\text{Suppose }Y_i \overset{iid}{\sim} N\left(0, 1^2 \right)$$
 $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
@@ -328,7 +408,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:40 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/effective-debugging/</guid>
-      <description>개인 생각  전체적으로 좋은 내용이 많았다고 생각된다. 하지만 실제로 디버깅할때 이 책의 모든 내용을 떠올리는 건 힘들다고 생각한다. 특히 중후반부부터 시작되는 툴들의 나열은 유의미하지 않았다. 맨 마지막에 상황별 도구 모음을 2~3 페이지에 걸쳐서 나열해줬으면 래퍼런스 북으로서 쓸수 있었을텐데 챕터별 요약  [[Effective Debugging/Chapter 1. 고차원 전략]] [[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]] [[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]] [[Effective Debugging/Chatper 4. 디버거 활용법]] [[Effective Debugging/Chapter 5. 프로그래밍 기법]] [[Effective Debugging/Chatper 6.</description>
+      <description>개인 생각  전체적으로 좋은 내용이 많았다고 생각된다. 하지만 실제로 디버깅할때 이 책의 모든 내용을 떠올리는 건 힘들다고 생각한다. 특히 중후반부부터 시작되는 툴들의 나열은 유의미하지 않았다. 맨 마지막에 상황별 도구 모음을 2~3 페이지에 걸쳐서 나열해줬으면 래퍼런스 북으로서 쓸수 있었을텐데  챕터별 요약  [[Effective Debugging/Chapter 1. 고차원 전략]] [[Effective Debugging/Chapter 2. 범용적인 디버깅 기법]] [[Effective Debugging/Chapter 3. 범용 도구를 활용한 기법]] [[Effective Debugging/Chatper 4. 디버거 활용법]] [[Effective Debugging/Chapter 5. 프로그래밍 기법]] [[Effective Debugging/Chatper 6.</description>
     </item>
     
     <item>
@@ -346,7 +426,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:40 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-2.-%EB%B2%94%EC%9A%A9%EC%A0%81%EC%9D%B8-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B8%B0%EB%B2%95/</guid>
-      <description>Item 9. 성공적인 디버깅을 위한 마음가짐  소프트웨어에서 발생한 문제는 항상 찾아서 고칠수 있다고 믿는다. 시간을 충분히 판단한다. 고도로 집중한다. 어려운 문제를 만나면 잠을 자는것도 좋다.  기억할 사항  모든 문제는 찾아서 고칠 수 있다고 믿는다. 디버깅 작업에 필요한 시간을 충분히 확보한다. 작업에 최대한 집중할 수 있도록 환경을 마련한다. 힘든 문제를 해결할 때는 효과적인 수면을 취한다. 포기하지 않는다. 디버깅 환경, 도구, 기법을 익히는 데 꾸준히 노력한다.  Item 10. 효율적으로 문제 상황 재현하기 효율적으로 문제 상황을 재현하는 것이 가지는 장점  오류를 만들어 내기 위해 시간을 낭비할 필요 없이 곧바로 원인을 해결하는데 집중할 수 있다.</description>
+      <description>Item 9. 성공적인 디버깅을 위한 마음가짐  소프트웨어에서 발생한 문제는 항상 찾아서 고칠수 있다고 믿는다. 시간을 충분히 판단한다. 고도로 집중한다. 어려운 문제를 만나면 잠을 자는것도 좋다.  기억할 사항  모든 문제는 찾아서 고칠 수 있다고 믿는다. 디버깅 작업에 필요한 시간을 충분히 확보한다. 작업에 최대한 집중할 수 있도록 환경을 마련한다. 힘든 문제를 해결할 때는 효과적인 수면을 취한다. 포기하지 않는다. 디버깅 환경, 도구, 기법을 익히는 데 꾸준히 노력한다.  Item 10.</description>
     </item>
     
     <item>
@@ -356,7 +436,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       
       <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-3.-%EB%B2%94%EC%9A%A9-%EB%8F%84%EA%B5%AC%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-%EA%B8%B0%EB%B2%95/</guid>
       <description>읽을거리
- The Art of Command Line(https://github.com/jlevy/the-art-of-command-line)  Item 22. 유닉스 명령줄 도구로 디버깅 데이터 분석하기  아래와 같은 순서로 스크립트를 작성한다.  가져오기(Fetching) 선택하기(Selecting) 처리하기(Processing) 정리하기(Summarizing)   읽을거리를 참고해서 CLI 사용법을 좀 더 잘 익히자  기억할 사항  텍스트 형태의 레코드를 가져오고, 선택하고, 처리하고, 정리하는 유닉스 명령어를 이용하여 디버깅 데이터를 분석한다. 여러 가지 유닉스 명령을 파이프라인으로 조합하는 방식으로 복잡한 분석 작업을 간단히 처리할 수 있다.  Item 23.</description>
+ The Art of Command Line(https://github.com/jlevy/the-art-of-command-line)  Item 22. 유닉스 명령줄 도구로 디버깅 데이터 분석하기  아래와 같은 순서로 스크립트를 작성한다.  가져오기(Fetching) 선택하기(Selecting) 처리하기(Processing) 정리하기(Summarizing)  읽을거리를 참고해서 CLI 사용법을 좀 더 잘 익히자  기억할 사항  텍스트 형태의 레코드를 가져오고, 선택하고, 처리하고, 정리하는 유닉스 명령어를 이용하여 디버깅 데이터를 분석한다. 여러 가지 유닉스 명령을 파이프라인으로 조합하는 방식으로 복잡한 분석 작업을 간단히 처리할 수 있다.  Item 23.</description>
     </item>
     
     <item>
@@ -365,7 +445,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:40 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/effective-debugging/chapter-5.-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EA%B8%B0%EB%B2%95/</guid>
-      <description>Item 38. 의심스런 코드를 검토하고 손으로 실행해보기  코드를 작성할 때 흔히 저지르는 실수를 하지 않았는지 살펴본다. 코드가 정확하게 동작하는지 직접 손으로 실행해서 확인한다. 복잡한 자료구조는 그림으로 쉽게 표현한다. 복잡한 코드를 쉽게 표현할 때는 종이나 화이트보드의 공간을 넉넉히 확보하고 색깔도 적절히 활용한다. 실제 물체를 활용하면 문제에 좀 더 집중할 수 있다.  Item 39. 동료 검토하기  자신이 작성한 코드를 고무 오리에게 설명한다. 동료 검토를 비롯한 코드 리뷰 과정을 거친다. 다양한 개체가 엮인 코드에서 발생한 오류를 디버익할 떄는 역할 놀이 방식을 적용한다.</description>
+      <description>Item 38. 의심스런 코드를 검토하고 손으로 실행해보기  코드를 작성할 때 흔히 저지르는 실수를 하지 않았는지 살펴본다. 코드가 정확하게 동작하는지 직접 손으로 실행해서 확인한다. 복잡한 자료구조는 그림으로 쉽게 표현한다. 복잡한 코드를 쉽게 표현할 때는 종이나 화이트보드의 공간을 넉넉히 확보하고 색깔도 적절히 활용한다. 실제 물체를 활용하면 문제에 좀 더 집중할 수 있다.  Item 39. 동료 검토하기  자신이 작성한 코드를 고무 오리에게 설명한다. 동료 검토를 비롯한 코드 리뷰 과정을 거친다.</description>
     </item>
     
     <item>
@@ -392,7 +472,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/</guid>
-      <description>Summary  [[Modern C++ Design Pattern/Chapter 1. 개요]] 제 1부 생성 패턴  [[Modern C++ Design Pattern/Chapter 2. 빌더]] [[Modern C++ Design Pattern/Chapter 3. 팩토리]] [[Modern C++ Design Pattern/Chapter 4. 프로토타입]] [[Modern C++ Design Pattern/Chapter 5. 싱글턴]]   제 2부 구조 패턴  In design step, we use well-known three ways.  Inheritance Composition Aggregation : One object can be independant nevertheless the object refer to another object. For example, T* or shared_ptr&amp;lt;T&amp;gt;     [[Modern C++ Design Pattern/Chapter 6.</description>
+      <description>Summary  [[Modern C++ Design Pattern/Chapter 1. 개요]] 제 1부 생성 패턴  [[Modern C++ Design Pattern/Chapter 2. 빌더]] [[Modern C++ Design Pattern/Chapter 3. 팩토리]] [[Modern C++ Design Pattern/Chapter 4. 프로토타입]] [[Modern C++ Design Pattern/Chapter 5. 싱글턴]]  제 2부 구조 패턴  In design step, we use well-known three ways.  Inheritance Composition Aggregation : One object can be independant nevertheless the object refer to another object. For example, T* or shared_ptr&amp;lt;T&amp;gt;  [[Modern C++ Design Pattern/Chapter 6.</description>
     </item>
     
     <item>
@@ -401,7 +481,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-1.-%EA%B0%9C%EC%9A%94/</guid>
-      <description>CRTP(Curiously Recurring Template Pattern) struct Foo : SomeBase&amp;lt;Foo&amp;gt; { ... } template &amp;lt;typename Derived&amp;gt; struct SomeBase { void foo() { for (auto&amp;amp; item : *static_cast&amp;lt;Derived*&amp;gt;(this)) { ... } } } Property class Person { private: int age_; public: int get_age() const {return age_; } void set_age(int value) {age_ = value; } __declspec(property(get=get_age, put=set_age)) int age; } Person p; p.age = 20; // calls p.set_age(20) Factory Factory Method struct Point { protected: Point(const float x, const float y) : x {x}, y {y} {} public: static Point NewCartesian(float x, float y) { return {x, y}; } static Point NewPolar(float r, float theta) { return {r * cos(theta), r * sin(theta)}; } // skip  }; SOLID Design Principle  SRP(Single Responsibility Principle)  If you need to edit a few classes(or little more?</description>
+      <description>CRTP(Curiously Recurring Template Pattern) struct Foo : SomeBase&amp;lt;Foo&amp;gt; { ... } template &amp;lt;typename Derived&amp;gt; struct SomeBase { void foo() { for (auto&amp;amp; item : *static_cast&amp;lt;Derived*&amp;gt;(this)) { ... } } }  Property class Person { private: int age_; public: int get_age() const {return age_; } void set_age(int value) {age_ = value; } __declspec(property(get=get_age, put=set_age)) int age; } Person p; p.age = 20; // calls p.set_age(20)  Factory Factory Method struct Point { protected: Point(const float x, const float y) : x {x}, y {y} {} public: static Point NewCartesian(float x, float y) { return {x, y}; } static Point NewPolar(float r, float theta) { return {r * cos(theta), r * sin(theta)}; } // skip };  SOLID Design Principle  SRP(Single Responsibility Principle)  If you need to edit a few classes(or little more?</description>
     </item>
     
     <item>
@@ -410,7 +490,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-2.-%EB%B9%8C%EB%8D%94/</guid>
-      <description>Builder Pattern Simple Builder struct HtmlBuilder { HtmlElement root; HtmlBuilder(string root_name) { root.name = root_name; } void add_child(string child_name string child_text) { HtmlElement e{ child_name, child_text }; root.elements.emplace_back(e); } string str() { return root.str(); } }; Fluent Builder struct HtmlBuilder { HtmlElement root; HtmlBuilder(string root_name) { root.name = root_name; } HtmlBuilder&amp;amp; add_child(string child_name string child_text) { HtmlElement e{ child_name child_text }; root.elements.emplace_back(e); return *this; } /* skip */ }; HtmlBuilder builder{ &amp;#34;ul&amp;#34; }; builder.</description>
+      <description>Builder Pattern Simple Builder struct HtmlBuilder { HtmlElement root; HtmlBuilder(string root_name) { root.name = root_name; } void add_child(string child_name string child_text) { HtmlElement e{ child_name, child_text }; root.elements.emplace_back(e); } string str() { return root.str(); } };  Fluent Builder struct HtmlBuilder { HtmlElement root; HtmlBuilder(string root_name) { root.name = root_name; } HtmlBuilder&amp;amp; add_child(string child_name string child_text) { HtmlElement e{ child_name child_text }; root.elements.emplace_back(e); return *this; } /* skip */ }; HtmlBuilder builder{ &amp;quot;ul&amp;quot; }; builder.</description>
     </item>
     
     <item>
@@ -419,7 +499,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-3.-%ED%8C%A9%ED%86%A0%EB%A6%AC/</guid>
-      <description>Factory Class struct Point { float x, y; friend class PointFacotry; private: Point(float x, float y) : x(x), y(y) {} }; struct PointFactory { static Point NewCartesian(float x, float y) { return Point{x, y}; } static Point NewPolar(float r, flaot theta) { return Point{r * cos(theta), r * sin (theta)}; } }; Inner Factory struct Point { private: Point(float x, float y) : x(x), y(y) {} struct PointFactory { private: PointFactory() {} public : static Point NewCartesian (float x, float y) { return {x, y}; } static Point NewPolar (float r, float theta) { return {r * cos(theta), r * sin (theta)}; } }; public: float x, y; static pointFactory Factory; }; Abstract Factory struct HotDrink { virtual void prepare (int volume) = 0; }; struct Tea: HotDrink { void prepare (int volume) override { cout &amp;lt;&amp;lt; &amp;#34;Take tea bag, boil water, pour&amp;#34; &amp;lt;&amp;lt; volume &amp;lt;&amp;lt; &amp;#34;ml, add some lemon&amp;#34; &amp;lt;&amp;lt; endl; } }; class DrinkFactory { map&amp;lt;string, unique_ptr&amp;lt;HotDrinkFactory&amp;gt;&amp;gt; hot_factories; public: DrinkFactory() { hot_factories[&amp;#34;coffee&amp;#34;] = make_unique&amp;lt;CoffeeFactory&amp;gt;(); hot_factories[&amp;#34;tea&amp;#34;] = make_unique&amp;lt;TeaFactory&amp;gt;(); } unique_ptr&amp;lt;HotDrink&amp;gt; make_drink(const string&amp;amp; name) { auto drink = hot_factories[name] -&amp;gt; make(); drink-&amp;gt;prepare(200); // 200 must be changed other constant variable  return drink; } }; Functional Factory class DrinkWithVolumeFactory { map&amp;lt;string, function&amp;lt;unique_ptr&amp;lt;HotDrink&amp;gt;()&amp;gt;&amp;gt; factories; public: DrinkWithVolumeFactory() { factories[&amp;#34;tea&amp;#34;]= [] [ auto tea = make_unique&amp;lt;Tea&amp;gt;(); tea-&amp;gt;prepare(200); return tea; }; } }; inline unique_ptr&amp;lt;HotDrink&amp;gt; DrinkWithVolumeFactory:: make_drink(const string&amp;amp; name) { return factories[name](); } Summary  &amp;ldquo;Factory Method&amp;rdquo;, which is member function of creation type, create object and return it.</description>
+      <description>Factory Class struct Point { float x, y; friend class PointFacotry; private: Point(float x, float y) : x(x), y(y) {} }; struct PointFactory { static Point NewCartesian(float x, float y) { return Point{x, y}; } static Point NewPolar(float r, flaot theta) { return Point{r * cos(theta), r * sin (theta)}; } };  Inner Factory struct Point { private: Point(float x, float y) : x(x), y(y) {} struct PointFactory { private: PointFactory() {} public : static Point NewCartesian (float x, float y) { return {x, y}; } static Point NewPolar (float r, float theta) { return {r * cos(theta), r * sin (theta)}; } }; public: float x, y; static pointFactory Factory; };  Abstract Factory struct HotDrink { virtual void prepare (int volume) = 0; }; struct Tea: HotDrink { void prepare (int volume) override { cout &amp;lt;&amp;lt; &amp;quot;Take tea bag, boil water, pour&amp;quot; &amp;lt;&amp;lt; volume &amp;lt;&amp;lt; &amp;quot;ml, add some lemon&amp;quot; &amp;lt;&amp;lt; endl; } }; class DrinkFactory { map&amp;lt;string, unique_ptr&amp;lt;HotDrinkFactory&amp;gt;&amp;gt; hot_factories; public: DrinkFactory() { hot_factories[&amp;quot;coffee&amp;quot;] = make_unique&amp;lt;CoffeeFactory&amp;gt;(); hot_factories[&amp;quot;tea&amp;quot;] = make_unique&amp;lt;TeaFactory&amp;gt;(); } unique_ptr&amp;lt;HotDrink&amp;gt; make_drink(const string&amp;amp; name) { auto drink = hot_factories[name] -&amp;gt; make(); drink-&amp;gt;prepare(200); // 200 must be changed other constant variable return drink; } };  Functional Factory class DrinkWithVolumeFactory { map&amp;lt;string, function&amp;lt;unique_ptr&amp;lt;HotDrink&amp;gt;()&amp;gt;&amp;gt; factories; public: DrinkWithVolumeFactory() { factories[&amp;quot;tea&amp;quot;]= [] [ auto tea = make_unique&amp;lt;Tea&amp;gt;(); tea-&amp;gt;prepare(200); return tea; }; } }; inline unique_ptr&amp;lt;HotDrink&amp;gt; DrinkWithVolumeFactory:: make_drink(const string&amp;amp; name) { return factories[name](); }  Summary  &amp;ldquo;Factory Method&amp;rdquo;, which is member function of creation type, create object and return it.</description>
     </item>
     
     <item>
@@ -428,7 +508,10 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-4.-%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85/</guid>
-      <description>객체 생성  같은 값으로 중복되게 초기화 되는 작업이 발생  중복처리 struct Address { string street, city; int suite; } struct Contact { string name; Address address; } struct Contact { string name; Address* address; }  복제 생성자를 통한 중복 초기화 복제 생성자를 배제하고 별도의 인터페이스  template &amp;lt;typename T&amp;gt; struct Clonable { virtual T clone() const = 0; } 직렬화(Serialization) struct Contact { string name; Address* address = nullptr; private: friend class boost:serialization::access; template&amp;lt;class Ar&amp;gt; void serialize(Ar&amp;amp; ar, const unsigned int version) { ar &amp;amp; name; ar &amp;amp; address; // *가 없다는 것에 주의 } }; auto clone = [](const Contact&amp;amp; c) { ostringstream oss; boost::achive::text_oarchive oa(oss); oa &amp;lt;&amp;lt; c; string s = oss.</description>
+      <description>객체 생성  같은 값으로 중복되게 초기화 되는 작업이 발생
+중복처리 ```cpp struct Address { string street, city; int suite; } struct Contact { string name; Address address; }
+  struct Contact { string name; Address* address; }
+* 복제 생성자를 통한 중복 초기화 * 복제 생성자를 배제하고 별도의 인터페이스 ```cpp template &amp;lt;typename T&amp;gt; struct Clonable { virtual T clone() const = 0; }  직렬화(Serialization) struct Contact { string name; Address* address = nullptr; private: friend class boost:serialization::access; template&amp;lt;class Ar&amp;gt; void serialize(Ar&amp;amp; ar, const unsigned int version) { ar &amp;amp; name; ar &amp;amp; address; // *가 없다는 것에 주의 } }; auto clone = [](const Contact&amp;amp; c) { ostringstream oss; boost::achive::text_oarchive oa(oss); oa &amp;lt;&amp;lt; c; string s = oss.</description>
     </item>
     
     <item>
@@ -437,7 +520,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-5.-%EC%8B%B1%EA%B8%80%ED%84%B4/</guid>
-      <description>Singleton static Database database{}; /* not recommended */ /** * This method is only secured about MT(Multi Thread)-Safe on C++11 or Higher. */ Database&amp;amp; get_database() { static Database databse; return database; } Traditional Implementation struct Database { protected: Database() { /* Do something */ } public: static Database&amp;amp; get() { // MT-Safe on C++11 or Higher  static Database database; return database; } Database(Database const&amp;amp;) = delete; Database(Database &amp;amp;&amp;amp;) = delete; Database&amp;amp; operator=(Database const&amp;amp;) = delete; Database&amp;amp; operator=(Database &amp;amp;&amp;amp;) = delete; };  You can think over inheritance of boost::noncopyable class if you don&amp;rsquo;t perfer to this by your hands.</description>
+      <description>Singleton static Database database{}; /* not recommended */ /** * This method is only secured about MT(Multi Thread)-Safe on C++11 or Higher. */ Database&amp;amp; get_database() { static Database databse; return database; }  Traditional Implementation struct Database { protected: Database() { /* Do something */ } public: static Database&amp;amp; get() { // MT-Safe on C++11 or Higher static Database database; return database; } Database(Database const&amp;amp;) = delete; Database(Database &amp;amp;&amp;amp;) = delete; Database&amp;amp; operator=(Database const&amp;amp;) = delete; Database&amp;amp; operator=(Database &amp;amp;&amp;amp;) = delete; };   You can think over inheritance of boost::noncopyable class if you don&amp;rsquo;t perfer to this by your hands.</description>
     </item>
     
     <item>
@@ -446,7 +529,8 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-6.-%EC%96%B4%EB%8C%91%ED%84%B0/</guid>
-      <description>Adapter Pattern  We use a example case, drawiing geometric shape.  struct Point { int x, y; }; struct Line{ Point start, end; }; struct VectorObject { virtual std::vector&amp;lt;Line&amp;gt;::iterator begin() = 0; virtual std::vector&amp;lt;Line&amp;gt;::iterator end() = 0; }; struct VectorRectangle : VectorObject { VectorRectangle(int x, int y, int width, int height) { lines.emplace_back(Line{ Point{x, y}, Point{x + width, y} }); lines.emplace_back(Line{ Point{x + width, y}, Point {x + width, y + height} }); lines.</description>
+      <description>Adapter Pattern  We use a example case, drawiing geometric shape.
+struct Point { int x, y; }; struct Line{ Point start, end; }; struct VectorObject { virtual std::vector&amp;lt;Line&amp;gt;::iterator begin() = 0; virtual std::vector&amp;lt;Line&amp;gt;::iterator end() = 0; }; struct VectorRectangle : VectorObject { VectorRectangle(int x, int y, int width, int height) { lines.emplace_back(Line{ Point{x, y}, Point{x + width, y} }); lines.emplace_back(Line{ Point{x + width, y}, Point {x + width, y + height} }); lines.</description>
     </item>
     
     <item>
@@ -455,7 +539,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-7.-%EB%B8%8C%EB%A6%BF%EC%A7%80/</guid>
-      <description>Bridge Pattern Pimpl (Pointer to Implmentation) struct Person { string name; void greet(); Person(); ~Person(); class PersonImpl; PersonImpl *impl; // refer to gsl::owner&amp;lt;T&amp;gt;  }; struct Person:PersonImpl { void greet(Person* p); } Person::Person() : impl(new PersonImpl) {} Person::~Person() { delete imple; } void Person::greet() { impl-&amp;gt;greet(this); } void Person::PersonImpl::greet(Person* p) { printf(&amp;#34;hello %s&amp;#34;, p-&amp;gt;name.c_str()); }  Props  Hide implementation. If Person class has many private/protected member variable, it is exposed though the header file to client.</description>
+      <description>Bridge Pattern Pimpl (Pointer to Implmentation) struct Person { string name; void greet(); Person(); ~Person(); class PersonImpl; PersonImpl *impl; // refer to gsl::owner&amp;lt;T&amp;gt; }; struct Person:PersonImpl { void greet(Person* p); } Person::Person() : impl(new PersonImpl) {} Person::~Person() { delete imple; } void Person::greet() { impl-&amp;gt;greet(this); } void Person::PersonImpl::greet(Person* p) { printf(&amp;quot;hello %s&amp;quot;, p-&amp;gt;name.c_str()); }   Props  Hide implementation. If Person class has many private/protected member variable, it is exposed though the header file to client.</description>
     </item>
     
     <item>
@@ -464,7 +548,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-8.-%EC%BB%B4%ED%8F%AC%EC%A7%80%ED%8A%B8/</guid>
-      <description>Composite Pattern  How to announce the object has multiple composite attributes? It is not easy.  Properties based on array. class Creature { int strength, agility, intelligence; public: int get_stringth() const { return strength; } void set_strength(int strength) { Creture::strength = strength; } // Other getter/setter....  int sum() const { return strength + agility + intelligence; } double average() const { return sum() / 3.0; } int max() const { return ::max(::max(strength, agility), intelligence); } };  It is not pretty.</description>
+      <description>Composite Pattern  How to announce the object has multiple composite attributes? It is not easy.  Properties based on array. class Creature { int strength, agility, intelligence; public: int get_stringth() const { return strength; } void set_strength(int strength) { Creture::strength = strength; } // Other getter/setter.... int sum() const { return strength + agility + intelligence; } double average() const { return sum() / 3.0; } int max() const { return ::max(::max(strength, agility), intelligence); } };   It is not pretty.</description>
     </item>
     
     <item>
@@ -473,7 +557,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/modern-c&#43;&#43;-design-pattern/chapter-9.-%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0/</guid>
-      <description>Decorator  Dynamic Composition Static Composition  Dynamic Decorator struct ColoredShape : Shape { Shape&amp;amp; shape; string color; ColoredShape(Shape&amp;amp; shape, const string&amp;amp; color) : shape{shape}, color{color} {} stinrg str() const override { ostringstream oss; oss &amp;lt;&amp;lt; shape.str() &amp;lt;, &amp;#34; Has the color &amp;#34; &amp;lt;&amp;lt; color; return oss.str(); } }; // Example Code  Circle circle{0.5f}; ColoredShape redCircle{circle, &amp;#34;red&amp;#34;}; cout &amp;lt;&amp;lt; redCircle.str(); struct TransparentShape : Shape { Shape&amp;amp; shape; uint8_t transparency; TransparentShape(Shape&amp;amp; shape, const uint8_t transparency) : shape{shape}, transparency{transparency} {} string str() const override { ostringstream oss; oss &amp;lt;&amp;lt; shape.</description>
+      <description>Decorator  Dynamic Composition Static Composition  Dynamic Decorator struct ColoredShape : Shape { Shape&amp;amp; shape; string color; ColoredShape(Shape&amp;amp; shape, const string&amp;amp; color) : shape{shape}, color{color} {} stinrg str() const override { ostringstream oss; oss &amp;lt;&amp;lt; shape.str() &amp;lt;, &amp;quot; Has the color &amp;quot; &amp;lt;&amp;lt; color; return oss.str(); } }; // Example Code Circle circle{0.5f}; ColoredShape redCircle{circle, &amp;quot;red&amp;quot;}; cout &amp;lt;&amp;lt; redCircle.str(); struct TransparentShape : Shape { Shape&amp;amp; shape; uint8_t transparency; TransparentShape(Shape&amp;amp; shape, const uint8_t transparency) : shape{shape}, transparency{transparency} {} string str() const override { ostringstream oss; oss &amp;lt;&amp;lt; shape.</description>
     </item>
     
     <item>
@@ -482,7 +566,18 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:43:34 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/book-reviews/</guid>
-      <description>정리 끝난거  [[Effective Debugging]]  정리 하는 중  [[Modern C++ Design Pattern]]  정리 보류한거  [[Mathematical Statistics]] [[Understanding Linux Kernel]] [[Operating System Summary]]  정리하기로 생각해둔거  Effective Modern C++ Clean Code Pragmatic Programmer Algorithm Coding Interview Data Application  </description>
+      <description> 정리 끝난거  [[Effective Debugging]]
+정리 하는 중 [[Modern C++ Design Pattern]]
+정리 보류한거 [[Mathematical Statistics]]
+ [[Understanding Linux Kernel]]
+ [[Operating System Summary]]
+정리하기로 생각해둔거 Effective Modern C++
+ Clean Code
+ Pragmatic Programmer
+ Algorithm
+ Coding Interview
+ Data Application
+  </description>
     </item>
     
     <item>
@@ -501,7 +596,8 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       <pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/lectures/computer-architecture/</guid>
-      <description>Large and Fast : Exploiting Memory Hierarchy5.  Principle of Locality  Temporal locality Spatial locality  Taking Advantage of Locality  Memory hierarchy  Store everything on disk (lowest level) Copy recently accessed (and nearby) items from disk to smaller DRAM(e.g. Main Memory) copy more recently accessed (and nearby) items from DRAM to smaller SRAM memory(e.g. Cache memory attached to CPU)    Memory Hierarchy Levels  A block (aka line) : unit of copying If accessed data is present in upper level  Hit : access satisfied by upper level  Hit ratio: hits/accesses     If accessed data is absent  Miss : block copied from lower level  Time taken : miss penalty Miss ratio : misses/accesses = 1 - hit ratio   Then accessed data supplied from upper level    Memory Technology  Static RAM (SRAM) : 0.</description>
+      <description>Large and Fast : Exploiting Memory Hierarchy5.
+Principle of Locality   Temporal locality Spatial locality  Taking Advantage of Locality  Memory hierarchy  Store everything on disk (lowest level) Copy recently accessed (and nearby) items from disk to smaller DRAM(e.g. Main Memory) copy more recently accessed (and nearby) items from DRAM to smaller SRAM memory(e.g. Cache memory attached to CPU)   Memory Hierarchy Levels  A block (aka line) : unit of copying If accessed data is present in upper level  Hit : access satisfied by upper level  Hit ratio: hits/accesses   If accessed data is absent  Miss : block copied from lower level  Time taken : miss penalty Miss ratio : misses/accesses = 1 - hit ratio  Then accessed data supplied from upper level   Memory Technology  Static RAM (SRAM) : 0.</description>
     </item>
     
     <item>
@@ -511,7 +607,7 @@ $$\bar Y \sim N(\mu, {\sigma^2\over{n}})$$</description>
       
       <guid>http://makerdark98.dev/wiki/lectures/image-processing/</guid>
       <description>PCA (Principal Components Analysis)
-Eigenvalues and Eigenvectors  The prefix eigen- is adopted from the German word eigen for &amp;ldquo;proper&amp;rdquo;, &amp;ldquo;characteristic&amp;rdquo; Eigenvalues are a special set of scalars associated with a linear system of equations that are sometimes also known as characteristic roots, characteristic values Each eigenvalue is paired with a corresponding so-called eigen vector. Eigenvectors are a special set of vectors associated with a linear system of equations that are sometimes also known as characteristic vectors The Lanczos algorithm is an algorithm for computing the eigenvalues and eigenvectors Eigenvalues and eigenvectors feature prominently in the analysis of transformations  Covariance matrix  The covariance matrix consists of the variances of the variables along the main diagonal and the covariance between each pair of variables in the other matrix positions  Face Recognition   obtain face images I_1, &amp;hellip; , I_m (training faces) (very important : the face images must be centered and of the same size)</description>
+Eigenvalues and Eigenvectors  The prefix eigen- is adopted from the German word eigen for &amp;ldquo;proper&amp;rdquo;, &amp;ldquo;characteristic&amp;rdquo; Eigenvalues are a special set of scalars associated with a linear system of equations that are sometimes also known as characteristic roots, characteristic values Each eigenvalue is paired with a corresponding so-called eigen vector. Eigenvectors are a special set of vectors associated with a linear system of equations that are sometimes also known as characteristic vectors The Lanczos algorithm is an algorithm for computing the eigenvalues and eigenvectors Eigenvalues and eigenvectors feature prominently in the analysis of transformations  Covariance matrix  The covariance matrix consists of the variances of the variables along the main diagonal and the covariance between each pair of variables in the other matrix positions  Face Recognition  obtain face images I_1, &amp;hellip; , I_m (training faces) (very important : the face images must be centered and of the same size) represent every I_i as a vector Gamma_i compute the average face vector Psi :</description>
     </item>
     
     <item>
@@ -520,7 +616,7 @@ Eigenvalues and Eigenvectors  The prefix eigen- is adopted from the German word 
       <pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/lectures/</guid>
-      <description>학교 수업  [[lectures/algorithm]] [[lectures/computer architecture]] [[lectures/image processing]]  </description>
+      <description> 학교 수업  [[lectures/algorithm]] [[lectures/computer architecture]] [[lectures/image processing]]  </description>
     </item>
     
     <item>
@@ -529,7 +625,7 @@ Eigenvalues and Eigenvectors  The prefix eigen- is adopted from the German word 
       <pubDate>Tue, 07 Apr 2020 20:36:45 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/tool-configuration/</guid>
-      <description>- Neovim - `.vimrc` &amp;quot; vim-bootstrap &amp;quot;***************************************************************************** &amp;quot;&amp;quot; Vim-PLug core &amp;quot;***************************************************************************** let vimplug_exists=expand(&#39;~/.config/nvim/autoload/plug.vim&#39;) let g:vim_bootstrap_langs = &amp;quot;c,html,javascript,python&amp;quot; let g:vim_bootstrap_editor = &amp;quot;nvim&amp;quot;	&amp;quot; nvim or vim if !filereadable(vimplug_exists) if !executable(&amp;quot;curl&amp;quot;) echoerr &amp;quot;You have to install curl or first install vim-plug yourself!&amp;quot; execute &amp;quot;q!&amp;quot; endif echo &amp;quot;Installing Vim-Plug...&amp;quot; echo &amp;quot;&amp;quot; silent exec &amp;quot;!\curl -fLo &amp;quot; . vimplug_exists . &amp;quot; --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&amp;quot; let g:not_finish_vimplug = &amp;quot;yes&amp;quot; autocmd VimEnter * PlugInstall endif &amp;quot; Required: call plug#begin(expand(&#39;~/.</description>
+      <description>- Neovim - `.vimrc` &amp;quot; vim-bootstrap &amp;quot;***************************************************************************** &amp;quot;&amp;quot; Vim-PLug core &amp;quot;***************************************************************************** let vimplug_exists=expand(&#39;~/.config/nvim/autoload/plug.vim&#39;) let g:vim_bootstrap_langs = &amp;quot;c,html,javascript,python&amp;quot; let g:vim_bootstrap_editor = &amp;quot;nvim&amp;quot; &amp;quot; nvim or vim if !filereadable(vimplug_exists) if !executable(&amp;quot;curl&amp;quot;) echoerr &amp;quot;You have to install curl or first install vim-plug yourself!&amp;quot; execute &amp;quot;q!&amp;quot; endif echo &amp;quot;Installing Vim-Plug...&amp;quot; echo &amp;quot;&amp;quot; silent exec &amp;quot;!\curl -fLo &amp;quot; . vimplug_exists . &amp;quot; --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&amp;quot; let g:not_finish_vimplug = &amp;quot;yes&amp;quot; autocmd VimEnter * PlugInstall endif &amp;quot; Required: call plug#begin(expand(&#39;~/.</description>
     </item>
     
     <item>
@@ -538,10 +634,10 @@ Eigenvalues and Eigenvectors  The prefix eigen- is adopted from the German word 
       <pubDate>Tue, 07 Apr 2020 20:36:17 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ssh-server/</guid>
-      <description>  Installation
+      <description> Installation
 sudo apt install openssh-server
 sudo vim /etc/ssh/sshd_config
-  generate key
+ generate key
 ssh-keygen -R {id}@{host}
 PermitRootLogin prohibit-password
   </description>
@@ -555,9 +651,9 @@ PermitRootLogin prohibit-password
       <guid>http://makerdark98.dev/wiki/firewall/</guid>
       <description>  iptables
 #iptables -nL
-  save firewall configuration #iptalbes-save &amp;gt; save_data.rules  config firwall   아이피 111.222.111.222에 대해서 destination port 가 22이면 ACCEPT 하여라.
-#iptables -A INPUT -s 111.222.111.222/32 -p tcp -m state &amp;ndash;state NEW -m tcp &amp;ndash;dport 22 -j ACCEPT-
-  save configuration persistent #apt install iptables-persistent    rule directory : /etc/iptables/rules.v4
+  save firewall configuration #iptalbes-save &amp;gt; save_data.rules  config firwall  아이피 111.222.111.222에 대해서 destination port 가 22이면 ACCEPT 하여라.
+#iptables -A INPUT -s 111.222.111.222&amp;frasl;32 -p tcp -m state &amp;ndash;state NEW -m tcp &amp;ndash;dport 22 -j ACCEPT-
+  save configuration persistent #apt install iptables-persistent   rule directory : /etc/iptables/rules.v4
 #iptables-save &amp;gt; /etc/iptables/rules.v4
   </description>
     </item>
@@ -568,7 +664,7 @@ PermitRootLogin prohibit-password
       <pubDate>Tue, 07 Apr 2020 20:35:51 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ftp/</guid>
-      <description> use vsftpd(Very Secure FTP Server Daemon)  Installation # apt install vsftpd  check vsftpd status # service vsftpd status  check network port # netstat -natp | grep ftp  Configuration vsftpd # vi /etc/vsftpd.conf #/etc/vsftpd.conf listen=YES listen_ipv6=NO anonymous_enable=NO port_enable=NO pasv_enable=YES local_enable=YES write_enable=YES use_localtime=YES xferlog_enable=YES chroot_local_user=YES allow_writeable_chroot=YES secure_chroot_dir=/var/run/vsftpd/empty pam_service_name=vsftpd ftpd_banner=Welcom to My FTP Server! ssl_enable=YES rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem rsa_private_key=/etc/ssl/private/ssl-cert-snakeoil.key listen_port=21 pasv_min_port=60020 pasv_max_port=60030 #utf8_filesystem=YES #local_umask=022  </description>
+      <description>  use vsftpd(Very Secure FTP Server Daemon)  Installation # apt install vsftpd  check vsftpd status # service vsftpd status  check network port # netstat -natp | grep ftp  Configuration vsftpd # vi /etc/vsftpd.conf #/etc/vsftpd.conf listen=YES listen_ipv6=NO anonymous_enable=NO port_enable=NO pasv_enable=YES local_enable=YES write_enable=YES use_localtime=YES xferlog_enable=YES chroot_local_user=YES allow_writeable_chroot=YES secure_chroot_dir=/var/run/vsftpd/empty pam_service_name=vsftpd ftpd_banner=Welcom to My FTP Server! ssl_enable=YES rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem rsa_private_key=/etc/ssl/private/ssl-cert-snakeoil.key listen_port=21 pasv_min_port=60020 pasv_max_port=60030 #utf8_filesystem=YES #local_umask=022  </description>
     </item>
     
     <item>
@@ -577,13 +673,13 @@ PermitRootLogin prohibit-password
       <pubDate>Tue, 07 Apr 2020 20:35:41 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/user/</guid>
-      <description>  check username
+      <description> check username
 cat /etc/passwd | grep {username}
-  create user &amp;amp; select default shell
+ create user &amp;amp; select default shell
 useradd {username} -m -s /bin/bash
-  password
+ password
 echo {password} | passwd &amp;ndash;stdin {username}
-  home directory
+ home directory
 mkhomedir_helper {username}
   </description>
     </item>
@@ -594,7 +690,7 @@ mkhomedir_helper {username}
       <pubDate>Tue, 07 Apr 2020 20:35:31 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/brightness/</guid>
-      <description>echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness </description>
+      <description> echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness </description>
     </item>
     
     <item>
@@ -605,18 +701,19 @@ mkhomedir_helper {username}
       <guid>http://makerdark98.dev/wiki/wifi-command-line/</guid>
       <description>Wifi Adapter 찾기
 iw dev
-  Adapter status
+ Adapter status
 ip link show wlp2s0
-  Adapter Start
+ Adapter Start
 ip link set wlp2s0 up
-When Operation fail because of rfkill $rfkill list $sudo rfkill unblock wifi   Wifi Adapter interface check
+When Operation fail because of rfkill $rfkill list $sudo rfkill unblock wifi Wifi Adapter interface check
 iw wlp2s0 link
-  Wifi Scan
+ Wifi Scan
 iw wlp2s0 scan
-  Public Wifi Connect
+ Public Wifi Connect
 sudo iw dev wlp2s0 connect iptime
-  WPA/WPA2 Wifi Connect
-$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
+ WPA/WPA2 Wifi Connect
+$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.conf ${password}
+$ sudo wpa_supplicant -B -i wlp2s0 -c wpa_supplicant.</description>
     </item>
     
     <item>
@@ -625,7 +722,12 @@ $ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
       <pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/linux-command/</guid>
-      <description>command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]] [[glob]]  Server  [[user]] [[ftp]] [[firewall]] [[ssh server]]  </description>
+      <description> command line  [[wifi command line]] [[brightness]] [[rm]] [[tee]] [[glob]]
+Server [[user]]
+ [[ftp]]
+ [[firewall]]
+ [[ssh server]]
+  </description>
     </item>
     
     <item>
@@ -636,9 +738,9 @@ $ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.</description>
       <guid>http://makerdark98.dev/wiki/docker/</guid>
       <description>install
 curl -fsSL https://get.docker.com/ | sudo sh
-  user 추가
+ user 추가
 sudo useradd {username} -m -s /bin/bash -G docker
-  docker container run
+ docker container run
 docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]
   -d : detached mode (background mode)
 -p : port forwarding from host port to container
@@ -654,7 +756,7 @@ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]
       <pubDate>Tue, 07 Apr 2020 20:34:32 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/sql/</guid>
-      <description>Mysql User Create create user &#39;username&#39;@&#39;localhost&#39; identified by &#39;password&#39;  Grant privileges grant all privileges on *.* to &#39;username&#39;@&#39;localhost&#39;; grant all privileges on &#39;DBname&#39;.* to &#39;username&#39;@&#39;localhost&#39;;  Drop User drop user &#39;username&#39;@&#39;localhost&#39;;  Create Database CREATE DATABASE &#39;DBname&#39;;  Create Table CREATE TABLE table_name ( column1 data_type(size), column2 data_type(size), column3 data_type(size), ... )  </description>
+      <description> Mysql User Create create user &#39;username&#39;@&#39;localhost&#39; identified by &#39;password&#39;  Grant privileges grant all privileges on *.* to &#39;username&#39;@&#39;localhost&#39;; grant all privileges on &#39;DBname&#39;.* to &#39;username&#39;@&#39;localhost&#39;;  Drop User drop user &#39;username&#39;@&#39;localhost&#39;;  Create Database CREATE DATABASE &#39;DBname&#39;;  Create Table CREATE TABLE table_name ( column1 data_type(size), column2 data_type(size), column3 data_type(size), ... )  </description>
     </item>
     
     <item>
@@ -672,7 +774,7 @@ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]
       <pubDate>Tue, 07 Apr 2020 20:33:57 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/typescript/class/</guid>
-      <description>Class class Greeter { greeting: string; constructor(message: string) { this.greeting = message; } greet() { return &amp;quot;Hello, &amp;quot; + this.greeting; } } let greeter = new Greeter(&amp;quot;world&amp;quot;);  Inheritance class Animal { move(distanceInMeters: number = 0) { console.log(`Animal moved ${distanceInMeters}m.`); } } class Dog extends Animal { bark() { console.log(&amp;quot;Woof! Woof!&amp;quot;); } } const dog = new Dog(); dog.bark(); dog.move(10); dog.bark(); class Animal { name: string; constructor(theName: string) { this.name = theName; } move(distanceInMeters: number = 0) { console.</description>
+      <description>Class class Greeter { greeting: string; constructor(message: string) { this.greeting = message; } greet() { return &amp;quot;Hello, &amp;quot; + this.greeting; } } let greeter = new Greeter(&amp;quot;world&amp;quot;);  Inheritance class Animal { move(distanceInMeters: number = 0) { console.log(`Animal moved ${distanceInMeters}m.`); } } class Dog extends Animal { bark() { console.log(&amp;quot;Woof! Woof!&amp;quot;); } } const dog = new Dog(); dog.bark(); dog.move(10); dog.bark(); class Animal { name: string; constructor(theName: string) { this.</description>
     </item>
     
     <item>
@@ -681,7 +783,7 @@ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]
       <pubDate>Tue, 07 Apr 2020 20:33:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/typescript/interface/</guid>
-      <description>- duck typing   structural subtyping
+      <description>- duck typing  structural subtyping
 interface LabelledValue { label: string; }
 function printLabel(labeledObj: LabelledValue) { console.log(labelledObj.label); }
 let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabel(myObj);
@@ -703,7 +805,7 @@ let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabe
       <pubDate>Tue, 07 Apr 2020 20:33:02 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/typescript/types/</guid>
-      <description>Boolean let isDone: boolean = false  Number let decimal: number = 6; let hex: number = 0xf00d; let binary: number = 0b1010; let octal: number = 0o744  String let color: string = &amp;quot;blue&amp;quot;; color = &#39;red&#39;; let fullName: string = `Bob Bobbingto`; let age: number = 37; let sentence: string = `Hello, myname is ${ fullName }. I&#39;ll be ${ age + 1 } years old next month.`;  Array let list: number[] = [1, 2, 3]; let list: Array&amp;lt;number&amp;gt; = [1, 2, 3];  Tuple let x: [string, number]; x = [&amp;quot;hello&amp;quot;, 10]; console.</description>
+      <description>Boolean let isDone: boolean = false  Number let decimal: number = 6; let hex: number = 0xf00d; let binary: number = 0b1010; let octal: number = 0o744  String let color: string = &amp;quot;blue&amp;quot;; color = &#39;red&#39;; let fullName: string = `Bob Bobbingto`; let age: number = 37; let sentence: string = `Hello, myname is ${ fullName }. I&#39;ll be ${ age + 1 } years old next month.</description>
     </item>
     
     <item>
@@ -712,7 +814,7 @@ let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabe
       <pubDate>Tue, 07 Apr 2020 20:32:54 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/typescript/</guid>
-      <description>Syntax  [[Typescript/Types]] [[Typescript/Variable Declaration]] [[Typescript/Interface]] [[Typescript/Class]] [[Typescript/Function]]  </description>
+      <description> Syntax  [[Typescript/Types]] [[Typescript/Variable Declaration]] [[Typescript/Interface]] [[Typescript/Class]] [[Typescript/Function]]  </description>
     </item>
     
     <item>
@@ -721,7 +823,7 @@ let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabe
       <pubDate>Tue, 07 Apr 2020 20:32:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/graphql-typescript/</guid>
-      <description> TOC {:toc}  yarn add type-graphql yarn add typescript @types/node --dev yarn add reflect-metadata  </description>
+      <description>  TOC {:toc}  yarn add type-graphql yarn add typescript @types/node --dev yarn add reflect-metadata  </description>
     </item>
     
     <item>
@@ -739,7 +841,7 @@ let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabe
       <pubDate>Tue, 07 Apr 2020 20:32:13 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/jest/</guid>
-      <description># Installation yarn add --dev jest npm install --dev jest yarn add --dev @types/jest npm install --dev @types/jest  Configuration &amp;quot;scripts&amp;quot;: { &amp;quot;test&amp;quot;: &amp;quot;jest&amp;quot; },  Write test code test(`test name`, () =&amp;gt; { expect(1).toBe(1); });  Test Matcher toEqual() test(&#39;return a user object&#39;, () =&amp;gt; { expect(getUser(1)).toEqual({ id: 1, email: &#39;user1@test.com&#39; }); });  toBeTruthy(), toBeFalsy() test(&#39;number 0 is falsy but string 0 is truthy&#39;, () =&amp;gt; { expect(0).toBeFalsy(); expect(&#39;0&#39;).</description>
+      <description># Installation yarn add --dev jest npm install --dev jest yarn add --dev @types/jest npm install --dev @types/jest  Configuration &amp;quot;scripts&amp;quot;: { &amp;quot;test&amp;quot;: &amp;quot;jest&amp;quot; },  Write test code test(`test name`, () =&amp;gt; { expect(1).toBe(1); });  Test Matcher toEqual() test(&#39;return a user object&#39;, () =&amp;gt; { expect(getUser(1)).toEqual({ id: 1, email: &#39;user1@test.com&#39; }); });  toBeTruthy(), toBeFalsy() test(&#39;number 0 is falsy but string 0 is truthy&#39;, () =&amp;gt; { expect(0).</description>
     </item>
     
     <item>
@@ -757,7 +859,7 @@ let myObj = { size: 10, label: &amp;ldquo;Size 10 Object&amp;rdquo; }; printLabe
       <pubDate>Tue, 07 Apr 2020 20:22:29 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/fetch/</guid>
-      <description>Basic Usage const queryData = { query:` query { hello, persons { name, } }` }; const headers = new Headers({ &amp;quot;Accept&amp;quot; : &amp;quot;application/json&amp;quot;, &amp;quot;Content-Type&amp;quot; : &amp;quot;application/json&amp;quot; }); const fetchPromise = fetch(&#39;/graphql&#39;, { headers, method: &amp;quot;POST&amp;quot;, body: JSON.stringify(queryData), }); fetchPromise .then(response =&amp;gt; response.clone().json()) // avoid reponse lock .then(data =&amp;gt; console.log);  </description>
+      <description> Basic Usage const queryData = { query:` query { hello, persons { name, } }` }; const headers = new Headers({ &amp;quot;Accept&amp;quot; : &amp;quot;application/json&amp;quot;, &amp;quot;Content-Type&amp;quot; : &amp;quot;application/json&amp;quot; }); const fetchPromise = fetch(&#39;/graphql&#39;, { headers, method: &amp;quot;POST&amp;quot;, body: JSON.stringify(queryData), }); fetchPromise .then(response =&amp;gt; response.clone().json()) // avoid reponse lock .then(data =&amp;gt; console.log);  </description>
     </item>
     
     <item>
@@ -776,7 +878,12 @@ The Great Escape from Callback Hell</description>
       <pubDate>Tue, 07 Apr 2020 20:22:03 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/javascript/</guid>
-      <description>Syntax  [[Promise]] [[Fetch]]  Library  [[Sequelize]] [[Jest]] [[Winston]] [[graphql-typescript]]  </description>
+      <description> Syntax  [[Promise]] [[Fetch]]
+Library [[Sequelize]]
+ [[Jest]]
+ [[Winston]]
+ [[graphql-typescript]]
+  </description>
     </item>
     
     <item>
@@ -797,7 +904,7 @@ Union File system
       <pubDate>Tue, 07 Apr 2020 20:21:19 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/nexus/</guid>
-      <description> TOC {:toc}  docker 설치 sudo apt install apt-transport-https ca-certificates curl software-properties-common curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&amp;quot; sudo apt update sudo apt install docker-ce -y  nexus 실행 sudo docker volume create --name nexus-data sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/nexus3  nexus bash 실행 sudo docker exec -it 7f1dc6675c11 /bin/bash  [[Docker Volume]] </description>
+      <description>  TOC {:toc}  docker 설치 sudo apt install apt-transport-https ca-certificates curl software-properties-common curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&amp;quot; sudo apt update sudo apt install docker-ce -y  nexus 실행 sudo docker volume create --name nexus-data sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/nexus3  nexus bash 실행 sudo docker exec -it 7f1dc6675c11 /bin/bash  [[Docker Volume]] </description>
     </item>
     
     <item>
@@ -806,7 +913,7 @@ Union File system
       <pubDate>Tue, 07 Apr 2020 20:21:10 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ssdsolid-state-drive/</guid>
-      <description>1. SSD의 구조 1.1. SSD(Solid-State Drive)  Flash Memory를 기반으로 한 저장 매체 비트들은 Floating-Gate Transistor로 구성된 Cell에 저장됨. 모든 컴포넌트가 전기 장치 대부분 NAND사용 (cf. NOR VS NAND)  1.1.1. NAND Flash Memory Property  Lifecycle is wearing-off(수명이 제한적이다.)  이유 : P/E(Program &amp;amp; Erase) 사이클마다 일부 전자가 오류로 인해 쌓이게 되어 트랜지스터에 갇힘. 이로 인해 갇힌 전자가 일정 수준을 넘어가면 사용 불가해짐.    1.1.2. Cell의 종류  SLC(Single Level Cell) : 하나의 비트만 저장 가능, 긴 수명 MLC(Multiple Level Cell) : 2비트, 레이턴시가 높고 짧은 수명 TLC(Triple Level Cell) : 3비트, 레이턴시가 매우 높고 더 짧은 수명 쓰기가 많을 수록 SLC가 좋고, 읽기가 많을 수록 TLC가 좋음.</description>
+      <description>1. SSD의 구조 1.1. SSD(Solid-State Drive)  Flash Memory를 기반으로 한 저장 매체 비트들은 Floating-Gate Transistor로 구성된 Cell에 저장됨. 모든 컴포넌트가 전기 장치 대부분 NAND사용 (cf. NOR VS NAND)  1.1.1. NAND Flash Memory Property  Lifecycle is wearing-off(수명이 제한적이다.)  이유 : P/E(Program &amp;amp; Erase) 사이클마다 일부 전자가 오류로 인해 쌓이게 되어 트랜지스터에 갇힘. 이로 인해 갇힌 전자가 일정 수준을 넘어가면 사용 불가해짐.   1.1.2. Cell의 종류  SLC(Single Level Cell) : 하나의 비트만 저장 가능, 긴 수명 MLC(Multiple Level Cell) : 2비트, 레이턴시가 높고 짧은 수명 TLC(Triple Level Cell) : 3비트, 레이턴시가 매우 높고 더 짧은 수명 쓰기가 많을 수록 SLC가 좋고, 읽기가 많을 수록 TLC가 좋음.</description>
     </item>
     
     <item>
@@ -815,7 +922,12 @@ Union File system
       <pubDate>Tue, 07 Apr 2020 20:20:28 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/pintos/</guid>
-      <description>설정하기 Configuration 프로젝트 기본 다운로드  대부분 우분투에서 설정할테니, 다른사람들이 잘 설정해좋은거 다운 받자  $ git clone https://github.com/kumardeepakr3/PINTOS-Ubuntu.git $ cd PINTOS-Ubuntu $ bash ./pintos_ubuntu.sh  여기서 9,10 작업은 필요가 없는 작업이니 다시 원복해주자  vim 설정하기  나는 vim(정확히는 neovim)으로 코딩할꺼니 자동완성 같은걸 설정해주자 여기서는 [[coc]], [[tagbar]], [[ALE]], [[cscope]]를 사용해서 설정했다.  coc  ccls 를 설치하고 CocLocalConfig를 명령어로 친뒤  { &amp;#34;languageserver&amp;#34;: { &amp;#34;ccls&amp;#34;: { &amp;#34;command&amp;#34;: &amp;#34;ccls&amp;#34;, &amp;#34;filetypes&amp;#34;: [ &amp;#34;c&amp;#34;, &amp;#34;cpp&amp;#34;, &amp;#34;objc&amp;#34;, &amp;#34;objcpp&amp;#34; ], &amp;#34;rootPatterns&amp;#34;: [ &amp;#34;.</description>
+      <description>설정하기 Configuration 프로젝트 기본 다운로드  대부분 우분투에서 설정할테니, 다른사람들이 잘 설정해좋은거 다운 받자 bash $ git clone https://github.com/kumardeepakr3/PINTOS-Ubuntu.git $ cd PINTOS-Ubuntu $ bash ./pintos_ubuntu.sh  여기서 9,10 작업은 필요가 없는 작업이니 다시 원복해주자
+vim 설정하기 나는 vim(정확히는 neovim)으로 코딩할꺼니 자동완성 같은걸 설정해주자
+ 여기서는 [[coc]], [[tagbar]], [[ALE]], [[cscope]]를 사용해서 설정했다.
+coc ccls 를 설치하고
+ CocLocalConfig를 명령어로 친뒤
+{ &amp;quot;languageserver&amp;quot;: { &amp;quot;ccls&amp;quot;: { &amp;quot;command&amp;quot;: &amp;quot;ccls&amp;quot;, &amp;quot;filetypes&amp;quot;: [ &amp;quot;c&amp;quot;, &amp;quot;cpp&amp;quot;, &amp;quot;objc&amp;quot;, &amp;quot;objcpp&amp;quot; ], &amp;quot;rootPatterns&amp;quot;: [ &amp;quot;.</description>
     </item>
     
     <item>
@@ -824,7 +936,7 @@ Union File system
       <pubDate>Tue, 07 Apr 2020 20:20:03 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%EB%B2%84%EC%8A%A4-%EC%8B%9C%EA%B0%84-%EB%A9%94%EB%AA%A8/</guid>
-      <description>목요일 11월 28일 14시 900A 출발 </description>
+      <description> 목요일 11월 28일 14시 900A 출발 </description>
     </item>
     
     <item>
@@ -854,7 +966,12 @@ Tips I use to avoid burnout:
       <pubDate>Tue, 07 Apr 2020 20:18:14 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/</guid>
-      <description>2019년  [[회고/2019.09.18]] [[회고/2019.09.19]] [[회고/2019.10.19]] [[회고/2019.11.24~25]]  2020년  [[회고/2020.01.01]] [[회고/2020.01.17]] [[회고/2020.04.08]] [[회고/2020.04.20]]  미정리 2020년 3월 회고</description>
+      <description>2019년  [[회고/2019.09.18]] [[회고/2019.09.19]] [[회고/2019.10.19]] [[회고/2019.11.24~25]]
+2020년 [[회고/2020.01.01]]
+ [[회고/2020.01.17]]
+ [[회고/2020.04.08]]
+ [[회고/2020.04.20]]
+  미정리 2020년 3월 회고</description>
     </item>
     
     <item>
@@ -863,7 +980,7 @@ Tips I use to avoid burnout:
       <pubDate>Tue, 07 Apr 2020 20:17:47 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ucpc_2018_%EC%98%88%EC%84%A0/</guid>
-      <description>boj15894 - 수학은 체육과목 입니다.  n*4를 출력하면 된다.  #include &amp;lt;iostream&amp;gt; #define scl(n) scanf(&amp;#34;%lld&amp;#34;, &amp;amp;(n))  using lld = long long; using namespace std; int main(){ lld n; scl(n); printf(&amp;#34;%lld&amp;#34;, 4*n); return 0; } boj15903 - 카드 합체 놀이  현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.  #include &amp;lt;iostream&amp;gt; #include &amp;lt;queue&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;algorithm&amp;gt; #define sci(n) scanf(&amp;#34;%d&amp;#34;, &amp;amp;(n))  using namespace std; using lld = long long; int main() { int n, m; sci(n), sci(m); priority_queue&amp;lt;int, vector&amp;lt;int&amp;gt;, greater&amp;lt;int&amp;gt; &amp;gt; q; for(int i=0;i&amp;lt;n;i++){ int t; sci(t); q.</description>
+      <description>boj15894 - 수학은 체육과목 입니다.  n*4를 출력하면 된다. cpp #include &amp;lt;iostream&amp;gt; #define scl(n) scanf(&amp;quot;%lld&amp;quot;, &amp;amp;(n)) using lld = long long; using namespace std; int main(){ lld n; scl(n); printf(&amp;quot;%lld&amp;quot;, 4*n); return 0; }   boj15903 - 카드 합체 놀이  현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.  #include &amp;lt;iostream&amp;gt; #include &amp;lt;queue&amp;gt; #include &amp;lt;vector&amp;gt; #include &amp;lt;algorithm&amp;gt; #define sci(n) scanf(&amp;quot;%d&amp;quot;, &amp;amp;(n)) using namespace std; using lld = long long; int main() { int n, m; sci(n), sci(m); priority_queue&amp;lt;int, vector&amp;lt;int&amp;gt;, greater&amp;lt;int&amp;gt; &amp;gt; q; for(int i=0;i&amp;lt;n;i++){ int t; sci(t); q.</description>
     </item>
     
     <item>
@@ -873,7 +990,7 @@ Tips I use to avoid burnout:
       
       <guid>http://makerdark98.dev/wiki/memory_leak/</guid>
       <description>주제 후보  메모리 누수란 왜 일어나는가? - garbage collector의 동작방식, javascript 에서 메모리 누수 없이 코딩하는 습관 가지기 비동기처리하기 - javascript callback, promise, async-await 웹사이트에서 원하는 정보 추출하기 - 웹사이트 크롤링, 파싱하기 나무위키 유의어, 반의어 - Word2Vec를 통한 나무위키 데이터 학습  → 익명의 대학 동기에게 재밋는 주제를 고르라고 해서 진행되었습니다.
-메모리 누수란 왜 일어나는가? 결론부터 말하자면 프로그래머의 실수. 코딩 습관을 잘 들이자.  Garbage Collection 의 필요성   C언어에서 메모리를 직접 할당하고 해제하는 malloc, free 라는 방식을 사용하였다.</description>
+메모리 누수란 왜 일어나는가? 결론부터 말하자면 프로그래머의 실수. 코딩 습관을 잘 들이자.  Garbage Collection 의 필요성</description>
     </item>
     
     <item>
@@ -893,9 +1010,8 @@ Tips I use to avoid burnout:
       <pubDate>Tue, 07 Apr 2020 20:15:43 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/endurable_transient_inconsistency_in_byte_addressable_persistent_b&#43;-tree/</guid>
-      <description>논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.  Abstract   Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨.
-  쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다.
-  B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.</description>
+      <description>논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.  Abstract  Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨. 쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다. B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.
+→흠.. 갑자기 8Bytes 씩 쓰기와 cache line 이야기하다가 block 기반 이야기를 하는 이유는 block 기반에서는 dirty page를 통해서 내렸고, cache line 단위로 동기화를 해야하는 일이 없었다고 생각한다.</description>
     </item>
     
     <item>
@@ -904,12 +1020,12 @@ Tips I use to avoid burnout:
       <pubDate>Tue, 07 Apr 2020 20:14:30 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/ssd-%EA%B3%B5%EB%B6%80%EC%9E%90%EB%A3%8C-%EB%AA%A8%EC%9D%8C/</guid>
-      <description>TOC {:toc}   An In-Depth Study of Next Generation Interface for Emerging Non-Volatile Memories
-
+      <description>TOC {:toc}  [](https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf) An In-Depth Study of Next Generation Interface for Emerging Non-Volatile Memories
+[](http://camelab.org/uploads/Main/nvmesim.pdf)
 F2FS: A New File System for Flash Storage
-
+[](https://www.usenix.org/system/files/conference/fast15/fast15-paper-lee.pdf)
 The new ext4 filesystem: current status and future plans
-
+[](https://pdfs.semanticscholar.org/b8dd/ec47f9fab1eddb5c9cacf703781dd5337b87.pdf)
 개발자를 위한 SSD (Coding for SSD) – Part 5 : 접근 방법과 시스템 최적화
 개발자를 위한 SSD (Coding for SSD) - Part 5 : 접근 방법과 시스템 최적화
 개발자를 위한 SSD (Coding for SSD) – Part 6 : A Summary – What every programmer should know about solid-state drives</description>
@@ -922,7 +1038,7 @@ The new ext4 filesystem: current status and future plans
       
       <guid>http://makerdark98.dev/wiki/%EA%B0%9C%EB%B0%9C_todo/</guid>
       <description>TOC {:toc}
-  shorter url
+ [ ] shorter url
   todo list
  offline editor with md &amp;amp; my page like blog  hackernews articles
 my favorite musics (includes video song, mp3 files and whatever)
@@ -949,9 +1065,9 @@ golang으로 만드는 db</description>
       <pubDate>Tue, 07 Apr 2020 00:01:51 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/f2fs/</guid>
-      <description>논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.  Abstract   Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨.
-  쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다.
-  B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.</description>
+      <description>[](https://www.usenix.org/system/files/conference/fast18/fast18-hwang.pdf)
+ 논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.  Abstract  Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨. 쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다. B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.
+→흠.. 갑자기 8Bytes 씩 쓰기와 cache line 이야기하다가 block 기반 이야기를 하는 이유는 block 기반에서는 dirty page를 통해서 내렸고, cache line 단위로 동기화를 해야하는 일이 없었다고 생각한다.</description>
     </item>
     
     <item>
@@ -969,7 +1085,7 @@ golang으로 만드는 db</description>
       <pubDate>Sun, 05 Apr 2020 20:15:41 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/weekly/</guid>
-      <description> TOC {:toc}  Test </description>
+      <description>  TOC {:toc}  Test </description>
     </item>
     
     <item>
@@ -987,7 +1103,7 @@ golang으로 만드는 db</description>
       <pubDate>Sun, 05 Apr 2020 15:23:05 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/links/</guid>
-      <description>링크 테스트 하기 위함.</description>
+      <description>  TOC {:toc}  Test </description>
     </item>
     
     <item>
@@ -996,7 +1112,7 @@ golang으로 만드는 db</description>
       <pubDate>Sun, 05 Apr 2020 15:22:33 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/link/</guid>
-      <description> TOC {:toc}  Test </description>
+      <description>  TOC {:toc}  Test </description>
     </item>
     
     <item>
@@ -1014,7 +1130,7 @@ golang으로 만드는 db</description>
       <pubDate>Sun, 26 Jan 2020 23:57:47 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/%EC%84%A4%EB%8C%80%ED%9A%8C/</guid>
-      <description>1. 생각의 흐름  설 대회로는 설 그 자체를 표현하라고 했다. 사실 원래 계획은 Word2Vec를 통해서 9월 (혹은 10월) : 추석 = 1월 (혹은 2월) : 설 이라던가 송편과 떡국 간의 관계를 통해서 설이라는 단어를 결과값으로 뽑고 싶었다. 체계단 내에서 누군가가 konlpy로 무언가를 하고 있는 것을 봤다. NLP라는 영역이 겹치는 것 같아서 뭔가 아이디어가 겹친다고 생각되어 처음부터 다시 생각하기로 했다.   과연 설은 무엇일까?  구글 번역기에 영어로 돌려봤다. New Year&amp;rsquo;s Day라고 나온다.</description>
+      <description>1. 생각의 흐름  설 대회로는 설 그 자체를 표현하라고 했다. 사실 원래 계획은 Word2Vec를 통해서 9월 (혹은 10월) : 추석 = 1월 (혹은 2월) : 설 이라던가 송편과 떡국 간의 관계를 통해서 설이라는 단어를 결과값으로 뽑고 싶었다. 체계단 내에서 누군가가 konlpy로 무언가를 하고 있는 것을 봤다. NLP라는 영역이 겹치는 것 같아서 뭔가 아이디어가 겹친다고 생각되어 처음부터 다시 생각하기로 했다.   과연 설은 무엇일까?  구글 번역기에 영어로 돌려봤다.</description>
     </item>
     
     <item>

@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,59 +150,77 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#11-ssdsolid-state-drive">1.1. SSD(Solid-State Drive)</a>
-      <ul>
-        <li><a href="#111-nand-flash-memory-property">1.1.1. NAND Flash Memory Property</a></li>
-        <li><a href="#112-cell의-종류">1.1.2. Cell의 종류</a></li>
-      </ul>
-    </li>
-    <li><a href="#12-ssd의-구성">1.2 SSD의 구성</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#기본-벤치마킹">기본 벤치마킹</a></li>
-    <li><a href="#프리컨디셔닝pre-conditioning">프리컨디셔닝(Pre-Conditioning)</a></li>
-    <li><a href="#워크로드와-메트릭">워크로드와 메트릭</a></li>
-  </ul>
+<ul>
+<li><a href="#1-ssd의-구조">1. SSD의 구조</a>
+<ul>
+<li><a href="#1-1-ssd-solid-state-drive">1.1. SSD(Solid-State Drive)</a>
+<ul>
+<li><a href="#1-1-1-nand-flash-memory-property">1.1.1. NAND Flash Memory Property</a></li>
+<li><a href="#1-1-2-cell의-종류">1.1.2. Cell의 종류</a></li>
+</ul></li>
+<li><a href="#1-2-ssd의-구성">1.2 SSD의 구성</a></li>
+</ul></li>
+<li><a href="#벤치마킹과-성능-메트릭">벤치마킹과 성능 메트릭</a>
+<ul>
+<li><a href="#기본-벤치마킹">기본 벤치마킹</a></li>
+<li><a href="#프리컨디셔닝-pre-conditioning">프리컨디셔닝(Pre-Conditioning)</a></li>
+<li><a href="#워크로드와-메트릭">워크로드와 메트릭</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="1-ssd의-구조">1. SSD의 구조</h1>
-<h2 id="11-ssdsolid-state-drive">1.1. SSD(Solid-State Drive)</h2>
+      
+
+<h1 id="1-ssd의-구조">1. SSD의 구조</h1>
+
+<h2 id="1-1-ssd-solid-state-drive">1.1. SSD(Solid-State Drive)</h2>
+
 <ul>
 <li>Flash Memory를 기반으로 한 저장 매체</li>
 <li>비트들은 Floating-Gate Transistor로 구성된 Cell에 저장됨.</li>
 <li>모든 컴포넌트가 전기 장치</li>
 <li>대부분 NAND사용 (cf. NOR VS NAND)</li>
 </ul>
-<h3 id="111-nand-flash-memory-property">1.1.1. NAND Flash Memory Property</h3>
+
+<h3 id="1-1-1-nand-flash-memory-property">1.1.1. NAND Flash Memory Property</h3>
+
 <ul>
 <li>Lifecycle is wearing-off(수명이 제한적이다.)
+
 <ul>
 <li>이유 : P/E(Program &amp; Erase) 사이클마다 일부 전자가 오류로 인해 쌓이게 되어 트랜지스터에 갇힘. 이로 인해 갇힌 전자가 일정 수준을 넘어가면 사용 불가해짐.</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h3 id="112-cell의-종류">1.1.2. Cell의 종류</h3>
+
+<h3 id="1-1-2-cell의-종류">1.1.2. Cell의 종류</h3>
+
 <ul>
 <li>SLC(Single Level Cell) : 하나의 비트만 저장 가능, 긴 수명</li>
 <li>MLC(Multiple Level Cell) : 2비트, 레이턴시가 높고 짧은 수명</li>
 <li>TLC(Triple Level Cell) : 3비트, 레이턴시가 매우 높고 더 짧은 수명</li>
 <li>쓰기가 많을 수록 SLC가 좋고, 읽기가 많을 수록 TLC가 좋음.</li>
 </ul>
-<h2 id="12-ssd의-구성">1.2 SSD의 구성</h2>
+
+<h2 id="1-2-ssd의-구성">1.2 SSD의 구성</h2>
+
 <p>..</p>
+
 <h1 id="벤치마킹과-성능-메트릭">벤치마킹과 성능 메트릭</h1>
+
 <h2 id="기본-벤치마킹">기본 벤치마킹</h2>
+
 <ul>
 <li>SATA 3.0</li>
 <li>PCI Express 3.0 (NVMe)</li>
 </ul>
-<h2 id="프리컨디셔닝pre-conditioning">프리컨디셔닝(Pre-Conditioning)</h2>
+
+<h2 id="프리컨디셔닝-pre-conditioning">프리컨디셔닝(Pre-Conditioning)</h2>
+
 <ul>
 <li>보통 10분 테스트한 벤치마크를 사용하는데 이는 대부분의 SSD에서 30분~3시간 사용한 SSD 에서 성능 저하가 발생하기 때문에 미리 일정량을 써놓는 Pre-Conditioning이 필요하다</li>
 <li>이럼에도 불구하고 SSD Benchmark는 단순하지 않다.</li>
 </ul>
+
 <h2 id="워크로드와-메트릭">워크로드와 메트릭</h2>
 
     </div>
@@ -210,8 +228,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -229,7 +249,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

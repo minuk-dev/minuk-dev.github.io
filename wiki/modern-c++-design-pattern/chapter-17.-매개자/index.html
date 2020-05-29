@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -156,26 +156,36 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#간단-설명">간단 설명</a></li>
-    <li><a href="#내용">내용</a></li>
-    <li><a href="#요약">요약</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#간단-설명">간단 설명</a></li>
+<li><a href="#내용">내용</a></li>
+<li><a href="#요약">요약</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="간단-설명">간단 설명</h2>
+      
+
+<h2 id="간단-설명">간단 설명</h2>
+
 <ul>
 <li>서로 다른 컴포넌트 간에 포인터나 직접적인 참조를 통한 커뮤니케이션이 필요하다</li>
 <li>일부 경우 상대방 객체의 존재를 알아야하는점, 객체의 생성/소멸 시점에대한 관리 때문에 포인터나 참조로 접근하는게 불안정할 수 있다.</li>
 <li>이를 위한 매커니즘</li>
 <li>전역 정적 변수이거나 모든 컴포넌트에 그 참조가 노출되어야 한다.</li>
 </ul>
+
 <h2 id="내용">내용</h2>
+
 <ul>
 <li>여기서는 <code>Boost.Signals2</code> 라이브러리를 사용해서 구현한다.</li>
 <li>잘 모르겠다. 일단 요약부분만 적고 나중에 필요하면 찾아보자</li>
 </ul>
+
 <h2 id="요약">요약</h2>
+
 <ul>
 <li>매개자 디자인 패턴은 시스탬 내 컴포넌트 모두가 참조할 수 있는 어떤 중간자를 컴포넌트 간에 서로 직접적으로 참조하지 않더라도 커뮤니케이션을 할수 있게 한다는 것을 기본아이디어로 한다.</li>
 <li>가장 단순한 구현 형태는 맴버 변수로 리스트를 두고 그 리스트를 검사하여 필요한 항목만 선택적으로 처리하는 함수를 만드는 것이다.</li>
@@ -186,8 +196,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -205,7 +217,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

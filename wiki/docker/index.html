@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -149,36 +149,43 @@
 
     </div>
 
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents"></nav></aside>
+    <aside class="navbar" id="nav-toc" style="text-align:left;"></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
       <ul>
-<li>
-<p>install</p>
-<p>curl -fsSL <a href="https://get.docker.com/">https://get.docker.com/</a> | sudo sh</p>
-</li>
-<li>
-<p>user 추가</p>
-<p>sudo useradd {username} -m -s /bin/bash -G docker</p>
-</li>
-<li>
-<p>docker container run</p>
-<p>docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&hellip;]</p>
-</li>
+<li><p>install</p>
+
+<p>curl -fsSL <a href="https://get.docker.com/">https://get.docker.com/</a> | sudo sh</p></li>
+
+<li><p>user 추가</p>
+
+<p>sudo useradd {username} -m -s /bin/bash -G docker</p></li>
+
+<li><p>docker container run</p>
+
+<p>docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&hellip;]</p></li>
 </ul>
+
 <p>-d : detached mode (background mode)</p>
+
 <p>-p : port forwarding from host port to container</p>
+
 <p>-v : mount host directory</p>
+
 <p>-name : configure container name</p>
+
 <p>-rm : remove automatically when process terminated</p>
+
 <p>-it : -i + -t ⇒ interactive terminal</p>
+
 <p>-link : container link</p>
+
 <ul>
-<li>
-<p>sample ubuntu 18.04 image</p>
+<li><p>sample ubuntu 18.04 image</p>
+
 <p>docker run ubuntu:18.04</p>
+
 <p>uml
-docker</p>
-</li>
+docker</p></li>
 </ul>
 
     </div>
@@ -186,8 +193,10 @@ docker</p>
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -205,7 +214,7 @@ docker</p>
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

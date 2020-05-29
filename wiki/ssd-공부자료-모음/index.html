@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -149,40 +149,66 @@
 
     </div>
 
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents"></nav></aside>
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
+<ul>
+<li><a href="#https-www-usenix-org-system-files-hotstorage19-paper-choi-pdf">[](<a href="https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf">https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf</a>)</a></li>
+</ul>
+</nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <ul>
+      
+
+<ul>
 <li>TOC
 {:toc}</li>
 </ul>
-<h1 id="httpswwwusenixorgsystemfileshotstorage19-paper-choipdf"><a href="https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf"></a></h1>
+
+<h1 id="https-www-usenix-org-system-files-hotstorage19-paper-choi-pdf">[](<a href="https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf">https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf</a>)</h1>
+
 <p>An In-Depth Study of Next Generation Interface for
 Emerging Non-Volatile Memories</p>
-<p><a href="http://camelab.org/uploads/Main/nvmesim.pdf"></a></p>
+
+<p>[](<a href="http://camelab.org/uploads/Main/nvmesim.pdf">http://camelab.org/uploads/Main/nvmesim.pdf</a>)</p>
+
 <p>F2FS: A New File System for Flash Storage</p>
-<p><a href="https://www.usenix.org/system/files/conference/fast15/fast15-paper-lee.pdf"></a></p>
+
+<p>[](<a href="https://www.usenix.org/system/files/conference/fast15/fast15-paper-lee.pdf">https://www.usenix.org/system/files/conference/fast15/fast15-paper-lee.pdf</a>)</p>
+
 <p>The new ext4 filesystem: current status and future plans</p>
-<p><a href="https://pdfs.semanticscholar.org/b8dd/ec47f9fab1eddb5c9cacf703781dd5337b87.pdf"></a></p>
+
+<p>[](<a href="https://pdfs.semanticscholar.org/b8dd/ec47f9fab1eddb5c9cacf703781dd5337b87.pdf">https://pdfs.semanticscholar.org/b8dd/ec47f9fab1eddb5c9cacf703781dd5337b87.pdf</a>)</p>
+
 <p>개발자를 위한 SSD (Coding for SSD) – Part 5 : 접근 방법과 시스템 최적화</p>
+
 <p><a href="https://tech.kakao.com/2016/07/17/coding-for-ssd-part-5/">개발자를 위한 SSD (Coding for SSD) - Part 5 : 접근 방법과 시스템 최적화</a></p>
+
 <p>개발자를 위한 SSD (Coding for SSD) – Part 6 : A Summary – What every programmer should know about solid-state drives</p>
-<p><a href="https://tech.kakao.com/2016/07/18/coding-for-ssd-part-6/"></a></p>
+
+<p>[](<a href="https://tech.kakao.com/2016/07/18/coding-for-ssd-part-6/">https://tech.kakao.com/2016/07/18/coding-for-ssd-part-6/</a>)</p>
+
 <p>F2FS 관련 논문</p>
-<p><a href="http://nyx.skku.ac.kr/wp-content/uploads/2018/12/18-720.pdf"></a></p>
-<p><a href="http://nyx.skku.ac.kr/publications/papers/f2fs_padding.pdf"></a></p>
+
+<p>[](<a href="http://nyx.skku.ac.kr/wp-content/uploads/2018/12/18-720.pdf">http://nyx.skku.ac.kr/wp-content/uploads/2018/12/18-720.pdf</a>)</p>
+
+<p>[](<a href="http://nyx.skku.ac.kr/publications/papers/f2fs_padding.pdf">http://nyx.skku.ac.kr/publications/papers/f2fs_padding.pdf</a>)</p>
+
 <p>Optimize write performance for DBMS on Solid State Drive</p>
-<p><a href="https://pdfs.semanticscholar.org/e8fa/8f1f6dab385351deae787577f30310b6fded.pdf"></a></p>
+
+<p>[](<a href="https://pdfs.semanticscholar.org/e8fa/8f1f6dab385351deae787577f30310b6fded.pdf">https://pdfs.semanticscholar.org/e8fa/8f1f6dab385351deae787577f30310b6fded.pdf</a>)</p>
+
 <p>Performance Analysis of NVMe SSDs and
 their Implication on Real World Databases</p>
-<p><a href="https://www.cs.utah.edu/~manua/pubs/systor15.pdf"></a></p>
+
+<p>[](<a href="https://www.cs.utah.edu/~manua/pubs/systor15.pdf">https://www.cs.utah.edu/~manua/pubs/systor15.pdf</a>)</p>
 
     </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -200,7 +226,7 @@ their Implication on Real World Databases</p>
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

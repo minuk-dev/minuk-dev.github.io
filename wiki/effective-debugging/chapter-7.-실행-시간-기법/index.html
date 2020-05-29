@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,81 +150,101 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#item-54-테스트-케이스를-작성하여-오류-찾기">Item 54. 테스트 케이스를 작성하여 오류 찾기</a>
-      <ul>
-        <li><a href="#기억할-사항">기억할 사항</a></li>
-      </ul>
-    </li>
-    <li><a href="#item-55-오류가-발생한-즉시-프로그램-중단하기">Item 55. 오류가 발생한 즉시 프로그램 중단하기</a></li>
-    <li><a href="#item-56-애플리케이션-로그-파일-분석하기">Item 56. 애플리케이션 로그 파일 분석하기</a>
-      <ul>
-        <li><a href="#기억할-사항-1">기억할 사항</a></li>
-      </ul>
-    </li>
-    <li><a href="#item-57-시스템-및-프로세스-연산에-대한-프로파일-분석하기">Item 57. 시스템 및 프로세스 연산에 대한 프로파일 분석하기</a></li>
-    <li><a href="#item-58-실행-흐름-추적하기">Item 58. 실행 흐름 추적하기</a>
-      <ul>
-        <li><a href="#기억할-사항-2">기억할 사항</a></li>
-      </ul>
-    </li>
-    <li><a href="#item-59-동적-프로그램-분석-도구-활용하기">Item 59. 동적 프로그램 분석 도구 활용하기</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#item-54-테스트-케이스를-작성하여-오류-찾기">Item 54. 테스트 케이스를 작성하여 오류 찾기</a>
+<ul>
+<li><a href="#기억할-사항">기억할 사항</a></li>
+</ul></li>
+<li><a href="#item-55-오류가-발생한-즉시-프로그램-중단하기">Item 55. 오류가 발생한 즉시 프로그램 중단하기</a></li>
+<li><a href="#item-56-애플리케이션-로그-파일-분석하기">Item 56. 애플리케이션 로그 파일 분석하기</a>
+<ul>
+<li><a href="#기억할-사항-1">기억할 사항</a></li>
+</ul></li>
+<li><a href="#item-57-시스템-및-프로세스-연산에-대한-프로파일-분석하기">Item 57. 시스템 및 프로세스 연산에 대한 프로파일 분석하기</a></li>
+<li><a href="#item-58-실행-흐름-추적하기">Item 58. 실행 흐름 추적하기</a>
+<ul>
+<li><a href="#기억할-사항-2">기억할 사항</a></li>
+</ul></li>
+<li><a href="#item-59-동적-프로그램-분석-도구-활용하기">Item 59. 동적 프로그램 분석 도구 활용하기</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="item-54-테스트-케이스를-작성하여-오류-찾기">Item 54. 테스트 케이스를 작성하여 오류 찾기</h2>
+      
+
+<h2 id="item-54-테스트-케이스를-작성하여-오류-찾기">Item 54. 테스트 케이스를 작성하여 오류 찾기</h2>
+
 <ul>
 <li>문제를 안정적으로 재현할 수 있도록 테스트 케이스 작성</li>
 <li>테스트 케이스를 최소한으로 간소화</li>
-<li>안정장치 확보 (찾아낸 문제만 걸러내는 단위 테스트나 회귀 테스트를 코드에 추가한다.)</li>
+
+<li><p>안정장치 확보 (찾아낸 문제만 걸러내는 단위 테스트나 회귀 테스트를 코드에 추가한다.)</p>
+
+<h3 id="기억할-사항">기억할 사항</h3></li>
+
+<li><p>제대로 작성된 최소한의 테스트 케이스를 통해 오류가 발생하는 지점과 해결책을 찾을 수 있다.</p></li>
+
+<li><p>사용한 테스트 케이스는 단위 테스트나 회귀 테스트 형태로 소프트웨어에 추가한다.</p></li>
 </ul>
-<h3 id="기억할-사항">기억할 사항</h3>
-<ul>
-<li>제대로 작성된 최소한의 테스트 케이스를 통해 오류가 발생하는 지점과 해결책을 찾을 수 있다.</li>
-<li>사용한 테스트 케이스는 단위 테스트나 회귀 테스트 형태로 소프트웨어에 추가한다.</li>
-</ul>
+
 <h2 id="item-55-오류가-발생한-즉시-프로그램-중단하기">Item 55. 오류가 발생한 즉시 프로그램 중단하기</h2>
+
 <ul>
 <li>루틴의 입력값을 검사하거나 호출한 API가 정상적으로 실행됬는지 확인할 때 Assertion을 활용한다.</li>
 <li>라이브러리에서 검사를 엄격히 수행하도록 설정한다.</li>
 <li>동적 프로그램 분석 기법을 이용하여 프로그램의 연산 과정을 검사한다.</li>
 <li>유닉스 쉘 스크립트를 작성할 때 -e 옵션을 설정해서 명령어가 에러로 인해 종료하면 스크립트가 종료되게 만든다.</li>
 </ul>
+
 <h2 id="item-56-애플리케이션-로그-파일-분석하기">Item 56. 애플리케이션 로그 파일 분석하기</h2>
+
 <ul>
-<li><code>/var/log</code> 에 남는 로그파일 목록
+<li><p><code>/var/log</code> 에 남는 로그파일 목록</p>
+
 <ul>
 <li>인증 관련 : auth.log</li>
 <li>백그라운드 프로세스 : daemon.log</li>
 <li>커널 : kern.log</li>
 <li>디버그 정보 : debug</li>
-<li>기타 메시지 : messages</li>
+
+<li><p>기타 메시지 : messages</p>
+
+<h3 id="기억할-사항-1">기억할 사항</h3></li>
+</ul></li>
+
+<li><p>오류가 발생한 애플리케이션의 로그 파일부터 분석한다.</p></li>
+
+<li><p>오류의 원인이 드러날 정도로 애플리케이션 로그 출력의 상세한 정도를 높인다.</p></li>
+
+<li><p>해결하려는 문제만 드러나도록 로그 파일의 출력 범위를 설정하거 나 로그에 나온 내용을 필터링한다.</p></li>
 </ul>
-</li>
-</ul>
-<h3 id="기억할-사항-1">기억할 사항</h3>
-<ul>
-<li>오류가 발생한 애플리케이션의 로그 파일부터 분석한다.</li>
-<li>오류의 원인이 드러날 정도로 애플리케이션 로그 출력의 상세한 정도를 높인다.</li>
-<li>해결하려는 문제만 드러나도록 로그 파일의 출력 범위를 설정하거 나 로그에 나온 내용을 필터링한다.</li>
-</ul>
+
 <h2 id="item-57-시스템-및-프로세스-연산에-대한-프로파일-분석하기">Item 57. 시스템 및 프로세스 연산에 대한 프로파일 분석하기</h2>
+
 <ul>
 <li>성능에 관련된 문제를 분석할 때는 CPU와 I/O, 메모리에 대한 사용량과 포화도를 살펴본다.</li>
 <li>프로세스의 CPU 및 메모리 사용 현황에 대한 프로파일을 분석하여 성능에 관련딘 문제를 발생하는 코드 영역의 범위를 좁혀나간다.</li>
 </ul>
+
 <h2 id="item-58-실행-흐름-추적하기">Item 58. 실행 흐름 추적하기</h2>
+
 <ul>
 <li>디버깅하는 애플리케이션에 로깅 기능이 없어도 데이터를 뽑아낼 수 있다.</li>
 <li>문제를 해결하기 위해 소프트웨어를 디버깅 버전으로 만들다 보면 문제를 가려버리거나 찾기 힘들게 될 수도 있는데, 실행 흐름을 뽑아내면 디버깅 버전을 따로 만들지 않아도 된다.</li>
 <li>GUI 디버거를 사용할 때에 비해 시스템에 주는 부담이 적어서 실전 환경에서도 활용할 수 있다.</li>
 </ul>
+
 <h3 id="기억할-사항-2">기억할 사항</h3>
+
 <ul>
 <li>시스템 함수나 라이브러리 호출의 실행 흐름을 추적하는 도구를 사용하면 소스 코드를 직접 건드리지 않고도 프로그램의 동작을 관찰할 수 있다.</li>
 <li>윈도우 시스템이라면 윈도우 성능 툴킷, 리눅스라면 SystemTap, macOS나 솔라리스, FreeBSD를 사용한다면 DTrace 도구의 사용법을 익혀서 이를 활용한다.</li>
 </ul>
+
 <h2 id="item-59-동적-프로그램-분석-도구-활용하기">Item 59. 동적 프로그램 분석 도구 활용하기</h2>
+
 <ul>
 <li>동적 프로그램 분석도구를 사용하면 코드를 실제로 실행할 때 발생하는 문제를 찾을 수 있다.</li>
 </ul>
@@ -234,8 +254,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -253,7 +275,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

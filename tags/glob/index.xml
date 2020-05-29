@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>glob on MD98 page</title>
+    <title>Glob on MD98 page</title>
     <link>http://makerdark98.dev/tags/glob/</link>
-    <description>Recent content in glob on MD98 page</description>
+    <description>Recent content in Glob on MD98 page</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ko-kr</language>
     <lastBuildDate>Mon, 13 Apr 2020 22:06:38 +0900</lastBuildDate>
@@ -26,7 +26,7 @@
       <pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate>
       
       <guid>http://makerdark98.dev/wiki/rm/</guid>
-      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일  $ rm -v !(&amp;#34;filename&amp;#34;)  다중  $ rm -v !(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;)  만약 zsh을 쓰고 있다면  $ setopt extendedglob $ rm ^(&amp;#34;filename1&amp;#34; | &amp;#34;filename2&amp;#34;) Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
+      <description>자주 사용하는 거 모음 특정 파일 제외하고 지우기  단일 bash $ rm -v !(&amp;quot;filename&amp;quot;)  다중 bash $ rm -v !(&amp;quot;filename1&amp;quot; | &amp;quot;filename2&amp;quot;)  만약 zsh을 쓰고 있다면 zsh $ setopt extendedglob $ rm ^(&amp;quot;filename1&amp;quot; | &amp;quot;filename2&amp;quot;)   Delete Files Using Extended Pattern Matching Operators  *(pattern-list) : matches zero or more occurrences of the specified patterns ?(pattern-list) : matches zero or one occurence of the specified patterns +(pattern-list) : matches one or more occurrences of the spcified patterns @(pattern-list) : matches one of the spcified patterns !</description>
     </item>
     
   </channel>

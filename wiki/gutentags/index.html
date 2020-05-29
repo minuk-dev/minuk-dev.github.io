@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -154,33 +154,44 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#발생한-문제점">발생한 문제점</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#발생한-문제점">발생한 문제점</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="발생한-문제점">발생한 문제점</h2>
+      
+
+<h2 id="발생한-문제점">발생한 문제점</h2>
+
 <ul>
-<li><code>git</code> 에서 커밋할때마다 아래와 같은 에러로그가 뜬다</li>
-</ul>
+<li><p><code>git</code> 에서 커밋할때마다 아래와 같은 에러로그가 뜬다</p>
+
 <pre><code>hint: Waiting for your editor to close the file...
 Error detected while processing DirChanged Autocommands for &quot;*&quot;:
 E475: Invalid argument: Channel doesn't exist
 E475: Invalid argument: Channel doesn't exist
 Error detected while processing function &lt;SNR&gt;149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job:
 line   22:
-</code></pre><ul>
-<li>해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정</li>
+</code></pre></li>
+
+<li><p>해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정</p>
+
+<pre><code class="language-vimrc">let g:gutentags_exclude_filetypes = ['gitcommit']
+</code></pre></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-vimrc" data-lang="vimrc"> <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">g</span>:<span style="color:#a6e22e">gutentags_exclude_filetypes</span> = [<span style="color:#e6db74">&#39;gitcommit&#39;</span>]<span style="color:#960050;background-color:#1e0010">
-</span></code></pre></div>
+
     </div>
 
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -198,7 +209,7 @@ line   22:
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

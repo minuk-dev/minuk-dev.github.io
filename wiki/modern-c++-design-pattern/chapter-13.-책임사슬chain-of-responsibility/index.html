@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -156,129 +156,153 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#시나리오">시나리오</a></li>
-    <li><a href="#포인터-사슬">포인터 사슬</a></li>
-    <li><a href="#브로커-사슬">브로커 사슬</a></li>
-    <li><a href="#요약">요약</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#시나리오">시나리오</a></li>
+<li><a href="#포인터-사슬">포인터 사슬</a></li>
+<li><a href="#브로커-사슬">브로커 사슬</a></li>
+<li><a href="#요약">요약</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="시나리오">시나리오</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Creature</span>
+      
+
+<h2 id="시나리오">시나리오</h2>
+
+<pre><code class="language-cpp">struct Creature
 {
   string name;
-  <span style="color:#66d9ef">int</span> attack, defense;
-  <span style="color:#75715e">// Constructor, operator...
-</span><span style="color:#75715e"></span>};
-</code></pre></div><h2 id="포인터-사슬">포인터 사슬</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreatureModifier</span>
+  int attack, defense;
+  // Constructor, operator...
+};
+</code></pre>
+
+<h2 id="포인터-사슬">포인터 사슬</h2>
+
+<pre><code class="language-cpp">class CreatureModifier
 {
-  CreatureModifier<span style="color:#f92672">*</span> next{<span style="color:#66d9ef">nullptr</span>};
-<span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
-  Creature<span style="color:#f92672">&amp;</span> creture; <span style="color:#75715e">// reference, pointer or shared_ptr
-</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-  <span style="color:#66d9ef">explicit</span> CreatureModifier(Creature<span style="color:#f92672">&amp;</span> creature)
-    <span style="color:#f92672">:</span> creature(creture) {}
+  CreatureModifier* next{nullptr};
+protected:
+  Creature&amp; creture; // reference, pointer or shared_ptr
+public:
+  explicit CreatureModifier(Creature&amp; creature)
+    : creature(creture) {}
   
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span>(CreatureModifier<span style="color:#f92672">*</span> cm)
+  void add(CreatureModifier* cm)
   {
-    <span style="color:#66d9ef">if</span> (next) next<span style="color:#f92672">-&gt;</span>add(cm);
-    <span style="color:#66d9ef">else</span> next <span style="color:#f92672">=</span>cm;
+    if (next) next-&gt;add(cm);
+    else next =cm;
   }
   
-  <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>()
+  virtual void handle()
   {
-    <span style="color:#66d9ef">if</span> (next) next<span style="color:#f92672">-&gt;</span>handle();
+    if (next) next-&gt;handle();
   }
 };
-</code></pre></div><ul>
+</code></pre>
+
+<ul>
 <li>참조를 넘겨받아 저장하고 변경할 준비</li>
 <li>추상 클래스가 아님</li>
 <li><code>next</code>는 다음 변경 작업을 가리킴</li>
 <li><code>add()</code>를 통해서 작업 사슬에 연결하여 추가</li>
 <li><code>handle()</code> 맴버 함수는 단순히 다음 항목을 처리한다. 원한다면 오버라이딩해서
-처리한다.</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DoubleAttackModifier</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> CreatureModifier
+처리한다.
+```cpp
+class DoubleAttackModifier : public CreatureModifier
 {
-<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-  <span style="color:#66d9ef">explicit</span> DoubleAttackModifier(Creature<span style="color:#f92672">&amp;</span> creature)
-    <span style="color:#f92672">:</span> CreatureModifier(creature) {}
-    
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>() <span style="color:#66d9ef">override</span>
+public:
+explicit DoubleAttackModifier(Creature&amp; creature)
+
+<dl>
+<dd>CreatureModifier(creature) {}
+<br /></dd>
+</dl></li>
+</ul>
+
+<p>void handle() override
   {
-    creature.attack <span style="color:#f92672">*=</span> <span style="color:#ae81ff">2</span>;
-    CreatureModifier<span style="color:#f92672">::</span>handle();
+    creature.attack *= 2;
+    CreatureModifier::handle();
+  }
+};</p>
+
+<pre><code>```cpp
+class NoBonusesModifier : public CreatureModifier
+{
+public:
+  explicit NoBonusesModifer(Creature&amp; creature)
+    : CreatureModifier(creature) {}
+    
+  void handle() override
+  {
+    // Do Nothing
   }
 };
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NoBonusesModifier</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> CreatureModifier
-{
-<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-  <span style="color:#66d9ef">explicit</span> NoBonusesModifer(Creature<span style="color:#f92672">&amp;</span> creature)
-    <span style="color:#f92672">:</span> CreatureModifier(creature) {}
-    
-  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span>() <span style="color:#66d9ef">override</span>
-  {
-    <span style="color:#75715e">// Do Nothing
-</span><span style="color:#75715e"></span>  }
-};
-</code></pre></div><h2 id="브로커-사슬">브로커 사슬</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Game</span>
-{
-  signal<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">void</span>(Query<span style="color:#f92672">&amp;</span>)<span style="color:#f92672">&gt;</span> queries; <span style="color:#75715e">// Boost.Signals2
-</span><span style="color:#75715e"></span>};
+</code></pre>
 
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Query</span>
+<h2 id="브로커-사슬">브로커 사슬</h2>
+
+<pre><code class="language-cpp">struct Game
+{
+  signal&lt;void(Query&amp;)&gt; queries; // Boost.Signals2
+};
+
+struct Query
 {
   string creature_name;
-  <span style="color:#66d9ef">enum</span> <span style="color:#a6e22e">Argumnet</span> { attack, defense } argument;
-  <span style="color:#66d9ef">int</span> result;
+  enum Argumnet { attack, defense } argument;
+  int result;
 };
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Creature</span>
+class Creature
 {
-  Game<span style="color:#f92672">&amp;</span> game;
-  <span style="color:#66d9ef">int</span> attack, defense;
-<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+  Game&amp; game;
+  int attack, defense;
+public:
   string name;
-  Creature(Game<span style="color:#f92672">&amp;</span> game, ...) <span style="color:#f92672">:</span> game{game}, ... { ... }
-  <span style="color:#75715e">// Other Members
-</span><span style="color:#75715e"></span>};
+  Creature(Game&amp; game, ...) : game{game}, ... { ... }
+  // Other Members
+};
 
-<span style="color:#66d9ef">int</span> Creature<span style="color:#f92672">::</span>get_attack() <span style="color:#66d9ef">const</span>
+int Creature::get_attack() const
 {
-  Query q{ name, Query<span style="color:#f92672">::</span>Argument<span style="color:#f92672">::</span>attack, attack };
+  Query q{ name, Query::Argument::attack, attack };
   game.queries(q);
-  <span style="color:#66d9ef">return</span> q.result;
+  return q.result;
 }
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CreatureModifier</span>
+class CreatureModifier
 {
-  Game<span style="color:#f92672">&amp;</span> game;
-  Creature<span style="color:#f92672">&amp;</span> creature;
-<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-  CreatureModifier(Game<span style="color:#f92672">&amp;</span> game, Creature<span style="color:#f92672">&amp;</span> creature)
-    <span style="color:#f92672">:</span> game(game), creature(creature) {}
+  Game&amp; game;
+  Creature&amp; creature;
+public:
+  CreatureModifier(Game&amp; game, Creature&amp; creature)
+    : game(game), creature(creature) {}
 };
 
-<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DoubleAttackModifier</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> CreatureModifier
+class DoubleAttackModifier : public CreatureModifier
 {
   connection conn;
-<span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-  DoubleAttackModifier(Game<span style="color:#f92672">&amp;</span> game, Creature<span style="color:#f92672">&amp;</span> creature)
-    <span style="color:#f92672">:</span> CreatureModifier(game, creature)
+public:
+  DoubleAttackModifier(Game&amp; game, Creature&amp; creature)
+    : CreatureModifier(game, creature)
   {
-    conn <span style="color:#f92672">=</span> game.queries.connect([<span style="color:#f92672">&amp;</span>](Query<span style="color:#f92672">&amp;</span> q) {
-      <span style="color:#66d9ef">if</span> (q.creature_name <span style="color:#f92672">==</span> creature.name <span style="color:#f92672">&amp;&amp;</span>
-        q.argument <span style="color:#f92672">==</span> Query<span style="color:#f92672">::</span>Argument<span style="color:#f92672">::</span>attack)
-        q.result <span style="color:#f92672">*=</span> <span style="color:#ae81ff">2</span>;
+    conn = game.queries.connect([&amp;](Query&amp; q) {
+      if (q.creature_name == creature.name &amp;&amp;
+        q.argument == Query::Argument::attack)
+        q.result *= 2;
     })
   }
   
-  <span style="color:#f92672">~</span>DoubleAttackModifier() { conn.disconnect(); }
+  ~DoubleAttackModifier() { conn.disconnect(); }
 }
-</code></pre></div><h2 id="요약">요약</h2>
+</code></pre>
+
+<h2 id="요약">요약</h2>
+
 <ul>
 <li>컴포넌트들이 어떤 명령이나 조회 작업을 차례로 처리할 수 있게 하는 매우 단순한
 디자인 패턴이다.</li>
@@ -291,8 +315,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -310,7 +336,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

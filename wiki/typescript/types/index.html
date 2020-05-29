@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,31 +150,41 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#boolean">Boolean</a></li>
-    <li><a href="#number">Number</a></li>
-    <li><a href="#string">String</a></li>
-    <li><a href="#array">Array</a></li>
-    <li><a href="#tuple">Tuple</a></li>
-    <li><a href="#enum">Enum</a></li>
-    <li><a href="#any">Any</a></li>
-    <li><a href="#void">Void</a></li>
-    <li><a href="#null--undefined">Null &amp; Undefined</a></li>
-    <li><a href="#never">Never</a></li>
-    <li><a href="#type-assertions">Type assertions</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#boolean">Boolean</a></li>
+<li><a href="#number">Number</a></li>
+<li><a href="#string">String</a></li>
+<li><a href="#array">Array</a></li>
+<li><a href="#tuple">Tuple</a></li>
+<li><a href="#enum">Enum</a></li>
+<li><a href="#any">Any</a></li>
+<li><a href="#void">Void</a></li>
+<li><a href="#null-undefined">Null &amp; Undefined</a></li>
+<li><a href="#never">Never</a></li>
+<li><a href="#type-assertions">Type assertions</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="boolean">Boolean</h2>
+      
+
+<h2 id="boolean">Boolean</h2>
+
 <pre><code>let isDone: boolean = false
 </code></pre>
+
 <h2 id="number">Number</h2>
+
 <pre><code>let decimal: number = 6;
 let hex: number = 0xf00d;
 let binary: number = 0b1010;
 let octal: number = 0o744
 </code></pre>
+
 <h2 id="string">String</h2>
+
 <pre><code>let color: string = &quot;blue&quot;;
 color = 'red';
 
@@ -184,19 +194,25 @@ let sentence: string = `Hello, myname is ${ fullName }.
 
 I'll be ${ age + 1 } years old next month.`;
 </code></pre>
+
 <h2 id="array">Array</h2>
+
 <pre><code>let list: number[] = [1, 2, 3];
 
 let list: Array&lt;number&gt; = [1, 2, 3];
 </code></pre>
+
 <h2 id="tuple">Tuple</h2>
+
 <pre><code>let x: [string, number];
 
 x = [&quot;hello&quot;, 10];
 
 console.log(x[0].substr(1));
 </code></pre>
+
 <h2 id="enum">Enum</h2>
+
 <pre><code>enum Color { Red, Green, Blue }
 let c: Color = Color.Green;
 
@@ -207,12 +223,16 @@ let colorName: string = Color[2];
 
 alert(colorName); // Green
 </code></pre>
+
 <h2 id="any">Any</h2>
+
 <pre><code>let notSure: any = 4;
 notSure = &quot;it may be string&quot;;
 notSure = true;
 </code></pre>
+
 <h2 id="void">Void</h2>
+
 <pre><code>function warnUser(): void {
     alert(&quot;This is my warning message&quot;);
 }
@@ -220,11 +240,15 @@ notSure = true;
 let unusable: void = undefined;
 let unusable2: void = null;
 </code></pre>
-<h2 id="null--undefined">Null &amp; Undefined</h2>
+
+<h2 id="null-undefined">Null &amp; Undefined</h2>
+
 <pre><code>let u: undefined = undefined;
 let n: null = null;
 </code></pre>
+
 <h2 id="never">Never</h2>
+
 <pre><code>function error(message: string): nver {
     throw new Error(message);
 }
@@ -238,7 +262,9 @@ function infiniteLoop(): nber {
     }
 }
 </code></pre>
+
 <h2 id="type-assertions">Type assertions</h2>
+
 <pre><code>let someValue: any = &quot;this is a string&quot;;
 
 let strLength: number = (&lt;string&gt;someValue).length;
@@ -253,8 +279,10 @@ let strLength: number = (someValue as string).length;
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -272,7 +300,7 @@ let strLength: number = (someValue as string).length;
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

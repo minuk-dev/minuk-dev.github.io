@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,194 +150,217 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#builder-pattern">Builder Pattern</a>
-      <ul>
-        <li><a href="#simple-builder">Simple Builder</a></li>
-        <li><a href="#fluent-builder">Fluent Builder</a></li>
-        <li><a href="#force-to-use-builder-class">Force to use Builder Class</a></li>
-        <li><a href="#groovy---style-builder"><code>Groovy</code> - style builder</a></li>
-        <li><a href="#composite-builder">Composite Builder</a></li>
-        <li><a href="#summary">Summary</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#builder-pattern">Builder Pattern</a>
+<ul>
+<li><a href="#simple-builder">Simple Builder</a></li>
+<li><a href="#fluent-builder">Fluent Builder</a></li>
+<li><a href="#force-to-use-builder-class">Force to use Builder Class</a></li>
+<li><a href="#groovy-style-builder"><code>Groovy</code> - style builder</a></li>
+<li><a href="#composite-builder">Composite Builder</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="builder-pattern">Builder Pattern</h2>
+      
+
+<h2 id="builder-pattern">Builder Pattern</h2>
+
 <h3 id="simple-builder">Simple Builder</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">HtmlBuilder</span>
+
+<pre><code class="language-cpp">    struct HtmlBuilder
     {
       HtmlElement root;
     
-      HtmlBuilder(string root_name) { root.name <span style="color:#f92672">=</span> root_name; }
+      HtmlBuilder(string root_name) { root.name = root_name; }
     
-      <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add_child</span>(string child_name string child_text)
+      void add_child(string child_name string child_text)
       {
         HtmlElement e{ child_name, child_text };
         root.elements.emplace_back(e);
       }
-      string <span style="color:#a6e22e">str</span>() { <span style="color:#66d9ef">return</span> root.str(); }
+      string str() { return root.str(); }
     };
-</code></pre></div><h3 id="fluent-builder">Fluent Builder</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">HtmlBuilder</span>
+</code></pre>
+
+<h3 id="fluent-builder">Fluent Builder</h3>
+
+<pre><code class="language-cpp">    struct HtmlBuilder
     {
       HtmlElement root;
-      HtmlBuilder(string root_name) { root.name <span style="color:#f92672">=</span> root_name; }
-      HtmlBuilder<span style="color:#f92672">&amp;</span> add_child(string child_name string child_text)
+      HtmlBuilder(string root_name) { root.name = root_name; }
+      HtmlBuilder&amp; add_child(string child_name string child_text)
       {
         HtmlElement e{ child_name child_text };
         root.elements.emplace_back(e);
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
+        return *this;
       }
-      <span style="color:#75715e">/* skip */</span>
+      /* skip */
     };
     
-    HtmlBuilder builder{ <span style="color:#e6db74">&#34;ul&#34;</span> };
-    builder.add_child(<span style="color:#e6db74">&#34;li&#34;</span>, <span style="color:#e6db74">&#34;Hello&#34;</span>).add_child(<span style="color:#e6db74">&#34;li&#34;</span>, <span style="color:#e6db74">&#34;world&#34;</span>);
-    cout <span style="color:#f92672">&lt;&lt;</span> builder.str() <span style="color:#f92672">&lt;&lt;</span> endl;
-</code></pre></div><ul>
+    HtmlBuilder builder{ &quot;ul&quot; };
+    builder.add_child(&quot;li&quot;, &quot;Hello&quot;).add_child(&quot;li&quot;, &quot;world&quot;);
+    cout &lt;&lt; builder.str() &lt;&lt; endl;
+</code></pre>
+
+<ul>
 <li>Fluence Builder Method can return whatever in reference(&amp;) or pointer (*). Just do what you want.</li>
 </ul>
+
 <h3 id="force-to-use-builder-class">Force to use Builder Class</h3>
+
 <ul>
-<li>delete public constructor</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">HtmlElement</span>
-    {
-      string name;
-      string text;
-      vector<span style="color:#f92672">&lt;</span>HtmlElement<span style="color:#f92672">&gt;</span> elements;
-      <span style="color:#66d9ef">const</span> size_t indent_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>;
+<li><p>delete public constructor</p>
+
+<pre><code class="language-cpp">struct HtmlElement
+{
+  string name;
+  string text;
+  vector&lt;HtmlElement&gt; elements;
+  const size_t indent_size = 2;
       
-      <span style="color:#66d9ef">static</span> unique_ptr<span style="color:#f92672">&lt;</span>HtmlBuilder<span style="color:#f92672">&gt;</span> build(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> root_name)
-      {
-        <span style="color:#66d9ef">return</span> make_unique<span style="color:#f92672">&lt;</span>HtmlBuilder<span style="color:#f92672">&gt;</span>(root_name);
-      }
+  static unique_ptr&lt;HtmlBuilder&gt; build(const string&amp; root_name)
+  {
+    return make_unique&lt;HtmlBuilder&gt;(root_name);
+  }
     
-    <span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
-      HtmlElement() {}
-      HtmlElement(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> name, <span style="color:#66d9ef">const</span> string <span style="color:#f92672">&amp;</span>text)
-        <span style="color:#f92672">:</span> name{name}, text{text} {}
-    };
+protected:
+  HtmlElement() {}
+  HtmlElement(const string&amp; name, const string &amp;text)
+    : name{name}, text{text} {}
+};
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">HtmlBuilder</span>
-    {
-      <span style="color:#66d9ef">operator</span> <span style="color:#a6e22e">HtmlElement</span>() <span style="color:#66d9ef">const</span> { <span style="color:#66d9ef">return</span> root; }
-      HtmlElement root;
-      <span style="color:#75715e">/* skip */</span>
-    };
+struct HtmlBuilder
+{
+  operator HtmlElement() const { return root; }
+  HtmlElement root;
+  /* skip */
+};
     
-    <span style="color:#75715e">/* Can use move semantic */</span>
-    HtmlElement HtmlBuilder<span style="color:#f92672">::</span>build() <span style="color:#66d9ef">const</span>
-    {
-      <span style="color:#66d9ef">return</span> root;
-    }
-</code></pre></div><h3 id="groovy---style-builder"><code>Groovy</code> - style builder</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Tag</span>
+/* Can use move semantic */
+HtmlElement HtmlBuilder::build() const
+{
+  return root;
+}
+</code></pre></li>
+</ul>
+
+<h3 id="groovy-style-builder"><code>Groovy</code> - style builder</h3>
+
+<pre><code class="language-cpp">    struct Tag
     {
       string name;
       string text;
-      vector<span style="color:#f92672">&lt;</span>Tag<span style="color:#f92672">&gt;</span> children;
-      vector<span style="color:#f92672">&lt;</span>pair<span style="color:#f92672">&lt;</span>string, string<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&gt;</span> sttributes;
+      vector&lt;Tag&gt; children;
+      vector&lt;pair&lt;string, string&gt; &gt; sttributes;
     
-      <span style="color:#66d9ef">friend</span> ostream<span style="color:#f92672">&amp;</span> <span style="color:#66d9ef">operator</span> <span style="color:#f92672">&lt;&lt;</span> (std<span style="color:#f92672">::</span>ostream<span style="color:#f92672">&amp;</span> os, <span style="color:#66d9ef">const</span> Tag<span style="color:#f92672">&amp;</span> tag)
+      friend ostream&amp; operator &lt;&lt; (std::ostream&amp; os, const Tag&amp; tag)
       {
-      <span style="color:#75715e">/* skip implementation */</span>
+      /* skip implementation */
       }
     
-    <span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
-      Tag(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> name, <span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> text)
-        <span style="color:#f92672">:</span> name {name}, text{text} {}
+    protected:
+      Tag(const string&amp; name, const string&amp; text)
+        : name {name}, text{text} {}
     
-      Tag(<span style="color:#66d9ef">const</span> string <span style="color:#f92672">&amp;</span>name, <span style="color:#66d9ef">const</span> vector<span style="color:#f92672">&lt;</span>Tag<span style="color:#f92672">&gt;&amp;</span> children)
-        <span style="color:#f92672">:</span> name{name}, children{children} {}
+      Tag(const string &amp;name, const vector&lt;Tag&gt;&amp; children)
+        : name{name}, children{children} {}
     };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">P</span> <span style="color:#f92672">:</span> Tag
+    struct P : Tag
     {
-      <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">P</span>(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> text)
-        <span style="color:#f92672">:</span> Tag{<span style="color:#e6db74">&#34;p&#34;</span>, text} {}
+      explicit P(const string&amp; text)
+        : Tag{&quot;p&quot;, text} {}
     
-      P(initializer_list<span style="color:#f92672">&lt;</span>Tag<span style="color:#f92672">&gt;</span> children)
-        <span style="color:#f92672">:</span> Tag{<span style="color:#e6db74">&#34;p&#34;</span>, children} {}
+      P(initializer_list&lt;Tag&gt; children)
+        : Tag{&quot;p&quot;, children} {}
     };
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">IMG</span> <span style="color:#f92672">:</span> Tag
+    struct IMG : Tag
     {
-      <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">IMG</span>(<span style="color:#66d9ef">const</span> string<span style="color:#f92672">&amp;</span> url
-        : Tag{<span style="color:#e6db74">&#34;img&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>}
+      explicit IMG(const string&amp; url
+        : Tag{&quot;img&quot;, &quot;&quot;}
       {
-    		attributes.emplace_back({<span style="color:#e6db74">&#34;src&#34;</span>, url});
+    		attributes.emplace_back({&quot;src&quot;, url});
       }
     };
     
-    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span>
+    std::cout &lt;&lt;
       P {
-        IMG { <span style="color:#e6db74">&#34;http://pokemon.com/pikachu.png&#34;</span> }
+        IMG { &quot;http://pokemon.com/pikachu.png&quot; }
       }
-    <span style="color:#f92672">&lt;&lt;</span> std<span style="color:#f92672">::</span>endl;
-</code></pre></div><h3 id="composite-builder">Composite Builder</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PersonBuilderBase</span>
+    &lt;&lt; std::endl;
+</code></pre>
+
+<h3 id="composite-builder">Composite Builder</h3>
+
+<pre><code class="language-cpp">    class PersonBuilderBase
     {
-    <span style="color:#66d9ef">protected</span><span style="color:#f92672">:</span>
-      Person<span style="color:#f92672">&amp;</span> person;
-      <span style="color:#66d9ef">explicit</span> <span style="color:#a6e22e">PersonBuilderBase</span>(Person<span style="color:#f92672">&amp;</span> person)
-        <span style="color:#f92672">:</span> person{ person } {}
-    <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-      <span style="color:#66d9ef">operator</span> Person()
+    protected:
+      Person&amp; person;
+      explicit PersonBuilderBase(Person&amp; person)
+        : person{ person } {}
+    public:
+      operator Person()
       {
-        <span style="color:#66d9ef">return</span> std<span style="color:#f92672">::</span>move(person);
+        return std::move(person);
       }
     
-      PersonAddressBuilder <span style="color:#a6e22e">lives</span>() <span style="color:#66d9ef">const</span>;
-      PersonJobBuilder <span style="color:#a6e22e">works</span>() <span style="color:#66d9ef">const</span>;
+      PersonAddressBuilder lives() const;
+      PersonJobBuilder works() const;
     };
     
-    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PersonBiulder</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> PersonBuilderBase
+    class PersonBiulder : public PersonBuilderBase
     {
       Person p;
-    <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-      PersonBuilder() <span style="color:#f92672">:</span> PersonBuilderBase{p} {}
+    public:
+      PersonBuilder() : PersonBuilderBase{p} {}
     };
     
     
-    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">PersonAddressBuilder</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">public</span> PersonBuilderBase
+    class PersonAddressBuilder : public PersonBuilderBase
     {
-      <span style="color:#66d9ef">typedef</span> PersonAddressBuilder self;
-    <span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
-      <span style="color:#66d9ef">explicit</span> PersonAddressBuilder(Person<span style="color:#f92672">&amp;</span> person)
-        <span style="color:#f92672">:</span> PersonBuilderBase { person } {}
+      typedef PersonAddressBuilder self;
+    public:
+      explicit PersonAddressBuilder(Person&amp; person)
+        : PersonBuilderBase { person } {}
       
-      self<span style="color:#f92672">&amp;</span> at(std<span style="color:#f92672">::</span>string street_address)
+      self&amp; at(std::string street_address)
       {
-        person.street_address <span style="color:#f92672">=</span> street_address;
-        <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;
+        person.street_address = street_address;
+        return *this;
       }
     
-      self<span style="color:#f92672">&amp;</span> with_postcode(std<span style="color:#f92672">::</span>string post_code) { <span style="color:#75715e">/* skip */</span> }
+      self&amp; with_postcode(std::string post_code) { /* skip */ }
       
-      self<span style="color:#f92672">&amp;</span> in(std<span style="color:#f92672">::</span>string city) { <span style="color:#75715e">/* skip */</span> }
+      self&amp; in(std::string city) { /* skip */ }
     };
     
-    Person p <span style="color:#f92672">=</span> Person<span style="color:#f92672">::</span>create()
-      .lives().at(<span style="color:#e6db74">&#34;123 London Road&#34;</span>)
-              .with_postcode(<span style="color:#e6db74">&#34;SW1 1GB&#34;</span>)
-              .in(<span style="color:#e6db74">&#34;London&#34;</span>)
-      .works().at(<span style="color:#e6db74">&#34;PragmaSoft&#34;</span>)
-              .as_a(<span style="color:#e6db74">&#34;Consultant&#34;</span>)
-              .earning(<span style="color:#ae81ff">10e6</span>);
-</code></pre></div><h3 id="summary">Summary</h3>
+    Person p = Person::create()
+      .lives().at(&quot;123 London Road&quot;)
+              .with_postcode(&quot;SW1 1GB&quot;)
+              .in(&quot;London&quot;)
+      .works().at(&quot;PragmaSoft&quot;)
+              .as_a(&quot;Consultant&quot;)
+              .earning(10e6);
+</code></pre>
+
+<h3 id="summary">Summary</h3>
+
 <ul>
 <li>The purpose of <code>Builder Pattern</code> is to create a complicate object, which needs a combination of many items.</li>
 <li>Properties of Builder Pattern
+
 <ul>
 <li>If you use the influence interface builder, just need only one call chain. Of course, the builder methods are constructed to return <code>this</code>(pointer) or <code>*this</code>(reference).</li>
 <li>Hide public outter constructor of target object to force using builder class or method. Also can define good operators to achieve this.</li>
 <li>Awesome <code>groovy</code>-style builder can be constructed with uniform initialiing syntax.</li>
 <li>A Builder interface can expose other sub builders. (refer to composite builder)</li>
-</ul>
-</li>
+</ul></li>
 </ul>
 
     </div>
@@ -345,8 +368,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -364,7 +389,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

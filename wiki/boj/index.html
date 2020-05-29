@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,20 +150,26 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#리스트">리스트</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#리스트">리스트</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="리스트">리스트</h2>
-<ul>
-<li><input checked="" disabled="" type="checkbox"> 10830 제출 (MOD 주의하자)</li>
-<li><input checked="" disabled="" type="checkbox"> 1300 제출 (long long 주의하자)</li>
-<li><input checked="" disabled="" type="checkbox"> 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기)</li>
-<li><input checked="" disabled="" type="checkbox"> 1167 dfs 를 주의하면서 짜자</li>
-<li><input checked="" disabled="" type="checkbox"> 11725</li>
-<li><input checked="" disabled="" type="checkbox"> 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자)</li>
-<li><input checked="" disabled="" type="checkbox"> 1967 : 1167 하고 똑같네</li>
+      
+
+<h2 id="리스트">리스트</h2>
+
+<ul class="task-list">
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 10830 제출 (MOD 주의하자)</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 1300 제출 (long long 주의하자)</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 2261 line sweep으로 푼거 다시 제출 (시간복잡도 잘 생각하기)</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 1167 dfs 를 주의하면서 짜자</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 11725</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 12025 index_tree 로 풀어보기 (압축하는데 시간이 생각보다 많이드나? ㅠ 조금더 고민해보자)</label></li>
+<li><label><input type="checkbox" checked disabled class="task-list-item"> 1967 : 1167 하고 똑같네</label></li>
 </ul>
 
     </div>
@@ -171,8 +177,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -190,7 +198,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

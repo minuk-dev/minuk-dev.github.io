@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -149,26 +149,42 @@
 
     </div>
 
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents"></nav></aside>
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
+<ul>
+<li><a href="#docker-설치">docker 설치</a></li>
+<li><a href="#nexus-실행">nexus 실행</a></li>
+<li><a href="#nexus-bash-실행">nexus bash 실행</a></li>
+<li><a href="#docker-volume">[[Docker Volume]]</a></li>
+</ul>
+</nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <ul>
+      
+
+<ul>
 <li>TOC
 {:toc}</li>
 </ul>
+
 <h1 id="docker-설치">docker 설치</h1>
+
 <pre><code>sudo apt install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&quot;
 sudo apt update
 sudo apt install docker-ce -y
 </code></pre>
+
 <h1 id="nexus-실행">nexus 실행</h1>
+
 <pre><code>sudo docker volume create --name nexus-data
 sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
 </code></pre>
+
 <h1 id="nexus-bash-실행">nexus bash 실행</h1>
+
 <pre><code>sudo docker exec -it 7f1dc6675c11 /bin/bash
 </code></pre>
+
 <h1 id="docker-volume">[[Docker Volume]]</h1>
 
     </div>
@@ -176,8 +192,10 @@ sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -195,7 +213,7 @@ sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -160,32 +160,42 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#자주-사용하는-거-모음">자주 사용하는 거 모음</a>
-      <ul>
-        <li><a href="#특정-파일-제외하고-지우기">특정 파일 제외하고 지우기</a></li>
-      </ul>
-    </li>
-    <li><a href="#delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#자주-사용하는-거-모음">자주 사용하는 거 모음</a>
+<ul>
+<li><a href="#특정-파일-제외하고-지우기">특정 파일 제외하고 지우기</a></li>
+</ul></li>
+<li><a href="#delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="자주-사용하는-거-모음">자주 사용하는 거 모음</h2>
+      
+
+<h2 id="자주-사용하는-거-모음">자주 사용하는 거 모음</h2>
+
 <h3 id="특정-파일-제외하고-지우기">특정 파일 제외하고 지우기</h3>
+
 <ul>
-<li>단일</li>
+<li>단일
+<code>bash
+$ rm -v !(&quot;filename&quot;)
+</code></li>
+<li>다중
+<code>bash
+$ rm -v !(&quot;filename1&quot; | &quot;filename2&quot;)
+</code></li>
+<li>만약 zsh을 쓰고 있다면
+<code>zsh
+$ setopt extendedglob
+$ rm ^(&quot;filename1&quot; | &quot;filename2&quot;)
+</code></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rm -v !<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filename&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><ul>
-<li>다중</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rm -v !<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filename1&#34;</span> | <span style="color:#e6db74">&#34;filename2&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><ul>
-<li>만약 zsh을 쓰고 있다면</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-zsh" data-lang="zsh">$ setopt extendedglob
-$ rm ^<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filename1&#34;</span> | <span style="color:#e6db74">&#34;filename2&#34;</span><span style="color:#f92672">)</span>
-</code></pre></div><h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators</h2>
+
+<h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators</h2>
+
 <ul>
 <li><code>*(pattern-list)</code> : matches zero or more occurrences of the specified patterns</li>
 <li><code>?(pattern-list)</code> : matches zero or one occurence of the specified patterns</li>
@@ -200,8 +210,10 @@ $ rm ^<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filen
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -219,7 +231,7 @@ $ rm ^<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;filen
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,100 +150,111 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#adapter-pattern">Adapter Pattern</a></li>
-    <li><a href="#adapter">Adapter</a></li>
-    <li><a href="#temporary-adapter">Temporary Adapter</a></li>
-  </ul>
+<ul>
+<li>
+<ul>
+<li><a href="#adapter-pattern">Adapter Pattern</a></li>
+<li><a href="#adapter">Adapter</a></li>
+<li><a href="#temporary-adapter">Temporary Adapter</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h2 id="adapter-pattern">Adapter Pattern</h2>
+      
+
+<h2 id="adapter-pattern">Adapter Pattern</h2>
+
 <ul>
-<li>We use a example case, drawiing geometric shape.</li>
-</ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Point</span>
-    {
-      <span style="color:#66d9ef">int</span> x, y;
-    };
+<li><p>We use a example case, drawiing geometric shape.</p>
+
+<pre><code class="language-cpp">struct Point
+{
+  int x, y;
+};
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Line</span>{
-      Point start, end;
-    };
+struct Line{
+  Point start, end;
+};
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">VectorObject</span>
-    {
-      <span style="color:#66d9ef">virtual</span> std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>Line<span style="color:#f92672">&gt;::</span>iterator begin() <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-      <span style="color:#66d9ef">virtual</span> std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>Line<span style="color:#f92672">&gt;::</span>iterator end() <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-    };
+struct VectorObject
+{
+  virtual std::vector&lt;Line&gt;::iterator begin() = 0;
+  virtual std::vector&lt;Line&gt;::iterator end() = 0;
+};
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">VectorRectangle</span> <span style="color:#f92672">:</span> VectorObject
-    {
-      VectorRectangle(<span style="color:#66d9ef">int</span> x, <span style="color:#66d9ef">int</span> y, <span style="color:#66d9ef">int</span> width, <span style="color:#66d9ef">int</span> height)
-      {
-        lines.emplace_back(Line{ Point{x, y}, Point{x <span style="color:#f92672">+</span> width, y} });
-        lines.emplace_back(Line{ Point{x <span style="color:#f92672">+</span> width, y}, Point {x <span style="color:#f92672">+</span> width, y <span style="color:#f92672">+</span> height} });
-        lines.emplace_back(Line{ Point{x,y}, Point{x, y <span style="color:#f92672">+</span> height} });
-        lines.emplace_back(Line{ Point{ x, y <span style="color:#f92672">+</span> height }, Point {x <span style="color:#f92672">+</span> width, y <span style="color:#f92672">+</span> height} });
-      }
+struct VectorRectangle : VectorObject
+{
+  VectorRectangle(int x, int y, int width, int height)
+  {
+    lines.emplace_back(Line{ Point{x, y}, Point{x + width, y} });
+    lines.emplace_back(Line{ Point{x + width, y}, Point {x + width, y + height} });
+    lines.emplace_back(Line{ Point{x,y}, Point{x, y + height} });
+    lines.emplace_back(Line{ Point{ x, y + height }, Point {x + width, y + height} });
+  }
      
-      std<span style="color:#f92672">::</span>vecotr<span style="color:#f92672">&lt;</span>Line<span style="color:#f92672">&gt;::</span>iterator begin() <span style="color:#66d9ef">override</span> {
-        <span style="color:#66d9ef">return</span> lines.begin();
-      }
-      std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>Line<span style="color:#f92672">&gt;::</span>iterator end() <span style="color:#66d9ef">override</span> {
-        <span style="color:#66d9ef">return</span> lines.end();
-      }
+  std::vecotr&lt;Line&gt;::iterator begin() override {
+    return lines.begin();
+  }
+  std::vector&lt;Line&gt;::iterator end() override {
+    return lines.end();
+  }
     
-    <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
-      std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>Line<span style="color:#f92672">&gt;</span> lines;
-    };
+private:
+  std::vector&lt;Line&gt; lines;
+};
     
-    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">DrawPoints</span>(CPaintDC<span style="color:#f92672">&amp;</span> dc,
-      std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>Point<span style="color:#f92672">&gt;::</span>iterator start,
-      std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>Point<span style="color:#f92672">&gt;::</span>iterator end)
-    {
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span> i <span style="color:#f92672">=</span> start; i <span style="color:#f92672">!=</span> end; <span style="color:#f92672">++</span>i)
-        dc.SetPixel(i<span style="color:#f92672">-&gt;</span>x, i<span style="color:#f92672">-&gt;</span>y , <span style="color:#ae81ff">0</span>);
-    }
-</code></pre></div><h2 id="adapter">Adapter</h2>
+void DrawPoints(CPaintDC&amp; dc,
+  std::vector&lt;Point&gt;::iterator start,
+  std::vector&lt;Point&gt;::iterator end)
+{
+  for (auto i = start; i != end; ++i)
+    dc.SetPixel(i-&gt;x, i-&gt;y , 0);
+}
+</code></pre></li>
+</ul>
+
+<h2 id="adapter">Adapter</h2>
+
 <ul>
 <li>Let&rsquo;s draw a few rectangles.</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">    vector<span style="color:#f92672">&lt;</span>shared_ptr<span style="color:#f92672">&lt;</span>VectorObject<span style="color:#f92672">&gt;&gt;</span> vectorObjects{
-      make_shared<span style="color:#f92672">&lt;</span>VectorRectangle<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">10</span>, <span style="color:#ae81ff">100</span>, <span style="color:#ae81ff">100</span>),
-      make_shared<span style="color:#f92672">&lt;</span>VectorRectangle<span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">30</span>, <span style="color:#ae81ff">60</span>, <span style="color:#ae81ff">60</span>)
+
+<pre><code class="language-cpp">    vector&lt;shared_ptr&lt;VectorObject&gt;&gt; vectorObjects{
+      make_shared&lt;VectorRectangle&gt;(10, 10, 100, 100),
+      make_shared&lt;VectorRectangle&gt;(30, 30, 60, 60)
     }
     
-    <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">LineToPointAdapter</span>
+    struct LineToPointAdapter
     {
-      <span style="color:#66d9ef">typedef</span> vector<span style="color:#f92672">&lt;</span>Point<span style="color:#f92672">&gt;</span> Points;
+      typedef vector&lt;Point&gt; Points;
     
-      LineToPointAdapter(Line<span style="color:#f92672">&amp;</span> line);
+      LineToPointAdapter(Line&amp; line);
       
-      <span style="color:#66d9ef">virtual</span> Points<span style="color:#f92672">::</span>iterator begin() { <span style="color:#66d9ef">return</span> points.begin(); }
-      <span style="color:#66d9ef">virtual</span> Points<span style="color:#f92672">::</span>iterator end() { <span style="color:#66d9ef">return</span> points.end(); }
-    <span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+      virtual Points::iterator begin() { return points.begin(); }
+      virtual Points::iterator end() { return points.end(); }
+    private:
       Points points;
     };
     
-    LineToPointAdapter<span style="color:#f92672">::</span>LineToPointAdapter(Line<span style="color:#f92672">&amp;</span> line)
+    LineToPointAdapter::LineToPointAdapter(Line&amp; line)
     {
-      <span style="color:#66d9ef">int</span> left <span style="color:#f92672">=</span> min(line.start.x, line.end.x);
-      <span style="color:#66d9ef">int</span> right <span style="color:#f92672">=</span> max(line.start.x, line.end.x);
-      <span style="color:#66d9ef">int</span> top <span style="color:#f92672">=</span> min(line.start.y, line.end.y);
-      <span style="color:#66d9ef">int</span> bottom <span style="color:#f92672">=</span> max(line.start.y, line.end.y);
-      <span style="color:#66d9ef">int</span> dx <span style="color:#f92672">=</span> right <span style="color:#f92672">-</span> left;
-      <span style="color:#66d9ef">int</span> dy <span style="color:#f92672">=</span> line.end.y <span style="color:#f92672">-</span> line.start.y;
+      int left = min(line.start.x, line.end.x);
+      int right = max(line.start.x, line.end.x);
+      int top = min(line.start.y, line.end.y);
+      int bottom = max(line.start.y, line.end.y);
+      int dx = right - left;
+      int dy = line.end.y - line.start.y;
     
-      <span style="color:#66d9ef">if</span> (dx <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+      if (dx == 0)
       {
-        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> y <span style="color:#f92672">=</span> top; y <span style="color:#f92672">&lt;=</span> bottom; <span style="color:#f92672">++</span>y)
+        for (int y = top; y &lt;= bottom; ++y)
         {
           points.emplace_back(Point{ left, y });
         }
       }
-      <span style="color:#66d9ef">else</span> <span style="color:#a6e22e">if</span> (dy <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+      else if (dy == 0)
       {
-        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> x <span style="color:#f92672">=</span> left; x <span style="color:#f92672">&lt;=</span> right; <span style="color:#f92672">++</span>x)
+        for (int x = left; x &lt;= right; ++x)
         {
           points.emplace_back(Point{ x, top });
         }
@@ -251,77 +262,81 @@
     }
     
     
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> obj : vectorObjects)
+    for (auto&amp; obj : vectorObjects)
     {
-      <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> line : <span style="color:#f92672">*</span>obj)
+      for (auto&amp; line : *obj)
       {
         LineToPointAdapter lpo{ line };
         DrawPoints(dc, lpo.begin(), lpo.end());
       }
     }
-</code></pre></div><h2 id="temporary-adapter">Temporary Adapter</h2>
+</code></pre>
+
+<h2 id="temporary-adapter">Temporary Adapter</h2>
+
 <ul>
-<li>How about above method is called in every display update despite no change?
+<li><p>How about above method is called in every display update despite no change?</p>
+
 <ul>
-<li>
-<p>One of the solutions is to use cache.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp">vector<span style="color:#f92672">&lt;</span>Point<span style="color:#f92672">&gt;</span> points;
-<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> o : vectorObjects)
+<li><p>One of the solutions is to use cache.</p>
+
+<pre><code class="language-cpp">vector&lt;Point&gt; points;
+for (auto&amp; o : vectorObjects)
 {
-  <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> l : <span style="color:#f92672">*</span>o)
+  for (auto&amp; l : *o)
   {
     LineToPointAdapter lpo{ l };
-    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">auto</span><span style="color:#f92672">&amp;</span> p : lp)
+    for (auto&amp; p : lp)
       points.push_back(p);
   }
 }
-</code></pre></div></li>
-<li>
-<p>Of course, this solution cause another problem. That is original vectorOjbects is changed.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Point</span>
+</code></pre></li>
+
+<li><p>Of course, this solution cause another problem. That is original vectorOjbects is changed.</p>
+
+<pre><code class="language-cpp">struct Point
 {
-  <span style="color:#66d9ef">int</span> x, y;
-  <span style="color:#66d9ef">friend</span> std<span style="color:#f92672">::</span> size_t hash_value(<span style="color:#66d9ef">const</span> POint<span style="color:#f92672">&amp;</span> obj)
+  int x, y;
+  friend std:: size_t hash_value(const POint&amp; obj)
   {
-    std<span style="color:#f92672">::</span>size_t send <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x825C696F</span>;
-    boost<span style="color:#f92672">::</span>hash_combine(seed, obj.x);
-    boost<span style="color:#f92672">::</span>hash_combine(seed, obj.y);
-    <span style="color:#66d9ef">return</span> seed;
+    std::size_t send = 0x825C696F;
+    boost::hash_combine(seed, obj.x);
+    boost::hash_combine(seed, obj.y);
+    return seed;
   }
 };
-      
-<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Line</span>
+        
+struct Line
 {
   Point start, end;
-  <span style="color:#66d9ef">friend</span> std<span style="color:#f92672">::</span>size_t hash_value(<span style="color:#66d9ef">const</span> Line<span style="color:#f92672">&amp;</span> obj)
+  friend std::size_t hash_value(const Line&amp; obj)
   {
-    std<span style="color:#f92672">::</span>size_t seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x719E6B16</span>;
-    boost<span style="color:#f92672">::</span>hash_combine(seed, obj.start);
-    boost<span style="color:#f92672">::</span>hash_combine(seed, obj.end);
-    <span style="color:#66d9ef">return</span> seed;
+    std::size_t seed = 0x719E6B16;
+    boost::hash_combine(seed, obj.start);
+    boost::hash_combine(seed, obj.end);
+    return seed;
   }
 };
-      
-<span style="color:#66d9ef">static</span> map<span style="color:#f92672">&lt;</span>size_t, Points<span style="color:#f92672">&gt;</span> cache;
-      
-<span style="color:#66d9ef">virtual</span> Points<span style="color:#f92672">::</span>iterator begin() { <span style="color:#66d9ef">return</span> cache[line_hash].begin(); }
-<span style="color:#66d9ef">virtual</span> Points<span style="color:#f92672">::</span>iterator end() { <span style="color:#66d9ef">return</span> cache[line_hash].end(); }
-      
-LineToPointCachingAdapter(Line<span style="color:#f92672">&amp;</span> line){
-  <span style="color:#66d9ef">static</span> boost<span style="color:#f92672">::</span>hash<span style="color:#f92672">&lt;</span>Line<span style="color:#f92672">&gt;</span> hash;
-  line_hash <span style="color:#f92672">=</span> hash(line);
-  <span style="color:#66d9ef">if</span> (cache.find(line_hash) <span style="color:#f92672">!=</span> cache.end())
-    <span style="color:#66d9ef">return</span>;
-      
+        
+static map&lt;size_t, Points&gt; cache;
+        
+virtual Points::iterator begin() { return cache[line_hash].begin(); }
+virtual Points::iterator end() { return cache[line_hash].end(); }
+        
+LineToPointCachingAdapter(Line&amp; line){
+  static boost::hash&lt;Line&gt; hash;
+  line_hash = hash(line);
+  if (cache.find(line_hash) != cache.end())
+    return;
+        
   Points points;
-      
-  <span style="color:#75715e">/* before code */</span>
-  <span style="color:#75715e">/* remove before cached point */</span>
-  cache[line_hash] <span style="color:#f92672">=</span> points;
+        
+  /* before code */
+  /* remove before cached point */
+  cache[line_hash] = points;
 }
-</code></pre></div></li>
-</ul>
-</li>
+</code></pre></li>
+</ul></li>
 </ul>
 
     </div>
@@ -329,8 +344,10 @@ LineToPointCachingAdapter(Line<span style="color:#f92672">&amp;</span> line){
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -348,7 +365,7 @@ LineToPointCachingAdapter(Line<span style="color:#f92672">&amp;</span> line){
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

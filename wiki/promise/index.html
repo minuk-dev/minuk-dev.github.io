@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,15 +150,22 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#callback-hell">Callback hell</a></li>
-    <li><a href="#promise">Promise</a></li>
-    <li><a href="#async-await">Async, Await</a></li>
-  </ul>
+<ul>
+<li><a href="#synchronous-vs-asynchronous">## Synchronous vs Asynchronous</a>
+<ul>
+<li><a href="#callback-hell">Callback hell</a></li>
+<li><a href="#promise">Promise</a></li>
+<li><a href="#async-await">Async, Await</a></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="-synchronous-vs-asynchronous">## Synchronous vs Asynchronous</h1>
+      
+
+<h1 id="synchronous-vs-asynchronous">## Synchronous vs Asynchronous</h1>
+
 <h2 id="callback-hell">Callback hell</h2>
+
 <pre><code>CallEndpoint(&quot;api/getidbyusername/hotcakes&quot;, function(result) {
     CallEndpoint(&quot;api/getfollowersbyid/&quot; + result.userID, function(result) {
         CallEndpoint(&quot;api/someothercall/&quot; + result.followers, function(result) {
@@ -169,9 +176,13 @@
     });
 });
 </code></pre>
+
 <h2 id="promise">Promise</h2>
+
 <h2 id="async-await">Async, Await</h2>
+
 <p>References</p>
+
 <p><a href="https://medium.com/@js_tut/the-great-escape-from-callback-hell-3006fa2c82e">The Great Escape from Callback Hell</a></p>
 
     </div>
@@ -179,8 +190,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -198,7 +211,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

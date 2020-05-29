@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -150,26 +150,32 @@
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#setting-up-a-connection">Setting up a connection</a></li>
-    <li><a href="#note-connection-pool-production">Note: connection pool (production)</a></li>
-    <li><a href="#testing-the-connection">Testing the connection</a></li>
-  </ul>
-
-  <ul>
-    <li><a href="#data-retrieval--finders">Data retrieval / Finders</a>
-      <ul>
-        <li><a href="#find---search-for-one-specific-element-in-the-database">find - Search for one specific element in the database</a></li>
-        <li><a href="#findorcreate---search-for-a-specific-element-or-create-it-if-not-available">findOrCreate - Search for a specific element or create it if not available</a></li>
-        <li><a href="#findandcountall---search-for-multiple-elements-in-the-database-returns-both-data-and-total-count">findAndCountAll - Search for multiple elements in the database, returns both data and total count</a></li>
-        <li><a href="#findall---search-for-multiple-elements-in-the-database">findAll - Search for multiple elements in the database</a></li>
-        <li><a href="#complex-filtering--or--not-queries">Complex filtering / OR / NOT queries</a></li>
-      </ul>
-    </li>
-  </ul>
+<ul>
+<li><a href="#installation"># Installation</a></li>
+<li><a href="#configuration-typescript">Configuration (Typescript)</a>
+<ul>
+<li><a href="#setting-up-a-connection">Setting up a connection</a></li>
+<li><a href="#note-connection-pool-production">Note: connection pool (production)</a></li>
+<li><a href="#testing-the-connection">Testing the connection</a></li>
+</ul></li>
+<li><a href="#model-usage">Model usage</a>
+<ul>
+<li><a href="#data-retrieval-finders">Data retrieval / Finders</a>
+<ul>
+<li><a href="#find-search-for-one-specific-element-in-the-database">find - Search for one specific element in the database</a></li>
+<li><a href="#findorcreate-search-for-a-specific-element-or-create-it-if-not-available">findOrCreate - Search for a specific element or create it if not available</a></li>
+<li><a href="#findandcountall-search-for-multiple-elements-in-the-database-returns-both-data-and-total-count">findAndCountAll - Search for multiple elements in the database, returns both data and total count</a></li>
+<li><a href="#findall-search-for-multiple-elements-in-the-database">findAll - Search for multiple elements in the database</a></li>
+<li><a href="#complex-filtering-or-not-queries">Complex filtering / OR / NOT queries</a></li>
+</ul></li>
+</ul></li>
+</ul>
 </nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="-installation"># Installation</h1>
+      
+
+<h1 id="installation"># Installation</h1>
+
 <pre><code>npm install --save sequelize
 
 # One of the following
@@ -179,8 +185,11 @@ npm install --save mariadb # mariadb
 npm install --save sqlite3 # sqlite
 npm install --save tedious # Microsoft SQL Server
 </code></pre>
+
 <h1 id="configuration-typescript">Configuration (Typescript)</h1>
+
 <h2 id="setting-up-a-connection">Setting up a connection</h2>
+
 <pre><code>import { Sequelize } from 'sequelize';
 
 interface DBConfituration {
@@ -211,7 +220,9 @@ const sequelize = new Sequelize(
 
 const sequelize = new Sequelize('postgres://user:pass@example.con:5432/dbname');
 </code></pre>
+
 <h2 id="note-connection-pool-production">Note: connection pool (production)</h2>
+
 <pre><code>const sequelize = new Sequelize(/* ... */, {
     // ...
     pool: {
@@ -222,7 +233,9 @@ const sequelize = new Sequelize('postgres://user:pass@example.con:5432/dbname');
     }
 });
 </code></pre>
+
 <h2 id="testing-the-connection">Testing the connection</h2>
+
 <pre><code>sequelize
     .authenticate()
     .then(() =&gt; {
@@ -232,12 +245,17 @@ const sequelize = new Sequelize('postgres://user:pass@example.con:5432/dbname');
         console.error('Unable to connect to the database:', err);
 });
 </code></pre>
+
 <ul>
 <li>Sample Code (Typescript)</li>
 </ul>
+
 <h1 id="model-usage">Model usage</h1>
-<h2 id="data-retrieval--finders">Data retrieval / Finders</h2>
-<h3 id="find---search-for-one-specific-element-in-the-database">find - Search for one specific element in the database</h3>
+
+<h2 id="data-retrieval-finders">Data retrieval / Finders</h2>
+
+<h3 id="find-search-for-one-specific-element-in-the-database">find - Search for one specific element in the database</h3>
+
 <pre><code>// search for known ids
 Project.findByPk(123).then(project =&gt; {
   // project will be an instance of Project and stores the content of the table entry
@@ -258,7 +276,9 @@ Project.findOne({
   // project.get('title') will contain the name of the project
 })
 </code></pre>
-<h3 id="findorcreate---search-for-a-specific-element-or-create-it-if-not-available">findOrCreate - Search for a specific element or create it if not available</h3>
+
+<h3 id="findorcreate-search-for-a-specific-element-or-create-it-if-not-available">findOrCreate - Search for a specific element or create it if not available</h3>
+
 <pre><code>User
   .findOrCreate({where: {username: 'sdepold'}, defaults: {job: 'Technical Lead JavaScript'}})
   .then(([user, created]) =&gt; {
@@ -313,7 +333,9 @@ User.create({ username: 'fnord', job: 'omnomnom' })
     */
   })
 </code></pre>
-<h3 id="findandcountall---search-for-multiple-elements-in-the-database-returns-both-data-and-total-count">findAndCountAll - Search for multiple elements in the database, returns both data and total count</h3>
+
+<h3 id="findandcountall-search-for-multiple-elements-in-the-database-returns-both-data-and-total-count">findAndCountAll - Search for multiple elements in the database, returns both data and total count</h3>
+
 <pre><code>Project
   .findAndCountAll({
      where: {
@@ -343,7 +365,9 @@ User.findAndCountAll({
   limit: 3
 });
 </code></pre>
-<h3 id="findall---search-for-multiple-elements-in-the-database">findAll - Search for multiple elements in the database</h3>
+
+<h3 id="findall-search-for-multiple-elements-in-the-database">findAll - Search for multiple elements in the database</h3>
+
 <pre><code>// find multiple entries
 Project.findAll().then(projects =&gt; {
   // projects will be an array of all Project instances
@@ -389,7 +413,9 @@ Project.findAll({
   }
 })
 </code></pre>
-<h3 id="complex-filtering--or--not-queries">Complex filtering / OR / NOT queries</h3>
+
+<h3 id="complex-filtering-or-not-queries">Complex filtering / OR / NOT queries</h3>
+
 <pre><code>Project.findOne({
   where: {
     name: 'a project',
@@ -418,8 +444,10 @@ Project.findOne({
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -437,7 +465,7 @@ Project.findOne({
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         

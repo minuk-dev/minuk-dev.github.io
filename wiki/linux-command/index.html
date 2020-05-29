@@ -22,7 +22,7 @@
 </style>
 
 
-<link rel="stylesheet" href="http://makerdark98.dev/css/main.css">
+<link rel="stylesheet" href="/css/main.css">
 
 
 
@@ -61,7 +61,7 @@
 <script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.68.3" />
+
         
 
         
@@ -155,22 +155,34 @@
 
     </div>
 
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents"></nav></aside>
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
+<ul>
+<li><a href="#command-line">command line</a></li>
+<li><a href="#server">Server</a></li>
+</ul>
+</nav></aside>
     <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      <h1 id="command-line">command line</h1>
+      
+
+<h1 id="command-line">command line</h1>
+
 <ul>
 <li>[[wifi command line]]</li>
 <li>[[brightness]]</li>
 <li>[[rm]]</li>
 <li>[[tee]]</li>
-<li>[[glob]]</li>
-</ul>
-<h1 id="server">Server</h1>
-<ul>
-<li>[[user]]</li>
-<li>[[ftp]]</li>
-<li>[[firewall]]</li>
-<li>[[ssh server]]</li>
+
+<li><p>[[glob]]</p>
+
+<h1 id="server">Server</h1></li>
+
+<li><p>[[user]]</p></li>
+
+<li><p>[[ftp]]</p></li>
+
+<li><p>[[firewall]]</p></li>
+
+<li><p>[[ssh server]]</p></li>
 </ul>
 
     </div>
@@ -178,8 +190,10 @@
   <script>
       ;(function() {
               var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`);
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
         content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
           `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
       })();
@@ -197,7 +211,7 @@
 
 </main>
         <footer>
-            <p class="copyright text-muted">© All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
+            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>
 
         
