@@ -1,17 +1,19 @@
----
+--- 
 layout  : wiki
-title   : mysql
+title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-05-28 15:16:44 +0900
-tags    : 
+lastmod : 2020-05-29 16:13:17 +0900
+tags    : [mysql, storage engine]
 draft   : false
 parent  : 
 ---
 
 # 참고용 홈페이지 
  1. https://dev.mysql.com/doc/internals/en/custom-engine.html
- * 
+ 2. mysql architecture
+   * ![mysql architecture](/wiki/images/mysql_architecture.png)
+ 3. https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PFS_PSI.html
 
 ## 환경 설정
  * 일단 지금 집에다가 예전에 썻던 삼성 노트북을 wol 으로 설정하고 (완전히 꺼지면 안켜지니까 shutdown 을 alias 해놓고, suspend를 사용하는 식으로 했다.휴가 때 마다 혹은 가끔씩 reboot 해주면 되겠지?)
@@ -25,7 +27,23 @@ $ git clone https://github.com/mysql/mysql-server
 ## 겪었던 문제들
  * git push 를 할때 너무 많아서 그런지 안올라가진다. -> 브랜치를 나눠서 올리면 된다. mysql 8.0.0 까진 수월하게 올라간다. mysql-8.0.0 브랜치까지 올리고 나머지 올리면 올라가진다. 용량이 커서 안올라가지는 것 같다.
 
-## 참고용 홈페이지 읽고 정리하기
+ 
+## 코딩할 때 알아야할 내용
+### mysys.h 관련
+ 1. `include/mysys.h` 에 사용할만한 함수들이 많이 정리되어 있다.
+ 2. File 관련 : `my_create`, `my_close`
+ 3. 문자열 관련 : `fn_format` (filename format) 
+ 4. Memory 관련 : `my_malloc`, `my_free`
+### THD (mysql thread 객체) 관련
+ 1. mysql thread 객체 (`THD`) 에 변수로 넣으면 (`THDVAR_SET`) 복사가 일어난다. (추측) -> 따라서 넣어야할 값이 있으면 my_malloc 하고 넣은다음에 my_free 해줘야한다. (Memory Leak 나지 않게 조심하자!)
+ 2. Mysql Thread 객체 (THD)에 값 확인, 넣기 : `THDVAR(대상 Thread, 원하는 변수명)`, `THDVAR_SET(대상 Thread, 원하는 변수명, 값의 주소)`
+ 
+ 
+### Debug
+ 1. Debug를 위해서 return 같은거 할때 `DBUG_RETURN` 을 적극적으로 활용하자
+
+ 
+# 참고용 홈페이지 읽고 정리하기
 ### 23.2 Overview
  * `handler`라는 interface를 구현하도록 되어 있는데, 각 connection 마다 thread가 생성되고 각 thread마다 handler instance를 생성하고 가지고 있도록 한다.
    *  질문점 : 그러면 각 handler들이 같은 table에 접근하게 되면 어떻게 되나 : handler를 구현할때 알아서 해결해야 한다. 가장 단순한 해결법은 table마다 lock을 가지게 해서 동시에 handler들이 접근 못하도록 하는것. (생각해보면 read lock, write lock마다 구현법도 다양하고 mvcc같은거 고려하면 생각할게 너무 많을 텐데 당연하게도 storage engine이 알아서 처리하도록 하는게 맞다)
@@ -35,7 +53,7 @@ $ git clone https://github.com/mysql/mysql-server
 ### 23.4 Adding Engine Specific Variables and Parameters
  * 구조가 Plugin 식으로 추가되는 식인것 같은데 그래서 Plugin 을 만드는 방법에 대해서 나와있다.
  * 이걸 열심히 공부하는것도 맞지만, 조금 목표와 멀어질 것 같아서 일단은 innobase 꺼 CMakeLists.txt 를 참고했고, 나중에 필요하면 다시 보면 될거라고 생각한다.
-### 23.4 Creating the handlerton
+### 23.5 Creating the handlerton
  * `handlerton` (= handler singleton) : storage engine 마다 1개씩 있는 객체로, transaction을 다루는 commit, rollbacks 같은 기능을 제공하게 된다.
 ```cpp
 typedef struct
@@ -96,4 +114,119 @@ ha_federated::ha_federated(TABLE *table_arg)
     ref_length(sizeof(MYSQL_ROW_OFFSET)), current_position(0)
     {}
 ```
+
+### 23.7 Defining Filename Extensions
+ * 지원하는 확장자를 `const char* []` 로 넘기면 처리해준다
+ * 단 array 의 마지막 은 `NullS` 로 끝나야함.
+ * 아래 코드는 csv 예시
+  
+```cpp
+static const char *ha_tina_exts[] = {
+  ".CSV",
+  NullS
+};
+```
+ * 이렇게 정의된 array를 다음과 같이 설정해주면 됨.
+  
+```cpp
+const char **ha_tina::bas_ext() const
+{
+  return ha_tina_exts;
+}
+```
+
+ * `DROP TABLE` 에서 table을 지웠을 때 파일이 삭제되는 기능을 딱히 구현하지 않고 생략해도 된다.
+ * 근데 이건 필수가 아닌 건지, `handler` class에 따로 선언되어 있지는 않다. -> 직접 구현했는데 혹시 문제가 생길수도 있으니 메모해놓는다.
+
+### 23.8 Creating Tables
+
+```cpp
+virtual int create(const char *name, TABLE *form, HA_CREATE_INFO *info)=0;
+```
+
+ * 위 함수를 반드시 구현하라고 한다.
+ * `name` 은 `table`의 이름
+ * `form` 은 `tablename` 이랑 매칭되는 `TABLE` structure : `tablename.frm` 이라는 파일에 이미 다 만들어 놨으니, Storage Engine은 이를 변경하면 안됨.
+ * `info` 는 `CREATE TABLE`을 했을 때 생기는 정보. `handler.h`에 정의 되어 있으니 참조.
+  
+```cpp
+typedef struct st_ha_create_information
+{
+    CHARSET_INFO *table_charset, *default_table_charset;
+    LEX_STRING connect_string;
+    const char *comment,*password;
+    const char *data_file_name, *index_file_name;
+    const char *alias;
+    ulonglong max_rows,min_rows;
+    ulonglong auto_increment_value;
+    ulong table_options;
+    ulong avg_row_length;
+    ulong raid_chunksize;
+    ulong used_fields;
+    SQL_LIST merge_list;
+    enum db_type db_type;
+    enum row_type row_type;
+    uint null_bits;                       /* NULL bits at start of record */
+    uint options;                         /* OR of HA_CREATE_ options */
+    uint raid_type,raid_chunks;
+    uint merge_insert_method;
+    uint extra_size;                      /* length of extra data segment */
+    bool table_existed;                /* 1 in create if table existed */
+    bool frm_only;                        /* 1 if no ha_create_table() */
+    bool varchar;                         /* 1 if table has a VARCHAR */
+} HA_CREATE_INFO;
+```
+ * storage engine 이 파일 기반이라는 가정하에 `form`, `info`는 신경 쓰지 않아도 됨.
+ * csv engine 같은 경우 아래와 같이 구현되어 있음
+  
+```
+int ha_tina::create(const char *name, TABLE *table_arg,
+  HA_CREATE_INFO *create_info)
+{
+    char name_buff[FN_REFLEN];
+    File create_file;
+    DBUG_ENTER("ha_tina::create");
+
+    if ((create_file= my_create(fn_format(name_buff, name, "", ".CSV",
+          MY_REPLACE_EXT|MY_UNPACK_FILENAME),0,
+          O_RDWR | O_TRUNC,MYF(MY_WME))) < 0)
+    DBUG_RETURN(-1);
+
+    my_close(create_file,MYF(0));
+
+    DBUG_RETURN(0);
+}
+```
+
+ * 흐음.... 딱히 예제 코드에서 수정할게 없어보여서 거의 그대로 가져왔다.
+ * 변경한 부분은 확장자 부분이랑, ccls에서 warning을 뱉길레 if문 안에 assignment구문을 넣지 않고 밖으로 뺴기만 했다.
+ * 그리고 원래 example source에 thread variable 을 설정하는 예시로 현재 사용하고 있는 Thread(아마도 내 추측으로는 client의 connection과 동일한 맥락을 가질듯, server에서는 connection 당 1개의 thread가 붙어서 담당한다고 알고 있음, 이건 위에 Overview 참고)마다 생성시킨 Table 개수를 tracking 하는 코드가 있었는데, 굳이 문제가 안될것 같아서 냅뒀다.
+
+### 23.9 Opening a Table
+ * read나 write 연산 전에 반드시 table data와 index file(있다면)을 열도록 되어있다.
+  
+```cpp
+int open(const char *name, int mode, int test_if_locked);
+```
+
+ * `name`은 table 의 이름
+ * `mode`는 `O_RDONLY`(Open read only) 또는 `O_RDWR`(Open read/write)
+ * `test_if_locked`는 파일을 열 때 확인해야할 내용에 대한 값이고,
+  
+```cpp
+#define HA_OPEN_ABORT_IF_LOCKED   0   /* default */
+#define HA_OPEN_WAIT_IF_LOCKED    1
+#define HA_OPEN_IGNORE_IF_LOCKED  2
+#define HA_OPEN_TMP_TABLE         4   /* Table is a temp table */
+#define HA_OPEN_DELAY_KEY_WRITE   8   /* Don't update index */
+#define HA_OPEN_ABORT_IF_CRASHED  16
+#define HA_OPEN_FOR_REPAIR        32  /* open even if crashed */
+``` 
+ * 이 값들중 하나이다.
+ * lock을 어떻게 다루는지 같은건 `get_share()`와 `free_share()`를 참조하라고 한다.
+
+#### 코드 보면서 느낀거
+ * `handler::ha_open` 이라는 메서드가 존재하는데 얘가 `handler::open`을 호출하는 구조이다. (정확히 여기서는 `handler`를 상속받은 custom storage engine의 open이라는 메서드)
+ * csv 의 `ha_tina`를 보면 (물론 여기서는 싱글톤? share를 활용해서 파일을 여는 구조인것 같다.) `mysql_file_open` 이라는 메서드를 사용해서 처리하는데, 여기서 받는 첫번째 인자가 `PSI_file_key`인데 이게 먼지 모르겠다. 참조 3에 있는 홈페이지에서 검색해서 찾아보면, 계측된? (instrumented) 파일 이라고 하는데.... 아예 innobase에서는 `mysql_file_open` 이라는 걸 사용하지도 않는다. csv에서도 static하게 선언해놓고 그냥 사용한다. 자동으로 채워지는 데이터 구조인지 잘모르겠다.
+ * 흐음... 찾아보았는데 file을 생성할 때 PSI_file_key를 같이 주고서 생성하면 넣어주는 방식인듯. 내가 구현할 때는 `my_create`를 사용해서 생성했으니까, 그냥 `my_open`으로 파일을 열어서 사용하면 될 듯. 사용하는 곳들을 보니까 전부 singleton 이거나 metadata 임.
 
