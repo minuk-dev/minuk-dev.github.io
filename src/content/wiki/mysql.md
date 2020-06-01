@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-05-29 16:13:17 +0900
+lastmod : 2020-06-01 20:21:53 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -32,7 +32,7 @@ $ git clone https://github.com/mysql/mysql-server
 ### mysys.h 관련
  1. `include/mysys.h` 에 사용할만한 함수들이 많이 정리되어 있다.
  2. File 관련 : `my_create`, `my_close`
- 3. 문자열 관련 : `fn_format` (filename format) 
+ 3. 문자열 관련 : `fn_format` (filename format) - `to`(buffer variable), `name`, `dir`, `extension`, `flags` 순서
  4. Memory 관련 : `my_malloc`, `my_free`
 ### THD (mysql thread 객체) 관련
  1. mysql thread 객체 (`THD`) 에 변수로 넣으면 (`THDVAR_SET`) 복사가 일어난다. (추측) -> 따라서 넣어야할 값이 있으면 my_malloc 하고 넣은다음에 my_free 해줘야한다. (Memory Leak 나지 않게 조심하자!)
@@ -230,3 +230,101 @@ int open(const char *name, int mode, int test_if_locked);
  * csv 의 `ha_tina`를 보면 (물론 여기서는 싱글톤? share를 활용해서 파일을 여는 구조인것 같다.) `mysql_file_open` 이라는 메서드를 사용해서 처리하는데, 여기서 받는 첫번째 인자가 `PSI_file_key`인데 이게 먼지 모르겠다. 참조 3에 있는 홈페이지에서 검색해서 찾아보면, 계측된? (instrumented) 파일 이라고 하는데.... 아예 innobase에서는 `mysql_file_open` 이라는 걸 사용하지도 않는다. csv에서도 static하게 선언해놓고 그냥 사용한다. 자동으로 채워지는 데이터 구조인지 잘모르겠다.
  * 흐음... 찾아보았는데 file을 생성할 때 PSI_file_key를 같이 주고서 생성하면 넣어주는 방식인듯. 내가 구현할 때는 `my_create`를 사용해서 생성했으니까, 그냥 `my_open`으로 파일을 열어서 사용하면 될 듯. 사용하는 곳들을 보니까 전부 singleton 이거나 metadata 임.
 
+ * dictionary file 은 singleton (`handlerton`) 에서 vector 의 형식으로 관리하고, data file 은 handler 들이 각자 가지도록 구현해놔야할듯. open 이라는 메서드 자체가 테이블을 열어야할 필요가 있을 때만 열린다고 하니까 dictionary 가 안열릴 수 도 있다는 가정 하에 코딩해야된다.
+ * handlerton 의 lifecycle 을 확인해서 handlerton 이 죽을 때(아마도 예측은 mysql server 가 죽을 때) 들고 있는 dictionary file을 해제하는 형식으로 해줘야 할듯.
+ * 일단 indirect data 구조로 짜서 dictionary 에는 data file 의 page number 와 page 의 offset을 들고 있도록 구현하자.... 흐음... 이렇게 짜면 innodb랑 엄청 비슷한거 같은데? 흥... 근데 이것 보다 좋은 방식이 따로 떠오르지는 않는데? 일단 생각한대로 해보자.(innodb 보다 성능이 잘나올지는 모르겠다. 흐음...)
+
+### 23.10 Implementing Basic Table Scanning
+#### 23.10.1 Implementing the store_lock() Method
+ * reading이나 writing 이 발생하기 전에 언제나 불림
+ * table에 lock을 추가하기 전에 `mysqld`라는 lock handler가 요청된 locks을 store_lock을 호출한다. 이때 store lock은 lock 의 수준을 변경할수 있고(blocking을 non-blocking을 만들다던가, 아예 무시하도록 만들다던가) 아니면 다른 테이블들에 락을 추가할수도 있다.
+ * lock을 풀어줄때 store_lock이 다시 불리게 되는데, 이런 경우에는 일반적으로는 아무것도 할 필요가 없다.
+ 
+ * 만약 store_lock에 TL_IGNORE가 파라메터로 들어온다면, mysql에 handler에게 마지막에 요청했던 락을 다시 요청하는 것과 같다.
+ * lock의 종류는 `includes/thr_lock.h`에 기재되어 있고 밑에 나와있는 것과 동일하다.
+
+ ```cpp
+ enum thr_lock_type
+{
+  TL_IGNORE=-1,
+  TL_UNLOCK,                  /* UNLOCK ANY LOCK */
+  TL_READ,                    /* Read lock */
+  TL_READ_WITH_SHARED_LOCKS,
+  TL_READ_HIGH_PRIORITY,      /* High prior. than TL_WRITE. Allow concurrent insert */
+  TL_READ_NO_INSERT,          /* READ, Don't allow concurrent insert */
+  TL_WRITE_ALLOW_WRITE,       /*   Write lock, but allow other threads to read / write. */
+  TL_WRITE_ALLOW_READ,        /* Write lock, but allow other threads to read / write. */
+  TL_WRITE_CONCURRENT_INSERT, /* WRITE lock used by concurrent insert. */
+  TL_WRITE_DELAYED,           /* Write used by INSERT DELAYED.  Allows READ locks */
+  TL_WRITE_LOW_PRIORITY,      /* WRITE lock that has lower priority than TL_READ */
+  TL_WRITE,                   /* Normal WRITE lock */
+  TL_WRITE_ONLY               /* Abort new lock request with an error */
+};
+ ```
+ 
+ * `ha_myisammrg::store_lock()`을 참조
+
+#### 23.10.2 Implementing the external_lock() Method
+ * statement 의 시작이나, `LOCK TABLES` 라는 게 들어오면 `external_lock()`이 호출된다.
+ * `external_lock()`은 ha_innodb.cc에서 찾아보면 된다. 대부분의 storage engine이 간단하게 return 0 하는 식으로 구현한다.
+ 
+#### 23.10.3 Implementing the rnd_init() Method
+ * `rnd_init()`은 table scan 을 준비하는 단계에서 호출되고, counters를 초기화 시키거나, pointers를 table의 시작지점에 만든다.
+ * 간단한 CSV storage engine의 구현 예시이다.
+  
+```cpp
+int ha_tina::rnd_init(bool scan)
+{
+      DBUG_ENTER("ha_tina::rnd_init");
+
+      current_position= next_position= 0;
+      records= 0;
+      chain_ptr= chain;
+
+      DBUG_RETURN(0);
+}
+```
+ * 만약 sequential read면 `scan`은 `true`, random read 면 `false`이다.
+  
+#### 23.10.4 Implementing the info(uinf flag) Method
+ * table scan을 하기 전에 optimizer에게 추가적인 테이블 정보를 넘겨주기 위해서 불린다.
+ * return 값으로 정보를 전달하는 식이아니라 handler class의 몇몇 맴버 변수를 통해서 가져간다.
+ * optimizer가 사용하는 것 이외에도 `SHOW TABLE STATUS`에서도 내용을 보게 된다. 이때 `flag` 인자는 어떠한 맥락에서 이 메서드가 호출되었는지를 전달해준다.
+   * `HA_STATUS_NO_LOCK` : table shared의 lock을 방지할수 있다면, handler가 오래된걸 사용한다. (직역해서 좀 이상한데, lock 없이 가능하다면 오래된 버전을 본다. 아 풀어서 써도 이상하네... mvcc 같은 개념을 생각하면 될듯)
+   * `HA_STATUS_TIME` : 오직 `stats->update_time`만 필요하다. (나머진 업데이터 안해도 된다.)
+   * `HA_STATUS_CONST` : immutable member를 업데이트 해라 (`max-data_file_length`, `max_index_file_length`, `create_time`, `sortkey`, `ref_length`, `block_size`, `data_file_name`, `index_file_name`)
+   * `HA_STATUS_VARIABLE` : `records`, `deleted`, `data_file_length`, `index_file_length`, `delete_length`, `check_time`, `mean_rec_length`
+   * `HA_STATUS_ERRKEY` : 마지막으로 발생한 error key
+   * `HASTATUS_AUTO` : autoincrement value 를 업데이트 해라.
+
+ * 아래는 `sql/handler.h`에 정의되어 있는 public properties
+
+```cpp
+ulonglong data_file_length;      /* Length off data file */
+ulonglong max_data_file_length;  /* Length off data file */
+ulonglong index_file_length;
+ulonglong max_index_file_length;
+ulonglong delete_length;         /* Free bytes */
+ulonglong auto_increment_value;
+ha_rows records;                 /* Records in table */
+ha_rows deleted;                 /* Deleted records */
+ulong raid_chunksize;
+ulong mean_rec_length;           /* physical reclength */
+time_t create_time;              /* When table was created */
+time_t check_time;
+time_t update_time;
+```
+
+ * table scan의 목적에선, 가장 중요한 property는 records (table의 records 개수) 이다. 0, 1, 2보다 많음에 대한 정보가 중요하게 쓰인다. 2보다 많으면 더 많은건 따로 신경 안써도 된다.
+
+* 아래는 `ha_tina` 의 예제이다.
+```cpp
+int ha_tina::info(uint flag)
+ {
+   DBUG_ENTER("ha_tina::info");
+   /* This is a lie, but you don't want the optimizer to see zero or 1 */
+   if (!records_is_known && stats.records < 2) 
+     stats.records= 2;
+   DBUG_RETURN(0); 
+ }
+```
