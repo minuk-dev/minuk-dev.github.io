@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-01 20:21:53 +0900
+lastmod : 2020-06-02 20:05:53 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -328,3 +328,92 @@ int ha_tina::info(uint flag)
    DBUG_RETURN(0); 
  }
 ```
+
+#### 23.10.5 Implementing the extra() method
+ * 추가적인 hint 를 주기 위해서 호출되는 method
+ * extra call 을 구현하는건 의무가 아니여서 대부분 0을 리턴함
+   * 너무 설명이 없다. 어떤 상황에서 추가적인 hint가 필요한지, parameter 가 왜 `int ha_tina::extra(enum ha_extra_function operation)` 이런식으로 구성되어 있는지에 대한 설명이 부족한듯.
+    
+#### 23.10.6 Implementing the rnd_next() method
+ * 각 row를 가져올때마다 호출되며, server의 search condition 이 만족되었거나 파일의 끝에 도달하면 `HA_ERR_END_OF_FILE` 을 리턴해야한다.
+ * `rnd_next()` 는 byte array 인 `buf`를 인자로 받는다. 이때 buf 는 반드시 mysql 의 table row 의 포멧을 따라야한다.
+   * 3가지 포멧을 지원하는데, fixed-length rows, variable-length rows, variable-length rows with BLOB pointers 이다.
+   * 모두 `CREATE TABLE` 의 순서를 따라야한다. (table의 정의는 `.frm` 에 있으며, optimizer와 handler 에서 최적화 할 수 있다.)
+   * 각 format 마다 nullable column 마다 1bit의 NULL bitmaps 으로 시작한다. (만약 8개의 Nullable Column 이 존재한다면, 1byte 의 bitmap 이 존재할거다.)
+   * 딱 하나 예외가 있는데, fixed-width table인데, 이때는 추가 시작 bit가 있으므로 8개의 Nullable columns 을 가지고 있는 table은 2bytes bitmap 이 존재한다.
+   * Nullbitmap 구역이 끝나면, Columns의 datatypes가 있다. datatype 에 대한 정의는 `sql/field.cc` 에 정의 되어 있다.
+   * fixed length row format 에서는 간단하게 하나 다음 하나 형식으로 존재한다. variable length row에서는 VARCHAR는 1이나 2 bytes 길이로 부호화 되어 있다.
+   * BLOB을 포함하는 variable length row 에서는 각 BLOB은 2부분으로 저장되는 데, 1번째는 BLOB의 크기를 저장하는 integer, 2번째는 BLOB의 내용에 대한 pointer 이다.
+ * 다음은 csv 의 예시이다.
+
+ ```cpp
+ int ha_tina::rnd_next(byte *buf)
+{
+   DBUG_ENTER("ha_tina::rnd_next");
+
+   statistic_increment(table->in_use->status_var.ha_read_rnd_next_count, &LOCK_status);
+
+   current_position= next_position;
+   if (!share->mapped_file)
+     DBUG_RETURN(HA_ERR_END_OF_FILE);
+   if (HA_ERR_END_OF_FILE == find_current_row(buf) )
+     DBUG_RETURN(HA_ERR_END_OF_FILE);
+
+   records++;
+   DBUG_RETURN(0);
+}
+ ```
+
+ ```cpp
+ int ha_tina::find_current_row(byte *buf)
+{
+   byte *mapped_ptr= (byte *)share->mapped_file + current_position;
+   byte *end_ptr;
+   DBUG_ENTER("ha_tina::find_current_row");
+
+   /* EOF should be counted as new line */
+   if ((end_ptr=  find_eoln(share->mapped_file, current_position,
+                            share->file_stat.st_size)) == 0)
+     DBUG_RETURN(HA_ERR_END_OF_FILE);
+
+   for (Field **field=table->field ; *field ; field++)
+   {
+     buffer.length(0);
+     mapped_ptr++; // Increment past the first quote
+     for(;mapped_ptr != end_ptr; mapped_ptr++)
+     {
+       // Need to convert line feeds!
+       if (*mapped_ptr == '"' &&
+           (((mapped_ptr[1] == ',') && (mapped_ptr[2] == '"')) ||
+            (mapped_ptr == end_ptr -1 )))
+       {
+         mapped_ptr += Move past the , and the "
+         break;
+       }
+       if (*mapped_ptr == '\\' && mapped_ptr != (end_ptr - 1))
+       {
+         mapped_ptr++;
+         if (*mapped_ptr == 'r')
+           buffer.append('\r');
+         else if (*mapped_ptr == 'n' )
+           buffer.append('\n');
+         else if ((*mapped_ptr == '\\') || (*mapped_ptr == '"'))
+           buffer.append(*mapped_ptr);
+         else  /* This could only happed with an externally created file */
+         {
+           buffer.append('\\');
+           buffer.append(*mapped_ptr);
+         }
+       }
+       else
+         buffer.append(*mapped_ptr);
+     }
+     (*field)->store(buffer.ptr(), buffer.length(), system_charset_info);
+   }
+   next_position= (end_ptr - share->mapped_file)+1;
+   /* Maybe use \N for null? */
+   memset(buf, 0, table->s->null_bytes); /* We do not implement nulls! */
+
+   DBUG_RETURN(0);
+}
+ ```
