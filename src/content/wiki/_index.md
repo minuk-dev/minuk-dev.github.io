@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-06-02 19:06:32 +0900
+lastmod: 2020-06-02 19:15:03 +0900
 ---
 ## 즐겨찾기
  * [[사지방]]
@@ -37,6 +37,7 @@ lastmod: 2020-06-02 19:06:32 +0900
 ### School
  * [[lectures]]
 ### Language
+ * [[C++]]
  * [[Javascript]]
  * [[Typescript]]
  * [[SQL]]
