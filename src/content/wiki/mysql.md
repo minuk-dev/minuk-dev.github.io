@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-02 20:23:17 +0900
+lastmod : 2020-06-02 20:36:19 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -451,3 +451,60 @@ int ha_myisam::write_row(byte * buf)
   return mi_write(file,buf);
 }
 ```
+
+### 23.13 Adding Support for UPDATE to a Stroage Engine
+ * 먼저 (table/index/range/etc) scan 을 통해서 where 절에 해당하는 걸 찾고 update_row()를 호출한다.
+
+ ```cpp
+ int ha_foo::update_row(const byte *old_data, byte *new_data)
+ ```
+ 
+ * `old_data` 는 update 되어야 되는 data를 가르키고 있고, `new_data`는 새롭게 들어갈 내용을 가지고 있다.
+ * row format 에 따라 성능이 갈리며, 어떤 경우에는 기존 데이터를 지우고 맨 뒤에 새롭게 추가하는 식으로 구현한다.
+ * 아래는 csv 의 예시이다.
+
+ ```cpp
+ int ha_tina::update_row(const byte * old_data, byte * new_data)
+{
+   int size;
+   DBUG_ENTER("ha_tina::update_row");
+
+   statistic_increment(table->in_use->status_var.ha_read_rnd_next_count,
+                      &LOCK_status);
+
+   if (table->timestamp_field_type & TIMESTAMP_AUTO_SET_ON_UPDATE)
+     table->timestamp_field->set_time();
+
+   size= encode_quote(new_data);
+
+   if (chain_append())
+     DBUG_RETURN(-1);
+
+   if (my_write(share->data_file, buffer.ptr(), size, MYF(MY_WME | MY_NABP)))
+     DBUG_RETURN(-1);
+   DBUG_RETURN(0);
+}
+ ```
+ 
+ 
+### 23.14 Adding Support for DELETE to a Storage Engine
+ * DELETE 도 UPDATE와 비슷하게 처리하며, `rnd_next()`를 호출하다가 `delete_row()`를 호출한다.
+ * `buf`는 삭제될 내용을 가리킨다. Non-indexed storage engine 은 무시할수도 있지만, transaction을 지원하는 storage engine 은 rollback 작업을 위해 삭제할 내용을 저장할 필요가 있다.
+ * 아래는 csv의 구현 예시이다.
+
+ ```cpp
+ int ha_tina::delete_row(const byte * buf)
+{
+   DBUG_ENTER("ha_tina::delete_row");
+   statistic_increment(table->in_use->status_var.ha_delete_count,
+                       &LOCK_status);
+
+   if (chain_append())
+     DBUG_RETURN(-1);
+
+   --records;
+
+   DBUG_RETURN(0);
+}
+ ```
+ 
