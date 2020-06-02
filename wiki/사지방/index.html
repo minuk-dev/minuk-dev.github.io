@@ -5,7 +5,7 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Tags</title>
+        <title>사지방</title>
         
         <style>
 
@@ -63,9 +63,6 @@
 <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
 
         
-            <link href="/tags/index.xml" rel="alternate" type="application/rss" title="MD98 page" />
-            <link href="/tags/index.xml" rel="feed" type="application/rss" title="MD98 page" />
-        
 
         
 
@@ -86,7 +83,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Tags</a>
+                    <a class="navbar-brand visible-xs" href="#">사지방</a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -138,107 +135,84 @@
 
 <main>
 
-    <h2>Tags</h2>
+    <div style="text-align:left;">
+      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
+    </div>
+    <div>
+        <h2>사지방</h2>
+        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/%ec%82%ac%ec%a7%80%eb%b0%a9.md">
+  <h5>created : Tue, 02 Jun 2020 19:05:23 &#43;0900</h5>
+  <h5>modified : Tue, 02 Jun 2020 19:06:21 &#43;0900</h5>
+</a>
 
-     <div class="item">
+        
+<a href="http://makerdark98.dev/tags/%EC%82%AC%EC%A7%80%EB%B0%A9"><kbd class="item-tag">사지방</kbd></a>
 
-    
-    
-    
+<a href="http://makerdark98.dev/tags/script"><kbd class="item-tag">script</kbd></a>
 
-    
-    
-
-    <h4><a href="/tags/todo/">Todo</a></h4>
-    <h5>Tue, 28 Apr 2020 21:25:05 &#43;0900</h5>
-    
+<a href="http://makerdark98.dev/tags/tool"><kbd class="item-tag">tool</kbd></a>
 
 
+    </div>
+
+    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#사지방용-script">사지방용 script</a></li>
+</ul></li>
+</ul>
+</nav></aside>
+    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
+      
+
+<h2 id="사지방용-script">사지방용 script</h2>
+
+<pre><code class="language-bash">wget https://github.com/alacritty/alacritty/releases/download/v0.4.3-rc1/Alacritty-v0.4.3-rc1-ubuntu_18_04_amd64.tar.gz
+
+tar -zxf Alacritty-v0.4.3-rc1-ubuntu_18_04_amd64.tar.gz
+
+wget https://github.com/naver/d2codingfont/releases/download/VER1.3.2/D2Coding-Ver1.3.2-20180524.zip
+unzip D2Coding-Ver1.3.2-20180524.zip
+mkdir -p .local/share/fonts
+mv D2Coding .local/share/fonts
+fc-cache -f -v 
+
+git clone https://github.com/makerdark98/alacritty-config ~/.config/alacritty
+
+echo $'remove Lock = Caps_Lock \nkeysym Caps_Lock = Control_L \nadd Control = Control_L' &gt;&gt; ~/.xmodmap
+xmodmap ~/.xmodmap
+./alacritty &amp;
+./alacritty &amp;
+
+exit
+</code></pre>
+
+    </div>
+
+  <script>
+      ;(function() {
+              var content = document.querySelector('.content');
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+          console.log(matching, display);
+          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
+        });
+        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
+          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
+      })();
+</script>
+
+  <div style="min-width:500px;">
+<script src="https://utteranc.es/client.js"
+        repo="makerdark98/makerdark98.github.io"
+        issue-term="pathname"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
 </div>
-  <div class="item">
-
-    
-    
-    
-
-    
-    
-
-    <h4><a href="/tags/tool/">Tool</a></h4>
-    <h5>Tue, 02 Jun 2020 19:06:21 &#43;0900</h5>
-    
-
-
-</div>
-  <div class="item">
-
-    
-    
-    
-
-    
-    
-
-    <h4><a href="/tags/vim/">Vim</a></h4>
-    <h5>Tue, 28 Apr 2020 21:41:36 &#43;0900</h5>
-    
-
-
-</div>
-  <div class="item">
-
-    
-    
-    
-
-    
-    
-
-    <h4><a href="/tags/vimwiki/">Vimwiki</a></h4>
-    <h5>Sun, 12 Apr 2020 20:44:38 &#43;0900</h5>
-    
-
-
-</div>
-  <div class="item">
-
-    
-    
-    
-
-    
-    
-
-    <h4><a href="/tags/zsh/">Zsh</a></h4>
-    <h5>Mon, 13 Apr 2020 22:28:56 &#43;0900</h5>
-    
-
-
-</div>
- 
 
 </main>
-
-
-
-<div class="pages">
-
-    
-        <a class="icon pages-icon" href="/tags/page/6/" rel="prev">
-            <i class="fa fa-arrow-left"></i>
-        </a>
-    
-
-    
-        <a class="icon pages-icon" href="/tags/page/8/" rel="next">
-            <i class="fa fa-arrow-right"></i>
-        </a>
-    
-
-</div>
-
-
-
         <footer>
             <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
         </footer>

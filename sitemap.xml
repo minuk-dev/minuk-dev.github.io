@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://makerdark98.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9/</loc>
+    <lastmod>2020-06-02T19:06:21+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://makerdark98.dev/wiki/%ED%9A%8C%EA%B3%A0/2020-05-30/</loc>
     <lastmod>2020-05-30T01:52:14+09:00</lastmod>
   </url>
@@ -544,7 +549,7 @@
   
   <url>
     <loc>http://makerdark98.dev/wiki/</loc>
-    <lastmod>2020-05-28T07:49:25+09:00</lastmod>
+    <lastmod>2020-06-02T19:06:32+09:00</lastmod>
   </url>
   
   <url>
@@ -715,7 +720,7 @@
   
   <url>
     <loc>http://makerdark98.dev/</loc>
-    <lastmod>2020-05-30T01:52:14+09:00</lastmod>
+    <lastmod>2020-06-02T19:06:21+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -750,6 +755,12 @@
   </url>
   
   <url>
+    <loc>http://makerdark98.dev/tags/script/</loc>
+    <lastmod>2020-06-02T19:06:21+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://makerdark98.dev/tags/ssd/</loc>
     <lastmod>2020-04-28T21:47:03+09:00</lastmod>
     <priority>0</priority>
@@ -780,6 +791,12 @@
   </url>
   
   <url>
+    <loc>http://makerdark98.dev/tags/tool/</loc>
+    <lastmod>2020-06-02T19:06:21+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://makerdark98.dev/tags/vim/</loc>
     <lastmod>2020-04-28T21:41:36+09:00</lastmod>
     <priority>0</priority>
@@ -794,6 +811,12 @@
   <url>
     <loc>http://makerdark98.dev/tags/zsh/</loc>
     <lastmod>2020-04-13T22:28:56+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://makerdark98.dev/tags/%EC%82%AC%EC%A7%80%EB%B0%A9/</loc>
+    <lastmod>2020-06-02T19:06:21+09:00</lastmod>
     <priority>0</priority>
   </url>
   
