@@ -1,193 +1,6 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Typescript/Variable Declaration</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Typescript/Variable Declaration</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Typescript/Variable Declaration</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Typescript/Variable%20Declaration.md">
-  <h5>created : Tue, 07 Apr 2020 20:33:29 &#43;0900</h5>
-  <h5>modified : Wed, 08 Apr 2020 12:53:55 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li><a href="#var-declarations">var declarations</a></li>
-<li><a href="#scoping-rules">Scoping rules</a></li>
-<li><a href="#variable-capturing-quirks">Variable capturing quirks</a></li>
-<li><a href="#iife">IIFE</a></li>
-<li><a href="#let-declarations">let declarations</a>
-<ul>
-<li><a href="#block-scoping">Block-scoping</a></li>
-<li><a href="#temporal-dead-zone-tdz">Temporal Dead Zone - TDZ</a></li>
-<li><a href="#re-declarations-and-shadowing">Re-declarations and Shadowing</a></li>
-<li><a href="#capture-block-scope-variable">Capture Block-Scope variable</a></li>
-</ul></li>
-<li><a href="#const-declarations">Const Declarations</a>
-<ul>
-<li><a href="#let-vs-const"><code>let</code> vs. <code>const</code></a></li>
-</ul></li>
-<li><a href="#destructuring">Destructuring</a>
-<ul>
-<li>
-<ul>
-<li><a href="#array-destructuring">Array destructuring</a></li>
-</ul></li>
-<li><a href="#object-destructuring">Object destructuring</a>
-<ul>
-<li><a href="#property-renaming">Property renaming</a></li>
-<li><a href="#default-values">Default values</a></li>
-<li><a href="#function-ddeclarations">Function ddeclarations</a></li>
-</ul></li>
-<li><a href="#spread-operator">Spread operator</a></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h1 id="var-declarations">var declarations</h1>
-
-<pre><code>var a = 10;
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Typescript/Variable Declaration</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Typescript/Variable Declaration</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Typescript/Variable Declaration</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Typescript/Variable%20Declaration.md><h5>created : Tue, 07 Apr 2020 20:33:29 +0900</h5><h5>modified : Wed, 08 Apr 2020 12:53:55 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#block-scoping>Block-scoping</a></li><li><a href=#temporal-dead-zone---tdz>Temporal Dead Zone - TDZ</a></li><li><a href=#re-declarations-and-shadowing>Re-declarations and Shadowing</a></li><li><a href=#capture-block-scope-variable>Capture Block-Scope variable</a></li></ul><ul><li><a href=#let-vs-const><code>let</code> vs. <code>const</code></a></li></ul><ul><li><ul><li><a href=#array-destructuring>Array destructuring</a></li></ul></li><li><a href=#object-destructuring>Object destructuring</a><ul><li><a href=#property-renaming>Property renaming</a></li><li><a href=#default-values>Default values</a></li><li><a href=#function-ddeclarations>Function ddeclarations</a></li></ul></li><li><a href=#spread-operator>Spread operator</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=var-declarations>var declarations</h1><pre><code>var a = 10;
 
 function f() {
   var message = &quot;Hello, world!&quot;;
@@ -205,11 +18,7 @@ function f() {
 
 var g = f();
 g();
-</code></pre>
-
-<h1 id="scoping-rules">Scoping rules</h1>
-
-<pre><code>function f(suoldInitialize: boolean) {
+</code></pre><h1 id=scoping-rules>Scoping rules</h1><pre><code>function f(suoldInitialize: boolean) {
     if (shouldInitialize) {
         var x = 10;
     }
@@ -219,29 +28,15 @@ g();
 
 f(true);  // return 10
 f(false);  // return undefined
-</code></pre>
-
-<h1 id="variable-capturing-quirks">Variable capturing quirks</h1>
-
-<pre><code>for (var i = 0; i &lt; 10; i++) {
+</code></pre><h1 id=variable-capturing-quirks>Variable capturing quirks</h1><pre><code>for (var i = 0; i &lt; 10; i++) {
     setTimeout(function() { console.log(i); }, 100 * i);
 }
-</code></pre>
-
-<h1 id="iife">IIFE</h1>
-
-<pre><code>for (var i = 0; i &lt; 10; i++) {
+</code></pre><h1 id=iife>IIFE</h1><pre><code>for (var i = 0; i &lt; 10; i++) {
     (function(i) {
         setTimeout(function() { console.log(i); }, 100 * i );
     })(i);
 }
-</code></pre>
-
-<h1 id="let-declarations">let declarations</h1>
-
-<h2 id="block-scoping">Block-scoping</h2>
-
-<pre><code>function f(input: boolean) {
+</code></pre><h1 id=let-declarations>let declarations</h1><h2 id=block-scoping>Block-scoping</h2><pre><code>function f(input: boolean) {
     let a = 100;
 
     if (input) {
@@ -251,17 +46,9 @@ f(false);  // return undefined
 
     return b; // error!
 }
-</code></pre>
-
-<h2 id="temporal-dead-zone-tdz">Temporal Dead Zone - TDZ</h2>
-
-<pre><code>console.log(bar);
+</code></pre><h2 id=temporal-dead-zone---tdz>Temporal Dead Zone - TDZ</h2><pre><code>console.log(bar);
 let bar;
-</code></pre>
-
-<h2 id="re-declarations-and-shadowing">Re-declarations and Shadowing</h2>
-
-<pre><code>function f(condition, x) {
+</code></pre><h2 id=re-declarations-and-shadowing>Re-declarations and Shadowing</h2><pre><code>function f(condition, x) {
     if (condition) {
         let x = 100;
         return x;
@@ -284,28 +71,10 @@ function sumMatrix(matrix: number[][]) {
 
     return sum;
 }
-</code></pre>
-
-<h2 id="capture-block-scope-variable">Capture Block-Scope variable</h2>
-
-<pre><code>for (let i = 0; i &lt; 10; i++) {
+</code></pre><h2 id=capture-block-scope-variable>Capture Block-Scope variable</h2><pre><code>for (let i = 0; i &lt; 10; i++) {
     setTimeout(function() { console.log(i); }, 100 * i);
 }
-</code></pre>
-
-<h1 id="const-declarations">Const Declarations</h1>
-
-<h2 id="let-vs-const"><code>let</code> vs. <code>const</code></h2>
-
-<ul>
-<li>pinciple of least privilege</li>
-</ul>
-
-<h1 id="destructuring">Destructuring</h1>
-
-<h3 id="array-destructuring">Array destructuring</h3>
-
-<pre><code>let input = [1, 2];
+</code></pre><h1 id=const-declarations>Const Declarations</h1><h2 id=let-vs-const><code>let</code> vs. <code>const</code></h2><ul><li>pinciple of least privilege</li></ul><h1 id=destructuring>Destructuring</h1><h3 id=array-destructuring>Array destructuring</h3><pre><code>let input = [1, 2];
 let [first, second] = input;
 console.log(first); // 1
 console.log(second); // 2
@@ -324,11 +93,7 @@ let [first] = [1, 2, 3, 4];
 console.log(first); // 1
 
 let [, second, , fourth] = [1, 2, 3, 4];
-</code></pre>
-
-<h2 id="object-destructuring">Object destructuring</h2>
-
-<pre><code>let o = {
+</code></pre><h2 id=object-destructuring>Object destructuring</h2><pre><code>let o = {
     a: &quot;foo&quot;,
     b: 12,
     c: &quot;bar&quot;
@@ -337,33 +102,17 @@ let [, second, , fourth] = [1, 2, 3, 4];
 let { a, b } = o;
 
 let { a, ...passthrough } = o;
-</code></pre>
-
-<h3 id="property-renaming">Property renaming</h3>
-
-<pre><code>let { a: newName1, b: newName2 } = o;
+</code></pre><h3 id=property-renaming>Property renaming</h3><pre><code>let { a: newName1, b: newName2 } = o;
 
 let { a, b }: { a: string, b: number} = o;
-</code></pre>
-
-<h3 id="default-values">Default values</h3>
-
-<pre><code>function keepWholeObject(wholeObject: { a: string, b?: number }) {
+</code></pre><h3 id=default-values>Default values</h3><pre><code>function keepWholeObject(wholeObject: { a: string, b?: number }) {
     let { a, b = 1001 } = wholeObject;
 }
-</code></pre>
-
-<h3 id="function-ddeclarations">Function ddeclarations</h3>
-
-<pre><code>type C = { a:string, b?: number }
+</code></pre><h3 id=function-ddeclarations>Function ddeclarations</h3><pre><code>type C = { a:string, b?: number }
 function f({ a, b }: C): void {
     // ...
 }
-</code></pre>
-
-<h2 id="spread-operator">Spread operator</h2>
-
-<pre><code>let first = [1, 2];
+</code></pre><h2 id=spread-operator>Spread operator</h2><pre><code>let first = [1, 2];
 let second = [3, 4];
 let bothPlus [0, ...first, ...second, 5];-
 
@@ -376,41 +125,4 @@ let c = new C();
 let clone =  { ...c };
 clone.p;
 clone.m(); // error;
-</code></pre>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

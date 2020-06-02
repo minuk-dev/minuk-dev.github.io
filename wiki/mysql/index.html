@@ -1,396 +1,66 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>mysql (storage engine)</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">mysql (storage engine)</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>mysql (storage engine)</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/mysql.md">
-  <h5>created : Thu, 28 May 2020 07:48:47 &#43;0900</h5>
-  <h5>modified : Mon, 01 Jun 2020 20:21:53 &#43;0900</h5>
-</a>
-
-        
-<a href="http://makerdark98.dev/tags/mysql"><kbd class="item-tag">mysql</kbd></a>
-
-<a href="http://makerdark98.dev/tags/storage-engine"><kbd class="item-tag">storage engine</kbd></a>
-
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li><a href="#참고용-홈페이지">참고용 홈페이지</a>
-<ul>
-<li><a href="#환경-설정">환경 설정</a></li>
-<li><a href="#겪었던-문제들">겪었던 문제들</a></li>
-<li><a href="#코딩할-때-알아야할-내용">코딩할 때 알아야할 내용</a>
-<ul>
-<li><a href="#mysys-h-관련">mysys.h 관련</a></li>
-<li><a href="#thd-mysql-thread-객체-관련">THD (mysql thread 객체) 관련</a></li>
-<li><a href="#debug">Debug</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#참고용-홈페이지-읽고-정리하기">참고용 홈페이지 읽고 정리하기</a>
-<ul>
-<li>
-<ul>
-<li><a href="#23-2-overview">23.2 Overview</a></li>
-<li><a href="#23-3-creating-storage-engine-source-files">23.3 Creating Storage Engine Source Files</a></li>
-<li><a href="#23-4-adding-engine-specific-variables-and-parameters">23.4 Adding Engine Specific Variables and Parameters</a></li>
-<li><a href="#23-5-creating-the-handlerton">23.5 Creating the handlerton</a></li>
-<li><a href="#23-6-handling-handler-instantiation">23.6 Handling Handler Instantiation</a></li>
-<li><a href="#23-7-defining-filename-extensions">23.7 Defining Filename Extensions</a></li>
-<li><a href="#23-8-creating-tables">23.8 Creating Tables</a></li>
-<li><a href="#23-9-opening-a-table">23.9 Opening a Table</a>
-<ul>
-<li><a href="#코드-보면서-느낀거">코드 보면서 느낀거</a></li>
-</ul></li>
-<li><a href="#23-10-implementing-basic-table-scanning">23.10 Implementing Basic Table Scanning</a>
-<ul>
-<li><a href="#23-10-1-implementing-the-store-lock-method">23.10.1 Implementing the store_lock() Method</a></li>
-<li><a href="#23-10-2-implementing-the-external-lock-method">23.10.2 Implementing the external_lock() Method</a></li>
-<li><a href="#23-10-3-implementing-the-rnd-init-method">23.10.3 Implementing the rnd_init() Method</a></li>
-<li><a href="#23-10-4-implementing-the-info-uinf-flag-method">23.10.4 Implementing the info(uinf flag) Method</a></li>
-</ul></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h1 id="참고용-홈페이지">참고용 홈페이지</h1>
-
-<ol>
-<li><a href="https://dev.mysql.com/doc/internals/en/custom-engine.html">https://dev.mysql.com/doc/internals/en/custom-engine.html</a></li>
-<li>mysql architecture
-
-<ul>
-<li><img src="/wiki/images/mysql_architecture.png" alt="mysql architecture" /></li>
-</ul></li>
-<li><a href="https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PFS_PSI.html">https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PFS_PSI.html</a></li>
-</ol>
-
-<h2 id="환경-설정">환경 설정</h2>
-
-<ul>
-<li>일단 지금 집에다가 예전에 썻던 삼성 노트북을 wol 으로 설정하고 (완전히 꺼지면 안켜지니까 shutdown 을 alias 해놓고, suspend를 사용하는 식으로 했다.휴가 때 마다 혹은 가끔씩 reboot 해주면 되겠지?)</li>
-<li>github 에서 다운로드 해서 private repository 에다가 올려놨다.
-<code>bash
-$ git clone https://github.com/mysql/mysql-server
-</code></li>
-<li>참고용 홈페이지 1을 보면 알 수 있듯이 <code>storage/example</code> 을 똑같이 카피했다.</li>
-<li>일단 지금 목표는 custom engine 을 만들어 보는 거고 가능하다면 2018년 FAST 에 나온 논문인 FAST_PAIR 를 만들어보는거다.</li>
-
-<li><p>일단 공부한 내용을 아래에 써놓겠다.</p>
-
-<h2 id="겪었던-문제들">겪었던 문제들</h2></li>
-
-<li><p>git push 를 할때 너무 많아서 그런지 안올라가진다. -&gt; 브랜치를 나눠서 올리면 된다. mysql 8.0.0 까진 수월하게 올라간다. mysql-8.0.0 브랜치까지 올리고 나머지 올리면 올라가진다. 용량이 커서 안올라가지는 것 같다.</p></li>
-</ul>
-
-<h2 id="코딩할-때-알아야할-내용">코딩할 때 알아야할 내용</h2>
-
-<h3 id="mysys-h-관련">mysys.h 관련</h3>
-
-<ol>
-<li><code>include/mysys.h</code> 에 사용할만한 함수들이 많이 정리되어 있다.</li>
-<li>File 관련 : <code>my_create</code>, <code>my_close</code></li>
-<li>문자열 관련 : <code>fn_format</code> (filename format) - <code>to</code>(buffer variable), <code>name</code>, <code>dir</code>, <code>extension</code>, <code>flags</code> 순서</li>
-
-<li><p>Memory 관련 : <code>my_malloc</code>, <code>my_free</code></p>
-
-<h3 id="thd-mysql-thread-객체-관련">THD (mysql thread 객체) 관련</h3></li>
-
-<li><p>mysql thread 객체 (<code>THD</code>) 에 변수로 넣으면 (<code>THDVAR_SET</code>) 복사가 일어난다. (추측) -&gt; 따라서 넣어야할 값이 있으면 my_malloc 하고 넣은다음에 my_free 해줘야한다. (Memory Leak 나지 않게 조심하자!)</p></li>
-
-<li><p>Mysql Thread 객체 (THD)에 값 확인, 넣기 : <code>THDVAR(대상 Thread, 원하는 변수명)</code>, <code>THDVAR_SET(대상 Thread, 원하는 변수명, 값의 주소)</code></p></li>
-</ol>
-
-<h3 id="debug">Debug</h3>
-
-<ol>
-<li>Debug를 위해서 return 같은거 할때 <code>DBUG_RETURN</code> 을 적극적으로 활용하자</li>
-</ol>
-
-<h1 id="참고용-홈페이지-읽고-정리하기">참고용 홈페이지 읽고 정리하기</h1>
-
-<h3 id="23-2-overview">23.2 Overview</h3>
-
-<ul>
-<li><code>handler</code>라는 interface를 구현하도록 되어 있는데, 각 connection 마다 thread가 생성되고 각 thread마다 handler instance를 생성하고 가지고 있도록 한다.
-
-<ul>
-<li>질문점 : 그러면 각 handler들이 같은 table에 접근하게 되면 어떻게 되나 : handler를 구현할때 알아서 해결해야 한다. 가장 단순한 해결법은 table마다 lock을 가지게 해서 동시에 handler들이 접근 못하도록 하는것. (생각해보면 read lock, write lock마다 구현법도 다양하고 mvcc같은거 고려하면 생각할게 너무 많을 텐데 당연하게도 storage engine이 알아서 처리하도록 하는게 맞다)</li>
-</ul></li>
-
-<li><p>read-only -&gt; insert, update, delete -&gt; indexing, transactions -&gt; other advanced options 순서로 구현하라고 한다.</p>
-
-<h3 id="23-3-creating-storage-engine-source-files">23.3 Creating Storage Engine Source Files</h3></li>
-
-<li><p><code>example</code> 을 복사해서 수정하는게 제일 단순하다 (사실 이렇게 공식 홈페이지 적어놓을만 한게, innobase(=innodb)코드를 보고 비슷하게 만들어보려고 시도했는데, 나에게는 이건 너무 어려웠다. ㅠ)</p>
-
-<h3 id="23-4-adding-engine-specific-variables-and-parameters">23.4 Adding Engine Specific Variables and Parameters</h3></li>
-
-<li><p>구조가 Plugin 식으로 추가되는 식인것 같은데 그래서 Plugin 을 만드는 방법에 대해서 나와있다.</p></li>
-
-<li><p>이걸 열심히 공부하는것도 맞지만, 조금 목표와 멀어질 것 같아서 일단은 innobase 꺼 CMakeLists.txt 를 참고했고, 나중에 필요하면 다시 보면 될거라고 생각한다.</p>
-
-<h3 id="23-5-creating-the-handlerton">23.5 Creating the handlerton</h3></li>
-
-<li><p><code>handlerton</code> (= handler singleton) : storage engine 마다 1개씩 있는 객체로, transaction을 다루는 commit, rollbacks 같은 기능을 제공하게 된다.</p>
-
-<pre><code class="language-cpp">typedef struct
-{
-const char *name; /* storage engine 의 이름 : CREATE TABLE ... ENGINE=FOO; 에 쓰인다. */
-SHOW_COMP_OPTION state; /* SHOW STORAGE ENGINES command를 사용하면 출력되는 값 */
-const char *comment; /* SHOW  STORAGE ENGINES command를 사용할때 출력되는 설명 */
-enum db_type db_type; /* custom engine 은 반드시 DB_TYPE_UNKNOWN 을 사용해야한다고 합니다. */
-bool (*init)(); /* Server 가 시작할때 딱 1번 불리게 되고, handler가 instance 화 되기 전에 처리되야할 내용을 넣으면된다. */
-uint slot; /* storage engine 마다 고유하게 가지고있는 메모리 영역 thd-&gt;ha_data[foo_hton.slot]으로 접근가능하고, Rollback 구현할떄 참조하라고 적혀있음 */
-uint savepoint_offset; /* savepoint 의 위치, 0이면 savepoint memory가 필요하지 않다. */
-int  (*close_connection)(THD *thd);
-int  (*savepoint_set)(THD *thd, void *sv);
-int  (*savepoint_rollback)(THD *thd, void *sv);
-int  (*savepoint_release)(THD *thd, void *sv);
-int  (*commit)(THD *thd, bool all);
-int  (*rollback)(THD *thd, bool all);
-int  (*prepare)(THD *thd, bool all);
-int  (*recover)(XID *xid_list, uint len);
-int  (*commit_by_xid)(XID *xid);
-int  (*rollback_by_xid)(XID *xid);
-void *(*create_cursor_read_view)();
-void (*set_cursor_read_view)(void *);
-void (*close_cursor_read_view)(void *);
-handler *(*create)(TABLE *table);
-void (*drop_database)(char* path);
-int (*panic)(enum ha_panic_function flag);
-int (*release_temporary_latches)(THD *thd);
-int (*update_statistics)();
-int (*start_consistent_snapshot)(THD *thd);
-bool (*flush_logs)();
-bool (*show_status)(THD *thd, stat_print_fn *print, enum ha_stat_type stat);
-int (*repl_report_sent_binlog)(THD *thd, char *log_file_name, my_off_t end_offset);
-uint32 flags;
-} handlerton;
-</code></pre></li>
-
-<li><p>적다보니 아래 부분은 transcation 을 구현할때나 필요한 부분이라 나중에 생각하기로 했다. 대충 공식 메뉴얼정도만 읽었고 굳이 번역해놓을 필요는 없을듯?</p></li>
-</ul>
-
-<h3 id="23-6-handling-handler-instantiation">23.6 Handling Handler Instantiation</h3>
-
-<pre><code class="language-cpp">static handler* example_create_handler (TABLE* table);
-</code></pre>
-
-<ul>
-<li>handler 생성 함수를 만들어야된다.</li>
-
-<li><p>handler constructor를 단순히 호출하는 형식으로 구현할 수도 있다. (아래 예시는 myisam 의 구현)</p>
-
-<pre><code class="language-cpp">static handler *myisam_create_handler(TABLE *table)
-{
-return new ha_myisam(table);
-}
-</code></pre></li>
-
-<li><p>constructor 의 구현 예시</p>
-
-<pre><code class="language-cpp">ha_federated::ha_federated(TABLE *table_arg)
-:handler(&amp;federated_hton, table_arg),
-mysql(0), stored_result(0), scan_flag(0),
-ref_length(sizeof(MYSQL_ROW_OFFSET)), current_position(0)
-{}
-</code></pre></li>
-</ul>
-
-<h3 id="23-7-defining-filename-extensions">23.7 Defining Filename Extensions</h3>
-
-<ul>
-<li>지원하는 확장자를 <code>const char* []</code> 로 넘기면 처리해준다</li>
-<li>단 array 의 마지막 은 <code>NullS</code> 로 끝나야함.</li>
-<li>아래 코드는 csv 예시
-<br /></li>
-</ul>
-
-<pre><code class="language-cpp">static const char *ha_tina_exts[] = {
-  &quot;.CSV&quot;,
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>mysql (storage engine)</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>mysql (storage engine)</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>mysql (storage engine)</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/mysql.md><h5>created : Thu, 28 May 2020 07:48:47 +0900</h5><h5>modified : Tue, 02 Jun 2020 20:36:19 +0900</h5></a><a href=http://makerdark98.dev/tags/mysql><kbd class=item-tag>mysql</kbd></a>
+<a href=http://makerdark98.dev/tags/storage-engine><kbd class=item-tag>storage engine</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#환경-설정>환경 설정</a></li><li><a href=#겪었던-문제들>겪었던 문제들</a></li><li><a href=#코딩할-때-알아야할-내용>코딩할 때 알아야할 내용</a><ul><li><a href=#mysysh-관련>mysys.h 관련</a></li><li><a href=#thd-mysql-thread-객체-관련>THD (mysql thread 객체) 관련</a></li><li><a href=#debug>Debug</a></li></ul></li></ul><ul><li><ul><li><a href=#232-overview>23.2 Overview</a></li><li><a href=#233-creating-storage-engine-source-files>23.3 Creating Storage Engine Source Files</a></li><li><a href=#234-adding-engine-specific-variables-and-parameters>23.4 Adding Engine Specific Variables and Parameters</a></li><li><a href=#235-creating-the-handlerton>23.5 Creating the handlerton</a></li><li><a href=#236-handling-handler-instantiation>23.6 Handling Handler Instantiation</a></li><li><a href=#237-defining-filename-extensions>23.7 Defining Filename Extensions</a></li><li><a href=#238-creating-tables>23.8 Creating Tables</a></li><li><a href=#239-opening-a-table>23.9 Opening a Table</a></li><li><a href=#2310-implementing-basic-table-scanning>23.10 Implementing Basic Table Scanning</a></li><li><a href=#2311-closing-a-table>23.11 Closing a Table</a></li><li><a href=#2312-adding-support-for-insert-to-a-storage-engine>23.12 Adding Support for INSERT to a Storage Engine</a></li><li><a href=#2313-adding-support-for-update-to-a-stroage-engine>23.13 Adding Support for UPDATE to a Stroage Engine</a></li><li><a href=#2314-adding-support-for-delete-to-a-storage-engine>23.14 Adding Support for DELETE to a Storage Engine</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=참고용-홈페이지>참고용 홈페이지</h1><ol><li><a href=https://dev.mysql.com/doc/internals/en/custom-engine.html>https://dev.mysql.com/doc/internals/en/custom-engine.html</a></li><li>mysql architecture</li></ol><ul><li><img src=/wiki/images/mysql_architecture.png alt="mysql architecture"></li></ul><ol start=3><li><a href=https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PFS_PSI.html>https://dev.mysql.com/doc/dev/mysql-server/latest/PAGE_PFS_PSI.html</a></li></ol><h2 id=환경-설정>환경 설정</h2><ul><li>일단 지금 집에다가 예전에 썻던 삼성 노트북을 wol 으로 설정하고 (완전히 꺼지면 안켜지니까 shutdown 을 alias 해놓고, suspend를 사용하는 식으로 했다.휴가 때 마다 혹은 가끔씩 reboot 해주면 되겠지?)</li><li>github 에서 다운로드 해서 private repository 에다가 올려놨다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ git clone https://github.com/mysql/mysql-server
+</code></pre></div><ul><li>참고용 홈페이지 1을 보면 알 수 있듯이 <code>storage/example</code> 을 똑같이 카피했다.</li><li>일단 지금 목표는 custom engine 을 만들어 보는 거고 가능하다면 2018년 FAST 에 나온 논문인 FAST_PAIR 를 만들어보는거다.</li><li>일단 공부한 내용을 아래에 써놓겠다.</li></ul><h2 id=겪었던-문제들>겪었던 문제들</h2><ul><li>git push 를 할때 너무 많아서 그런지 안올라가진다. -> 브랜치를 나눠서 올리면 된다. mysql 8.0.0 까진 수월하게 올라간다. mysql-8.0.0 브랜치까지 올리고 나머지 올리면 올라가진다. 용량이 커서 안올라가지는 것 같다.</li></ul><h2 id=코딩할-때-알아야할-내용>코딩할 때 알아야할 내용</h2><h3 id=mysysh-관련>mysys.h 관련</h3><ol><li><code>include/mysys.h</code> 에 사용할만한 함수들이 많이 정리되어 있다.</li><li>File 관련 : <code>my_create</code>, <code>my_close</code></li><li>문자열 관련 : <code>fn_format</code> (filename format) - <code>to</code>(buffer variable), <code>name</code>, <code>dir</code>, <code>extension</code>, <code>flags</code> 순서</li><li>Memory 관련 : <code>my_malloc</code>, <code>my_free</code></li></ol><h3 id=thd-mysql-thread-객체-관련>THD (mysql thread 객체) 관련</h3><ol><li>mysql thread 객체 (<code>THD</code>) 에 변수로 넣으면 (<code>THDVAR_SET</code>) 복사가 일어난다. (추측) -> 따라서 넣어야할 값이 있으면 my_malloc 하고 넣은다음에 my_free 해줘야한다. (Memory Leak 나지 않게 조심하자!)</li><li>Mysql Thread 객체 (THD)에 값 확인, 넣기 : <code>THDVAR(대상 Thread, 원하는 변수명)</code>, <code>THDVAR_SET(대상 Thread, 원하는 변수명, 값의 주소)</code></li></ol><h3 id=debug>Debug</h3><ol><li>Debug를 위해서 return 같은거 할때 <code>DBUG_RETURN</code> 을 적극적으로 활용하자</li></ol><h1 id=참고용-홈페이지-읽고-정리하기>참고용 홈페이지 읽고 정리하기</h1><h3 id=232-overview>23.2 Overview</h3><ul><li><code>handler</code>라는 interface를 구현하도록 되어 있는데, 각 connection 마다 thread가 생성되고 각 thread마다 handler instance를 생성하고 가지고 있도록 한다.<ul><li>질문점 : 그러면 각 handler들이 같은 table에 접근하게 되면 어떻게 되나 : handler를 구현할때 알아서 해결해야 한다. 가장 단순한 해결법은 table마다 lock을 가지게 해서 동시에 handler들이 접근 못하도록 하는것. (생각해보면 read lock, write lock마다 구현법도 다양하고 mvcc같은거 고려하면 생각할게 너무 많을 텐데 당연하게도 storage engine이 알아서 처리하도록 하는게 맞다)</li></ul></li><li>read-only -> insert, update, delete -> indexing, transactions -> other advanced options 순서로 구현하라고 한다.</li></ul><h3 id=233-creating-storage-engine-source-files>23.3 Creating Storage Engine Source Files</h3><ul><li><code>example</code> 을 복사해서 수정하는게 제일 단순하다 (사실 이렇게 공식 홈페이지 적어놓을만 한게, innobase(=innodb)코드를 보고 비슷하게 만들어보려고 시도했는데, 나에게는 이건 너무 어려웠다. ㅠ)</li></ul><h3 id=234-adding-engine-specific-variables-and-parameters>23.4 Adding Engine Specific Variables and Parameters</h3><ul><li>구조가 Plugin 식으로 추가되는 식인것 같은데 그래서 Plugin 을 만드는 방법에 대해서 나와있다.</li><li>이걸 열심히 공부하는것도 맞지만, 조금 목표와 멀어질 것 같아서 일단은 innobase 꺼 CMakeLists.txt 를 참고했고, 나중에 필요하면 다시 보면 될거라고 생각한다.</li></ul><h3 id=235-creating-the-handlerton>23.5 Creating the handlerton</h3><ul><li><code>handlerton</code> (= handler singleton) : storage engine 마다 1개씩 있는 객체로, transaction을 다루는 commit, rollbacks 같은 기능을 제공하게 된다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span>
+  {
+    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>name; <span style=color:#75715e>/* storage engine 의 이름 : CREATE TABLE ... ENGINE=FOO; 에 쓰인다. */</span>
+    SHOW_COMP_OPTION state; <span style=color:#75715e>/* SHOW STORAGE ENGINES command를 사용하면 출력되는 값 */</span>
+    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>comment; <span style=color:#75715e>/* SHOW  STORAGE ENGINES command를 사용할때 출력되는 설명 */</span>
+    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>db_type</span> db_type; <span style=color:#75715e>/* custom engine 은 반드시 DB_TYPE_UNKNOWN 을 사용해야한다고 합니다. */</span>
+    <span style=color:#66d9ef>bool</span> (<span style=color:#f92672>*</span>init)(); <span style=color:#75715e>/* Server 가 시작할때 딱 1번 불리게 되고, handler가 instance 화 되기 전에 처리되야할 내용을 넣으면된다. */</span>
+    uint slot; <span style=color:#75715e>/* storage engine 마다 고유하게 가지고있는 메모리 영역 thd-&gt;ha_data[foo_hton.slot]으로 접근가능하고, Rollback 구현할떄 참조하라고 적혀있음 */</span>
+    uint savepoint_offset; <span style=color:#75715e>/* savepoint 의 위치, 0이면 savepoint memory가 필요하지 않다. */</span>
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>close_connection)(THD <span style=color:#f92672>*</span>thd);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>savepoint_set)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>sv);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>savepoint_rollback)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>sv);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>savepoint_release)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>sv);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>commit)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>bool</span> all);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>rollback)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>bool</span> all);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>prepare)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>bool</span> all);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>recover)(XID <span style=color:#f92672>*</span>xid_list, uint len);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>commit_by_xid)(XID <span style=color:#f92672>*</span>xid);
+    <span style=color:#66d9ef>int</span>  (<span style=color:#f92672>*</span>rollback_by_xid)(XID <span style=color:#f92672>*</span>xid);
+    <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>(<span style=color:#f92672>*</span>create_cursor_read_view)();
+    <span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>set_cursor_read_view)(<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>);
+    <span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>close_cursor_read_view)(<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>);
+    handler <span style=color:#f92672>*</span>(<span style=color:#f92672>*</span>create)(TABLE <span style=color:#f92672>*</span>table);
+    <span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>drop_database)(<span style=color:#66d9ef>char</span><span style=color:#f92672>*</span> path);
+    <span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>panic)(<span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>ha_panic_function</span> flag);
+    <span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>release_temporary_latches)(THD <span style=color:#f92672>*</span>thd);
+    <span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>update_statistics)();
+    <span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>start_consistent_snapshot)(THD <span style=color:#f92672>*</span>thd);
+    <span style=color:#66d9ef>bool</span> (<span style=color:#f92672>*</span>flush_logs)();
+    <span style=color:#66d9ef>bool</span> (<span style=color:#f92672>*</span>show_status)(THD <span style=color:#f92672>*</span>thd, stat_print_fn <span style=color:#f92672>*</span>print, <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>ha_stat_type</span> stat);
+    <span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>repl_report_sent_binlog)(THD <span style=color:#f92672>*</span>thd, <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>log_file_name, my_off_t end_offset);
+    uint32 flags;
+  } handlerton;
+</code></pre></div><ul><li>적다보니 아래 부분은 transcation 을 구현할때나 필요한 부분이라 나중에 생각하기로 했다. 대충 공식 메뉴얼정도만 읽었고 굳이 번역해놓을 필요는 없을듯?</li></ul><h3 id=236-handling-handler-instantiation>23.6 Handling Handler Instantiation</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>static</span> handler<span style=color:#f92672>*</span> <span style=color:#a6e22e>example_create_handler</span> (TABLE<span style=color:#f92672>*</span> table);
+</code></pre></div><ul><li>handler 생성 함수를 만들어야된다.</li><li>handler constructor를 단순히 호출하는 형식으로 구현할 수도 있다. (아래 예시는 myisam 의 구현)</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>static</span> handler <span style=color:#f92672>*</span><span style=color:#a6e22e>myisam_create_handler</span>(TABLE <span style=color:#f92672>*</span>table)
+  {
+    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>new</span> ha_myisam(table);
+  }
+</code></pre></div><ul><li>constructor 의 구현 예시</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>ha_federated<span style=color:#f92672>::</span>ha_federated(TABLE <span style=color:#f92672>*</span>table_arg)
+  <span style=color:#f92672>:</span>handler(<span style=color:#f92672>&amp;</span>federated_hton, table_arg),
+    mysql(<span style=color:#ae81ff>0</span>), stored_result(<span style=color:#ae81ff>0</span>), scan_flag(<span style=color:#ae81ff>0</span>),
+    ref_length(<span style=color:#66d9ef>sizeof</span>(MYSQL_ROW_OFFSET)), current_position(<span style=color:#ae81ff>0</span>)
+    {}
+</code></pre></div><h3 id=237-defining-filename-extensions>23.7 Defining Filename Extensions</h3><ul><li>지원하는 확장자를 <code>const char* []</code> 로 넘기면 처리해준다</li><li>단 array 의 마지막 은 <code>NullS</code> 로 끝나야함.</li><li>아래 코드는 csv 예시</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>ha_tina_exts[] <span style=color:#f92672>=</span> {
+  <span style=color:#e6db74>&#34;.CSV&#34;</span>,
   NullS
 };
-</code></pre>
-
-<ul>
-<li>이렇게 정의된 array를 다음과 같이 설정해주면 됨.
-<br /></li>
-</ul>
-
-<pre><code class="language-cpp">const char **ha_tina::bas_ext() const
+</code></pre></div><ul><li>이렇게 정의된 array를 다음과 같이 설정해주면 됨.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>ha_tina<span style=color:#f92672>::</span>bas_ext() <span style=color:#66d9ef>const</span>
 {
-  return ha_tina_exts;
+  <span style=color:#66d9ef>return</span> ha_tina_exts;
 }
-</code></pre>
-
-<ul>
-<li><code>DROP TABLE</code> 에서 table을 지웠을 때 파일이 삭제되는 기능을 딱히 구현하지 않고 생략해도 된다.</li>
-<li>근데 이건 필수가 아닌 건지, <code>handler</code> class에 따로 선언되어 있지는 않다. -&gt; 직접 구현했는데 혹시 문제가 생길수도 있으니 메모해놓는다.</li>
-</ul>
-
-<h3 id="23-8-creating-tables">23.8 Creating Tables</h3>
-
-<pre><code class="language-cpp">virtual int create(const char *name, TABLE *form, HA_CREATE_INFO *info)=0;
-</code></pre>
-
-<ul>
-<li>위 함수를 반드시 구현하라고 한다.</li>
-<li><code>name</code> 은 <code>table</code>의 이름</li>
-<li><code>form</code> 은 <code>tablename</code> 이랑 매칭되는 <code>TABLE</code> structure : <code>tablename.frm</code> 이라는 파일에 이미 다 만들어 놨으니, Storage Engine은 이를 변경하면 안됨.</li>
-<li><code>info</code> 는 <code>CREATE TABLE</code>을 했을 때 생기는 정보. <code>handler.h</code>에 정의 되어 있으니 참조.
-<br /></li>
-</ul>
-
-<pre><code class="language-cpp">typedef struct st_ha_create_information
+</code></pre></div><ul><li><code>DROP TABLE</code> 에서 table을 지웠을 때 파일이 삭제되는 기능을 딱히 구현하지 않고 생략해도 된다.</li><li>근데 이건 필수가 아닌 건지, <code>handler</code> class에 따로 선언되어 있지는 않다. -> 직접 구현했는데 혹시 문제가 생길수도 있으니 메모해놓는다.</li></ul><h3 id=238-creating-tables>23.8 Creating Tables</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>create</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>name, TABLE <span style=color:#f92672>*</span>form, HA_CREATE_INFO <span style=color:#f92672>*</span>info)<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;
+</code></pre></div><ul><li>위 함수를 반드시 구현하라고 한다.</li><li><code>name</code> 은 <code>table</code>의 이름</li><li><code>form</code> 은 <code>tablename</code> 이랑 매칭되는 <code>TABLE</code> structure : <code>tablename.frm</code> 이라는 파일에 이미 다 만들어 놨으니, Storage Engine은 이를 변경하면 안됨.</li><li><code>info</code> 는 <code>CREATE TABLE</code>을 했을 때 생기는 정보. <code>handler.h</code>에 정의 되어 있으니 참조.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>st_ha_create_information</span>
 {
-    CHARSET_INFO *table_charset, *default_table_charset;
+    CHARSET_INFO <span style=color:#f92672>*</span>table_charset, <span style=color:#f92672>*</span>default_table_charset;
     LEX_STRING connect_string;
-    const char *comment,*password;
-    const char *data_file_name, *index_file_name;
-    const char *alias;
+    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>comment,<span style=color:#f92672>*</span>password;
+    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>data_file_name, <span style=color:#f92672>*</span>index_file_name;
+    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>alias;
     ulonglong max_rows,min_rows;
     ulonglong auto_increment_value;
     ulong table_options;
@@ -398,26 +68,18 @@ ref_length(sizeof(MYSQL_ROW_OFFSET)), current_position(0)
     ulong raid_chunksize;
     ulong used_fields;
     SQL_LIST merge_list;
-    enum db_type db_type;
-    enum row_type row_type;
-    uint null_bits;                       /* NULL bits at start of record */
-    uint options;                         /* OR of HA_CREATE_ options */
+    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>db_type</span> db_type;
+    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>row_type</span> row_type;
+    uint null_bits;                       <span style=color:#75715e>/* NULL bits at start of record */</span>
+    uint options;                         <span style=color:#75715e>/* OR of HA_CREATE_ options */</span>
     uint raid_type,raid_chunks;
     uint merge_insert_method;
-    uint extra_size;                      /* length of extra data segment */
-    bool table_existed;                /* 1 in create if table existed */
-    bool frm_only;                        /* 1 if no ha_create_table() */
-    bool varchar;                         /* 1 if table has a VARCHAR */
+    uint extra_size;                      <span style=color:#75715e>/* length of extra data segment */</span>
+    <span style=color:#66d9ef>bool</span> table_existed;                <span style=color:#75715e>/* 1 in create if table existed */</span>
+    <span style=color:#66d9ef>bool</span> frm_only;                        <span style=color:#75715e>/* 1 if no ha_create_table() */</span>
+    <span style=color:#66d9ef>bool</span> varchar;                         <span style=color:#75715e>/* 1 if table has a VARCHAR */</span>
 } HA_CREATE_INFO;
-</code></pre>
-
-<ul>
-<li>storage engine 이 파일 기반이라는 가정하에 <code>form</code>, <code>info</code>는 신경 쓰지 않아도 됨.</li>
-<li>csv engine 같은 경우 아래와 같이 구현되어 있음
-<br /></li>
-</ul>
-
-<pre><code>int ha_tina::create(const char *name, TABLE *table_arg,
+</code></pre></div><ul><li>storage engine 이 파일 기반이라는 가정하에 <code>form</code>, <code>info</code>는 신경 쓰지 않아도 됨.</li><li>csv engine 같은 경우 아래와 같이 구현되어 있음</li></ul><pre><code>int ha_tina::create(const char *name, TABLE *table_arg,
   HA_CREATE_INFO *create_info)
 {
     char name_buff[FN_REFLEN];
@@ -433,213 +95,176 @@ ref_length(sizeof(MYSQL_ROW_OFFSET)), current_position(0)
 
     DBUG_RETURN(0);
 }
-</code></pre>
-
-<ul>
-<li>흐음&hellip;. 딱히 예제 코드에서 수정할게 없어보여서 거의 그대로 가져왔다.</li>
-<li>변경한 부분은 확장자 부분이랑, ccls에서 warning을 뱉길레 if문 안에 assignment구문을 넣지 않고 밖으로 뺴기만 했다.</li>
-<li>그리고 원래 example source에 thread variable 을 설정하는 예시로 현재 사용하고 있는 Thread(아마도 내 추측으로는 client의 connection과 동일한 맥락을 가질듯, server에서는 connection 당 1개의 thread가 붙어서 담당한다고 알고 있음, 이건 위에 Overview 참고)마다 생성시킨 Table 개수를 tracking 하는 코드가 있었는데, 굳이 문제가 안될것 같아서 냅뒀다.</li>
-</ul>
-
-<h3 id="23-9-opening-a-table">23.9 Opening a Table</h3>
-
-<ul>
-<li>read나 write 연산 전에 반드시 table data와 index file(있다면)을 열도록 되어있다.
-<br /></li>
-</ul>
-
-<pre><code class="language-cpp">int open(const char *name, int mode, int test_if_locked);
-</code></pre>
-
-<ul>
-<li><code>name</code>은 table 의 이름</li>
-<li><code>mode</code>는 <code>O_RDONLY</code>(Open read only) 또는 <code>O_RDWR</code>(Open read/write)</li>
-<li><code>test_if_locked</code>는 파일을 열 때 확인해야할 내용에 대한 값이고,
-<br /></li>
-</ul>
-
-<pre><code class="language-cpp">#define HA_OPEN_ABORT_IF_LOCKED   0   /* default */
-#define HA_OPEN_WAIT_IF_LOCKED    1
-#define HA_OPEN_IGNORE_IF_LOCKED  2
-#define HA_OPEN_TMP_TABLE         4   /* Table is a temp table */
-#define HA_OPEN_DELAY_KEY_WRITE   8   /* Don't update index */
-#define HA_OPEN_ABORT_IF_CRASHED  16
-#define HA_OPEN_FOR_REPAIR        32  /* open even if crashed */
-</code></pre>
-
-<ul>
-<li>이 값들중 하나이다.</li>
-<li>lock을 어떻게 다루는지 같은건 <code>get_share()</code>와 <code>free_share()</code>를 참조하라고 한다.</li>
-</ul>
-
-<h4 id="코드-보면서-느낀거">코드 보면서 느낀거</h4>
-
-<ul>
-<li><code>handler::ha_open</code> 이라는 메서드가 존재하는데 얘가 <code>handler::open</code>을 호출하는 구조이다. (정확히 여기서는 <code>handler</code>를 상속받은 custom storage engine의 open이라는 메서드)</li>
-<li>csv 의 <code>ha_tina</code>를 보면 (물론 여기서는 싱글톤? share를 활용해서 파일을 여는 구조인것 같다.) <code>mysql_file_open</code> 이라는 메서드를 사용해서 처리하는데, 여기서 받는 첫번째 인자가 <code>PSI_file_key</code>인데 이게 먼지 모르겠다. 참조 3에 있는 홈페이지에서 검색해서 찾아보면, 계측된? (instrumented) 파일 이라고 하는데&hellip;. 아예 innobase에서는 <code>mysql_file_open</code> 이라는 걸 사용하지도 않는다. csv에서도 static하게 선언해놓고 그냥 사용한다. 자동으로 채워지는 데이터 구조인지 잘모르겠다.</li>
-
-<li><p>흐음&hellip; 찾아보았는데 file을 생성할 때 PSI_file_key를 같이 주고서 생성하면 넣어주는 방식인듯. 내가 구현할 때는 <code>my_create</code>를 사용해서 생성했으니까, 그냥 <code>my_open</code>으로 파일을 열어서 사용하면 될 듯. 사용하는 곳들을 보니까 전부 singleton 이거나 metadata 임.</p></li>
-
-<li><p>dictionary file 은 singleton (<code>handlerton</code>) 에서 vector 의 형식으로 관리하고, data file 은 handler 들이 각자 가지도록 구현해놔야할듯. open 이라는 메서드 자체가 테이블을 열어야할 필요가 있을 때만 열린다고 하니까 dictionary 가 안열릴 수 도 있다는 가정 하에 코딩해야된다.</p></li>
-
-<li><p>handlerton 의 lifecycle 을 확인해서 handlerton 이 죽을 때(아마도 예측은 mysql server 가 죽을 때) 들고 있는 dictionary file을 해제하는 형식으로 해줘야 할듯.</p></li>
-
-<li><p>일단 indirect data 구조로 짜서 dictionary 에는 data file 의 page number 와 page 의 offset을 들고 있도록 구현하자&hellip;. 흐음&hellip; 이렇게 짜면 innodb랑 엄청 비슷한거 같은데? 흥&hellip; 근데 이것 보다 좋은 방식이 따로 떠오르지는 않는데? 일단 생각한대로 해보자.(innodb 보다 성능이 잘나올지는 모르겠다. 흐음&hellip;)</p></li>
-</ul>
-
-<h3 id="23-10-implementing-basic-table-scanning">23.10 Implementing Basic Table Scanning</h3>
-
-<h4 id="23-10-1-implementing-the-store-lock-method">23.10.1 Implementing the store_lock() Method</h4>
-
-<ul>
-<li>reading이나 writing 이 발생하기 전에 언제나 불림</li>
-<li>table에 lock을 추가하기 전에 <code>mysqld</code>라는 lock handler가 요청된 locks을 store_lock을 호출한다. 이때 store lock은 lock 의 수준을 변경할수 있고(blocking을 non-blocking을 만들다던가, 아예 무시하도록 만들다던가) 아니면 다른 테이블들에 락을 추가할수도 있다.</li>
-
-<li><p>lock을 풀어줄때 store_lock이 다시 불리게 되는데, 이런 경우에는 일반적으로는 아무것도 할 필요가 없다.</p></li>
-
-<li><p>만약 store_lock에 TL_IGNORE가 파라메터로 들어온다면, mysql에 handler에게 마지막에 요청했던 락을 다시 요청하는 것과 같다.</p></li>
-
-<li><p>lock의 종류는 <code>includes/thr_lock.h</code>에 기재되어 있고 밑에 나와있는 것과 동일하다.</p></li>
-</ul>
-
-<pre><code class="language-cpp"> enum thr_lock_type
+</code></pre><ul><li>흐음&mldr;. 딱히 예제 코드에서 수정할게 없어보여서 거의 그대로 가져왔다.</li><li>변경한 부분은 확장자 부분이랑, ccls에서 warning을 뱉길레 if문 안에 assignment구문을 넣지 않고 밖으로 뺴기만 했다.</li><li>그리고 원래 example source에 thread variable 을 설정하는 예시로 현재 사용하고 있는 Thread(아마도 내 추측으로는 client의 connection과 동일한 맥락을 가질듯, server에서는 connection 당 1개의 thread가 붙어서 담당한다고 알고 있음, 이건 위에 Overview 참고)마다 생성시킨 Table 개수를 tracking 하는 코드가 있었는데, 굳이 문제가 안될것 같아서 냅뒀다.</li></ul><h3 id=239-opening-a-table>23.9 Opening a Table</h3><ul><li>read나 write 연산 전에 반드시 table data와 index file(있다면)을 열도록 되어있다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>open</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>name, <span style=color:#66d9ef>int</span> mode, <span style=color:#66d9ef>int</span> test_if_locked);
+</code></pre></div><ul><li><code>name</code>은 table 의 이름</li><li><code>mode</code>는 <code>O_RDONLY</code>(Open read only) 또는 <code>O_RDWR</code>(Open read/write)</li><li><code>test_if_locked</code>는 파일을 열 때 확인해야할 내용에 대한 값이고,</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#75715e>#define HA_OPEN_ABORT_IF_LOCKED   0   </span><span style=color:#75715e>/* default */</span><span style=color:#75715e>
+</span><span style=color:#75715e>#define HA_OPEN_WAIT_IF_LOCKED    1
+</span><span style=color:#75715e>#define HA_OPEN_IGNORE_IF_LOCKED  2
+</span><span style=color:#75715e>#define HA_OPEN_TMP_TABLE         4   </span><span style=color:#75715e>/* Table is a temp table */</span><span style=color:#75715e>
+</span><span style=color:#75715e>#define HA_OPEN_DELAY_KEY_WRITE   8   </span><span style=color:#75715e>/* Don&#39;t update index */</span><span style=color:#75715e>
+</span><span style=color:#75715e>#define HA_OPEN_ABORT_IF_CRASHED  16
+</span><span style=color:#75715e>#define HA_OPEN_FOR_REPAIR        32  </span><span style=color:#75715e>/* open even if crashed */</span><span style=color:#75715e>
+</span></code></pre></div><ul><li>이 값들중 하나이다.</li><li>lock을 어떻게 다루는지 같은건 <code>get_share()</code>와 <code>free_share()</code>를 참조하라고 한다.</li></ul><h4 id=코드-보면서-느낀거>코드 보면서 느낀거</h4><ul><li><p><code>handler::ha_open</code> 이라는 메서드가 존재하는데 얘가 <code>handler::open</code>을 호출하는 구조이다. (정확히 여기서는 <code>handler</code>를 상속받은 custom storage engine의 open이라는 메서드)</p></li><li><p>csv 의 <code>ha_tina</code>를 보면 (물론 여기서는 싱글톤? share를 활용해서 파일을 여는 구조인것 같다.) <code>mysql_file_open</code> 이라는 메서드를 사용해서 처리하는데, 여기서 받는 첫번째 인자가 <code>PSI_file_key</code>인데 이게 먼지 모르겠다. 참조 3에 있는 홈페이지에서 검색해서 찾아보면, 계측된? (instrumented) 파일 이라고 하는데&mldr;. 아예 innobase에서는 <code>mysql_file_open</code> 이라는 걸 사용하지도 않는다. csv에서도 static하게 선언해놓고 그냥 사용한다. 자동으로 채워지는 데이터 구조인지 잘모르겠다.</p></li><li><p>흐음&mldr; 찾아보았는데 file을 생성할 때 PSI_file_key를 같이 주고서 생성하면 넣어주는 방식인듯. 내가 구현할 때는 <code>my_create</code>를 사용해서 생성했으니까, 그냥 <code>my_open</code>으로 파일을 열어서 사용하면 될 듯. 사용하는 곳들을 보니까 전부 singleton 이거나 metadata 임.</p></li><li><p>dictionary file 은 singleton (<code>handlerton</code>) 에서 vector 의 형식으로 관리하고, data file 은 handler 들이 각자 가지도록 구현해놔야할듯. open 이라는 메서드 자체가 테이블을 열어야할 필요가 있을 때만 열린다고 하니까 dictionary 가 안열릴 수 도 있다는 가정 하에 코딩해야된다.</p></li><li><p>handlerton 의 lifecycle 을 확인해서 handlerton 이 죽을 때(아마도 예측은 mysql server 가 죽을 때) 들고 있는 dictionary file을 해제하는 형식으로 해줘야 할듯.</p></li><li><p>일단 indirect data 구조로 짜서 dictionary 에는 data file 의 page number 와 page 의 offset을 들고 있도록 구현하자&mldr;. 흐음&mldr; 이렇게 짜면 innodb랑 엄청 비슷한거 같은데? 흥&mldr; 근데 이것 보다 좋은 방식이 따로 떠오르지는 않는데? 일단 생각한대로 해보자.(innodb 보다 성능이 잘나올지는 모르겠다. 흐음&mldr;)</p></li></ul><h3 id=2310-implementing-basic-table-scanning>23.10 Implementing Basic Table Scanning</h3><h4 id=23101-implementing-the-store_lock-method>23.10.1 Implementing the store_lock() Method</h4><ul><li><p>reading이나 writing 이 발생하기 전에 언제나 불림</p></li><li><p>table에 lock을 추가하기 전에 <code>mysqld</code>라는 lock handler가 요청된 locks을 store_lock을 호출한다. 이때 store lock은 lock 의 수준을 변경할수 있고(blocking을 non-blocking을 만들다던가, 아예 무시하도록 만들다던가) 아니면 다른 테이블들에 락을 추가할수도 있다.</p></li><li><p>lock을 풀어줄때 store_lock이 다시 불리게 되는데, 이런 경우에는 일반적으로는 아무것도 할 필요가 없다.</p></li><li><p>만약 store_lock에 TL_IGNORE가 파라메터로 들어온다면, mysql에 handler에게 마지막에 요청했던 락을 다시 요청하는 것과 같다.</p></li><li><p>lock의 종류는 <code>includes/thr_lock.h</code>에 기재되어 있고 밑에 나와있는 것과 동일하다.</p></li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>thr_lock_type</span>
 {
-  TL_IGNORE=-1,
-  TL_UNLOCK,                  /* UNLOCK ANY LOCK */
-  TL_READ,                    /* Read lock */
-  TL_READ_WITH_SHARED_LOCKS,
-  TL_READ_HIGH_PRIORITY,      /* High prior. than TL_WRITE. Allow concurrent insert */
-  TL_READ_NO_INSERT,          /* READ, Don't allow concurrent insert */
-  TL_WRITE_ALLOW_WRITE,       /*   Write lock, but allow other threads to read / write. */
-  TL_WRITE_ALLOW_READ,        /* Write lock, but allow other threads to read / write. */
-  TL_WRITE_CONCURRENT_INSERT, /* WRITE lock used by concurrent insert. */
-  TL_WRITE_DELAYED,           /* Write used by INSERT DELAYED.  Allows READ locks */
-  TL_WRITE_LOW_PRIORITY,      /* WRITE lock that has lower priority than TL_READ */
-  TL_WRITE,                   /* Normal WRITE lock */
-  TL_WRITE_ONLY               /* Abort new lock request with an error */
+ TL_IGNORE<span style=color:#f92672>=-</span><span style=color:#ae81ff>1</span>,
+ TL_UNLOCK,                  <span style=color:#75715e>/* UNLOCK ANY LOCK */</span>
+ TL_READ,                    <span style=color:#75715e>/* Read lock */</span>
+ TL_READ_WITH_SHARED_LOCKS,
+ TL_READ_HIGH_PRIORITY,      <span style=color:#75715e>/* High prior. than TL_WRITE. Allow concurrent insert */</span>
+ TL_READ_NO_INSERT,          <span style=color:#75715e>/* READ, Don&#39;t allow concurrent insert */</span>
+ TL_WRITE_ALLOW_WRITE,       <span style=color:#75715e>/*   Write lock, but allow other threads to read / write. */</span>
+ TL_WRITE_ALLOW_READ,        <span style=color:#75715e>/* Write lock, but allow other threads to read / write. */</span>
+ TL_WRITE_CONCURRENT_INSERT, <span style=color:#75715e>/* WRITE lock used by concurrent insert. */</span>
+ TL_WRITE_DELAYED,           <span style=color:#75715e>/* Write used by INSERT DELAYED.  Allows READ locks */</span>
+ TL_WRITE_LOW_PRIORITY,      <span style=color:#75715e>/* WRITE lock that has lower priority than TL_READ */</span>
+ TL_WRITE,                   <span style=color:#75715e>/* Normal WRITE lock */</span>
+ TL_WRITE_ONLY               <span style=color:#75715e>/* Abort new lock request with an error */</span>
 };
-</code></pre>
-
-<ul>
-<li><code>ha_myisammrg::store_lock()</code>을 참조</li>
-</ul>
-
-<h4 id="23-10-2-implementing-the-external-lock-method">23.10.2 Implementing the external_lock() Method</h4>
-
-<ul>
-<li>statement 의 시작이나, <code>LOCK TABLES</code> 라는 게 들어오면 <code>external_lock()</code>이 호출된다.</li>
-<li><code>external_lock()</code>은 ha_innodb.cc에서 찾아보면 된다. 대부분의 storage engine이 간단하게 return 0 하는 식으로 구현한다.</li>
-</ul>
-
-<h4 id="23-10-3-implementing-the-rnd-init-method">23.10.3 Implementing the rnd_init() Method</h4>
-
-<ul>
-<li><code>rnd_init()</code>은 table scan 을 준비하는 단계에서 호출되고, counters를 초기화 시키거나, pointers를 table의 시작지점에 만든다.</li>
-<li>간단한 CSV storage engine의 구현 예시이다.
-<br /></li>
-</ul>
-
-<pre><code class="language-cpp">int ha_tina::rnd_init(bool scan)
+</code></pre></div><ul><li><code>ha_myisammrg::store_lock()</code>을 참조</li></ul><h4 id=23102-implementing-the-external_lock-method>23.10.2 Implementing the external_lock() Method</h4><ul><li>statement 의 시작이나, <code>LOCK TABLES</code> 라는 게 들어오면 <code>external_lock()</code>이 호출된다.</li><li><code>external_lock()</code>은 ha_innodb.cc에서 찾아보면 된다. 대부분의 storage engine이 간단하게 return 0 하는 식으로 구현한다.</li></ul><h4 id=23103-implementing-the-rnd_init-method>23.10.3 Implementing the rnd_init() Method</h4><ul><li><code>rnd_init()</code>은 table scan 을 준비하는 단계에서 호출되고, counters를 초기화 시키거나, pointers를 table의 시작지점에 만든다.</li><li>간단한 CSV storage engine의 구현 예시이다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_tina<span style=color:#f92672>::</span>rnd_init(<span style=color:#66d9ef>bool</span> scan)
 {
-      DBUG_ENTER(&quot;ha_tina::rnd_init&quot;);
+      DBUG_ENTER(<span style=color:#e6db74>&#34;ha_tina::rnd_init&#34;</span>);
 
-      current_position= next_position= 0;
-      records= 0;
-      chain_ptr= chain;
+      current_position<span style=color:#f92672>=</span> next_position<span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      records<span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      chain_ptr<span style=color:#f92672>=</span> chain;
 
-      DBUG_RETURN(0);
+      DBUG_RETURN(<span style=color:#ae81ff>0</span>);
 }
-</code></pre>
-
-<ul>
-<li>만약 sequential read면 <code>scan</code>은 <code>true</code>, random read 면 <code>false</code>이다.
-<br /></li>
-</ul>
-
-<h4 id="23-10-4-implementing-the-info-uinf-flag-method">23.10.4 Implementing the info(uinf flag) Method</h4>
-
-<ul>
-<li>table scan을 하기 전에 optimizer에게 추가적인 테이블 정보를 넘겨주기 위해서 불린다.</li>
-<li>return 값으로 정보를 전달하는 식이아니라 handler class의 몇몇 맴버 변수를 통해서 가져간다.</li>
-
-<li><p>optimizer가 사용하는 것 이외에도 <code>SHOW TABLE STATUS</code>에서도 내용을 보게 된다. 이때 <code>flag</code> 인자는 어떠한 맥락에서 이 메서드가 호출되었는지를 전달해준다.</p>
-
-<ul>
-<li><code>HA_STATUS_NO_LOCK</code> : table shared의 lock을 방지할수 있다면, handler가 오래된걸 사용한다. (직역해서 좀 이상한데, lock 없이 가능하다면 오래된 버전을 본다. 아 풀어서 써도 이상하네&hellip; mvcc 같은 개념을 생각하면 될듯)</li>
-<li><code>HA_STATUS_TIME</code> : 오직 <code>stats-&gt;update_time</code>만 필요하다. (나머진 업데이터 안해도 된다.)</li>
-<li><code>HA_STATUS_CONST</code> : immutable member를 업데이트 해라 (<code>max-data_file_length</code>, <code>max_index_file_length</code>, <code>create_time</code>, <code>sortkey</code>, <code>ref_length</code>, <code>block_size</code>, <code>data_file_name</code>, <code>index_file_name</code>)</li>
-<li><code>HA_STATUS_VARIABLE</code> : <code>records</code>, <code>deleted</code>, <code>data_file_length</code>, <code>index_file_length</code>, <code>delete_length</code>, <code>check_time</code>, <code>mean_rec_length</code></li>
-<li><code>HA_STATUS_ERRKEY</code> : 마지막으로 발생한 error key</li>
-<li><code>HASTATUS_AUTO</code> : autoincrement value 를 업데이트 해라.</li>
-</ul></li>
-
-<li><p>아래는 <code>sql/handler.h</code>에 정의되어 있는 public properties</p></li>
-</ul>
-
-<pre><code class="language-cpp">ulonglong data_file_length;      /* Length off data file */
-ulonglong max_data_file_length;  /* Length off data file */
+</code></pre></div><ul><li>만약 sequential read면 <code>scan</code>은 <code>true</code>, random read 면 <code>false</code>이다.</li></ul><h4 id=23104-implementing-the-infouinf-flag-method>23.10.4 Implementing the info(uinf flag) Method</h4><ul><li><p>table scan을 하기 전에 optimizer에게 추가적인 테이블 정보를 넘겨주기 위해서 불린다.</p></li><li><p>return 값으로 정보를 전달하는 식이아니라 handler class의 몇몇 맴버 변수를 통해서 가져간다.</p></li><li><p>optimizer가 사용하는 것 이외에도 <code>SHOW TABLE STATUS</code>에서도 내용을 보게 된다. 이때 <code>flag</code> 인자는 어떠한 맥락에서 이 메서드가 호출되었는지를 전달해준다.</p><ul><li><code>HA_STATUS_NO_LOCK</code> : table shared의 lock을 방지할수 있다면, handler가 오래된걸 사용한다. (직역해서 좀 이상한데, lock 없이 가능하다면 오래된 버전을 본다. 아 풀어서 써도 이상하네&mldr; mvcc 같은 개념을 생각하면 될듯)</li><li><code>HA_STATUS_TIME</code> : 오직 <code>stats->update_time</code>만 필요하다. (나머진 업데이터 안해도 된다.)</li><li><code>HA_STATUS_CONST</code> : immutable member를 업데이트 해라 (<code>max-data_file_length</code>, <code>max_index_file_length</code>, <code>create_time</code>, <code>sortkey</code>, <code>ref_length</code>, <code>block_size</code>, <code>data_file_name</code>, <code>index_file_name</code>)</li><li><code>HA_STATUS_VARIABLE</code> : <code>records</code>, <code>deleted</code>, <code>data_file_length</code>, <code>index_file_length</code>, <code>delete_length</code>, <code>check_time</code>, <code>mean_rec_length</code></li><li><code>HA_STATUS_ERRKEY</code> : 마지막으로 발생한 error key</li><li><code>HASTATUS_AUTO</code> : autoincrement value 를 업데이트 해라.</li></ul></li><li><p>아래는 <code>sql/handler.h</code>에 정의되어 있는 public properties</p></li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>ulonglong data_file_length;      <span style=color:#75715e>/* Length off data file */</span>
+ulonglong max_data_file_length;  <span style=color:#75715e>/* Length off data file */</span>
 ulonglong index_file_length;
 ulonglong max_index_file_length;
-ulonglong delete_length;         /* Free bytes */
+ulonglong delete_length;         <span style=color:#75715e>/* Free bytes */</span>
 ulonglong auto_increment_value;
-ha_rows records;                 /* Records in table */
-ha_rows deleted;                 /* Deleted records */
+ha_rows records;                 <span style=color:#75715e>/* Records in table */</span>
+ha_rows deleted;                 <span style=color:#75715e>/* Deleted records */</span>
 ulong raid_chunksize;
-ulong mean_rec_length;           /* physical reclength */
-time_t create_time;              /* When table was created */
+ulong mean_rec_length;           <span style=color:#75715e>/* physical reclength */</span>
+time_t create_time;              <span style=color:#75715e>/* When table was created */</span>
 time_t check_time;
 time_t update_time;
-</code></pre>
-
-<ul>
-<li><p>table scan의 목적에선, 가장 중요한 property는 records (table의 records 개수) 이다. 0, 1, 2보다 많음에 대한 정보가 중요하게 쓰인다. 2보다 많으면 더 많은건 따로 신경 안써도 된다.</p></li>
-
-<li><p>아래는 <code>ha_tina</code> 의 예제이다.</p>
-
-<pre><code class="language-cpp">int ha_tina::info(uint flag)
+</code></pre></div><ul><li><p>table scan의 목적에선, 가장 중요한 property는 records (table의 records 개수) 이다. 0, 1, 2보다 많음에 대한 정보가 중요하게 쓰인다. 2보다 많으면 더 많은건 따로 신경 안써도 된다.</p></li><li><p>아래는 <code>ha_tina</code> 의 예제이다.</p></li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_tina<span style=color:#f92672>::</span>info(uint flag)
+ {
+   DBUG_ENTER(<span style=color:#e6db74>&#34;ha_tina::info&#34;</span>);
+   <span style=color:#75715e>/* This is a lie, but you don&#39;t want the optimizer to see zero or 1 */</span>
+   <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>records_is_known <span style=color:#f92672>&amp;&amp;</span> stats.records <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>2</span>) 
+     stats.records<span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;
+   DBUG_RETURN(<span style=color:#ae81ff>0</span>); 
+ }
+</code></pre></div><h4 id=23105-implementing-the-extra-method>23.10.5 Implementing the extra() method</h4><ul><li>추가적인 hint 를 주기 위해서 호출되는 method</li><li>extra call 을 구현하는건 의무가 아니여서 대부분 0을 리턴함<ul><li>너무 설명이 없다. 어떤 상황에서 추가적인 hint가 필요한지, parameter 가 왜 <code>int ha_tina::extra(enum ha_extra_function operation)</code> 이런식으로 구성되어 있는지에 대한 설명이 부족한듯.</li></ul></li></ul><h4 id=23106-implementing-the-rnd_next-method>23.10.6 Implementing the rnd_next() method</h4><ul><li>각 row를 가져올때마다 호출되며, server의 search condition 이 만족되었거나 파일의 끝에 도달하면 <code>HA_ERR_END_OF_FILE</code> 을 리턴해야한다.</li><li><code>rnd_next()</code> 는 byte array 인 <code>buf</code>를 인자로 받는다. 이때 buf 는 반드시 mysql 의 table row 의 포멧을 따라야한다.<ul><li>3가지 포멧을 지원하는데, fixed-length rows, variable-length rows, variable-length rows with BLOB pointers 이다.</li><li>모두 <code>CREATE TABLE</code> 의 순서를 따라야한다. (table의 정의는 <code>.frm</code> 에 있으며, optimizer와 handler 에서 최적화 할 수 있다.)</li><li>각 format 마다 nullable column 마다 1bit의 NULL bitmaps 으로 시작한다. (만약 8개의 Nullable Column 이 존재한다면, 1byte 의 bitmap 이 존재할거다.)</li><li>딱 하나 예외가 있는데, fixed-width table인데, 이때는 추가 시작 bit가 있으므로 8개의 Nullable columns 을 가지고 있는 table은 2bytes bitmap 이 존재한다.</li><li>Nullbitmap 구역이 끝나면, Columns의 datatypes가 있다. datatype 에 대한 정의는 <code>sql/field.cc</code> 에 정의 되어 있다.</li><li>fixed length row format 에서는 간단하게 하나 다음 하나 형식으로 존재한다. variable length row에서는 VARCHAR는 1이나 2 bytes 길이로 부호화 되어 있다.</li><li>BLOB을 포함하는 variable length row 에서는 각 BLOB은 2부분으로 저장되는 데, 1번째는 BLOB의 크기를 저장하는 integer, 2번째는 BLOB의 내용에 대한 pointer 이다.</li></ul></li><li>다음은 csv 의 예시이다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_tina<span style=color:#f92672>::</span>rnd_next(byte <span style=color:#f92672>*</span>buf)
 {
-DBUG_ENTER(&quot;ha_tina::info&quot;);
-/* This is a lie, but you don't want the optimizer to see zero or 1 */
-if (!records_is_known &amp;&amp; stats.records &lt; 2) 
- stats.records= 2;
-DBUG_RETURN(0); 
+  DBUG_ENTER(<span style=color:#e6db74>&#34;ha_tina::rnd_next&#34;</span>);
+
+  statistic_increment(table<span style=color:#f92672>-&gt;</span>in_use<span style=color:#f92672>-&gt;</span>status_var.ha_read_rnd_next_count, <span style=color:#f92672>&amp;</span>LOCK_status);
+
+  current_position<span style=color:#f92672>=</span> next_position;
+  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>share<span style=color:#f92672>-&gt;</span>mapped_file)
+    DBUG_RETURN(HA_ERR_END_OF_FILE);
+  <span style=color:#66d9ef>if</span> (HA_ERR_END_OF_FILE <span style=color:#f92672>==</span> find_current_row(buf) )
+    DBUG_RETURN(HA_ERR_END_OF_FILE);
+
+  records<span style=color:#f92672>++</span>;
+  DBUG_RETURN(<span style=color:#ae81ff>0</span>);
 }
-</code></pre></li>
-</ul>
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_tina<span style=color:#f92672>::</span>find_current_row(byte <span style=color:#f92672>*</span>buf)
+{
+  byte <span style=color:#f92672>*</span>mapped_ptr<span style=color:#f92672>=</span> (byte <span style=color:#f92672>*</span>)share<span style=color:#f92672>-&gt;</span>mapped_file <span style=color:#f92672>+</span> current_position;
+  byte <span style=color:#f92672>*</span>end_ptr;
+  DBUG_ENTER(<span style=color:#e6db74>&#34;ha_tina::find_current_row&#34;</span>);
 
-    </div>
+  <span style=color:#75715e>/* EOF should be counted as new line */</span>
+  <span style=color:#66d9ef>if</span> ((end_ptr<span style=color:#f92672>=</span>  find_eoln(share<span style=color:#f92672>-&gt;</span>mapped_file, current_position,
+                           share<span style=color:#f92672>-&gt;</span>file_stat.st_size)) <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+    DBUG_RETURN(HA_ERR_END_OF_FILE);
 
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
+  <span style=color:#66d9ef>for</span> (Field <span style=color:#f92672>**</span>field<span style=color:#f92672>=</span>table<span style=color:#f92672>-&gt;</span>field ; <span style=color:#f92672>*</span>field ; field<span style=color:#f92672>++</span>)
+  {
+    buffer.length(<span style=color:#ae81ff>0</span>);
+    mapped_ptr<span style=color:#f92672>++</span>; <span style=color:#75715e>// Increment past the first quote
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>for</span>(;mapped_ptr <span style=color:#f92672>!=</span> end_ptr; mapped_ptr<span style=color:#f92672>++</span>)
+    {
+      <span style=color:#75715e>// Need to convert line feeds!
+</span><span style=color:#75715e></span>      <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>mapped_ptr <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;&#34;&#39;</span> <span style=color:#f92672>&amp;&amp;</span>
+          (((mapped_ptr[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;,&#39;</span>) <span style=color:#f92672>&amp;&amp;</span> (mapped_ptr[<span style=color:#ae81ff>2</span>] <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;&#34;&#39;</span>)) <span style=color:#f92672>||</span>
+           (mapped_ptr <span style=color:#f92672>==</span> end_ptr <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span> )))
+      {
+        mapped_ptr <span style=color:#f92672>+=</span> Move past the , and the <span style=color:#e6db74>&#34;</span>
+        <span style=color:#66d9ef>break</span>;
+      }
+      <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>mapped_ptr <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;\\&#39;</span> <span style=color:#f92672>&amp;&amp;</span> mapped_ptr <span style=color:#f92672>!=</span> (end_ptr <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>))
+      {
+        mapped_ptr<span style=color:#f92672>++</span>;
+        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>*</span>mapped_ptr <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;r&#39;</span>)
+          buffer.append(<span style=color:#e6db74>&#39;\r&#39;</span>);
+        <span style=color:#66d9ef>else</span> <span style=color:#a6e22e>if</span> (<span style=color:#f92672>*</span>mapped_ptr <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;n&#39;</span> )
+          buffer.append(<span style=color:#e6db74>&#39;\n&#39;</span>);
+        <span style=color:#66d9ef>else</span> <span style=color:#a6e22e>if</span> ((<span style=color:#f92672>*</span>mapped_ptr <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;\\&#39;</span>) <span style=color:#f92672>||</span> (<span style=color:#f92672>*</span>mapped_ptr <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;&#34;&#39;</span>))
+          buffer.append(<span style=color:#f92672>*</span>mapped_ptr);
+        <span style=color:#66d9ef>else</span>  <span style=color:#75715e>/* This could only happed with an externally created file */</span>
+        {
+          buffer.append(<span style=color:#e6db74>&#39;\\&#39;</span>);
+          buffer.append(<span style=color:#f92672>*</span>mapped_ptr);
+        }
+      }
+      <span style=color:#66d9ef>else</span>
+        buffer.append(<span style=color:#f92672>*</span>mapped_ptr);
+    }
+    (<span style=color:#f92672>*</span>field)<span style=color:#f92672>-&gt;</span>store(buffer.ptr(), buffer.length(), system_charset_info);
+  }
+  next_position<span style=color:#f92672>=</span> (end_ptr <span style=color:#f92672>-</span> share<span style=color:#f92672>-&gt;</span>mapped_file)<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>;
+  <span style=color:#75715e>/* Maybe use \N for null? */</span>
+  memset(buf, <span style=color:#ae81ff>0</span>, table<span style=color:#f92672>-&gt;</span>s<span style=color:#f92672>-&gt;</span>null_bytes); <span style=color:#75715e>/* We do not implement nulls! */</span>
 
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
+  DBUG_RETURN(<span style=color:#ae81ff>0</span>);
+}
+</code></pre></div><h3 id=2311-closing-a-table>23.11 Closing a Table</h3><ul><li>Table 에서 작업을 마치면 호출된다.</li><li>shared resource를 반환해야 한다.</li></ul><h3 id=2312-adding-support-for-insert-to-a-storage-engine>23.12 Adding Support for INSERT to a Storage Engine</h3><ul><li>read를 다 구현하면 write를 구현해야하고, WORM(Write Once, Read Many) application을 다뤄야한다.</li><li>모든 INSERT 구문은 <code>write_row()</code> 로 다룬다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_foo<span style=color:#f92672>::</span>write_row(byte <span style=color:#f92672>*</span>buf)
+</code></pre></div><ul><li><p>이때 <code>buf</code> 는 mysql format을 따라서 전달한다.</p></li><li><p>다음은 <code>MyISAM</code>의 예시이다.</p></li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_myisam<span style=color:#f92672>::</span>write_row(byte <span style=color:#f92672>*</span> buf)
+{
+  statistic_increment(table<span style=color:#f92672>-&gt;</span>in_use<span style=color:#f92672>-&gt;</span>status_var.ha_write_count,<span style=color:#f92672>&amp;</span>LOCK_status);
 
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
+  <span style=color:#75715e>/* If we have a timestamp column, update it to the current time */</span>
+  <span style=color:#66d9ef>if</span> (table<span style=color:#f92672>-&gt;</span>timestamp_field_type <span style=color:#f92672>&amp;</span> TIMESTAMP_AUTO_SET_ON_INSERT)
+    table<span style=color:#f92672>-&gt;</span>timestamp_field<span style=color:#f92672>-&gt;</span>set_time();
 
-        
+  <span style=color:#75715e>/*
+</span><span style=color:#75715e>    If we have an auto_increment column and we are writing a changed row
+</span><span style=color:#75715e>    or a new row, then update the auto_increment value in the record.
+</span><span style=color:#75715e>  */</span>
+  <span style=color:#66d9ef>if</span> (table<span style=color:#f92672>-&gt;</span>next_number_field <span style=color:#f92672>&amp;&amp;</span> buf <span style=color:#f92672>==</span> table<span style=color:#f92672>-&gt;</span>record[<span style=color:#ae81ff>0</span>])
+    update_auto_increment();
+  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>mi_write</span>(file,buf);
+}
+</code></pre></div><h3 id=2313-adding-support-for-update-to-a-stroage-engine>23.13 Adding Support for UPDATE to a Stroage Engine</h3><ul><li>먼저 (table/index/range/etc) scan 을 통해서 where 절에 해당하는 걸 찾고 update_row()를 호출한다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_foo<span style=color:#f92672>::</span>update_row(<span style=color:#66d9ef>const</span> byte <span style=color:#f92672>*</span>old_data, byte <span style=color:#f92672>*</span>new_data)
+</code></pre></div><ul><li><code>old_data</code> 는 update 되어야 되는 data를 가르키고 있고, <code>new_data</code>는 새롭게 들어갈 내용을 가지고 있다.</li><li>row format 에 따라 성능이 갈리며, 어떤 경우에는 기존 데이터를 지우고 맨 뒤에 새롭게 추가하는 식으로 구현한다.</li><li>아래는 csv 의 예시이다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_tina<span style=color:#f92672>::</span>update_row(<span style=color:#66d9ef>const</span> byte <span style=color:#f92672>*</span> old_data, byte <span style=color:#f92672>*</span> new_data)
+{
+  <span style=color:#66d9ef>int</span> size;
+  DBUG_ENTER(<span style=color:#e6db74>&#34;ha_tina::update_row&#34;</span>);
 
-        
-    </body>
+  statistic_increment(table<span style=color:#f92672>-&gt;</span>in_use<span style=color:#f92672>-&gt;</span>status_var.ha_read_rnd_next_count,
+                     <span style=color:#f92672>&amp;</span>LOCK_status);
 
-</html>
+  <span style=color:#66d9ef>if</span> (table<span style=color:#f92672>-&gt;</span>timestamp_field_type <span style=color:#f92672>&amp;</span> TIMESTAMP_AUTO_SET_ON_UPDATE)
+    table<span style=color:#f92672>-&gt;</span>timestamp_field<span style=color:#f92672>-&gt;</span>set_time();
 
+  size<span style=color:#f92672>=</span> encode_quote(new_data);
+
+  <span style=color:#66d9ef>if</span> (chain_append())
+    DBUG_RETURN(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>);
+
+  <span style=color:#66d9ef>if</span> (my_write(share<span style=color:#f92672>-&gt;</span>data_file, buffer.ptr(), size, MYF(MY_WME <span style=color:#f92672>|</span> MY_NABP)))
+    DBUG_RETURN(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>);
+  DBUG_RETURN(<span style=color:#ae81ff>0</span>);
+}
+</code></pre></div><h3 id=2314-adding-support-for-delete-to-a-storage-engine>23.14 Adding Support for DELETE to a Storage Engine</h3><ul><li>DELETE 도 UPDATE와 비슷하게 처리하며, <code>rnd_next()</code>를 호출하다가 <code>delete_row()</code>를 호출한다.</li><li><code>buf</code>는 삭제될 내용을 가리킨다. Non-indexed storage engine 은 무시할수도 있지만, transaction을 지원하는 storage engine 은 rollback 작업을 위해 삭제할 내용을 저장할 필요가 있다.</li><li>아래는 csv의 구현 예시이다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>int</span> ha_tina<span style=color:#f92672>::</span>delete_row(<span style=color:#66d9ef>const</span> byte <span style=color:#f92672>*</span> buf)
+{
+  DBUG_ENTER(<span style=color:#e6db74>&#34;ha_tina::delete_row&#34;</span>);
+  statistic_increment(table<span style=color:#f92672>-&gt;</span>in_use<span style=color:#f92672>-&gt;</span>status_var.ha_delete_count,
+                      <span style=color:#f92672>&amp;</span>LOCK_status);
+
+  <span style=color:#66d9ef>if</span> (chain_append())
+    DBUG_RETURN(<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>);
+
+  <span style=color:#f92672>--</span>records;
+
+  DBUG_RETURN(<span style=color:#ae81ff>0</span>);
+}
+</code></pre></div></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

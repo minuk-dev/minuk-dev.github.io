@@ -1,198 +1,11 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Typescript/Interface</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Typescript/Interface</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Typescript/Interface</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Typescript/Interface.md">
-  <h5>created : Tue, 07 Apr 2020 20:33:43 &#43;0900</h5>
-  <h5>modified : Wed, 08 Apr 2020 12:54:02 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li><a href="#duck-typing">- duck typing</a>
-<ul>
-<li><a href="#optional-properties">Optional Properties</a></li>
-<li><a href="#readonly-properties">Readonly properties</a></li>
-<li><a href="#readonly-vs-const"><code>readonly</code> vs <code>const</code></a></li>
-<li><a href="#excess-property-checks">Excess Property Checks—</a></li>
-<li><a href="#function-types">Function Types</a></li>
-<li><a href="#indexable-types">Indexable Types</a></li>
-<li><a href="#class-type">Class Type</a>
-<ul>
-<li><a href="#implementating-an-interface">Implementating an interface</a></li>
-<li><a href="#difference-between-the-static-and-instance-sides-of-classes">Difference between the static and instance sides of classes</a></li>
-</ul></li>
-<li><a href="#extending-interfaces">Extending Interfaces</a></li>
-<li><a href="#hybrid-types">Hybrid Types</a></li>
-<li><a href="#interfaces-extending-classes">Interfaces Extending Classes</a></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h1 id="duck-typing">- duck typing</h1>
-
-<ul>
-<li><p>structural subtyping</p>
-
-<p>interface LabelledValue {
-    label: string;
-}</p>
-
-<p>function printLabel(labeledObj: LabelledValue) {
-    console.log(labelledObj.label);
-}</p>
-
-<p>let myObj = { size: 10, label: &ldquo;Size 10 Object&rdquo; };
-printLabel(myObj);</p></li>
-</ul>
-
-<h2 id="optional-properties">Optional Properties</h2>
-
-<pre><code>interface SquareConfig {
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Typescript/Interface</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Typescript/Interface</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Typescript/Interface</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Typescript/Interface.md><h5>created : Tue, 07 Apr 2020 20:33:43 +0900</h5><h5>modified : Wed, 08 Apr 2020 12:54:02 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#optional-properties>Optional Properties</a></li><li><a href=#readonly-properties>Readonly properties</a></li><li><a href=#readonly-vs-const><code>readonly</code> vs <code>const</code></a></li><li><a href=#excess-property-checks>Excess Property Checks—</a></li><li><a href=#function-types>Function Types</a></li><li><a href=#indexable-types>Indexable Types</a></li><li><a href=#class-type>Class Type</a><ul><li><a href=#implementating-an-interface>Implementating an interface</a></li><li><a href=#difference-between-the-static-and-instance-sides-of-classes>Difference between the static and instance sides of classes</a></li></ul></li><li><a href=#extending-interfaces>Extending Interfaces</a></li><li><a href=#hybrid-types>Hybrid Types</a></li><li><a href=#interfaces-extending-classes>Interfaces Extending Classes</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=--duck-typing>- duck typing</h1><ul><li><p>structural subtyping</p><p>interface LabelledValue {
+label: string;
+}</p><p>function printLabel(labeledObj: LabelledValue) {
+console.log(labelledObj.label);
+}</p><p>let myObj = { size: 10, label: &ldquo;Size 10 Object&rdquo; };
+printLabel(myObj);</p></li></ul><h2 id=optional-properties>Optional Properties</h2><pre><code>interface SquareConfig {
   color?: string;
     width?: number;
 }
@@ -209,11 +22,7 @@ function createSquare(config: SquareConfig): { color: string; area: number } {
 }
 
 let mySquare = createSquare({ color: &quot;black&quot; });
-</code></pre>
-
-<h2 id="readonly-properties">Readonly properties</h2>
-
-<pre><code>interface Point {
+</code></pre><h2 id=readonly-properties>Readonly properties</h2><pre><code>interface Point {
     readonly x: number;
     readonly y: number;
 }
@@ -229,18 +38,7 @@ ro.length = 100; // error
 a = ro; //error
 
 a = ro as number[];
-</code></pre>
-
-<h2 id="readonly-vs-const"><code>readonly</code> vs <code>const</code></h2>
-
-<ul>
-<li>variables use const</li>
-<li>properties use readonly</li>
-</ul>
-
-<h2 id="excess-property-checks">Excess Property Checks—</h2>
-
-<pre><code>interface SquareConfig {
+</code></pre><h2 id=readonly-vs-const><code>readonly</code> vs <code>const</code></h2><ul><li>variables use const</li><li>properties use readonly</li></ul><h2 id=excess-property-checks>Excess Property Checks—</h2><pre><code>interface SquareConfig {
     color?: string;
     width?: number;
 }
@@ -251,21 +49,11 @@ function createSquare(config: SquareConfig): { color:string; area: number } {
 
 let mySquare = createSquare({ colour: &quot;red&quot;, width: 100 });
 // Error
-</code></pre>
-
-<ul>
-<li><p>Caution! interface has other properties.</p>
-
-<p>interface SquareConfig {
-    color?: string;
-    width?: number;
-    [propName: string]: any;
-}</p></li>
-</ul>
-
-<h2 id="function-types">Function Types</h2>
-
-<pre><code>interface SearchFunc {
+</code></pre><ul><li><p>Caution! interface has other properties.</p><p>interface SquareConfig {
+color?: string;
+width?: number;
+[propName: string]: any;
+}</p></li></ul><h2 id=function-types>Function Types</h2><pre><code>interface SearchFunc {
     (source: string, subString: string): boolean;
 }
 
@@ -274,11 +62,7 @@ mySearch = function(source: string, subString: string) {
     let result = source.search(subString);
     return result &gt; -1;
 };
-</code></pre>
-
-<h2 id="indexable-types">Indexable Types</h2>
-
-<pre><code>interface StringArray {
+</code></pre><h2 id=indexable-types>Indexable Types</h2><pre><code>interface StringArray {
     [index: number]: string;
 }
 
@@ -296,13 +80,7 @@ interface ReadonlyStringArray {
     readonly [index: number]: string;
 }
 let myArray:ReadonlyStringArray = [&quot;Alice&quot;, &quot;Bob&quot;];
-</code></pre>
-
-<h2 id="class-type">Class Type</h2>
-
-<h3 id="implementating-an-interface">Implementating an interface</h3>
-
-<pre><code>interface ClockInterface {
+</code></pre><h2 id=class-type>Class Type</h2><h3 id=implementating-an-interface>Implementating an interface</h3><pre><code>interface ClockInterface {
     currentTime: Date;
 }
 
@@ -310,11 +88,7 @@ class Clock implements ClockInterface {
     currentTime: Date;
     constructor(h: number, m: number) {}
 }
-</code></pre>
-
-<h3 id="difference-between-the-static-and-instance-sides-of-classes">Difference between the static and instance sides of classes</h3>
-
-<pre><code>interface ClockConstructor {
+</code></pre><h3 id=difference-between-the-static-and-instance-sides-of-classes>Difference between the static and instance sides of classes</h3><pre><code>interface ClockConstructor {
     new (hour: number, minute: number): ClockInterface;
 }
 
@@ -346,11 +120,7 @@ class AnalogClock implments ClockInterface {
 
 let digital = createClock(DigitalClock, 12, 17);
 let analog = createClock(AnalogClock, 7, 32);
-</code></pre>
-
-<h2 id="extending-interfaces">Extending Interfaces</h2>
-
-<pre><code>interface Shape {
+</code></pre><h2 id=extending-interfaces>Extending Interfaces</h2><pre><code>interface Shape {
     color: string;
 }
 
@@ -378,11 +148,7 @@ let square = &lt;Square&gt;{};
 square.color = &quot;blue&quot;;
 square.sideLength = 10;
 square.penWidth = 5.0;
-</code></pre>
-
-<h2 id="hybrid-types">Hybrid Types</h2>
-
-<pre><code>interface Counter {
+</code></pre><h2 id=hybrid-types>Hybrid Types</h2><pre><code>interface Counter {
     (start:number): string;
     interval: number;
     reset(): void;
@@ -399,11 +165,7 @@ let c = getCounter;
 c(10);
 c.reset();
 c.interval = 5.0;
-</code></pre>
-
-<h2 id="interfaces-extending-classes">Interfaces Extending Classes</h2>
-
-<pre><code>class Control {
+</code></pre><h2 id=interfaces-extending-classes>Interfaces Extending Classes</h2><pre><code>class Control {
     private state: any;
 }
 
@@ -418,41 +180,4 @@ class Button extends Control implements SelectableControl {
 class TextBox extends Control {
     select() {}
 }
-</code></pre>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

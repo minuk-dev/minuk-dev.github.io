@@ -1,260 +1,84 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Modern C&#43;&#43; Design Pattern/Chatper 6. 어댑터</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Modern C&#43;&#43; Design Pattern/Chatper 6. 어댑터</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Modern C&#43;&#43; Design Pattern/Chatper 6. 어댑터</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C&#43;&#43;%20Design%20Pattern/Chapter%206.%20%ec%96%b4%eb%8c%91%ed%84%b0.md">
-  <h5>created : Tue, 07 Apr 2020 20:44:17 &#43;0900</h5>
-  <h5>modified : Thu, 09 Apr 2020 23:32:38 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#adapter-pattern">Adapter Pattern</a></li>
-<li><a href="#adapter">Adapter</a></li>
-<li><a href="#temporary-adapter">Temporary Adapter</a></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h2 id="adapter-pattern">Adapter Pattern</h2>
-
-<ul>
-<li><p>We use a example case, drawiing geometric shape.</p>
-
-<pre><code class="language-cpp">struct Point
-{
-  int x, y;
-};
-    
-struct Line{
-  Point start, end;
-};
-    
-struct VectorObject
-{
-  virtual std::vector&lt;Line&gt;::iterator begin() = 0;
-  virtual std::vector&lt;Line&gt;::iterator end() = 0;
-};
-    
-struct VectorRectangle : VectorObject
-{
-  VectorRectangle(int x, int y, int width, int height)
-  {
-    lines.emplace_back(Line{ Point{x, y}, Point{x + width, y} });
-    lines.emplace_back(Line{ Point{x + width, y}, Point {x + width, y + height} });
-    lines.emplace_back(Line{ Point{x,y}, Point{x, y + height} });
-    lines.emplace_back(Line{ Point{ x, y + height }, Point {x + width, y + height} });
-  }
-     
-  std::vecotr&lt;Line&gt;::iterator begin() override {
-    return lines.begin();
-  }
-  std::vector&lt;Line&gt;::iterator end() override {
-    return lines.end();
-  }
-    
-private:
-  std::vector&lt;Line&gt; lines;
-};
-    
-void DrawPoints(CPaintDC&amp; dc,
-  std::vector&lt;Point&gt;::iterator start,
-  std::vector&lt;Point&gt;::iterator end)
-{
-  for (auto i = start; i != end; ++i)
-    dc.SetPixel(i-&gt;x, i-&gt;y , 0);
-}
-</code></pre></li>
-</ul>
-
-<h2 id="adapter">Adapter</h2>
-
-<ul>
-<li>Let&rsquo;s draw a few rectangles.</li>
-</ul>
-
-<pre><code class="language-cpp">    vector&lt;shared_ptr&lt;VectorObject&gt;&gt; vectorObjects{
-      make_shared&lt;VectorRectangle&gt;(10, 10, 100, 100),
-      make_shared&lt;VectorRectangle&gt;(30, 30, 60, 60)
-    }
-    
-    struct LineToPointAdapter
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Modern C++ Design Pattern/Chatper 6. 어댑터</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 6. 어댑터</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Modern C++ Design Pattern/Chatper 6. 어댑터</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%206.%20%ec%96%b4%eb%8c%91%ed%84%b0.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Thu, 09 Apr 2020 23:32:38 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#adapter-pattern>Adapter Pattern</a></li><li><a href=#adapter>Adapter</a></li><li><a href=#temporary-adapter>Temporary Adapter</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=adapter-pattern>Adapter Pattern</h2><ul><li>We use a example case, drawiing geometric shape.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span>
     {
-      typedef vector&lt;Point&gt; Points;
+      <span style=color:#66d9ef>int</span> x, y;
+    };
     
-      LineToPointAdapter(Line&amp; line);
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Line</span>{
+      Point start, end;
+    };
+    
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>VectorObject</span>
+    {
+      <span style=color:#66d9ef>virtual</span> std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>Line<span style=color:#f92672>&gt;::</span>iterator begin() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>virtual</span> std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>Line<span style=color:#f92672>&gt;::</span>iterator end() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    };
+    
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>VectorRectangle</span> <span style=color:#f92672>:</span> VectorObject
+    {
+      VectorRectangle(<span style=color:#66d9ef>int</span> x, <span style=color:#66d9ef>int</span> y, <span style=color:#66d9ef>int</span> width, <span style=color:#66d9ef>int</span> height)
+      {
+        lines.emplace_back(Line{ Point{x, y}, Point{x <span style=color:#f92672>+</span> width, y} });
+        lines.emplace_back(Line{ Point{x <span style=color:#f92672>+</span> width, y}, Point {x <span style=color:#f92672>+</span> width, y <span style=color:#f92672>+</span> height} });
+        lines.emplace_back(Line{ Point{x,y}, Point{x, y <span style=color:#f92672>+</span> height} });
+        lines.emplace_back(Line{ Point{ x, y <span style=color:#f92672>+</span> height }, Point {x <span style=color:#f92672>+</span> width, y <span style=color:#f92672>+</span> height} });
+      }
+     
+      std<span style=color:#f92672>::</span>vecotr<span style=color:#f92672>&lt;</span>Line<span style=color:#f92672>&gt;::</span>iterator begin() <span style=color:#66d9ef>override</span> {
+        <span style=color:#66d9ef>return</span> lines.begin();
+      }
+      std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>Line<span style=color:#f92672>&gt;::</span>iterator end() <span style=color:#66d9ef>override</span> {
+        <span style=color:#66d9ef>return</span> lines.end();
+      }
+    
+    <span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
+      std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>Line<span style=color:#f92672>&gt;</span> lines;
+    };
+    
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>DrawPoints</span>(CPaintDC<span style=color:#f92672>&amp;</span> dc,
+      std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>Point<span style=color:#f92672>&gt;::</span>iterator start,
+      std<span style=color:#f92672>::</span>vector<span style=color:#f92672>&lt;</span>Point<span style=color:#f92672>&gt;::</span>iterator end)
+    {
+      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span> i <span style=color:#f92672>=</span> start; i <span style=color:#f92672>!=</span> end; <span style=color:#f92672>++</span>i)
+        dc.SetPixel(i<span style=color:#f92672>-&gt;</span>x, i<span style=color:#f92672>-&gt;</span>y , <span style=color:#ae81ff>0</span>);
+    }
+</code></pre></div><h2 id=adapter>Adapter</h2><ul><li>Let&rsquo;s draw a few rectangles.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    vector<span style=color:#f92672>&lt;</span>shared_ptr<span style=color:#f92672>&lt;</span>VectorObject<span style=color:#f92672>&gt;&gt;</span> vectorObjects{
+      make_shared<span style=color:#f92672>&lt;</span>VectorRectangle<span style=color:#f92672>&gt;</span>(<span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>100</span>, <span style=color:#ae81ff>100</span>),
+      make_shared<span style=color:#f92672>&lt;</span>VectorRectangle<span style=color:#f92672>&gt;</span>(<span style=color:#ae81ff>30</span>, <span style=color:#ae81ff>30</span>, <span style=color:#ae81ff>60</span>, <span style=color:#ae81ff>60</span>)
+    }
+    
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>LineToPointAdapter</span>
+    {
+      <span style=color:#66d9ef>typedef</span> vector<span style=color:#f92672>&lt;</span>Point<span style=color:#f92672>&gt;</span> Points;
+    
+      LineToPointAdapter(Line<span style=color:#f92672>&amp;</span> line);
       
-      virtual Points::iterator begin() { return points.begin(); }
-      virtual Points::iterator end() { return points.end(); }
-    private:
+      <span style=color:#66d9ef>virtual</span> Points<span style=color:#f92672>::</span>iterator begin() { <span style=color:#66d9ef>return</span> points.begin(); }
+      <span style=color:#66d9ef>virtual</span> Points<span style=color:#f92672>::</span>iterator end() { <span style=color:#66d9ef>return</span> points.end(); }
+    <span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
       Points points;
     };
     
-    LineToPointAdapter::LineToPointAdapter(Line&amp; line)
+    LineToPointAdapter<span style=color:#f92672>::</span>LineToPointAdapter(Line<span style=color:#f92672>&amp;</span> line)
     {
-      int left = min(line.start.x, line.end.x);
-      int right = max(line.start.x, line.end.x);
-      int top = min(line.start.y, line.end.y);
-      int bottom = max(line.start.y, line.end.y);
-      int dx = right - left;
-      int dy = line.end.y - line.start.y;
+      <span style=color:#66d9ef>int</span> left <span style=color:#f92672>=</span> min(line.start.x, line.end.x);
+      <span style=color:#66d9ef>int</span> right <span style=color:#f92672>=</span> max(line.start.x, line.end.x);
+      <span style=color:#66d9ef>int</span> top <span style=color:#f92672>=</span> min(line.start.y, line.end.y);
+      <span style=color:#66d9ef>int</span> bottom <span style=color:#f92672>=</span> max(line.start.y, line.end.y);
+      <span style=color:#66d9ef>int</span> dx <span style=color:#f92672>=</span> right <span style=color:#f92672>-</span> left;
+      <span style=color:#66d9ef>int</span> dy <span style=color:#f92672>=</span> line.end.y <span style=color:#f92672>-</span> line.start.y;
     
-      if (dx == 0)
+      <span style=color:#66d9ef>if</span> (dx <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
       {
-        for (int y = top; y &lt;= bottom; ++y)
+        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> y <span style=color:#f92672>=</span> top; y <span style=color:#f92672>&lt;=</span> bottom; <span style=color:#f92672>++</span>y)
         {
           points.emplace_back(Point{ left, y });
         }
       }
-      else if (dy == 0)
+      <span style=color:#66d9ef>else</span> <span style=color:#a6e22e>if</span> (dy <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
       {
-        for (int x = left; x &lt;= right; ++x)
+        <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> x <span style=color:#f92672>=</span> left; x <span style=color:#f92672>&lt;=</span> right; <span style=color:#f92672>++</span>x)
         {
           points.emplace_back(Point{ x, top });
         }
@@ -262,116 +86,63 @@ void DrawPoints(CPaintDC&amp; dc,
     }
     
     
-    for (auto&amp; obj : vectorObjects)
+    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> obj : vectorObjects)
     {
-      for (auto&amp; line : *obj)
+      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> line : <span style=color:#f92672>*</span>obj)
       {
         LineToPointAdapter lpo{ line };
         DrawPoints(dc, lpo.begin(), lpo.end());
       }
     }
-</code></pre>
-
-<h2 id="temporary-adapter">Temporary Adapter</h2>
-
-<ul>
-<li><p>How about above method is called in every display update despite no change?</p>
-
-<ul>
-<li><p>One of the solutions is to use cache.</p>
-
-<pre><code class="language-cpp">vector&lt;Point&gt; points;
-for (auto&amp; o : vectorObjects)
+</code></pre></div><h2 id=temporary-adapter>Temporary Adapter</h2><ul><li>How about above method is called in every display update despite no change?<ul><li><p>One of the solutions is to use cache.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>vector<span style=color:#f92672>&lt;</span>Point<span style=color:#f92672>&gt;</span> points;
+<span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> o : vectorObjects)
 {
-  for (auto&amp; l : *o)
+  <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> l : <span style=color:#f92672>*</span>o)
   {
     LineToPointAdapter lpo{ l };
-    for (auto&amp; p : lp)
+    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> p : lp)
       points.push_back(p);
   }
 }
-</code></pre></li>
-
-<li><p>Of course, this solution cause another problem. That is original vectorOjbects is changed.</p>
-
-<pre><code class="language-cpp">struct Point
+</code></pre></div></li><li><p>Of course, this solution cause another problem. That is original vectorOjbects is changed.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span>
 {
-  int x, y;
-  friend std:: size_t hash_value(const POint&amp; obj)
+  <span style=color:#66d9ef>int</span> x, y;
+  <span style=color:#66d9ef>friend</span> std<span style=color:#f92672>::</span> size_t hash_value(<span style=color:#66d9ef>const</span> POint<span style=color:#f92672>&amp;</span> obj)
   {
-    std::size_t send = 0x825C696F;
-    boost::hash_combine(seed, obj.x);
-    boost::hash_combine(seed, obj.y);
-    return seed;
+    std<span style=color:#f92672>::</span>size_t send <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x825C696F</span>;
+    boost<span style=color:#f92672>::</span>hash_combine(seed, obj.x);
+    boost<span style=color:#f92672>::</span>hash_combine(seed, obj.y);
+    <span style=color:#66d9ef>return</span> seed;
   }
 };
-        
-struct Line
+      
+<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Line</span>
 {
   Point start, end;
-  friend std::size_t hash_value(const Line&amp; obj)
+  <span style=color:#66d9ef>friend</span> std<span style=color:#f92672>::</span>size_t hash_value(<span style=color:#66d9ef>const</span> Line<span style=color:#f92672>&amp;</span> obj)
   {
-    std::size_t seed = 0x719E6B16;
-    boost::hash_combine(seed, obj.start);
-    boost::hash_combine(seed, obj.end);
-    return seed;
+    std<span style=color:#f92672>::</span>size_t seed <span style=color:#f92672>=</span> <span style=color:#ae81ff>0x719E6B16</span>;
+    boost<span style=color:#f92672>::</span>hash_combine(seed, obj.start);
+    boost<span style=color:#f92672>::</span>hash_combine(seed, obj.end);
+    <span style=color:#66d9ef>return</span> seed;
   }
 };
-        
-static map&lt;size_t, Points&gt; cache;
-        
-virtual Points::iterator begin() { return cache[line_hash].begin(); }
-virtual Points::iterator end() { return cache[line_hash].end(); }
-        
-LineToPointCachingAdapter(Line&amp; line){
-  static boost::hash&lt;Line&gt; hash;
-  line_hash = hash(line);
-  if (cache.find(line_hash) != cache.end())
-    return;
-        
+      
+<span style=color:#66d9ef>static</span> map<span style=color:#f92672>&lt;</span>size_t, Points<span style=color:#f92672>&gt;</span> cache;
+      
+<span style=color:#66d9ef>virtual</span> Points<span style=color:#f92672>::</span>iterator begin() { <span style=color:#66d9ef>return</span> cache[line_hash].begin(); }
+<span style=color:#66d9ef>virtual</span> Points<span style=color:#f92672>::</span>iterator end() { <span style=color:#66d9ef>return</span> cache[line_hash].end(); }
+      
+LineToPointCachingAdapter(Line<span style=color:#f92672>&amp;</span> line){
+  <span style=color:#66d9ef>static</span> boost<span style=color:#f92672>::</span>hash<span style=color:#f92672>&lt;</span>Line<span style=color:#f92672>&gt;</span> hash;
+  line_hash <span style=color:#f92672>=</span> hash(line);
+  <span style=color:#66d9ef>if</span> (cache.find(line_hash) <span style=color:#f92672>!=</span> cache.end())
+    <span style=color:#66d9ef>return</span>;
+      
   Points points;
-        
-  /* before code */
-  /* remove before cached point */
-  cache[line_hash] = points;
+      
+  <span style=color:#75715e>/* before code */</span>
+  <span style=color:#75715e>/* remove before cached point */</span>
+  cache[line_hash] <span style=color:#f92672>=</span> points;
 }
-</code></pre></li>
-</ul></li>
-</ul>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div></li></ul></li></ul></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

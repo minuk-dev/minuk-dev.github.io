@@ -1,210 +1,20 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Typescript/Function</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Typescript/Function</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Typescript/Function</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Typescript/Function.md">
-  <h5>created : Tue, 07 Apr 2020 20:34:09 &#43;0900</h5>
-  <h5>modified : Wed, 08 Apr 2020 12:55:01 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#functions-types">Functions Types</a>
-<ul>
-<li><a href="#typing-the-function">Typing the function</a></li>
-<li><a href="#writing-the-function-type">Writing the function type</a></li>
-<li><a href="#inferring-the-types">Inferring the types</a></li>
-</ul></li>
-<li><a href="#optional-and-default-parameters">Optional and Default Parameters</a></li>
-<li><a href="#rest-parameters">Rest Parameters</a></li>
-</ul></li>
-<li><a href="#this"><code>this</code></a>
-<ul>
-<li><a href="#this-and-arrow-functions"><code>this</code> and arrow functions</a></li>
-<li><a href="#this-parameters"><code>this</code> parameters</a></li>
-<li><a href="#this-parameters-in-callbacks"><code>this</code> parameters in callbacks</a></li>
-</ul></li>
-<li><a href="#overloads">Overloads</a></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h2 id="functions-types">Functions Types</h2>
-
-<h3 id="typing-the-function">Typing the function</h3>
-
-<pre><code>function add(x: number, y: number): number {
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Typescript/Function</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Typescript/Function</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Typescript/Function</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Typescript/Function.md><h5>created : Tue, 07 Apr 2020 20:34:09 +0900</h5><h5>modified : Wed, 08 Apr 2020 12:55:01 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#functions-types>Functions Types</a><ul><li><a href=#typing-the-function>Typing the function</a></li><li><a href=#writing-the-function-type>Writing the function type</a></li><li><a href=#inferring-the-types>Inferring the types</a></li></ul></li><li><a href=#optional-and-default-parameters>Optional and Default Parameters</a></li><li><a href=#rest-parameters>Rest Parameters</a></li></ul><ul><li><a href=#this-and-arrow-functions><code>this</code> and arrow functions</a></li><li><a href=#this-parameters><code>this</code> parameters</a></li><li><a href=#this-parameters-in-callbacks><code>this</code> parameters in callbacks</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=functions-types>Functions Types</h2><h3 id=typing-the-function>Typing the function</h3><pre><code>function add(x: number, y: number): number {
     return x + y;
 }
 
 let myAdd = function(x: number, y: number): number { return x + y; };
-</code></pre>
-
-<h3 id="writing-the-function-type">Writing the function type</h3>
-
-<pre><code>let myAdd: (x: number, y: number) =&gt; number =
+</code></pre><h3 id=writing-the-function-type>Writing the function type</h3><pre><code>let myAdd: (x: number, y: number) =&gt; number =
     function (x: number, y: number): number { return x + y; };
 
 let myAdd: (baseValue: number, increment: number) =&gt; number =
     function(x: number y: number): number { return x + y; };
-</code></pre>
-
-<h3 id="inferring-the-types">Inferring the types</h3>
-
-<pre><code>let myAdd = function(x: number, y: number): number { return x + y; };
+</code></pre><h3 id=inferring-the-types>Inferring the types</h3><pre><code>let myAdd = function(x: number, y: number): number { return x + y; };
 
 let myAdd: (baseValue: number, increment: number) =&gt; number = 
     function(x, y) { return x + y; };
-</code></pre>
-
-<h2 id="optional-and-default-parameters">Optional and Default Parameters</h2>
-
-<pre><code>function buildName(firstName: string, lastName: string) {
+</code></pre><h2 id=optional-and-default-parameters>Optional and Default Parameters</h2><pre><code>function buildName(firstName: string, lastName: string) {
     return firstName + &quot; &quot; + lastName;
 }
 
@@ -231,22 +41,12 @@ let result1 = buidlName(&quot;Bob&quot;);
 let result2 = buildName(&quot;Bob&quot;, undefined);
 let result3 = buildName(&quot;Bob&quot; &quot;Adams&quot;, &quot;Sr.&quot;); // Error-
 let result4 = buildName(&quot;Bob&quot;, &quot;Adams&quot;);
-</code></pre>
-
-<h2 id="rest-parameters">Rest Parameters</h2>
-
-<pre><code>function buildName(firstName: string, ...restOfName: string[]) {
+</code></pre><h2 id=rest-parameters>Rest Parameters</h2><pre><code>function buildName(firstName: string, ...restOfName: string[]) {
     return firstName + &quot; &quot; + restOfName.join(&quot; &quot;);
 }
 
 let employeeName = buildName(&quot;Joseph&quot;, &quot;Samuel&quot;, &quot;Lucas&quot;, &quot;MacKinzie&quot;);
-</code></pre>
-
-<h1 id="this"><code>this</code></h1>
-
-<h2 id="this-and-arrow-functions"><code>this</code> and arrow functions</h2>
-
-<pre><code>let deck = {
+</code></pre><h1 id=this><code>this</code></h1><h2 id=this-and-arrow-functions><code>this</code> and arrow functions</h2><pre><code>let deck = {
     suits: [&quot;hears&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;].
     cards: Array(52),
     createCardPicker: function() {
@@ -263,11 +63,7 @@ let cardPicker = deck.createCardPicker();
 let pickedCard = cardPicker();
 
 alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickedCard.suit);
-</code></pre>
-
-<h2 id="this-parameters"><code>this</code> parameters</h2>
-
-<pre><code>interface Card {
+</code></pre><h2 id=this-parameters><code>this</code> parameters</h2><pre><code>interface Card {
     suit: string;
     card: nmber;
 }
@@ -284,7 +80,7 @@ let deck: Deck = {
         return () =&gt; {
             let pickedCard = Math.floor(Math.random() * 52);
             let pickedSuit = Math.floor(pickedCard / 13);
-
+		
             return { shit: this.suits[pickedSuit], card: pickedCard % 13};
         }
     }
@@ -294,11 +90,7 @@ let cardPicker = deck.createCardPicker();
 let pickedCard = cardPikcer();
 
 alert(&quot;card: &quot; + pickedCard.card + &quot; of &quot; + pickerCard.suit);
-</code></pre>
-
-<h2 id="this-parameters-in-callbacks"><code>this</code> parameters in callbacks</h2>
-
-<pre><code>interface UIElement {
+</code></pre><h2 id=this-parameters-in-callbacks><code>this</code> parameters in callbacks</h2><pre><code>interface UIElement {
     addClickListener(onclick: (this: void, e: Event) =&gt; void): void;
 }
 
@@ -315,11 +107,7 @@ class Handler {
     info: string;
     onClickGood = (e: Event) =&gt; { this.info = e.message }
 }
-</code></pre>
-
-<h1 id="overloads">Overloads</h1>
-
-<pre><code>let suits = [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;];
+</code></pre><h1 id=overloads>Overloads</h1><pre><code>let suits = [&quot;hearts&quot;, &quot;spades&quot;, &quot;clubs&quot;, &quot;diamonds&quot;];
 
 function pickCard(x): any {
     if (typeof x == &quot;object&quot;) {
@@ -338,41 +126,4 @@ alert(&quot;card: &quot; + pickedCard1.card + &quot; of &quot; + pickedCard1.sui
 
 let pickedCard2 = pickCard(15);
 alert(&quot;card: &quot; + pickedCard2.card + &quot; of &quot; + pickedCard2.suit);
-</code></pre>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

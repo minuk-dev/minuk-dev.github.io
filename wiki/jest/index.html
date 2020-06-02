@@ -1,248 +1,37 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Jest</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Jest</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Jest</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Jest.md">
-  <h5>created : Tue, 07 Apr 2020 20:32:13 &#43;0900</h5>
-  <h5>modified : Wed, 08 Apr 2020 12:51:30 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li><a href="#installation"># Installation</a></li>
-<li><a href="#configuration">Configuration</a>
-<ul>
-<li><a href="#write-test-code">Write test code</a></li>
-<li><a href="#test-matcher">Test Matcher</a>
-<ul>
-<li><a href="#toequal">toEqual()</a></li>
-<li><a href="#tobetruthy-tobefalsy">toBeTruthy(), toBeFalsy()</a></li>
-<li><a href="#tohavelength-tocontain">toHaveLength(), toContain()</a></li>
-<li><a href="#tomatch">toMatch()</a></li>
-<li><a href="#tothrow">toThrow()</a></li>
-</ul></li>
-<li><a href="#async-example">Async Example</a>
-<ul>
-<li><a href="#resolves">.resolves</a></li>
-<li><a href="#async-await">async / await</a></li>
-</ul></li>
-<li><a href="#error-handling">Error handling</a>
-<ul>
-<li><a href="#rejects">.rejects</a></li>
-<li><a href="#rejects-1">.rejects</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h1 id="installation"># Installation</h1>
-
-<pre><code>yarn add --dev jest
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Jest</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Jest</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Jest</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Jest.md><h5>created : Tue, 07 Apr 2020 20:32:13 +0900</h5><h5>modified : Wed, 08 Apr 2020 12:51:30 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#write-test-code>Write test code</a></li><li><a href=#test-matcher>Test Matcher</a><ul><li><a href=#toequal>toEqual()</a></li><li><a href=#tobetruthy-tobefalsy>toBeTruthy(), toBeFalsy()</a></li><li><a href=#tohavelength-tocontain>toHaveLength(), toContain()</a></li><li><a href=#tomatch>toMatch()</a></li><li><a href=#tothrow>toThrow()</a></li></ul></li><li><a href=#async-example>Async Example</a><ul><li><a href=#resolves>.resolves</a></li><li><a href=#async--await>async / await</a></li></ul></li><li><a href=#error-handling>Error handling</a><ul><li><a href=#rejects>.rejects</a></li><li><a href=#rejects-1>.rejects</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=-installation># Installation</h1><pre><code>yarn add --dev jest
 npm install --dev jest
 
 yarn add --dev @types/jest
 npm install --dev @types/jest
-</code></pre>
-
-<h1 id="configuration">Configuration</h1>
-
-<pre><code>&quot;scripts&quot;: {
+</code></pre><h1 id=configuration>Configuration</h1><pre><code>&quot;scripts&quot;: {
     &quot;test&quot;: &quot;jest&quot;
 }, 
-</code></pre>
-
-<h2 id="write-test-code">Write test code</h2>
-
-<pre><code>test(`test name`, () =&gt; {
+</code></pre><h2 id=write-test-code>Write test code</h2><pre><code>test(`test name`, () =&gt; {
     expect(1).toBe(1);
 });
-</code></pre>
-
-<h2 id="test-matcher">Test Matcher</h2>
-
-<h3 id="toequal">toEqual()</h3>
-
-<pre><code>test('return a user object', () =&gt; {
+</code></pre><h2 id=test-matcher>Test Matcher</h2><h3 id=toequal>toEqual()</h3><pre><code>test('return a user object', () =&gt; {
     expect(getUser(1)).toEqual({
         id: 1,
         email: 'user1@test.com'
     });
 });
-</code></pre>
-
-<h3 id="tobetruthy-tobefalsy">toBeTruthy(), toBeFalsy()</h3>
-
-<pre><code>test('number 0 is falsy but string 0 is truthy', () =&gt; {
+</code></pre><h3 id=tobetruthy-tobefalsy>toBeTruthy(), toBeFalsy()</h3><pre><code>test('number 0 is falsy but string 0 is truthy', () =&gt; {
     expect(0).toBeFalsy();
     expect('0').toBeTruthy();
 });
-</code></pre>
-
-<h3 id="tohavelength-tocontain">toHaveLength(), toContain()</h3>
-
-<pre><code>test('array', () =&gt; {
+</code></pre><h3 id=tohavelength-tocontain>toHaveLength(), toContain()</h3><pre><code>test('array', () =&gt; {
     const coloers = ['Red', 'Yellow', 'Blue'];
     expect(colors).toHaveLength(3);
     expect(colors).toContain('Yellow');
     expect(colors).not.toContain('Green');
 });
-</code></pre>
-
-<h3 id="tomatch">toMatch()</h3>
-
-<pre><code>test('string', ()=&gt; {
+</code></pre><h3 id=tomatch>toMatch()</h3><pre><code>test('string', ()=&gt; {
     expect(getUser(1).email).toBe('user1@test.com');
     expect(getUser(2).email).toMatch(/.*test.com$/);
 });
-</code></pre>
-
-<h3 id="tothrow">toThrow()</h3>
-
-<pre><code>function getUser(id) {
+</code></pre><h3 id=tothrow>toThrow()</h3><pre><code>function getUser(id) {
     if (id &lt;= 0) throw new Error('Invalid ID');
     return {
         id,
@@ -254,23 +43,11 @@ test('throw when id is non negative', () =&gt; {
   expect(() =&gt; getUser(-1).toThrow());
   expect(() =&gt; getUser(-1).toThrow('Invalid ID'));
 });
-</code></pre>
-
-<p><a href="https://jestjs.io/docs/en/tutorial-async">An Async Example · Jest</a></p>
-
-<h2 id="async-example">Async Example</h2>
-
-<h3 id="resolves">.resolves</h3>
-
-<pre><code>it('works with resolves', )_ =&gt; {
+</code></pre><p><a href=https://jestjs.io/docs/en/tutorial-async>An Async Example · Jest</a></p><h2 id=async-example>Async Example</h2><h3 id=resolves>.resolves</h3><pre><code>it('works with resolves', )_ =&gt; {
     expect.assrtions(1);
     return expect(user.getUserName(5)).resolves.toEqual('Paul');
 });
-</code></pre>
-
-<h3 id="async-await">async / await</h3>
-
-<pre><code>it('works with async/awit', async () =&gt; {
+</code></pre><h3 id=async--await>async / await</h3><pre><code>it('works with async/awit', async () =&gt; {
     expect.assertions(1);
     const data = await user.getUserName(4);
     expect(data).toEqual('Mark');
@@ -280,13 +57,7 @@ it('works with aysnc/await and resolves', aysnc() =&gt; {
     expect.assertions(1);
     await expect(user.getUserName(5)).resolves.toEqual('Paul');
 });
-</code></pre>
-
-<h2 id="error-handling">Error handling</h2>
-
-<h3 id="rejects">.rejects</h3>
-
-<pre><code>// Testing for async errors using Promise.catch.
+</code></pre><h2 id=error-handling>Error handling</h2><h3 id=rejects>.rejects</h3><pre><code>// Testing for async errors using Promise.catch.
 test('tests error with promises', () =&gt; {
   expect.assertions(1);
   return user.getUserName(2).catch(e =&gt;
@@ -307,11 +78,7 @@ it('tests error with async/await', async () =&gt; {
     });
   }
 });
-</code></pre>
-
-<h3 id="rejects-1">.rejects</h3>
-
-<pre><code>// Testing for async errors using `.rejects`.
+</code></pre><h3 id=rejects-1>.rejects</h3><pre><code>// Testing for async errors using `.rejects`.
 it('tests error with rejects', () =&gt; {
   expect.assertions(1);
   return expect(user.getUserName(3)).rejects.toEqual({
@@ -326,41 +93,4 @@ it('tests error with async/await and rejects', async () =&gt; {
     error: 'User with 3 not found.',
   });
 });
-</code></pre>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

@@ -1,791 +1,491 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>UCPC 2018 예선</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>UCPC 2018 예선</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>UCPC 2018 예선</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>UCPC 2018 예선</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/UCPC_2018_%ec%98%88%ec%84%a0.md><h5>created : Tue, 07 Apr 2020 20:17:47 +0900</h5><h5>modified : Mon, 20 Apr 2020 23:23:27 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#boj15894---수학은-체육과목-입니다>boj15894 - 수학은 체육과목 입니다.</a></li><li><a href=#boj15903---카드-합체-놀이>boj15903 - 카드 합체 놀이</a></li><li><a href=#boj15902-split-and-merge>boj15902-Split and Merge</a></li><li><a href=#15900--나무탈출>15900- 나무탈출</a></li><li><a href=#15901---소각로>15901 - 소각로</a></li><li><a href=#15899---트리와-색깔>15899 - 트리와 색깔</a></li><li><a href=#15904-ucpc는-무엇의-약자일까>15904-UCPC는 무엇의 약자일까?</a></li><li><a href=#15898---피아의-아틀리에신비한-대회의-연금술사>15898 - 피아의 아틀리에~신비한 대회의 연금술사~</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=boj15894---수학은-체육과목-입니다>boj15894 - 수학은 체육과목 입니다.</h2><ul><li>n*4를 출력하면 된다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define scl(n) scanf(&#34;%lld&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> lld <span style=color:#f92672>=</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>;
+    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(){
+      lld n;
+      scl(n);
+      printf(<span style=color:#e6db74>&#34;%lld&#34;</span>, <span style=color:#ae81ff>4</span><span style=color:#f92672>*</span>n);
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">UCPC 2018 예선</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>UCPC 2018 예선</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/UCPC_2018_%ec%98%88%ec%84%a0.md">
-  <h5>created : Tue, 07 Apr 2020 20:17:47 &#43;0900</h5>
-  <h5>modified : Mon, 20 Apr 2020 23:23:27 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#boj15894-수학은-체육과목-입니다">boj15894 - 수학은 체육과목 입니다.</a></li>
-<li><a href="#boj15903-카드-합체-놀이">boj15903 - 카드 합체 놀이</a></li>
-<li><a href="#boj15902-split-and-merge">boj15902-Split and Merge</a></li>
-<li><a href="#15900-나무탈출">15900- 나무탈출</a></li>
-<li><a href="#15901-소각로">15901 - 소각로</a></li>
-<li><a href="#15899-트리와-색깔">15899 - 트리와 색깔</a></li>
-<li><a href="#15904-ucpc는-무엇의-약자일까">15904-UCPC는 무엇의 약자일까?</a></li>
-<li><a href="#15898-피아의-아틀리에-신비한-대회의-연금술사">15898 - 피아의 아틀리에~신비한 대회의 연금술사~</a></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h2 id="boj15894-수학은-체육과목-입니다">boj15894 - 수학은 체육과목 입니다.</h2>
-
-<ul>
-<li>n*4를 출력하면 된다.
-<code>cpp
-#include &lt;iostream&gt;
-#define scl(n) scanf(&quot;%lld&quot;, &amp;(n))
-using lld = long long;
-using namespace std;
-int main(){
-  lld n;
-  scl(n);
-  printf(&quot;%lld&quot;, 4*n);
-  return 0;
-}
-</code></li>
-</ul>
-
-<h2 id="boj15903-카드-합체-놀이">boj15903 - 카드 합체 놀이</h2>
-
-<ul>
-<li>현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.</li>
-</ul>
-
-<pre><code class="language-cpp">    #include &lt;iostream&gt;
-    #include &lt;queue&gt;
-    #include &lt;vector&gt;
-    #include &lt;algorithm&gt;
-    #define sci(n) scanf(&quot;%d&quot;, &amp;(n))
-    using namespace std;
-    using lld = long long;
+</code></pre></div><h2 id=boj15903---카드-합체-놀이>boj15903 - 카드 합체 놀이</h2><ul><li>현재 있는 세트에서 가장 작은 2개를 더해서 다음 세트에 넣는 구조이니 priority queue를 사용해서 문제를 해결할 수 있다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;queue&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;vector&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;algorithm&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define sci(n) scanf(&#34;%d&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>using</span> lld <span style=color:#f92672>=</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>;
     
-    int main() {
-      int n, m;
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
+      <span style=color:#66d9ef>int</span> n, m;
       sci(n), sci(m);
-      priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt; &gt; q;
-      for(int i=0;i&lt;n;i++){
-        int t;
+      priority_queue<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>int</span>, vector<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>int</span><span style=color:#f92672>&gt;</span>, greater<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>int</span><span style=color:#f92672>&gt;</span> <span style=color:#f92672>&gt;</span> q;
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>n;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>int</span> t;
         sci(t);
         q.push(t);
       }
-      for(int i=0;i&lt;m;i++){
-        int f = q.top(); q.pop();
-        int s = q.top(); q.pop();
-        q.push(f+s); q.push(f+s);
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>m;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>int</span> f <span style=color:#f92672>=</span> q.top(); q.pop();
+        <span style=color:#66d9ef>int</span> s <span style=color:#f92672>=</span> q.top(); q.pop();
+        q.push(f<span style=color:#f92672>+</span>s); q.push(f<span style=color:#f92672>+</span>s);
       }
-      lld result = 0;
-      while (!q.empty()) {
-        result += q.top(); q.pop();
+      lld result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>while</span> (<span style=color:#f92672>!</span>q.empty()) {
+        result <span style=color:#f92672>+=</span> q.top(); q.pop();
       }
-      printf(&quot;%lld&quot;, result);
-      return 0;
+      printf(<span style=color:#e6db74>&#34;%lld&#34;</span>, result);
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
-</code></pre>
-
-<h2 id="boj15902-split-and-merge">boj15902-Split and Merge</h2>
-
-<ul>
-<li>솔직히 해설을 봤는데도 잘 이해 못하고 넘어갔었다. 지금 다시 풀어봐야겠다. (19.09.19)</li>
-</ul>
-
-<p>먼저 생각한건</p>
-
-<p>1/2/1/1/1 이라는 숫자를 2/1/2/1 로 바꾸기 위해서</p>
-
-<p>1/11/1/1/1 을 11/1/11/1 이라고 생각하고</p>
-
-<p>1과 1 사이 공간 마다 /가 있다면 b를 없다면 a를 할당해봤다.</p>
-
-<p>babbb → abbab 로 바꾸는 방법의 경우의 수인데 이때 a가 연속되지 않게 배치하는 과정을 거쳐야한다고 생각할 수 있다.</p>
-
-<p>이를 분할해서 생각해보면</p>
-
-<p>ba→ ab, b→a 로 쪼개서 문제를 볼 수 있다.</p>
-
-<p>사실 이게 뭔 소리인지 전혀 이해하지 못했었는데 <del>지금도 다시 이해하는데 오래걸렸다.</del></p>
-
-<p>babbb 를 abbab 로 바꾸는 예제를 보면 3번째 위치에 있는 b와 5번째 마지막 b는 바뀌지도 않고 변화하는데에도 전혀 영향을 미치지 못하기 때문에 다음과 같이 문제를 재해석할수 있다.</p>
-
-<p>ba 를 ab로 바꾸는 것과 b를 a로 바꾸는 2가지 문제를 동시에 푸는 경우의 수로 볼수 있다.</p>
-
-<p>앞의 문제를 풀기위해 시도하는걸 w_1, 뒤의 문제를 풀기위해 시도하는걸 w_2라고 할때</p>
-
-<p>답은 w_1과 w_2를 배치하는 경우의수 x w_1끼리 바뀌는 수 x w_2끼리 바뀌는 수이다.</p>
-
-<p>이를 수식으로 써보면</p>
-
-<p>$$\frac{\Pi<em>{i=0}^lD</em>{L<em>i} \times \Sigma</em>{i=0}^l {L<em>i}}{\Pi</em>{i=0}^lL_i!}$$</p>
-
-<p>단, l 은 부분문제의 수, L_i는 각 부분문제의 길이, D_i는 길이가 i 인 부분문제의 해결하는 경우의 수</p>
-
-<p>이다.</p>
-
-<p>D_i 는 죽어도 식을 못찾겠어서, 문제 풀이를 참고했다.</p>
-
-<p>이를 곱셈의 역원을 참고해서 코딩하면</p>
-
-<pre><code class="language-cpp">    //
-    // Created by lmu on 18. 9. 26.
-    //
+</code></pre></div><h2 id=boj15902-split-and-merge>boj15902-Split and Merge</h2><ul><li>솔직히 해설을 봤는데도 잘 이해 못하고 넘어갔었다. 지금 다시 풀어봐야겠다. (19.09.19)</li></ul><p>먼저 생각한건</p><p>1/2/1/1/1 이라는 숫자를 2/1/2/1 로 바꾸기 위해서</p><p>1/11/1/1/1 을 11/1/11/1 이라고 생각하고</p><p>1과 1 사이 공간 마다 /가 있다면 b를 없다면 a를 할당해봤다.</p><p>babbb → abbab 로 바꾸는 방법의 경우의 수인데 이때 a가 연속되지 않게 배치하는 과정을 거쳐야한다고 생각할 수 있다.</p><p>이를 분할해서 생각해보면</p><p>ba→ ab, b→a 로 쪼개서 문제를 볼 수 있다.</p><p>사실 이게 뭔 소리인지 전혀 이해하지 못했었는데 <del>지금도 다시 이해하는데 오래걸렸다.</del></p><p>babbb 를 abbab 로 바꾸는 예제를 보면 3번째 위치에 있는 b와 5번째 마지막 b는 바뀌지도 않고 변화하는데에도 전혀 영향을 미치지 못하기 때문에 다음과 같이 문제를 재해석할수 있다.</p><p>ba 를 ab로 바꾸는 것과 b를 a로 바꾸는 2가지 문제를 동시에 푸는 경우의 수로 볼수 있다.</p><p>앞의 문제를 풀기위해 시도하는걸 w_1, 뒤의 문제를 풀기위해 시도하는걸 w_2라고 할때</p><p>답은 w_1과 w_2를 배치하는 경우의수 x w_1끼리 바뀌는 수 x w_2끼리 바뀌는 수이다.</p><p>이를 수식으로 써보면</p><p>$$\frac{\Pi_{i=0}^lD_{L_i} \times \Sigma_{i=0}^l {L_i}}{\Pi_{i=0}^lL_i!}$$</p><p>단, l 은 부분문제의 수, L_i는 각 부분문제의 길이, D_i는 길이가 i 인 부분문제의 해결하는 경우의 수</p><p>이다.</p><p>D_i 는 죽어도 식을 못찾겠어서, 문제 풀이를 참고했다.</p><p>이를 곱셈의 역원을 참고해서 코딩하면</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#75715e>//
+</span><span style=color:#75715e></span>    <span style=color:#75715e>// Created by lmu on 18. 9. 26.
+</span><span style=color:#75715e></span>    <span style=color:#75715e>//
+</span><span style=color:#75715e></span>    
+    <span style=color:#75715e>#define _USE_MATH_DEFINES
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;cmath&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;complex&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;vector&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;algorithm&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define sci(n) scanf(&#34;%d&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define scl(n) scanf(&#34;%lld&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define pri(n) printf(&#34;%d &#34;, (n))
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define prl(n) printf(&#34;%lld &#34;, (n))
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define MOD 1000000007LL
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span> lld;
+    <span style=color:#66d9ef>typedef</span> pair<span style=color:#f92672>&lt;</span>lld, lld<span style=color:#f92672>&gt;</span> pii;
+    <span style=color:#66d9ef>typedef</span> vector<span style=color:#f92672>&lt;</span>lld<span style=color:#f92672>&gt;</span> vi;
+    <span style=color:#66d9ef>typedef</span> vector<span style=color:#f92672>&lt;</span>vi<span style=color:#f92672>&gt;</span> vvi;
+    <span style=color:#66d9ef>typedef</span> vector<span style=color:#f92672>&lt;</span>pii<span style=color:#f92672>&gt;</span> vpii;
     
-    #define _USE_MATH_DEFINES
-    #include &lt;iostream&gt;
-    #include &lt;cmath&gt;
-    #include &lt;complex&gt;
-    #include &lt;vector&gt;
-    #include &lt;algorithm&gt;
-    #define sci(n) scanf(&quot;%d&quot;, &amp;(n))
-    #define scl(n) scanf(&quot;%lld&quot;, &amp;(n))
-    #define pri(n) printf(&quot;%d &quot;, (n))
-    #define prl(n) printf(&quot;%lld &quot;, (n))
-    #define MOD 1000000007LL
-    using namespace std;
-    typedef long long lld;
-    typedef pair&lt;lld, lld&gt; pii;
-    typedef vector&lt;lld&gt; vi;
-    typedef vector&lt;vi&gt; vvi;
-    typedef vector&lt;pii&gt; vpii;
-    
-    int main(){
-      int L, n, m;
-      vi D(6010, 0), f(6010), inv(6010), finv(6010);
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(){
+      <span style=color:#66d9ef>int</span> L, n, m;
+      vi D(<span style=color:#ae81ff>6010</span>, <span style=color:#ae81ff>0</span>), f(<span style=color:#ae81ff>6010</span>), inv(<span style=color:#ae81ff>6010</span>), finv(<span style=color:#ae81ff>6010</span>);
       vi a, b, LS;
-      int nowLength = 0;
-      int ai = 0, bi =0, as = 0, bs = 0;
-      int i, j;
+      <span style=color:#66d9ef>int</span> nowLength <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>int</span> ai <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>, bi <span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>, as <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>, bs <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>int</span> i, j;
     
-      f[0] = f[1] = 1;
-      inv[1] = 1;
-      finv[0] = finv[1] = 1;
-      for (i=2;i&lt;6010;i++) {
-        f[i] = (f[i-1]*i) % MOD;
-        inv[i] = (MOD - (MOD / i)* inv[MOD%i] % MOD) % MOD;
-        finv[i] = finv[i - 1] * inv[i] % MOD;
+      f[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> f[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+      inv[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+      finv[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> finv[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+      <span style=color:#66d9ef>for</span> (i<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>;i<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>6010</span>;i<span style=color:#f92672>++</span>) {
+        f[i] <span style=color:#f92672>=</span> (f[i<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]<span style=color:#f92672>*</span>i) <span style=color:#f92672>%</span> MOD;
+        inv[i] <span style=color:#f92672>=</span> (MOD <span style=color:#f92672>-</span> (MOD <span style=color:#f92672>/</span> i)<span style=color:#f92672>*</span> inv[MOD<span style=color:#f92672>%</span>i] <span style=color:#f92672>%</span> MOD) <span style=color:#f92672>%</span> MOD;
+        finv[i] <span style=color:#f92672>=</span> finv[i <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>] <span style=color:#f92672>*</span> inv[i] <span style=color:#f92672>%</span> MOD;
       }
     
       sci(L), sci(n); a.resize(n);
-      for (i=0;i&lt;n;i++) scl(a[i]);
+      <span style=color:#66d9ef>for</span> (i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>n;i<span style=color:#f92672>++</span>) scl(a[i]);
       sci(m); b.resize(m);
-      for (i=0;i&lt;m;i++) scl(b[i]);
+      <span style=color:#66d9ef>for</span> (i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>m;i<span style=color:#f92672>++</span>) scl(b[i]);
     
-      while (as &lt; L || bs &lt; L) {
-        if (as == bs) {
-          as += a[ai++];
-          bs += b[bi++];
-          nowLength += 2;
+      <span style=color:#66d9ef>while</span> (as <span style=color:#f92672>&lt;</span> L <span style=color:#f92672>||</span> bs <span style=color:#f92672>&lt;</span> L) {
+        <span style=color:#66d9ef>if</span> (as <span style=color:#f92672>==</span> bs) {
+          as <span style=color:#f92672>+=</span> a[ai<span style=color:#f92672>++</span>];
+          bs <span style=color:#f92672>+=</span> b[bi<span style=color:#f92672>++</span>];
+          nowLength <span style=color:#f92672>+=</span> <span style=color:#ae81ff>2</span>;
         }
-        else if (as &lt; bs) {
-          as += a[ai++];
-          nowLength ++;
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (as <span style=color:#f92672>&lt;</span> bs) {
+          as <span style=color:#f92672>+=</span> a[ai<span style=color:#f92672>++</span>];
+          nowLength <span style=color:#f92672>++</span>;
         } 
-        else {
-          bs += b[bi++];
-          nowLength ++;
+        <span style=color:#66d9ef>else</span> {
+          bs <span style=color:#f92672>+=</span> b[bi<span style=color:#f92672>++</span>];
+          nowLength <span style=color:#f92672>++</span>;
         }
     
-        if (as == bs) {
-          if (nowLength &gt; 2)
-            LS.push_back(nowLength -2);
-          nowLength = 0;
-        }
-      }
-    
-      /* Calculate D */
-      D[0] = D[1] = 1;
-      for (i = 2; i &lt;= 2 * L; i++) {
-        for (j = i-2; j &gt;= 0; j-= 2) {
-          lld t = D[j] * D[i-1-j] % MOD;
-          t = (t * f[i-1]) % MOD;
-          t = (t * finv[j]) % MOD;
-          t = (t * finv[i - 1 - j]) % MOD;
-          D[i] = (D[i] + t) % MOD;
+        <span style=color:#66d9ef>if</span> (as <span style=color:#f92672>==</span> bs) {
+          <span style=color:#66d9ef>if</span> (nowLength <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>2</span>)
+            LS.push_back(nowLength <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>);
+          nowLength <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
         }
       }
     
-      lld result = 1, s = 0;
-      for (auto&amp; l : LS) {
-        result = (result * finv[l]) % MOD;
-        result = (result * D[l]) % MOD;
-        s += l;
+      <span style=color:#75715e>/* Calculate D */</span>
+      D[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> D[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+      <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>; i <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>*</span> L; i<span style=color:#f92672>++</span>) {
+        <span style=color:#66d9ef>for</span> (j <span style=color:#f92672>=</span> i<span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>; j <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>; j<span style=color:#f92672>-=</span> <span style=color:#ae81ff>2</span>) {
+          lld t <span style=color:#f92672>=</span> D[j] <span style=color:#f92672>*</span> D[i<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span><span style=color:#f92672>-</span>j] <span style=color:#f92672>%</span> MOD;
+          t <span style=color:#f92672>=</span> (t <span style=color:#f92672>*</span> f[i<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]) <span style=color:#f92672>%</span> MOD;
+          t <span style=color:#f92672>=</span> (t <span style=color:#f92672>*</span> finv[j]) <span style=color:#f92672>%</span> MOD;
+          t <span style=color:#f92672>=</span> (t <span style=color:#f92672>*</span> finv[i <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>-</span> j]) <span style=color:#f92672>%</span> MOD;
+          D[i] <span style=color:#f92672>=</span> (D[i] <span style=color:#f92672>+</span> t) <span style=color:#f92672>%</span> MOD;
+        }
       }
     
-      result = (result * f[s]) % MOD;
-      printf(&quot;%lld %lld\n&quot;, s, result);
+      lld result <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>, s <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> l : LS) {
+        result <span style=color:#f92672>=</span> (result <span style=color:#f92672>*</span> finv[l]) <span style=color:#f92672>%</span> MOD;
+        result <span style=color:#f92672>=</span> (result <span style=color:#f92672>*</span> D[l]) <span style=color:#f92672>%</span> MOD;
+        s <span style=color:#f92672>+=</span> l;
+      }
     
-      return 0;
+      result <span style=color:#f92672>=</span> (result <span style=color:#f92672>*</span> f[s]) <span style=color:#f92672>%</span> MOD;
+      printf(<span style=color:#e6db74>&#34;%lld %lld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, s, result);
+    
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
-</code></pre>
-
-<p>이다. 겨우겨우 AC받았다.ㅠ</p>
-
-<h2 id="15900-나무탈출">15900- 나무탈출</h2>
-
-<ul>
-<li>전형적인 위상정렬 문제다.</li>
-</ul>
-
-<pre><code class="language-cpp">    #include &lt;iostream&gt;
-    #include &lt;vector&gt;
-    #include &lt;queue&gt;
-    #define sci(n) scanf(&quot;%d&quot;, &amp;(n))
+</code></pre></div><p>이다. 겨우겨우 AC받았다.ㅠ</p><h2 id=15900--나무탈출>15900- 나무탈출</h2><ul><li>전형적인 위상정렬 문제다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;vector&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;queue&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define sci(n) scanf(&#34;%d&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    
+    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>using</span> vi <span style=color:#f92672>=</span> vector<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>int</span><span style=color:#f92672>&gt;</span>;
+    <span style=color:#66d9ef>using</span> vvi <span style=color:#f92672>=</span> vector<span style=color:#f92672>&lt;</span>vi<span style=color:#f92672>&gt;</span>;
     
-    using namespace std;
-    using vi = vector&lt;int&gt;;
-    using vvi = vector&lt;vi&gt;;
-    
-    int main () {
-      int N;
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span> () {
+      <span style=color:#66d9ef>int</span> N;
       sci(N);
-      vi nodes(N+1, 0);
-      vi visited(N+1, 0);
-      vi indegree(N+1, 0);
-      vvi edges(N+1);
-      for(int i=1;i&lt;N;i++){
-        int a,b;
+      vi nodes(N<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>);
+      vi visited(N<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>);
+      vi indegree(N<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>);
+      vvi edges(N<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>);
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;i<span style=color:#f92672>&lt;</span>N;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>int</span> a,b;
         sci(a), sci(b);
         edges[a].push_back(b);
         edges[b].push_back(a);
-        indegree[a] ++;
-        indegree[b] ++;
+        indegree[a] <span style=color:#f92672>++</span>;
+        indegree[b] <span style=color:#f92672>++</span>;
       }
-      queue&lt;int&gt; q;
-      int result = 0;
-      visited[1] = 1;
-      nodes[1] = 0;
-      q.push(1);
-      while(!q.empty()) {
-        int f = q.front(); q.pop();
-        for(int i=0;i&lt;edges[f].size();i++){
-          if(!visited[edges[f][i]]) {
-            visited[edges[f][i]] = 1;
-            nodes[edges[f][i]] = nodes[f] + 1;
+      queue<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>int</span><span style=color:#f92672>&gt;</span> q;
+      <span style=color:#66d9ef>int</span> result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      visited[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+      nodes[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      q.push(<span style=color:#ae81ff>1</span>);
+      <span style=color:#66d9ef>while</span>(<span style=color:#f92672>!</span>q.empty()) {
+        <span style=color:#66d9ef>int</span> f <span style=color:#f92672>=</span> q.front(); q.pop();
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>edges[f].size();i<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>visited[edges[f][i]]) {
+            visited[edges[f][i]] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+            nodes[edges[f][i]] <span style=color:#f92672>=</span> nodes[f] <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
             q.push({edges[f][i]});
           }
         }
       }
-      for(int i=2;i&lt;=N;i++){
-        if(indegree[i] == 1) result += nodes[i];
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span>;i<span style=color:#f92672>&lt;=</span>N;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>if</span>(indegree[i] <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>) result <span style=color:#f92672>+=</span> nodes[i];
       }
     
-      printf(&quot;%s&quot;, result % 2 == 1 ? &quot;YES&quot; : &quot;NO&quot;);
+      printf(<span style=color:#e6db74>&#34;%s&#34;</span>, result <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>?</span> <span style=color:#e6db74>&#34;YES&#34;</span> <span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;NO&#34;</span>);
     
-      return 0;
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
-</code></pre>
-
-<h2 id="15901-소각로">15901 - 소각로</h2>
-
-<p>못품 ㅠ. 뭔문제인지 감도 안잡혀서 나중에 뭔 문제인지 감은 오면 풀어볼려고 풀이도 안봤다.</p>
-
-<h2 id="15899-트리와-색깔">15899 - 트리와 색깔</h2>
-
-<p>세그먼트 트리로 offline query 처리하면 된다.</p>
-
-<pre><code class="language-cpp">    #include &lt;iostream&gt;
-    #include &lt;vector&gt;
-    #include &lt;stack&gt;
-    #include &lt;algorithm&gt;
-    #define scl(n) scanf(&quot;%lld&quot;, &amp;(n))
-    #define MOD 1000000007LL
-    using namespace std;
-    using lld = long long;
-    using vi = vector&lt;lld&gt;;
-    using vvi = vector&lt;vi&gt;;
-    using pii = pair&lt;lld, lld&gt;;
-    using vpii = vector&lt;pii&gt;;
+</code></pre></div><h2 id=15901---소각로>15901 - 소각로</h2><p>못품 ㅠ. 뭔문제인지 감도 안잡혀서 나중에 뭔 문제인지 감은 오면 풀어볼려고 풀이도 안봤다.</p><h2 id=15899---트리와-색깔>15899 - 트리와 색깔</h2><p>세그먼트 트리로 offline query 처리하면 된다.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;vector&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stack&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;algorithm&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define scl(n) scanf(&#34;%lld&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define MOD 1000000007LL
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>using</span> lld <span style=color:#f92672>=</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>;
+    <span style=color:#66d9ef>using</span> vi <span style=color:#f92672>=</span> vector<span style=color:#f92672>&lt;</span>lld<span style=color:#f92672>&gt;</span>;
+    <span style=color:#66d9ef>using</span> vvi <span style=color:#f92672>=</span> vector<span style=color:#f92672>&lt;</span>vi<span style=color:#f92672>&gt;</span>;
+    <span style=color:#66d9ef>using</span> pii <span style=color:#f92672>=</span> pair<span style=color:#f92672>&lt;</span>lld, lld<span style=color:#f92672>&gt;</span>;
+    <span style=color:#66d9ef>using</span> vpii <span style=color:#f92672>=</span> vector<span style=color:#f92672>&lt;</span>pii<span style=color:#f92672>&gt;</span>;
     
     lld N, M, C;
     vvi edges;
-    lld visited[220000];
-    lld idx_tree[550000];
+    lld visited[<span style=color:#ae81ff>220000</span>];
+    lld idx_tree[<span style=color:#ae81ff>550000</span>];
     vpii nodes, query, range;
-    lld trav(lld now, lld t) {
-      visited[now] ++;
-      lld start = t;
-      t++;
-      for(int i=0;i&lt;edges[now].size();i++){
-        if (!visited[edges[now][i]]) 
-          t = trav(edges[now][i], t);
+    lld <span style=color:#a6e22e>trav</span>(lld now, lld t) {
+      visited[now] <span style=color:#f92672>++</span>;
+      lld start <span style=color:#f92672>=</span> t;
+      t<span style=color:#f92672>++</span>;
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>edges[now].size();i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>visited[edges[now][i]]) 
+          t <span style=color:#f92672>=</span> trav(edges[now][i], t);
       }
-      range[now] = {start, t-1};
-      return t;
+      range[now] <span style=color:#f92672>=</span> {start, t<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>};
+      <span style=color:#66d9ef>return</span> t;
     }
     
-    void index_inc_up(lld n) {
-      if (n==0) return;
-      idx_tree[n] ++;
-      index_inc_up(n&gt;&gt;1);
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>index_inc_up</span>(lld n) {
+      <span style=color:#66d9ef>if</span> (n<span style=color:#f92672>==</span><span style=color:#ae81ff>0</span>) <span style=color:#66d9ef>return</span>;
+      idx_tree[n] <span style=color:#f92672>++</span>;
+      index_inc_up(n<span style=color:#f92672>&gt;&gt;</span><span style=color:#ae81ff>1</span>);
     }
     
-    lld index_query(pii q){
-      lld res = 0;
-      if (q.first &gt; q.second) return 0;
-      if (q.first == q.second) return idx_tree[q.first];
-      if (q.first % 2 == 1){
-        res += idx_tree[q.first];
-        q.first++;
+    lld <span style=color:#a6e22e>index_query</span>(pii q){
+      lld res <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>if</span> (q.first <span style=color:#f92672>&gt;</span> q.second) <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>if</span> (q.first <span style=color:#f92672>==</span> q.second) <span style=color:#66d9ef>return</span> idx_tree[q.first];
+      <span style=color:#66d9ef>if</span> (q.first <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>){
+        res <span style=color:#f92672>+=</span> idx_tree[q.first];
+        q.first<span style=color:#f92672>++</span>;
       }
-      if (q.second % 2 == 0){
-        res += idx_tree[q.second];
-        q.second--;
+      <span style=color:#66d9ef>if</span> (q.second <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>){
+        res <span style=color:#f92672>+=</span> idx_tree[q.second];
+        q.second<span style=color:#f92672>--</span>;
       }
-      return res + index_query({q.first/2, q.second/2});
+      <span style=color:#66d9ef>return</span> res <span style=color:#f92672>+</span> index_query({q.first<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>, q.second<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>});
     }
     
-    int main() {
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
       scl(N), scl(M), scl(C);
-      range.resize(N+1);
-      edges.resize(N+1);
-      for(lld i=1;i&lt;=N;i++) {
+      range.resize(N<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>);
+      edges.resize(N<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>);
+      <span style=color:#66d9ef>for</span>(lld i<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;i<span style=color:#f92672>&lt;=</span>N;i<span style=color:#f92672>++</span>) {
         lld c;
         scl(c);
         nodes.push_back({i, c});
       }
     
-      for(lld i=1;i&lt;N;i++) {
+      <span style=color:#66d9ef>for</span>(lld i<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;i<span style=color:#f92672>&lt;</span>N;i<span style=color:#f92672>++</span>) {
         lld a, b;
         scl(a), scl(b);
         edges[a].push_back(b);
         edges[b].push_back(a);
       }
     
-      for(lld i=0;i&lt;M;i++){
+      <span style=color:#66d9ef>for</span>(lld i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>M;i<span style=color:#f92672>++</span>){
         lld v, c;
         scl(v), scl(c);
         query.push_back({v, c});
       }
     
-      auto cmp =  [](const pii&amp; a, const pii&amp; b)-&gt;bool {
-          if (a.second == b.second) return a.first &lt; b.first;
-          return a.second &lt; b.second;
+      <span style=color:#66d9ef>auto</span> cmp <span style=color:#f92672>=</span>  [](<span style=color:#66d9ef>const</span> pii<span style=color:#f92672>&amp;</span> a, <span style=color:#66d9ef>const</span> pii<span style=color:#f92672>&amp;</span> b)<span style=color:#f92672>-&gt;</span><span style=color:#66d9ef>bool</span> {
+          <span style=color:#66d9ef>if</span> (a.second <span style=color:#f92672>==</span> b.second) <span style=color:#66d9ef>return</span> a.first <span style=color:#f92672>&lt;</span> b.first;
+          <span style=color:#66d9ef>return</span> a.second <span style=color:#f92672>&lt;</span> b.second;
         };
       sort(nodes.begin(), nodes.end(), cmp);
       sort(query.begin(), query.end(), cmp);
     
       lld base;
-      for(base=1;base&lt;N;base&lt;&lt;=1);
-      trav(1, base);
+      <span style=color:#66d9ef>for</span>(base<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;base<span style=color:#f92672>&lt;</span>N;base<span style=color:#f92672>&lt;&lt;=</span><span style=color:#ae81ff>1</span>);
+      trav(<span style=color:#ae81ff>1</span>, base);
     
-      lld node_loop = 0;
-      lld query_loop = 0;
-      lld result = 0;
-      for(lld i=1;i&lt;=N;i++){
-        printf(&quot;range[%lld] : %lld %lld\n&quot;, i, range[i].first, range[i].second);
+      lld node_loop <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      lld query_loop <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      lld result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>for</span>(lld i<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;i<span style=color:#f92672>&lt;=</span>N;i<span style=color:#f92672>++</span>){
+        printf(<span style=color:#e6db74>&#34;range[%lld] : %lld %lld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, i, range[i].first, range[i].second);
       }
-      for(lld i=1;i&lt;=C;i++){
-        while (nodes[node_loop].second &lt;= i &amp;&amp; node_loop &lt; N) {
+      <span style=color:#66d9ef>for</span>(lld i<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>;i<span style=color:#f92672>&lt;=</span>C;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>while</span> (nodes[node_loop].second <span style=color:#f92672>&lt;=</span> i <span style=color:#f92672>&amp;&amp;</span> node_loop <span style=color:#f92672>&lt;</span> N) {
           index_inc_up(range[nodes[node_loop].first].first);
-          node_loop ++;
+          node_loop <span style=color:#f92672>++</span>;
         }
     
-        while (query[query_loop].second &lt;= i &amp;&amp; query_loop &lt; M) {
-          result += (index_query(range[query[query_loop].first])) %MOD;
-          result %= MOD;
-          query_loop ++;
+        <span style=color:#66d9ef>while</span> (query[query_loop].second <span style=color:#f92672>&lt;=</span> i <span style=color:#f92672>&amp;&amp;</span> query_loop <span style=color:#f92672>&lt;</span> M) {
+          result <span style=color:#f92672>+=</span> (index_query(range[query[query_loop].first])) <span style=color:#f92672>%</span>MOD;
+          result <span style=color:#f92672>%=</span> MOD;
+          query_loop <span style=color:#f92672>++</span>;
         }
       }
-      printf(&quot;%lld&quot;, result);
-      return 0;
+      printf(<span style=color:#e6db74>&#34;%lld&#34;</span>, result);
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
-</code></pre>
-
-<p>처음으로 index tree를 구성해서 풀어봤다. 역시 주변에 잘하는 사람이 있는게 좋은 것같다.</p>
-
-<h2 id="15904-ucpc는-무엇의-약자일까">15904-UCPC는 무엇의 약자일까?</h2>
-
-<pre><code class="language-cpp">    #include &lt;iostream&gt;
-    using namespace std;
+</code></pre></div><p>처음으로 index tree를 구성해서 풀어봤다. 역시 주변에 잘하는 사람이 있는게 좋은 것같다.</p><h2 id=15904-ucpc는-무엇의-약자일까>15904-UCPC는 무엇의 약자일까?</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
     
-    int main() {
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>() {
       string a; 
       getline(cin, a);
-      int i=0;
-      char data[] =&quot;UCPC&quot;;
-      for(const auto&amp; c:a){
-        if (c==data[i]){
-          i++;
+      <span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>char</span> data[] <span style=color:#f92672>=</span><span style=color:#e6db74>&#34;UCPC&#34;</span>;
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> c:a){
+        <span style=color:#66d9ef>if</span> (c<span style=color:#f92672>==</span>data[i]){
+          i<span style=color:#f92672>++</span>;
         }
       }
-      printf(&quot;%s&quot;,i&gt;=4 ? &quot;I love UCPC &quot; : &quot;I hate UCPC &quot;);
-      return 0;
+      printf(<span style=color:#e6db74>&#34;%s&#34;</span>,i<span style=color:#f92672>&gt;=</span><span style=color:#ae81ff>4</span> <span style=color:#f92672>?</span> <span style=color:#e6db74>&#34;I love UCPC &#34;</span> <span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;I hate UCPC &#34;</span>);
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
 
-## 15897- 잘못 구현한 에라토스테네스의 체
-
-    #include &lt;iostream&gt;
-    #include &lt;cmath&gt;
-    #define scl(n) scanf(&quot;%lld&quot;, &amp;(n))
-    using namespace std;
-    using lld = long long;
-    int main(){
+<span style=color:#75715e>## 15897- 잘못 구현한 에라토스테네스의 체
+</span><span style=color:#75715e></span>
+    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;cmath&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define scl(n) scanf(&#34;%lld&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>using</span> lld <span style=color:#f92672>=</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>;
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(){
       lld n;
       scl(n);
-      lld result = 0;
-      int i, j;
+      lld result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>int</span> i, j;
     
-      for(i=1, j=0;i&lt;=n;i+=j){
-        j = ((n-1)/i)==0 ? 1 : ((n-1)%i)  / ((n-1)/i)+1;
-        result += (1+(n-1)/i) * j;
+      <span style=color:#66d9ef>for</span>(i<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>, j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;=</span>n;i<span style=color:#f92672>+=</span>j){
+        j <span style=color:#f92672>=</span> ((n<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>/</span>i)<span style=color:#f92672>==</span><span style=color:#ae81ff>0</span> <span style=color:#f92672>?</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>:</span> ((n<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>%</span>i)  <span style=color:#f92672>/</span> ((n<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>/</span>i)<span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>;
+        result <span style=color:#f92672>+=</span> (<span style=color:#ae81ff>1</span><span style=color:#f92672>+</span>(n<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)<span style=color:#f92672>/</span>i) <span style=color:#f92672>*</span> j;
       }
     
-      printf(&quot;%lld&quot;, result);
-      return 0;
+      printf(<span style=color:#e6db74>&#34;%lld&#34;</span>, result);
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
     }
-</code></pre>
-
-<ul>
-<li>흠&hellip; 잘 점프하도록 구현했다. 원래는 휴리스틱하게 풀어서 AC을 받았었는데</li>
-</ul>
-
-<h2 id="15898-피아의-아틀리에-신비한-대회의-연금술사">15898 - 피아의 아틀리에~신비한 대회의 연금술사~</h2>
-
-<ul>
-<li><p>구현 빡세다 ㅠ</p>
-
-<pre><code class="language-cpp">
-#include &lt;iostream&gt;
-#define sci(n) scanf(&quot;%d&quot;, &amp;(n))
-#define scc(n) scanf(&quot; %c&quot;, &amp;(n))
-using namespace std;
-struct cell {
-  char color;
-  int value;
-};
-struct ind {
-  cell data[4][4];
-};
-cell now[5][5];
-int n;
-ind inds[10];
-using P_T = cell[5][5];
-P_T cal_ind[10][4][4];
-int visited[10];
-void init_now(){
-  for(int i=0;i&lt;5;i++){
-    for(int j=0;j&lt;5;j++){
-      now[i][j].color = 'W';
-      now[i][j].value = 0;
-    }
-  }
-}
-void push_ind(int x, int dir, int pos) {
-  for(int i=0;i&lt;5;i++){
-    for(int j=0;j&lt;5;j++){
-      now[i][j].color = cal_ind[x][dir][pos][i][j].color=='W' ? now[i][j].color : cal_ind[x][dir][pos][i][j].color;
-      now[i][j].value += cal_ind[x][dir][pos][i][j].value;
-      now[i][j].value = now[i][j].value &gt; 0 ? now[i][j].value : 0;
-      now[i][j].value = now[i][j].value &lt; 9 ? now[i][j].value : 9;
-    }
-  }
-}
-void init_cal_ind(){
-  for(int i=0;i&lt;n;i++){
-    for(int j=0;j&lt;4;j++){
-      for(int k=0;k&lt;4;k++){
-        for(int l=0;l&lt;5;l++){
-          for(int m=0;m&lt;5;m++){
-            cal_ind[i][j][k][l][m].color = 'W';
-            cal_ind[i][j][k][l][m].value = 0;
-          }
+</code></pre></div><ul><li>흠&mldr; 잘 점프하도록 구현했다. 원래는 휴리스틱하게 풀어서 AC을 받았었는데</li></ul><h2 id=15898---피아의-아틀리에신비한-대회의-연금술사>15898 - 피아의 아틀리에~신비한 대회의 연금술사~</h2><ul><li>구현 빡세다 ㅠ</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>
+    <span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define sci(n) scanf(&#34;%d&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#75715e>#define scc(n) scanf(&#34; %c&#34;, &amp;(n))
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>using</span> <span style=color:#66d9ef>namespace</span> std;
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>cell</span> {
+      <span style=color:#66d9ef>char</span> color;
+      <span style=color:#66d9ef>int</span> value;
+    };
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ind</span> {
+      cell data[<span style=color:#ae81ff>4</span>][<span style=color:#ae81ff>4</span>];
+    };
+    cell now[<span style=color:#ae81ff>5</span>][<span style=color:#ae81ff>5</span>];
+    <span style=color:#66d9ef>int</span> n;
+    ind inds[<span style=color:#ae81ff>10</span>];
+    <span style=color:#66d9ef>using</span> P_T <span style=color:#f92672>=</span> cell[<span style=color:#ae81ff>5</span>][<span style=color:#ae81ff>5</span>];
+    P_T cal_ind[<span style=color:#ae81ff>10</span>][<span style=color:#ae81ff>4</span>][<span style=color:#ae81ff>4</span>];
+    <span style=color:#66d9ef>int</span> visited[<span style=color:#ae81ff>10</span>];
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>init_now</span>(){
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;j<span style=color:#f92672>++</span>){
+          now[i][j].color <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;W&#39;</span>;
+          now[i][j].value <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
         }
       }
     }
-  }
-}
-    
-int cal_value() {
-  int result = 0;
-  for(int i=0;i&lt;5;i++){
-    for(int j=0;j&lt;5;j++){
-      switch(now[i][j].color) {
-        case 'R':
-          result += 7*now[i][j].value;
-          break;
-        case 'B':
-          result += 5*now[i][j].value;
-          break;
-        case 'G':
-          result += 3*now[i][j].value;
-          break;
-        case 'Y':
-          result += 2*now[i][j].value;
-          break;
-      }
-    }
-  }
-  return result;
-}
-inline int getr(int r, int c, int dir){
-  switch(dir) {
-    case 0:
-      return r;
-    case 1:
-      return c;
-    case 2:
-      return 3-r;
-    case 3:
-      return 3-c;
-  }
-  return 0;
-}
-inline int getc(int r, int c, int dir){
-  switch(dir) {
-    case 0:
-      return c;
-    case 1:
-      return 3-r;
-    case 2:
-      return 3-c;
-    case 3:
-      return r;
-  }
-}
-int main(){
-  sci(n);
-  for(int i=0;i&lt;n;i++){
-    for(int j=0;j&lt;4;j++){
-      for(int k=0;k&lt;4;k++){
-        sci(inds[i].data[j][k].value);
-      }
-    }
-    for(int j=0;j&lt;4;j++){
-      for(int k=0;k&lt;4;k++){
-        scc(inds[i].data[j][k].color);
-      }
-    }
-  }
-    
-  init_cal_ind();
-    
-    
-    
-  int rs[4] = {0, 0, 1, 1};
-  int cs[4] = {0, 1, 0, 1};
-  for(int i=0;i&lt;n;i++){
-    for(int j=0;j&lt;4;j++){
-      for(int k=0;k&lt;4;k++){
-        for(int dir=0;dir&lt;4;dir++){
-          for(int pos=0;pos&lt;4;pos++){
-            cal_ind[i][dir][pos][rs[pos]+ getr(j,k,dir) ][cs[pos]+ getc(j,k,dir)].color = inds[i].data[j][k].color;
-            cal_ind[i][dir][pos][rs[pos]+ getr(j,k,dir) ][cs[pos]+ getc(j,k,dir)].value = inds[i].data[j][k].value;
-          }
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>push_ind</span>(<span style=color:#66d9ef>int</span> x, <span style=color:#66d9ef>int</span> dir, <span style=color:#66d9ef>int</span> pos) {
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;j<span style=color:#f92672>++</span>){
+          now[i][j].color <span style=color:#f92672>=</span> cal_ind[x][dir][pos][i][j].color<span style=color:#f92672>==</span><span style=color:#e6db74>&#39;W&#39;</span> <span style=color:#f92672>?</span> now[i][j].color : cal_ind[x][dir][pos][i][j].color;
+          now[i][j].value <span style=color:#f92672>+=</span> cal_ind[x][dir][pos][i][j].value;
+          now[i][j].value <span style=color:#f92672>=</span> now[i][j].value <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>?</span> now[i][j].value : <span style=color:#ae81ff>0</span>;
+          now[i][j].value <span style=color:#f92672>=</span> now[i][j].value <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>9</span> <span style=color:#f92672>?</span> now[i][j].value : <span style=color:#ae81ff>9</span>;
         }
       }
     }
-  }
-    
-  int result = 0;
-  for(int i=0;i&lt;n;i++){
-    visited[i] = 1;
-    for(int j=0;j&lt;n;j++){
-      if (visited[j]) continue;
-      visited[j] = 1;
-      for(int k=0;k&lt;n;k++){
-        if (visited[k]) continue;
-        visited[k] = 1;
-        for(int id=0;id&lt;4;id++){
-          for(int jd=0;jd&lt;4;jd++){
-            for(int kd=0;kd&lt;4;kd++){
-              for(int ip=0;ip&lt;4;ip++){
-                for(int jp=0;jp&lt;4;jp++){
-                  for(int kp=0;kp&lt;4;kp++){
-                    init_now();
-                    push_ind(i, id, ip);
-                    push_ind(j, jd, jp);
-                    push_ind(k, kd, kp);
-                    int tmp = cal_value();
-                    result = result &gt; tmp ? result : tmp;
-                  }
-                }
+    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>init_cal_ind</span>(){
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>n;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;j<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;k<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;k<span style=color:#f92672>++</span>){
+            <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> l<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;l<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;l<span style=color:#f92672>++</span>){
+              <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> m<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;m<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;m<span style=color:#f92672>++</span>){
+                cal_ind[i][j][k][l][m].color <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;W&#39;</span>;
+                cal_ind[i][j][k][l][m].value <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
               }
             }
           }
         }
-        visited[k] = 0;
       }
-      visited[j] = 0;
     }
-    visited[i] = 0;
-  }
-  printf(&quot;%d&quot;, result);
-  return 0;
-}
-</code></pre></li>
-</ul>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+    
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>cal_value</span>() {
+      <span style=color:#66d9ef>int</span> result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>5</span>;j<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>switch</span>(now[i][j].color) {
+            <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#39;R&#39;</span><span style=color:#f92672>:</span>
+              result <span style=color:#f92672>+=</span> <span style=color:#ae81ff>7</span><span style=color:#f92672>*</span>now[i][j].value;
+              <span style=color:#66d9ef>break</span>;
+            <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#39;B&#39;</span><span style=color:#f92672>:</span>
+              result <span style=color:#f92672>+=</span> <span style=color:#ae81ff>5</span><span style=color:#f92672>*</span>now[i][j].value;
+              <span style=color:#66d9ef>break</span>;
+            <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#39;G&#39;</span><span style=color:#f92672>:</span>
+              result <span style=color:#f92672>+=</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>*</span>now[i][j].value;
+              <span style=color:#66d9ef>break</span>;
+            <span style=color:#66d9ef>case</span> <span style=color:#e6db74>&#39;Y&#39;</span><span style=color:#f92672>:</span>
+              result <span style=color:#f92672>+=</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>*</span>now[i][j].value;
+              <span style=color:#66d9ef>break</span>;
+          }
+        }
+      }
+      <span style=color:#66d9ef>return</span> result;
+    }
+    <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>getr</span>(<span style=color:#66d9ef>int</span> r, <span style=color:#66d9ef>int</span> c, <span style=color:#66d9ef>int</span> dir){
+      <span style=color:#66d9ef>switch</span>(dir) {
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> r;
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> c;
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>-</span>r;
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>-</span>c;
+      }
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+    }
+    <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>getc</span>(<span style=color:#66d9ef>int</span> r, <span style=color:#66d9ef>int</span> c, <span style=color:#66d9ef>int</span> dir){
+      <span style=color:#66d9ef>switch</span>(dir) {
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> c;
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>-</span>r;
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>-</span>c;
+        <span style=color:#66d9ef>case</span> <span style=color:#ae81ff>3</span><span style=color:#f92672>:</span>
+          <span style=color:#66d9ef>return</span> r;
+      }
+    }
+    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(){
+      sci(n);
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>n;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;j<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;k<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;k<span style=color:#f92672>++</span>){
+            sci(inds[i].data[j][k].value);
+          }
+        }
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;j<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;k<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;k<span style=color:#f92672>++</span>){
+            scc(inds[i].data[j][k].color);
+          }
+        }
+      }
+    
+      init_cal_ind();
+    
+    
+    
+      <span style=color:#66d9ef>int</span> rs[<span style=color:#ae81ff>4</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>1</span>};
+      <span style=color:#66d9ef>int</span> cs[<span style=color:#ae81ff>4</span>] <span style=color:#f92672>=</span> {<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>};
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>n;i<span style=color:#f92672>++</span>){
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;j<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;k<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;k<span style=color:#f92672>++</span>){
+            <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> dir<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;dir<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;dir<span style=color:#f92672>++</span>){
+              <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> pos<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;pos<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;pos<span style=color:#f92672>++</span>){
+                cal_ind[i][dir][pos][rs[pos]<span style=color:#f92672>+</span> getr(j,k,dir) ][cs[pos]<span style=color:#f92672>+</span> getc(j,k,dir)].color <span style=color:#f92672>=</span> inds[i].data[j][k].color;
+                cal_ind[i][dir][pos][rs[pos]<span style=color:#f92672>+</span> getr(j,k,dir) ][cs[pos]<span style=color:#f92672>+</span> getc(j,k,dir)].value <span style=color:#f92672>=</span> inds[i].data[j][k].value;
+              }
+            }
+          }
+        }
+      }
+    
+      <span style=color:#66d9ef>int</span> result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;i<span style=color:#f92672>&lt;</span>n;i<span style=color:#f92672>++</span>){
+        visited[i] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+        <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> j<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;j<span style=color:#f92672>&lt;</span>n;j<span style=color:#f92672>++</span>){
+          <span style=color:#66d9ef>if</span> (visited[j]) <span style=color:#66d9ef>continue</span>;
+          visited[j] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+          <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> k<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;k<span style=color:#f92672>&lt;</span>n;k<span style=color:#f92672>++</span>){
+            <span style=color:#66d9ef>if</span> (visited[k]) <span style=color:#66d9ef>continue</span>;
+            visited[k] <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+            <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> id<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;id<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;id<span style=color:#f92672>++</span>){
+              <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> jd<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;jd<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;jd<span style=color:#f92672>++</span>){
+                <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> kd<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;kd<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;kd<span style=color:#f92672>++</span>){
+                  <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> ip<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;ip<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;ip<span style=color:#f92672>++</span>){
+                    <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> jp<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;jp<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;jp<span style=color:#f92672>++</span>){
+                      <span style=color:#66d9ef>for</span>(<span style=color:#66d9ef>int</span> kp<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;kp<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>4</span>;kp<span style=color:#f92672>++</span>){
+                        init_now();
+                        push_ind(i, id, ip);
+                        push_ind(j, jd, jp);
+                        push_ind(k, kd, kp);
+                        <span style=color:#66d9ef>int</span> tmp <span style=color:#f92672>=</span> cal_value();
+                        result <span style=color:#f92672>=</span> result <span style=color:#f92672>&gt;</span> tmp <span style=color:#f92672>?</span> result : tmp;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            visited[k] <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+          }
+          visited[j] <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+        }
+        visited[i] <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      }
+      printf(<span style=color:#e6db74>&#34;%d&#34;</span>, result);
+      <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+    }
+</code></pre></div></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

@@ -1,310 +1,82 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
-
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Modern C&#43;&#43; Design Pattern/Chatper 7. 브릿지</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Modern C&#43;&#43; Design Pattern/Chatper 7. 브릿지</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Modern C&#43;&#43; Design Pattern/Chatper 7. 브릿지</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C&#43;&#43;%20Design%20Pattern/Chapter%207.%20%eb%b8%8c%eb%a6%bf%ec%a7%80.md">
-  <h5>created : Tue, 07 Apr 2020 20:44:17 &#43;0900</h5>
-  <h5>modified : Thu, 09 Apr 2020 23:40:18 &#43;0900</h5>
-</a>
-
-        
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#bridge-pattern">Bridge Pattern</a>
-<ul>
-<li><a href="#pimpl-pointer-to-implmentation">Pimpl (Pointer to Implmentation)</a></li>
-</ul></li>
-<li><a href="#bridge-pattern-1">Bridge Pattern</a>
-<ul>
-<li><a href="#summary">Summary</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h2 id="bridge-pattern">Bridge Pattern</h2>
-
-<h3 id="pimpl-pointer-to-implmentation">Pimpl (Pointer to Implmentation)</h3>
-
-<pre><code class="language-cpp">    struct Person
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Modern C++ Design Pattern/Chatper 7. 브릿지</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 7. 브릿지</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Modern C++ Design Pattern/Chatper 7. 브릿지</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%207.%20%eb%b8%8c%eb%a6%bf%ec%a7%80.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Thu, 09 Apr 2020 23:40:18 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#bridge-pattern>Bridge Pattern</a><ul><li><a href=#pimpl-pointer-to-implmentation>Pimpl (Pointer to Implmentation)</a></li></ul></li><li><a href=#bridge-pattern-1>Bridge Pattern</a><ul><li><a href=#summary>Summary</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=bridge-pattern>Bridge Pattern</h2><h3 id=pimpl-pointer-to-implmentation>Pimpl (Pointer to Implmentation)</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Person</span>
     {
       string name;
-      void greet();
+      <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>greet</span>();
     
       Person();
-      ~Person();
+      <span style=color:#f92672>~</span>Person();
     
-      class PersonImpl;
-      PersonImpl *impl; // refer to gsl::owner&lt;T&gt;
+      <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PersonImpl</span>;
+      PersonImpl <span style=color:#f92672>*</span>impl; <span style=color:#75715e>// refer to gsl::owner&lt;T&gt;
+</span><span style=color:#75715e></span>    };
+    
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Person</span><span style=color:#f92672>:</span>PersonImpl
+    {
+      <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>greet</span>(Person<span style=color:#f92672>*</span> p);
+    }
+    
+    Person<span style=color:#f92672>::</span>Person()
+      <span style=color:#f92672>:</span> impl(<span style=color:#66d9ef>new</span> PersonImpl) {}
+    
+    Person<span style=color:#f92672>::~</span>Person() { <span style=color:#66d9ef>delete</span> imple; }
+    
+    <span style=color:#66d9ef>void</span> Person<span style=color:#f92672>::</span>greet()
+    {
+      impl<span style=color:#f92672>-&gt;</span>greet(<span style=color:#66d9ef>this</span>);
+    }
+    
+    <span style=color:#66d9ef>void</span> Person<span style=color:#f92672>::</span>PersonImpl<span style=color:#f92672>::</span>greet(Person<span style=color:#f92672>*</span> p)
+    {
+      printf(<span style=color:#e6db74>&#34;hello %s&#34;</span>, p<span style=color:#f92672>-&gt;</span>name.c_str());
+    }
+</code></pre></div><ul><li>Props<ul><li>Hide implementation. If <code>Person</code> class has many private/protected member variable, it is exposed though the header file to client.</li><li>Ensure binary compatiblity.</li><li>Include some header file needed.</li></ul></li></ul><h2 id=bridge-pattern-1>Bridge Pattern</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Renderer</span>
+    {
+      <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>render_circle</span>(<span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y, <span style=color:#66d9ef>float</span> radius) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
     };
     
-    struct Person:PersonImpl
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>VectorRenderer</span> <span style=color:#f92672>:</span> Renderer
     {
-      void greet(Person* p);
-    }
-    
-    Person::Person()
-      : impl(new PersonImpl) {}
-    
-    Person::~Person() { delete imple; }
-    
-    void Person::greet()
-    {
-      impl-&gt;greet(this);
-    }
-    
-    void Person::PersonImpl::greet(Person* p)
-    {
-      printf(&quot;hello %s&quot;, p-&gt;name.c_str());
-    }
-</code></pre>
-
-<ul>
-<li>Props
-
-<ul>
-<li>Hide implementation. If <code>Person</code> class has many private/protected member variable, it is exposed though the header file to client.</li>
-<li>Ensure binary compatiblity.</li>
-<li>Include some header file needed.</li>
-</ul></li>
-</ul>
-
-<h2 id="bridge-pattern-1">Bridge Pattern</h2>
-
-<pre><code class="language-cpp">    struct Renderer
-    {
-      virtual void render_circle(float x, float y, float radius) = 0;
-    };
-    
-    struct VectorRenderer : Renderer
-    {
-      void render_circle(float x, float y, float radius) override
+      <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>render_circle</span>(<span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y, <span style=color:#66d9ef>float</span> radius) <span style=color:#66d9ef>override</span>
       {
-        cout &lt;&lt; &quot;Rasterizing circle of radius &quot; &lt;&lt; radius &lt;&lt; endl;
+        cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;Rasterizing circle of radius &#34;</span> <span style=color:#f92672>&lt;&lt;</span> radius <span style=color:#f92672>&lt;&lt;</span> endl;
       }
     };
     
-    struct RasterRenderer : Renderer
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>RasterRenderer</span> <span style=color:#f92672>:</span> Renderer
     {
-      void render_circle(float x, float y, float radius) override
+      <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>render_circle</span>(<span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y, <span style=color:#66d9ef>float</span> radius) <span style=color:#66d9ef>override</span>
       {
-        cout &lt;&lt; &quot;Drawing a vector circle of radius &quot; &lt;&lt; radius &lt;&lt; endl;
+        cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;Drawing a vector circle of radius &#34;</span> <span style=color:#f92672>&lt;&lt;</span> radius <span style=color:#f92672>&lt;&lt;</span> endl;
       }
     };
     
-    struct Shape
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Shape</span>
     {
-    protected:
-      Renderer&amp; renderer;
-      Shape(Renderer&amp; renderer) : renderer{ renderer } {}
-    public:
-      virtual void draw() = 0;
-      virtual void resize(float factor) = 0;
+    <span style=color:#66d9ef>protected</span><span style=color:#f92672>:</span>
+      Renderer<span style=color:#f92672>&amp;</span> renderer;
+      Shape(Renderer<span style=color:#f92672>&amp;</span> renderer) <span style=color:#f92672>:</span> renderer{ renderer } {}
+    <span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+      <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> draw() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>resize</span>(<span style=color:#66d9ef>float</span> factor) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
     };
     
-    struct Circle : Shape
+    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Circle</span> <span style=color:#f92672>:</span> Shape
     {
-      float x, y, radius;
+      <span style=color:#66d9ef>float</span> x, y, radius;
     
-      void draw() override
+      <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>draw</span>() <span style=color:#66d9ef>override</span>
       {
         renderer.render_circle(x, y, radius);
       }
     
-      void resize(float factor) override
+      <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>resize</span>(<span style=color:#66d9ef>float</span> factor) <span style=color:#66d9ef>override</span>
       {
-        radius += factor;
+        radius <span style=color:#f92672>+=</span> factor;
       }
     
-      Circle(Renderer&amp; renderer, float x, float y, float radius)
-        : Shape{renderer}, x{x}, y{y}, radius{radius} {}
+      Circle(Renderer<span style=color:#f92672>&amp;</span> renderer, <span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y, <span style=color:#66d9ef>float</span> radius)
+        <span style=color:#f92672>:</span> Shape{renderer}, x{x}, y{y}, radius{radius} {}
     };
-</code></pre>
-
-<h3 id="summary">Summary</h3>
-
-<ul>
-<li>The bridge pattern must to know each other class except implmentation. It is compared with Mediator Pattern.</li>
-</ul>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div><h3 id=summary>Summary</h3><ul><li>The bridge pattern must to know each other class except implmentation. It is compared with Mediator Pattern.</li></ul></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>

@@ -1,330 +1,99 @@
-<!DOCTYPE html>
-<html lang="ko-kr">
-    <head>
-        
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Modern C++ Design Pattern/Chatper 16. 반복자</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href=/css/main.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=/vendor/highlight/styles/default.css><link rel=stylesheet href=/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css><link rel=stylesheet href=/vendor/font-awesome-4.7.0/css/font-awesome.min.css><script src=/vendor/highlight/highlight.pack.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/vendor/jquery-3.4.1.min.js></script><script src=/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script type=text/javascript async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 16. 반복자</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/projects/>Projects</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li class=navbar-icon><a href=https://twitter.com/makerdark98/><i class="fa fa-twitter"></i></a></li><li class=navbar-icon><a href=https://www.linkedin.com/in/makerdark98/><i class="fa fa-linkedin"></i></a></li><li class=navbar-icon><a href=https://www.stackoverflow.com/makerdark98/><i class="fa fa-stack-overflow"></i></a></li><li><div style=max-width:300px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div style=text-align:left><button class="btn btn-link" onclick=history.back();><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기</button></div><div><h2>Modern C++ Design Pattern/Chatper 16. 반복자</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%2016.%20%eb%b0%98%eb%b3%b5%ec%9e%90.md><h5>created : Tue, 21 Apr 2020 23:12:43 +0900</h5><h5>modified : Tue, 21 Apr 2020 23:28:04 +0900</h5></a><a href=http://makerdark98.dev/tags/cpp><kbd class=item-tag>cpp</kbd></a>
+<a href=http://makerdark98.dev/tags/iterator><kbd class=item-tag>iterator</kbd></a>
+<a href=http://makerdark98.dev/tags/design-pattern><kbd class=item-tag>design pattern</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#간략-설명>간략 설명</a></li><li><a href=#표준-라이브러리의-반복자>표준 라이브러리의 반복자</a></li><li><a href=#이진-트리의-탐색>이진 트리의 탐색</a></li><li><a href=#코루틴을-이용한-순회>코루틴을 이용한 순회</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=간략-설명>간략 설명</h2><ul><li>복잡한 데이터 구조를 다루어야 할 때 데이터 순회 문제를 해결하는 방법</li></ul><h2 id=표준-라이브러리의-반복자>표준 라이브러리의 반복자</h2><ul><li><code>begin</code></li><li><code>end</code></li><li><code>rbegin</code></li><li><code>rend</code></li><li><code>cbegin</code></li><li><code>cend</code></li><li><code>crbegin</code></li><li><code>crend</code></li></ul><h2 id=이진-트리의-탐색>이진 트리의 탐색</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> U<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>PreOrderIterator</span>;
+<span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>BinaryTree</span>;
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Modern C&#43;&#43; Design Pattern/Chatper 16. 반복자</title>
-        
-        <style>
-
-    html body {
-        font-family: 'Raleway', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #00a3d2;
-        --border-width:  5px ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-
-
- 
-
-<link rel="stylesheet" href="/vendor/highlight/styles/default.css">
-
-
-
-
-<link rel="stylesheet" href="/vendor/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-
-
-<link rel="stylesheet" href="/vendor/font-awesome-4.7.0/css/font-awesome.min.css">
- 
-
-
-    <script src="/vendor/highlight/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-
-
-
-
-<script src="/vendor/jquery-3.4.1.min.js"></script>
-
-
-
-<script src="/vendor/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
-
-        
-
-        
-
-        
-            
-          <script type="text/javascript" async src="/vendor/MathJax-2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-        <meta name="google-site-verification" content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA" />
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Modern C&#43;&#43; Design Pattern/Chatper 16. 반복자</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/wiki/">Wiki</a></li>
-                            
-                                <li><a href="/posts/">Posts</a></li>
-                            
-                                <li><a href="/projects/">Projects</a></li>
-                            
-                                <li><a href="/about/">About</a></li>
-                            
-                        </ul>
-                    
-                    
-                        <ul class="nav navbar-nav navbar-right">
-                            
-                                <li class="navbar-icon"><a href="mailto:makerdark98@gmail.com"><i class="fa fa-envelope-o"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://github.com/makerdark98/"><i class="fa fa-github"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://twitter.com/makerdark98/"><i class="fa fa-twitter"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.linkedin.com/in/makerdark98/"><i class="fa fa-linkedin"></i></a></li>
-                            
-                                <li class="navbar-icon"><a href="https://www.stackoverflow.com/makerdark98/"><i class="fa fa-stack-overflow"></i></a></li>
-                            
-                            <li>
-                              <div style="max-width:300px;display:inline-block;max-height:40px;">
-                                <script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script>
-<div class="gcse-search"></div>
-
-                              </div>
-                            </li>
-                        </ul>
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div style="text-align:left;">
-      <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-    </div>
-    <div>
-        <h2>Modern C&#43;&#43; Design Pattern/Chatper 16. 반복자</h2>
-        <a href="https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C&#43;&#43;%20Design%20Pattern/Chapter%2016.%20%eb%b0%98%eb%b3%b5%ec%9e%90.md">
-  <h5>created : Tue, 21 Apr 2020 23:12:43 &#43;0900</h5>
-  <h5>modified : Tue, 21 Apr 2020 23:28:04 &#43;0900</h5>
-</a>
-
-        
-<a href="http://makerdark98.dev/tags/cpp"><kbd class="item-tag">cpp</kbd></a>
-
-<a href="http://makerdark98.dev/tags/iterator"><kbd class="item-tag">iterator</kbd></a>
-
-<a href="http://makerdark98.dev/tags/design-pattern"><kbd class="item-tag">design pattern</kbd></a>
-
-
-    </div>
-
-    <aside class="navbar" id="nav-toc" style="text-align:left;"><nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#간략-설명">간략 설명</a></li>
-<li><a href="#표준-라이브러리의-반복자">표준 라이브러리의 반복자</a></li>
-<li><a href="#이진-트리의-탐색">이진 트리의 탐색</a></li>
-<li><a href="#코루틴을-이용한-순회">코루틴을 이용한 순회</a></li>
-</ul></li>
-</ul>
-</nav></aside>
-    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
-      
-
-<h2 id="간략-설명">간략 설명</h2>
-
-<ul>
-<li>복잡한 데이터 구조를 다루어야 할 때 데이터 순회 문제를 해결하는 방법</li>
-</ul>
-
-<h2 id="표준-라이브러리의-반복자">표준 라이브러리의 반복자</h2>
-
-<ul>
-<li><code>begin</code></li>
-<li><code>end</code></li>
-<li><code>rbegin</code></li>
-<li><code>rend</code></li>
-<li><code>cbegin</code></li>
-<li><code>cend</code></li>
-<li><code>crbegin</code></li>
-<li><code>crend</code></li>
-</ul>
-
-<h2 id="이진-트리의-탐색">이진 트리의 탐색</h2>
-
-<pre><code class="language-cpp">template &lt;typename U&gt; struct PreOrderIterator;
-template &lt;typename T&gt; struct BinaryTree;
-
-template &lt;typename T&gt; struct Node
+<span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Node</span>
 {
   T value;
-  Node&lt;T&gt; *left = nullptr;
-  Node&lt;T&gt; *right = nullptr;
-  Node&lt;T&gt; *parent = nullptr;
-  BinaryTree&lt;T&gt;* tree = nullptr;
+  Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>left <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>;
+  Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>right <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>;
+  Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> <span style=color:#f92672>*</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>;
+  BinaryTree<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> tree <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>;
   
-  explicit Node(const T&amp; value)
-    : value(value) {}
+  <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>Node</span>(<span style=color:#66d9ef>const</span> T<span style=color:#f92672>&amp;</span> value)
+    <span style=color:#f92672>:</span> value(value) {}
     
-  Node(const T&amp; value, Node&lt;T&gt;* const left, Node&lt;T&gt;* const right)
-    : value(value), left(left), right(right)
+  Node(<span style=color:#66d9ef>const</span> T<span style=color:#f92672>&amp;</span> value, Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> <span style=color:#66d9ef>const</span> left, Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> <span style=color:#66d9ef>const</span> right)
+    <span style=color:#f92672>:</span> value(value), left(left), right(right)
   {
-    this-&gt;left-&gt;tree =this-&gt;right-&gt;tree = tree;
-    this-&gt;left-&gt;parent = this-&gt;right-&gt;parent = this;
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>left<span style=color:#f92672>-&gt;</span>tree <span style=color:#f92672>=</span><span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>right<span style=color:#f92672>-&gt;</span>tree <span style=color:#f92672>=</span> tree;
+    <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>left<span style=color:#f92672>-&gt;</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span><span style=color:#f92672>-&gt;</span>right<span style=color:#f92672>-&gt;</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>this</span>;
   }
   
-  void set_tree(BinaryTree&lt;T&gt;* t)
+  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>set_tree</span>(BinaryTree<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> t)
   {
-    tree = t;
-    if (left) left-&gt;set_tree(t);
-    if (right) right-&gt;set_tree(t);
+    tree <span style=color:#f92672>=</span> t;
+    <span style=color:#66d9ef>if</span> (left) left<span style=color:#f92672>-&gt;</span>set_tree(t);
+    <span style=color:#66d9ef>if</span> (right) right<span style=color:#f92672>-&gt;</span>set_tree(t);
   }
 };
 
-template &lt;typename T&gt; struct BinaryTree
+<span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>BinaryTree</span>
 {
-  Node&lt;T&gt;* root = nullptr;
+  Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> root <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>;
   
-  explicit BinaryTree(Node&lt;T&gt;* const root)
-    : root{ root }
+  <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>BinaryTree</span>(Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> <span style=color:#66d9ef>const</span> root)
+    <span style=color:#f92672>:</span> root{ root }
   {
-    root-&gt;set_tree(this);
+    root<span style=color:#f92672>-&gt;</span>set_tree(<span style=color:#66d9ef>this</span>);
   }
-  typedef PreOrderIterator&lt;T&gt; iterator;
+  <span style=color:#66d9ef>typedef</span> PreOrderIterator<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> iterator;
   
-  iterator begin()
+  iterator <span style=color:#a6e22e>begin</span>()
   {
-    Node&lt;T&gt;* n = root;
+    Node<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;*</span> n <span style=color:#f92672>=</span> root;
     
-    if (n)
-      while (n-&gt;left)
-        n = n-&gt;left;
-    return iterator{ n }
+    <span style=color:#66d9ef>if</span> (n)
+      <span style=color:#66d9ef>while</span> (n<span style=color:#f92672>-&gt;</span>left)
+        n <span style=color:#f92672>=</span> n<span style=color:#f92672>-&gt;</span>left;
+    <span style=color:#66d9ef>return</span> iterator{ n }
   }
   
-  iterator end()
+  iterator <span style=color:#a6e22e>end</span>()
   {
-    return iteraotr { nullptr };
+    <span style=color:#66d9ef>return</span> iteraotr { <span style=color:#66d9ef>nullptr</span> };
   }
 };
 
-template &lt;typename U&gt;
-struct PreOrderIterator
+<span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> U<span style=color:#f92672>&gt;</span>
+<span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>PreOrderIterator</span>
 {
-  Node&lt;U&gt;* current;
-  explicit PreOrderIterator(Node&lt;U&gt;* current)
-    : current(current)
+  Node<span style=color:#f92672>&lt;</span>U<span style=color:#f92672>&gt;*</span> current;
+  <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>PreOrderIterator</span>(Node<span style=color:#f92672>&lt;</span>U<span style=color:#f92672>&gt;*</span> current)
+    <span style=color:#f92672>:</span> current(current)
   {
   }
   
-  bool operator!=(const PreOrderIterator&lt;U&gt;&amp; other)
+  <span style=color:#66d9ef>bool</span> <span style=color:#66d9ef>operator</span><span style=color:#f92672>!=</span>(<span style=color:#66d9ef>const</span> PreOrderIterator<span style=color:#f92672>&lt;</span>U<span style=color:#f92672>&gt;&amp;</span> other)
   {
-    return current != other.current;
+    <span style=color:#66d9ef>return</span> current <span style=color:#f92672>!=</span> other.current;
   }
   
-  Node&lt;U&gt;&amp; operator*() { return *current; }
+  Node<span style=color:#f92672>&lt;</span>U<span style=color:#f92672>&gt;&amp;</span> <span style=color:#66d9ef>operator</span><span style=color:#f92672>*</span>() { <span style=color:#66d9ef>return</span> <span style=color:#f92672>*</span>current; }
   
-  PreOrderIterator&lt;U&gt;&amp; operator++()
+  PreOrderIterator<span style=color:#f92672>&lt;</span>U<span style=color:#f92672>&gt;&amp;</span> <span style=color:#66d9ef>operator</span><span style=color:#f92672>++</span>()
   {
-    if (current-&gt;right)
+    <span style=color:#66d9ef>if</span> (current<span style=color:#f92672>-&gt;</span>right)
     {
-      current = current-&gt;right;
-      while (current-&gt;left)
-        current = current-&gt;left;
+      current <span style=color:#f92672>=</span> current<span style=color:#f92672>-&gt;</span>right;
+      <span style=color:#66d9ef>while</span> (current<span style=color:#f92672>-&gt;</span>left)
+        current <span style=color:#f92672>=</span> current<span style=color:#f92672>-&gt;</span>left;
     }
-    else
+    <span style=color:#66d9ef>else</span>
     {
-      Node&lt;U&gt;* p = current-&gt;parent;
-      while (p &amp;&amp; current == p-&gt;right)
+      Node<span style=color:#f92672>&lt;</span>U<span style=color:#f92672>&gt;*</span> p <span style=color:#f92672>=</span> current<span style=color:#f92672>-&gt;</span>parent;
+      <span style=color:#66d9ef>while</span> (p <span style=color:#f92672>&amp;&amp;</span> current <span style=color:#f92672>==</span> p<span style=color:#f92672>-&gt;</span>right)
       {
-        current = p;
-        p = p-&gt;parent;
+        current <span style=color:#f92672>=</span> p;
+        p <span style=color:#f92672>=</span> p<span style=color:#f92672>-&gt;</span>parent;
       }
-      current = p;
+      current <span style=color:#f92672>=</span> p;
     }
-    return *this;
+    <span style=color:#66d9ef>return</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>this</span>;
   }
 }
 
-</code></pre>
-
-<h2 id="코루틴을-이용한-순회">코루틴을 이용한 순회</h2>
-
-<ul>
-<li>흐음&hellip; 잘 모르겠다. 아직 이런 불편함을 안겪어봐서인듯</li>
-</ul>
-
-    </div>
-
-  <script>
-      ;(function() {
-              var content = document.querySelector('.content');
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
-          console.log(matching, display);
-          return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
-        });
-        content.innerHTML = content.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) =>
-          `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${matching}</a>`);
-      })();
-</script>
-
-  <div style="min-width:500px;">
-<script src="https://utteranc.es/client.js"
-        repo="makerdark98/makerdark98.github.io"
-        issue-term="pathname"
-        theme="github-light"
-        crossorigin="anonymous"
-        async>
-</script>
-</div>
-
-</main>
-        <footer>
-            <p class="copyright text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io">Hugo</a> and <a href="https://github.com/calintat/minimal">Minimal</a>.</p>
-        </footer>
-
-        
-
-        
-    </body>
-
-</html>
-
+</code></pre></div><h2 id=코루틴을-이용한-순회>코루틴을 이용한 순회</h2><ul><li>흐음&mldr; 잘 모르겠다. 아직 이런 불편함을 안겪어봐서인듯</li></ul></div><script>;(function(){var content=document.querySelector('.content');content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{console.log(matching,display);return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});content.innerHTML=content.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>`<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${matching}</a>`);})();</script><div style=min-width:500px><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
