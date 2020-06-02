@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-02 20:05:53 +0900
+lastmod : 2020-06-02 20:23:17 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -417,3 +417,37 @@ int ha_tina::info(uint flag)
    DBUG_RETURN(0);
 }
  ```
+
+### 23.11 Closing a Table
+ * Table 에서 작업을 마치면 호출된다.
+ * shared resource를 반환해야 한다.
+
+### 23.12 Adding Support for INSERT to a Storage Engine
+ * read를 다 구현하면 write를 구현해야하고, WORM(Write Once, Read Many) application을 다뤄야한다.
+ * 모든 INSERT 구문은 `write_row()` 로 다룬다.
+  
+```cpp
+int ha_foo::write_row(byte *buf)
+```
+ * 이때 `buf` 는 mysql format을 따라서 전달한다.
+
+ * 다음은 `MyISAM`의 예시이다.
+
+```cpp
+int ha_myisam::write_row(byte * buf)
+{
+  statistic_increment(table->in_use->status_var.ha_write_count,&LOCK_status);
+
+  /* If we have a timestamp column, update it to the current time */
+  if (table->timestamp_field_type & TIMESTAMP_AUTO_SET_ON_INSERT)
+    table->timestamp_field->set_time();
+
+  /*
+    If we have an auto_increment column and we are writing a changed row
+    or a new row, then update the auto_increment value in the record.
+  */
+  if (table->next_number_field && buf == table->record[0])
+    update_auto_increment();
+  return mi_write(file,buf);
+}
+```
