@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-03 19:44:28 +0900
+lastmod : 2020-06-03 20:34:44 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -530,6 +530,72 @@ int ha_foo::rnd_pos(byte * buf, byte *pos)
  * `pos` 에는  `position()` method 를 사용해서 미리 기록된 정보를 포함하는 인자이다.
  * `buf`는 mysql format 에 맞추어서 데이터를 넣어줘야 한다.
 
-### 여담
+#### 여담
  * 흐음... Index 말고 non-sequential read? 이게 어쩔때 호출되는지 모르겠었다. -> 아 23.15 시작할때 적혀있었다.
  * `multi-table UPDATE` 이나 `SELECT .. table.blob_column ORDER BY something` 일때 사용한다. 그러므로 선택사항이 아닌 **필수** 구현사항이다.
+
+### 23.16 Supporting Indexing
+
+#### 23.16.1 Indexing Overview
+ * Indexing 을 지원하는 것은 2가지로 구성된다 : Optimizer 에게 정보를 제공하는 것과 그에 맞는 Method 구현이다.
+ * indexing method 는
+   * key에 맞는 row를 읽는 것
+   * index 순서에 맞춰서 a set of rows(데이터들)을 읽는 것
+   * index로부터 직접적으로 정보(information) 을 읽는 것.
+ * 중 하나이다.
+ * `UPDATE foo SET ts = now() WHERE id = 1:`같은 Update query가 실행될때 다음과 같은 순서로 실행된다.
+ 
+ ```cpp
+ha_foo::index_init
+ha_foo::index_read
+ha_foo::index_read_idx
+ha_foo::rnd_next
+ha_foo::update_row
+ ```
+ 
+ * 추가적으로 index read를 지원한다면, storage engine 은 row가 추가, 제거, 수정 될 때에도 table index를 유지하기 위해서 새로운 index를 만드는 것을 지원해야 한다.
+
+#### 23.16.2 Getting Index Information During CREATE TABLE Operations
+ * 일반적으로 indexing read를 지원하는 storage engine 같은 경우, `CREATE TABLE` 할 때 index 정보를 제공한다. 나중에는 index 정보를 획득해서 만들기 어렵다.
+ * TABLE 의 `create()` method 의 인자 `key_info`는 다음과 같은 정보를 포함한다.
+
+ ```cpp
+ #define HA_NOSAME             1  /* Set if not duplicated records   */
+ #define HA_PACK_KEY           2  /* Pack string key to previous key */
+ #define HA_AUTO_KEY           16
+ #define HA_BINARY_PACK_KEY    32 /* Packing of all keys to prev key */
+ #define HA_FULLTEXT          128 /* For full-text search            */
+ #define HA_UNIQUE_CHECK      256 /* Check the key for uniqueness    */
+ #define HA_SPATIAL          1024 /* For spatial search              */
+ #define HA_NULL_ARE_EQUAL   2048 /* NULL in key are cmp as equal    */
+ #define HA_GENERATED_KEY    8192 /* Automatically generated key     */
+ ```
+ 
+ * `flag`외에도 `algorithm`는 index type에 관련된 알고리즘 정보를 제공한다.
+ ```cpp
+ enum ha_key_alg {
+  HA_KEY_ALG_UNDEF=     0,  /* Not specified (old file)     */
+  HA_KEY_ALG_BTREE=     1,  /* B-tree, default one          */
+  HA_KEY_ALG_RTREE=     2,  /* R-tree, for spatial searches */
+  HA_KEY_ALG_HASH=      3,  /* HASH keys (HEAP tables)      */
+  HA_KEY_ALG_FULLTEXT=  4   /* FULLTEXT (MyISAM tables)     */
+};
+ ```
+ 
+ * `flag`와 `algorithm` 에외에도 `key_part` 라고 복합 키(composite key)의 개별적인 부분을 설명하는 array 가 있다.
+ * `key_part` 는 key part와 연관된 field(압축되어야 하는지, index part 의 data type과 길이) 를 제공하고 자세한건 `ha_myisam.cc`를 참조하면 어떻게 파싱해야할지 알 수 있다.
+ * 추가적으로, storage engine 은 각 연산마다 `handler`의 `TABLE` 구조에서 index 를 읽을 수 있다.
+
+#### 23.16.3 Create Index Keys
+ * `INSERT`, `UPDATE`, `DELETE` 와 같이 테이블에 쓰기를 하는 연산시, Index 정보를 갱신해줘야한다.
+ * index를 저장하는 방식이 다양하기 때문에, index를 갱신하는건 storage engine 마다 방법이 다양하다.
+ * 일반적으로는 `write_row()`, `update_row()`, `delete_row()` 에서 넘어온 row 정보를 TABLE의 index 정보를 결합해서 활용한다.
+
+#### 23.16.4 Parsing Key Information
+ * 대부분의 index와 관련된 method 가 표준 규격의 `key`를 넘긴다. Storage Engine 을 구현할 때 필요한 정보를 추출해서 저장하고, 저장된 index정보를 가공해서 번역(translate)해야한다.
+ * key 정보는 일정한 순서대로 되어 있는데, `table->key_info[index]->key_part[part_num]` 에 정의되어 있는 대로이다.
+ * key와 함께 handler의 method는 `keypart_map`를 전달해서 key 인자에 존재하는 key의 부분을 나타낸다.
+ * `keypart_map` 는 `ulonglong` 타입의 bitmap 이고, key part마다 비트가 켜져있다. (에시 : 1이 켜져있으면 keypart[0] 에 key가 존재한다. 2가 켜져있으면 keypart[1], 4가 켜져있으면 keypart[2])
+ * 마지막 key part 뒤에 있는 bit는 중요하지 않으니 모든 keypart 마다 ~0 를 사용할수 있다. 현재는 prefix만 허용하니 다음과 같이 쓸수 있다. `assert((keypart_map + 1) & keypart_map == 0).`
+ * `keypart_map` 은 `records_in_range()`에서 사용되는 `key_range` 의 일부분이므로, `keypart_map`은 `index_read()`, `index_read_idx()` 에서 인자로서 직접적으로 접근 할수 있다.
+ * 옛날 handler 같은 경우 `keypart_map` 대신 `key_len` 을 가지고 있다. `key_len`은 prefix 가 매칭될때 prefix 길이를 나타낸다.
