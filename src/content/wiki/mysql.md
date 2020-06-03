@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-02 20:36:19 +0900
+lastmod : 2020-06-03 19:44:28 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -508,3 +508,28 @@ int ha_myisam::write_row(byte * buf)
 }
  ```
  
+### 23.15 Supporting Non-Sequential Reads
+
+#### 23.15.1 Implementing the position() Method
+ * `rnd_next()`가 불린뒤 데이터를 재정렬할 필요가 있을 때 `position()` 이 호출된다.
+
+```cpp
+void ha_foo::position(const byte *record)
+```
+
+ * `this->ref` 안에 record의 **position** 이 저장된다. 이때 position에 저장된 contents는 맘대로 해도 된다.
+ * position 에 나중에 검색하기 위한 정보만 들어있으면 된다. 대부분의 Storage Engine은 primary key 의 offset을 가지고 있다.
+ 
+#### 23.15.2 Implementing the rns_pos() Method
+ * `rnd_next()` 와 비슷하게 구현하면 된다.
+  
+```cpp
+int ha_foo::rnd_pos(byte * buf, byte *pos)
+```
+
+ * `pos` 에는  `position()` method 를 사용해서 미리 기록된 정보를 포함하는 인자이다.
+ * `buf`는 mysql format 에 맞추어서 데이터를 넣어줘야 한다.
+
+### 여담
+ * 흐음... Index 말고 non-sequential read? 이게 어쩔때 호출되는지 모르겠었다. -> 아 23.15 시작할때 적혀있었다.
+ * `multi-table UPDATE` 이나 `SELECT .. table.blob_column ORDER BY something` 일때 사용한다. 그러므로 선택사항이 아닌 **필수** 구현사항이다.
