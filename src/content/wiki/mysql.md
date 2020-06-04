@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-04 20:30:46 +0900
+lastmod : 2020-06-04 20:34:34 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -752,3 +752,11 @@ SELECT * FROM t1 WHERE a=1 ORDER BY a DESC,b DESC;
  ```
  
  
+### 23.17 Supporting Transactions
+ * Transaction을 지원하는 Storage Engine을 만들때 참조해야하는 내용
+ * transaction은 매우 복잡할수 있고, row versioning과 redo logs 같이 이 문서를 뛰어넘는 범위의 method를 포함한다.
+ * 모든 Method와 구현에 대한 설명이 아닌, 필수적인 내용에 국한되며, 구현의 예시는 `ha_innodb.cc`를 참조해라.
+
+## 잠시
+ * 일단 Transaction을 구현하는 내용은 조금 나중에 다뤄야하는게 맞는 것 같다. 위에서 나온 내용으로 충분히 indexing 까지는 구현할수 있으니, 일단 구현하고 나중에 보자.
+ * 그리고 Transaction이 내용이 방대하니 미리 공부해놓고 여길 보는게 맞다.
