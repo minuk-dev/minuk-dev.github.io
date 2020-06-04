@@ -3,7 +3,7 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-03 20:34:44 +0900
+lastmod : 2020-06-04 20:30:46 +0900
 tags    : [mysql, storage engine]
 draft   : false
 parent  : 
@@ -97,8 +97,10 @@ typedef struct
 ```cpp
 static handler* example_create_handler (TABLE* table);
 ```
+
  * handler 생성 함수를 만들어야된다.
  * handler constructor를 단순히 호출하는 형식으로 구현할 수도 있다. (아래 예시는 myisam 의 구현)
+  
 ```cpp
 static handler *myisam_create_handler(TABLE *table)
   {
@@ -107,6 +109,7 @@ static handler *myisam_create_handler(TABLE *table)
 ```
 
  * constructor 의 구현 예시
+ 
 ```cpp
 ha_federated::ha_federated(TABLE *table_arg)
   :handler(&federated_hton, table_arg),
@@ -126,6 +129,7 @@ static const char *ha_tina_exts[] = {
   NullS
 };
 ```
+
  * 이렇게 정의된 array를 다음과 같이 설정해주면 됨.
   
 ```cpp
@@ -179,7 +183,7 @@ typedef struct st_ha_create_information
  * storage engine 이 파일 기반이라는 가정하에 `form`, `info`는 신경 쓰지 않아도 됨.
  * csv engine 같은 경우 아래와 같이 구현되어 있음
   
-```
+```cpp
 int ha_tina::create(const char *name, TABLE *table_arg,
   HA_CREATE_INFO *create_info)
 {
@@ -599,3 +603,152 @@ ha_foo::update_row
  * 마지막 key part 뒤에 있는 bit는 중요하지 않으니 모든 keypart 마다 ~0 를 사용할수 있다. 현재는 prefix만 허용하니 다음과 같이 쓸수 있다. `assert((keypart_map + 1) & keypart_map == 0).`
  * `keypart_map` 은 `records_in_range()`에서 사용되는 `key_range` 의 일부분이므로, `keypart_map`은 `index_read()`, `index_read_idx()` 에서 인자로서 직접적으로 접근 할수 있다.
  * 옛날 handler 같은 경우 `keypart_map` 대신 `key_len` 을 가지고 있다. `key_len`은 prefix 가 매칭될때 prefix 길이를 나타낸다.
+
+#### 23.16.5 Providing Index Information to the Optimizer
+ * Indexing 을 효과적으로 하기 위해서는 Optimizer(질의 최적화기?)에게 Index에 대한 정보를 제공해야한다. 이렇게 제공받은 정보로 Index를 사용할지, 쓴다면 어떤 Index를 사용할것인지를 결정한다.
+
+##### 23.16.5.1 Implementing the info() Method
+ * `handler:info()` 를 호출하면서 Optimizer는 정보를 얻는다. 이때 `info()` 는 return value로 정보를 제공하는게 아닌 handler의 public variable 을 설정하여서 필요할때 읽도록 한다. 
+ * 이런 값들은 `INFORMATION SCHEMA` 에게 `SHOW TABLE STATUS` 같은 질의를 할때도 사용된다.
+ * 가능하다면 모든 variable를 채우는게 좋지만, 만약 안된다고 해도 아래 서술하는 변수들은 반드시 채워야한다.
+   * `records` - Table에 있는 row의 수, 만약 정확하게 산출하기 어렵다면, 1보다 큰 아무 값이라도 넣어놔야지 optimizer가 0개와 1개일때 최적화 하는 것을 방지할수 있다.
+   * `deleted` - Table에 들어있는 삭제된 row의 수. table fragmentation 여부를 판단할 때 사용한다.
+   * `data_file_length` - bytes 단위인 data 파일의 크기, optimizer 가 읽기 비용을 계산할때 사용한다.
+   * `index_file_length` - bytes 단위인 index파일의 크기, optimizer 가 읽기 비용을 계산할 때 사용한다.
+   * `mean_rec_length` - 1 row의 평균 크기, byte 단위
+   * `scan_time` - full scan 할때의 I/O 탐색의 비용
+   * `delete_length` - ??? 안적혀 있네
+   * `check_time` - 이것도 안적혀 있음.
+ * 비용을 계산할때 정확하게 계산하는 것보다는 빨리 나오는게 좋다. 어떻게 해야지 빠른지를 구하는데 오래걸린다면 의미가 없다.
+ * 대수를 추정하는 걸로 충분하다.
+
+##### 23.16.6.2 Implementing the records_in_range Method
+ * table 에 query 하거나 join할 때 `records_in_range`가 호출된다.
+ * 
+```cpp
+ha_rows ha_foo::records_in_range(uint inx, key_range *min_key, key_range *max_key)
+```
+
+ * `inx` 는 확인되어야할 index, `min_key`와 `max_key`는 범위의 양 끝값
+ * `key_range`는 다음과 같이 정의 되어있다.
+
+ ```cpp
+typedef struct st_key_range
+{
+  const byte *key;
+  uint length;
+  key_part_map keypart_map;
+  enum ha_rkey_function flag;
+} key_range; 
+ ```
+ 
+ * `key` - key buffer의 pointer
+ * `length` - key의 길이
+ * `keypart_map` - 전달된 `key`에서 key 부분이 어디인지를 가리키는 변수 : 자세한건 Parsing Key Information 참조
+ * `flag` - key가 범위에 포함되는지를 나타내는 변수
+   * `min_key.flag` 는 
+     * `HA_READ_KEY_EXACT` - 범위에 key가 포함됨
+     * `HA_READ_AFTER_KEY` - 범위에 key가 포함되지 않음
+   * `max_key.flag` 는 
+     * `HA_READ_BEFORE_KEY` - 범위에 key가 포함되지 않음
+     * `HA_READ_AFTER_KEY` - `end_key`의 모든 값들이 범위에 포함됨.
+ * return value는 다음과 같다.
+   * `0` - 주어진 범위에 key들이 있지 않음.
+   * `number > 0` - 주어진 범위에 대충 `number` 개 있음
+   * `HA_POS_ERROR` - index tree 조회하다 먼가 오류가 남.
+ * 속도가 정확도보다 중요함.
+
+#### 23.16.6 Preparing for Index Use with index_init()
+ * index를 사용하기 전 storage engine 이 사전작업이나 최적화를 할 수 있도록 `index_init()`을 호출해준다.
+  
+```cpp
+int ha_foo::index_init(uint keynr, bool sorted)
+```
+
+ * 대부분의 storage engine 의 경우 딱히 사전작업을 할필요는 없다. 만약 명시적으로 따로 구현하지 않으면 아래의 함수를 사용하게 된다.
+  
+```cpp
+int handler::index_init(uint idx) { active_index=idx; return 0; }
+```
+
+#### 23.16.7 Cleaning up with index_end()
+ * `index_init()`과는 반대의 용도인데, `index_init()`에서 만든 것들을 없애는 목적이다.
+ * 만약 따로 `index_init()` 을 구현하지 않았다면, `index_end()`도 구현할 필요 없다.
+
+#### 23.16.8 Implementing the index_read() Method
+ * key를 기반으로 row를 찾기 위해서 사용된다.
+
+```cpp
+int ha_foo::index_read(byte * buf, const byte * key,
+                       ulonglong keypart_map,
+                       enum ha_rkey_function find_flag)
+```
+
+ * `buf` 는 `key`에 해당하는 row를 넣을 byte array
+ * `keypart_map` 은 `key`에서 어느부분에 진짜 key가 저장되어 있는지를 나타내는 변수
+ * `find_flag`는 어떻게 동작할지를 나타내는 enumerator, 다음 값들을 가질 수 있다.
+
+```cpp
+HA_READ_AFTER_KEY
+HA_READ_BEFORE_KEY
+HA_READ_KEY_EXACT
+HA_READ_KEY_OR_NEXT
+HA_READ_KEY_OR_PREV
+HA_READ_PREFIX
+HA_READ_PREFIX_LAST
+HA_READ_PREFIX_LAST_OR_PREV
+```
+
+ * storage engine은 key를 나름대로 (자기만의 형식으로 바꿔서) `find_flag`에 해당하는 행의 row 값을 `buf` 에 mysql format으로 넣어야한다.
+ * row를 찾아 반환한 이후에, storage engine은 sequential index read를 지원하도록 cursor를 설정해 둬야한다.
+ * `key` 가 `null`일 경우 index의 첫번째 key를 읽어야한다. (흠?? key가 아니라 first key에 해당하는 row를 반환해야된다는 거겠지?)
+
+#### 23.16.8 Implementing the index_read_idx() Method
+ * `index_read_idx()` 는 추가적으로 `keynr` 이라는 인자를 받는 것을 빼고는 `index_read()`와 동일하다.
+
+ ```cpp
+ int ha_foo::index_read_idx(byte * buf, uint keynr, const byte * key,
+                           ulonglong keypart_map,
+                           enum ha_rkey_function find_flag)
+ ```
+
+ * `keynr` 인자는 `index_read` 에서는 기존에 설정된 index를 읽는 반면, 특정한 index를 읽도록 결정한다.
+ * `index_read()`와 마찬가지로 나중에 읽을수 있도록 cursor를 설정해 두어야한다.
+
+#### 23.16.10 Implementing the index_read_last() Method
+ * `index_read_last()` 도 `index_read()`와 비슷하게 동작한다.
+ * 하지만 주어진 `key`에 해당하는 맨마지막 값을 반환한다.
+ * 보통 다음과 같은 query를 최적화 할때 호출된다.
+  
+```sql
+SELECT * FROM t1 WHERE a=1 ORDER BY a DESC,b DESC;
+```
+
+#### 23.16.11 Implementing the index_next() Method
+ * index scanning 을 할 때 호출된다.
+
+ ```cpp
+  int ha_foo::index_next(byte * buf) 
+ ```
+ 
+ * `buf` 는 `index_read()` 나 `index_first()` 같은 해당하는 다음 key에 매칭되는 row로 이동된 cursor에 의해 값을 채운다.
+
+#### 23.16.12 Implementing the index_prev() Method
+ * reverse index scanning 할때 `index_prev()`는 호출된다.
+ * `buf`는 `index_read()` 나 `index_last()` 같이 이전 key에 해당되는 row로 이동된 cursor에 의해 값을 채운다.
+
+#### 23.16.13 Implementing the index_next() Method
+ * index scanning 할때 호출되며, `buf`는 index의 첫번째 값에 해당하는 row로 값을 채워진다.
+  
+```cpp
+ int ha_foo::index_first(byte * buf)
+```
+
+#### 23.16.14 Implementing the index_last() Method
+ * reverse index scanning 할때 호출되며, `buf`는 index의 마지막 값에 해당하는 row로 값을 채운다.
+
+ ```cpp
+  int ha_foo::index_last(byte * buf)
+ ```
+ 
+ 
