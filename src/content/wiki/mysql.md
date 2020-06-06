@@ -3,8 +3,8 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-04 20:34:34 +0900
-tags    : [mysql, storage engine]
+lastmod : 2020-06-04 20:45:50 +0900
+tags    : [mysql, storage engine, database]
 draft   : false
 parent  : 
 ---
