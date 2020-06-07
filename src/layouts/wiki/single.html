@@ -1,19 +1,12 @@
 {{ partial "header" . }}
 
 <main>
-
-    <div class="navigator" style="display:flex;">
-      <div style="flex:none;">
-        <button class="btn btn-link" onclick="history.back();"><i class="fa fa-arrow-left"></i>&nbsp;뒤로 가기 </button>
-      </div>
-      <div style="margin-left: auto;">
-        {{ partial "wikiparent" . }}
-      </div>
-    </div>
+    {{ partial "wikinavigator" .}}
     <div>
         <h2>{{ .Title }}</h2>
         {{ partial "created" . }}
         {{ partial "tags" . }}
+        {{ partial "wikiparent" . }}
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;">{{ .TableOfContents }}</aside>

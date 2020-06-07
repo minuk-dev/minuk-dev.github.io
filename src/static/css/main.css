@@ -108,9 +108,13 @@ footer {
 }
 
 main {
-  max-width: 100%;
+  max-width: 1000px;
+  width: 100%;
 }
 
 .content {
   word-break: break-word;
+}
+.breadcrumb > li + li:before {
+  content: ">";
 }

@@ -1,5 +1,6 @@
-{{ if .Params.parent }}
-<div class="parent-doc">
+<div class="parent-doc" style="flex:none;">
+  {{ if .Params.parent }}
   parent : [[{{ .Params.parent }}]]
+  {{ end }}
 </div>
-{{ end }}
+
