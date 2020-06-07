@@ -52,19 +52,5 @@ publishDir = ".."
     name = "github"
     weight = 2
 
-[[menu.icon]]
-    url = "https://twitter.com/makerdark98/"
-    name = "twitter"
-    weight = 3
-
-[[menu.icon]]
-    url = "https://www.linkedin.com/in/makerdark98/"
-    name = "linkedin"
-    weight = 4
-
-[[menu.icon]]
-    url = "https://www.stackoverflow.com/makerdark98/"
-    name = "stack-overflow"
-    weight = 5
 [taxonomies]
 tag = "tags"
