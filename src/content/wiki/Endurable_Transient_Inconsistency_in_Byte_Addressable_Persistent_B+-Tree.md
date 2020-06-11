@@ -3,12 +3,9 @@ layout  : wiki
 title   : Endurable Transient Inconsistency in Byte Addressable Persistent B+-Tree
 summary : 
 date    : 2020-04-07 20:15:43 +0900
-lastmod : 2020-04-08 12:41:03 +0900
+lastmod : 2020-06-10 19:22:07 +0900
 tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+parent  : "database"
 ---
 - 논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.
 
