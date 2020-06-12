@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-06-11 20:24:34 +0900
+lastmod : 2020-06-12 20:03:17 +0900
 tags    : 
 draft   : [ssd]
 parent  : 
@@ -76,3 +76,25 @@ class Interface : public SimpleSSD::DMAInterface {
  * `Controller::submit` 함수는 `Controller::completion` 함수를 부르는 event를 관리한다.
  * `Controller::completion` 함수는 CQ entry를 채우고, `Controller::updateInterrupt` 를 사용해서 interrupt를 보낸다.
  * `Controller::updateInterrupt`는 단순히 `Interface::updateInterrupt`를 호출한다.
+
+###### Subsystem
+ * admin commmands를 다루는 NVMe Subsystem은 `hil/nvme/subsystem.hh`에 `SimpleSSD::HIL::NVMe::Subsystem` 으로 선언되어 있다.
+ * Open-channel SSD Subsystem은 `hil/nvme/ocssd.hh`에 `SimpleSSD::HIL::NVMe::OpenChannelSSD`로 선언되어 있다.
+ * 두 subsystem 모두 `hil/nvme/abstract_subsystem.hh`의 `SimpleSSD::HIL::NVMe::AbstractSubsystem` 을 상속한다.
+ * 기본적으로 아래쪽 설명들은 NVMe subsystem 을 기반으로 하고 있는데, Open-Channel SSD 랑 사소한 차이만 있기 때문이다.
+
+ * NVMe Subsystem은 2부분으로 나뉘는데, command handling, I/O request handling.
+ * Subsystem이 여러 namespaces를 가질수 있으므로, Subsystem은 반드시 I/O requests 를 Namespaces 로부터 HIL의 SSD Interface로 넘겨줘야 한다.
+
+ * 각 NVMe 명령들은
+   * I/O 명령이라면, `Subsystem::submitCommand` 함수를 통해서 특정한 Namespace로 가지게 되며.
+   * 관리용(admin) 명령이라면, `submitCommand` 함수는 OPCODE를 확인한 이후 적절한 함수를 호출하게 된다.
+ * 모든 명령들은 완료됨을 알리기 위해서 `Controller::submit` 를 유발한다.
+
+ * 특정한 I/O 함수들(`Subsystem::read, write, flush and trim`)이 불리게 된다면, I/O unit으로 번역된뒤, SSD Intreface의 함수들로 간다. (`HIL::HIL::read`, `HIL::HIL::write`, `HIL::HIL::flush` and `HIL::HIL::trim`);
+
+ * SSD를 선형적으로 쪼개기 위해서, Subsystem은 multiple Namespaces를 유지한다.
+   * 예를 들어 1TB SSD 가 4K 논리적 block을 사용한다고 하자. 이때 512GB, 256GB, 256GB 용량으로 3개의 Namespaces로 쪼갤수 있다.
+   * Subsystem은 offset과 length를 찾아서 namespaces를 할당할 것이고, Subsystem은 할당되지 않은 공간을 처음 맞는 Namespaces에 할당한다.(first-fit). 만약 공간이 없다면 할당이 실패한다.
+
+ * 각 Namespace 마다 offset과 length를 가지고 있으며, 이 값은 SSD interface를 위해 I/O unit으로 번역될때 쓰인다.
