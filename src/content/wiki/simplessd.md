@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-06-12 20:58:48 +0900
+lastmod : 2020-06-15 19:48:31 +0900
 tags    : 
 draft   : [ssd]
 parent  : 
@@ -153,3 +153,67 @@ class Interface : public SimpleSSD::DMAInterface {
 * 완료 이후, 각 명령어들은 명령의 결과를 `HBA`에게 보고하기(report) 위해서 `HBA::submitFIS`를 호출한다.
 * I/O 와 관련된 `READ*`, `WRITE*` and `FLUSH*` 는 SSD Interface의 함수 (`HIL::HIL::read, write and flush`) 를 호출한다.
 
+#### Universal Flash Storage
+ * Universal Flash Storage - UFS : 모바일용 저장소를 위해 디자인된 interface. 대부분의 스마트폰들이 이 UFS interface를 사용하고 있다.
+ * SimpleSSD 에서는 `Universal Flash Storage (UFS) Host Controller Interface (JESD223)`을 기반으로 UFS Host Controller를 구현하였으며, UFS PHY는 `Specification for M-PHY Version 4.0` 을, UFS protocol은 `Universal Flash Storage (UFS) Version 2.1 (JESD220C)`를 기반으로 한다.
+
+##### Host Interface
+ * `SimpleSSD::HIL::UFS::Interface` 는 simulator에게 common API를 제공하기 위해 추상 클래스로 `hil/ufs/interface.hh` 에 정의되어 있다. 어떻게 구체화 하는지는 SimpleSSD_FullSystem의 `UFSInterface` 는 `scr/dev/storage/ufs_interface.hh` 에 나와 있다.
+ * `SimpleSSD::HIL::UFS::Interface` 는 단지 `generateInterrrupt()` 와 `clearInterrupt()` 를 포함한다.
+
+##### Host Controller inteface
+ * SATA처럼 UFS도 UFS Host Controller Interface - UFSHCI 를 제공한다. 이 인터페이스는 `Universal Flash Storage (UFS) Host Controller Interface (JESD223)`를 따라간다.
+ * UFSHCI 는 `hil/ufs/host.hh` 에 `SimpleSSD::HIL::UFS::Host`로 구현되어 있다.
+
+ * `Interface` 는 UFSHCI register에 `Host::writeRegister` 함수를 사용해서 쓴다.
+ * UFS는 3가지 종류의 명령이 있는데
+   * UFS Trasnport Protocol Transfer (UTP Transfer)
+   * UFS Transport Protocol Task Management (UTP Task)
+   * UFS InterConnect Command (UIC Command)
+ * 각 명령어들은 request를 알리는데 서로 다른 doorbell을 사용하며
+   * `REG_UTRLDBR` 는 UTP Transfer
+   * `REG_UTMRLDBR` 는 UTP Task
+   * `REG_UICCMDR` 는 UIC Command
+ * 를 확인할때 사용할수 있다.
+
+ * 리눅스 커널과 UFS 2.1에서 UTP Task는 구현되지 않았기 때문에 SimpleSSD 에서도 구현하지 않았다.
+ * UIC Commands 는 오직 UFS hardware를 초기화 할때만 사용하며(M-PHY link 부팅 등), 그러므로 우린 오직 2가지 기초적 명령어들만 구현했다.
+ * NVMe와 SATA처럼 **Event Engine** 은 주기적으로 `Host::work` 함수를 호출하며. `Host::handleRequest` 함수는 `work`에 의해서 호출되고 request가 유효한지를 검증한다. `Host::processUTPCommand` 는 request를 파싱하고, request에 적합한 handler를 부른다.
+
+ * UFS Transfer는 3가지 유형의 명령어들로 정의된다.
+   * Command (SCSI protocol)
+   * Native UFS Command
+   * Device Management Command
+ * Native UFS Command는 UFS 2.1 에서 정의되지 않았기 때문에 우린 Command 와 Device Management Command 만을 구현했다.
+
+ * `Device::processCommand` 함수는 Command 를 다루고 `Device::processQueryCommand` 함수는 Device Management Command 를 다룬다.
+ * `handleRequest` 함수에서 완료 루틴(Completion routine) 이 선언되어 있으며 이는 `doRequest` 와 `doWrite` 라는 lambda 함수들을 확인하면 된다. `doWrite` 함수는 completion routine(`Host::completion`)을 예약하며, `completion` 함수는 `Interface::updateInterrupt` 함수를 사용해서 Interrupt를 보낸다.
+
+ 
+##### Device
+ * UFSHCI 와 연결해주는 Device 는 `hil/ufs/device.hh`에 `SimpleSSD::HIL::UFS::Device` 를 정의한다.
+ * UFS 는 SCSI commands set(`SCSI Block Commands - 3 (SBC-3)` 와 `SCSI Primary Commands - 4(SPC-4)`) 을 I/O 하기 위해서 사용gksek.
+ * Device 는 아래 나오는 SCSI 명령어들로 다루어진다.
+   * `INQUERY`
+   * `MODE SELECT 10`
+   * `MODE SENSE 10`
+   * `READ 6`
+   * `READ 10`
+   * `READ CAPACITY 10`
+   * `READ CAPACITY 16`
+   * `START STOP UNIT`
+   * `TEST UNIT READY`
+   * `REPORT LUNS`
+   * `VERIFY 10`
+   * `WRITE 6`
+   * `WRITE 10`
+   * `SYNCHRONIZE CACHE 10`
+
+ * Device 의 구현은 SATA와 비슷하지만 2가지 명령어 handling 함수를 가진다. (`processCommand` 와 `processQueryCommand`)
+ * 완료 이후 각 SCI command 함수는 callback handler 를 호출하며, 이때 `processCommand` 함수의 인자로서 콜백은 제공한다.
+ * `processQueryCommand` 는 즉시 결과를 리턴한다. I/O 관련 명령 `READ*`, `WRITE*` 와 `SYNCHRONIZE CACHE` 는 SSD Interface 함수들 (`HIL::HIL::read, write and flush`) 를 호출한다.
+
+ 
+### SSD Interface
+ * HIL 의 SSD Interface는 단순한데 `hil/hil.hh` 에 `SimpleSSD::HIL::HIL` 로 정의되어 있다.
+ * I/O request를 host controller로 부터 받아 `Interal Cache Layer` 에 넘겨준다.
