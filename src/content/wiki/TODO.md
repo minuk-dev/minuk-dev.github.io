@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-06-17 20:44:55 +0900
+lastmod : 2020-06-17 20:48:38 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -23,7 +23,8 @@ parent  :
   * [X] mysql storage engine 문서 읽기
   * [ ] custom storage engine 만들어보기 (일시 정지, 구현해보길 원하는 논문과 기술적 차이가 있다는 걸 알게됨)
 ## Blog
- * [ ] 다시 cdn 에서 static 가져오도록 바꾸기
+ * [X] 다시 cdn 에서 static 가져오도록 바꾸기
+ * [ ] google analytics 붙이기
  * [X] git blame을 사용해서 wiki diff 만들기
  * [X] table of contents 를 홈페이지 측면에 띄우기
  * [.] vimwiki 와 hugo 연동한거 글쓰기
