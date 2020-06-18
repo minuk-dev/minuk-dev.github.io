@@ -3,7 +3,7 @@ layout  : wiki
 title   : nvme
 summary : 
 date    : 2020-06-15 20:13:59 +0900
-lastmod : 2020-06-16 20:41:50 +0900
+lastmod : 2020-06-18 20:55:20 +0900
 tags    : [linux, nvme, ssd]
 draft   : false
 parent  : 
@@ -29,8 +29,9 @@ parent  :
    * `NVME_TCP` : NVM Express over Fabrics TCP host driver
  * 일단 나는 block layer를 통하는 path 를 공부하는게 목표 : 이럴 경우 PCI 와 NVMe Core 부분만 보면 된다.
 
-### PCI module 연결 부분
+#### PCI driver structure (실제로 module 의 interface)
  * 참고 : PCI driver structure 설명 : https://wiki.kldp.org/wiki.php/PCI%20Drivers
+  
 ```c
 static struct pci_driver nvme_driver = {
 	.name		= "nvme",
@@ -47,6 +48,7 @@ static struct pci_driver nvme_driver = {
 	.err_handler	= &nvme_err_handler,
 };
 ```
+
  * 하나씩 보면 `name` 은 driver 이름, `id_table` : driver 가 처리하는 id table 의 포인터
   
 ```c
@@ -72,4 +74,31 @@ static const struct pci_device_id nvme_id_table[] = {
 ```
 
  * `probe` : id 테이블과 매치한 뒤, 아직 다른 드라이버에 의해 처리되지 않은 모든 장치들에 대한 장치 검색 함수의 포인터, 0을 반환하면 driver가 device를 잘인식하고 쓴다는 것(원문은 device가 driver 를 accept 하면 이라고 써져 있는데, 평소 말하듯이 쓰면 이렇게 쓰는게 맞을듯?)
- * TODO: 아직 probe 함수를 안 읽어봤음.. 읽어보고 정리 하고 파라메터 정리
+
+#### `nvme_probe` 함수 (`nvme_driver` 의 `probe` 부분)
+##### 하는일
+ 1. NUMA NODE 설정
+   1-2. `dev_to_node` 를 통해서 [[NUMA]] NODE 를 가져온다. (단, `CONFIG_NUMA` 가 선언되어 있지 않으면 아무것도 하지 않는다.)
+   1-3. device 에 numa 노드가 설정되지 않았다면, `first_memory_node` 를 가져온다. 
+ 2. `struct nvme_dev` 크기에 맞추어 `dev` 변수를 kernel memory 를 할당한다.
+ 3. queue 들을 설정 한다. (각 device는 적어도 2개, admin command 와 i/o command 를 담당하는 큐를 가지게 된다.)
+   3-1. `write_queues`,`poll_queues` 값을 설정한다. (흠.. 이 값을 어디서 세팅해놓는지는 못찾았다. 아마도 config 변수 값일듯)
+   3-2. 사용가능한 cpu 개수 + write_queues + poll_queues 값에 맞추어 queue를 할당한다.
+ 4. device를 가져온다.
+   4-1. 2~3 과정에서 설정한 `dev` 변수를 **private_driver_data** 로 지정한다. (`pci_set_drvdata`)
+ 5. pci를 메모리에 매핑시킨다.
+   5-1. pci를 "nvme" 앞으로 예약한다.
+   5-2. I/O 물리 메모리를 Virtual Memory 에 매핑시킨다.
+ 6. `reset_work`, `remove_work` (workqueue) 를 초기화 시킨다.
+ 7. [[prp]] list용 page, 256(4K~128K) 에 최적화된 prp list를 `dma_pool_create` 를 통해 각각 만든다.
+ 8. 하드웨어 별로 특이사항이 있는지 확인한다. (`quirks` 에다가 OR 연산으로 넣어놓는다.)
+ 9. iod용 memory pool 을 할당한다. (iod는 i/o description 의 약자)
+ 10. NVMe Controller 를 init
+   10-1. 이때 `nvme_pci_ctrl_ops` 를 넘겨준다. 이를 기반으로 `core.c` 에 선언 되어 있는 `nvme_init_ctrl` 이 호출된다.
+ 11. NVMe Controller reset
+   11-1. pci에 nvme 를 켜주는 등의 작업.
+   11-2. admin queue 설정
+   
+ 12. 오래걸리는 작업 (controller 의 reset_work, scan_work 초기화, 4 에서 가져온 device release (정확히 함수는 `put_device` 호출)) 을 async 하게 동작하도록 예약
+ 
+ * TODO : dev->ctrl 변수가 어디서 초기화 되는지 못찾았다. ㅠ 다시 찾아보자.
