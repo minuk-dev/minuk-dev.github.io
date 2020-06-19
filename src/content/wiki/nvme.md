@@ -3,16 +3,24 @@ layout  : wiki
 title   : nvme
 summary : 
 date    : 2020-06-15 20:13:59 +0900
-lastmod : 2020-06-18 20:55:20 +0900
+lastmod : 2020-06-19 20:59:19 +0900
 tags    : [linux, nvme, ssd]
 draft   : false
 parent  : 
 ---
 
+# 시작
+ * 아무것도 모르고 SSD 에 대해서 아는거라곤, 개발자를 위한 SSD 라는 카카오에서 올린 글(https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/) 와 [[simplessd]] 논문만 보고 무턱대고 시작한 공부
+  
+  
 ## Linux NVMe 공부
  * [[workqueue]]
  * [[block layer]]
+ * [[IO mapping]]
+ * [[blk_mq]]
 
+## nvme 자료구조 
+ * https://testkernel.tistory.com/3
  
 ## 의문점
  * linux/drivers/nvme/host 에 있는 nvme 함수들은 어떻게 호출되는가? -> scsi interface 를 사용해서
@@ -94,11 +102,13 @@ static const struct pci_device_id nvme_id_table[] = {
  8. 하드웨어 별로 특이사항이 있는지 확인한다. (`quirks` 에다가 OR 연산으로 넣어놓는다.)
  9. iod용 memory pool 을 할당한다. (iod는 i/o description 의 약자)
  10. NVMe Controller 를 init
-   10-1. 이때 `nvme_pci_ctrl_ops` 를 넘겨준다. 이를 기반으로 `core.c` 에 선언 되어 있는 `nvme_init_ctrl` 이 호출된다.
- 11. NVMe Controller reset
+   10-1. `spin_lock`, `mutex`, `list`, `rwsem`(read write semaphore), `ops`, `quirks`, workqueues 들을 초기화(이외에도 많은 controller 관련 변수들을 초기화)
+   10-2. 이때 `nvme_pci_ctrl_ops` 를 넘겨준다. 이를 기반으로 `core.c` 에 선언 되어 있는 `nvme_init_ctrl` 이 호출된다.
+ 12. NVMe Controller reset
    11-1. pci에 nvme 를 켜주는 등의 작업.
    11-2. admin queue 설정
    
- 12. 오래걸리는 작업 (controller 의 reset_work, scan_work 초기화, 4 에서 가져온 device release (정확히 함수는 `put_device` 호출)) 을 async 하게 동작하도록 예약
+ 13. 오래걸리는 작업 (controller 의 reset_work, scan_work 초기화, 4 에서 가져온 device release (정확히 함수는 `put_device` 호출)) 을 async 하게 동작하도록 예약
  
- * TODO : dev->ctrl 변수가 어디서 초기화 되는지 못찾았다. ㅠ 다시 찾아보자.
+##### 그림
+ * ![nvme](/wiki/images/nvme.png)
