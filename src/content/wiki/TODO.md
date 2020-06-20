@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-06-17 20:48:38 +0900
+lastmod : 2020-06-21 01:47:15 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -41,8 +41,13 @@ parent  :
  * [ ] 글을 자동배포하면 좋겠음. push까진 아니여도 commit이 자동으로 될 방법은 없나 생각해보자.
    * [ ] 자동 배포할떄 commit message 에 content, build 가 태그가 적히도록 해보자
      * [ ] 최신 변경 글 보는 기능에 github page 에서 content tag를 검색해서 보여주면 될듯?
- * [ ] anyenv 글쓰기
- * [ ] pintos 글쓰기
+ * [ ] 히스토리 기능
+   * [ ] 마우스 올리면 전체 표시됬다가, 마우스 벗어나면 다시 3개만 출력되도록 하자 (일단 올리면 되는건 짬)
+```   
+historyElem.addEventListener('mouseover', () => {
+    historyElem.innerHTML = '<nav aria-label="breadcrumb"><ol class="breadcrumb">' + getHistory().map(h=>`<li class="breadcrumb-item">[[${h}]]</li>`).join('\n'); + '</ol></nav>';
+});
+```
  
 ## Vim
  * [O] tagbar 알아서 잘 되도록 설정하기
@@ -50,3 +55,4 @@ parent  :
    * [X] universal tag 설치 
    * [X] [[gutentags]] 문제 해결하기 : 링크 참고
  * [ ] vim ultisnip 사용법 알아보기
+ * [ ] coc 설정 하기
