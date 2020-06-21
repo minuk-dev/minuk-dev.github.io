@@ -3,7 +3,7 @@ layout  : wiki
 title   : nvme
 summary : 
 date    : 2020-06-15 20:13:59 +0900
-lastmod : 2020-06-21 19:20:48 +0900
+lastmod : 2020-06-21 20:52:21 +0900
 tags    : [linux, nvme, ssd]
 draft   : false
 parent  : 
@@ -112,3 +112,4 @@ static const struct pci_device_id nvme_id_table[] = {
  
 ##### 그림
  * ![nvme](/wiki/images/nvme.jpg)
+ * TODO: nvme_reset_work 함수 그림 그리면서 분석해야함.
