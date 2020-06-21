@@ -3,7 +3,7 @@ layout  : wiki
 title   : nvme
 summary : 
 date    : 2020-06-15 20:13:59 +0900
-lastmod : 2020-06-19 20:59:19 +0900
+lastmod : 2020-06-21 19:20:48 +0900
 tags    : [linux, nvme, ssd]
 draft   : false
 parent  : 
@@ -111,4 +111,4 @@ static const struct pci_device_id nvme_id_table[] = {
  13. 오래걸리는 작업 (controller 의 reset_work, scan_work 초기화, 4 에서 가져온 device release (정확히 함수는 `put_device` 호출)) 을 async 하게 동작하도록 예약
  
 ##### 그림
- * ![nvme](/wiki/images/nvme.png)
+ * ![nvme](/wiki/images/nvme.jpg)
