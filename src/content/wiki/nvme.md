@@ -3,7 +3,7 @@ layout  : wiki
 title   : nvme
 summary : 
 date    : 2020-06-15 20:13:59 +0900
-lastmod : 2020-06-21 20:52:21 +0900
+lastmod : 2020-06-22 20:42:10 +0900
 tags    : [linux, nvme, ssd]
 draft   : false
 parent  : 
@@ -18,6 +18,8 @@ parent  :
  * [[block layer]]
  * [[IO mapping]]
  * [[blk_mq]]
+ * [[IOMMU]]
+ * [[SGL]]{Scatter-Gatter List}
 
 ## nvme 자료구조 
  * https://testkernel.tistory.com/3

@@ -3,13 +3,17 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-06-21 01:47:15 +0900
+lastmod : 2020-06-23 19:30:15 +0900
 tags    : [todo]
 draft   : false
 parent  : 
 ---
 
+## 생활측면
+ * [ ] 손톱 물어뜯는 습관 고치기 위해 물품 사기
+
 ## 공부
+### SSD
  * [.] simplessd
    * [o] host interface layer
      * [X] simplessd 공식 문서 읽기
@@ -19,10 +23,11 @@ parent  :
        * [ ] scsi 공부하기
    * [ ] Internal Cache Layer
    * [ ] Flash Translation Layer
+### Database
 * [X] mysql
   * [X] mysql storage engine 문서 읽기
   * [ ] custom storage engine 만들어보기 (일시 정지, 구현해보길 원하는 논문과 기술적 차이가 있다는 걸 알게됨)
-## Blog
+### Blog
  * [X] 다시 cdn 에서 static 가져오도록 바꾸기
  * [ ] google analytics 붙이기
  * [X] git blame을 사용해서 wiki diff 만들기
@@ -49,7 +54,7 @@ historyElem.addEventListener('mouseover', () => {
 });
 ```
  
-## Vim
+### Vim
  * [O] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
    * [X] universal tag 설치 
