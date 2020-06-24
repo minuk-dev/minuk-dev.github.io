@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-06-15 19:48:31 +0900
+lastmod : 2020-06-24 20:12:31 +0900
 tags    : 
 draft   : [ssd]
 parent  : 
@@ -212,6 +212,184 @@ class Interface : public SimpleSSD::DMAInterface {
  * Device 의 구현은 SATA와 비슷하지만 2가지 명령어 handling 함수를 가진다. (`processCommand` 와 `processQueryCommand`)
  * 완료 이후 각 SCI command 함수는 callback handler 를 호출하며, 이때 `processCommand` 함수의 인자로서 콜백은 제공한다.
  * `processQueryCommand` 는 즉시 결과를 리턴한다. I/O 관련 명령 `READ*`, `WRITE*` 와 `SYNCHRONIZE CACHE` 는 SSD Interface 함수들 (`HIL::HIL::read, write and flush`) 를 호출한다.
+
+#### nvme 소스코드와의 비교
+ * [[nvme]] 페이지에 나름 정리한걸 올려놨다.
+ * driver 부분을 주로 비교하고 나머진 아직 openssd 를 읽으면서 해야할듯.
+
+#### 프로그램 시작점
+ * simplessd에서 `sim/main.cc` 파일의 220번째 줄을 보면 `RequestGenerator` 가 있다. 여기서 `submitIO()` 가 bio를 호출 (실제로는 시뮬레이션이지만, 편의상)하고, `iocallback()`이 주기적으로 `rescheduleSubmit()` 를 호출하면서 IO를 발생시킨다.
+ * 여기서는 `bil/interface.hh`에 `DriverInterface` 를 만들어 두어서 `BIO` layer를 구현해둔듯 하다. scheduler는 단순히 `DriverInterface` 의 `submitIO`를 호출하는게 전부임.
+
+#### BIO 발생 -> 드라이버
+##### request로부터 opcode 분리
+ * linux 의 `drivers/nvme/host/core.c` 의 `nvme_queue_rq()`에서 호출하는 `nvme_setup_cmd()` 와 SimpleSSD의 `sil/nvme/nvme.cc` 의 `Driver::submitIO()` 가 서로 같은 일을 하고 있음.
+ * 명령어의 종류에 따라 (`READ`, `WRITE`, `TRIM(DISCARD)`, `FLUSH`) 기본적인 setup과정을 호출해준다.
+###### SimpleSSD 구현
+```cpp
+void Driver::submitIO(BIL::BIO &bio) {
+  uint32_t cmd[16];
+  PRP *prp = nullptr;
+  static ResponseHandler callback = [this](uint16_t status, uint32_t,
+                                           void *context) {
+    _io(status, context);
+  };
+
+  memset(cmd, 0, 64);
+
+  uint64_t slba = bio.offset / LBAsize;
+  uint32_t nlb = (uint32_t)DIVCEIL(bio.length, LBAsize);
+
+  cmd[1] = namespaceID;  // NSID
+
+  if (bio.type == BIL::BIO_READ) {
+    cmd[0] = SimpleSSD::HIL::NVMe::OPCODE_READ;  // CID, FUSE, OPC
+    cmd[10] = (uint32_t)slba;
+    cmd[11] = slba >> 32;
+    cmd[12] = nlb - 1;  // LR, FUA, PRINFO, NLB
+
+    prp = new PRP(bio.length);
+    prp->getPointer(*(uint64_t *)(cmd + 6), *(uint64_t *)(cmd + 8));  // DPTR
+  }
+  else if (bio.type == BIL::BIO_WRITE) {
+    cmd[0] = SimpleSSD::HIL::NVMe::OPCODE_WRITE;  // CID, FUSE, OPC
+    cmd[10] = (uint32_t)slba;
+    cmd[11] = slba >> 32;
+    cmd[12] = nlb - 1;  // LR, FUA, PRINFO, DTYPE, NLB
+
+    prp = new PRP(bio.length);
+    prp->getPointer(*(uint64_t *)(cmd + 6), *(uint64_t *)(cmd + 8));  // DPTR
+  }
+  else if (bio.type == BIL::BIO_FLUSH) {
+    cmd[0] = SimpleSSD::HIL::NVMe::OPCODE_FLUSH;  // CID, FUSE, OPC
+  }
+  else if (bio.type == BIL::BIO_TRIM) {
+    cmd[0] = SimpleSSD::HIL::NVMe::OPCODE_DATASET_MANAGEMEMT;  // CID, FUSE, OPC
+    cmd[10] = 0;                                               // NR
+    cmd[11] = 0x04;                                            // AD
+
+    prp = new PRP(16);
+    prp->getPointer(*(uint64_t *)(cmd + 6), *(uint64_t *)(cmd + 8));  // DPTR
+
+    // Fill range definition
+    uint8_t data[16];
+
+    memset(data, 0, 16);
+    memcpy(data + 4, &nlb, 4);
+    memcpy(data + 8, &slba, 8);
+
+    prp->writeData(0, 16, data);
+  }
+
+  submitCommand(1, (uint8_t *)cmd, callback,
+                new IOWrapper(bio.id, prp, bio.callback));
+}
+```
+
+###### nvme(driver) 구현
+```c
+blk_status_t nvme_setup_cmd(struct nvme_ns *ns, struct request *req,
+		struct nvme_command *cmd)
+{
+	blk_status_t ret = BLK_STS_OK;
+
+	nvme_clear_nvme_request(req);
+
+	memset(cmd, 0, sizeof(*cmd));
+	switch (req_op(req)) {
+	case REQ_OP_DRV_IN:
+	case REQ_OP_DRV_OUT:
+		memcpy(cmd, nvme_req(req)->cmd, sizeof(*cmd));
+		break;
+	case REQ_OP_FLUSH:
+		nvme_setup_flush(ns, cmd);
+		break;
+	case REQ_OP_WRITE_ZEROES:
+		ret = nvme_setup_write_zeroes(ns, req, cmd);
+		break;
+	case REQ_OP_DISCARD:
+		ret = nvme_setup_discard(ns, req, cmd);
+		break;
+	case REQ_OP_READ:
+	case REQ_OP_WRITE:
+		ret = nvme_setup_rw(ns, req, cmd);
+		break;
+	default:
+		WARN_ON_ONCE(1);
+		return BLK_STS_IOERR;
+	}
+
+	cmd->common.command_id = req->tag;
+	trace_nvme_setup_cmd(req, cmd);
+	return ret;
+}
+```
+
+##### submit command
+ * nvme에서는 `struct blk_mq_hw_ctx *hctx` 를 parameter로 넣어주므로써 자연스럽게 nvme queue를 admin queue와 submission queue를 처리하는데, SimpleSSD 의 경우에는 `uint16_t iv` 라는 값을 전달하므로써 이를 처리한다.
+ * 궁금점은 nvme에서는 spin_lock 을 걸어서 복사하는 과정에서 또다른 bio가 오는 것을 생각하고 있는 듯한 구현인데, SimpleSSD 의 경우에는 따로 lock을 거는 게 없다. 단일 쓰레드에서만 도는 걸 생각하는건가? 여기는 잘 모르겠다.
+###### SimpleSSD 구현
+```cpp
+void Driver::submitCommand(uint16_t iv, uint8_t *cmd, ResponseHandler &func,
+                           void *context) {
+  uint16_t cid = 0;
+  uint16_t opcode = cmd[0];
+  uint16_t tail = 0;
+  uint64_t tick = engine.getCurrentTick();
+  Queue *queue = nullptr;
+
+  // Push to queue
+  if (iv == 0) {
+    increaseCommandID(adminCommandID);
+    cid = adminCommandID;
+    queue = adminSQ;
+  }
+  else if (iv == 1 && ioSQ) {
+    increaseCommandID(ioCommandID);
+    cid = ioCommandID;
+    queue = ioSQ;
+  }
+  else {
+    SimpleSSD::panic("I/O Submission Queue is not initialized");
+  }
+
+  memcpy(cmd + 2, &cid, 2);
+  queue->setData(cmd, 64);
+  tail = queue->getTail();
+
+  // Push to pending cmd list
+  pendingCommandList.push_back(CommandEntry(iv, opcode, cid, context, func));
+
+  // Ring doorbell
+  pController->ringSQTailDoorbell(iv, tail, tick);
+  queue->incrHead();
+}
+```
+##### nvme구현
+```c
+/**
+ * nvme_submit_cmd() - Copy a command into a queue and ring the doorbell
+ * @nvmeq: The queue to use
+ * @cmd: The command to send
+ * @write_sq: whether to write to the SQ doorbell
+ */
+static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd,
+			    bool write_sq)
+{
+	spin_lock(&nvmeq->sq_lock);
+	memcpy(nvmeq->sq_cmds + (nvmeq->sq_tail << nvmeq->sqes),
+	       cmd, sizeof(*cmd));
+	if (++nvmeq->sq_tail == nvmeq->q_depth)
+		nvmeq->sq_tail = 0;
+	if (write_sq)
+		nvme_write_sq_db(nvmeq);
+	spin_unlock(&nvmeq->sq_lock);
+}
+```
+
+
+### 잠시 정지
+ * TODO: ㅠ queue 에 이렇게 넣고 나면 nvme_scan_work 를 하는 것 같은데 정확한 호출부가 햇갈린다. 정확히는 SimpleSSD 에서 어디서 queue를 처리하는 callback 함수를 호출하는지가 안보인다. 일단 잠깐 쉬자
 
  
 ### SSD Interface
