@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-06-24 20:12:31 +0900
+lastmod : 2020-06-25 20:34:40 +0900
 tags    : 
 draft   : [ssd]
 parent  : 
@@ -388,8 +388,15 @@ static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd,
 ```
 
 
-### 잠시 정지
- * TODO: ㅠ queue 에 이렇게 넣고 나면 nvme_scan_work 를 하는 것 같은데 정확한 호출부가 햇갈린다. 정확히는 SimpleSSD 에서 어디서 queue를 처리하는 callback 함수를 호출하는지가 안보인다. 일단 잠깐 쉬자
+#### Work
+##### SimpleSSD
+ * simplessd에선 `Driver::submitCommand()` 에서 `pendingCommandList` 에 `CommandEntry`를 넣은 뒤, `pController->ringSQTailDoorbell` 를 해주는데, 이를 따라가보면, 인자로 넣어준 SQ의 tail을 이동시키는게 전부다...?
+ * 여기서부터 순간 방향성을 잃었는데, SQ 넣고 어떻게 되지? 싶었다. 한번 SQ에 엑세스 하는걸 봐보자
+ * 그러면 `Controller::work()` 가 나오게 된다. 이 함수는 `workEvent` 라는 변수에 담겨서 `Controller::writeRegister()`에서 schedule에 등록된다. 이는 `Driver::init()` 에서 Step 5. 에서 일어난다.
+ * 따라서 SimpleSSD 는 `workInterval` (기본값 : 50000, 50ns) 마다 SQ를 검사해서 처리하는 방식이다.
+##### nvme(driver)
+ * `nvme_write_sq_db()` 를 호출하는데, 이는 결국 `writel()`를 호출해서 SQ tail 주소에 command를 쓰는 구조이다.
+ * 그렇다면 nvme에서 command는 어떻게 되는가? : TODO: 흠.... 아직 잘 모르겠는데? `nvme_scan_work()` 가 있긴한데, 이게 user 가 scan work를 강제로 SSD에 시키는 건지가 모르겠는데, 근데 그런 구조면, 글러먹은게 IO 연산을 하기 위해서 직접 다 해줘야되는건데? 그러면 굳이 scheduler가 linux kernel level에 존재할 필요가 없는데? 그냥 scheduler layer 없이 SSD scan work 를 조절하면 되는데? 일단 추정은 ssd 내부에 존재하는건데, 이건 OpenChannelSSD 를 읽어보고 알아내야할듯.
 
  
 ### SSD Interface
