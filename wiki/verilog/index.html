@@ -2,7 +2,7 @@
 gtag('js',new Date());gtag('config','UA-98056974-1');</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>verilog (베릴로그)</a>
 <button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
 <span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><a href=/wiki><button class="btn btn-link"><i class="fa fa-arrow-left"></i>&nbsp;Front Page</button></a></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="verilog"
-pushHistory(now);</script></div></div><div><h2>verilog (베릴로그)</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/verilog.md><h5>created : Thu, 25 Jun 2020 20:46:51 +0900</h5><h5>modified : Thu, 25 Jun 2020 20:53:00 +0900</h5></a><a href=http://makerdark98.dev/tags/verilog><kbd class=item-tag>verilog</kbd></a><div class=parent-doc style=flex:none></div></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#출처>출처</a></li><li><a href=#기본-문법>기본 문법</a><ul><li><a href=#hello-world>Hello World</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=개요>개요</h1><ul><li>openssd가 verilog가 짜져있어서 읽을수 있을 수준까지 공부하는게 목표</li></ul><h2 id=출처>출처</h2><ul><li>기본 문법 : <a href="https://blog.naver.com/PostView.nhn?blogId=kyj0833&logNo=221490972642&from=search&redirect=Log&widgetTypeCall=true&directAccess=false">https://blog.naver.com/PostView.nhn?blogId=kyj0833&logNo=221490972642&from=search&redirect=Log&widgetTypeCall=true&directAccess=false</a></li><li>리눅스에서 verilog 사용하기 : <a href=https://www.sapphosound.com/archives/1894>https://www.sapphosound.com/archives/1894</a></li></ul><h2 id=기본-문법>기본 문법</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>module</span> module_name(port_list);
+pushHistory(now);</script></div></div><div><h2>verilog (베릴로그)</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/verilog.md><h5>created : Thu, 25 Jun 2020 20:46:51 +0900</h5><h5>modified : Fri, 26 Jun 2020 20:55:47 +0900</h5></a><a href=http://makerdark98.dev/tags/verilog><kbd class=item-tag>verilog</kbd></a><div class=parent-doc style=flex:none></div></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#출처>출처</a></li><li><a href=#기본-문법>기본 문법</a><ul><li><a href=#hello-world>Hello World</a></li><li><a href=#d-flip-flop-code>D flip-flop Code</a></li><li><a href=#data-type-english>Data Type (English)</a></li><li><a href=#data-type-한국어>Data Type (한국어)</a></li><li><a href=#opertators>Opertators</a></li><li><a href=#control-statements>Control Statements</a></li><li><a href=#if-else>If-else</a></li><li><a href=#case>Case</a></li><li><a href=#while>while</a></li><li><a href=#for-loop>For loop</a></li><li><a href=#repeat>Repeat</a></li><li><a href=#initial-blocks>Initial Blocks</a></li><li><a href=#always-blocks>Always Blocks</a></li><li><a href=#assign-statement>Assign Statement</a></li><li><a href=#task-and-function>Task and Function</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=개요>개요</h1><ul><li>openssd가 verilog가 짜져있어서 읽을수 있을 수준까지 공부하는게 목표</li></ul><h2 id=출처>출처</h2><ul><li>기본 문법 : <a href="https://blog.naver.com/PostView.nhn?blogId=kyj0833&logNo=221490972642&from=search&redirect=Log&widgetTypeCall=true&directAccess=false">https://blog.naver.com/PostView.nhn?blogId=kyj0833&logNo=221490972642&from=search&redirect=Log&widgetTypeCall=true&directAccess=false</a></li><li>리눅스에서 verilog 사용하기 : <a href=https://www.sapphosound.com/archives/1894>https://www.sapphosound.com/archives/1894</a></li><li><a href=http://www.asic-world.com/verilog/intro1.html#Design_Styles>http://www.asic-world.com/verilog/intro1.html#Design_Styles</a></li></ul><h2 id=기본-문법>기본 문법</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>module</span> module_name(port_list);
 
 port, <span style=color:#66d9ef>reg</span>, <span style=color:#66d9ef>wire</span>, <span style=color:#66d9ef>parameter</span> declaration
 submodule instance
@@ -20,5 +20,170 @@ funciton, <span style=color:#66d9ef>task</span> declaration
     $finish;
   <span style=color:#66d9ef>end</span>
 <span style=color:#66d9ef>endmodule</span>
-</code></pre></div></div><script>function convertWikiLink(elem){elem.innerHTML=elem.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});elem.innerHTML=elem.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>{var display=matching;if(display==="_index"){display="Front Page";matching="";}
+</code></pre></div><h3 id=d-flip-flop-code>D flip-flop Code</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>module</span> d_ff (d, clk, q, q_bar);
+<span style=color:#66d9ef>input</span> d, clk;
+<span style=color:#66d9ef>output</span> q, q_bar;
+<span style=color:#66d9ef>wire</span> d, clk;
+<span style=color:#66d9ef>reg</span> q, q_bar;
+
+<span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clk)
+
+<span style=color:#66d9ef>begin</span>
+  q <span style=color:#f92672>&lt;=</span> d;
+  q_bar <span style=color:#f92672>&lt;=</span> <span style=color:#f92672>!</span>d;
+<span style=color:#66d9ef>end</span>
+
+<span style=color:#66d9ef>endmodule</span>
+</code></pre></div><h3 id=data-type-english>Data Type (English)</h3><ul><li>Hardware does have two kinds of drivers.</li><li>A driver is a data type which can drive a load. Basically, in a physical circuit, a driver would be anything that electrons can move through/into.<ul><li>Driver that can store a value (example: flip-flop).</li><li>Driver that can not store value, but connects two points (example: wire).</li></ul></li><li>The first type of driver is called a reg in Verilog (short for &ldquo;register&rdquo;). The Second data type is called a wire (for&mldr; well, &ldquo;wire&rdquo;). You can refer to tidbits section to understand it better.</li></ul><h3 id=data-type-한국어>Data Type (한국어)</h3><ul><li>하드웨어는 2가지 종류의 드라이버가 있으며, 기본적으로 물리적인 회로이며, 드라이버는 전자가 들어오거나 나갈수 있는 무엇이든 될 수 있다.<ul><li>드라이버는 값을 저장할 수 있다. (예를 들어 플립플롯) -> reg(register의 준말)</li><li>드라이버는 값을 저장하지 못하는 대신, 두 지점을 연결 시킬수 있다. (예를 들어 wire) -> wire</li></ul></li></ul><h3 id=opertators>Opertators</h3><table><thead><tr><th>Operator Type</th><th>Operator Symbol</th><th>Operation Performed</th></tr></thead><tbody><tr><td>Arithmetic</td><td><code>*</code></td><td>Multiply</td></tr><tr><td></td><td><code>/</code></td><td>Division</td></tr><tr><td></td><td><code>+</code></td><td>Add</td></tr><tr><td></td><td><code>-</code></td><td>Subtract</td></tr><tr><td></td><td><code>%</code></td><td>Modulus</td></tr><tr><td></td><td><code>+</code></td><td>Unary plus</td></tr><tr><td></td><td><code>-</code></td><td>Unary minus</td></tr><tr><td>Logical</td><td><code>!</code></td><td>Logical negation</td></tr><tr><td></td><td><code>&&</code></td><td>Logical and</td></tr><tr><td></td><td><code>||</code></td><td>Logical or</td></tr><tr><td></td><td><code>></code></td><td>Greater than</td></tr><tr><td></td><td><code>&lt;</code></td><td>Less than</td></tr><tr><td></td><td><code>>=</code></td><td>Greater than or equal</td></tr><tr><td></td><td><code>&lt;=</code></td><td>Less than or equal</td></tr><tr><td>Equality</td><td><code>==</code></td><td>Equality</td></tr><tr><td></td><td><code>!=</code></td><td>inequality</td></tr><tr><td>Reduction</td><td><code>~</code></td><td>Bitwize negation</td></tr><tr><td></td><td><code>~&</code></td><td>nand</td></tr><tr><td></td><td><code>|</code></td><td>or</td></tr><tr><td></td><td><code>~|</code></td><td>nor</td></tr><tr><td></td><td><code>^</code></td><td>xor</td></tr><tr><td></td><td><code>^~</code></td><td>xnor</td></tr><tr><td></td><td><code>~^</code></td><td>xnor</td></tr><tr><td>Shift</td><td><code>>></code></td><td>Right shift</td></tr><tr><td></td><td><code>&lt;&lt;</code></td><td>Left shift</td></tr><tr><td>Concatenation</td><td><code>{}</code></td><td>Concatenation</td></tr><tr><td>Conditional</td><td><code>?</code></td><td>conditional</td></tr></tbody></table><h3 id=control-statements>Control Statements</h3><h3 id=if-else>If-else</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#75715e>// begin and end act like curly braces in C/C++.
+</span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (enable <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+  data <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;         <span style=color:#75715e>// Decimal assigned
+</span><span style=color:#75715e></span>  address <span style=color:#f92672>=</span> <span style=color:#ae81ff>16&#39;hDEAD</span>; <span style=color:#75715e>// Hexadecimal
+</span><span style=color:#75715e></span>  wr_enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>; <span style=color:#75715e>// Binary
+</span><span style=color:#75715e></span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span>
+  data <span style=color:#f92672>=</span> <span style=color:#ae81ff>32</span><span style=color:#ae81ff>&#39;b0</span>;
+  wr_enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b0</span>;
+  address <span style=color:#f92672>=</span> address <span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>;
+<span style=color:#66d9ef>end</span>
+</code></pre></div><h3 id=case>Case</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>case</span>(address)
+  <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;It is 11:40PM&#34;</span>);
+  <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;I am feeling sleepy&#34;</span>);
+  <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;Let me skip this tutorial&#34;</span>);
+  <span style=color:#66d9ef>default</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;Need to complete&#34;</span>);
+<span style=color:#66d9ef>endcase</span>
+</code></pre></div><h3 id=while>while</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>while</span> (free_time) <span style=color:#66d9ef>begin</span>
+  $display (<span style=color:#e6db74>&#34;Continue with webpage development&#34;</span>);
+<span style=color:#66d9ef>end</span>
+</code></pre></div><h4 id=counter-example>Counter example</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>module</span> counter (clk, rst, enable, count);
+<span style=color:#66d9ef>input</span> clk, rst, enabl;
+<span style=color:#66d9ef>output</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] count;
+<span style=color:#66d9ef>reg</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] count;
+
+<span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clk <span style=color:#66d9ef>or</span> <span style=color:#66d9ef>posedge</span> rst)
+<span style=color:#66d9ef>if</span> (rst) <span style=color:#66d9ef>begin</span>
+  count <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+<span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span><span style=color:#f92672>:</span> COUNT
+  <span style=color:#66d9ef>while</span> (enable) <span style=color:#66d9ef>begin</span>
+    count <span style=color:#f92672>&lt;=</span> count <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+    <span style=color:#66d9ef>disable</span> COUNT;
+  <span style=color:#66d9ef>end</span>
+<span style=color:#66d9ef>end</span>
+
+<span style=color:#66d9ef>endmodule</span>
+</code></pre></div><h3 id=for-loop>For loop</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>15</span>; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+  $display (<span style=color:#e6db74>&#34;Current value of i is %d&#34;</span>, i);
+<span style=color:#66d9ef>end</span>
+</code></pre></div><h3 id=repeat>Repeat</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>repeat</span> (<span style=color:#ae81ff>16</span>) <span style=color:#66d9ef>begin</span>
+  $display (<span style=color:#e6db74>&#34;Current value of i is %d&#34;</span>, i);
+  i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+<span style=color:#66d9ef>end</span>
+</code></pre></div><h3 id=initial-blocks>Initial Blocks</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+  clk <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  req_0 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  req_1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+<span style=color:#66d9ef>end</span>
+</code></pre></div><h3 id=always-blocks>Always Blocks</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>always</span> @ (a <span style=color:#66d9ef>or</span> b <span style=color:#66d9ef>or</span> sel)
+<span style=color:#66d9ef>begin</span>
+  y <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  <span style=color:#66d9ef>if</span> (sel <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>) <span style=color:#66d9ef>begin</span>
+    y <span style=color:#f92672>=</span> a;
+  <span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span>
+    y <span style=color:#f92672>=</span> b;
+  <span style=color:#66d9ef>end</span>
+<span style=color:#66d9ef>end</span>
+</code></pre></div><ul><li>?? 이건 근데 mux랑 똑같은거 아닌가? mux 만들어 놓고, initial block 에서 wire 연결 해두면 안되는 건가?</li><li>always block의 쓰임을 잘 모르겠네, 어떻게 되는 거지?</li><li>=> 주변에 있는 다른 분께 물어보니 같은 동작을 하는건 맞고, 실제 기판으로 나오는게 똑같으면 어떻게 코딩하든 상관 없다고 하심.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>always</span> <span style=color:#66d9ef>begin</span>
+  #<span style=color:#ae81ff>5</span> clk <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>clk;
+<span style=color:#66d9ef>end</span>
+</code></pre></div><h3 id=assign-statement>Assign Statement</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>assign</span> out <span style=color:#f92672>=</span> (enable) <span style=color:#f92672>?</span> data <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>&#39;bz;
+</code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>assign</span> out <span style=color:#f92672>=</span> data;
+</code></pre></div><h3 id=task-and-function>Task and Function</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=color:#66d9ef>function</span> parity;
+<span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] data;
+<span style=color:#66d9ef>integer</span> i;
+<span style=color:#66d9ef>begin</span>
+  parity <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+  <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>32</span>; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+    parity <span style=color:#f92672>=</span> parity <span style=color:#f92672>^</span> data[i];
+  <span style=color:#66d9ef>end</span>
+<span style=color:#66d9ef>end</span>
+<span style=color:#66d9ef>endfunction</span>
+</code></pre></div><ul><li>흠&mldr; for을 도는건 delay 없이 도는 거니 위에 내용은 실제로 컴파일 되면 data의 모든 bit를 한번에 xor하는 결과가 나오는건가?</li><li>그래서 한번 만들고 compile 해봤다.</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog> 
+<span style=color:#66d9ef>module</span> parity (d, p);
+  <span style=color:#66d9ef>output</span> <span style=color:#66d9ef>reg</span> p;
+  <span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] d;
+
+  <span style=color:#66d9ef>function</span> parity;
+    <span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] data;
+    <span style=color:#66d9ef>integer</span> i;
+
+    <span style=color:#66d9ef>begin</span>
+      parity <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+      <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>32</span>; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+        parity <span style=color:#f92672>=</span> parity <span style=color:#f92672>^</span> data[i];
+      <span style=color:#66d9ef>end</span>
+    <span style=color:#66d9ef>end</span>
+  <span style=color:#66d9ef>endfunction</span>
+
+  <span style=color:#66d9ef>always</span> @ (d)
+    p <span style=color:#f92672>=</span> parity(d);
+
+<span style=color:#66d9ef>endmodule</span>
+</code></pre></div><ul><li>아래는 컴파일 된걸 연 결과다</li></ul><pre><code>#! /usr/bin/vvp
+:ivl_version &quot;10.1 (stable)&quot;;
+:ivl_delay_selection &quot;TYPICAL&quot;;
+:vpi_time_precision + 0;
+:vpi_module &quot;system&quot;;
+:vpi_module &quot;vhdl_sys&quot;;
+:vpi_module &quot;v2005_math&quot;;
+:vpi_module &quot;va_math&quot;;
+S_0x56211aafb800 .scope module, &quot;parity&quot; &quot;parity&quot; 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 32 &quot;d&quot;
+    .port_info 1 /OUTPUT 1 &quot;p&quot;
+o0x7f15420240a8 .functor BUFZ 32, C4&lt;zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz&gt;; HiZ drive
+v0x56211ab1be30_0 .net &quot;d&quot;, 31 0, o0x7f15420240a8;  0 drivers
+v0x56211ab1bf30_0 .var &quot;p&quot;, 0 0;
+E_0x56211aac3cc0 .event edge, v0x56211ab1be30_0;
+S_0x56211aafb9c0 .scope function, &quot;parity&quot; &quot;parity&quot; 2 5, 2 5 0, S_0x56211aafb800;
+ .timescale 0 0;
+v0x56211aafbbb0_0 .var &quot;data&quot;, 31 0;
+v0x56211ab1bcb0_0 .var/i &quot;i&quot;, 31 0;
+v0x56211ab1bd90_0 .var &quot;parity&quot;, 0 0;
+TD_parity.parity ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x56211ab1bd90_0, 0, 1;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x56211ab1bcb0_0, 0, 32;
+T_0.0 ;
+    %load/vec4 v0x56211ab1bcb0_0;
+    %cmpi/s 32, 0, 32;
+    %jmp/0xz T_0.1, 5;
+    %load/vec4 v0x56211ab1bd90_0;
+    %load/vec4 v0x56211aafbbb0_0;
+    %load/vec4 v0x56211ab1bcb0_0;
+    %part/s 1;
+    %xor;
+    %store/vec4 v0x56211ab1bd90_0, 0, 1;
+    %load/vec4 v0x56211ab1bcb0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x56211ab1bcb0_0, 0, 32;
+    %jmp T_0.0;
+T_0.1 ;
+    %end;
+    .scope S_0x56211aafb800;
+T_1 ;
+    %wait E_0x56211aac3cc0;
+    %load/vec4 v0x56211ab1be30_0;
+    %store/vec4 v0x56211aafbbb0_0, 0, 32;
+    %fork TD_parity.parity, S_0x56211aafb9c0;
+    %join;
+    %load/vec4  v0x56211ab1bd90_0;
+    %store/vec4 v0x56211ab1bf30_0, 0, 1;
+    %jmp T_1;
+    .thread T_1, $push;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    &quot;N/A&quot;;
+    &quot;&lt;interactive&gt;&quot;;
+    &quot;parity.v&quot;;
+</code></pre><ul><li>TODO: 아직 결과 분석을 못했다. 일단 오늘 공부는 여기까지</li></ul></div><script>function convertWikiLink(elem){elem.innerHTML=elem.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});elem.innerHTML=elem.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>{var display=matching;if(display==="_index"){display="Front Page";matching="";}
 return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});};(function(){var content=document.querySelector('.content');convertWikiLink(content);var parent=document.querySelector('.parent-doc');if(parent)convertWikiLink(parent);})();</script><div><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
