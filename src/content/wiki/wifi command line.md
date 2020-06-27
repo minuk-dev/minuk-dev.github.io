@@ -3,12 +3,9 @@ layout  : wiki
 title   : Wifi commands
 summary : 
 date    : 2020-04-07 20:35:07 +0900
-lastmod : 2020-04-12 20:36:51 +0900
+lastmod : 2020-06-27 15:13:36 +0900
 tags    : [linux, cli, command, iw, ip, dhclient]
-toc     : true
-public  : true
-parent  : 
-latex   : false
+parent  : linux command
 ---
 
 - Wifi Adapter 찾기

@@ -3,7 +3,7 @@ layout  : wiki
 title   : vim
 summary : 
 date    : 2020-04-08 23:44:39 +0900
-lastmod : 2020-04-28 21:24:12 +0900
+lastmod : 2020-06-27 15:21:27 +0900
 tags    : [vim]
 draft   : false
 parent  : 

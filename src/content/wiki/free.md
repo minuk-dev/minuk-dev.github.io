@@ -3,10 +3,10 @@ layout  : wiki
 title   : free (linux command)
 summary : 
 date    : 2020-06-02 20:37:44 +0900
-lastmod : 2020-06-02 20:38:33 +0900
+lastmod : 2020-06-27 15:14:30 +0900
 tags    : [memory, free]
 draft   : false
-parent  : 
+parent  : linux command
 ---
 
 ## linux command

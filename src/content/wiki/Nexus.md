@@ -3,15 +3,10 @@ layout  : wiki
 title   : Nexus
 summary : 
 date    : 2020-04-07 20:21:19 +0900
-lastmod : 2020-04-12 20:37:29 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:19:07 +0900
+tags    : [tool, repository]
+parent  : tool
 ---
-* TOC
-{:toc}
 
 # docker 설치
 

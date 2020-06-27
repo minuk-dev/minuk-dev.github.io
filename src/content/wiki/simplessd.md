@@ -3,10 +3,9 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-06-25 20:34:40 +0900
-tags    : 
-draft   : [ssd]
-parent  : 
+lastmod : 2020-06-27 15:11:14 +0900
+tags    : [ssd]
+parent  : ssd
 ---
 
 

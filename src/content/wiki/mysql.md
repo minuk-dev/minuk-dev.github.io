@@ -3,10 +3,10 @@ layout  : wiki
 title   : mysql (storage engine)
 summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-04 20:45:50 +0900
+lastmod : 2020-06-27 15:10:10 +0900
 tags    : [mysql, storage engine, database]
 draft   : false
-parent  : 
+parent  : database
 ---
 
 # 참고용 홈페이지 

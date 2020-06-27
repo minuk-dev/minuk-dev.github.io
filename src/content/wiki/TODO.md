@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-06-23 19:30:15 +0900
+lastmod : 2020-06-27 15:22:01 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -61,3 +61,6 @@ historyElem.addEventListener('mouseover', () => {
    * [X] [[gutentags]] 문제 해결하기 : 링크 참고
  * [ ] vim ultisnip 사용법 알아보기
  * [ ] coc 설정 하기
+
+## 잡다
+* [[개발_TODO]]

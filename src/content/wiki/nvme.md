@@ -3,10 +3,10 @@ layout  : wiki
 title   : nvme
 summary : 
 date    : 2020-06-15 20:13:59 +0900
-lastmod : 2020-06-22 20:42:10 +0900
+lastmod : 2020-06-27 15:11:20 +0900
 tags    : [linux, nvme, ssd]
 draft   : false
-parent  : 
+parent  : ssd
 ---
 
 # 시작

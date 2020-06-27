@@ -3,12 +3,9 @@ layout  : wiki
 title   : Firewall (방화벽) Configuration
 summary : 
 date    : 2020-04-07 20:36:02 +0900
-lastmod : 2020-04-08 13:04:48 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:15:22 +0900
+tags    : [linux, firewall]
+parent  : linux command
 ---
 - iptables
 

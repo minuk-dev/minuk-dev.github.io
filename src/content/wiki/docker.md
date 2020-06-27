@@ -3,12 +3,9 @@ layout  : wiki
 title   : docker
 summary : 
 date    : 2020-04-07 20:34:43 +0900
-lastmod : 2020-04-08 12:56:58 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:20:57 +0900
+tags    : [tool, docker]
+parent  : tool
 ---
 
 - install

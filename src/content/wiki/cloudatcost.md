@@ -3,12 +3,9 @@ layout  : wiki
 title   : cloudatcost
 summary : 
 date    : 2020-04-07 22:55:20 +0900
-lastmod : 2020-04-07 22:55:31 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:12:47 +0900
+tags    : [web, cloudatcost]
+parent  : web
 ---
 # CloudatCost
 

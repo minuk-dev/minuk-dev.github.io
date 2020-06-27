@@ -3,12 +3,9 @@ layout  : wiki
 title   : Tool configuration
 summary : 
 date    : 2020-04-07 20:36:45 +0900
-lastmod : 2020-04-08 12:57:39 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:16:51 +0900
+tags    : [linux, tool]
+parent  : tool
 ---
 # - Neovim
     - `.vimrc`

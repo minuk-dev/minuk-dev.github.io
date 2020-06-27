@@ -3,12 +3,9 @@ layout  : wiki
 title   : ftp server command
 summary : 
 date    : 2020-04-07 20:35:51 +0900
-lastmod : 2020-04-08 13:04:00 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:15:06 +0900
+tags    : [ftp, linux]
+parent  : linux command
 ---
 - use vsftpd(Very Secure FTP Server Daemon)
 

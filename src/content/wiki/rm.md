@@ -3,10 +3,10 @@ layout  : wiki
 title   : rm (Linux Command)
 summary : 
 date    : 2020-04-12 20:22:32 +0900
-lastmod : 2020-04-13 22:29:58 +0900
+lastmod : 2020-06-27 15:13:51 +0900
 tags    : [linux, rm, cli, command, glob]
 draft   : false
-parent  : 
+parent  : linux command
 ---
 
 ## 자주 사용하는 거 모음

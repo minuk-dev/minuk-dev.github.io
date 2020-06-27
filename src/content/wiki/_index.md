@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-06-23 19:28:52 +0900
+lastmod: 2020-06-27 15:24:35 +0900
 ---
 ## 즐겨찾기
  * [[사지방]]
@@ -10,6 +10,7 @@ lastmod: 2020-06-23 19:28:52 +0900
  * [[SSD]]
  * [[my-page]]
  * [[회고]]
+ * [[vim]]
 
 ---
 ## 개인 글쓰기
@@ -19,16 +20,11 @@ lastmod: 2020-06-23 19:28:52 +0900
 ---
 ## 공부
  * [[web]]
- * [[개발_TODO]]
- * [[regex]]
  * [[Pintos]]
- * [[vim]]
- * [[hugo]]
- * [[Nexus]]
- * [[docker]]
- * [[tool configuration]]
- * [[linux command]]
+ * [[tool]]
+ * [[사지방]]
  * [[SSD]]
+ * [[database]]
 ### Algorithm
  * [[boj]]
  * [[UCPC_2018_예선]]
@@ -42,6 +38,8 @@ lastmod: 2020-06-23 19:28:52 +0900
  * [[Javascript]]
  * [[Typescript]]
  * [[SQL]]
+ * [[verilog]]
+ * [[regex]]
 ### Book Review
  * [[Book reviews]]
 ---
@@ -52,7 +50,3 @@ lastmod: 2020-06-23 19:28:52 +0900
  * [[회고]]
 ### 잡생각
  * [[완벽한삶]]
----
-## Sandbox
-* [[links]]
-* [[collapsible]]

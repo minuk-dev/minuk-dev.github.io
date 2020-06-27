@@ -3,7 +3,7 @@ layout  : wiki
 title   : SSD
 summary : 
 date    : 2020-04-28 21:46:46 +0900
-lastmod : 2020-06-25 20:53:25 +0900
+lastmod : 2020-06-27 15:07:09 +0900
 tags    : [SSD]
 draft   : false
 parent  : 

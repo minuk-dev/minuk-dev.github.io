@@ -3,10 +3,10 @@ layout  : wiki
 title   : vimwiki로 블로그 구축하기
 summary : 
 date    : 2020-04-11 00:19:04 +0900
-lastmod : 2020-04-13 00:00:20 +0900
+lastmod : 2020-06-27 14:53:22 +0900
 tags    : 
 draft   : true
-parent  : 
+parent  : vim
 ---
 
 ## 계기

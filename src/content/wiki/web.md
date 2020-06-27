@@ -3,13 +3,14 @@ layout  : wiki
 title   : web
 summary : 
 date    : 2020-04-07 22:52:05 +0900
-lastmod : 2020-04-07 23:53:09 +0900
-tags    : 
-toc     : true
-public  : true
+lastmod : 2020-06-27 15:12:17 +0900
+tags    : [web]
 parent  : 
-latex   : false
 ---
+
+## Tool
  * [[nginx]]
  * [[cloudatcost]]
  * [[gandi.net]]
+## Projects
+ * [[my-page]]

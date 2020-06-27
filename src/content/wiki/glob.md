@@ -3,10 +3,10 @@ layout  : wiki
 title   : glob
 summary : 
 date    : 2020-04-13 22:06:38 +0900
-lastmod : 2020-04-13 22:28:56 +0900
+lastmod : 2020-06-27 15:14:23 +0900
 tags    : [linux, glob, cli, bash, zsh, regex]
 draft   : false
-parent  : 
+parent  : linux command
 ---
 
 ## glob

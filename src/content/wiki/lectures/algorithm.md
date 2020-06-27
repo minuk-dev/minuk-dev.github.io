@@ -3,12 +3,9 @@ layout  : wiki
 title   : lectures/algorithm
 summary : 
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2020-04-08 13:21:07 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:23:12 +0900
+tags    : [lecture, algorithm]
+parent  : lecture
 ---
 8. Basic Sorting algorithm
 The most common uses of sorted sequences are

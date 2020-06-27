@@ -3,10 +3,10 @@ layout  : wiki
 title   : B+ Tree
 summary : 
 date    : 2020-06-05 19:24:15 +0900
-lastmod : 2020-06-06 19:30:05 +0900
+lastmod : 2020-06-27 15:10:23 +0900
 tags    : 
 draft   : false
-parent  : 
+parent  : database
 ---
 
 ## 유틸

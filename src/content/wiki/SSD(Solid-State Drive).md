@@ -3,12 +3,9 @@ layout  : wiki
 title   : SSD(Solid-State Drive)
 summary : 
 date    : 2020-04-07 20:21:10 +0900
-lastmod : 2020-04-08 12:47:05 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:10:53 +0900
+tags    : [ssd]
+parent  : ssd
 ---
 
 # 1. SSD의 구조

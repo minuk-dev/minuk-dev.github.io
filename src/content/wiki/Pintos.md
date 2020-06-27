@@ -3,12 +3,9 @@ layout  : wiki
 title   : Pintos
 summary : 
 date    : 2020-04-07 20:20:28 +0900
-lastmod : 2020-04-25 20:54:00 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 14:54:37 +0900
+tags    : [pintos]
+parent  : front page
 ---
 
 ## 설정하기 Configuration

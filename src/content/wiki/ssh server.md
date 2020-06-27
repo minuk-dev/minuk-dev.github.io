@@ -3,12 +3,9 @@ layout  : wiki
 title   : SSH Server Configuration
 summary : 
 date    : 2020-04-07 20:36:17 +0900
-lastmod : 2020-04-08 13:05:04 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-06-27 15:15:35 +0900
+tags    : [linux, ssh]
+parent  : linux command
 ---
 - Installation
 
