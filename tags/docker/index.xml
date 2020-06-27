@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on MD98 page</title><link>http://makerdark98.dev/tags/docker/</link><description>Recent content in docker on MD98 page</description><generator>Hugo -- gohugo.io</generator><language>ko-kr</language><lastBuildDate>Tue, 07 Apr 2020 20:34:43 +0900</lastBuildDate><atom:link href="http://makerdark98.dev/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>docker</title><link>http://makerdark98.dev/wiki/docker/</link><pubDate>Tue, 07 Apr 2020 20:34:43 +0900</pubDate><guid>http://makerdark98.dev/wiki/docker/</guid><description>install
+curl -fsSL https://get.docker.com/ | sudo sh
+user 추가
+sudo useradd {username} -m -s /bin/bash -G docker
+docker container run
+docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]
+-d : detached mode (background mode)
+-p : port forwarding from host port to container
+-v : mount host directory
+-name : configure container name
+-rm : remove automatically when process terminated
+-it : -i + -t ⇒ interactive terminal</description></item></channel></rss>

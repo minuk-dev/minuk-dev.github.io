@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>firewall on MD98 page</title><link>http://makerdark98.dev/tags/firewall/</link><description>Recent content in firewall on MD98 page</description><generator>Hugo -- gohugo.io</generator><language>ko-kr</language><lastBuildDate>Tue, 07 Apr 2020 20:36:02 +0900</lastBuildDate><atom:link href="http://makerdark98.dev/tags/firewall/index.xml" rel="self" type="application/rss+xml"/><item><title>Firewall (방화벽) Configuration</title><link>http://makerdark98.dev/wiki/firewall/</link><pubDate>Tue, 07 Apr 2020 20:36:02 +0900</pubDate><guid>http://makerdark98.dev/wiki/firewall/</guid><description> iptables
+#iptables -nL
+save firewall configuration #iptalbes-save &amp;gt; save_data.rules config firwall 아이피 111.222.111.222에 대해서 destination port 가 22이면 ACCEPT 하여라.
+#iptables -A INPUT -s 111.222.111.222/32 -p tcp -m state &amp;ndash;state NEW -m tcp &amp;ndash;dport 22 -j ACCEPT-
+save configuration persistent #apt install iptables-persistent rule directory : /etc/iptables/rules.v4
+#iptables-save &amp;gt; /etc/iptables/rules.v4</description></item></channel></rss>
