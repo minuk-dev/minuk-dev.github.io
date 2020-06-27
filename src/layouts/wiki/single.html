@@ -1,12 +1,11 @@
 {{ partial "header" . }}
 
 <main>
-    {{ partial "wikinavigator" .}}
+    {{ partial "wikinavigator" . }}
     <div>
         <h2>{{ .Title }}</h2>
         {{ partial "created" . }}
         {{ partial "tags" . }}
-        {{ partial "wikiparent" . }}
     </div>
 
     <aside class="navbar" id="nav-toc" style="text-align:left;">{{ .TableOfContents }}</aside>

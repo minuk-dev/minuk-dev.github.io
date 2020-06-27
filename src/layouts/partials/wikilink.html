@@ -1,6 +1,10 @@
 <script>
   function convertWikiLink(elem) {
     elem.innerHTML = elem.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g, (original, matching, display) => {
+      if(display === "_index") {
+        display = "Front Page";
+        matching = "";
+      }
       return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '')}">${display}</a>`;
     });
     elem.innerHTML = elem.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) => {
@@ -14,7 +18,7 @@
   }
   ;(function() {
     var content = document.querySelector('.content');
-    convertWikiLink(content);
+    if (content) convertWikiLink(content);
     var parent = document.querySelector('.parent-doc');
     if (parent) convertWikiLink(parent);
   })();
