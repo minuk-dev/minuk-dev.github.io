@@ -3,7 +3,7 @@ layout  : wiki
 title   : 5 articles per week
 summary : 
 date    : 2020-04-07 20:19:37 +0900
-lastmod : 2020-04-08 12:45:32 +0900
+lastmod : 2020-06-28 23:44:02 +0900
 tags    : 
 toc     : true
 public  : true
@@ -193,32 +193,10 @@ Tips I use to avoid burnout:
 
 [Craig Mod on Twitter](https://twitter.com/craigmod/status/1219644556003565568)
 
-- 
+## 2020. 06. 28. (일) 23:40:40 KST
 
-## Jan 12, 2020 2:48am 스크랩만 해두고 아직 안읽어봄
-
-[Broot](https://dystroy.org/broot/)
-
-[distractionware " VVVVVV's source code is now public, 10 year anniversary jam happening now!](http://distractionware.com/blog/2020/01/vvvvvv-is-now-open-source/)
-
-[Real World Technologies - Forums - Thread: Nuances related to Spinlock implementation and the Linux Scheduler](https://www.realworldtech.com/forum/?threadid=189711&curpostid=189841)
-
-[Gandi.net](https://status.gandi.net/timeline/events/2109)
-
-[Facebook's PR feels broken](https://themargins.substack.com/p/facebooks-pr-feels-broken)
-
-[https://twitter.com/neilcybart/status/1214867813464236032](https://twitter.com/neilcybart/status/1214867813464236032)
-
-[The Unstoppable Rise of Sci-Hub: How does a new generation of researchers perceive Sci-Hub?](https://blogs.lse.ac.uk/impactofsocialsciences/2019/02/19/the-unstoppable-rise-of-sci-hub-how-does-a-new-generation-of-researchers-perceive-sci-hub/)
-
-[beefytech/Beef](https://github.com/beefytech/Beef)
-
-[On the Impact of Programming Languages on Code Quality](https://arxiv.org/abs/1901.10220)
-
-[valeriansaliou/bloom](https://github.com/valeriansaliou/bloom)
-
-[Bitbucket](https://bitbucket.org/zjszewczyk/firstcrack-public/src/master/)
-
-[위키독스](https://wikidocs.net/33793)
-
-[https://storage.googleapis.com/pub-tools-public-publication-data/pdf/03de87e2856b06a94ffae7dca218db2d4b9afd39.pdf](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/03de87e2856b06a94ffae7dca218db2d4b9afd39.pdf)
+[Microsoft Releases Windows File Recovery for NTFS, FAT, exFAT, ReFS File Systems (microsoft.com)](https://www.microsoft.com/en-us/p/windows-file-recovery/9n26s50ln705?activetab=pivot:overviewtab)
+- file recovery tool 이다. 윈도우즈에서 주로 사용하는 파일 시스템에서 지원하니 다음에 참고할만 한것 같다.
+-
+[iOS14 reveals that TikTok may snoop clipboard contents every few keystrokes (twitter.com)](https://twitter.com/jeremyburge/status/1275896482433040386)
+* tiktok 이 지속적으로 clipboard contents를 가져간다는 건데, 의도된거라면 굉장히 좋지 않게 보이지만, 개인적으로는 노이즈마케닝이거나, 단순한 개발자의 실수라고 생각한다.
