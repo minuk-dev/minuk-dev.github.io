@@ -3,14 +3,14 @@ layout  : wiki
 title   : verilog (베릴로그)
 summary : 
 date    : 2020-06-25 20:46:51 +0900
-lastmod : 2020-06-26 20:55:47 +0900
+lastmod : 2020-06-29 20:47:04 +0900
 tags    : [verilog]
 draft   : false
 parent  : 
 ---
 
 # 개요 
- * openssd가 verilog가 짜져있어서 읽을수 있을 수준까지 공부하는게 목표
+ * opennvm가 verilog가 짜져있어서 읽을수 있을 수준까지 공부하는게 목표
 
 ## 출처
  * 기본 문법 : https://blog.naver.com/PostView.nhn?blogId=kyj0833&logNo=221490972642&from=search&redirect=Log&widgetTypeCall=true&directAccess=false
@@ -324,4 +324,498 @@ T_1 ;
     "<interactive>";
     "parity.v";
 ```
- * TODO: 아직 결과 분석을 못했다. 일단 오늘 공부는 여기까지
+ * 읽어보면, 실제로 loop돌고 jump 하는 것처럼 보인다.
+ * 생각해보면 그럴수 밖에 없는 것 같기도 하고, 만약 1번에 끝내길 바랬으면 다르게 짜야지 싶기도 해서
+
+### Task Benches
+
+```verilog
+module arbiter (
+clock,
+reset,
+req_0,
+req_1,
+gnt_0,
+gnt_1
+);
+
+input clock, reset, req_0, req_1;
+output gnt_0, gnt_1;
+
+reg gnt_0, gnt_1;
+
+always @ (posedge clock or posedge reset)
+
+if (reset) begin
+  gnt_0 <= 0;
+  gnt_1 <= 0;
+end else if (req_0) begin
+  gnt_0 <= 1;
+  gnt_1 <= 0;
+end else if (req_1) begin
+  gnt_0 <= 0;
+  gnt_1 <= 1;
+end
+
+endmodule
+// Testbench Code Goes here
+module arbiter_tb;
+
+reg clock, reset, req0, req1;
+wire gnt0, gnt1;
+
+initial begin
+  $monitor ("req0=%b,req1=%b,gnt0=%b,gnt1=%b", req0, req1, gnt0, gnt1);
+  clock = 0;
+  reset = 0;
+  req0 = 0;
+  req1 = 0;
+  #5 reset = 1;
+  #15 reset = 0;
+  #10 req0 = 1;
+  #10 req0 = 0;
+  #10 req1 = 1;
+  #10 req1 = 0;
+  #10 {req0, req1} = 2'b11;
+  #10 {req0, req1} = 2'b00;
+  #10 $finish;
+end
+
+always begin
+  #5 clock = !clock;
+end
+
+arbiter U0 (
+.clock (clock),
+.reset (reset),
+.req_0 (req0),
+.req_1 (req1),
+.gnt_0 (gnt0),
+.gnt_1 (gnt1)
+);
+
+
+endmodule
+```
+
+ * 처음에 initial block 에서 monitor로 변수 값 바뀔때 tracking 해주고, req0 = 0, req1 = 0 이 설정 되고, gnt는 설정이 안되서 0, 0, x, x 가 나오고 나머지는 다 delay 걸려서 실행 안되고 있고, arbiter 호출해준다.
+ * 5 delays 뒤에 reset 이 1 이 되면서 gnt_0, gnt_1 이 되면서 0, 0, 0, 0 이 출력
+ * 10 delays 뒤에 req0 가 1이 되면서, 1, 0, 0, 0
+ * 그러면서 1, 0, 1, 0
+ * 그 뒤 req0 이 0 되면서 0, 0, 1 , 0
+ * req1 이 1 이 되면서 0, 1, 1, 0
+ * 그 직후 0, 1, 0, 1
+ * 0, 0, 0, 1
+ * 1, 1, 0, 1
+ * 1, 1, 1, 0
+ * 0, 0, 1, 0
+ * 순으으로 나오게 된다.
+ * 처음에는 reset 이 0 으로 바뀌는걸 못봐서 한참 삽질했다.
+
+ 
+### Counter Design
+
+```verilog
+//-----
+// Function : This is a 4 bit up-counter with
+// Synchronous active high reset and
+// with active high enable signal
+//-----
+module first_counter (
+clock,
+reset,
+enable,
+counter_out
+);
+
+input clock;
+input reset;
+input enable;
+
+output [3:0] counter_out;
+
+wire clock;
+wire reset;
+wire enable;
+
+reg [3:0] counter_out;
+
+always @ (posedge clock)
+begin: COUNTER // Block Name
+  if (reset == 1'b1) begin
+    counter_out <= # 4'b0000;
+  end
+  
+  else if (enable == 1'b1) begin
+    counter_out <= #1 counter_out + 1;
+  end
+end
+
+endmodule
+```
+
+```verilog
+`include "first_counter.v"
+module first_counter_tb();
+// Declare inputs as regs and outputs as wires
+reg clock, reset, enable;
+wire [3:0] counter_out;
+
+// Initialize all variables
+
+initial begin
+  $display ("time\t clk reset enable counter");
+  $monitor ("%g\t %b %b %b %b");
+    $time, clock, reset, enable, counter_out;
+    
+  clock = 1;
+  reset = 0;
+  enable = 0;
+  #5 reset = 1;
+  #10 reset = 0;
+  #10 enable = 1;
+  #100 enable = 0;
+  #5 $finish;
+end
+
+always begin
+  #5 clock = ~clock;
+end
+
+first_counter U_counter (
+clock,
+reset,
+enable,
+counter_out
+);
+
+endmoudle
+```
+
+ * 다른 module 을 부를때 `include 라는 문법을 쓰는걸 알게 되었다.
+ * 나머진 예전에 배운 논리회로랑 똑같아서 스킵
+
+### Comments
+
+```verilog
+/* This is a
+  Multi line comment
+  example */
+module addbit (
+a,
+b,
+ci,
+sum,
+co);
+
+input a;
+input b;
+input ci;
+output sum;
+output co;
+wire a;
+wire b;
+wire ci;
+wire sum;
+wire co;
+
+endmodule
+
+```
+
+### Numbers in Verilog
+#### Integer Number
+ * Syntax : <size>'<radix><value>;
+ 
+| Integer    | Stored as                        |
+|------------|----------------------------------|
+| 1          | 00000000000000000000000000000001 |
+| 8'hAA      | 10101010                         |
+| 6'b10_0011 | 100011                           |
+| 'hF        | 00000000000000000000000000001111 |
+
+#### Real Numbers
+ * Syntax : <value>.<value>, <mantissa>E<exponent>
+
+
+### Modules
+#### Ports
+ * Syntax 
+```
+input [range_val:range_var] list_of_identifier;
+output [range_val:range_var] list_of_identifier;
+inout [range_val:range_var] list_of_identifier;
+```
+ * Examples
+```verilog
+input clk;
+input [15:0] data_in;
+output [&;0] count;
+inout data_bi;
+```
+
+```verilog
+module addbit(
+a,
+b,
+ci, sum,
+co
+);
+input a;
+input b;
+input ci;
+output sum;
+output co;
+
+wire a;
+wire b;
+wire ci;
+wire sum;
+wire co;
+
+assign {co, sum} = a + b + ci;
+
+endmodule
+```
+
+##### Modules connected by port order (implicit)
+
+```verilog
+module adder_implicit (
+result,
+carry,
+r1,
+r2,
+ci
+);
+
+input [3:0] r1;
+input [3:0] r2;
+input ci;
+
+output [3:0] result;
+ouput carry;
+
+wire [3:0] r1;
+wire [3:0] r2;
+wire ci;
+wire [3:0] result;
+wire crarry;
+
+wire c1;
+wire c2;
+wire c3;
+
+addbit u0 (
+r1[0],
+r2[0],
+ci ,
+result[0],
+c1
+);
+
+addbit u1 (
+r1[1] ,
+r2[1] ,
+c1,
+result[1],
+c2
+);
+
+addbit u2 (
+r1[2] ,
+r2[2], 
+c2,
+result[2],
+c3
+);
+
+addbit u3(
+r1[3],
+r2[3],
+c3,
+result[3],
+carry
+);
+
+endmodule
+```
+
+##### Modules connected by name
+
+```verilog
+module adder_explicit (
+result,
+carry,
+r1,
+r2,
+ci
+);
+
+input [3:0] r1;
+input [3:0] r2;
+input ci;
+
+ouput [3:0] result;
+ouput carry;
+
+wire [3:0] r1;
+wire [3:0] r2;
+wire ci;
+wire [3:0] result;
+wire carry;
+
+wire c1;
+wire c2;
+wire c3;
+
+addbit u0 (
+.a (r1[0]),
+.b (r2[0]),
+.ci (ci),
+.sum (result[0]),
+.sum (result[0]),
+co (c1)
+);
+
+addbit u1 (
+.a (r1[1]),
+.b (r2[1]),
+.ci (c1),
+.sum (result[1]),
+.co (c2)
+);
+
+addbit u2 (
+.a (r1[2]),
+.b (r2[2]),
+.ci (c2),
+.sum (result[2]),
+.co (3)
+);
+
+addbit u3 (
+.a (r1[3]),
+.b (r2[3]),
+.ci (c3),
+.sum (result[3]),
+.co (carry)
+);
+
+endmodule
+```
+
+
+##### Instantiating a module
+```verilog
+module parity (
+a,
+b,
+c,
+d,
+y
+);
+
+input a;
+input b;
+input c;
+input d;
+
+ouput y;
+
+wire a;
+wire b;
+wire c;
+wire d;
+wire y;
+
+wire out_0;
+wire out_1;
+
+xor u0 (out_0, a, b);
+xor u1 (out_1, c, d);
+
+xor u2 (y, out_0, out_1);
+
+endmodule
+```
+
+#### Port Connection Rules
+ * Inputs : internally must always be of type net, externally the inputs can be connected to a variable of type reg or net.
+ * Outputs : internally can be of type net or reg, externally the outputs must be connected to a variable of type net.
+ * Inouts : internally or externally must always be type net, can only be connected to a variable net type.
+ * Width matching : it is legal to connect internal and external ports of different sizes. But beware, synthesis tools could report problems.
+ * Unconnected ports : unconnected ports are allowed by using a ",".
+ * The net data types are used to connect structure.
+ * A net data type is required if a signal can be driven a structural connection.
+
+ 
+##### Example - Implicit Unconnected Port
+```verilog
+module implicit();
+reg clk, d, rst, pre;
+wire q;
+
+dff u0 (q,, clk, d, rst, pre);
+
+end module
+
+module dff (q, q_bar, clk, d, rst, pre);
+input clk, d, rst, pre;
+output q, q_bar;
+reg q;
+
+assign a_bar = ~q;
+
+always @ (posedge clk)
+
+if 9rst ==1'b1) gegin
+  q <= 0;
+end else if (pre == 1'b1) begin
+  q <= 1;
+end else being
+  q <= d;
+end
+
+endmodule
+```
+
+##### Example - Explicit Unconnected Port
+```verilog
+module explicit();
+reg clk, d, rst, pre;
+wire q;
+
+dff u0 (
+.q (q),
+.d (d),
+.clk (clk),
+.q_bar (),
+.rst (rst),
+.pre (pre)
+);
+
+endmodule
+
+
+module dff (q, q_bar, clk, d, rst, pre);
+input clk, d, rst, pe;
+output q, q-bar;
+reg q;
+
+assign q_bar = ~q;
+
+always @ (posedge clk)
+
+if (rst == 1'b1) begin
+  q <= 0;
+end else if (pre == 1'b1) begin
+  q <= 1;
+end else begin
+  q <= d;
+end
+
+endmodule
+```
+
+* TODO : 지친다. 오늘은 여기까지. 다음 차례때 해야할 부분 : http://www.asic-world.com/verilog/syntax3.html
