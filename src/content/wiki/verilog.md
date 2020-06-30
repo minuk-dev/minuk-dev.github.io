@@ -3,7 +3,7 @@ layout  : wiki
 title   : verilog (베릴로그)
 summary : 
 date    : 2020-06-25 20:46:51 +0900
-lastmod : 2020-06-29 20:47:04 +0900
+lastmod : 2020-06-30 20:02:07 +0900
 tags    : [verilog]
 draft   : false
 parent  : 
@@ -818,4 +818,287 @@ end
 endmodule
 ```
 
-* TODO : 지친다. 오늘은 여기까지. 다음 차례때 해야할 부분 : http://www.asic-world.com/verilog/syntax3.html
+#### Hierarchical Identifiers
+
+```verilog
+`include "addbit.v"
+module adder_hier (
+result,
+carry,
+r1,
+r2,
+ci
+);
+
+input [3:0] r1;
+input [3:0] r2;
+input ci;
+
+output [3:0] result;
+output carry;
+
+wire [3:0] r1;
+wire [3:0] r2;
+wire ci;
+wire [3:0] result;
+wire carry;
+
+wire c1;
+wire c2;
+wire c3;
+
+
+addbit u0 (r1[0], r2[0],ci,result[0],c1);
+addbit u1 (r1[1], r2[1],c1,result[1],c2);
+addbit u2 (r1[2], r2[2],c2,result[2],c3);
+addbit u3 (r1[3], r2[3],c3,result[3],carry);
+
+endmodule
+
+module tb();
+
+reg [3:0] r1, r2;
+reg ci;
+wire [3:0] result;
+wire carry;
+
+initial begin
+  r1 = 0;
+  r2 = 0;
+  ci = 0;
+  #10 r1 = 10;
+  #10 r2 = 2;
+  #10 ci = 1;
+  #10 $display("+-----------------+");
+  $finish;
+end
+
+
+adder_hier U (result, carry, r1, r2, ci);
+
+initial begin
+  $display("+---------------+");
+  $display("|r1|r2|ci|u0.sum|u1.sum|u2.sum|u3.sum|");
+  $display("+---------------+");
+  $monitoer("|%h|%h|%h|%h|h|%h|%h|",
+    r1, r2, ci, tb.U.u0.sum, tb.U.u1.sum, tb.U.u2.sum, tb.U.u3.sum);
+end
+
+endmodule
+```
+
+
+#### Data Types
+ * Verilog Language has two primary data types:
+   * Nets - Present structural connections between components.
+   * Registers - represent variables used to store data.
+ * Every signal has a data type associated with it:
+   * Explicitly declared with a declaration in your Verilog code.
+   * Implicitly declared with no declaration when used to connect structural building blocks in your code. Implicit declaration is always a net type "wire" and is one bit wide.
+
+##### Types of Nets
+ 
+| Net Data Type    | Functionality                                          | 간략 번역                        |
+|------------------|--------------------------------------------------------|----------------------------------|
+| wire, tri        | Interconnecting wire - nospecial resolution function   | 상호 연결                        |
+| wor, trior       | Wired outputs Or together (models ECL)                 | 연결된 것들끼리 or한 값          |
+| wand, triand     | Wired outputs And together (models open-collector)     | 연결된 것들끼리 and 한 값        |
+| tri0, tri1       | Net pulls-down or pulls-up when not driven             | tri와 동일한데, z 일때 0이거나 1 |
+| supply0, supply1 | Net has a constant logic 0 or logic 1 (supply strenth) | 상수 ground, vdd                 |
+| trireg           | Retains last value, when driven by z(tristate).        | z일때 예전 값을 기억             |
+
+##### Example - wor
+```verillog
+module test_wor();
+wor a;
+reg b, c;
+assign a = b;
+assign a = c;
+
+initial begin
+  $monitor("%g a = %b b = %b c = %b", $time, a, b, c);
+  #1 b = 0;
+  #1 c = 0;
+  #1 b = 1;
+  #1 b = 0;
+  #1 c = 1;
+  #1 b = 1;
+  #1 b = 0;
+  #1 $finish;
+end
+
+endmoudle
+```
+
+##### Example - tri
+
+```verilog
+module test_tri();
+
+tri a;
+reg b, c;
+
+
+assign a = (b) ? c : 1'bz;
+
+initial begin
+  $monitor("%g a = %b b = %b c= %b", $time, a, b, c);
+  b = 0;
+  c = 0;
+  #1 b = 1;
+  #1 b = 0;
+  #1 c = 1;
+  #1 b = 1;
+  #1 b = 0;
+  #1 $finish;
+end
+
+endmodule
+```
+
+##### Example - trireg
+```verilog
+module test_trireg();
+trireg a;
+reg b, c;
+
+assign a = (b) ? c : 1'bz;
+
+initial begin
+  $monitor("%g a = %b b = %b c= %b", $time, a, b, c);
+  b = 0;
+  c = 0;
+  #1 b = 1;
+  #1 b = 0;
+  #1 c = 1;
+  #1 b = 1;
+  #1 b = 0;
+  #1 $finish;
+end
+
+endmodule
+```
+
+#### Register Data Types
+ * Registers store the last value assigned to them until another assignment statement changes their value.  (새로운 할당 전까지 그 값이 변하지 않고 저장한다.)
+ * Registers represent data storage constructs. (register는 data구성을 표현한다?)
+ * You can create regs arrays called memories. (memories 라고도 불리는 regs array를 만들수도 있다.)
+ * register data types are used as variables in procedural blocks. (register의 data type은 procedural block들 에서 변수로써 쓰인다.)
+ * A register data type is required if a signal is assigned a value within a procedural block (procedural block에서 변수의 값을 할당하려면 register의 data type이 필요하다.)
+ * Procedural blocks begin with keyword initial and always. (Procedural block 은 initial 과 always 키워드로 시작한다.)
+
+
+| Data types | Functionality                            |
+|------------|------------------------------------------|
+| reg        | Unsigned variable                        |
+| integer    | Signed variable - 32 bits                |
+| time       | Unsigned integer - 64 bits               |
+| real       | Double precision floating point variable |
+
+
+#### Strings
+
+| Character | Description                                             |
+|-----------|---------------------------------------------------------|
+| \n        | New line character                                      |
+| \t        | Tab character                                           |
+| \\        | Backslash (\) character                                 |
+| \"        | Double quote (") Character                              |
+| \ddd      | A character specified in 1-3 octal digits (0 <= d <= 7) |
+| %%        | Percent (%) character                                   |
+
+### Gate Primitives
+
+```verilog
+module gates();
+
+wire out0;
+wire out1;
+wire out2;
+reg in1, in2, in3, in4;
+
+not U1(out0, in1);
+and U2(out1, in1, in2, in3, in4);
+xor U3(out2, in1, in2, in3);
+
+initial begin
+  $monitor("in1 = %b in2= %b in3=%b out0=%b out1=%b out2=%b",
+    in1, in2, in3, in4, out0, out1, out2);
+  in1 = 0;
+  in2 = 0;
+  in3 = 0;
+  in4 = 0;
+  
+  #1 in1 = 1;
+  #1 in2 = 1;
+  #1 in3 = 1;
+  #1 in4 = 1;
+  #1 $finish;
+end
+
+endmodule
+```
+
+### Transmission Gate Primitives
+
+```verilog
+module transmission_gates();
+
+reg data_enable_low, in;
+wire data_bus, out1, out2;
+
+bufif0 u1(data_bus, in, data_enable_low);
+buf U2(out1, in);
+not U3(out2, in);
+
+initial begin
+  $monitor(
+    "@%g in = %b data_enable_low=%b out1=%b out2=%b data_bus=%b",
+    $time, in, data_enable_low, out1, out2, data_bus);
+  data_enable_low = 0;
+  in = 0;
+  #4 data_enable_low = 1;
+  #8 $finish;
+end
+
+always #2 in = ~in;
+
+endmodule
+```
+
+### Switch Primitives
+
+```verilog
+module switch_primitives();
+
+wire net1, net2, net3;
+wire n4, net5, net6;
+
+tranif0 my_gate1 (net1, net2, net3);
+rtranif1 my_gate2 (net4, net5, net6);
+
+endmodule
+```
+
+### Logic Values and signal Strengths
+
+| Logic Value | Description                        |
+|-------------|------------------------------------|
+| 0           | zero, low, false                   |
+| 1           | one, high, true                    |
+| z or Z      | high impedance, floating           |
+| x or X      | unknown, uninitialized, contention |
+
+### Verilog Strength Levels
+
+
+| Strengtth Level      | Specification Keyword |
+|----------------------|-----------------------|
+| 7 Supply Drive       | supply0 supply1       |
+| 6 Strong Pull        | strong0 strong1       |
+| 5 Pull Drive         | pull0 pull1           |
+| 4 Large Capacitance  | large                 |
+| 3 Weak Drive         | weak0 weak1           |
+| 2 Medium Capacitance | medium                |
+| 1 Small Capacitance  | small                 |
+| 0 Hi Impedance       | highz0 highz1         |
