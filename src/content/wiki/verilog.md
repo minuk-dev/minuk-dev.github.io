@@ -3,7 +3,7 @@ layout  : wiki
 title   : verilog (베릴로그)
 summary : 
 date    : 2020-06-25 20:46:51 +0900
-lastmod : 2020-06-30 20:02:07 +0900
+lastmod : 2020-07-01 20:53:18 +0900
 tags    : [verilog]
 draft   : false
 parent  : 
@@ -1102,3 +1102,250 @@ endmodule
 | 2 Medium Capacitance | medium                |
 | 1 Small Capacitance  | small                 |
 | 0 Hi Impedance       | highz0 highz1         |
+
+### User Defined Primitives
+#### Syntax
+```verilog
+primitive udp_syntax (
+a,
+b,
+c,
+d
+);
+output a;
+input b,c,d;
+
+endprimitive
+```
+
+#### UDP ports rules
+ * An UDP can contain only one output and up to 10 inputs.
+ * Output port should be the first port followed by one or more input ports.
+ * All UDP ports are scalar, i.e. Vector ports are not allowed.
+ * UDPs can not have bidirectional ports.
+ * The output terminal of a sequetial UDP requires an additional declaration as type reg.
+ * It is illegal to declare a reg for the output terminal of a combinational UDP
+
+#### Body
+```verilog
+primitive udp_body (
+a,
+b,
+c
+);
+
+ouput a;
+input b, c;
+
+// A = B | C;
+table
+  ? 1 : 1;
+  1 ? : 1;
+  0 0 : 0;
+endtable
+
+endprimitive
+```
+
+```verilog
+`include "udp_body.v"
+module udp_body_tb();
+
+reg b,c;
+wire a;
+
+udp_body udp (a, b, c);
+
+initial begin
+  $monitor(" B = %b C = %b A = %b", b, c, a);
+  b = 0;
+  c = 0;
+  #1 b = 1;
+  #1 b = 0;
+  #1 c = 1;
+  #1 b = 1'bx;
+  #1 c = 0;
+  #1 b = 1;
+  #1 c = 1'bx;
+  #1 b = 0;
+  #1 $finish;
+end
+
+endmodule
+```
+
+#### Symbols
+
+
+| Symbol | interpretation                        | Explanation                             |
+|--------|---------------------------------------|-----------------------------------------|
+| ?      | 0 or 1 or X                           | ? means the variable can be 0 or 1 or x |
+| b      | 0 or 1                                | Same as ?, but x is not included        |
+| f      | (10)                                  | Falling edge on an input                |
+| r      | (01)                                  | Rising edge on an input                 |
+| p      | (01) or (0x) or (x1) or (1z0 or (z1)) | Rising edge including x and z           |
+| n      | (10) or (1x) or (x0) or (0z) or (z0)  | Falling edge including x and z          |
+| *      | (??)                                  | All transitions                         |
+| -      | No change                             | No Change                               |
+
+### System Task and Function
+ * `$display("format_string", par_1, par_2, ...);`
+ * `$strobe("format_string", par_1, par2, ...);`
+ * `$monitor("format_string", par_1, par_2, ...);`
+ * `$displayb (as above but defaults to binary..);`
+ * `$strobeh (as above but defaults to hex..);`
+ * `$monitoro (as above but defaults to octal..);`
+---
+ * `$time`, `$stime`, `$realtime` : the current simulation time as a 64-bit integer, a 32-bit integer, and a real number
+ * `$reset`, `$stop`, `$finish` : `$reset` resets the simulation back to time 0; `$stop` halts the simulator and puts it in interactive mode where the user can enter commands; `$finish` exits the simulator back to the operating system.
+ * `$scope`, `$showscope` : `$scope(hierarchy_name)` sets the current hierarchical scope to hierarchy_name. `$showscopes(n)` lists all modules, tasks and block names in (and below, if n is set to 1) the current scope.
+ * `$random` generates a random integer every tie it is called. If the sequence is to be repeatable, teh first time one invokes random giving it a numerical argument (a seed). Otherwise the seed is derived from the computer clock.
+---
+ * `$dumpfile`, `$dumpvar`, `$dumpon`, `$dumpoff`, `$dumpall`
+ * `$dumpfile("filename.vcd")`
+ * `$dumpvar` : dumps all variables in the design.
+ * `$dumpvar(1, top)` : dumps all the varaibles in module top and below, but not modules instantiated in top.
+ * `$dumpvar(2, top)` : dumps all the variables in module top and 1 level below.
+ * `$dumpvar(n, top)` : dumps all the variables in module top and n-1 levels below.
+ * `$dumpvar(0, top)` : dumps all the variables in module top and all level below.
+ * `$dumpon` : initiates the dump.
+ * `$dumpoff` : stop dumping.
+---
+ * `$fopen`, `$fdisplay`, `$fstrobe`, `$fmonitor` and `$fwrite`
+ * `$fopen` opens an output file and gives the open file a handle for use by the other commands.
+ * `$fclose` : closes the file and lests other programs access it.
+ * `$fdisplay` and `$fwrite` write formatted data to a file whenever they are executed. They are the same except `$fdisplay` inserts a new line after every execution and `$write` does not.
+ * `$disrobe` also writes to file when executed, but its waits until all other operations in the time step are complete before writing. Thus initial `#1 a = 1; b= 0; $fstrobe(hand1, a,b); b=1;` will write write 1 1 for a and b.
+ * `$fmonitor` writes to a file whenever any of tis arguments changes.
+ * `handle1 = $fopen("filenam1.suffix")`
+ * `handle2=$fopen("filename2.suffix")`
+ * `$fstrobe(handle1, format, variable list)`
+ * `$fdisplay(handle2, format, variable list)`
+ * `$fwrite(handle2, format, variable list)`
+
+## 실습
+ * 단순히 문법만 배우니까 먼가 언어를 배우는 느낌이 안나서 코딩해보기로 했다.
+ * 해보니까 새롭게 알게 된게 있어서 해보길 잘했다고 생각한다.
+```verilog
+/* heap.v */
+module heap (
+  d,
+  is_insert,
+  ret,
+  enable,
+  clock,
+  reset
+);
+
+parameter MAX_SIZE = 128;
+
+input wire [31:0] d;
+input wire is_insert;
+input wire enable;
+input wire clock;
+input wire reset;
+
+output reg signed [31:0] ret;
+
+integer node[MAX_SIZE - 1:0];
+integer count;
+integer tmp1, tmp2, tmp3;
+integer i;
+
+initial
+begin
+  for (i = 0; i < MAX_SIZE; i = i + 1) begin
+    node[i] = 0;
+  end
+  $display("time | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 ");
+  $monitor("%g | %d | %d | %d | %d | %d | %d | %d | %d",
+      $time, node[1], node[2], node[3], node[4], node[5], node[6], node[7], node[8]);
+  count = 0;
+end
+
+always @ (posedge clock)
+begin
+  if (enable) begin
+    /* insert */
+    if (is_insert) begin
+      count = count + 1;
+      node[count] = d;
+      
+      tmp1 = count;
+      while (tmp1 > 1 && node[tmp1 / 2] < node[tmp1]) begin
+        tmp2 = node [tmp1/2];
+        node [tmp1/2] = node[tmp1];
+        node [tmp1] = tmp2;
+
+        tmp1 = tmp1 / 2;
+      end
+    end
+    /* pop */
+    else begin
+      ret = node[1];
+      
+      node[1] = node[count];
+      node[count] = node[1];
+      count = count - 1;
+
+      tmp1 = 1;
+      tmp2 = tmp1 * 2;
+      if (tmp2 + 1 <= count) begin
+      tmp2 = (node[tmp2] > node[tmp2 + 1]) ? tmp2 : tmp2 + 1;
+      end
+
+      while (tmp2 <= count && node[tmp1] < node[tmp2]) begin
+        tmp3 = node[tmp1];
+        node[tmp1] = node[tmp2];
+        node[tmp2] = tmp3;
+
+        tmp1 = tmp2;
+        tmp2 = tmp2 * 2;
+
+        if (tmp2 + 1 <= count) begin
+          tmp2 = (node[tmp2] > node[tmp2 +1]) ? tmp2 : tmp2 + 1;
+        end
+      end
+
+      node[count + 1] = 0; /* to display */
+    end
+  end
+end
+
+endmodule
+```
+
+```verilog
+/* test.v */
+`include "heap.v" // to fix syntax highlight`
+
+module heap_test();
+
+reg clock, reset, enable, is_insert;
+integer data;
+wire [31:0] ret;
+
+initial begin
+  clock = 0;
+  reset = 0;
+  enable = 1;
+  is_insert = 1;
+  data = 0;
+  #5 data = 5;
+  #10 data = 10;
+  #10 data = 7;
+  #10 is_insert = 0;
+  #5 $finish;
+end
+
+always begin 
+  #5 clock = ~clock;
+end
+
+heap U(data, is_insert, ret, enable, clock, reset);
+
+endmodule
+
+```
+ * 여기서 배운건 assign 할때 async하게 도는 것과 sync 하게 만드는 것 2개가 있다는 것을 알게 되었다. 일단 heap을 짤때 sync하게 짯는데 async 하게 짤수 있는 부분이 있는지 알아봐야겠다.
+ * http://aboutmadlife.blogspot.com/2015/01/verilog-blocking-non-blocking.html 
