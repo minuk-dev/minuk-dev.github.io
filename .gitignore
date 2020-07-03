@@ -1,2 +1,6 @@
 # universial tags
 tags/tags.temp
+tags.lock
+tags.temp
+**/tags.lock
+**/tags.temp
