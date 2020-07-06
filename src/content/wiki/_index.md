@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-07-05 00:21:06 +0900
+lastmod: 2020-07-06 20:09:19 +0900
 ---
 ## 즐겨찾기
  * [[사지방]]
@@ -43,6 +43,8 @@ lastmod: 2020-07-05 00:21:06 +0900
  * [[regex]]
 ### Book Review
  * [[Book reviews]]
+### Mathematics
+ * [[statistics]]
 ---
 ## 잡스러운 것들 모음
  * [[버스 시간 메모]]
