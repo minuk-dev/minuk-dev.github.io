@@ -1,0 +1,106 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Modern C++ Design Pattern/Chatper 9. 데코레이터</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent: #00a3d2;--border-width:  5px }</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on('click',function(){$('.collapse').collapse('hide');})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','UA-98056974-1');</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 9. 데코레이터</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><a href=/wiki/><button class="btn btn-link"><i class="fa fa-arrow-left"></i>&nbsp;Front Page</button></a></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="Chapter 9- 데코레이터"
+pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper 9. 데코레이터</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%209-%20%eb%8d%b0%ec%bd%94%eb%a0%88%ec%9d%b4%ed%84%b0.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Thu, 09 Apr 2020 23:46:45 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#decorator>Decorator</a><ul><li><a href=#dynamic-decorator>Dynamic Decorator</a></li><li><a href=#static-decorator>Static Decorator</a></li><li><a href=#funtional-decorator>Funtional Decorator</a></li><li><a href=#summary>Summary</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=decorator>Decorator</h2><ul><li>Dynamic Composition</li><li>Static Composition</li></ul><h3 id=dynamic-decorator>Dynamic Decorator</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>  <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ColoredShape</span> <span style=color:#f92672>:</span> Shape
+  {
+    Shape<span style=color:#f92672>&amp;</span> shape;
+    string color;
+  
+    ColoredShape(Shape<span style=color:#f92672>&amp;</span> shape, <span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> color)
+      <span style=color:#f92672>:</span> shape{shape}, color{color} {}
+  
+    stinrg <span style=color:#a6e22e>str</span>() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span>
+    {
+      ostringstream oss;
+      oss <span style=color:#f92672>&lt;&lt;</span> shape.str() <span style=color:#f92672>&lt;</span>, <span style=color:#e6db74>&#34; Has the color &#34;</span> <span style=color:#f92672>&lt;&lt;</span> color;
+      <span style=color:#66d9ef>return</span> oss.str();
+    }
+  };
+  
+  <span style=color:#75715e>// Example Code
+</span><span style=color:#75715e></span>  Circle circle{<span style=color:#ae81ff>0.5f</span>};
+  ColoredShape redCircle{circle, <span style=color:#e6db74>&#34;red&#34;</span>};
+  cout <span style=color:#f92672>&lt;&lt;</span> redCircle.str();
+  
+  <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>TransparentShape</span> <span style=color:#f92672>:</span> Shape
+  {
+    Shape<span style=color:#f92672>&amp;</span> shape;
+    <span style=color:#66d9ef>uint8_t</span> transparency;
+  
+    TransparentShape(Shape<span style=color:#f92672>&amp;</span> shape, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint8_t</span> transparency)
+      <span style=color:#f92672>:</span> shape{shape}, transparency{transparency} {}
+  
+    string <span style=color:#a6e22e>str</span>() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span>
+    {
+      ostringstream oss;
+      oss <span style=color:#f92672>&lt;&lt;</span> shape.str() <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34; has &#34;</span>
+          <span style=color:#f92672>&lt;&lt;</span> <span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>float</span><span style=color:#f92672>&gt;</span>(transparency) <span style=color:#f92672>/</span> <span style=color:#ae81ff>255.f</span> <span style=color:#f92672>*</span> <span style=color:#ae81ff>100.f</span>
+          <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;% transparency&#34;</span>;
+      <span style=color:#66d9ef>return</span> oss.str();
+    }
+  };
+  
+  <span style=color:#75715e>// Exmaple Code
+</span><span style=color:#75715e></span>  Squre square{<span style=color:#ae81ff>3</span>};
+  TransparentShape demiSquare{square, <span style=color:#ae81ff>85</span>};
+  cout <span style=color:#f92672>&lt;&lt;</span> demiSqure.str();
+  
+  <span style=color:#75715e>// Composition Exmaple
+</span><span style=color:#75715e></span>  TransparentShape myCircle {
+    ColoredShape {
+      Circle{<span style=color:#ae81ff>23</span>}, <span style=color:#e6db74>&#34;green&#34;</span>,
+    }, <span style=color:#ae81ff>64</span>
+  };
+  
+  cout <span style=color:#f92672>&lt;&lt;</span> myCircle.str();
+</code></pre></div><h3 id=static-decorator>Static Decorator</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>  <span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ColoredShape</span> <span style=color:#f92672>:</span> T
+  {
+    <span style=color:#66d9ef>static_assert</span>(is_base_of<span style=color:#f92672>&lt;</span>Shape, T<span style=color:#f92672>&gt;::</span>value,
+      <span style=color:#e6db74>&#34;Tempalte argument must be a Shape&#34;</span>);
+  
+    string color;
+  
+    string <span style=color:#a6e22e>str</span>() <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>override</span>
+    {
+      ostringstream oss;
+      oss <span style=color:#f92672>&lt;&lt;</span> T<span style=color:#f92672>::</span>str() <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34; has the color &#34;</span> <span style=color:#f92672>&lt;&lt;</span> color;
+      <span style=color:#66d9ef>return</span> oss.str();
+    }
+  
+    <span style=color:#66d9ef>template</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span>...Args<span style=color:#f92672>&gt;</span>
+    ColoredShape(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> color, Args ...args)
+      <span style=color:#f92672>:</span> T(std<span style=color:#f92672>::</span>forward<span style=color:#f92672>&lt;</span>Args<span style=color:#f92672>&gt;</span>(args)...), color{ color } {}
+  };
+</code></pre></div><h3 id=funtional-decorator>Funtional Decorator</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>  <span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span><span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Logger</span>;
+  <span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> R, <span style=color:#66d9ef>typename</span>... Args<span style=color:#f92672>&gt;</span>
+  <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Logger</span><span style=color:#f92672>&lt;</span>R(Args...)<span style=color:#f92672>&gt;</span>
+  {
+    Logger(function<span style=color:#f92672>&lt;</span>R(Args...)<span style=color:#f92672>&gt;</span> func, <span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> name)
+      <span style=color:#f92672>:</span> func{func}, name{name} {}
+    
+    R <span style=color:#a6e22e>operator</span>() (Args ...args)
+    {
+      cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;Enter &#34;</span> <span style=color:#f92672>&lt;&lt;</span> name <span style=color:#f92672>&lt;&lt;</span> endl;
+      R result <span style=color:#f92672>=</span> func(args...);
+      cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;Exiting &#34;</span> <span style=color:#f92672>&lt;&lt;</span> name <span style=color:#f92672>&lt;&lt;</span> endl;
+      <span style=color:#66d9ef>return</span> result;
+    }
+  
+    function<span style=color:#f92672>&lt;</span>R(Args ...)<span style=color:#f92672>&gt;</span> func;
+    string name;
+  };
+  
+  <span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> R, <span style=color:#66d9ef>typename</span>... Args<span style=color:#f92672>&gt;</span>
+  <span style=color:#66d9ef>auto</span> make_logger(R (<span style=color:#f92672>*</span>func)(Args...), <span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> name)
+  {
+    <span style=color:#66d9ef>return</span> Logger<span style=color:#f92672>&lt;</span>R(Args...)<span style=color:#f92672>&gt;</span>(
+      function<span style=color:#f92672>&lt;</span>R(Args...)<span style=color:#f92672>&gt;</span>(func),
+      name);
+  }
+  
+  <span style=color:#66d9ef>auto</span> logged_add <span style=color:#f92672>=</span> make_logger(add, <span style=color:#e6db74>&#34;add&#34;</span>);
+  <span style=color:#66d9ef>auto</span> result <span style=color:#f92672>=</span> logged_add(<span style=color:#ae81ff>2</span>, <span style=color:#ae81ff>3</span>);
+</code></pre></div><h3 id=summary>Summary</h3><ul><li>Dynamic Decorator<ul><li>Store decoreated object, compose dynamically in runtime. However, original object member cannot access member variable.</li></ul></li><li>Static Decorator<ul><li>Using mixin inheritance, compose in compile time. So, this method cannot compose again in runtime. However, it can access member variable. And using constructor forwarding, completely initialize object.</li></ul></li><li>Functional Decorator<ul><li>Can overwrap a code block or other specific function to compose.</li></ul></li></ul></div><script>function convertWikiLink(elem){elem.innerHTML=elem.innerHTML.replace(/\[\[(.+?)\]\]\{(.+?)\}/g,(original,matching,display)=>{if(display==="_index"){display="Front Page";matching="";}
+return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});elem.innerHTML=elem.innerHTML.replace(/\[\[(.+?)\]\]/g,(original,matching)=>{var display=matching;if(display==="_index"){display="Front Page";matching="";}
+return `<a href="/wiki/${matching.toLowerCase().replace(/ /g,'-').replace(/[()]/g,'')}">${display}</a>`;});};(function(){var content=document.querySelector('.content');if(content)convertWikiLink(content);var parent=document.querySelector('.parent-doc');if(parent)convertWikiLink(parent);})();</script><div><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
