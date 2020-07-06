@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-06-27 15:11:14 +0900
+lastmod : 2020-07-06 20:38:00 +0900
 tags    : [ssd]
 parent  : ssd
 ---
@@ -397,7 +397,12 @@ static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd,
  * `nvme_write_sq_db()` 를 호출하는데, 이는 결국 `writel()`를 호출해서 SQ tail 주소에 command를 쓰는 구조이다.
  * 그렇다면 nvme에서 command는 어떻게 되는가? : TODO: 흠.... 아직 잘 모르겠는데? `nvme_scan_work()` 가 있긴한데, 이게 user 가 scan work를 강제로 SSD에 시키는 건지가 모르겠는데, 근데 그런 구조면, 글러먹은게 IO 연산을 하기 위해서 직접 다 해줘야되는건데? 그러면 굳이 scheduler가 linux kernel level에 존재할 필요가 없는데? 그냥 scheduler layer 없이 SSD scan work 를 조절하면 되는데? 일단 추정은 ssd 내부에 존재하는건데, 이건 OpenChannelSSD 를 읽어보고 알아내야할듯.
 
+ * 흐음.... 이건 잘 못찾았다. Controller 내부에 있다고 가정하고 계속 읽어 나가야할듯
  
 ### SSD Interface
  * HIL 의 SSD Interface는 단순한데 `hil/hil.hh` 에 `SimpleSSD::HIL::HIL` 로 정의되어 있다.
  * I/O request를 host controller로 부터 받아 `Interal Cache Layer` 에 넘겨준다.
+
+ ## Internal Cache Layer
+  * 여기서는 I/O buffer model (data cache)인 Internal Cache Layer (이하 ICL) 을 알아본다.
+  * ICL은 추상 클래스로 되어 있어서 상속 받아서 구현해볼수 있고 기본적으로는 set-associative cache 로 구현된 Generic Cache를 확인한다.
