@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-03 20:58:27 +0900
+lastmod : 2020-07-06 19:16:14 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -58,6 +58,7 @@ parent  :
    * [X] [[gutentags]] 문제 해결하기 : 링크 참고
  * [ ] vim ultisnip 사용법 알아보기
  * [X] coc 설정 하기
+ * [ ] calendar와 timeline 기능 넣어서, 매일 어떤 공부하는지 확인하기
 
 ## 잡다
 * [[개발_TODO]]
