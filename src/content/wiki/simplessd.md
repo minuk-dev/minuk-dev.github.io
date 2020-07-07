@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-07-07 20:13:37 +0900
+lastmod : 2020-07-07 20:53:34 +0900
 tags    : [ssd]
 parent  : ssd
 ---
@@ -425,3 +425,66 @@ static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd,
    * `EvictPolicy` : Specify which algorithm to use to select victim cache line.
    * `EvictMode` : Specify how many data should be evicted when cache is full.
    * `CacheLatency` : Set cache metadata accesss latency.
+
+### 호출구조
+ * `hil/nvme/controller.cc` 에서 `Controller::work()`를 확인해보면 `DMAContext` 를 만들어주고 호출하는 걸 알수 있다.
+ * 여기서 `checkQueue()` 를 호출하면서 `DMAFunction` 타입인 `func`를 호출하게된다. 이때 `func`은 `doQueue` 이고 이는 결국 `collectSQueue`의 인자로 주어졌던 `CPUContext`가 가지고 있는 함수를 호출한다. 이때 이건 결국 `handleRequest`를 호출하게 된다. 이는 `SubSystem` 에 request를 전달하게 된다.
+ * 결론은 결국 request는 처리되서 subsystem에 도달하게 되고, 이게 어떻게 처리되는지는 `Subsystem::submitCommand()`를 확인하면 알수 있다. 여기서 admin command 들을 처리하고, 아닌 것들은 그대로 `Namespace::submitCommand()` 로 넘어오게 된다.
+```cpp
+void Namespace::submitCommand(SQEntryWrapper &req, RequestFunction &func) {
+    /* Skip */
+    // NVM commands
+    else {
+      switch (req.entry.dword0.opcode) {
+        case OPCODE_FLUSH:
+          flush(req, func);
+          break;
+        case OPCODE_WRITE:
+          write(req, func);
+          break;
+        case OPCODE_READ:
+          read(req, func);
+          break;
+        case OPCODE_COMPARE:
+          compare(req, func);
+          break;
+        case OPCODE_DATASET_MANAGEMEMT:
+          datasetManagement(req, func);
+          break;
+        default:
+          resp.makeStatus(true, false, TYPE_GENERIC_COMMAND_STATUS,
+                          STATUS_INVALID_OPCODE);
+
+          response = true;
+
+          break;
+      }
+    }
+  }
+
+  if (response) {
+    func(resp);
+  }
+}
+```
+
+ * 이때 `read` 함수등 은 다시 `Subsystem::read()`를 호출하고 이 내부는
+```cpp
+void Subsystem::read(Namespace *ns, uint64_t slba, uint64_t nlblk,
+                     DMAFunction &func, void *context) {
+  Request *req = new Request(func, context);
+  DMAFunction doRead = [this](uint64_t, void *context) {
+    auto req = (Request *)context;
+
+    pHIL->read(*req);
+
+    delete req;
+  };
+
+  convertUnit(ns, slba, nlblk, *req);
+
+  execute(CPU::NVME__SUBSYSTEM, CPU::CONVERT_UNIT, doRead, req);
+}
+```
+* `HIL::read()` 를 부르게 된다. 이렇게 불리게 된 `HIL::read()` 의 내부에서 `ICL::read()` 를 부르는 구조이다.
+* read 부분만 봤는데, 다른 부분도 비슷할거라고 생각한다.
