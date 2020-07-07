@@ -3,7 +3,7 @@ layout  : wiki
 title   : Cache
 summary : 
 date    : 2020-07-06 20:38:22 +0900
-lastmod : 2020-07-06 20:57:36 +0900
+lastmod : 2020-07-07 20:03:03 +0900
 tags    : [memory, cache]
 draft   : false
 parent  : 
@@ -107,5 +107,7 @@ parent  :
    * Full associative : 인덱스가 어떤 공간이던지 가리킬수 있음 (충돌이 적지만 모든 블록을 탐색해야함. 속도가 느림)
    * Set associative : 인덱스가 가리키는 공간이 두개 이상인 경우 n-way set associative 캐시라고 부른다.
 
-   
- * TODO : 아직 덜 정리함. 시간이 모자라네
+### Handling Cache Writes
+ * Cache에서 업데이트된 데이터를 언제 메모리에 쓸것인가
+ * Write-through : 캐시에 데이터가 바뀔때마다 바로바로 업데이트함.
+ * Write-back : dirty bit를 추가하여 데이터가 변경되었다면 1로 체크해준뒤 블록이 교체될때 dirty비트를 확인하여 메모리의 데이터를 변경하는 구조.
