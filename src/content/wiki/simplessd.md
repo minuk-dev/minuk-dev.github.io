@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-07-06 20:38:00 +0900
+lastmod : 2020-07-07 20:13:37 +0900
 tags    : [ssd]
 parent  : ssd
 ---
@@ -403,6 +403,25 @@ static void nvme_submit_cmd(struct nvme_queue *nvmeq, struct nvme_command *cmd,
  * HIL 의 SSD Interface는 단순한데 `hil/hil.hh` 에 `SimpleSSD::HIL::HIL` 로 정의되어 있다.
  * I/O request를 host controller로 부터 받아 `Interal Cache Layer` 에 넘겨준다.
 
- ## Internal Cache Layer
+## Internal Cache Layer
   * 여기서는 I/O buffer model (data cache)인 Internal Cache Layer (이하 ICL) 을 알아본다.
   * ICL은 추상 클래스로 되어 있어서 상속 받아서 구현해볼수 있고 기본적으로는 set-associative cache 로 구현된 Generic Cache를 확인한다.
+
+### Abstract Class
+ * `icl/abstract_cache.hh`에 `AbstractCache` 클래스로 선언되어 있으며 5가지 가상함수가 존재한다.(`Statobject`에서 파생된 3가지 함수들도 추가로 있다.)
+ * ICL 은 각 가상함수로부터 I/O requests와 고유한 알고리즘에 의해서 bffer /IIO 를 가진다. data eviction이 필요하거나, flush request가 있을때 I/O를 FTL 에 넘긴다.
+ * SSD의 Data buffer는 느린 NAND I/O 성능을 감추기 위해서 매우 중요하다. buffer algorithm의 작은 변화도 성능을 크게 바꿀수 있다.
+
+### Set-Associative Cache
+ * `icl/generic_cache.hh` 에 `SimpleSSD::ICL::GenericCache` 라고 선언된 set-associative cache를 제공하며, 아래 후술될 인자를 조정할수 있다.
+   * `CacheSize` : Buffer Capacity.
+   * `CacheWaySize` : Set associativity of cache. set size will automatically caclculated
+   * `EnableReadCache`: Enable read data caching.
+   * `EnableReadPrefetch`: enable read-ahead and prefetch.
+   * `ReadPrefetchMode`: Specify how many data should be read-ahead/prefetch.
+   * `ReadPrefetchCount` : Threshold for read-ahead/prefetch(# of sequential I/O).
+   * `ReadPrefetchRatio` : Threshold for read-ahead/prefetch(data size of sequential I/O).
+   * `EnableWriteCache` : enable write data caching.
+   * `EvictPolicy` : Specify which algorithm to use to select victim cache line.
+   * `EvictMode` : Specify how many data should be evicted when cache is full.
+   * `CacheLatency` : Set cache metadata accesss latency.
