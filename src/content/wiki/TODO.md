@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-12 13:47:38 +0900
+lastmod : 2020-07-12 14:24:47 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -41,27 +41,40 @@ parent  :
     * [ ] 나머지
   * [ ] linux device driver 내용 공부하기
 ### Blog
- * [X] 다시 cdn 에서 static 가져오도록 바꾸기
- * [X] google analytics 붙이기
- * [X] git blame을 사용해서 wiki diff 만들기
- * [X] table of contents 를 홈페이지 측면에 띄우기
- * [X] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
  * [o] commit 로그에서 content 와 src, build 를 분리해서 보고 싶음.
    * [X] github 링크 확인하기
    * [ ] 실제로 링크 넣기
  * [o] 히스토리 기능
    * [X] 마우스 올리면 전체 표시됬다가, 마우스 벗어나면 다시 3개만 출력되도록 하자 (일단 올리면 되는건 짬)
- * [ ] history reset 기능 추가
- * [ ] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
- * [ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.
+   * [ ] history reset 기능 추가
+   * [ ] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
+   * [ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.
+ * [ ] about 페이지 만들기
+ * [ ] 읽은 논문 정리
+ * [ ] meta data 정리
+ * [X] 다시 cdn 에서 static 가져오도록 바꾸기
+ * [X] google analytics 붙이기
+ * [X] git blame을 사용해서 wiki diff 만들기
+ * [X] table of contents 를 홈페이지 측면에 띄우기
+ * [X] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
 ### Vim
+ * [ ] vim ultisnip 사용법 알아보기
+ * [ ] calendar와 timeline 기능 넣어서, 매일 어떤 공부하는지 확인하기
  * [O] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
    * [X] universal tag 설치 
    * [X] [[gutentags]] 문제 해결하기 : 링크 참고
- * [ ] vim ultisnip 사용법 알아보기
  * [X] coc 설정 하기
- * [ ] calendar와 timeline 기능 넣어서, 매일 어떤 공부하는지 확인하기
+
+### 갑자기 궁금해져서 공부해야하는거
+ * [ ] Queueing Theory
+ * [ ] gzip 압축 알고리즘
+ * [ ] Fourier Transform
+ * [ ] JPG 압축 원리
+ * [ ] 스테가노그레피 원리
+ * [ ] 무선 통신 이론 공부하기
+ * [ ] NFS 파일 시스템 동작 원리 공부하기
+ * [ ] WAS와 대표 IP 공부하기 (아마도 로드밸런싱)
 
 ## 잡다
 * [[개발_TODO]]
