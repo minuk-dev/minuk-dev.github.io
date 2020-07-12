@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-06 19:16:14 +0900
+lastmod : 2020-07-12 13:47:38 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -49,8 +49,11 @@ parent  :
  * [o] commit 로그에서 content 와 src, build 를 분리해서 보고 싶음.
    * [X] github 링크 확인하기
    * [ ] 실제로 링크 넣기
- * [X] 히스토리 기능
+ * [o] 히스토리 기능
    * [X] 마우스 올리면 전체 표시됬다가, 마우스 벗어나면 다시 3개만 출력되도록 하자 (일단 올리면 되는건 짬)
+ * [ ] history reset 기능 추가
+ * [ ] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
+ * [ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.
 ### Vim
  * [O] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
