@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-07-09 20:38:05 +0900
+lastmod : 2020-07-14 20:14:38 +0900
 tags    : [ssd]
 parent  : ssd
 ---
@@ -501,6 +501,7 @@ bool GenericCache::read(Request &req, uint64_t &tick) {
              req.reqID, req.reqSubID, req.range.slpn, req.length);
 
   if (useReadCaching) { /* 읽기용 Cache가 있는지를 확인한다. */
+    /* start logical page number ? 의 약자인듯 */
     uint32_t setIdx = calcSetIndex(req.range.slpn); /* Set-Associative Cache 를 참조 */
     uint32_t wayIdx;
     uint64_t arrived = tick;
