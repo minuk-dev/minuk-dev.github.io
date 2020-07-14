@@ -64,7 +64,7 @@ function displayHistory(container) {
       
       container.innerHTML = '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
         + (hist.length > 3 ? '<li style="cursor:pointer;" class="hidden-history">...</li>' : "")
-        + hist.slice(-3).map(h =>`<li class="breadcrumb-item">[[${h}]]</li>`).join('\n');
+        + hist.slice(-3).map(h =>`<li class="breadcrumb-item">[[${h}]]{${h.slice(0, 10)}}</li>`).join('\n');
         + '</ol></nav>';
 
     }
