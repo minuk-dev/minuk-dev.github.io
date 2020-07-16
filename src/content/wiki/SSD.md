@@ -3,7 +3,7 @@ layout  : wiki
 title   : SSD
 summary : 
 date    : 2020-04-28 21:46:46 +0900
-lastmod : 2020-07-14 20:13:12 +0900
+lastmod : 2020-07-16 20:35:14 +0900
 tags    : [SSD]
 draft   : false
 parent  : 
@@ -19,6 +19,7 @@ parent  :
  * [[MRAM]]
  * [[open-nvm]]
  * [[cache]]
+ * [[LFS]]
 
 ## 용어
  * [[FTL]]
