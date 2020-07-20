@@ -118,3 +118,8 @@ main {
 .breadcrumb > li + li:before {
   content: ">";
 }
+
+details {
+  padding-left: 25px;
+  margin-bottom: 10px;
+}
