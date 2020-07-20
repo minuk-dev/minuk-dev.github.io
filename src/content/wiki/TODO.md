@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-20 19:35:03 +0900
+lastmod : 2020-07-20 20:57:21 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -50,14 +50,16 @@ parent  :
    * [ ] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
    * [ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.
  * [ ] about 페이지 만들기
- * [ ] 읽은 논문 정리
+ * [o] 읽은 논문 정리
+   * [X] 대부분 정리
+   * [ ] 논문 중 하나 모르는거 알아내기
  * [ ] meta data 정리
  * [X] 다시 cdn 에서 static 가져오도록 바꾸기
  * [X] google analytics 붙이기
  * [X] git blame을 사용해서 wiki diff 만들기
  * [X] table of contents 를 홈페이지 측면에 띄우기
  * [X] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
- * [ ] folding 기능 구현
+ * [X] folding 기능 구현
 ### Vim
  * [ ] vim ultisnip 사용법 알아보기
  * [ ] calendar와 timeline 기능 넣어서, 매일 어떤 공부하는지 확인하기
