@@ -2,7 +2,7 @@ baseURL = "http://makerdark98.dev/"
 languageCode = "ko-kr"
 title = "MD98 page"
 theme = "minimal"
-disqusShortname = "makerdark98" # delete this to disable disqus comments
+#disqusShortname = "makerdark98" # delete this to disable disqus comments
 googleAnalytics = ""
 publishDir = ".."
 
