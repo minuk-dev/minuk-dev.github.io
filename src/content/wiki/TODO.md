@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-12 14:24:47 +0900
+lastmod : 2020-07-20 19:35:03 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -57,6 +57,7 @@ parent  :
  * [X] git blame을 사용해서 wiki diff 만들기
  * [X] table of contents 를 홈페이지 측면에 띄우기
  * [X] wiki에서 괄호()가 들어가면 링크가 정상적으로 안걸림 ()를 자동으로 제거해야함.
+ * [ ] folding 기능 구현
 ### Vim
  * [ ] vim ultisnip 사용법 알아보기
  * [ ] calendar와 timeline 기능 넣어서, 매일 어떤 공부하는지 확인하기
@@ -74,7 +75,7 @@ parent  :
  * [ ] 스테가노그레피 원리
  * [ ] 무선 통신 이론 공부하기
  * [ ] NFS 파일 시스템 동작 원리 공부하기
- * [ ] WAS와 대표 IP 공부하기 (아마도 로드밸런싱)
+ * [X] WAS와 대표 IP 공부하기 (아마도 로드밸런싱)
 
 ## 잡다
 * [[개발_TODO]]
