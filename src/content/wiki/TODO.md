@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-20 20:57:21 +0900
+lastmod : 2020-07-21 23:56:56 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -70,13 +70,16 @@ parent  :
  * [X] coc 설정 하기
 
 ### 갑자기 궁금해져서 공부해야하는거
- * [ ] Queueing Theory
  * [ ] gzip 압축 알고리즘
- * [ ] Fourier Transform
  * [ ] JPG 압축 원리
+   * [ ] Fourier Transform
  * [ ] 스테가노그레피 원리
  * [ ] 무선 통신 이론 공부하기
+   * [ ] Queueing Theory
  * [ ] NFS 파일 시스템 동작 원리 공부하기
+   * [ ] RAID 공부하기
+     * [ ] RAID 종류 정리
+     * [ ] RAID 에서는 Cocurrency 고려 안하나?
  * [X] WAS와 대표 IP 공부하기 (아마도 로드밸런싱)
 
 ## 잡다
