@@ -3,7 +3,7 @@ layout  : wiki
 title   : web
 summary : 
 date    : 2020-04-07 22:52:05 +0900
-lastmod : 2020-07-13 20:29:00 +0900
+lastmod : 2020-07-21 23:55:45 +0900
 tags    : [web]
 parent  : 
 ---
@@ -18,3 +18,4 @@ parent  :
 
 ## Basics
  * [[Load-Balance]]
+ * [[NAS]]
