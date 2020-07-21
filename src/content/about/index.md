@@ -10,7 +10,7 @@ draft : false
 {{< summary >}}
  Courses (Major : Computer Science, Minor : Statistics)
 {{< /summary >}}
-
+{{< markdownify >}}
 2017 Spring
 
 - General Physics I (Only Theory)
@@ -42,6 +42,8 @@ draft : false
 - Object-Oriented Programming (Theory & C++)
 - Algorithm (Theory & Toy Project)
 - Programming Language (Lexical Analysis, Syntax Analysis & Make converter from nnef to tensorflow with JavaCC)
+
+{{< /markdownify >}}
 {{< /details >}}
 
 ## Interests
