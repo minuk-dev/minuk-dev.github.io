@@ -6,10 +6,10 @@ draft : false
 ## Courses
  * Chung-Ang University
 
-{{< collapsible-start >}}
-{{< summary-start >}}
+{{< details >}}
+{{< summary >}}
  Courses (Major : Computer Science, Minor : Statistics)
-{{< summary-end >}}
+{{< /summary >}}
 
 2017 Spring
 
@@ -42,7 +42,7 @@ draft : false
 - Object-Oriented Programming (Theory & C++)
 - Algorithm (Theory & Toy Project)
 - Programming Language (Lexical Analysis, Syntax Analysis & Make converter from nnef to tensorflow with JavaCC)
-{{< collapsible-end >}}
+{{< /details >}}
 
 ## Interests
  * Storage & System (SSD, filesystem, Database, Distributed System)
