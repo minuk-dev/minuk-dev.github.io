@@ -3,7 +3,7 @@ layout  : wiki
 title   : LFS Paper
 summary : 
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-07-22 20:58:12 +0900
+lastmod : 2020-07-22 23:06:29 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -28,7 +28,7 @@ parent  : ssd
  * We introduce new concepts, which disk spaces are divided by a specific size, to maintain large free areas on disk for fast writing. (빠른 쓰기를 위해 디스크에 큰 여유공간을 확보하는 게 문제가 되었고, 이를 디스크를 특정한 크기로 나눔으로써 해결하는 새로운 방법을 제시했다.)
  * There is a prototype log-structured file system called Sprite LFS.  It can use 70% of the disk bandwidth for writing.  (Sprite LFS 라는 프로토 타입을 제시하였고, 이 는쓰기할때 디스크의 70%의 성능을 사용하게 해준다.)
  
-### Intorduction
+### 1. Intorduction
 #### Background
  * CPU speeds have increased but disk doesn't. => Application performances are limited. (CPU의 성능은 향상되는데 디스크는 그렇지 않고 이로 인해서 제약이 생긴다.)
 #### Idea
@@ -39,4 +39,11 @@ parent  : ssd
  * Many other papers suggest this notion. But, it is only for temporary storage. (다른 논문들도 이런 개념을 제시하였으나 일시적 저장에 그쳤다.)
 #### Well-known issues
  * Log structured File system has a problem to free up disk space for new data. We solve it by introduce segments and segment cleaner. (알려진 문제로, Log structured File system은 새로운 데이터를 위해 디스크 공간을 확보하는 게 있으며, 이는 segments와 segment cleaner를 통해서 해결한다.)
-#### 
+
+### 2. Design for file systems of the 1990's
+#### 2.1 Technology
+ * File system design has three significant components(Processors, Disks, and Main Memory).
+ * Disk performance depends on two components (Transfer bandwidth and access time).
+ * Disk is not better than before compared with CPU.
+ * Main Memory improvement is so remarkable that modern file systems cache recently-used file data in it. Therefore, a system can absorb a greater fraction of the read requests and more write requests can be buffered before write to disk.
+

@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-07-21 23:56:56 +0900
+lastmod : 2020-07-22 22:51:40 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -46,13 +46,11 @@ parent  :
    * [ ] 실제로 링크 넣기
  * [o] 히스토리 기능
    * [X] 마우스 올리면 전체 표시됬다가, 마우스 벗어나면 다시 3개만 출력되도록 하자 (일단 올리면 되는건 짬)
+   * [X] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
    * [ ] history reset 기능 추가
-   * [ ] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
    * [ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.
  * [ ] about 페이지 만들기
- * [o] 읽은 논문 정리
-   * [X] 대부분 정리
-   * [ ] 논문 중 하나 모르는거 알아내기
+ * [X] 읽은 논문 정리
  * [ ] meta data 정리
  * [X] 다시 cdn 에서 static 가져오도록 바꾸기
  * [X] google analytics 붙이기
