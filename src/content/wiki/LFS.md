@@ -3,7 +3,7 @@ layout  : wiki
 title   : LFS Paper
 summary : 
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-07-22 23:06:29 +0900
+lastmod : 2020-07-27 20:48:01 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -41,9 +41,49 @@ parent  : ssd
  * Log structured File system has a problem to free up disk space for new data. We solve it by introduce segments and segment cleaner. (알려진 문제로, Log structured File system은 새로운 데이터를 위해 디스크 공간을 확보하는 게 있으며, 이는 segments와 segment cleaner를 통해서 해결한다.)
 
 ### 2. Design for file systems of the 1990's
-#### 2.1 Technology
+#### 2.1. Technology
  * File system design has three significant components(Processors, Disks, and Main Memory).
  * Disk performance depends on two components (Transfer bandwidth and access time).
  * Disk is not better than before compared with CPU.
  * Main Memory improvement is so remarkable that modern file systems cache recently-used file data in it. Therefore, a system can absorb a greater fraction of the read requests and more write requests can be buffered before write to disk.
 
+#### 2.2. Workloads
+ * Random accesses are dominated by small files. In contrast, Sequential are dominated by large file.
+ 
+#### 2.3. Problems with existing file systems
+ * Current file systems have two problems.
+ * First, spread information around the disk caused too many small accesses.
+ * Second, applications must wait for the write to complete.
+
+### 3. Log-structured file systems
+ * Basic idea : Buffering a sequence of file system changes in the file cache and then writing all the changes to disk sequentially in a single disk write operations.
+ * This single write operation contains file data blocks, attributes, index, blocks, directories, and almost all the other information.
+ * This idea has two important issues.
+ * First, How to retrieve inforamtion from the log.
+ * Second, How to manage the free space on disk for writing new data.
+ 
+#### 3.1. File location and reading
+* Basic structures are based from inode, and contains the first ten blocks of the file. When the file is bigger than ten blocks, it contains one or more indirect blocks.
+* Unlike other file systems, inode map, which maintains the current locations of each inode, are placed at unfixed location. It is divided into log blocks.
+* A fixed checkpoint region on each disk identifie the locations of all the inode map blocks.
+ 
+#### 3.2. Free space management: segments
+* It is main issue for log-structured filesystem to manage free space.
+* From this point on, Threading and copying live data are presented.
+* Sprite LFS use a combination of threading and copying. -> The disk is divided into large fixed-size extent called segments.
+* All live data are copied before the segment was rewritten.
+ 
+#### 3.3. Segment cleaning mechanism
+#### 3.4. Segment cleaning policies
+#### 3.5. Simulation results
+#### 3.6. Segment usage table
+### 4. Crash recovery
+#### 4.1. Checkpoints
+#### 4.2. Roll-forward
+### 5. Experience with the Sprite LFS
+#### 5.1. Micro-benchmarks
+#### 5.2. Cleaning overheads
+#### 5.3. Crash recovery
+#### 5.4. Other overheads in Sprite LFS
+### 6. Related work
+### 7. Conclusion
