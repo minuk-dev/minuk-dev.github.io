@@ -3,7 +3,7 @@ layout  : wiki
 title   : LFS Paper
 summary : 
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-07-27 20:48:01 +0900
+lastmod : 2020-07-28 20:22:25 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -74,7 +74,24 @@ parent  : ssd
 * All live data are copied before the segment was rewritten.
  
 #### 3.3. Segment cleaning mechanism
+* The process of copying live data out of a segment is called segment cleaning.
+* It consists of three-step.
+  * Read a number of segments into memory
+  * Identify the live data
+  * Write the live data back to a smaller number of clean segments.
+* In order to write out again, Identifying blocks must be possible.
+* => For this purpose, We define segment summary block, which are indexing which segment is live.
+* Segment Summary Blocks impose little overhead during writing, and they are useful during crash recovery.
+* Sprite LFS counts the number (unique identifier - uid) to recognize which block is live. If the uid of a block does not match the uid currently stored in the inode map when the sgement is cleaned.
+ 
 #### 3.4. Segment cleaning policies
+* Four policy issues must be addressed
+  *  When should the sgement cleaner execute?
+  * How many segments should it clean at a time?
+  * Which segments should be cleaned?
+  * How should the live blocks be grouped when they are written out?
+
+
 #### 3.5. Simulation results
 #### 3.6. Segment usage table
 ### 4. Crash recovery
