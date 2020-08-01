@@ -3,7 +3,7 @@ layout  : wiki
 title   : LFS Paper
 summary : 
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-07-28 20:22:25 +0900
+lastmod : 2020-08-01 20:52:36 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -19,7 +19,9 @@ parent  : ssd
 ### 잡담
  * 겸사겸사 영어 공부할겸 영어로 paraphase 하면서 작문하는 연습을 하기로 했다.
  * 영어로 먼적 작문 하고 한글로 다시 번역하는 식으로 진행
- 
+
+---
+
 ### Abstract
  * This paper introduces `log-structured file system`. (이 논문에서는 `log-structured file system` 을 소개한다.)
  * This FS has a log-like structure and it contains all modifications sequentially. (이 파일 시스템에서는 log 같은 구조체가 있으며, 이건 모든 변경사항을 순차적으로 가지고 있다.)
@@ -28,6 +30,8 @@ parent  : ssd
  * We introduce new concepts, which disk spaces are divided by a specific size, to maintain large free areas on disk for fast writing. (빠른 쓰기를 위해 디스크에 큰 여유공간을 확보하는 게 문제가 되었고, 이를 디스크를 특정한 크기로 나눔으로써 해결하는 새로운 방법을 제시했다.)
  * There is a prototype log-structured file system called Sprite LFS.  It can use 70% of the disk bandwidth for writing.  (Sprite LFS 라는 프로토 타입을 제시하였고, 이 는쓰기할때 디스크의 70%의 성능을 사용하게 해준다.)
  
+--- 
+
 ### 1. Intorduction
 #### Background
  * CPU speeds have increased but disk doesn't. => Application performances are limited. (CPU의 성능은 향상되는데 디스크는 그렇지 않고 이로 인해서 제약이 생긴다.)
@@ -39,6 +43,8 @@ parent  : ssd
  * Many other papers suggest this notion. But, it is only for temporary storage. (다른 논문들도 이런 개념을 제시하였으나 일시적 저장에 그쳤다.)
 #### Well-known issues
  * Log structured File system has a problem to free up disk space for new data. We solve it by introduce segments and segment cleaner. (알려진 문제로, Log structured File system은 새로운 데이터를 위해 디스크 공간을 확보하는 게 있으며, 이는 segments와 segment cleaner를 통해서 해결한다.)
+
+---
 
 ### 2. Design for file systems of the 1990's
 #### 2.1. Technology
@@ -54,6 +60,8 @@ parent  : ssd
  * Current file systems have two problems.
  * First, spread information around the disk caused too many small accesses.
  * Second, applications must wait for the write to complete.
+
+---
 
 ### 3. Log-structured file systems
  * Basic idea : Buffering a sequence of file system changes in the file cache and then writing all the changes to disk sequentially in a single disk write operations.
@@ -86,14 +94,38 @@ parent  : ssd
  
 #### 3.4. Segment cleaning policies
 * Four policy issues must be addressed
-  *  When should the sgement cleaner execute?
+  * When should the segment cleaner execute?
   * How many segments should it clean at a time?
   * Which segments should be cleaned?
   * How should the live blocks be grouped when they are written out?
-
-
+* In this paper, we do not focus on the first and second keypoints. It just run when the number of segments which must be cleaned is over threadshold value.
+* We think the third and fourth policy decisions are more important than former things.
+  * To decision this, we use a term called write cost
+  * $$\text{write cost} = \frac{\text{total bytes read and writeen}}{\text{new data written}} = \frac{\text{read segs} + \text{write live} + \text{write new}}{\text{new data written}} = \frac{N + N \times u + N \times (1-u)}{N \times (1-u)} = \frac{2}{1-u}$$
+  * It means the average amount of time when the disk is busy per byte of new data written, including all the cleaning overheads.
+  * It is ideal that this value equals 1.0.
+  * The above formula has one conservative assumption, a segment must be read in its entirety to recover the live blocks. However in practice, it may be faster to read just the live blocks.
+* According to reference, Unix FFS on small-file workloads uses only at most 5-10% of the disk bandwidth for a write cost of 10-20.
+* From this, we conclude the cleaner can choose the least utilized segments to clean.
+* There is a trade off between performance and space utilization. But this is not only in log-structured file systems.
+* The key for high performance at low cost is to force the disk into a bimodal segment distribution where some segments are nearly full and others are nearly empty.
+ 
 #### 3.5. Simulation results
+ * We build a simulator to analyze different cleaning policies under controlled conditions.
+ * modeling a fixed number of 4-kbytes files
+ * It has two random access patterns: Uniform and Hot-and-cold.
+   * Uniform : Each file has equal likelihood of being selected in each step.
+   * Hot-and-cold : One group contains 10% of the files; 90% of the time. The other are 90% of the files;10% of the time.
+ * ![figure4.png](/wiki/images/lfs-figure4.png)
+ * Figure 4 shows the surprising result that locality and better grouping result in worse performance than a system with no locality.
+ * ![figure5.png](/wiki/images/lfs-figure5.png)
+ * Figure 5 shows the reason for above the situation. Every segment's utilization eventually drops to the cleaning threshold, including the cold segments and the utilization of cold segments drops very slowly. It caused to linger.
+ * ??? 머지 이해 못하겠는데??
+ * 일단 지금 이해한건, cold data 도 live data 인데, 90% 정도로 큰 비율을 차지하기 때문에 segments 의 대부분이 live data 가 많은 채로 유지되고, 이게 결국 write cost를 커진 채로 남아 있는 block 들이 계속 쌓이게 되고, 이런 segments 들이 많아지다가 이걸 치워야 할때 문제가 발생한다는 건가?
 #### 3.6. Segment usage table
+
+---
+
 ### 4. Crash recovery
 #### 4.1. Checkpoints
 #### 4.2. Roll-forward
