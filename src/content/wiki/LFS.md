@@ -3,7 +3,7 @@ layout  : wiki
 title   : LFS Paper
 summary : 
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-08-01 20:52:36 +0900
+lastmod : 2020-08-02 20:57:26 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -136,3 +136,17 @@ parent  : ssd
 #### 5.4. Other overheads in Sprite LFS
 ### 6. Related work
 ### 7. Conclusion
+
+---
+### 나름 영어 요약해보기
+```
+The Design and Implementation of a Log-Structured File system.
+
+Last decades, many file systems has stayed on the backup writing named "journaling". It was efficient with low CPU speeds and memories. But, the main bottleneck on the computer system is disk writing when CPU speeds and memories increased. So, we must focus on the structure which are written into the disk.
+
+Because many read requests can be buffered into the memory cache, Disk access times accounts for the writings. And many of writing times account for seeking time. A lot of data are scattered on the disk and it causes random accesses. In this point, we introduce a log-structured file system based on sequential writings.
+
+The basic ideas are buffering a sequence of file system changes in the cache and then writing all the changes to disk sequentially in a single disk write operation. This single write operation contains file data blocks, attributes, index. blocks, directories and almost all the other information. We call it "log". A past paper already introduce this concept. However it was only to writing temporarily. We use the log permanently. 
+
+A Log-Structured File system actually has two issues.
+```
