@@ -3,7 +3,7 @@ layout  : wiki
 title   : algorithm teamnote
 summary : 
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-08-08 00:29:42 +0900
+lastmod : 2020-08-08 23:04:28 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : 
@@ -339,14 +339,12 @@ private:
 
   int vn;
   vi lv;
-  vi bfsq;
-  int bfsqt;
   const static int INF = numeric_limits<int>::max();
   vector< vector<edge> > edges;
 
 public:
   NetworkFlow (int n)
-    : vn(n), lv(vn), bfsq(vn), edges(vn)
+    : vn(n), lv(vn), edges(vn)
   {}
 
   void addEdge(int s, int d, int f) {
@@ -365,17 +363,18 @@ public:
     fill(lv.begin(), lv.end(), 0);
 
     lv[s] = 1;
-    bfsq[0] = s;
-    bfsqt++;
+    queue<int> q;
+    q.push(s);
 
-    for (i = 0; i < bfsqt; i++) {
-      nv = bfsq[i];
+    while (!q.empty()){
+      nv = q.front();
+      q.pop();
       nlv = lv[nv];
 
       for (const auto& e: edges[nv]) {
         if (e.fl > 0 && lv[e.dest] == 0) {
           lv[e.dest] = nlv + 1;
-          bfsq[bfsqt++] = e.dest;
+          q.push(e.dest);
           if (e.dest == d) return true;
         }
       }
