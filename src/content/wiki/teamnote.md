@@ -3,11 +3,45 @@ layout  : wiki
 title   : algorithm teamnote
 summary : 
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-08-08 23:04:28 +0900
+lastmod : 2020-08-11 23:29:02 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : 
 ---
+
+## Binary Search
+ * 1 차이로 문제를 틀리는 일이 빈번해서, 틀리지 않게 자주 쓰이는 폼 정리
+```cpp
+int s = 0, e = n -1;
+while (s <= e) {
+  int m = (s + e) / 2;
+  if (array[m] == x) {
+    // 위치 m 에서 x를 찾음
+  }
+  if (array[m] < x) s = m + 1;
+  else e = m -1;
+}
+```
+
+```cpp
+int k = 0;
+for (int i = n / 2; i >= 1; i /= 2) {
+  while (k + i < n && array[k +i] <= x) k += i;
+}
+
+if (array[k] == x) {
+  // 위치 k 에서 x를 찾음.
+}
+```
+
+```cpp
+int x = -1;
+for (int b = z; b >= 1; b /= 2) {
+  while (!valid(x + b)) x += b;
+} 
+int k = x + 1;
+/* valid(x) : true when x >= k, false when x < k */
+```
 
 ## Segment Tree (Range Update) & Index Tree (Point Update)
 ```cpp
