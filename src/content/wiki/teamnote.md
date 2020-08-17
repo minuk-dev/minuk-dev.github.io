@@ -3,7 +3,7 @@ layout  : wiki
 title   : algorithm teamnote
 summary : 
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-08-11 23:29:02 +0900
+lastmod : 2020-08-17 18:41:06 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : 
@@ -41,6 +41,18 @@ for (int b = z; b >= 1; b /= 2) {
 } 
 int k = x + 1;
 /* valid(x) : true when x >= k, false when x < k */
+```
+
+## 좌표 압축
+```cpp
+vector<int> C; /* C 에다가 좌표들 넣기 */
+sort(C.begin(), c.end());
+C.erase(unique(C.begin(), C.end()), C.end());
+
+/* 오리지널 좌표(P) -> 압축된 좌표(D) */
+int d = distance(C.begin(), lower_bound(C.begin(), C.end(), P));
+/* 압축된 좌표(D) -> 오리지널 좌표(P) */
+int P = C[D];
 ```
 
 ## Segment Tree (Range Update) & Index Tree (Point Update)
