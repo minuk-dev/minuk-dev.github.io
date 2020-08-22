@@ -3,7 +3,7 @@ layout  : wiki
 title   : LFS Paper
 summary : 
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-08-02 20:57:26 +0900
+lastmod : 2020-08-22 20:27:58 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -123,13 +123,38 @@ parent  : ssd
  * ??? 머지 이해 못하겠는데??
  * 일단 지금 이해한건, cold data 도 live data 인데, 90% 정도로 큰 비율을 차지하기 때문에 segments 의 대부분이 live data 가 많은 채로 유지되고, 이게 결국 write cost를 커진 채로 남아 있는 block 들이 계속 쌓이게 되고, 이런 segments 들이 많아지다가 이걸 치워야 할때 문제가 발생한다는 건가?
 #### 3.6. Segment usage table
+ * It use `segment usage table` to support benefit.
+ * Segment usage table maintains how many bytes of live data and most recent modified time per segment in order to clean.
+ * The blocks of the segment usage table are written to the log, and the addresses of the blocks are stored in the checkpoint regions.
 
 ---
 
 ### 4. Crash recovery
+ * When a system crash occurs, such as sudden shutdown, and reboot the system.
+ * In many other file system, Crash recovery has very high costs.
+ * However, Sprite LFS can improve this performance to use `checkpoints` and `roll-forward`
 #### 4.1. Checkpoints
+ * To create a checkpoint, We have to take two steps.
+ * First, it writes out all modified information to the log, including file data blocks, indirect blocks, inodes, and blocks of the inode map and segment usage table.
+ * Second, it writes a checkpoint region to a special fixed position on disk.
+ * The checkpoint region contains the addresses of all the blocks in the inode map and segment usage table, plus the current time and a pointer to the last segment written.
+ * During reboot, Sprite LFS reads the checkpoint region and uses that information to initialize its main memory data strucutres.
+ * To prevent crash, there are actually two checkpoint regions for recovery.
+ * The checkpoint time determines which checkpoint to use for the recovery process.
+ * The interval between checkpoints affects the overhead of writing and system tolerance against crash. This paper use 30 seconds.
+ 
 #### 4.2. Roll-forward
+ * Crash recovery process is just to discard any data in the log after the lastest checkpoint. It named `roll-forward`.
+ * During roll-forward Sprite LFS uses the information in segment summary blocks to recovery recently-written file data.
+ * The roll-forward code also adjusts the utilizations in the segment usage table read from the checkpoint.
+ * The final issue in roll-forawrd is how to restore consistency between directory entries and inodes.
+ * To solve it, Sprite LFS outputs a special record in the log for each directory change(operation code, the location of the directory entry, the contents of the directory entry and the new reference count for the inode named in the entry.). - called the `directory operation log`.
+ * During roll-forward, the diretory operation log is used to ensure consistency between directory entries and inodes.
+ * The interaction between the directory operation log and checkpoints introduced additional synchronization issues.
+ 
 ### 5. Experience with the Sprite LFS
+ * ![figure8.png](/wiki/images/lfs-figure8.png)
+ * ![figure9.png](/wiki/images/lfs-figure9.png)
 #### 5.1. Micro-benchmarks
 #### 5.2. Cleaning overheads
 #### 5.3. Crash recovery
