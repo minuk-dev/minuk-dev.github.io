@@ -1,9 +1,9 @@
 ---
 layout  : wiki
 title   : LFS Paper
-summary : 
+summary : "The basic idea : collect large amounts of new data in a file cache in main memory"
 date    : 2020-07-16 20:35:14 +0900
-lastmod : 2020-08-22 20:27:58 +0900
+lastmod : 2020-08-23 20:20:12 +0900
 tags    : [filesystem, lfs]
 draft   : false
 parent  : ssd
@@ -133,6 +133,7 @@ parent  : ssd
  * When a system crash occurs, such as sudden shutdown, and reboot the system.
  * In many other file system, Crash recovery has very high costs.
  * However, Sprite LFS can improve this performance to use `checkpoints` and `roll-forward`
+ 
 #### 4.1. Checkpoints
  * To create a checkpoint, We have to take two steps.
  * First, it writes out all modified information to the log, including file data blocks, indirect blocks, inodes, and blocks of the inode map and segment usage table.
@@ -152,26 +153,29 @@ parent  : ssd
  * During roll-forward, the diretory operation log is used to ensure consistency between directory entries and inodes.
  * The interaction between the directory operation log and checkpoints introduced additional synchronization issues.
  
+---
 ### 5. Experience with the Sprite LFS
+#### 5.1. Micro-benchmarks
  * ![figure8.png](/wiki/images/lfs-figure8.png)
  * ![figure9.png](/wiki/images/lfs-figure9.png)
-#### 5.1. Micro-benchmarks
+ * 밴치마크를 지금 평가하기에는 조금 어려운듯. 논문 출판년도가 년도이고, 이때 당시에는 SSD 보다는 HDD 였을테니, 그냥 그랬구나하면서 끝내고, 논문에서 분석한 이유? 정도만 요약하면 될듯. 추가적으로 LFS의 뒤를 잇는 F2FS 를 다시 읽어보는게 더 좋을듯.
+ * The data is too old to analyze. We just see `Sprite LFS` is better especially on writes.
+ 
 #### 5.2. Cleaning overheads
+ * ![table2.png](/wiki/images/lfs-table2.png)
+ * 밴치마크들은 이야기하는 것 보다 그냥 보는게 낳은듯 더 이상 정리 안함.
+ * There are two reasons that the experience benchmarks is better than the simulations and predictions.
+ * First, in practice, there are a substantial number of longer files and they tend to be written and deleted as a whole, however in simulations, just a sing block long. It affects locality each segments.
+ * Second, data temperatures is different. In practice, it has much gap between hot data and cold data.
+ 
 #### 5.3. Crash recovery
+ * Skip
 #### 5.4. Other overheads in Sprite LFS
+ * Because of the short checkpoint interval, metadata is unnecessary often accessed.
+  
 ### 6. Related work
+ * Skip
+  
 ### 7. Conclusion
+ * The basic principle behind a lfs is "collect large amounts of new data in a file cache in main memory".
 
----
-### 나름 영어 요약해보기
-```
-The Design and Implementation of a Log-Structured File system.
-
-Last decades, many file systems has stayed on the backup writing named "journaling". It was efficient with low CPU speeds and memories. But, the main bottleneck on the computer system is disk writing when CPU speeds and memories increased. So, we must focus on the structure which are written into the disk.
-
-Because many read requests can be buffered into the memory cache, Disk access times accounts for the writings. And many of writing times account for seeking time. A lot of data are scattered on the disk and it causes random accesses. In this point, we introduce a log-structured file system based on sequential writings.
-
-The basic ideas are buffering a sequence of file system changes in the cache and then writing all the changes to disk sequentially in a single disk write operation. This single write operation contains file data blocks, attributes, index. blocks, directories and almost all the other information. We call it "log". A past paper already introduce this concept. However it was only to writing temporarily. We use the log permanently. 
-
-A Log-Structured File system actually has two issues.
-```
