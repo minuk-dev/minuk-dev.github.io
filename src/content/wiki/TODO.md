@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-08-23 20:30:10 +0900
+lastmod : 2020-08-26 20:02:04 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -14,7 +14,7 @@ parent  :
 
 ## 공부
 ### SSD
- * [.] simplessd
+ * [.] [[simplessd]]
    * [o] host interface layer
      * [X] simplessd 공식 문서 읽기
      * [o] linux kernel 에서 해당하는 부분 공부하기
@@ -75,10 +75,10 @@ parent  :
  * [ ] 스테가노그레피 원리
  * [ ] 무선 통신 이론 공부하기
    * [ ] Queueing Theory
- * [ ] NFS 파일 시스템 동작 원리 공부하기
-   * [ ] RAID 공부하기
-     * [ ] RAID 종류 정리
-     * [ ] RAID 에서는 Cocurrency 고려 안하나?
+ * [X] NFS 파일 시스템 동작 원리 공부하기
+   * [X] RAID 공부하기
+     * [X] RAID 종류 정리
+     * [X] RAID 에서는 Cocurrency 고려 안하나?
  * [X] WAS와 대표 IP 공부하기 (아마도 로드밸런싱)
 
 ## 잡다

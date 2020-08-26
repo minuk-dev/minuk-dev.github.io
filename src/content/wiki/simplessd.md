@@ -3,7 +3,7 @@ layout  : wiki
 title   : simple-ssd
 summary : 
 date    : 2020-06-10 19:39:41 +0900
-lastmod : 2020-07-14 20:14:38 +0900
+lastmod : 2020-08-26 20:54:02 +0900
 tags    : [ssd]
 parent  : ssd
 ---
@@ -21,6 +21,9 @@ parent  : ssd
 ## 문서 읽기
  * 그냥 홈페이지에 있는 문서를 읽어보자. 중요하니까 정리해놨겠지
 
+ 
+## 그림으로 그려보기
+ * ![simplessd drawio](/wiki/images/simplessd.png)
 ---
 ### Host Interface Layer
  * HIL 이라고도 불리는 Host Interface Layer에 대한 설명이다.
