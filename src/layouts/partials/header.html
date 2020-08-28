@@ -25,7 +25,7 @@
           </script>
 
         {{ if .Site.Params.MathJax | default true }}
-            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+          {{ partial "mathjax" .}}
         {{ end }}
 
         {{ partial "head-close" . }}
