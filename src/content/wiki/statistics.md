@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-08-28 23:52:01 +0900
+lastmod : 2020-08-29 16:51:19 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -143,3 +143,71 @@ parent  :
    * $$E(X) = \frac{1}{p}$$
    * $$Var(X) = \frac{1-p}{p^2}$$
    * $$M_X(t) = \frac{pe^t}{1 - (1-p)e^t}I(t < -ln(1 - p)$$
+ * `Negative Hypergeometric Distribution`
+   * `The negative hypergeometric distribution` describes probabilities for when sampling from a finite population without replacement in which each sample can be classified into two mutually exclusive categories.
+   * $$f(x) = \frac{\binom{k+1r-1}{k} \binom{N-r-k}{K-k}}{\binom{N}{K}} I(0 \le k \le K)$$
+   * $$E(X) = r \frac{K}{N-K+1}$$
+   * $$Var(X) = r \frac{(N+1)K}{(N-K+1)(N-K)+2} [1 - \frac{r}{N-K+1}]$$
+ * `Possion Distribution`
+   * `The poisson distribution` is a `discrete probability distribution` that expresses the probability of a given number of events occurring in a fiexd interval of time or space if these events occur with a known constant mean rate and independently of the time since the last event.
+     * The experiment consists of counting the number of events that will occur during a specific interval of time or in a specific distance, area,or volume.
+     * The probability that an event occurs in a given time, distance, area, or volume is the same.
+     * Each event is independent of all other events.
+   * $$f(x) = \frac{\lambda ^x e ^{-\lambda}}{k !}$$
+   * $$E(X) = \lambda$$
+   * $$Var(X) = \lambda$$
+   * $$M_X(t) = exp(\lambda (e^t - 1))$$
+ * `Possion Distribution`, `Binomial Distribution`, `Hypergeometric Distribution`
+   * `Poisson` - conditioning -> `Binomial` - conditioning -> `Hypergeometric`
+   * `Poisson` <- limit - `Binomial` <- limit - `Hypergeometric`
+ * `Uniform Distribution`
+   * `The continuous uniform distribution` is a family of `symmetric probability distributions`.
+   * It describes an experiment where there is an arbitrary outcome that lies between certain bounds.
+   * $$f(x) = \frac{1}{b-1} I(a \le x \le b)$$
+   * $$E(X) = \frac{a+b}{2}$$
+   * $$Var(X) = \frac{(b-a)^2}{12}$$
+   * $$M_X(t) = \frac{e^{tb} - e^{ta}}{t(b-a)} I(t \neq 0) + I(t = 0)$$
+ * `Normal Distribution`
+   * `A normal distribution` is a type of `continuous probability distribution` for real-valued random variable.
+   * $$f(x) = \frac{1}{\sigma \sqrt{2 \pi}} e ^{- \frac{1}{2} (\frac{x- \mu}{\sigma})^ 2}$$
+   * $$E(X) = \mu$$
+   * $$Var(X) = \sigma ^ 2$$
+   * $$M_X(t) = exp(\mu t + \sigma^2 t^2 / 2)$$
+ * `Gamma Distribution`
+   * $$\Gamma(\alpha) = \int_0^{\infty} x^{\alpha - 1} e ^ {- x} dx \\ = \lim_{n \rightarrow \infty} \frac{n! n^{\alpha}}{\alpha (\alpha + 1) (\alpha + 2) ... (\alpha + n)}$$
+   * $$\Gamma(1) = 1$$
+   * $$\Gamma(\frac{1}{2}) = \sqrt{\pi}$$
+   * $$\Gamma(\alpha + 1) = \alpha \Gamma(\alpha)$$
+   * $$n \in \mathbb{R}, \Gamma(n + 1) = n!$$
+   * `The gamma distribution` is a two-parameter family of continuous probability distributions.
+   * There are two parameters, a shape parameter \\(\alpha \\) and an scale parameter \\( \beta \\).
+   * $$f(x) = \frac{1}{\beta^\alpha \cdot \Gamma(\alpha)} x^{\alpha-1}e^{- \frac{x}{\beta}}$$
+   * $$E(X) = \alpha\beta$$
+   * $$Var(X) = \alpha \beta ^2$$
+   * $$M_X(t) = (1 - \beta t)^{-\alpha} I (t < \frac{1}{\beta})$$
+ * `Exponential Distribution`
+   * `The exponential distribution` is a specific form of `gamma distribution`.
+   * It is the probiability distribution of the time between events in a Possion point process.
+   * $$f(x) = \frac{1}{\beta} e ^{- \frac{x}{\beta}} I(x > 0)$$
+   * $$E(X) = \beta$$
+   * $$Var(X) = \beta^2$$
+ * `Beta Distribution`
+   * It is important in baysian statistics.
+   * `The beta distribution` is a family of continuous probability distributions defined on the interval [0, 1] parameterized by two positive shape parameters, denoted by \\(\alpha \\) and \\(\beta \\), that appear as exponents of the random variable and control the shape of the distribution.
+   * The beta distribution has been applied to model the behavior of random variables limited to intervals of finite length in a wide variety of disciplines.
+   * Beta Function \\( B(\alpha, \beta) \\)
+     * $$B(\alpha, \beta) = \int _0 ^1 x^{\alpha - 1} (1 - x) ^{\beta - 1} dx$$
+     * $$B(\alpha, \beta) = \frac{\Gamma(\alpha) \Gamma(\beta)}{\Gamma(\alpha + \beta)}$$
+     * $$B(\alpha, \beta) = B(\beta, \alpha)$$
+     * $$B(\alpha, \beta) = 2 \int_0 ^{\frac{\pi}{2}} (cos \theta)^{2 \alpha -1} (sin \theta)^{2 \beta - 1} d\theta$$
+     * $$B(\alpha, \beta) = \int_0^1 \frac{s ^{\alpha - 1}}{(1 + s) ^{\alpha + \beta}} ds$$
+     * $$B(\alpha, \beta) = \frac{(\alpha - 1)!}{(\alpha -1 + \beta) (\alpha -2 + \beta) ... (1+\beta) \beta}$$
+     * $$B(\alpha, \beta) = \frac{(\alpha - 1) (\beta - 1)}{(\alpha + \beta -1) (\alpha + \beta - 2)} B(\alpha - 1, \beta - 1)$$
+   * $$f(x) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1-x)^{\beta - 1} I(0 < x < 1)$$
+   * $$E(X) = \frac{\alpha}{\alpha + \beta}$$
+   * $$Var(X) = \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}$$
+   * Generialized beta distribution
+     * $$f(x) = \frac{1}{B(\alpha, \beta} (x - a)^{\alpha - 1} (b - x)^{\beta - 1} I(a < x < b)$$
+     * $$ X \sim GBETA(\alpha, \beta, a, b)$$
+     * $$E(X) = (b-a) \frac{\alpha}{\alpha + \beta} + a$$
+     * $$Var(X) = (b-a)^2 \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$$

@@ -1,7 +1,7 @@
 ---
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-08-08 00:10:21 +0900
+lastmod: 2020-08-29 16:54:23 +0900
 ---
 ## 즐겨찾기
  * [[사지방]]
@@ -23,8 +23,7 @@ lastmod: 2020-08-08 00:10:21 +0900
  * [[tool]]
  * [[사지방]]
  * [[linux]]
- * [[SSD]]
- * [[database]]
+ * [[Storage]]
  * [[english]]
 ### Algorithm
  * [[teamnote]]
