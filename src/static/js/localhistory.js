@@ -83,10 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (hidden_history !== null) {
     hidden_history.addEventListener('click', (event) => {
       event.stopPropagation();
-      showAllHistory(document.querySelector('.hidden-history'), true);
+      showAllHistory(hidden_history, true);
+    });
+    document.querySelector('html').addEventListener('click', () => {
+      showAllHistory(hidden_history, false);
     });
   }
-  document.querySelector('html').addEventListener('click', () => {
-    showAllHistory(document.querySelector('.hidden-history'), false);
-  })
 });
