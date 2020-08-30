@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-08-26 20:02:04 +0900
+lastmod : 2020-08-30 23:09:12 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -48,8 +48,8 @@ parent  :
  * [o] 히스토리 기능
    * [X] 마우스 올리면 전체 표시됬다가, 마우스 벗어나면 다시 3개만 출력되도록 하자 (일단 올리면 되는건 짬)
    * [X] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
-   * [ ] history reset 기능 추가
-   * [ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.
+   * ~~[ ] history reset 기능 추가~~
+   * ~~[ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.~~
  * [X] about 페이지 만들기
  * [X] 읽은 논문 정리
  * [ ] meta data 정리
@@ -70,9 +70,9 @@ parent  :
 
 ### 갑자기 궁금해져서 공부해야하는거
  * [ ] gzip 압축 알고리즘
- * [ ] JPG 압축 원리
-   * [ ] Fourier Transform
- * [ ] 스테가노그레피 원리
+ * [X] JPG 압축 원리
+   * [X] Fourier Transform
+ * [ ] ~~스테가노그레피 원리~~
  * [ ] 무선 통신 이론 공부하기
    * [ ] Queueing Theory
  * [X] NFS 파일 시스템 동작 원리 공부하기
