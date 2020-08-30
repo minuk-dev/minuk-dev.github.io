@@ -79,11 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
   var hist = document.querySelector('.wiki-history');
   displayHistory(hist);
   if (hist) convertWikiLink(hist);
-  document.querySelector('.hidden-history').addEventListener('click', (event) => {
-    event.stopPropagation();
-    showAllHistory(document.querySelector('.hidden-history'), true);
-  });
-  document.querySelector('html').addEventListener('click', () => {
-    showAllHistory(document.querySelector('.hidden-history'), false);
-  })
+  let hidden_history = document.querySelector('.hidden-history');
+  if (hidden_history !== null) {
+    hidden_history.addEventListener('click', (event) => {
+      event.stopPropagation();
+      showAllHistory(hidden_history, true);
+    });
+    document.querySelector('html').addEventListener('click', () => {
+      showAllHistory(hidden_history, false);
+    });
+  }
 });
