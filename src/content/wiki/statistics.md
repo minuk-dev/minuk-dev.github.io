@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-08-29 16:51:19 +0900
+lastmod : 2020-09-01 20:53:29 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -211,3 +211,41 @@ parent  :
      * $$ X \sim GBETA(\alpha, \beta, a, b)$$
      * $$E(X) = (b-a) \frac{\alpha}{\alpha + \beta} + a$$
      * $$Var(X) = (b-a)^2 \frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}$$
+
+ * `Transformation of Random Variables`
+   * `확률 변수 X의 확률분포는 f(x)이고, 확률변수 Y는 Y=u(X)라는 일대일 관계가 성립한다. y= u(x)를 x에 관하여 푼 유일한 x = w(y) 일 때, Y의 확률분포 g(y)=f[w(y)] 이다.`
+   * `연속확률변수 X의 확률분포가 f(x)이고, X와 Y 사이에는 일대일 대응 관계가 성립해서 y=u(x)를 풀면 유일하게 x=w(y)로 될때, Y의 확률분포 g(y)=f(w(y)) |J|이다. 여기서 J=w'(y)이며, J를 야코비안이라 한다.`
+ * `Moment-Generating Function`
+   * `The moment-generating funciton` of a real-valued random variable is an alternative specification of its probability distribution.
+   * Not all random variable have moment-generating functions.
+   * $$M_X(t) = E[e^{tX}], t \in R$$
+   * $$M_X(0) = 1$$
+   * $$e^{tX} = 1 + tX + \frac{t^2 X^2}{2!} + \frac{t^3 X^3}{3!} + \cdots + \frac{t^n X^n}{n!} + \cdots \\\\ \text{hence, } M_X(t) = E(e^{tX}) = 1 + tE(X) + \frac{t^2 E(X^2)}{2!} + \frac{t^3 E(X^3)}{3!} + \cdots + \frac{t^nE(X^n)}{n!} \cdots \\\\ = 1 + tm_1 + \frac{t^2 m_2}{2!} + \frac{t^3 m_3}{3!} + \cdots + \frac{t^n m_n}{n!} + \cdots, \\\\ \text{ where } m_n \text{is the } n \text{th moment.}$$
+ * `Sampling`
+   * `population` : A population can be defined as including all people or items with the characteristic one wishes to understand.
+   * `complete enumeration`
+   * `sample` :the selection of a subset of individuals
+   * `sampleing` : sampling is the selection of a subset of individuals from within a statistical population to estimate chracteristics of the whole population.
+   * `random sampling`
+   * `purposive sampling` 
+   * $$\text{When n independent probabilities } X_1, X_2, X_3, ..., X_n \\\\ \text{ exist and each random variable has the same probability distribution } f(x), \\\\ \text{define } X_1, X_2, X_3, ... X_n \text{ as n samples from the population, and the combined probability density function is } \\\\ f(x_1, x_2, ..., x_n) = f(x_1)f(x_2) ... f(x_n)$$
+ * `Sample Mean & Sample Variance of Random Samples`
+   * Random Sample has these properties
+     * When sampling n samples, each sample is independent.
+     * Each sample has the same probability distribution.
+     * $$E(X_i) = E(X) = \mu < \infty, i = 1, 2, ..., n $$
+     * $$0 < Var(X_i) = Var(X) < \infty , i = 1, 2, ..., n $$
+   * $$\text{Define } X_1, X_2, ..., X_2 \text{ is as n samples,} \\\\ \bar X = \frac{1}{n} \sum_{i=1}^n X_i$$
+   * $$S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar X)^2$$
+ * `Central Limit Theorem`
+   * `The central limit theorem (CLT)` establishes that, in some situations, when independent random variables are added, their properly normalized sum tends toward a normal distribution even if the original variables themselves are not normally distributed.
+   * If \\(X_1, X_2, ..., X_n \\) are random samples each of size \\(n\\) taken from a population with overall mean \\(\mu \\) and finite variance \\(\sigma^2 \\) and if \\(\bar X \\) is the sample mean, the lmiting from of the distribution of \\(Z = (\frac{\bar X_n - \mu}{\sigma / \sqrt{n}}) \\) as \\( n \rightarrow \infty \\), is the standard normal distribution.
+ * `Chi-Squared Distribution`
+   * $$f(x) = \frac{1}{2^{v / 2} \Gamma (v / 2)} x^{v / 2 -1} e ^{- x / 2}$$
+   * If random variables \\(X_1, X_2, ... , X_n \\) are independent from each other and follow \\(N(\mu, \sigma^2) \\), \\( Y = \sum_{i=1}^n (\frac{X_i - \mu}{\sigma})^2 \\) follows \\(\chi ^2 (n) \\).
+   * `Degree of freedom`
+ * `Student-T Distribution`
+   * When \\(X_1, X_2, ..., X_n \\) are random samples from the population which follows \\(N(\mu, \sigma ^2) \\) and define the sample variance \\( S^2 \\), \\(\frac{(n-1) S^2}{\sigma^2} = \sum_{i=1}^n \frac{(X_i - \bar X)^2}{\sigma ^2} \sim \chi ^2 (n-1) \\)
+   * When \\(Z \sim N(0, 1), V \sim \chi^2(v) \\) are independent, \\(T=\frac{Z}{\sqrt{\frac{V}{z}}} \sim T(v) \\).
+   * $$f(x) = \frac{\Gamma(\frac{v+1}{2})}{\Gamma (\frac{v}{2} ) \sqrt{\pi v})} ( 1 + \frac{t^2}{v}) ^{- \frac{v + 1}{2}}, -\infty < t < \infty$$
+   * t- 분포는 모집단의 분산(혹은 표준편차)이 알려지ㅕ 있지 않은 경우 정규분포 대신 이용하는 확률 분포.
