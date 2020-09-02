@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-01 20:53:29 +0900
+lastmod : 2020-09-02 20:49:16 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -248,4 +248,67 @@ parent  :
    * When \\(X_1, X_2, ..., X_n \\) are random samples from the population which follows \\(N(\mu, \sigma ^2) \\) and define the sample variance \\( S^2 \\), \\(\frac{(n-1) S^2}{\sigma^2} = \sum_{i=1}^n \frac{(X_i - \bar X)^2}{\sigma ^2} \sim \chi ^2 (n-1) \\)
    * When \\(Z \sim N(0, 1), V \sim \chi^2(v) \\) are independent, \\(T=\frac{Z}{\sqrt{\frac{V}{z}}} \sim T(v) \\).
    * $$f(x) = \frac{\Gamma(\frac{v+1}{2})}{\Gamma (\frac{v}{2} ) \sqrt{\pi v})} ( 1 + \frac{t^2}{v}) ^{- \frac{v + 1}{2}}, -\infty < t < \infty$$
-   * t- 분포는 모집단의 분산(혹은 표준편차)이 알려지ㅕ 있지 않은 경우 정규분포 대신 이용하는 확률 분포.
+   * t- 분포는 모집단의 분산(혹은 표준편차)이 알려져 있지 않은 경우 정규분포 대신 이용하는 확률 분포.
+ * `Snedecor's F-Distribution`
+   * `The F-distribution`, also known as `Snedecor's f Distribution` or the `Fisher-Snedecor distribution` is a continuous probability distribution that aries frequently as the null distribution of a test statistic, most notably in th analysis of variance (ANOVA).
+   * `The null distribution` is the probability distribution of the test statistic when the null hypothesis is true.
+   * It is used to check whether two or more sample means are drawn from the same population.
+   * When \\(U, V``\\) are independent random variables and they follow \\(\chi^2\\) distribution with \\(v_1, v_2\\) degrees of freedom, \\(F = \frac{U/v_1}{V/v_2} \\) follows F-distribution with (\\(v_1, v_2 \\)) degrees of freedom.
+   * $$f(x) = \frac{ \sqrt{\frac{(d_1x)^{d_1} d_2^{d^2}}{(d_1 x + d_2)^{d_1 + d_2}}}}{x B(d_1 / 2, d_2 / 2)}$$
+   * $$E(X) = \frac{d_2}{d_2 - 2} \text{ for }d_2 > 2$$
+   * $$f_{1 - \alpha} (v_1, v_2) = \frac{1}{f_{\alpha}(v_2, v_1)}$$
+   * Assuming that the variances of samples of sizes \\(n_1\\) and \\(n_2\\) extracted independently of each other from the normal population with population variances \\(\sigma_1^2\\) and \\(\sigma_2^2\\), respectively, are \\(S_1^2\\) and \\(S_2^2\\), \\(F=\frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2} = \frac{S_1^2 \sigma_2^2}{S_2^2 \sigma_2^2} \sim F(n_1-1, n_2 -1)\\)
+ * `Point Estimation`
+   * Statistical inference` : estimation, test
+   * Estimation : point estimation vs interval estimation
+   * Point Estimator
+     * minimum-variance mean-unbiased estimator(MVUE) : minimizes the risk of the squared-error loss-funciton.
+     * best linear unbiased estimator(BLUE)
+     * minimum mean squared error (MMSE)
+     * median-unbiased esitmator, minimizes the risk of the absolute-error loss function
+     * maximum likelihood estimator (MLE)
+     * method of moments and generalized method of moments
+   * $$\hat \theta = h (X_1, X_2, ..., X_n)$$
+   * Moment method vs Maximum Likelihood method
+   * Bias
+     * $$B(\hat \theta) = E(\hat \theta) - \theta$$
+     * When \\(B(\hat \theta) = 0\\), this estimator \\(\theta\\) is called `unbiased estimator`
+   * Error
+     * $$MSE(\hat \theta) = E[(\hat \theta - \theta) ^2] \\\\ = Var(\hat \theta) + \{B(\hat \theta)\}^2$$
+   * Which estimator is the better estimator?
+     * $$Var(\hat \theta_1) < Var(\hat \theta_2) \Rightarrow \theta_1 \text{ is better than } \theta_2$$
+   * likelihood function
+     * $$L(x_1, x_2, ..., x_n; \theta)$$
+     * If \\(X_1, X_2, ..., X_n \\) are the samples from independent random variables which of pdf is \\(f(x;\theta) \\), \\(L(x_1, x_2, ..., x_n;\theta) = f(x_1;\theta) f(x_2; \theta) ... f(x_n; \theta) = \Pi_{i=1}^n f(x_i; \theta) \\)
+ * `Interval Estimation`
+   * $$P(\hat \theta_l \le \theta \le \hat \theta_h) = 1 - \alpha \text{, } (0 < \alpha < 1)$$
+   * confidence level : \\(1 - \alpha \\)
+   * confidence interval : \\(100 ( 1- \alpha) % \\)
+ * `Estimating the Mean`
+   * Known the variance of population (\\(\sigma^2 \\))
+     * $$\bar X - z_{\frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}} \le \mu \le \bar X + z_{\frac{\alpha}{2}} \frac{\sigma}{\sqrt{n}}$$
+   * Unknown the variance of population
+     * $$\bar X - t_{\frac{\alpha}{2} (n-1)} \frac{S}{\sqrt{n}} \le \mu \le \bar X + t_{\frac{\alpha}{2} (n-1)} \frac{S}{\sqrt{n}}\text{ degree of freedom is n-1 }$$
+   * In generally, t-distribution is used when #sample < 30
+ * `Estimating the Variance`
+   * When the population is normal distributiona and #sample n, the variance of sample \\(S^2\\),
+   * $$\frac{(n-1)S^2}{\chi_{\frac{\alpha}{2}} ^2} \le \sigma^2 \le \frac{(n-1) S^2}{\chi_{1 - \frac{\alpha}{2} ^ 2}}$$
+ * `Estimating the Proportion`
+   *$$\hat p - z_\frac{\alpha}{2} \sqrt{\frac{\hat p (1 - \hat p)}{n}} \le p \le \hat p + z_{\frac{\alpha}{2}} \sqrt{\frac{\hat p (1 - \hat p)}{n}}$$ 
+ * `Testing a Statistical Hypothesis`
+   * Null hypothesis
+   * alternative hypothesis
+   * Critical value : A critical value is a point on the test disribution that is compared to the test statistic to determine whether to reject the null hypothesis. If the absolute value of your test statistic is greater than the critical value, you can declare statistical significance and reject the null hypothesis.
+ * `Error of Testing Statistical Hypothesis`
+   * type 1 error : alternative hypothesis is true, but it is rejected.
+   * type 2 error : alternative hypothesis is false, but is is accepted.
+   * $$ \alpha = P(\text{type 1 error}) = P(H_0 \text{ is rejected} | H_0 \text { is true})$$
+   * $$ \beta = P(\text{type 2 error}) = P(H_0 \text{ is accepted} | H_0 \text {is false})$$
+ * `One-Sided Test and Two-Sided Test`
+   * One-Sided Test
+     * $$H_0 : \theta = \theta_0, H_1 : \theta > \theta_0$$
+     * $$H_0 : \theta = \theta_0, H_1 : \theta < \theta_0$$
+     * $$H_0 : \theta \le \theta_0, H_1 : \theta > \theta_0$$
+     * $$H_0 : \theta \ge \theta_0, H_1 : \theta < \theta_0$$
+   * Two-Sided Test
+     * $$H_0 : \theta = \theta_0, H_1 : \theta \not = \theta_0$$
