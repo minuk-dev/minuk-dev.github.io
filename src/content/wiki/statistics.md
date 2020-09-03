@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-02 20:49:16 +0900
+lastmod : 2020-09-03 20:25:53 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -312,3 +312,68 @@ parent  :
      * $$H_0 : \theta \ge \theta_0, H_1 : \theta < \theta_0$$
    * Two-Sided Test
      * $$H_0 : \theta = \theta_0, H_1 : \theta \not = \theta_0$$
+ * `Hypothesis Test on the Difference between Two Means`
+   * Known the variances of two populations.
+     * $$Z = \frac{(\bar X - \bar Y) - (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}$$
+     * Two Sided Test : \\(|Z| \ge z_{\frac{\alpha}{2}} \\)
+     * One Sided Test : \\(Z \ge z_{\alpha} \\) or \\(Z \le z_{\alpha} \\)
+   * Unkown the variance of two populations.(n >= 30)
+     * $$Z = \frac{(\bar X - \bar Y) - (\mu_1 - \mu_2)}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
+     * Two Sided Test : \\(|Z| \ge z_{\frac{\alpha}{2}} \\)
+     * One Sided Test : \\(Z \ge z_{\alpha} \\) or \\(Z \le z_{\alpha} \\)
+   * Unkown the variance of two populations.(n < 30)
+     * $$T = \frac{(\bar X - \bar Y) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+     * $$S_p = \sqrt{\frac{(n_1 - 1) S_1^2 + (n_2 - 1)S_2 ^2}{n_1 + n_2 - 2}}$$
+     * Two Sided Test : \\(|T| \ge t_{\frac{\alpha}{2}} (n_1 + n_2 - 2) \\)
+     * One Sided Test : \\(T \ge t_{\alpha} ( n_1 + n_2 - 2) \\) or \\(T \le -t_{\alpha} (n_1 + n_2 - 2) \\)
+
+ * `Hypothesis Test on the Ratio between Two Variances`
+   * We test on the ratio between two variances, so we presume the two variances are same.
+   * $$F=\frac{S_1^2}{S_2^2}$$
+   * Two Sided Test : \\(F \ ge F_{\frac{\alpha}{2} (n_1 - 1, n_2 - 1)}, F \le F_{1 - \frac{\alpha}{2} (n_1 - 1, n_2 - 1)} \\)
+   * One Sided Test
+     * $$F \ge F_{\alpha} (n_1 -1, n_2 - 1) \text{, right sided test}$$
+     * $$F \le F_{1 - \alpha} (n_1 -1, n_2 - 1) \text{, left sided test}$$
+ * `Hypothesis Test on the Difference between Two Proportion`
+   * We hypothesize the two proportion is same. \\(p_1 = p_2 \\)
+   * $$ Z = \frac{\hat p_1 - \hat p_2}{\sqrt{\hat p ( 1 - \hat p) ( \frac{1}{n_1} + \frac{1}{n_2})}} $$
+   * Two Sided Test : \\(|Z| \ge z_{\frac{\alpha}{2}} \\)
+   * One Sided Test : \\(z \ge z_{\alpha} \\) or \\(z \le z_{\alpha} \\)
+ * `Correlation Analysis`
+   * $$Cov(X, Y) = E(XY) - E(X)E(Y)$$
+   * $$\rho (X, Y) = \frac{Cov(X, Y)}{\sqrt{Var(X)} \sqrt{Var(Y)}} = \frac{\sigma _{XY}}{ \sigma _X \sigma _Y}$$
+ * `Sample Correlation Coefficient`
+   * $$S_{XY} = \frac{1}{n-1} \{ \sum_{i=1}^n X_i Y_i - \frac{\sigma_{i = 1}^n X_i \sum_{i = 1}^n Y_i}{n} \}$$
+   * $$S_{XX} = \frac{1}{n-1} \{\sum_{i=1}^n X_i^2 - \frac{(\sum_{i=1}^n X_i)^2}{n} \}$$
+   * $$\rho(X, Y) = \frac{\rho_{XY}}{\rho_X \rho_Y}, -1 \le \rho(X, Y) \le 1$$
+   * $$r(X, Y) = \frac{S_{XY}}{S_{XX} S_{YY}}, -1 \le r(X, Y) \ le 1 \\\\ = \frac{n \sum_{i = 1}^n X_iY_i - \sum_{i=1}^n X_i \sum_{i = 1}^n Y_i}{\sqrt{n \sum_{i=1}^n X_i^2 - (\sum_{i=1}^n X_i)^2} \sqrt{n \sum_{i=1}^n Y_i^2 - (\sum_{i=1}^n Y_i)^2}} = \frac{\sum_{i=1}^n (X_i - \bar X)(Y_i - \bar Y)}{\sqrt{\sum_{i=1}^n (X_i - \bar X)^2} \sqrt{\sum_{i=1}^n (Y_i - \bar Y)^2}}$$
+   * $$\rho (X, Y) = \rho (aX + b, cY + b)$$
+ * `Regression Analysis`
+   * tendency, dependency -> prediction
+   * simple regression, multiple regression
+   * Regression analysis is a set of statistical processes for estimating the relationships between a dependent variable (often called the 'outcome variable') and one or more independent variables (often called 'predictors', 'covariates', or 'features').
+ * `Simple Linear Regression Model`
+   * $$y_i = \beta_0 + \beta_1 x_i + \epsilon _i, (i = 1 \text{ to } n)$$
+ * `Finding Regression Coefficient`
+   * \\(\beta_0, \beta_1 \\) : regression coefficient
+     * \\(\beta_0 \\) : intercept coefficient
+     * \\(\beta_1 \\) : slop coefficient
+   * Original (Population)
+     * $$\beta_0 = E(y) - \beta_1 E(x)$$
+     * $$\beta_1 = \frac{Cov(x, y)}{Var(x)}$$
+
+   * Sample
+     * $$\bar x = \frac{x_1 + x_2 + ... + x_n}{n}$$
+     * $$\bar y = \frac{y_1 + y_2 + ... + y_n}{n}$$
+     * $$S_{xx} = \sum_{i=1}^n(x_i - \bar x)^2, S_{yy} = \sum_{i=1}^n(y_i - \bar y)^2$$
+     * $$S_{xy} = \sum_{i=1}^n(x_i - \bar x)(y_i - \bar y)$$
+     * $$\hat \beta_1 = \frac{S_{xy}}{S_{xx}}, \hat \beta_0 = \bar y - \hat \beta_1 \bar x$$
+     * $$\hat y = \hat \beta_0 + \hat \beta_1 x$$
+     * $$\hat y_i = \hat \beta_0 + \hat \beta_1 x_i$$
+     * $$e_i = y_i - \hat y_i (i = 1 \text{ to } n)$$
+ * `The Method of Least Squares`
+   * $$e_i^2 = (y_i - \hat y_i)^2$$
+   * $$SSE = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2$$
+   * SSE : Sum of Squares of the Errors
+   * $$SSE = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2 = \sum_{i=1}^n (y_i - (\hat \beta_0 + \hat \beta_1 x_i))^2 \\\\ = \sum_{i=1}{n}(y_i - \hat \beta_0 - \hat \beta_i x_i)^2$$
+   * $$\text{From the partial derivative, } \hat \beta_1 = \frac{n \sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - (\sum_{i=1}^n x_i)^2} \\\\ \hat beta_0 = \frac{\sum_{i=1}^n y_i - \hat \beta_1 \sum_{i=1}^n x_i}{n}$$
