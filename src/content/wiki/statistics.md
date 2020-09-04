@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-03 20:25:53 +0900
+lastmod : 2020-09-04 20:03:44 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -353,7 +353,7 @@ parent  :
    * simple regression, multiple regression
    * Regression analysis is a set of statistical processes for estimating the relationships between a dependent variable (often called the 'outcome variable') and one or more independent variables (often called 'predictors', 'covariates', or 'features').
  * `Simple Linear Regression Model`
-   * $$y_i = \beta_0 + \beta_1 x_i + \epsilon _i, (i = 1 \text{ to } n)$$
+   * $$y_i = \beta_0 + \beta_1 x_i + \varepsilon _i, (i = 1 \text{ to } n)$$
  * `Finding Regression Coefficient`
    * \\(\beta_0, \beta_1 \\) : regression coefficient
      * \\(\beta_0 \\) : intercept coefficient
@@ -376,4 +376,18 @@ parent  :
    * $$SSE = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2$$
    * SSE : Sum of Squares of the Errors
    * $$SSE = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (y_i - \hat y_i)^2 = \sum_{i=1}^n (y_i - (\hat \beta_0 + \hat \beta_1 x_i))^2 \\\\ = \sum_{i=1}{n}(y_i - \hat \beta_0 - \hat \beta_i x_i)^2$$
-   * $$\text{From the partial derivative, } \hat \beta_1 = \frac{n \sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - (\sum_{i=1}^n x_i)^2} \\\\ \hat beta_0 = \frac{\sum_{i=1}^n y_i - \hat \beta_1 \sum_{i=1}^n x_i}{n}$$
+   * $$\text{From the partial derivative, } \hat \beta_1 = \frac{n \sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - (\sum_{i=1}^n x_i)^2} \\\\ \hat \beta_0 = \frac{\sum_{i=1}^n y_i - \hat \beta_1 \sum_{i=1}^n x_i}{n}$$
+ * `Coefficient of Determination(R-Squared)`
+   * sample coefficient
+     * $$y = \beta_0 + \beta_1 x + \varepsilon \\\\ \Rightarrow Var(y) = Var(\beta_0 + \beta_1 x + \varepsilon) \\\\ \Rightarrow Var(y) = \beta_1^2Var(x) + Var(\varepsilon)$$
+     * $$\rho ^2 = \frac{\beta_1^2Var(x)}{Var(y)} = \frac{[Cov(x,y)]^2}{Var(x) Var(y)}$$
+     * When \\(\rho ^2 \\) is close to \\(0 \\), \\(Var(\varepsilon) \\) is bigger and \\(y \\) cannot be estimated well.
+     * When \\(\rho ^2 \\) is close to \\(1 \\), \\(y \\) is more linear function of \\(x \\), we can estimate well.
+   * coefficient of determination, R-squred
+     * $$r^2 = \frac{S_{xy}^2}{S_{xx} S_{yy}}$$
+     * The coefficient of determination's value is between 0 to 1. When it is closer, more goo fit.
+
+ * Mean Squared Error
+   * $$MSE = \frac{SSE}{n-2} = \frac{\sum_{i=1}^n e_i^2}{n-2} = \frac{\sum_{i=1}^n (y_i - \hat y_i)^2}{n-2} = \frac{\sum_{i=1}^n (y_i - b_0 - b_1 x_i)^2}{n-2}$$
+   * $$E(MSE) = \sigma^2$$
+   * \\(\sigma ^2 \\) is the variance of errors in regression model, it follows Normal Distribution with mean 0, variance \\(\sigma ^2\\).
