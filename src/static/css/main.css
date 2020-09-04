@@ -127,3 +127,17 @@ details {
 .page-link {
   cursor: pointer;
 }
+
+.gsc-control-cse {
+  background-color: inherit !important;
+  border: none !important;
+}
+
+form.gsc-search-box {
+  margin-bottom: 0 !important;
+}
+
+.gsc-control-cse {
+  padding-top: 10px !important;
+  padding-bottom: 0px !important;
+}
