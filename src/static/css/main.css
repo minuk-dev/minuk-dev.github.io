@@ -123,3 +123,7 @@ details {
   padding-left: 25px;
   margin-bottom: 10px;
 }
+
+.page-link {
+  cursor: pointer;
+}
