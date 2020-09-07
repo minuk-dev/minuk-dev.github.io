@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-04 20:03:44 +0900
+lastmod : 2020-09-07 17:51:22 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -387,7 +387,22 @@ parent  :
      * $$r^2 = \frac{S_{xy}^2}{S_{xx} S_{yy}}$$
      * The coefficient of determination's value is between 0 to 1. When it is closer, more goo fit.
 
- * Mean Squared Error
+ * `Mean Squared Error`
    * $$MSE = \frac{SSE}{n-2} = \frac{\sum_{i=1}^n e_i^2}{n-2} = \frac{\sum_{i=1}^n (y_i - \hat y_i)^2}{n-2} = \frac{\sum_{i=1}^n (y_i - b_0 - b_1 x_i)^2}{n-2}$$
    * $$E(MSE) = \sigma^2$$
    * \\(\sigma ^2 \\) is the variance of errors in regression model, it follows Normal Distribution with mean 0, variance \\(\sigma ^2\\).
+ * `Properties of the Estimators of Regression Coefficient`
+   * \\(\beta_1 \\) estimator's mean and variance
+     * Proof
+       * $$\hat \beta_1 = \frac{S_{xy}}{S_{xx}} = \frac{\sum_{i=1}^n (x_i - \bar x) (y_i - \bar y)}{\sum_{i=1}^n(x_i - \bar x)^2}$$
+       * $$\sum_{i=1}^n (x_i - \bar x)(y_i - \bar y) = \sum_{i = 1}^n(x_i - \bar x) y_i$$
+       * $$\hat \beta_1 = \frac{\sum_{i=1}^n (x_i - \bar x)(y_i - \bar y)}{\sum_{i=1}^n(x_i - \bar x)^2} = \sum_{i=1}^n(x_i - \bar x)y_i}{\sum_{i=1}^n (x_i - \bar x)^2} \\\\ \Rightarrow \hat \beta_1 = \sum_{i=1}^n k_i y_i, \text{ replace } \frac{x_i - \bar x}{\sum_{i=1}^n (x_i - \bar x)^2} = k_i$$
+       * $$\sum_{i=1}^n k_i = 0 \Rightarrow \text{ Sum of Variance is 0}$$
+       * $$\sum_{i=1}^n k_i x_i = 1$$
+       * $$\sum_{i=1}^n k_i ^2 = \frac{1}{\sum_{i=1}^n (x_i - \bar x)^2}$$
+     * $$E(\hat \beta _1) = \beta-1$$
+     * $$Var(\hat \beta_1) = \frac{\sigma ^2}{\sum_{i=1}^n (x_i - \bar x)^2}$$
+   * \\(\beta_1 \\) estimator's mean and variance
+     * $$E(\hat \beta_0) = \beta_0$$
+     * $$Var(\hat \beta_0) = \sigma^2(\frac{1}{n} + \frac{\bar x ^2}{\sum_{i=1}^n(x_i - \bar x)^2})
+   * Conclusion : \\(\beta_1, \beta_0 \\) are `unbiased estimators`.
