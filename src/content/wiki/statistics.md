@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-07 17:51:22 +0900
+lastmod : 2020-09-07 18:22:49 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -396,13 +396,24 @@ parent  :
      * Proof
        * $$\hat \beta_1 = \frac{S_{xy}}{S_{xx}} = \frac{\sum_{i=1}^n (x_i - \bar x) (y_i - \bar y)}{\sum_{i=1}^n(x_i - \bar x)^2}$$
        * $$\sum_{i=1}^n (x_i - \bar x)(y_i - \bar y) = \sum_{i = 1}^n(x_i - \bar x) y_i$$
-       * $$\hat \beta_1 = \frac{\sum_{i=1}^n (x_i - \bar x)(y_i - \bar y)}{\sum_{i=1}^n(x_i - \bar x)^2} = \sum_{i=1}^n(x_i - \bar x)y_i}{\sum_{i=1}^n (x_i - \bar x)^2} \\\\ \Rightarrow \hat \beta_1 = \sum_{i=1}^n k_i y_i, \text{ replace } \frac{x_i - \bar x}{\sum_{i=1}^n (x_i - \bar x)^2} = k_i$$
+       * $$\hat \beta_1 = \frac{\sum_{i=1}^n (x_i - \bar x)(y_i - \bar y)}{\sum_{i=1}^n(x_i - \bar x)^2} = \frac{\sum_{i=1}^n(x_i - \bar x)y_i}{\sum_{i=1}^n (x_i - \bar x)^2} \\\\ \Rightarrow \hat \beta_1 = \sum_{i=1}^n k_i y_i, \text{ replace } \frac{x_i - \bar x}{\sum_{i=1}^n (x_i - \bar x)^2} = k_i$$
        * $$\sum_{i=1}^n k_i = 0 \Rightarrow \text{ Sum of Variance is 0}$$
        * $$\sum_{i=1}^n k_i x_i = 1$$
        * $$\sum_{i=1}^n k_i ^2 = \frac{1}{\sum_{i=1}^n (x_i - \bar x)^2}$$
-     * $$E(\hat \beta _1) = \beta-1$$
+     * $$E(\hat \beta _1) = \beta_1$$
      * $$Var(\hat \beta_1) = \frac{\sigma ^2}{\sum_{i=1}^n (x_i - \bar x)^2}$$
    * \\(\beta_1 \\) estimator's mean and variance
      * $$E(\hat \beta_0) = \beta_0$$
      * $$Var(\hat \beta_0) = \sigma^2(\frac{1}{n} + \frac{\bar x ^2}{\sum_{i=1}^n(x_i - \bar x)^2})
    * Conclusion : \\(\beta_1, \beta_0 \\) are `unbiased estimators`.
+ 
+ * `Distribution of the Estimators of regression Coefficient`
+   * Main question : What distributions are \\(\frac{\beta_1 - \beta-1}{S(\hat \beta_1)}, \frac{\hat \beta_0 - \beta_0}{S(\hat \beta_0)} \\) respectively?
+   * $$\frac{\hat \beta_1 - \beta_1}{S(\hat \beta_1)} = \frac{(\hat \beta_1 - \beta_1) / \sigma(\hat \beta_1)}{S(\hat \beta_1) / \sigma(\hat \beta_1)}$$
+     * $$\frac{\hat \beta_1 - \beta_1}{\sigma(\hat \beta_1)} \text{ follows the standard normal distribution}$$
+     * $$\frac{S^2(\hat \beta_1)}{\sigma^2(\hat \beta_1)} = \frac{S^2(\hat \beta_1)}{Var(\hat \beta_1)} = \frac{(MSE) / \sum_{i=1}^n (x_i - \bar x)^2}{\sigma^2 / \sum_{i=1}^n (x_i - \bar x)^2} = \frac{(MSE)}{\sigma^2} = \frac{SSE / (n - 2)}{\sigma^2} = \frac{SSE}{\sigma^2(n-2)}$$
+     * $$\frac{(SSE)}{\sigma ^2} \sim \chi ^2 (n-2)$$
+     * $$\frac{(SSE)}{\sigma^2 (n-2)} \sim \frac{\chi ^2(n-2)}{n-2}$$
+     * $$\frac{\beta_1 - \beta_1}{\sigma(\hat \beta_1)} \sim N(0, 1), \frac{S^2(\hat \beta_1)}{\sigma^2(\hat \beta_1)} \sim \frac{\chi^2(n-2)}{n-2}, \text{ Therefore, } \frac{\hat \beta_1 - \beta_1}{S(\hat \beta_1)} \sim \frac{z}{\sqrt{\frac{\chi^2(n-1)}{n-2}}}$$
+   * $$\frac{\beta_1 - \beta_1}{S(\hat \beta_1)} \sim \frac{z}{\sqrt{\frac{\chi^2(n-2)}{n-2}}} = t(n-2)$$
+   * $$\text{ Through the same induction process, } \frac{\hat \beta_0 - \beta_0}{S(\hat \beta_0)} \sim t(n-2)$$
