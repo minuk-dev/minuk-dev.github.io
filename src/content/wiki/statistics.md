@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary : 
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-07 18:22:49 +0900
+lastmod : 2020-09-07 18:45:47 +0900
 tags    : [statistics, math]
 draft   : false
 parent  : 
@@ -417,3 +417,18 @@ parent  :
      * $$\frac{\beta_1 - \beta_1}{\sigma(\hat \beta_1)} \sim N(0, 1), \frac{S^2(\hat \beta_1)}{\sigma^2(\hat \beta_1)} \sim \frac{\chi^2(n-2)}{n-2}, \text{ Therefore, } \frac{\hat \beta_1 - \beta_1}{S(\hat \beta_1)} \sim \frac{z}{\sqrt{\frac{\chi^2(n-1)}{n-2}}}$$
    * $$\frac{\beta_1 - \beta_1}{S(\hat \beta_1)} \sim \frac{z}{\sqrt{\frac{\chi^2(n-2)}{n-2}}} = t(n-2)$$
    * $$\text{ Through the same induction process, } \frac{\hat \beta_0 - \beta_0}{S(\hat \beta_0)} \sim t(n-2)$$
+
+ * `Interval Estimation for Regression Coefficient`
+   * \\( \beta_1 \\) 's  interval estimation
+     * $$P[t_{\frac{\alpha}{2}} (n -2) \le \frac{\hat \beta_1 - \beta_1}{S(\hat \beta_1)} \le t_{1 - \frac{\alpha}{2}} (n-2)] = 1 - \alpha$$
+     * $$P[\hat \beta_1 - t_{1 - \frac{\alpha}{2}} (n-2) S(\hat \beta _1) \le \beta_1 \le \hat \beta_1 + t_{1 - \frac{\alpha}{2}} (n-2) S(\hat \beta_1)] = 1 - \alpha$$
+   * \\( \beta_0 \\) 's interval estimation
+     * $$P[\hat \beta_0 - t_{1 - \frac{\alpha}{2}}(n-2) S(\hat \beta_0) \le \beta_0 \le \hat \beta_0 + t_{1 - \frac{\alpha}{2}} (n-2) S(\hat \beta_0)] = 1 - \alpha$$
+
+ * `Joint Memoent Generating Function`
+   * $$M(s, t) = E(e^{sX + tY}) \Rightarrow M(s, 0) = E(e^{sX}), M(0, t) = E(e^{t Y})$$
+   * $$E(X^n) = \frac{\partial ^n M(s, t)}{\partial s ^n}_{(0, 0)}$$
+   * $$E(Y^n) = \frac{\partial ^n M(s, t)}{\partial t ^n}_{(0, 0)}$$
+   * $$E(XY) = \frac{\partial ^2 M(s, t)}{\partial s \partial t}_{(0, 0)}$$
+   * $$\text{When Random Variables X, Y are independent, } M_{aX + bY}(t) = M_X(at)M_Y(bt)$$
+   * $$\text{When Random Variables X, Y are independent and follow normal distributions respectively, } \\\\ aX+bY \sim N(a\mu_X + b \mu_Y, a^2 \sigma_X ^2 + b^2 \sigma_Y ^2)$$
