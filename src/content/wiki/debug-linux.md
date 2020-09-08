@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-08 22:52:14 +0900
+lastmod : 2020-09-08 23:48:16 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -53,9 +53,14 @@ sudo apt install debootstrap
 ```
 
 ---
-여기서부터 해야함. 빌드되는데 한참이라 그냥 여기까지만 해놓고 끔
 #### 이미지 굽기
 ```
 wget https://github.com/google/syzkaller/blob/master/tools/create-image.sh 
 ```
 해서 create-image.sh 실행해주자
+
+* 실행하고 나면 stretch.img랑 stretch.id.rsa, stretch.id.pub 파일이 나온다.
+* 모두 고이 보관해주자.
+ 
+여기서부터 해야함. 빌드되는데 한참이라 그냥 여기까지만 해놓고 끔
+TODO: 구워서 부팅까지는 됬는데 ssh가 안붙어짐, 그리고 기본적인 package를 어떻게 설치하는지 잘 모르겠음.
