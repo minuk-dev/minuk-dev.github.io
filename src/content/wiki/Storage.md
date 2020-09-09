@@ -3,7 +3,7 @@ layout  : wiki
 title   : Storage
 summary : 
 date    : 2020-08-23 20:47:33 +0900
-lastmod : 2020-08-24 20:12:49 +0900
+lastmod : 2020-09-09 20:57:11 +0900
 tags    : [storage]
 draft   : false
 parent  : 
@@ -26,3 +26,4 @@ parent  :
 ## 용어
  * [[cache]]
  * [[RAID]]
+ * [[fuse]]

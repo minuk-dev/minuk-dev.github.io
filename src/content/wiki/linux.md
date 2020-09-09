@@ -3,7 +3,7 @@ layout  : wiki
 title   : linux
 summary : 
 date    : 2020-07-03 20:29:46 +0900
-lastmod : 2020-07-03 20:31:22 +0900
+lastmod : 2020-09-09 20:57:11 +0900
 tags    : [linux]
 draft   : false
 parent  : 
@@ -11,3 +11,4 @@ parent  :
 
 ## 공부
  * [[VFS]]
+ * [[debug-linux]]

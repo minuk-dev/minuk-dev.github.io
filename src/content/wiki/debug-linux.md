@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-08 23:48:16 +0900
+lastmod : 2020-09-09 20:42:05 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -21,26 +21,21 @@ parent  : linux
  * https://mystrlight.tistory.com/90
  * https://procdiaru.tistory.com/78
  * https://nautiluslee.blogspot.com/2019/01/debootstrap.html
+ * https://tistory.0wn.kr/368
 
 ### 이미지 다운로드 및 소스코드 다운로드
-#### 리눅스 커널 소스코드 다운로드 (책 참고)
-```bash
-git clone https://github.com/raspberrypi/linux --depth=1
-```
-#### ~~라즈베리파이 이미지 다운로드~~
-```bash
-wget https://downloads.raspberrypi.org/raspios_liute_armhf_latest
-```
-* 이렇게 다운로드 하면 다운로드 파일 이름이 조금 다른데, 그건 알아서 .img를 붙여서 바꿔주자, 위에 명령어를 처음부터 잘써서 파일명을 다운해도 된다.
-* 하고 나서 알았는데, 어짜피 이미지를 우리가 만들꺼라, 다운 안해도 된다. 그냥 책따라하보니 그런듯, 책에서 이미지를 다운한 이유는 라즈베리파이를 굽기 위해서고, 우리는 qemu이니 버리자.
- 
 #### qemu 설치(뇌피셜)
 ```bash
 sudo apt install qemu qemu-system-x86
 ```
 * 아마도 이렇게 하면 될것이다, 사실 qemu는 pintos 공부하면서 이미 설치를 다 해놔서...
+ 
+#### 리눅스 커널 소스코드 다운로드
+```bash
+wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.143.tar.xz
+```
 
-#### kernel build(1, 2, 3, 4번 참고)
+#### kernel build
 ```bash
 make defconfig
 make kvmconfig
@@ -54,13 +49,7 @@ sudo apt install debootstrap
 
 ---
 #### 이미지 굽기
-```
-wget https://github.com/google/syzkaller/blob/master/tools/create-image.sh 
-```
+* 5번 참고해서 create image 실행해주자.
 해서 create-image.sh 실행해주자
 
-* 실행하고 나면 stretch.img랑 stretch.id.rsa, stretch.id.pub 파일이 나온다.
-* 모두 고이 보관해주자.
- 
-여기서부터 해야함. 빌드되는데 한참이라 그냥 여기까지만 해놓고 끔
-TODO: 구워서 부팅까지는 됬는데 ssh가 안붙어짐, 그리고 기본적인 package를 어떻게 설치하는지 잘 모르겠음.
+
