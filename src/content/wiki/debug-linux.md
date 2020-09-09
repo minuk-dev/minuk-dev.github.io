@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-09 20:42:05 +0900
+lastmod : 2020-09-09 23:55:49 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -53,3 +53,6 @@ sudo apt install debootstrap
 해서 create-image.sh 실행해주자
 
 
+#### 고생한 부분
+ * KASLR 을 해제했다고 생각해서 한참동안을 왜 에러가 나오지? 하고 있었다. 주의하자 무조건 해제해줘야한다. 안그러면 디버그 포인트를 지나간다.
+ * 아 근데 왜 안되냐 ㅠ 안되서 다시 처음부터 해보고 있다.
