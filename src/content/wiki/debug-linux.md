@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-11 23:49:36 +0900
+lastmod : 2020-09-12 20:56:25 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -85,6 +85,7 @@ qemu-system-x86_64 \
 * x64 용으로 컴파일 해서 작업하고 있어서, 다른부분이 있다.
 * 책 151쪽에서 여러 함수들에 filter를 거는데, 당연히도 안걸린다. 그런데 function 을 걸면 당연히 문제가 된다. 스크립트채로 따라쳐서 실행하지 말고, 한줄한줄 실행하고 동작하는지 확인하면서 작업했다.
  
+#### 유저 레벨 프로세스 실행 실습
 ```bash
 cat /sys/kernel/debug/tracing/available_filter_functions | grep sys_clone
 ```
@@ -132,4 +133,96 @@ echo "function stack trace enabled"
 
 echo 1 > /sys/kernel/debug/tracing/tracing_on
 echo "tracing_on"
+```
+* 프로세스 생성 단계의 함수 흐름 : 책이랑 살짝 다른데 이건 cpu마다 다를듯?
+```
+copy_process.part.53+0x5/0x1d40
+_do_fork+0xcf/0x3a0
+__x64_sys_clone+0x27/0x30
+do_syscall_64+0x55/0x110
+```
+* 프로세스 종료 단계의 함수 흐름
+```
+do_exit+0x5/0xbd0
+do_group_exit+0x47/0xb0
+get_signal+0xfe/0x7e0
+do_signal+0x37/0x650
+exit_to_usermode_loop+0x9b/0xb0
+do_syscall_64+0x101/0x110
+```
+
+##### 프로세스 실행 흐름
+1. 프로세스 생성
+1. raspbian_proc 프로세스 실행
+1. 프로세스 종료
+1. 부모 프로세스에게 시그널 전달
+
+##### 배운 내용
+* 프로세스가 스스로 exit POSIX 시스템 콜을 호출하면 스스로 소멸할 수 있다.
+* exit POSIX 시스템 콜에 대한 시스템 콜 핸들러는 sys_exit_group() 함수이다.
+* 프로세스는 소멸되는 과정에서 부모 프로세스에게 SIGCHLD 시그널을 전달해 자신이 종료될 것이라고 통지한다.
+
+#### 커널 스레드
+* 커널 스레드는 커널 공간에서만 실행되며, 유저 공간과 상호작용하지 않습니다.
+* 커널 스레드는 실행, 휴면 등 모든 동작을 커널에서 직접 제어 관리합니다.
+* 대부분의 커널 스레드는 시스템이 부팅할 때 생성되고 시스템이 종료할 때까지 백그라운드로 실행됩니다.
+
+##### 커널 스레드 생성 과정
+1. kthreadd 프로세스에서 커널 스레드 생성을 요청
+  * kthread_create()
+  * kthread_create_on_node()
+1. kthreadd 프로세스가 커널 스레드를 생성
+  * kthreadd()
+  * create_kthread()
+
+##### 커널 내부 프로세스의 생성 과정 (_do_fork() 함수)
+* 위에서 말한 대로 실제로 생성하는 곳은 kthreadd가 호출하는 create_kthread 인데, 이건 결국 _do_fork 를 호출한다.
+* _do_fork 의 호출 과정
+  1. 프로세스 생성 : copy_process() 함수를 호출해서 프로세스를 생성
+  1. 생성한 프로세스의 실행 요청 : copy_process 함수를 호출해 프로세스를 만든 후, wake_up_new_task 함수를 호출
+
+* copy_process() 함수를 호출해 프로세스를 생성
+* wake_up_new_task() 함수를 호출해 생성한 프로세스를 깨움
+* 생성한 프로세스 PID를 반환
+
+##### copy_process 함수 분석
+* dup_task_struct : task_struct 구조체와 프로세스가 실행될 스택 공간을 할당, 이후 새로운 구조체 주소를 반환
+  * 책에서는 여기만 나와 있는데, memory 동적할당이 어떻게 되는지 궁금해서 확인해봤다.
+  * 쭉쭉 따라가보면, alloc_task_struct_node -> kmem_cache_alloc_node -> kmem_cache_alloc ->slab_alloc 가 호출되는데, slab이 뭔지 몰라서 찾아봤다.
+    * 참고 : https://lascrea.tistory.com/66
+    * slab allocator라고 하며, 일종의 자원 할당자 중 하나로 4KB의 크기를 가진 Page로 데이터를 저장하고 관리할 경우 발생하는 단편화를 최소화 하기 위해 만들어졌다.
+    * 리눅스 커널은 slab을 사용하고 있으며 /proc/meminfo에서 리눅스 커널이 사용하는 cache 크기를 의미한다.
+    * 리눅스 커널에서 커널과 디바이스 드라이버, 파일시스템 등은 영구적이지 않은 데이터(inode, task 구조체, 장치 구조체 등)들을 저장하기 위한 공간이 필요한데 이것이 slab에 관리된다.
+* 그리고 기본적인 자원들(메모리, 파일 등)을 복사한다.
+```c
+	/* copy all the process information */
+	shm_init_task(p);
+	retval = security_task_alloc(p, clone_flags);
+	if (retval)
+		goto bad_fork_cleanup_audit;
+	retval = copy_semundo(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_security;
+	retval = copy_files(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_semundo;
+	retval = copy_fs(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_files;
+	retval = copy_sighand(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_fs;
+	retval = copy_signal(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_sighand;
+	retval = copy_mm(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_signal;
+	retval = copy_namespaces(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_mm;
+	retval = copy_io(clone_flags, p);
+	if (retval)
+		goto bad_fork_cleanup_namespaces;
+	retval = copy_thread_tls(clone_flags, stack_start, stack_size, p, tls);
 ```
