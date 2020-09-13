@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-12 20:56:25 +0900
+lastmod : 2020-09-13 20:47:39 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -226,3 +226,115 @@ do_syscall_64+0x101/0x110
 		goto bad_fork_cleanup_namespaces;
 	retval = copy_thread_tls(clone_flags, stack_start, stack_size, p, tls);
 ```
+##### wake_up_new_task()
+* 프로세스 상태를 TASK_RUNNING으로 변경
+* 현재 실행 중인 CPU 번호를 thread_info 구조체의 cpu 필드에 저장 (CONFIG_SMP 값이 켜져 있을때)
+* 런큐에 프로세스를 큐잉
+
+#### 프로세스의 종료 과정 분석
+* 프로세스가 죽는 두가지 흐름
+  * 유저 애플리케이션에서 exit() 함수를 호출할 때
+  * 종료 시그널을 전달받을 때
+* 이번에는 책 보기 전에 ftrace 결과에 나오는 함수들 다 찾아보자.
+  * `kernel/exit.c`
+    ```c
+    SYSCALL_DEFINE1(exit_group, int, error_code)
+    {
+      do_group_exit((error_code & 0xff) << 8);
+      /* NOTREACHED */
+      return 0;
+    }
+    ```
+  * `kernel/signal.c`
+    ```c
+    bool get_signal(struct ksignal *ksig)
+    {
+    /* skip */
+        /*
+         * Death signals, no core dump.
+         */
+        do_group_exit(ksig->info.si_signo);
+        /* NOTREACHED */
+      }
+      spin_unlock_irq(&sighand->siglock);
+
+      ksig->sig = signr;
+      return ksig->sig > 0;
+    }
+   ```
+  * 이거 이외에도 `fpu.c`, `seccomp.c` 에 있는데, 이건 찾아보니까 fpu 에서 에러가 나서 죽일때랑, [[seccomp]]에서 강제로 죽일때 호출. 일반적으로 죽는 경우는 아니니, 위에 2가지만이 do_group_exit를 호출한다라고 알수 있다.
+
+* do_exit() 함수의 동작 방식 확인
+  1. init 프로세스가 종료하면 강제 커널 패닉 유발 : 보통 부팅 과정에서 발생함
+  2. 이미 프로세스가 do_exit() 함수의 실행으로 프로세스가 종료되는 도중 다시 do_exit() 함수가 호출됐는지 점검
+  3. 프로세스 리소스(파일 디스크립터, 가상 메모리, 시그널) 등을 해제
+  4. 부모 프로세스에게 자신이 종료되고 있다고 알림
+  5. 프로세스의 실행 상태를 task_struct 구조체의 state 필드에 TASK_DEAD로 설정
+  6. do_task_dead() 함수에 호출해 스케줄링을 실행, do_task_dead() 함수에서 __schedule() 함수가 호출되어 프로세스 자료구조인 태스크 디스크립터와 스택 메모리를 해제
+
+* do_task_daed() 함수를 호출하고 난 후의 동작
+  * __schedule() 함수
+  * context_switch() 함수
+  * finish_task_switch() 함수
+
+##### 태스크 디스크립터(task_struct 구조체)
+* 프로세스를 식별하는 필드
+  * comm : 프로세스 이름
+  * pid : 프로세스 id
+  * tgid : task_group id, 만약 thread가 leader 인 경우, tgid == pid
+* 프로세스 상태 저장
+  * state: 프로세스 실행 상태
+    * TASK_RUNNING : CPU에서 실행 중이거나 런큐에서 대기 상태에 있음
+    * TASK_INTERRUPTIBLE : 휴면 상태
+    * TASK_UNINTERRUPTIBLE : 특정 조건에서 깨어나기 위해 휴면 상태로 진입한 상태
+  * flags: 프로세스 세부 동작 상태와 속성 정보
+    * PF_IDLE : 자신이 IDLE thread 임을 나타내는 flag
+    * PF_EXITING : 종료되는 중
+    * PF_EXITPIDONE : 종료 됨
+    * PF_WQ_WORKER : 워커 쓰레드
+    * PF_KTHREAD : 커널 스레드
+* 프로세스 간의 관계
+ * real_parent : 자신을 생성한 부모 프로세스의 태스크 디스크립터 주소를 저장
+ * parent : 부모 프로세스의 태스크 디스크립터 주소를 담고 있음.
+ * children : 자식 프로세스 리스트
+ * sibiling : 형제 프로세스 리스트
+* 프로세스 실행 시각 정보
+ * utime : 유저 모드에서 프로세스가 실행한 시각 (account_user_time)
+ * stime : 커널 모드에서 프로세스가 실행한 시각 (account_system_index_time)
+ * sched_info.last_arrival :  프로세스가 CPU에서 실행된 시각 (context_switch -> prepare_task_switch -> sched_info_switch -> __sched_info_switch -> sched_info_arrive)
+
+##### 스레드 정보 : thread_info 구조체
+ * 선점 스케줄링 실행 여부
+ * 시그널 전달 여부
+ * 인터럽트 컨텍스트와 Soft IRQ 컨텍스트 상태
+ * 휴면 상태로 진입하기 직전 레지스터 세트를 로딩 및 백업
+```c
+struct thread_info {
+	struct task_struct	*task;		/* main task structure */
+	unsigned long		flags;		/* low level flags */
+	__u32			cpu;		/* current CPU */
+	__s32			preempt_count; /* 0 => preemptable, <0 => BUG */
+
+	mm_segment_t		addr_limit; /* thread address space:
+					       0-0x7FFFFFFF for user-thead
+					       0-0xFFFFFFFF for kernel-thread
+					     */
+	__u8			supervisor_stack[0];
+
+	/* saved context data */
+	unsigned long           ksp;
+};
+#endif
+```
+ * preempt_count 가 바뀌는 조건 
+   * 인터럽트 컨텍스트 실행 시작 및 종료 설정
+   * Soft IRQ 컨텍스트 실행 시작 및 종료 설정
+   * 프로세스 선점 스케줄링 가능 여부
+  
+##### cpu 필드에 대한 상세 분석
+ * sm_processor_id()
+ * set_task_cpu()
+
+##### thread_info 구조체 초기화 코드 분석
+ * dup_task_struct()
+ * setup_thread_stack(tsk, orig);
