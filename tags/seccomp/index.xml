@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>seccomp on MD98 page</title><link>http://makerdark98.dev/tags/seccomp/</link><description>Recent content in seccomp on MD98 page</description><generator>Hugo -- gohugo.io</generator><language>ko-kr</language><lastBuildDate>Sun, 13 Sep 2020 19:37:24 +0900</lastBuildDate><atom:link href="http://makerdark98.dev/tags/seccomp/index.xml" rel="self" type="application/rss+xml"/><item><title>seccomp</title><link>http://makerdark98.dev/wiki/seccomp/</link><pubDate>Sun, 13 Sep 2020 19:37:24 +0900</pubDate><guid>http://makerdark98.dev/wiki/seccomp/</guid><description>seccomp (secure computing mode) 참고 : https://ko.wikipedia.org/wiki/Seccomp, https://ssup2.github.io/theory_analysis/Linux_seccomp/
+system call filtering 기법
+strict 와 filter 모드가 존재
+strict 모드에서는 일부 시스템 콜만 허용(read, write, exit, sigreturn), 이외에 호출하면 SIGKILL 이 발생해서 죽음.
+filter 모드에서는 각 system call 별로 수행 동작을 설정 가능.</description></item></channel></rss>
