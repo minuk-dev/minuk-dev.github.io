@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-13 20:47:39 +0900
+lastmod : 2020-09-14 20:50:18 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -338,3 +338,58 @@ struct thread_info {
 ##### thread_info 구조체 초기화 코드 분석
  * dup_task_struct()
  * setup_thread_stack(tsk, orig);
+ * alloc_task_struct_node()
+ * alloc_thread_stack_node()
+
+##### 프로세스의 태스크 디스크립터에 접근하는 매크로 함수
+ * current : 현재 구동 중인 프로세스의 태스크 디스크립터 주소
+ * arch/x86/include/asm/current.h
+ ```c
+  DECLARE_PER_CPU(struct task_struct *, current_task);
+  static __always_inline struct task_struct *get_current(void)
+  {
+    return this_cpu_read_stable(current_task);
+  }
+
+  #define current get_current()
+ ```
+ * 보면은, cpu 마다 task_struct를 선언하는데, 이 변수 명은 current_task 인데, arch/x86/kernel/process_64.c 에 있는 `__switch_to()`에서
+ ```c
+	this_cpu_write(current_task, next_p);
+	this_cpu_write(cpu_current_top_of_stack, task_top_of_stack(next_p));
+
+	/* Reload sp0. */
+	update_task_stack(next_p);
+
+	switch_to_extra(prev_p, next_p);
+ ```
+ * 이렇게 매번 task가 전환 될때 cpu 별로 따로 넣어준다. 이때마다, update_task_stack를 호출해주면서 stack을 설정한다.
+
+##### 프로세스 디버깅
+ * 사용하는 명령어 : layout asm
+ * 내용 정리
+   * 리눅스 유틸리티 프로그램을 실행할 때 프로세스는 fork()와 execve() 시스템 콜 함수를 호출한다.
+   * ftrce의 sched_process_exec 이벤트로 리눅스 유틸리티 프로그램의 파일 위치를 알 수 있다.
+   * 리눅스 유틸리티 프로그램을 종료할 때의 프로세스는 exit() 시스템 콜 함수를 호출한다.
+
+#### 인터럽트
+ * 인터럽트 벡터와 인터럽트 핸들러
+ * IRQ(Interrupt ReQuest)
+ ```c
+ int (*request_irq)(struct dispc_device *dispc, irq_handler_t handler, void *dev_id);
+ ```
+##### 인터럽트 컨텍스트 활성화 시기
+ * 프로세스 실행 중
+ * 인터럽트 벡터 실행
+ * 커널 인터럽트 내부 함수 호출
+ * 인터럽트 종류별로 인터럽트 핸들러 호출
+   * 인터럽트 컨텍스트 시작
+ * 인터럽트 핸들러의 서브루틴 실행 시작
+ * 인터럽트 핸들러의 서브루틴 실행 마무리
+   * 인터럽트 컨텍스트 마무리
+
+##### 인터럽트 디스크립터
+ * 인터럽트 핸들러
+ * 인터럽트 핸들러 매개변수
+ * 논리적인 인터럽트 번호
+ * 인터럽트 실행 횟수
