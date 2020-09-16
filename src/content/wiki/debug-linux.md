@@ -3,7 +3,7 @@ layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 summary : 
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-14 20:50:18 +0900
+lastmod : 2020-09-16 20:53:17 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -393,3 +393,153 @@ struct thread_info {
  * 인터럽트 핸들러 매개변수
  * 논리적인 인터럽트 번호
  * 인터럽트 실행 횟수
+
+##### 인터럽트 처리 흐름
+ 1. 인터럽트 발생 : 인터럽트가 발생하면 프로세스는 실행 도중 인터럽트 벡터로 이동, 인터럽트 벡터에서 인터럽트 처리를 마리한 후 다시 프로세스를 실행하기 위해 실행 중인 프로세스의 레지스터 세트를 스택에 저장, IRQ 서 브시스템을 구성하는 함수들이 호출
+ 1. 인터럽트 핸들러 호출 : 발생한 인터럽트에 대앙하는 인터럽트 디스크립터를 읽어서 인터럽트 핸들러를 호출
+ 1. 인터럽트 핸들러 실행 : 인터럽트 핸들러에서 하드웨어를 직접 제어하고 유저 공간에 전달
+
+##### 인터럽트 서술자 테이블 (Interrupt Descriptor Table - IDT)
+ * 인터럽트 벡터 테이블을 구현하기 위해 x86 아키텍처에서 사용되는 데이터 구조체이다.
+ * IDT의 사용은 다음 3 종류의 이벹느들에 의해 발생된다.
+   * 하드웨어 인터럽트
+   * 소프트웨어 인터럽트
+   * 프로세서 예외
+
+##### IRQ Chip
+ * 참고 : http://jake.dothome.co.kr/interrupts-2/
+ * 인터럽트 컨트롤러 드라이버를 위해 hw 제어를 담당하는 구현 부분을 가짐.
+
+##### 리눅스 커널
+ * `arch/x86/entry/entry_64.S` line number 655 common_interrupt: -> call `do_IRQ`
+ * `arch/x86/kernel/irq.c`
+  ```c
+  /*
+   * do_IRQ handles all normal device IRQ's (the special
+   * SMP cross-CPU interrupts have their own specific
+   * handlers).
+   */
+  __visible unsigned int __irq_entry do_IRQ(struct pt_regs *regs)
+  {
+    struct pt_regs *old_regs = set_irq_regs(regs);
+    struct irq_desc * desc;
+    /* high bit used in ret_from_ code  */
+    unsigned vector = ~regs->orig_ax;
+
+    entering_irq();
+
+    /* entering_irq() tells RCU that we're not quiescent.  Check it. */
+    RCU_LOCKDEP_WARN(!rcu_is_watching(), "IRQ failed to wake up RCU");
+
+    desc = __this_cpu_read(vector_irq[vector]);
+
+    if (!handle_irq(desc, regs)) {
+      ack_APIC_irq();
+
+      if (desc != VECTOR_RETRIGGERED && desc != VECTOR_SHUTDOWN) {
+        pr_emerg_ratelimited("%s: %d.%d No irq handler for vector\n",
+                 __func__, smp_processor_id(),
+                 vector);
+      } else {
+        __this_cpu_write(vector_irq[vector], VECTOR_UNUSED);
+      }
+    }
+
+    exiting_irq();
+
+    set_irq_regs(old_regs);
+    return 1;
+  }
+  ```
+ * check handler at `if (!handle_irq(desc, regs))`. handler_irq is defined by an irq chip driver.
+ * gic_handle_irq -> __handler_domain_irq -> generic_handle_irq -> handle_fasteoi_irq -> handle_irq_event -> handle_irq_event_percpu
+
+ 
+##### Interrupt Context
+ ```asm
+common_interrupt:
+	addq	$-0x80, (%rsp)			/* Adjust vector to [-256, -1] range */
+	call	interrupt_entry
+	UNWIND_HINT_REGS indirect=1
+	call	do_IRQ	/* rdi points to pt_regs */
+	/* 0(%rsp): old RSP */
+ ```
+ 
+ ```asm
+ENTRY(interrupt_entry)
+	UNWIND_HINT_IRET_REGS offset=16
+	ASM_CLAC
+	cld
+
+	testb	$3, CS-ORIG_RAX+8(%rsp)
+	jz	1f
+	SWAPGS
+	FENCE_SWAPGS_USER_ENTRY
+	/*
+	 * Switch to the thread stack. The IRET frame and orig_ax are
+	 * on the stack, as well as the return address. RDI..R12 are
+	 * not (yet) on the stack and space has not (yet) been
+	 * allocated for them.
+	 */
+	pushq	%rdi
+
+	/* Need to switch before accessing the thread stack. */
+	SWITCH_TO_KERNEL_CR3 scratch_reg=%rdi
+	movq	%rsp, %rdi
+	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+
+	 /*
+	  * We have RDI, return address, and orig_ax on the stack on
+	  * top of the IRET frame. That means offset=24
+	  */
+	UNWIND_HINT_IRET_REGS base=%rdi offset=24
+
+	pushq	7*8(%rdi)		/* regs->ss */
+	pushq	6*8(%rdi)		/* regs->rsp */
+	pushq	5*8(%rdi)		/* regs->eflags */
+	pushq	4*8(%rdi)		/* regs->cs */
+	pushq	3*8(%rdi)		/* regs->ip */
+	UNWIND_HINT_IRET_REGS
+	pushq	2*8(%rdi)		/* regs->orig_ax */
+	pushq	8(%rdi)			/* return address */
+
+	movq	(%rdi), %rdi
+	jmp	2f
+1:
+	FENCE_SWAPGS_KERNEL_ENTRY
+2:
+	PUSH_AND_CLEAR_REGS save_ret=1
+	ENCODE_FRAME_POINTER 8
+
+	testb	$3, CS+8(%rsp)
+	jz	1f
+
+	/*
+	 * IRQ from user mode.
+	 *
+	 * We need to tell lockdep that IRQs are off.  We can't do this until
+	 * we fix gsbase, and we should do it before enter_from_user_mode
+	 * (which can take locks).  Since TRACE_IRQS_OFF is idempotent,
+	 * the simplest way to handle it is to just call it twice if
+	 * we enter from user mode.  There's no reason to optimize this since
+	 * TRACE_IRQS_OFF is a no-op if lockdep is off.
+	 */
+	TRACE_IRQS_OFF
+
+	CALL_enter_from_user_mode
+
+1:
+	ENTER_IRQ_STACK old_rsp=%rdi save_ret=1
+	/* We entered an interrupt context - irqs are off: */
+	TRACE_IRQS_OFF
+
+	ret
+END(interrupt_entry)
+ ```
+ * 여기서 이전에 있던 걸 저장하는 asm은 PUSH_AND_CLEAR_REGS 이다.
+
+##### in_interrupt
+  * `include/linux/preempt.h`
+  ```c
+  #define in_interrupt()		(irq_count())
+  ```
