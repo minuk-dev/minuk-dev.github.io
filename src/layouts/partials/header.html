@@ -7,12 +7,11 @@
         <title>{{ .Title }}</title>
         {{ if .Site.Params.favicon }}
             <link rel="icon" href="{{ .Site.Params.favicon | absURL }}">
+            <meta property="og:title" content="MD98 블로그">
+            <meta property="og:description" content="MD98 블로그 : {{ .Title }}">
+            <meta property="og:image" content="{{ .Site.Params.favicon | absURL }}">
         {{ end }}
         {{ partial "css" . }} {{ partial "js" . }}
-        {{ with .OutputFormats.Get "RSS" }}
-            <link href="{{ .RelPermalink }}" rel="alternate" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
-            <link href="{{ .RelPermalink }}" rel="feed" type="{{ .MediaType.Type }}" title="{{ $.Site.Title }}" />
-        {{ end }}
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
           <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script>
