@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-18 20:44:38 +0900
+lastmod : 2020-09-19 19:50:13 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -633,9 +633,53 @@ END(interrupt_entry)
    struct proc_dir_entry *dir;
  } ____cacheline_internodealigned_in_smp;
  ```
- 
+
  * handler : 인터럽트 핸들러의 함수 주소
  * dev_id : 인터럽트 핸들러에 전달되는 매개변수
  * thread_fn : 인터럽트를 threaded IRQ 방식으로 처리할때 IRQ 스레드 처리 함수의 주소를 저장하는 필드, 지정하지 않으면 NULL
  * irq : 인터럽트 번후
  * flags : 인터럽트 플레그 설정 필드
+
+##### 인터럽트가 비활성화되어야 할 때
+ * SoC에서 정의한 하드웨어 블록에 정확한 시퀀스를 줘야할 경우
+ * 시스템이 유휴 상태에 진입하기 직전의 *시스템의 상태 정보* 값을 저장하는 동작
+ * 각 디바이스 드라이버가 서스펜드 모드로 진입할 때 디바이스 드라이버에 데이ㅌ 시트에서 명시한 대로 정확히 특정 시퀀스를 줘야 할 경우
+ * 예외가 발생해서 시스템 리셋을 시키기 전
+
+ * local_irq_disable : 해당 cpu 라인에서 인터럽트의 발생을 비활성화 하는 함수
+ * local_irq_enable : 해당 CPU 인터럽트 라인을 활성화
+
+ ```c
+#define raw_local_irq_enable()		arch_local_irq_enable()
+static inline notrace void arch_local_irq_enable(void)
+{
+  native_irq_enable();
+}
+
+static inline void native_irq_enable(void)
+{
+  asm volatile("sti": : :"memory");
+}
+ ```
+ 
+ 
+##### 인터럽트 디버깅
+```bash
+#!/bin/bash
+
+echo 0 > /sys/kernel/debug/tracing/tracing_on
+sleep 1
+echo "tracing_off"
+echo nop > /sys/kernel/debug/tracing/current_tracer
+echo 0 > /sys/kernel/debug/tracing/events/enable
+sleep 1
+
+echo 1 > /sys/kernel/debug/tracing/events/sched/sched_switch/enable
+sleep 1
+
+echo 1 > /sys/kernel/debug/tracing/events/irq/irq_handler_entry/enable
+echo 1 > /sys/kernel/debug/tracing/events/irq/irq_handler_exit/enable
+
+echo 1 > /sys/kernel/debug/tracing/tracing_on
+echo "tracing_on"
+```
