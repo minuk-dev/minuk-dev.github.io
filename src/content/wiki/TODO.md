@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 해야할 일들
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-09-19 18:45:20 +0900
+lastmod : 2020-09-19 19:27:12 +0900
 tags    : [todo]
 draft   : false
 parent  :
@@ -50,6 +50,7 @@ parent  :
    * [X] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
    * ~~[ ] history reset 기능 추가~~
    * ~~[ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.~~
+   * [ ] 하위 디렉토리에 대해서 동작 안함. 예를 들어 Modern C++ Design Pattern
  * [X] about 페이지 만들기
  * [X] 읽은 논문 정리
  * [X] meta data 정리
