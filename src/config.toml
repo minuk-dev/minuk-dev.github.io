@@ -17,6 +17,7 @@ publishDir = ".."
     highlight = true
     highlightStyle = "default"
     highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift", "cpp", "c", "javascript", "typescript", "bash"]
+    favicon = "images/Rb.png"
 
 [[menu.main]]
     url = "/"
