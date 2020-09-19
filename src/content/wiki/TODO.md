@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : TODO Lists
-summary : 
+summary : 해야할 일들
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-09-19 18:40:17 +0900
+lastmod : 2020-09-19 18:45:20 +0900
 tags    : [todo]
 draft   : false
-parent  : 
+parent  :
 ---
 
 ## 생활측면
@@ -64,7 +64,7 @@ parent  :
  * [ ] calendar와 timeline 기능 넣어서, 매일 어떤 공부하는지 확인하기
  * [O] tagbar 알아서 잘 되도록 설정하기
    * [X] markdown 에서 tagbar
-   * [X] universal tag 설치 
+   * [X] universal tag 설치
    * [X] [[gutentags]] 문제 해결하기 : 링크 참고
  * [X] coc 설정 하기
 
