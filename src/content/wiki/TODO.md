@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-08-30 23:09:12 +0900
+lastmod : 2020-09-19 18:40:17 +0900
 tags    : [todo]
 draft   : false
 parent  : 
@@ -43,8 +43,8 @@ parent  :
 * [X] LFS 읽기
 ### Blog
  * [o] commit 로그에서 content 와 src, build 를 분리해서 보고 싶음.
-   * [X] github 링크 확인하기
-   * [ ] 실제로 링크 넣기
+   * [X] github 링크 확인하기(https://github.com/makerdark98/makerdark98.github.io/search?q=content&type=commits, https://github.com/makerdark98/makerdark98.github.io/search?q=src&type=commits)
+   * ~~[ ] 실제로 링크 넣기~~ 넣을만한 곳이 없네
  * [o] 히스토리 기능
    * [X] 마우스 올리면 전체 표시됬다가, 마우스 벗어나면 다시 3개만 출력되도록 하자 (일단 올리면 되는건 짬)
    * [X] history 에서 최근 3 개 같은 경우 10글자로 안짤리는 문제가 버그가 있음.
@@ -52,7 +52,7 @@ parent  :
    * ~~[ ] history를 길게 누를때 툴팁으로 전체 이름이 나오면 좋겠음.~~
  * [X] about 페이지 만들기
  * [X] 읽은 논문 정리
- * [ ] meta data 정리
+ * [X] meta data 정리
  * [X] 다시 cdn 에서 static 가져오도록 바꾸기
  * [X] google analytics 붙이기
  * [X] git blame을 사용해서 wiki diff 만들기
