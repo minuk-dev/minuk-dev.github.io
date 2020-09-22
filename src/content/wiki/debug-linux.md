@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-19 19:50:13 +0900
+lastmod : 2020-09-22 20:29:21 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -661,8 +661,8 @@ static inline void native_irq_enable(void)
   asm volatile("sti": : :"memory");
 }
  ```
- 
- 
+
+
 ##### 인터럽트 디버깅
 ```bash
 #!/bin/bash
@@ -683,3 +683,79 @@ echo 1 > /sys/kernel/debug/tracing/events/irq/irq_handler_exit/enable
 echo 1 > /sys/kernel/debug/tracing/tracing_on
 echo "tracing_on"
 ```
+
+#### 인터럽트 후반부 처리
+* 인터럽트 후반부의 필요성
+ * 인터럽트가 발생하면 커널은 실행 중인 프로세스를 멈추가 인터럽트 벡터를 실행해서 인터럽트 핸들러를 실행하게 된다. 이는 프로세스 입장에서는 실행 도중 멈추는 것이니 최대한 빨리 실행되지 않는다면, 프로세스가 동작하다가 멈춘 것처럼 보인다.
+ * 이는 다음 4가지 기법들을 이끌어 낸다.
+   * IRQ 스레드
+   * Soft IRQ
+   * 테스크릿
+   * 워크큐
+* 인터럽트 컨텍스트에서 시간을 오래 소모하면 커널 패닉이 일어난다.
+
+##### Top Half/Bottom Half
+ * Top Half : 인터럽트가 발생한 후 빨리 처리해야 하는 일
+ * Bottom Half : 조금 있다가 처리해도 되는일
+ * 인터럽트 핸들러는 Top Half를, 프로세스 레벨에선 Bottom Half 를 처리한다.
+
+##### 인터럽트 후반부 처리 기법 정리
+ * IRQ 쓰레드(threaded IRQ) : 인터럽트를 처리하는 전용 IRQ 스레드에서 인터럽트 후속 처리를 수행한다.
+ * Soft IRQ : 인터럽트 핸들러 실행이 끝나면 바로 시작되며, Soft IRQ 컨텍스트에서 실행되며, 시간이 오래 걸릴 경우 ksoftirqd 프로세스를 깨우고 서비스를 종료한다. 이후 ksoftirqd 라는 프로세스에서 나머지 내용들을 처리한다.
+ * 테스크릿 : Soft IRQ 서비스를 동적으로 쓸 수 있는 인터페이스이자 자료구조
+ * 워크큐 : 인터럽트 핸들러가 실행될 때 워크를 워크큐에 큐잉하고 프로세스 레벨의 워커 스레드에서 인터럽트 후반부를 처리한다.
+
+##### 어떤 처리기법을 적용해야 하는가
+ * 인터럽트가 자주 발생할 경우 : Soft IRQ나 테스크릿
+   * IRQ 스레드는 실시간 프로세스로 구동되며, 이는 선점 스케줄링을 유발하여 다른 프로세스들이 대기하게 된다. 이는 시스템 반응 속도가 느려지는 결과가 생긴다.
+   * 워크큐는 실행 시간 측면에서, 큐잉 뒤 워크를 깨우는 시간이 오래 걸리고, 워커 스레드는 일반 프로세스로 우선순위가 높지 않다.
+ * 인터럽트 개수가 많을 경우 : IRQ 스레드를 생성할 때, 메모리 주의
+   * 인터럽트 개수만큼 IRQ 스레드가 생성되기 때문에 메모리를 더 사용하게 된다.
+
+##### IRQ 스레드 (threaded IRQ)
+ * IRQ : Interrupt Request으 약자로 하드웨어에서 발생한 인터럽트를 처리한다.
+ * Threaed IRQ : 인터럽트 핸들러에서 바로 처리하지 않아도 되는 일을 수행하는 프로세스를 두고 처리하는 방식
+
+ * `irq/인터럽트 번호 - 인터럽트 이름` 의 순서로 IRQ 스레드의 이름이 지어진다. (예시 : irq/86-mmc1 는 mmc1이라는 이름의 86번 인터럽트를 처리하는 IRQ 스레드)
+
+##### IRQ 생성 방법
+ * request_threaded_irq -> __setup_irq -> setup_irq_thread -> kthread_create 과정을 통해서 커널 스레드를 생성
+ * request_threaded_irq
+   ```c
+   int request_threaded_irq(unsigned int irq, irq_handler_t handler,
+    irq_handler_t thread_fn, unsigned long irqflags,
+    const char *devname, void *dev_id);
+   ```
+
+   * irq : 인터럽트 번호
+   * handler : 인터럽트 핸들러 주소
+   * thread_fn : IRQ 스레드 처리 함수의 주소
+   * irqflags : 인터럽트 핸들링 플래그
+   * devname : 인터럽트 핸들러 이름
+   * dev_id : 인터럽드 디바이스 정보
+
+   * 하는일
+     1. 인터럽트 디스크립터 설정 : 이나를 인터럽트 디스크립터 필드에 할당
+     2. IRQ 스레드 생성 : thread_fn 인자에 IRQ 스레드 처리 함수 주소를 지정하면 IRQ 스레드 생성
+
+ * __setup_irq
+   ```c
+    static int
+    __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
+   ```
+
+   * irq : 인터럽트 번호
+   * desc : 인터럽트 디스크립터
+   * new : 인터럽트 디스크립터의 action 필드
+
+   * 하는일
+     * IRQ 스레드 처리 함수가 등록됐는지 점검
+     * 만약 IRQ 스레드가 등록됐으면 setup_irq_thread 함수를 호출해 IRQ 스레드를 생성
+ * setup_irq_thread
+   ```c
+    static int
+    setup_irq_thread(struct irqaction *new, unsigned int irq, bool secondary)
+   ```
+
+ * IRQ 스레드 처리 함수 : 인터럽트별로 지정한 IRQ 스레드별로 후반부를 처리하는 함수
+ * IRQ 스레드 핸들러 함수 : irq_thread() 함수를 뜻하며, 인터럽트별로 지정된 IRQ 스레드 처리함수를 호출하는 역할
