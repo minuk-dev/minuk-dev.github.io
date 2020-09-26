@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-22 20:29:21 +0900
+lastmod : 2020-09-26 20:49:06 +0900
 tags    : [linux]
 draft   : false
 parent  : linux
@@ -759,3 +759,133 @@ echo "tracing_on"
 
  * IRQ 스레드 처리 함수 : 인터럽트별로 지정한 IRQ 스레드별로 후반부를 처리하는 함수
  * IRQ 스레드 핸들러 함수 : irq_thread() 함수를 뜻하며, 인터럽트별로 지정된 IRQ 스레드 처리함수를 호출하는 역할
+
+##### IRQ 스레드의 실행과정
+ 1. 인터럽트 핸들러에서 IRQ_WAKE_THREAD를 반환
+ 1. IRQ 스레드를 꺠움
+ 1. IRQ 스레드 핸들러인 irq_thread() 함수를 실행
+ 1. irq_thread() 함수에서 IRQ 스레드 처리 함수 호출
+---
+ * handle_irq_event -> handle_irq_event_percpu -> __handle_irq_event_percpu -> __irq_wake_thread -> wake_up_process
+ * 만약 IRQ 스레드를 깨우고 싶으면 IRQ_WAKE_THREAD를 반환하고,아니라면 IRQ_HANDLED를 반환하면 된다.
+
+#### Soft IRQ
+ * 리눅스 커널에서 지원하는 10가지 Soft IRQ 서비스
+   * HI, TIMER, NET_TX, NET_RX, BLOCK, IRQ_POLL, TASKLET, SCHED, HRTIMER, RCU
+
+##### Soft IRQ 서비스의 라이프 사이클
+ 1. 부팅 과정
+   * Soft IRQ 서비스 등록
+   * open_softirq()
+ 1. 인터럽트 처리
+   * Soft IRQ 서비스 요청
+   * raise_softirq()
+ 1. Soft IRQ 컨텍스트
+   * Soft IRQ 서비스 실행
+   * __do_softirq()
+
+##### 발생 흐름
+ 1. 인터럽트가 발생하면 해당 인터럽트 핸들러에서 Soft IRQ 서비스를 요청한다. 이를 위해 raise_softirq_irqoff() 함수를 호출해야 한다. 이는 인터럽트 핸들러에서 IRQ_WAKE_THREAD를 반환하는 동작과 유사하다.
+ 1. 인터럽트 서비스 루틴 동작이 끝나면 irq_exit() 함수를 호출한다. 여기서 Soft IRQ 서비스 요청 여부를 점검한다. 요청한 Soft IRQ 서비스가 있으면 __do_softirq() 함수를 호출해서 해당 Soft IRQ 서비스 핸들러를 실행한다. 만약 Soft IRQ 서비스 요청이 없으면 riq_exit() 함수는 바로 종료하게 된다.
+ 1. __do_softirq() 함수에서 Soft IRQ 서비스 핸들러 호출을 끝내면 Soft IRQ 서비스 요청이 있었는지 다시 체크한다. 이미 Soft IRQ 서비 스핸들러 처리 시간이 2ms 이상이거나 10번 이상 Soft IRQ 서비스 핸들러를 처리했다면 다음 동작을 수행한다.
+   * wakeup_softirqd() 함수를 호출해서 ksoftirqd 프로세스를 깨움
+   * __do_softirq() 함수 종료
+ 1. ksoftirqd 프로세스 가깨어나 3단계에서 마무리하지 못한 Soft IRQ 서비스 핸들러를 실행한다.
+
+##### 후반부 기법으로 Soft IRQ를 사용하는 상황
+ * 인터럽트 발생 빈도가 높거나 인터럽트 후반부를 빨리 처리해야 할 때 사용한다.
+ * 커널에서는 Soft IRQ를 디바이스 드라이버 레벨에서 쓸 수 있는 태스크릿이라는 인터페이스 환경을 제공한다.
+
+##### Soft IRQ 서비스 설명
+
+| 우선순위   | Soft IRQ 서비스    | 설명                                             | Soft IRQ 서비스 핸들러   |
+| ---------- | ------------------ | ------------------------------------------------ | ------------------------ |
+| 0          | HI_SOFTIRQ         | 가장 우선순위가 높으며 TASKLET_HI로 적용         | tasklet_hi_action()      |
+| 1          | TIMER_SOFTIRQ      | 동적 타이버로 사용                               | run_timer_softirq()      |
+| 2          | NET_TX_SOFTIRQ     | 네트워크 패킷 송신용으로 사용                    | net_tx_action()          |
+| 3          | NET_RX_SOFTIRQ     | 네트워크 패킷 수신용 사용                        | net_rx_action()          |
+| 4          | BLOCK_SOFTIRQ      | 블록 디바이스에서 사용                           | blk_done_softirq()       |
+| 5          | IRQ_POLL_SOFTIRQ   | IRQ_POLL 연관 동작                               | blk_iopoll_softirq()     |
+| 6          | TASKLET_SOFTIRQ    | 일반 태스크릿으로 사용                           | tasklet_action()         |
+| 7          | SCHED_SOFTIRQ      | 스케쥴러에서 사용                                | run_reblanace_domains()  |
+| 8          | HRTIMER_SOFTIRQ    | 현재 사용하지 않지만 하위 호환성을 위해 남겨둠   | run_timer_softirq()      |
+| 9          | RCU_SOFTIRQ        | RCU 처리용으로 사용                              | rcu_process_callbacks()  |
+
+##### raise_softirq() 함수
+ * raise_softirq -> raise_softirq_irqoff -> or_softirq_pending
+ * irq_exit -> invoke_softirq -> __do_softirq
+ * run_ksoftirqd -> __do_softirq
+
+##### __do_softirq 함수
+ * 실제로 Soft IRQ 서비스 핸들러를 실행시켜주는 곳
+ * 시간이 오래걸리거나, 특정 횟수 이상 서비스를 실행했으면ksoftirqd 스레드를 깨움.
+
+##### ksoftirqd 스레드
+ * wakeup_softirqd -> wake_up_process
+ * run_ksoftirqd -> __do_softirq
+
+##### 정리
+ * Soft IRQ 서비스 요청 시기 : 인터럽트가 발생하면 인터럽트 핸들러에서 Soft IRQ 서비스를 요청
+ * Soft IRQ 서비스 실행의 출발점 : 인터럽트 핸들러 수행이 끝나면 요청한 Soft IRQ 서비스가 있엇는지 체크, irq_exit() -> invoke_softirq() -> __do_softirq()
+ * Soft IRQ 전용 스레드인 ksoftirqd 스레드의 기상 시점 : __do_softirqd() 함수 실행시간이 2ms 이상이거나, Soft IRQ 서비스 핸들러를 10번 이상 호출했다면 ksoftirqd 스레드가 일어난다.
+
+#### ksoftirqd 스레드
+ * Soft IRQ 서비스를 인터럽트를 처리 한 후의 시점이 아닌 프로세스 레벨에서 실행할 수 있게 생성된 프로세스
+ * percpu 타입의 프로세스이며, cpu 코어의 개수 만큼 생성되어 정해진 cpu 내에서만 실행된다.
+
+##### ksoftirqd 스레드 기상 시점
+ * __do_softirq() 함수에서 Soft IRQ 서비스를 실행한 후
+ * 인터럽트 컨텍스트가 아닌 상황에서 Soft IRQ 서비스를 요청할 때
+
+ * __do_softirq() 함수에서 Soft IRQ 서비스의 실행 시간이 MAX_SOFTIRQ_TIME 을 초과 했을 때
+ ```c
+ asmlinkage __visible void __softirq_entry __do_softirq(void)
+ {
+   unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
+   /* skip */
+   restart :
+   /* skip */
+   while ((softirq_bit = ffs(pending))) {
+   /* skip */
+     trace_softirq_entry(vec_nr);
+     h->action(h);
+     trace_softirq_exit(vec_nr);
+     /* skip */
+     h ++;
+     pending >>= softirq_bit;
+   }
+   pending = local_softirq_pending();
+   if (pending) {
+     if (time_before(jiffies, end) && !need_resched() &&
+       --max_restart)
+       goto restart;
+
+     wake_softirqd();
+   }
+ }
+
+ * Soft IRQ 서비스를 요청할 때 (raise_softirq_irqoff)
+   ```c
+   inline void raise_softirq_irqoff(unsigned int nr)
+   {
+     __raise_softirq_irqoff(nr);
+
+     if (!in_interrupt())
+       wakeup_softirqd();
+   }
+   ```
+
+##### ksoftirqd 핸들러 run_ksoftirqd
+```c
+static void run_ksoftirqd(unsigned int cpu)
+{
+  local_irq_disable();
+  if (local_softirq_pending()) {
+    __do_softirq();
+    local_irq_enable();
+    cond_resched_cru_qs();
+    return;
+  }
+  local_irq_enable();
+}
+```
