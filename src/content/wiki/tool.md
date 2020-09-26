@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : tool
-summary : 
+summary :
 date    : 2020-06-27 15:17:31 +0900
-lastmod : 2020-07-31 20:49:27 +0900
+lastmod : 2020-09-26 22:46:53 +0900
 tags    : [tool]
 draft   : false
-parent  : 
+parent  :
 ---
 
 ## tool 모음
