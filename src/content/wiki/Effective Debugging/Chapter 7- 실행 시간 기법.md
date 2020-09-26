@@ -1,10 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chatper 7. 컴파일 시간 기법
-summary : 
+summary :
 date    : 2020-04-09 22:13:40 +0900
-lastmod : 2020-04-09 22:27:07 +0900
-tags    : 
+lastmod : 2020-09-26 23:28:43 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 54. 테스트 케이스를 작성하여 오류 찾기
 * 문제를 안정적으로 재현할 수 있도록 테스트 케이스 작성

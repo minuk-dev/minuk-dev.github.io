@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chapter 1. 고차원 전략
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-09 21:44:46 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:26:50 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 1. Issue Tracking (모든 문제를 이슈 추적 시스템으로 관리하기)
 

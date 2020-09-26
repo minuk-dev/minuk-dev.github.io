@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-07-04 23:42:39 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:26:56 +0900
+tags    : [debugging]
+parent  :
 ---
 
 ## 개인 생각

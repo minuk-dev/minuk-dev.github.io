@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chapter 3. 범용 도구를 활용한 기법
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-09 21:46:56 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:27:39 +0900
+tags    :
+parent  : Effective Debugging
 ---
 읽을거리
 

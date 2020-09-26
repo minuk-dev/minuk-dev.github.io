@@ -1,10 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chatper 8. 멀티스레드 코드 디버깅
-summary : 
+summary :
 date    : 2020-04-09 22:13:40 +0900
-lastmod : 2020-04-09 22:35:42 +0900
-tags    : 
+lastmod : 2020-09-26 23:28:55 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 60. 사후 디버깅으로 교착 상태 분석하기
 * 교착상태를 디버깅할 때는 교착 상태에 빠진 시점의 프로그램 상태(스냅샵)를 구한 뒤, 스레드나 코드 흐름에서 자원을 기다리는 코드 지점을 찾아낸다.

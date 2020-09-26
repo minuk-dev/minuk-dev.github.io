@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chapter 2. 범용적인 디버깅 기법
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-09 21:46:24 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:27:16 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 9. 성공적인 디버깅을 위한 마음가짐
 

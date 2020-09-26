@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chapter 5. 프로그래밍 기법
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-09 21:48:01 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:28:09 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 38. 의심스런 코드를 검토하고 손으로 실행해보기
 

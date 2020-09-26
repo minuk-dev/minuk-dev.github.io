@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chatper 6. 컴파일 시간 기법
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-09 22:11:59 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:28:28 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 50. 생성된 코드 확인하기
 
@@ -40,7 +37,7 @@ latex   : false
 - 빌드 과정과 지속적인 통합 과정에 최소한 한 개 이상의 정적 프로그램 분석 도구를 거치도록 설정한다.
 
 ## Item 52. 빌드 결과와 실행 동작이 항상 일정하도록 설정하기
-- 악의적인 공격을 막기 위해 OS 커널이 프로그램이 올라갈 메모리의 위치에 대한 주소 값을 난수로 정한다. (ALSR, Address Space Layout Randomization) 
+- 악의적인 공격을 막기 위해 OS 커널이 프로그램이 올라갈 메모리의 위치에 대한 주소 값을 난수로 정한다. (ALSR, Address Space Layout Randomization)
 - GNU/Linux 에서는
 ```bash
   setarch $(uname -m) -R myprogram

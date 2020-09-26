@@ -1,14 +1,11 @@
 ---
 layout  : wiki
 title   : Effective Debugging/Chatper 4. 디버거 활용법
-summary : 
+summary :
 date    : 2020-04-07 20:44:40 +0900
-lastmod : 2020-04-09 21:47:34 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2020-09-26 23:27:54 +0900
+tags    :
+parent  : Effective Debugging
 ---
 ## Item 28. 디버깅 버전으로 컴파일 하기
 
