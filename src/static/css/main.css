@@ -141,3 +141,11 @@ form.gsc-search-box {
   padding-top: 10px !important;
   padding-bottom: 0px !important;
 }
+
+.content th {
+  border: solid;
+}
+
+.content td {
+  border: solid;
+}
