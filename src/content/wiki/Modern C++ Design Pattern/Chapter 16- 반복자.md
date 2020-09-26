@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 16. 반복자
-summary : 
+summary :
 date    : 2020-04-21 23:12:43 +0900
-lastmod : 2020-04-21 23:28:04 +0900
+lastmod : 2020-09-26 23:24:56 +0900
 tags    : [cpp, iterator, design pattern]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 간략 설명
@@ -34,17 +34,17 @@ template <typename T> struct Node
   Node<T> *right = nullptr;
   Node<T> *parent = nullptr;
   BinaryTree<T>* tree = nullptr;
-  
+
   explicit Node(const T& value)
     : value(value) {}
-    
+
   Node(const T& value, Node<T>* const left, Node<T>* const right)
     : value(value), left(left), right(right)
   {
     this->left->tree =this->right->tree = tree;
     this->left->parent = this->right->parent = this;
   }
-  
+
   void set_tree(BinaryTree<T>* t)
   {
     tree = t;
@@ -56,24 +56,24 @@ template <typename T> struct Node
 template <typename T> struct BinaryTree
 {
   Node<T>* root = nullptr;
-  
+
   explicit BinaryTree(Node<T>* const root)
     : root{ root }
   {
     root->set_tree(this);
   }
   typedef PreOrderIterator<T> iterator;
-  
+
   iterator begin()
   {
     Node<T>* n = root;
-    
+
     if (n)
       while (n->left)
         n = n->left;
     return iterator{ n }
   }
-  
+
   iterator end()
   {
     return iteraotr { nullptr };
@@ -88,14 +88,14 @@ struct PreOrderIterator
     : current(current)
   {
   }
-  
+
   bool operator!=(const PreOrderIterator<U>& other)
   {
     return current != other.current;
   }
-  
+
   Node<U>& operator*() { return *current; }
-  
+
   PreOrderIterator<U>& operator++()
   {
     if (current->right)

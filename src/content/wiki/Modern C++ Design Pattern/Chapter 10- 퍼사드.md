@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chapter 10. 퍼사드
-summary : 
+summary :
 date    : 2020-04-09 23:56:51 +0900
-lastmod : 2020-04-12 20:46:32 +0900
+lastmod : 2020-09-26 23:21:33 +0900
 tags    : [cpp, design pattern, facade]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 퍼사드는 어디에 있는가?

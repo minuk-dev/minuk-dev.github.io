@@ -1,12 +1,11 @@
 ---
 layout  : wiki
 title   : Book Review
-summary : 
+summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2020-04-28 21:51:10 +0900
-tags    : 
-toc     : true
-parent  : 
+lastmod : 2020-09-26 23:07:27 +0900
+tags    : [book]
+parent  :
 ---
 
 ### 정리 끝난거

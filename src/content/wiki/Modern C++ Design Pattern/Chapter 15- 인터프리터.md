@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 15. 인터프리터
-summary : 
+summary :
 date    : 2020-04-20 22:46:23 +0900
-lastmod : 2020-04-20 22:56:33 +0900
+lastmod : 2020-09-26 23:24:31 +0900
 tags    : [cpp, design pattern, interpreter pattern]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 인터프리터 디자인 패턴?

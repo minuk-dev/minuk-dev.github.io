@@ -1,10 +1,11 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 6. 어댑터
-summary : 
+summary :
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:32:38 +0900
-tags    : 
+lastmod : 2020-09-26 23:19:03 +0900
+tags    : [cpp, adaptor]
+parent  : Modern C++ Design Pattern
 ---
 ## Adapter Pattern
 
@@ -14,17 +15,17 @@ tags    :
     {
       int x, y;
     };
-    
+
     struct Line{
       Point start, end;
     };
-    
+
     struct VectorObject
     {
       virtual std::vector<Line>::iterator begin() = 0;
       virtual std::vector<Line>::iterator end() = 0;
     };
-    
+
     struct VectorRectangle : VectorObject
     {
       VectorRectangle(int x, int y, int width, int height)
@@ -34,18 +35,18 @@ tags    :
         lines.emplace_back(Line{ Point{x,y}, Point{x, y + height} });
         lines.emplace_back(Line{ Point{ x, y + height }, Point {x + width, y + height} });
       }
-     
+
       std::vecotr<Line>::iterator begin() override {
         return lines.begin();
       }
       std::vector<Line>::iterator end() override {
         return lines.end();
       }
-    
+
     private:
       std::vector<Line> lines;
     };
-    
+
     void DrawPoints(CPaintDC& dc,
       std::vector<Point>::iterator start,
       std::vector<Point>::iterator end)
@@ -64,19 +65,19 @@ tags    :
       make_shared<VectorRectangle>(10, 10, 100, 100),
       make_shared<VectorRectangle>(30, 30, 60, 60)
     }
-    
+
     struct LineToPointAdapter
     {
       typedef vector<Point> Points;
-    
+
       LineToPointAdapter(Line& line);
-      
+
       virtual Points::iterator begin() { return points.begin(); }
       virtual Points::iterator end() { return points.end(); }
     private:
       Points points;
     };
-    
+
     LineToPointAdapter::LineToPointAdapter(Line& line)
     {
       int left = min(line.start.x, line.end.x);
@@ -85,7 +86,7 @@ tags    :
       int bottom = max(line.start.y, line.end.y);
       int dx = right - left;
       int dy = line.end.y - line.start.y;
-    
+
       if (dx == 0)
       {
         for (int y = top; y <= bottom; ++y)
@@ -101,8 +102,8 @@ tags    :
         }
       }
     }
-    
-    
+
+
     for (auto& obj : vectorObjects)
     {
       for (auto& line : *obj)
@@ -144,7 +145,7 @@ tags    :
             return seed;
           }
         };
-        
+
         struct Line
         {
           Point start, end;
@@ -156,20 +157,20 @@ tags    :
             return seed;
           }
         };
-        
+
         static map<size_t, Points> cache;
-        
+
         virtual Points::iterator begin() { return cache[line_hash].begin(); }
         virtual Points::iterator end() { return cache[line_hash].end(); }
-        
+
         LineToPointCachingAdapter(Line& line){
           static boost::hash<Line> hash;
           line_hash = hash(line);
           if (cache.find(line_hash) != cache.end())
             return;
-        
+
           Points points;
-        
+
           /* before code */
           /* remove before cached point */
           cache[line_hash] = points;

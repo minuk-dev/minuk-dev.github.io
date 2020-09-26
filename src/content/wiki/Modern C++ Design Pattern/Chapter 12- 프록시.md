@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chapter 12. 프록시
-summary : 
+summary :
 date    : 2020-04-12 23:10:03 +0900
-lastmod : 2020-04-18 01:16:53 +0900
+lastmod : 2020-09-26 23:22:05 +0900
 tags    : [cpp, design pattern, proxy]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 스마트 포인터
@@ -59,7 +59,7 @@ struct Bitmap : Image
   {
     cout << "Loading image from " << filename << endl;
   }
-  
+
   void draw() override
   {
     cout << "Drawing Image " << filename << endl;
@@ -77,7 +77,7 @@ struct LazyBitmap : Image
       bmp = new Bitmap(filename);
     bmp->draw();
   }
-  
+
 private:
   Bitmap *bmp(nullptr);
   string filename;

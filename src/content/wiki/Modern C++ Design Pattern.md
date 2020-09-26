@@ -1,9 +1,9 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern
-summary : 
+summary : 챕터별 정리
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-07-04 23:34:13 +0900
+lastmod : 2020-09-26 23:07:57 +0900
 tags    : [cpp, design pattern]
 ---
 

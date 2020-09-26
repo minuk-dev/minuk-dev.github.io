@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 13. 책임사슬(Chain of Responsibility)
-summary : 
+summary :
 date    : 2020-04-18 22:14:11 +0900
-lastmod : 2020-04-20 23:01:43 +0900
+lastmod : 2020-09-26 23:22:30 +0900
 tags    : [cpp, design pattern, chain of responsibility]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 시나리오
@@ -28,13 +28,13 @@ protected:
 public:
   explicit CreatureModifier(Creature& creature)
     : creature(creture) {}
-  
+
   void add(CreatureModifier* cm)
   {
     if (next) next->add(cm);
     else next =cm;
   }
-  
+
   virtual void handle()
   {
     if (next) next->handle();
@@ -53,7 +53,7 @@ class DoubleAttackModifier : public CreatureModifier
 public:
   explicit DoubleAttackModifier(Creature& creature)
     : CreatureModifier(creature) {}
-    
+
   void handle() override
   {
     creature.attack *= 2;
@@ -67,7 +67,7 @@ class NoBonusesModifier : public CreatureModifier
 public:
   explicit NoBonusesModifer(Creature& creature)
     : CreatureModifier(creature) {}
-    
+
   void handle() override
   {
     // Do Nothing
@@ -127,7 +127,7 @@ public:
         q.result *= 2;
     })
   }
-  
+
   ~DoubleAttackModifier() { conn.disconnect(); }
 }
 ```

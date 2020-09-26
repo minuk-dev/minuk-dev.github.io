@@ -1,16 +1,17 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 1. 개요
-summary : 
+summary :
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:18:06 +0900
-tags    : 
+lastmod : 2020-09-26 23:09:17 +0900
+tags    : [cpp]
+parent  : Modern C++ Design Pattern
 ---
 ## CRTP(Curiously Recurring Template Pattern)
 ```cpp
 struct Foo : SomeBase<Foo>
 {
- ... 
+ ...
 }
 
 template <typename Derived>
@@ -37,7 +38,7 @@ struct SomeBase
     void set_age(int value) {age_ = value; }
     __declspec(property(get=get_age, put=set_age)) int age;
   }
-  
+
   Person p;
   p.age = 20; // calls p.set_age(20)
 ```
@@ -46,15 +47,15 @@ struct SomeBase
 
 ### Factory Method
 ```cpp
-  struct Point 
+  struct Point
   {
   protected:
     Point(const float x, const float y)
       : x {x}, y {y}
     {}
-  
+
   public:
-    static Point NewCartesian(float x, float y) 
+    static Point NewCartesian(float x, float y)
     {
       return {x, y};
     }
@@ -75,7 +76,7 @@ struct Journal
 {
   string title;
   vector<string> entries;
-  
+
   explicit Journal (const string& title) : title{title} {}
 };
 ```
@@ -134,9 +135,9 @@ struct BetterFilter : Filter<Product>
 struct ColorSpecification : Specification<Product>
 {
   Color color;
-  
+
   explicit ColorSpecification(cosnt Color color) : color{color} {}
-  
+
   bool is_stisfied(Product* item) override {
     return item->color == color;
   }
@@ -202,14 +203,14 @@ struct Machine : IMachine
 {
   IPrinter& printer;
   IScanner& scanner;
-  
+
   Machine(IPrinter& printer, IScanner& scanner)
     : printer{printer},
       scanner{scanner}
   {
   }
-  
-  
+
+
   void print(vector<Document*> docs) override {
     printer.print(docs);
   }
@@ -229,7 +230,7 @@ struct ILogger
 struct ConsoleLogger : ILogger
 {
   ConsoleLogger() {}
-  
+
   void Log(const string& s) override
   {
     cout << "LOG: " << s.c_str() << endl;
@@ -240,7 +241,7 @@ struct Car
 {
   unique_ptr<Engine> engine;
   shared_ptr<ILogger> logger;
-  
+
   Car(unique_ptr<Engine> engine,
       const shared_ptr<ILogger>& logger)
     : engine{move(engine)},
@@ -248,7 +249,7 @@ struct Car
   {
     logger->Log("making a car");
   }
-  
+
   friend ostream& operator<<(ostream& os, const Car& obj)
   {
     return os << "car with engine: " << *obj.engine;

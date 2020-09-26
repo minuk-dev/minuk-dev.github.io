@@ -1,21 +1,22 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 5. 싱글턴
-summary : 
+summary :
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:29:09 +0900
-tags    : 
+lastmod : 2020-09-26 23:17:37 +0900
+tags    : [singleton, cpp]
+parent  : Modern C++ Design Pattern
 ---
 # Singleton
 ```cpp
     static Database database{}; /* not recommended */
-    
+
     /**
      * This method is only secured about MT(Multi Thread)-Safe on C++11 or Higher.
      */
     Database& get_database()
     {
-    	static Database databse;
+      static Database databse;
       return database;
     }
 ```
@@ -66,7 +67,7 @@ tags    :
         public:
           virtual int get_population(const std::string& name) = 0;
         };
-        
+
         class SingletonDatabase : public Database
         {
         protected:
@@ -75,19 +76,19 @@ tags    :
         public:
           SingletonDatabase(SingletonDatabase const&) = delete;
           void operator=(SingletonDatabase const&) = delete;
-        
+
           static SingletonDatabase& get()
           {
             static SingletonDatabase db;
             return db;
           }
-        
+
           int get_population(const std::string& name) override
           {
             return capitals[name];
           }
         };
-        
+
         struct SingletonRecordFinder
         {
           int total_population(std::vector<std::string> names)
@@ -99,7 +100,7 @@ tags    :
           }
         };
 ```
-        
+
 
     - This code can create issue, data can be changed in unit test. A solution is to make configuraion class like this.
 
@@ -108,7 +109,7 @@ tags    :
             {
               explicit ConfigurableRecordFinder(Database& db)
                 : db{db} {}
-              
+
               int total_population(std::vector<std::string> names)
               {
                 int result = 0;
@@ -116,10 +117,10 @@ tags    :
                   result += db.get_population(name);
                 return result;
               }
-            
+
               Database& db;
             };
-            
+
             class DummyDatabase : public Database
             {
               std::map<std::string, int> capitals;
@@ -130,12 +131,12 @@ tags    :
                 capitals["beta"] = 2;
                 capitals["gamma"] = 3;
               }
-            
+
               int get_population(const std::string& name) override {
                 return capitals[name];
               }
             };
-            
+
             TEST(RecordFinderTests, DummyTotalPopulationTest)
             {
               DummyDatabase db{};

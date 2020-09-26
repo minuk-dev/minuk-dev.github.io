@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 18. 메멘토
-summary : 
+summary :
 date    : 2020-04-28 21:07:07 +0900
-lastmod : 2020-04-28 21:41:17 +0900
-tags    : 
+lastmod : 2020-09-26 23:25:20 +0900
+tags    : [cpp, memento]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 간략 설명

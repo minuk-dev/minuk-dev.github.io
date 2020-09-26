@@ -1,33 +1,34 @@
----
+# ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 3. 팩토리
-summary : 
+summary :
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:25:17 +0900
-tags    : 
+lastmod : 2020-09-26 23:15:49 +0900
+tags    :
+parent  : Modern C++ Design Pattern
 ---
 ## Factory Class
 ```cpp
     struct Point
     {
-    	float x, y;
-    	friend class PointFacotry;
+      float x, y;
+      friend class PointFacotry;
     private:
-    	Point(float x, float y) 
-    		: x(x), y(y) 
-    	{}
+      Point(float x, float y)
+        : x(x), y(y)
+      {}
     };
-    
+
     struct PointFactory
     {
-    	static Point NewCartesian(float x, float y)
-    	{
-    		return Point{x, y};
-    	}
-    	static Point NewPolar(float r, flaot theta)
-    	{
-    		return Point{r * cos(theta), r * sin (theta)};
-    	}
+      static Point NewCartesian(float x, float y)
+      {
+        return Point{x, y};
+      }
+      static Point NewPolar(float r, flaot theta)
+      {
+        return Point{r * cos(theta), r * sin (theta)};
+      }
     };
 ```
 
@@ -36,27 +37,27 @@ tags    :
     struct Point
     {
     private:
-    	Point(float x, float y)
-    	: x(x), y(y)
-    	{}
-    	struct PointFactory
-    	{
-    	private:
-    		PointFactory() {}
-    	public :
-    		static Point NewCartesian (float x, float y)
-    		{
-    			return {x, y};
-    		}
-    		static Point NewPolar (float r, float theta)
-    		{
-    			return {r * cos(theta), r * sin (theta)};
-    		}
-    	};
-    
+      Point(float x, float y)
+      : x(x), y(y)
+      {}
+      struct PointFactory
+      {
+      private:
+        PointFactory() {}
+      public :
+        static Point NewCartesian (float x, float y)
+        {
+          return {x, y};
+        }
+        static Point NewPolar (float r, float theta)
+        {
+          return {r * cos(theta), r * sin (theta)};
+        }
+      };
+
     public:
-    	float x, y;
-    	static pointFactory Factory;
+      float x, y;
+      static pointFactory Factory;
     };
 ```
 
@@ -65,32 +66,32 @@ tags    :
 ```cpp
     struct HotDrink
     {
-    	virtual void prepare (int volume) = 0;
+      virtual void prepare (int volume) = 0;
     };
     struct Tea: HotDrink
     {
-    	void prepare (int volume) override
-    	{
-    		cout << "Take tea bag, boil water, pour" << volume
-    				<< "ml, add some lemon" << endl;
-    	}
+      void prepare (int volume) override
+      {
+        cout << "Take tea bag, boil water, pour" << volume
+        << "ml, add some lemon" << endl;
+      }
     };
-    
+
     class DrinkFactory
     {
-    	map<string, unique_ptr<HotDrinkFactory>> hot_factories;
+      map<string, unique_ptr<HotDrinkFactory>> hot_factories;
     public:
-    	DrinkFactory()
-    	{
-    		hot_factories["coffee"] = make_unique<CoffeeFactory>();
-    		hot_factories["tea"] = make_unique<TeaFactory>();
-    	}
-    	unique_ptr<HotDrink> make_drink(const string& name)
-    	{
-    		auto drink = hot_factories[name] -> make();
-    		drink->prepare(200);  // 200 must be changed other constant variable
-    		return drink;
-    	}
+      DrinkFactory()
+      {
+        hot_factories["coffee"] = make_unique<CoffeeFactory>();
+        hot_factories["tea"] = make_unique<TeaFactory>();
+      }
+        unique_ptr<HotDrink> make_drink(const string& name)
+      {
+        auto drink = hot_factories[name] -> make();
+        drink->prepare(200);  // 200 must be changed other constant variable
+        return drink;
+      }
     };
 ```
 
@@ -99,21 +100,20 @@ tags    :
 ```cpp
     class DrinkWithVolumeFactory
     {
-    	map<string, function<unique_ptr<HotDrink>()>> factories;
+      map<string, function<unique_ptr<HotDrink>()>> factories;
     public:
-    	DrinkWithVolumeFactory()
-    	{
-    		factories["tea"]= [] [
-    			auto tea = make_unique<Tea>();
-    			tea->prepare(200);
-    			return tea;
-    		};
-    	}
+      DrinkWithVolumeFactory()
+      {
+        factories["tea"]= [] [
+        auto tea = make_unique<Tea>();
+        tea->prepare(200);
+        return tea;
+      };
     };
     inline unique_ptr<HotDrink>
     DrinkWithVolumeFactory:: make_drink(const string& name)
     {
-    	return factories[name]();
+      return factories[name]();
     }
 ```
 

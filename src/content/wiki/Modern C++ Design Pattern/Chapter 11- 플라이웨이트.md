@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chapter 11. 플라이웨이트
-summary : 
+summary :
 date    : 2020-04-11 23:28:27 +0900
-lastmod : 2020-04-12 23:09:00 +0900
+lastmod : 2020-09-26 23:21:47 +0900
 tags    : [cpp, design pattern, flyweight]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 * 플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 "스마트 참조"로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.
@@ -54,7 +54,7 @@ public:
   {
     int start, end;
     bool capitalize;
-    
+
     bool covers(int position) const
     {
       return position >= start && position <= end;

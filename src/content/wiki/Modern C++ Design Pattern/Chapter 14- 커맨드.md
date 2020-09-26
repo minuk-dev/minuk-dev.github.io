@@ -1,12 +1,12 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 14. 커맨드
-summary : 
+summary :
 date    : 2020-04-19 21:40:23 +0900
-lastmod : 2020-04-19 22:22:20 +0900
+lastmod : 2020-09-26 23:24:20 +0900
 tags    : [cpp, design pattern, command pattern]
 draft   : false
-parent  : 
+parent  : Modern C++ Design Pattern
 ---
 
 ## 필요성
@@ -18,13 +18,13 @@ struct BankAccount
 {
   int balance = 0;
   int overdraft_limit = -500;
-  
+
   void deposit(int amount)
   {
     balance += amount;
     cout << "deposited " << amount << ", balance is now " << balance << "\n";
   }
-  
+
   void withdraw(int amount)
   {
     if (balance - amount >= overdraft_limit)
@@ -48,10 +48,10 @@ struct BankAccountCommand : Command
   BankAccount& account;
   enum Action { deposit, withdraw } action;
   int amount;
-  
+
   BankAccountCommand(BankAccount& account, const Action action, const int amount)
     : account(account), action(action), amount(amount) {}
-    
+
   void call() const override
   {
     switch (action)
@@ -100,10 +100,10 @@ struct BankAccountCommand : Command
   enum Action { deposit, withdraw } action;
   int amount;
   bool widthdrawal_succeeded;
-  
+
   BankAccountCommand(BankAccount& account, const Action action, const int amount)
     : account(account), action(action), amount(amount), widthdrawal_succeeded{false} {}
-    
+
   void call() const override
   {
     switch (action)
@@ -116,7 +116,7 @@ struct BankAccountCommand : Command
       break;
     }
   }
-  
+
   void undo() const override
   {
     switch (action)
@@ -145,13 +145,13 @@ struct CompositeBankAccountCommand : vector<BankAccountCommand>, Command
 {
   CompositeBankAccountCommand(const initializer_list<value_type>& items)
     : vector<BankAccountCommand>(items) {}
-    
+
   void call() override
   {
     for (auto& cmd : *this)
       cmd.call();
   }
-  
+
   void undo() override
   {
     for (auto it = rbegin(); it != rend(); ++it)

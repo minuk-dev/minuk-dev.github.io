@@ -1,10 +1,11 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 9. 데코레이터
-summary : 
+summary :
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:46:45 +0900
-tags    : 
+lastmod : 2020-09-26 23:21:20 +0900
+tags    : [decorator, cpp]
+parent  : Modern C++ Design Pattern
 ---
 
 ## Decorator
@@ -18,10 +19,10 @@ tags    :
   {
     Shape& shape;
     string color;
-  
+
     ColoredShape(Shape& shape, const string& color)
       : shape{shape}, color{color} {}
-  
+
     stinrg str() const override
     {
       ostringstream oss;
@@ -29,20 +30,20 @@ tags    :
       return oss.str();
     }
   };
-  
+
   // Example Code
   Circle circle{0.5f};
   ColoredShape redCircle{circle, "red"};
   cout << redCircle.str();
-  
+
   struct TransparentShape : Shape
   {
     Shape& shape;
     uint8_t transparency;
-  
+
     TransparentShape(Shape& shape, const uint8_t transparency)
       : shape{shape}, transparency{transparency} {}
-  
+
     string str() const override
     {
       ostringstream oss;
@@ -52,19 +53,19 @@ tags    :
       return oss.str();
     }
   };
-  
+
   // Exmaple Code
   Squre square{3};
   TransparentShape demiSquare{square, 85};
   cout << demiSqure.str();
-  
+
   // Composition Exmaple
   TransparentShape myCircle {
     ColoredShape {
       Circle{23}, "green",
     }, 64
   };
-  
+
   cout << myCircle.str();
 ```
 
@@ -74,16 +75,16 @@ tags    :
   {
     static_assert(is_base_of<Shape, T>::value,
       "Tempalte argument must be a Shape");
-  
+
     string color;
-  
+
     string str() const override
     {
       ostringstream oss;
       oss << T::str() << " has the color " << color;
       return oss.str();
     }
-  
+
     template<typename...Args>
     ColoredShape(const string& color, Args ...args)
       : T(std::forward<Args>(args)...), color{ color } {}
@@ -98,7 +99,7 @@ tags    :
   {
     Logger(function<R(Args...)> func, const string& name)
       : func{func}, name{name} {}
-    
+
     R operator() (Args ...args)
     {
       cout << "Enter " << name << endl;
@@ -106,11 +107,11 @@ tags    :
       cout << "Exiting " << name << endl;
       return result;
     }
-  
+
     function<R(Args ...)> func;
     string name;
   };
-  
+
   template <typename R, typename... Args>
   auto make_logger(R (*func)(Args...), const string& name)
   {
@@ -118,7 +119,7 @@ tags    :
       function<R(Args...)>(func),
       name);
   }
-  
+
   auto logged_add = make_logger(add, "add");
   auto result = logged_add(2, 3);
 ```

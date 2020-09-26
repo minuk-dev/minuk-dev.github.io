@@ -1,10 +1,11 @@
 ---
 layout  : wiki
 title   : Modern C++ Design Pattern/Chatper 7. 브릿지
-summary : 
+summary :
 date    : 2020-04-07 20:44:17 +0900
-lastmod : 2020-04-09 23:40:18 +0900
-tags    : 
+lastmod : 2020-09-26 23:19:52 +0900
+tags    : [cpp, bridge]
+parent  : Modern C++ Design Pattern
 ---
 
 
@@ -16,29 +17,29 @@ tags    :
     {
       string name;
       void greet();
-    
+
       Person();
       ~Person();
-    
+
       class PersonImpl;
       PersonImpl *impl; // refer to gsl::owner<T>
     };
-    
+
     struct Person:PersonImpl
     {
       void greet(Person* p);
     }
-    
+
     Person::Person()
       : impl(new PersonImpl) {}
-    
+
     Person::~Person() { delete imple; }
-    
+
     void Person::greet()
     {
       impl->greet(this);
     }
-    
+
     void Person::PersonImpl::greet(Person* p)
     {
       printf("hello %s", p->name.c_str());
@@ -57,7 +58,7 @@ tags    :
     {
       virtual void render_circle(float x, float y, float radius) = 0;
     };
-    
+
     struct VectorRenderer : Renderer
     {
       void render_circle(float x, float y, float radius) override
@@ -65,7 +66,7 @@ tags    :
         cout << "Rasterizing circle of radius " << radius << endl;
       }
     };
-    
+
     struct RasterRenderer : Renderer
     {
       void render_circle(float x, float y, float radius) override
@@ -73,7 +74,7 @@ tags    :
         cout << "Drawing a vector circle of radius " << radius << endl;
       }
     };
-    
+
     struct Shape
     {
     protected:
@@ -83,21 +84,21 @@ tags    :
       virtual void draw() = 0;
       virtual void resize(float factor) = 0;
     };
-    
+
     struct Circle : Shape
     {
       float x, y, radius;
-    
+
       void draw() override
       {
         renderer.render_circle(x, y, radius);
       }
-    
+
       void resize(float factor) override
       {
         radius += factor;
       }
-    
+
       Circle(Renderer& renderer, float x, float y, float radius)
         : Shape{renderer}, x{x}, y{y}, radius{radius} {}
     };
