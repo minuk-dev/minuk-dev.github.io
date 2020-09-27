@@ -2,10 +2,10 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-26 20:49:06 +0900
+lastmod : 2020-09-27 20:24:57 +0900
 tags    : [linux]
 draft   : false
-parent  : linux
+parent  : Book reviews
 ---
 
 ## 간략 소개
@@ -889,3 +889,128 @@ static void run_ksoftirqd(unsigned int cpu)
   local_irq_enable();
 }
 ```
+
+##### Soft IRQ 컨텍스트
+ * Soft IRQ 컨텍스트의 시작점
+   * __do_softirq() 에서 __local_bh_disable_ip(_RET_IP_, SOFTIRQ_OFFSET) 을 호출하면서 시작
+ * Soft IRQ 컨텍스트 확인 : in_softirq()
+
+#### 태스크릿
+ * 동적으로 Soft IRQ 서비스를 쓸 수 있게 만든 인터페이스
+##### 태스크릿 실행 순서
+ 1. Soft IRQ 서비스 요청
+ 1. Soft IRQ 서비스 실행
+ 1. ksoftirqd 스레드를 깨움
+ 1. ksfotirqd 스레드 실행
+
+##### 태스크릿의 실행 주체
+ * tasklet_action()
+
+##### 태스크릿 자료 구조
+```c
+struct tasklet_struct
+{
+  struct tasklet_struct *next;
+  unsigned long state;
+  atomic_t count;
+  void (*func)(unsigned long);
+  unsigned long data;
+}
+```
+ * next : 다음 태스크릿을 가리키는 용도의 포인터
+ * state : 캐스크릿의 세부 상태 정보를 저장하는 필드, 아래 나오는 플레그 중 하나를 저장한다.
+  ```c
+  enum
+  {
+    TASKLET_STATE_SCHED,  /* Tasklet is scheduled for execution. */
+    TASKLET_STATE_RUN     /* Tasklet is running (SMP only) */
+  }
+  ```
+   * TASKLET_STATE_SCHED : 태스크릿 서비스를 요청한 후 아직 태스크릿 핸들러를 처리하지 않는 상태
+   * TASKLET_STATE_RUN : 태스크릿 핸들러를 실행 중인 상태
+ * count : 태스크릿의 레퍼런스 카운터, 초기화할때(tasklet_init)에서 0으로 설정. 반드시 0이여야지만 태스크릿을 실행
+ * func : 테스크릿 핸들러 함수 주소, tasklet_init 함수를 호출할 때 2번째 인자로 등록
+ * data : 태스크릿 핸들러 함수에 전달되는 매개변수
+
+##### 태스크릿 등록 방법
+ * 태스크릿 전역변수 선언 : DECLARE_TASKLET() 또는 DECLARE_TASKLET_DISABLED() 함수 호출
+   ```c
+   #define DECLARE_TASKLET(name, func, data) \
+   struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(0), func, data }
+
+   #define DECLARE_TASKLET_DISABLED(name, func, data) \
+   struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(1), func, data }
+
+   /* example */
+   DECLARE_TASKLET_DISABLED(keyboard_tasklet, kbd_bh, 0);
+
+   int __init kdb_init(void)
+   {
+     /* skip */
+     tasklet_enable(&keyboard_tasklet);
+     tasklet_schedule(&keyboard_tasklet);
+     /* skip */
+     return 0;
+   }
+   ```
+   * 기본적으로는 태스크릿을 비활성화해 초기화 한 후 tasklet_enable() 함수를 호출하면 태스크릿을 활성화 할수 있다.
+ * 테스크릿 초기화 함수 호출 : tasklet_init() 함수
+   ```c
+   extern void tasklet_init(struct tasklet_struct *t,
+     void (*func)(unsigned long), unsigned long data);
+   ```
+   * t : 태스크릿을 식별하는 구조체
+   * func : 태스크릿 핸들러 함수
+   * data : 태스크릿 콜백 함수로 전달하는 매개변수
+
+##### 태스크릿 실행 요청 방법
+ * tasklet_schedule()
+   * tasklet_schedule -> __tasklet_schedule -> __tasklet_schedule_common
+     * tasklet_schedule : state를 TASKLET_STATE_SCHED로 바꿈
+     * __stasklet_schedule : __tasklet_schedule_commone 함수 호출
+     * __tasklet_schedule_common : tasklet_vec 에 태스크릿 핸들러 등록
+
+##### Soft IRQ 디버깅 해보기
+ * ftrace 코드
+   ```bash
+  #!/bin/bash
+
+  echo 0 > /sys/kernel/debug/tracing/tracing_on
+  sleep 1
+  echo "tracing_off"
+
+  echo 0 > /sys/kernel/debug/tracing/events/enable
+  sleep 1
+  echo "events disabled"
+
+  echo 1 > /sys/kernel/debug/tracing/events/irq/softirq_raise/enable
+  echo 1 > /sys/kernel/debug/tracing/events/irq/softirq_entry/enable
+  echo 1 > /sys/kernel/debug/tracing/events/irq/softirq_exit/enable
+
+  sleep 1
+  echo "set_ftrace_filter enabled"
+
+  echo 1 > /sys/kernel/debug/tracing/tracing_on
+  echo "tracing_on"
+   ```
+ * ftrace log 확인하기
+   ```log
+    soft_irq_ftrace-2255  [000] d.h. 19085.301866: softirq_raise: vec=7 [action=SCHED]
+    soft_irq_ftrace-2255  [000] ..s. 19085.301920: softirq_entry: vec=1 [action=TIMER]
+    soft_irq_ftrace-2255  [000] ..s. 19085.301940: softirq_exit: vec=1 [action=TIMER]
+    soft_irq_ftrace-2255  [000] ..s. 19085.301944: softirq_entry: vec=7 [action=SCHED]
+   ```
+   * softirq_entry : 시작, softirq_exit : 실행 마무리, softirq_raise : 서비스 요청
+ * Soft IRQ 서비스 실행 횟수 확인
+   ```bash
+   cat /proc/softirqs
+   ```
+
+---
+#### 인터럽트 정리
+ * 인터럽트가 발생했을 때 빨리 실행해야 하는 코드는 인터럽트 핸들러에서 처리, 나머지는 후반부 처리
+ * IRQ 스레드는 후반부 처리를 위핸 전용 커널 스레드, request_threaded_irq 함수가 실행될 때 생성, 인터럽트 핸들러에서 IRQ_THREAD_WAKE를 반환하면 깨어남.
+ * Soft IRQ : 빠른 시간 내에 인터럽트 후반부 처리를 하기 위한 기법, 네트워크 고속 패킷이나 스토리지 디바이스에 서사용
+ * Soft IRQ 는 서비스 요청과 서비스 실행 단계로 나눌수 있으며, 실행할 때 softirq_vec 이라는 Soft IRQ 벡터에 등록된 함수를 호출
+ * Soft IRQ 컨텍스트는 Soft IRQ 서비스를 실행 중인 상태이며, 프로세스를 관리하는 thread_info 구조체의 preempt_count 필드에 SOFTIRQ_OFFSET을 나타내는 0x100을 저장.
+ * 태스크릿은 동적으로 Soft IRQ 서비스를 사용하기 위한 인터페이스
