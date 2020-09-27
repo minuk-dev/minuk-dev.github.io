@@ -1,18 +1,18 @@
 ---
 layout  : wiki
 title   : statistics
-summary : 
+summary :
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-07 18:45:47 +0900
+lastmod : 2020-09-26 23:30:05 +0900
 tags    : [statistics, math]
 draft   : false
-parent  : 
+parent  :
 ---
 
 ## 기본 용어
  * [[quartile]]
 
- 
+
 ## 용어 정리
  * 참고 : https://blog.naver.com/mykepzzang
  * `Probability` is the branch of mathematics concerning numerical descriptions of how likely an event is to occur or how likely it is that a proposition is true.
@@ -21,7 +21,7 @@ parent  :
    * `total event`( \\(S\\) ) : the event which includes all elements.
    * `null event`( \\(\phi\\) ): the event which does not includes any element.
    * `complementary event` : the event without elements of another Event.
-   * `union event` : 
+   * `union event` :
    * `intersection event`
    * `mutually exclusive event`
  * `Multiplication Rule`
@@ -107,12 +107,12 @@ parent  :
    * $$Var(X) = pq = p(1-p)$$
    * $$M_X(t) = q + p^t$$
  * `Binomial Distribution`
-   * `The Binomial distribution` with parameters \\(n\\) and \\(p\\) is the `distrcete probability distribution` of the number of successes in a sequence of \\(n\\) indipendent experiments, each asking a yes-no question, and each with its own boolean-valued outcome. 
+   * `The Binomial distribution` with parameters \\(n\\) and \\(p\\) is the `distrcete probability distribution` of the number of successes in a sequence of \\(n\\) indipendent experiments, each asking a yes-no question, and each with its own boolean-valued outcome.
    * $$f(x) = \binom{n}{x}p^x(1-p)^{n-x}$$
    * $$E(X) = np$$
    * $$Var(X) = npq = np(1-p)$$
    * $$M_X(t) = (q + pe^t)^n$$
-    
+
  * `Multinomial Distribution`
    * `The multinomial distribution` is a gneralization of the `binomial distribution`.
    * It models the probability of counts for each side of a \\(k\\)-sided die rolled \\(n\\) times.
@@ -227,7 +227,7 @@ parent  :
    * `sample` :the selection of a subset of individuals
    * `sampleing` : sampling is the selection of a subset of individuals from within a statistical population to estimate chracteristics of the whole population.
    * `random sampling`
-   * `purposive sampling` 
+   * `purposive sampling`
    * $$\text{When n independent probabilities } X_1, X_2, X_3, ..., X_n \\\\ \text{ exist and each random variable has the same probability distribution } f(x), \\\\ \text{define } X_1, X_2, X_3, ... X_n \text{ as n samples from the population, and the combined probability density function is } \\\\ f(x_1, x_2, ..., x_n) = f(x_1)f(x_2) ... f(x_n)$$
  * `Sample Mean & Sample Variance of Random Samples`
    * Random Sample has these properties
@@ -294,7 +294,7 @@ parent  :
    * When the population is normal distributiona and #sample n, the variance of sample \\(S^2\\),
    * $$\frac{(n-1)S^2}{\chi_{\frac{\alpha}{2}} ^2} \le \sigma^2 \le \frac{(n-1) S^2}{\chi_{1 - \frac{\alpha}{2} ^ 2}}$$
  * `Estimating the Proportion`
-   *$$\hat p - z_\frac{\alpha}{2} \sqrt{\frac{\hat p (1 - \hat p)}{n}} \le p \le \hat p + z_{\frac{\alpha}{2}} \sqrt{\frac{\hat p (1 - \hat p)}{n}}$$ 
+   *$$\hat p - z_\frac{\alpha}{2} \sqrt{\frac{\hat p (1 - \hat p)}{n}} \le p \le \hat p + z_{\frac{\alpha}{2}} \sqrt{\frac{\hat p (1 - \hat p)}{n}}$$
  * `Testing a Statistical Hypothesis`
    * Null hypothesis
    * alternative hypothesis
@@ -406,7 +406,7 @@ parent  :
      * $$E(\hat \beta_0) = \beta_0$$
      * $$Var(\hat \beta_0) = \sigma^2(\frac{1}{n} + \frac{\bar x ^2}{\sum_{i=1}^n(x_i - \bar x)^2})
    * Conclusion : \\(\beta_1, \beta_0 \\) are `unbiased estimators`.
- 
+
  * `Distribution of the Estimators of regression Coefficient`
    * Main question : What distributions are \\(\frac{\beta_1 - \beta-1}{S(\hat \beta_1)}, \frac{\hat \beta_0 - \beta_0}{S(\hat \beta_0)} \\) respectively?
    * $$\frac{\hat \beta_1 - \beta_1}{S(\hat \beta_1)} = \frac{(\hat \beta_1 - \beta_1) / \sigma(\hat \beta_1)}{S(\hat \beta_1) / \sigma(\hat \beta_1)}$$
