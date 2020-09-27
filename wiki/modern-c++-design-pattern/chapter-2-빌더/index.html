@@ -2,13 +2,14 @@
 gtag('js',new Date());gtag('config','UA-98056974-1');</script><script>window.MathJax={jax:["input/TeX","output/CommonHTML"],extensions:["tex2jax.js","asciimath2jax.js","mml2jax.js","MathMenu.js","MathZoom.js"],TeX:{extensions:["AMSmath.js","AMSsymbols.js","autoload-all.js"]},tex2jax:{inlineMath:[['$','$'],["\\(","\\)"]],processEscapes:true},showProcessingMessages:false,messageStyle:"none",menuSettings:{zoom:"Click"},AuthorInit:function(){MathJax.Hub.Register.StartupHook("End",function(){var timeout=false,delay=250;var shrinkMath=function(){var dispFormulas=document.getElementsByClassName("formula");if(dispFormulas){var contentTest=document.getElementsByTagName("body")[0];var nodesWidth=contentTest.offsetWidth;var mathIndent=MathJax.Hub.config.displayIndent;var mathIndentValue=mathIndent.substring(0,mathIndent.length-2);for(var i=0;i<dispFormulas.length;i++){var dispFormula=dispFormulas[i];var wrapper=dispFormula.getElementsByClassName("MathJax_Preview")[0].nextSibling;var child=wrapper.firstChild;wrapper.style.transformOrigin="center";var oldScale=child.style.transform;var newValue=Math.min(0.80*dispFormula.offsetWidth/child.offsetWidth,1.0).toFixed(2);var newScale="scale("+newValue+")";if(!(newScale===oldScale)){wrapper.style.transform=newScale;wrapper.style["margin-left"]=Math.pow(newValue,4)*mathIndentValue+"px";var wrapperStyle=window.getComputedStyle(wrapper);var wrapperHeight=parseFloat(wrapperStyle.height);wrapper.style.height=""+(wrapperHeight*newValue)+"px";if(newValue==="1.00"){wrapper.style.cursor="";wrapper.style.height="";}
 else{wrapper.style.cursor="zoom-in";}}}}};shrinkMath();window.addEventListener('resize',function(){clearTimeout(timeout);timeout=setTimeout(shrinkMath,delay);});});}};(function(d,script){script=d.createElement('script');script.type='text/javascript';script.async=true;script.onload=function(){};script.src='https://cdn.mathjax.org/mathjax/latest/MathJax.js';d.getElementsByTagName('head')[0].appendChild(script);}(document));</script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 2. 빌더</a>
 <button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><a href=/wiki/><button class="btn btn-link"><i class="fa fa-arrow-left"></i>&nbsp;Front Page</button></a></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="Chapter 2- 빌더"
-pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper 2. 빌더</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%202-%20%eb%b9%8c%eb%8d%94.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Thu, 09 Apr 2020 23:25:05 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#builder-pattern>Builder Pattern</a><ul><li><a href=#simple-builder>Simple Builder</a></li><li><a href=#fluent-builder>Fluent Builder</a></li><li><a href=#force-to-use-builder-class>Force to use Builder Class</a></li><li><a href=#groovy---style-builder><code>Groovy</code> - style builder</a></li><li><a href=#composite-builder>Composite Builder</a></li><li><a href=#summary>Summary</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=builder-pattern>Builder Pattern</h2><h3 id=simple-builder>Simple Builder</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>HtmlBuilder</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick="(function(elem){elem.querySelector('a').click();})(this);">
+<i class="fa fa-arrow-left"></i>[[Modern C++ Design Pattern]]</button></div></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="Chapter 2- 빌더"
+pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper 2. 빌더</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%202-%20%eb%b9%8c%eb%8d%94.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Sat, 26 Sep 2020 23:10:55 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#builder-pattern>Builder Pattern</a><ul><li><a href=#simple-builder>Simple Builder</a></li><li><a href=#fluent-builder>Fluent Builder</a></li><li><a href=#force-to-use-builder-class>Force to use Builder Class</a></li><li><a href=#groovy---style-builder><code>Groovy</code> - style builder</a></li><li><a href=#composite-builder>Composite Builder</a></li><li><a href=#summary>Summary</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=builder-pattern>Builder Pattern</h2><h3 id=simple-builder>Simple Builder</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>HtmlBuilder</span>
     {
       HtmlElement root;
-    
+
       HtmlBuilder(string root_name) { root.name <span style=color:#f92672>=</span> root_name; }
-    
+
       <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>add_child</span>(string child_name string child_text)
       {
         HtmlElement e{ child_name, child_text };
@@ -28,7 +29,7 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
       }
       <span style=color:#75715e>/* skip */</span>
     };
-    
+
     HtmlBuilder builder{ <span style=color:#e6db74>&#34;ul&#34;</span> };
     builder.add_child(<span style=color:#e6db74>&#34;li&#34;</span>, <span style=color:#e6db74>&#34;Hello&#34;</span>).add_child(<span style=color:#e6db74>&#34;li&#34;</span>, <span style=color:#e6db74>&#34;world&#34;</span>);
     cout <span style=color:#f92672>&lt;&lt;</span> builder.str() <span style=color:#f92672>&lt;&lt;</span> endl;
@@ -38,25 +39,25 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
       string text;
       vector<span style=color:#f92672>&lt;</span>HtmlElement<span style=color:#f92672>&gt;</span> elements;
       <span style=color:#66d9ef>const</span> size_t indent_size <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;
-      
+
       <span style=color:#66d9ef>static</span> unique_ptr<span style=color:#f92672>&lt;</span>HtmlBuilder<span style=color:#f92672>&gt;</span> build(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> root_name)
       {
         <span style=color:#66d9ef>return</span> make_unique<span style=color:#f92672>&lt;</span>HtmlBuilder<span style=color:#f92672>&gt;</span>(root_name);
       }
-    
+
     <span style=color:#66d9ef>protected</span><span style=color:#f92672>:</span>
       HtmlElement() {}
       HtmlElement(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> name, <span style=color:#66d9ef>const</span> string <span style=color:#f92672>&amp;</span>text)
         <span style=color:#f92672>:</span> name{name}, text{text} {}
     };
-    
+
     <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>HtmlBuilder</span>
     {
       <span style=color:#66d9ef>operator</span> <span style=color:#a6e22e>HtmlElement</span>() <span style=color:#66d9ef>const</span> { <span style=color:#66d9ef>return</span> root; }
       HtmlElement root;
       <span style=color:#75715e>/* skip */</span>
     };
-    
+
     <span style=color:#75715e>/* Can use move semantic */</span>
     HtmlElement HtmlBuilder<span style=color:#f92672>::</span>build() <span style=color:#66d9ef>const</span>
     {
@@ -68,38 +69,38 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
       string text;
       vector<span style=color:#f92672>&lt;</span>Tag<span style=color:#f92672>&gt;</span> children;
       vector<span style=color:#f92672>&lt;</span>pair<span style=color:#f92672>&lt;</span>string, string<span style=color:#f92672>&gt;</span> <span style=color:#f92672>&gt;</span> sttributes;
-    
+
       <span style=color:#66d9ef>friend</span> ostream<span style=color:#f92672>&amp;</span> <span style=color:#66d9ef>operator</span> <span style=color:#f92672>&lt;&lt;</span> (std<span style=color:#f92672>::</span>ostream<span style=color:#f92672>&amp;</span> os, <span style=color:#66d9ef>const</span> Tag<span style=color:#f92672>&amp;</span> tag)
       {
       <span style=color:#75715e>/* skip implementation */</span>
       }
-    
+
     <span style=color:#66d9ef>protected</span><span style=color:#f92672>:</span>
       Tag(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> name, <span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> text)
         <span style=color:#f92672>:</span> name {name}, text{text} {}
-    
+
       Tag(<span style=color:#66d9ef>const</span> string <span style=color:#f92672>&amp;</span>name, <span style=color:#66d9ef>const</span> vector<span style=color:#f92672>&lt;</span>Tag<span style=color:#f92672>&gt;&amp;</span> children)
         <span style=color:#f92672>:</span> name{name}, children{children} {}
     };
-    
+
     <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>P</span> <span style=color:#f92672>:</span> Tag
     {
       <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>P</span>(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> text)
         <span style=color:#f92672>:</span> Tag{<span style=color:#e6db74>&#34;p&#34;</span>, text} {}
-    
+
       P(initializer_list<span style=color:#f92672>&lt;</span>Tag<span style=color:#f92672>&gt;</span> children)
         <span style=color:#f92672>:</span> Tag{<span style=color:#e6db74>&#34;p&#34;</span>, children} {}
     };
-    
+
     <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>IMG</span> <span style=color:#f92672>:</span> Tag
     {
       <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>IMG</span>(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> url
         : Tag{<span style=color:#e6db74>&#34;img&#34;</span>, <span style=color:#e6db74>&#34;&#34;</span>}
       {
-    		attributes.emplace_back({<span style=color:#e6db74>&#34;src&#34;</span>, url});
+        attributes.emplace_back({<span style=color:#e6db74>&#34;src&#34;</span>, url});
       }
     };
-    
+
     std<span style=color:#f92672>::</span>cout <span style=color:#f92672>&lt;&lt;</span>
       P {
         IMG { <span style=color:#e6db74>&#34;http://pokemon.com/pikachu.png&#34;</span> }
@@ -116,37 +117,37 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
       {
         <span style=color:#66d9ef>return</span> std<span style=color:#f92672>::</span>move(person);
       }
-    
+
       PersonAddressBuilder <span style=color:#a6e22e>lives</span>() <span style=color:#66d9ef>const</span>;
       PersonJobBuilder <span style=color:#a6e22e>works</span>() <span style=color:#66d9ef>const</span>;
     };
-    
+
     <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PersonBiulder</span> <span style=color:#f92672>:</span> <span style=color:#66d9ef>public</span> PersonBuilderBase
     {
       Person p;
     <span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
       PersonBuilder() <span style=color:#f92672>:</span> PersonBuilderBase{p} {}
     };
-    
-    
+
+
     <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>PersonAddressBuilder</span> <span style=color:#f92672>:</span> <span style=color:#66d9ef>public</span> PersonBuilderBase
     {
       <span style=color:#66d9ef>typedef</span> PersonAddressBuilder self;
     <span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
       <span style=color:#66d9ef>explicit</span> PersonAddressBuilder(Person<span style=color:#f92672>&amp;</span> person)
         <span style=color:#f92672>:</span> PersonBuilderBase { person } {}
-      
+
       self<span style=color:#f92672>&amp;</span> at(std<span style=color:#f92672>::</span>string street_address)
       {
         person.street_address <span style=color:#f92672>=</span> street_address;
         <span style=color:#66d9ef>return</span> <span style=color:#f92672>*</span><span style=color:#66d9ef>this</span>;
       }
-    
+
       self<span style=color:#f92672>&amp;</span> with_postcode(std<span style=color:#f92672>::</span>string post_code) { <span style=color:#75715e>/* skip */</span> }
-      
+
       self<span style=color:#f92672>&amp;</span> in(std<span style=color:#f92672>::</span>string city) { <span style=color:#75715e>/* skip */</span> }
     };
-    
+
     Person p <span style=color:#f92672>=</span> Person<span style=color:#f92672>::</span>create()
       .lives().at(<span style=color:#e6db74>&#34;123 London Road&#34;</span>)
               .with_postcode(<span style=color:#e6db74>&#34;SW1 1GB&#34;</span>)

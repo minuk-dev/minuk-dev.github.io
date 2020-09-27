@@ -2,10 +2,11 @@
 gtag('js',new Date());gtag('config','UA-98056974-1');</script><script>window.MathJax={jax:["input/TeX","output/CommonHTML"],extensions:["tex2jax.js","asciimath2jax.js","mml2jax.js","MathMenu.js","MathZoom.js"],TeX:{extensions:["AMSmath.js","AMSsymbols.js","autoload-all.js"]},tex2jax:{inlineMath:[['$','$'],["\\(","\\)"]],processEscapes:true},showProcessingMessages:false,messageStyle:"none",menuSettings:{zoom:"Click"},AuthorInit:function(){MathJax.Hub.Register.StartupHook("End",function(){var timeout=false,delay=250;var shrinkMath=function(){var dispFormulas=document.getElementsByClassName("formula");if(dispFormulas){var contentTest=document.getElementsByTagName("body")[0];var nodesWidth=contentTest.offsetWidth;var mathIndent=MathJax.Hub.config.displayIndent;var mathIndentValue=mathIndent.substring(0,mathIndent.length-2);for(var i=0;i<dispFormulas.length;i++){var dispFormula=dispFormulas[i];var wrapper=dispFormula.getElementsByClassName("MathJax_Preview")[0].nextSibling;var child=wrapper.firstChild;wrapper.style.transformOrigin="center";var oldScale=child.style.transform;var newValue=Math.min(0.80*dispFormula.offsetWidth/child.offsetWidth,1.0).toFixed(2);var newScale="scale("+newValue+")";if(!(newScale===oldScale)){wrapper.style.transform=newScale;wrapper.style["margin-left"]=Math.pow(newValue,4)*mathIndentValue+"px";var wrapperStyle=window.getComputedStyle(wrapper);var wrapperHeight=parseFloat(wrapperStyle.height);wrapper.style.height=""+(wrapperHeight*newValue)+"px";if(newValue==="1.00"){wrapper.style.cursor="";wrapper.style.height="";}
 else{wrapper.style.cursor="zoom-in";}}}}};shrinkMath();window.addEventListener('resize',function(){clearTimeout(timeout);timeout=setTimeout(shrinkMath,delay);});});}};(function(d,script){script=d.createElement('script');script.type='text/javascript';script.async=true;script.onload=function(){};script.src='https://cdn.mathjax.org/mathjax/latest/MathJax.js';d.getElementsByTagName('head')[0].appendChild(script);}(document));</script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 1. 개요</a>
 <button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><a href=/wiki/><button class="btn btn-link"><i class="fa fa-arrow-left"></i>&nbsp;Front Page</button></a></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="Chapter 1- 개요"
-pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper 1. 개요</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%201-%20%ea%b0%9c%ec%9a%94.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Thu, 09 Apr 2020 23:18:06 +0900</h5></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#crtpcuriously-recurring-template-pattern>CRTP(Curiously Recurring Template Pattern)</a><ul><li><a href=#property>Property</a></li></ul></li><li><a href=#factory>Factory</a><ul><li><a href=#factory-method>Factory Method</a></li><li><a href=#solid-design-principle>SOLID Design Principle</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=crtpcuriously-recurring-template-pattern>CRTP(Curiously Recurring Template Pattern)</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Foo</span> <span style=color:#f92672>:</span> SomeBase<span style=color:#f92672>&lt;</span>Foo<span style=color:#f92672>&gt;</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick="(function(elem){elem.querySelector('a').click();})(this);">
+<i class="fa fa-arrow-left"></i>[[Modern C++ Design Pattern]]</button></div></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="Chapter 1- 개요"
+pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper 1. 개요</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%201-%20%ea%b0%9c%ec%9a%94.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Sat, 26 Sep 2020 23:09:17 +0900</h5></a><a href=http://makerdark98.dev/tags/cpp><kbd class=item-tag>cpp</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#crtpcuriously-recurring-template-pattern>CRTP(Curiously Recurring Template Pattern)</a><ul><li><a href=#property>Property</a></li></ul></li><li><a href=#factory>Factory</a><ul><li><a href=#factory-method>Factory Method</a></li><li><a href=#solid-design-principle>SOLID Design Principle</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=crtpcuriously-recurring-template-pattern>CRTP(Curiously Recurring Template Pattern)</h2><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Foo</span> <span style=color:#f92672>:</span> SomeBase<span style=color:#f92672>&lt;</span>Foo<span style=color:#f92672>&gt;</span>
 {
- ... 
+ ...
 }
 
 <span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> Derived<span style=color:#f92672>&gt;</span>
@@ -28,18 +29,18 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
     <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>set_age</span>(<span style=color:#66d9ef>int</span> value) {age_ <span style=color:#f92672>=</span> value; }
     <span style=color:#66d9ef>__declspec</span>(property(get<span style=color:#f92672>=</span>get_age, put<span style=color:#f92672>=</span>set_age)) <span style=color:#66d9ef>int</span> age;
   }
-  
+
   Person p;
   p.age <span style=color:#f92672>=</span> <span style=color:#ae81ff>20</span>; <span style=color:#75715e>// calls p.set_age(20)
-</span></code></pre></div><h2 id=factory>Factory</h2><h3 id=factory-method>Factory Method</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>  <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span> 
+</span></code></pre></div><h2 id=factory>Factory</h2><h3 id=factory-method>Factory Method</h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp>  <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span>
   {
   <span style=color:#66d9ef>protected</span><span style=color:#f92672>:</span>
     Point(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> y)
       <span style=color:#f92672>:</span> x {x}, y {y}
     {}
-  
+
   <span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
-    <span style=color:#66d9ef>static</span> Point NewCartesian(<span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y) 
+    <span style=color:#66d9ef>static</span> Point NewCartesian(<span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y)
     {
       <span style=color:#66d9ef>return</span> {x, y};
     }
@@ -53,7 +54,7 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
 {
   string title;
   vector<span style=color:#f92672>&lt;</span>string<span style=color:#f92672>&gt;</span> entries;
-  
+
   <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>Journal</span> (<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> title) <span style=color:#f92672>:</span> title{title} {}
 };
 </code></pre></div><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=color:#66d9ef>void</span> Journal<span style=color:#f92672>::</span>add(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> entry)
@@ -105,9 +106,9 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
 <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ColorSpecification</span> <span style=color:#f92672>:</span> Specification<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>&gt;</span>
 {
   Color color;
-  
+
   <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>ColorSpecification</span>(cosnt Color color) <span style=color:#f92672>:</span> color{color} {}
-  
+
   <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>is_stisfied</span>(Product<span style=color:#f92672>*</span> item) <span style=color:#66d9ef>override</span> {
     <span style=color:#66d9ef>return</span> item<span style=color:#f92672>-&gt;</span>color <span style=color:#f92672>==</span> color;
   }
@@ -167,14 +168,14 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
 {
   IPrinter<span style=color:#f92672>&amp;</span> printer;
   IScanner<span style=color:#f92672>&amp;</span> scanner;
-  
+
   Machine(IPrinter<span style=color:#f92672>&amp;</span> printer, IScanner<span style=color:#f92672>&amp;</span> scanner)
     <span style=color:#f92672>:</span> printer{printer},
       scanner{scanner}
   {
   }
-  
-  
+
+
   <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#66d9ef>override</span> {
     printer.print(docs);
   }
@@ -191,7 +192,7 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
 <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ConsoleLogger</span> <span style=color:#f92672>:</span> ILogger
 {
   ConsoleLogger() {}
-  
+
   <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>Log</span>(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> s) <span style=color:#66d9ef>override</span>
   {
     cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;LOG: &#34;</span> <span style=color:#f92672>&lt;&lt;</span> s.c_str() <span style=color:#f92672>&lt;&lt;</span> endl;
@@ -202,7 +203,7 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
 {
   unique_ptr<span style=color:#f92672>&lt;</span>Engine<span style=color:#f92672>&gt;</span> engine;
   shared_ptr<span style=color:#f92672>&lt;</span>ILogger<span style=color:#f92672>&gt;</span> logger;
-  
+
   Car(unique_ptr<span style=color:#f92672>&lt;</span>Engine<span style=color:#f92672>&gt;</span> engine,
       <span style=color:#66d9ef>const</span> shared_ptr<span style=color:#f92672>&lt;</span>ILogger<span style=color:#f92672>&gt;&amp;</span> logger)
     <span style=color:#f92672>:</span> engine{move(engine)},
@@ -210,7 +211,7 @@ pushHistory(now);</script></div></div><div><h2>Modern C++ Design Pattern/Chatper
   {
     logger<span style=color:#f92672>-&gt;</span>Log(<span style=color:#e6db74>&#34;making a car&#34;</span>);
   }
-  
+
   <span style=color:#66d9ef>friend</span> ostream<span style=color:#f92672>&amp;</span> <span style=color:#66d9ef>operator</span><span style=color:#f92672>&lt;&lt;</span>(ostream<span style=color:#f92672>&amp;</span> os, <span style=color:#66d9ef>const</span> Car<span style=color:#f92672>&amp;</span> obj)
   {
     <span style=color:#66d9ef>return</span> os <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;car with engine: &#34;</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#f92672>*</span>obj.engine;
