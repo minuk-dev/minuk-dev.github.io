@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-27 20:24:57 +0900
+lastmod : 2020-09-28 20:54:23 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1014,3 +1014,105 @@ struct tasklet_struct
  * Soft IRQ 는 서비스 요청과 서비스 실행 단계로 나눌수 있으며, 실행할 때 softirq_vec 이라는 Soft IRQ 벡터에 등록된 함수를 호출
  * Soft IRQ 컨텍스트는 Soft IRQ 서비스를 실행 중인 상태이며, 프로세스를 관리하는 thread_info 구조체의 preempt_count 필드에 SOFTIRQ_OFFSET을 나타내는 0x100을 저장.
  * 태스크릿은 동적으로 Soft IRQ 서비스를 사용하기 위한 인터페이스
+
+### 워크큐
+ * 주요 키워드 : 워크, 워커스레드, 워커 풀, 풀워크큐
+ * 워크 : 워크큐를 실행하는 단위
+   * 실행 처리 흐름
+     1. 워크 큐잉(schedule_work), insert_work)
+     2. 워크 스레드 깨움(wake_up_worker)
+     3. 워크 스레드 실행(process_one_work)
+
+   * 커널 후반부를 처리하는 단위, 워 크핸들러 실행 도중 휴면 상태에 진입할 숫 있다.
+   * 워크는 워커 스레드가 실행한다.
+ * 워크 스레드
+   * 워커 스레드의 이름은 "kworker/" 로 시작하며, 워크큐의 종류에 다라 "kworker/" 다음에 번호를 부여한다.
+   * 워커 스레드 핸들러 함수는 worker_thread() 함수다.
+ * 워커 풀
+   * 큐잉한 워크 리스트를 관리
+   * 워커 스레드를 생성하면서 관리
+   ```c
+   struct worker_pool {
+     spinlock_t lock;
+     int cpu;
+     /* skip */
+     struct list_head worklist;
+     int nr_workers;
+     /* skip */
+     struct list_head workers;
+   }
+   ```
+ * 풀워크큐
+   * 워커 풀을 통해 워크와 워커 스레드를 관리한다.
+
+#### 워크큐의 특징
+ * 워커 스레드가 워커를 실행할 때는 언제든 휴면이 가능한다. 따라서 스케쥴링을 지원하는 모든 커널 함수를 쓸 수 있다.
+ * 실행 시각에 민감한 후반부를 처리하는 용도로 워크큐의 워크를 사용하는 것은 적합하지 않다. 시스템 부하에 따라 워크 핸들러의 실행 시각 시간이 달라질 수 있다.
+ * 드라이브 레벨에 서워크는 쓰기 쉽다. 워크는 work_struct 구조체 변수만 설정, 워크를 실행할 코드에 queue_work() 혹은 schedule_work() 함수만 추가하면 된다.
+ * 워크큐를 쓰면 드라이버를 조금 더 유연하게 설계 가능하다. 또한 딜레이 워크(struct delayed_work)를 제공하며, 이를 사용해 jiffies(1/HZ) 단위로 워크를 특정 시각 이후로 지연시킨 후 실행 가능
+
+#### 워크큐와 다른 인터럽트 후반부 기법과의 비교
+ * vs IRQ 스레드 방식
+   * 스레드의 우선순위 : IRQ 스레드는 우선순위를 높여서 처리 가능
+ * vs Soft IRQ 방식과의 비교
+   * Soft IRQ는 인터럽트 발생 빈도가 높고 후반부를 빨리 처리해야하는 상황에서 사용
+   * 워크큐는 Soft IRQ에 비해 처리 속도가 느리다.
+
+#### 워크큐 설계
+ * 인터럽트 핸들러로 빨리 처리해야 할 코드를 수행한 후 워크를 워크큐에 큐잉한다.
+ * 인터럽트 후반부로 처리해야 할 코드를 워크 핸들러에서 처리한다.
+
+#### 워크큐의 종류
+##### alloc_workqueue()
+```c
+#define alloc_workqueue(fmt, flags, max_active, args...) \
+  __alloc_workqueue_key((fmt), (flags), (max_active), \
+    NULL, NULL, ##args)
+```
+ * fmt : 워크큐의 이름을 지정하며, workqueue_struct 구조체의 name 필드에 저장된다.
+ * flags : 워크큐의 속성 정보 저장, workqueue_struct 구조체의 flags 필드에 저장.
+   ```c
+   enum {
+     WQ_UNBOUND = 1 << 1,
+     WQ_FREEZABLE = 1 << 2,
+     WQ_MEM_RECLAIM = 1 << 3,
+     WQ_HIGHPRI = 1 << 4,
+     WQ_CPU_INTENSIVE = 1 << 5,
+     WQ_SYSFS = 1 << 6,
+     WQ_POWER_EFFICIENT = 1 << 7,
+     /* skip */
+   }
+   ```
+ * max_active : workqueue_struct 구조체의 saved_max_active에 저장
+ * workqueue_init_early 함수에서 호출됨.
+
+##### 7가지 워크큐
+```c
+int __init workqueue_init_early(void)
+{
+  int std_nice[NR_STD_WORKER_POOLS] = { 0, HIGHPRI_NICE_LEVEL };
+  int i, cpu;
+  /* skip */
+  system_wq = alloc_workqueue("events", 0, 0);
+  system_highpri_wq = alloc_workqueue("events_highpri", WQ_HIGHPRI, 0);
+  system_long_wq = alloc_workqueue("events_long", 0, 0);
+  system_unbound_wq = alloc_workqueue("evnets_unbound", WQ_UNBOUND,
+                        WQ_UNBOUND_MAX_ACTIVE);
+  system_freezable_wq = alloc_workqueue("events_power_efficient",
+                        WQ_FREEZABLE, 0);
+  system_power_efficient_wq = alloc_workqueue("events_power_efficient",
+                        WQ_POWER_EFFICIENT, 0);
+  system_freezable_power_efficient_wq =
+    alloc_workqueue("events_freezable_power_efficient",
+                        WQ_FREEZABLE | WQ_POWER_EFFICIENT,
+                        0);
+
+  BUG_ON(!system_wq || !system_highpri_wq || !system_long_wq ||
+        !system_unbound_wq || !system_freezable_sq ||
+        !system_power_efficient_wq ||
+        !system_freezable_power_efficient_wq);
+}
+```
+ * 7가지 워크큐 생성
+ * 워크큐가 제대로 생성됐는지 점검
+ * system_wq : 시스템 워크큐
