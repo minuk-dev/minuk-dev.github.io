@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-02 00:12:13 +0900
+lastmod : 2020-10-02 00:36:19 +0900
 tags    :
 draft   : false
 parent  :
@@ -20,3 +20,8 @@ parent  :
  * 오개념 잡기 쉬운부분 : 항상 모든 내용(데이터)를 다 적을 필요는 없음. 메타데이터만 적고, 데이터를 적을 수도 있음. 자세한건 journaling 참고
  * 참고 : https://ko.wikipedia.org/wiki/%EB%A1%9C%EA%B7%B8_%EC%84%A0%ED%96%89_%EA%B8%B0%EC%9E%85
  * 찾아보게 된 계기 : 논문 보다 나왔는데, 추상적으로만 이해하는게 아니라, 정확히 개념을 정립하기 위해서
+
+## ACL(access control list)
+ * 참고 : https://ko.wikipedia.org/wiki/%EC%A0%91%EA%B7%BC_%EC%A0%9C%EC%96%B4_%EB%AA%A9%EB%A1%9D
+ * 개체나 개체 속성에 적용되어 있는 허가 목록
+ * 찾아보게 된 계기 : f2fs github issue에 있길레
