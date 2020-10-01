@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-01 23:57:38 +0900
+lastmod : 2020-10-02 00:12:13 +0900
 tags    :
 draft   : false
 parent  :
@@ -14,3 +14,9 @@ parent  :
  * coarse-grained 는 프로세스를 굵게 쪼개서 뭉뚱그려놓은 것,
  * fine-grained 는 프로세스를 아주 잘게 쪼개서 작업하느냐
  * 찾아보게 된 계기 : fine-grained lock 이라는 단어가 먼지 잘 모르겠어서.
+
+## write-ahead logging(로그 선행 기록)
+ * transaction 의 내용을 한번 다 적고(commit), 다 적힌 트랜잭션을 데이터 원본 영역에 넣는 방법
+ * 오개념 잡기 쉬운부분 : 항상 모든 내용(데이터)를 다 적을 필요는 없음. 메타데이터만 적고, 데이터를 적을 수도 있음. 자세한건 journaling 참고
+ * 참고 : https://ko.wikipedia.org/wiki/%EB%A1%9C%EA%B7%B8_%EC%84%A0%ED%96%89_%EA%B8%B0%EC%9E%85
+ * 찾아보게 된 계기 : 논문 보다 나왔는데, 추상적으로만 이해하는게 아니라, 정확히 개념을 정립하기 위해서
