@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-09-28 20:54:23 +0900
+lastmod : 2020-10-02 23:56:04 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1116,3 +1116,188 @@ int __init workqueue_init_early(void)
  * 7가지 워크큐 생성
  * 워크큐가 제대로 생성됐는지 점검
  * system_wq : 시스템 워크큐
+ * system_highpri_wq : 시스템 워크큐에서 쓰는 워커 스레드 보다 우선순위가 높은 워커 스레드를 처리하는 큐
+ * system_long_wq : 오래걸리는 작업 때 사용
+ * system_unbound_wq : percpu 타입의 워커를 쓰지 않고 wq->numa_pwq_tbl[node]에 지정된 워커 풀을 쓴다. 시스템 워크큐보다 빨리 실행된다.
+ * system_freezable_wq : freezable 유저 프로세스나 커널 쓰레드를 처리할때 사용. (freeze_wokques_begin() 함수에서 실행)
+   * 프로세스를 얼릴때는 __frefrigerator 함수를 호출
+ * system_power_efficient_wq, system_freezable_power_efficient_wq : 절전 목적으로 사용하는 워크큐
+
+##### 워크
+ * 워크큐를 실행하는 기본 단위
+ ```c
+ struct work_struct {
+   atomic_long_t data;
+   struct list_head entry;
+   work_func_t func;
+   #ifdef CONFIG_LOCKDEP
+   struct lockdep_map lockdep_map;
+   #endif
+ };
+ ```
+   * data : 워크 실행상태를 나타낸다.
+     * 워크 초기화 : 0xFFFFFFE0
+     * 워크를 워크큐에 큐잉 : WORK_STRUCT_PENDING_BIT(0x1)
+   * entry : 연결 리스트, worker_pool 구조체 중 연결 리스트 worklist에 등록된다.
+   * func : 워크 핸들러 함수의 주소를 저장
+
+ * 초기화 방법 : INIT_WORK, DECLARE_WORK
+   * INIT_WORK : 커널이 INIT_WORK 함수를 실행할 때 워크를 초기화
+      ```c
+      INIT_WORK(&work, callback);
+      ```
+
+      ```c
+      #define INIT_WORK(_work, _func)                              \
+            __INIT_WORK((_work), (_func), 0)
+
+      #define __INIT_WORK(_work, _func, _onstack)                  \
+        do {                                                    \
+              __init_work((_work), _onstack);                   \
+              (_work)->data = (atomic_long_t) WORK_DATA_INIT(); \
+              INIT_LIST_HEAD(&(_work)->entry);                  \
+              (_work)->func = (_func);                          \
+        } while(0)
+
+      #define WORK_DATA_INIT() ATOMIC_LONG_INIT(WORKSTRUCT_NO_POOL)
+      ```
+      * 6번째 줄의 __init_work 함수는 CONFIG_DEBUG_OBJECTS 커널 컨피그가 활성화돼 있어야 실행, 대부분 비활성
+   * DECLARE_WORK : 커널이 컴파일될 때 워크 세부 정보가 포함된 전역 변수 생성
+      ```c
+      static DECLARE_WORK(work, callback);
+      ```
+
+      ```c
+      #define DECLARE_WORK(n, f)                                    \
+            struct work_struct n = __WORK_INITIALIZER(n, f)
+
+      #define __WORK_INITIALIZER(n, f) {                            \
+        .data = WORK_DATA_STATIC_INIT(),                            \
+        .entry = { &(n).entry, &(n).entry },                        \
+        .func = (f),                                                \
+        __WORK_INIT_LOCKDEP_MAP(#n, &(n))                           \
+      }
+
+      #define WORK_DATA_STATIC_INIT()                               \
+            ATOMIC_LONG_INIT((unsigned long)(WORK_STRUCT_NO_POOL | WORK_STRUCT_STATIC))
+      ```
+
+##### 워크 큐잉
+ * schedule_work(), queue_work_on(), __queue_work(), insert_work(), wake_up_worker()
+ * interface
+   * schedule_work()
+     * 시스템 워크큐에 큐잉
+     * 호출 구조 : schedule_work() -> queue_work() -> queue_work_on() -> __queue_work()
+     ```c
+     schedule_work(&work);
+     ```
+
+     ```c
+     static inline bool schedule_work(struct work_struct *work)
+     {
+        return queue_work(system_wq, work);
+     }
+     ```
+
+     ```c
+     struct workqueue_struct *system_wq __read_mostly;
+     EXPORT_SYMBOL(system_wq);
+     ```
+
+     * queue_work()
+     ```c
+     static inline bool queue_work(struct workqueue_struct *wq,
+                  struct work_struct *work)
+     {
+       return queue_work_on(WORK_CPU_UNBOUND, wq, work);
+     }
+     ```
+
+     * queue_work_on()
+     ```c
+     bool queue_work_on(int cpu, struct workqueue_struct *wq,
+        struct work_struct *work)
+     {
+       bool ret = false;
+       unsigned long flags;
+
+       local_irq_save(flags);
+
+       if (!test_and_set_bit(WORK_STRUCT_PENDING_BIT, work_data_bits(work))) {
+         __queue_work(cpu, wq, work);
+         ret = true;
+       }
+
+       local_irq_restore(flags);
+       return ret;
+     }
+     ```
+
+     * __queue_work()
+     ```c
+     static void __queue_work(int cpu, struct workqueue_struct *wq,
+                struct work_struct *work);
+     ```
+     * queue_work_on 이 호출할 때, 인자
+       * cpu : WORK_CPU_UNBOUND
+       * wq : system_wq
+       * work : work_struct 구조체의 주소
+     ```c
+     static void __queue_work(int cpu, struct workqueue_struct *wq,
+                struct work_struct *work)
+     {
+       struct pool_workqueue *pwq;
+       struct worker_pool *last_pool;
+       struct list_head *worklist;
+       unsigned int work_flags;
+       unsigned int req_cpu = cpu;
+       /* skip */
+     retry:
+       if (req_cpu == WORK_CPU_UNBOUND)
+         cpu = wq_select_unbound_cpu(raw_smp_processor_id());
+       /* pwq which will be used unless @work is executing elsewhere */
+       if (!(wq->flags & WQ_UNBOUND))
+         pwd = per_cpu_ptr(wq->cpu_pwqs, cpu);
+       else
+         pwd = unbound_pwq_by_node(wq, cpu_to_node(cpu));
+
+       las_pool = get_work_pool(work);
+       if (last_pool && last_pool != pwq->pool) {
+         struct worker *worker;
+
+         spin_lock(&last_pool->lock);
+
+         worker = find_worker_executing_work(last_pool, work);
+
+         if (worker && worker->current_pwq->wq == wq) {
+           pwd = worker->current_pwq;
+         } else {
+           /* meh... not running there, queue her */
+           spin_unlock(&last_pool->lock);
+           spin_lock(&pwd->pool->lock);
+         }
+       } else {
+         spin_lock(&pwq->pool->lock);
+       }
+       /* skip */
+       /* pwq determined, queue */
+       trace_workqueue_queue_work(req_cpu, pwq, work);
+       /* skip */
+       if (likely(pwq->nr_active < pwq->max_active)) {
+         trace_workqueue_activate_work(work);
+         pwq->nr_active++;
+         worklist = &pwq->pool->worklist;
+         if (list_empty(worklist))
+           pwq->pool->watchdog_ts = jiffies;
+       } else {
+         work_flags |= WORK_STRUCT_DELAYED;
+         worklist = &pwq->delayed_works;
+       }
+
+       insert_work(pwq, work, worklist, work_flags);
+       /* skip */
+     }
+     ```
+       * 풀워크큐 가져오기
+       * 워커 구조체 가져오기
+       * ftrace 로그 출력
