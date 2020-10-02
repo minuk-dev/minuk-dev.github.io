@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-02 00:36:19 +0900
+lastmod : 2020-10-02 23:25:00 +0900
 tags    :
 draft   : false
 parent  :
@@ -25,3 +25,7 @@ parent  :
  * 참고 : https://ko.wikipedia.org/wiki/%EC%A0%91%EA%B7%BC_%EC%A0%9C%EC%96%B4_%EB%AA%A9%EB%A1%9D
  * 개체나 개체 속성에 적용되어 있는 허가 목록
  * 찾아보게 된 계기 : f2fs github issue에 있길레
+
+## __read_mostly 매크로 (kernel)
+ * 참고 : https://poplinux.tistory.com/160
+ * 자주 읽을 꺼니, 캐시에 올려놓는게 유리하다고 전달해주는 매크로
