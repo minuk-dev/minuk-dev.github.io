@@ -1,4 +1,4 @@
-baseURL = "http://makerdark98.dev/"
+baseURL = "https://makerdark98.dev/"
 languageCode = "ko-kr"
 title = "MD98 page"
 theme = "minimal"
