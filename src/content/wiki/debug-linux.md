@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-02 23:56:04 +0900
+lastmod : 2020-10-05 20:43:26 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1261,7 +1261,7 @@ int __init workqueue_init_early(void)
        else
          pwd = unbound_pwq_by_node(wq, cpu_to_node(cpu));
 
-       las_pool = get_work_pool(work);
+       last_pool = get_work_pool(work);
        if (last_pool && last_pool != pwq->pool) {
          struct worker *worker;
 
@@ -1301,3 +1301,158 @@ int __init workqueue_init_early(void)
        * 풀워크큐 가져오기
        * 워커 구조체 가져오기
        * ftrace 로그 출력
+       * 워커 풀에 워크의 연결리스트를 등록하고 워커 스레드 깨우기
+   * get_work_pool()
+     ```c
+     static struct worker_pool *get_work_pool(struct work_struct *work)
+     {
+       unsigned long data = atomic_long_read(&work->data);
+       int pool_id;
+
+       assert_rcu_or_pool_mutex();
+
+       if (data & WORK_STRUCT_PWQ)
+         return ((struct pool_workqueue *)
+           (data & WORK_STRUCT_WQ_DATA_MASK))->pool;
+
+       pool_id = data >> WORK_OFFQ_POOL_SHIFT;
+       if (pool_id == WORK_OFFQ_POOL_NONE)
+         return NULL;
+
+       return idr_find(&worker_pool_idr, pool_id);
+     }
+     ```
+   * insert_work()
+     ```c
+     static void insert_work(struct pool_workqueue *pwq, struct work_struct *work,
+                          struct list_head *head, unsigned int extra_flags)
+     {
+       struct worker_pool *pool = pwq->pool;
+
+       set_work_pwq(work, pwq, extra_flags);
+       list_add_tail(&work->entry, head);
+       get_pwq(pwq);
+
+       smp_mb();
+
+       if (__need_more_worker(pool))
+         wake_up_worker(pool);
+     }
+     ```
+   * wake_up_worker()
+     ```c
+     static void wake_up_worker(struct worker_pool *pool)
+     {
+       struct worker *worker = first_idle_worker(pool);
+
+       if (likely(worker))
+         wake_up_process(worker->task);
+     }
+     ```
+   * find_worker_executing_work()
+    ```c
+    static struct worker *find_worker_executing_work(struct worker_pool *pool,
+                                                    struct work_struct *work)
+    {
+      struct worker *worker;
+
+      hash_for_each_possible(pool->busy_hash, worker, hentry,
+                          (unsigned long)work)
+        if (worker->current_work == work &&
+              worker->current_func == work->func)
+          return worker;
+
+      return NULL;
+    }
+    ```
+
+##### 워크의 실행 주체
+ * 워커 스레드, 워크를 워크큐에 큐잉하면 워커 스레드를 깨운다.
+ * worker_thread()
+   ```c
+   static int worker_thread(void *__worker)
+   {
+     struct worker *worker = __worker;
+     struct worker_pool *pool = worker->pool;
+
+     /* skip */
+     do {
+       struct work_struct *work =
+         list_first_entry(&pool->worklist,
+           struct work_struct, entry);
+
+       pool->watchdog_ts = jiffies;
+
+       if (likely(!(*work_data_bits(work) & WORK_STRUCT_LINKED))) {
+         /* optimization path, not strictly necessary */
+         process_one_work(worker, work);
+         if (unlikely(!list_empty(&worker->scheduled)))
+           process_scheduled_works(worker);
+       } else {
+         move_linked_works(work, &worker->scheduled, NULL);
+         process_scheduled_works(worker);
+       }
+     } while (keep_working(pool));
+   }
+   ```
+   * keep_working() : 이미 큐잉된 워크가 있으면 true를 반환하는 역할
+     ```c
+     static bool keep_working(struct worker_pool *pool)
+     {
+       return !list_empty(&pool->worklist) &&
+         atomic_read(&pool->nr_running) <= 1;
+     }
+     ```
+   * 워커 풀에 워크가 큐잉됐는지 체크한다.
+   * 워커 풀에 큐잉된 워크의 연결 리스트를 가져와 워크 구조체를 알아낸다.
+   * process_one_work() 함수를 호출해 워크를 실행한다.
+ * process_one_work()
+   ```c
+   static void process_one_work(struct worker *worker. struct work_struct *work)
+   __releases(&pool->lock)
+   __acquires(&pool->lock)
+   {
+     struct pool_workqueue *pwq = get_work_pwq(work);
+     struct worker_pool *pool = worker->pool;
+     bool cpu_intensive = pwq->wq->flags & WQ_CPU_INTENSIVE;
+     int work_color;
+     struct worker *collision;
+     /* skip */
+     collision = find_worker_executing_work(pool, work);
+     if (unlikely(collision)) {
+       move_linked_works(work, &collision->scheduled, NULL);
+       return;
+     }
+
+     /* claim and dequeue */
+     debug_work_deactivate(work);
+     hash_add(pool->busy_hash, &worker->hentry, (unsgined long)work);
+     worker->current_work = work;
+     worker->current_func = work->func;
+     worker->current_pwq = pwq;
+     work_color = get_work_color(work);
+     /* skip */
+
+     list_del_init(&work->entry);
+     /* skip */
+
+     set_work_pool_and_clear_pending(work, pool->id);
+     /* skip */
+
+     trace_workqueue_execute_start(work);
+     worker->current_func(work);
+     trace_workqueue_execute_end(work);
+     /* skip */
+     if (unlikely(in_atomic() || lockdep_depth(current) > 0) {
+       pr_err("BUG: workqueue leaked lock or atomic: %s/0x%08x/%d\n"
+         "last function: %pf\n",
+         current->comm, prempt_count(), task_pid_nr(current),
+         worker->current_func);
+         debug_show_held_locks(current);
+         dump_stack();
+     }
+   }
+   ```
+     * 워크 전처리 : 하나의 워크를 여러 워커에서 실행하지 않도록 관리
+     * 워크 핸들러 실행
+
