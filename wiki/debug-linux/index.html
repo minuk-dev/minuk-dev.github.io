@@ -4,7 +4,7 @@ else{wrapper.style.cursor="zoom-in";}}}}};shrinkMath();window.addEventListener('
 <button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
 <span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick="(function(elem){elem.querySelector('a').click();})(this);">
 <i class="fa fa-arrow-left"></i>[[Book reviews]]</button></div></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="debug-linux"
-pushHistory(now);</script></div></div><div><h2>디버깅을 통해 배우는 리눅스 커널의 구조와 원리</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/debug-linux.md><h5>created : Tue, 08 Sep 2020 22:14:21 +0900</h5><h5>modified : Fri, 02 Oct 2020 23:56:04 +0900</h5></a><a href=https://makerdark98.dev/tags/linux><kbd class=item-tag>linux</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#간략-소개>간략 소개</a></li><li><a href=#설치>설치</a><ul><li><a href=#참고한-곳>참고한 곳</a></li><li><a href=#이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</a></li><li><a href=#vim-설정>vim 설정</a></li></ul></li><li><a href=#책-따라하기>책 따라하기</a><ul><li><a href=#커널-디버깅과-코드-학습>커널 디버깅과 코드 학습</a></li><li><a href=#프로세스>프로세스</a></li><li><a href=#워크큐>워크큐</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=간략-소개>간략 소개</h2><ul><li>디버깅을 통해 배우는 리눅스 커널의 구조와 원리를 읽으면서 공부하는 내용 정리</li></ul><h2 id=설치>설치</h2><ul><li>작업하고 있는 곳의 환경상, 라즈베리파이를 직접적으로 사용하기 어려워 qemu로 가상화하기로 했다.</li><li>오로지 ssh로 붙어서 서버에서만 작업가능해야 한다.</li></ul><h3 id=참고한-곳>참고한 곳</h3><ul><li><a href=https://woodz.tistory.com/72>https://woodz.tistory.com/72</a></li><li><a href=https://mystrlight.tistory.com/90>https://mystrlight.tistory.com/90</a></li><li><a href=https://procdiaru.tistory.com/78>https://procdiaru.tistory.com/78</a></li><li><a href=https://nautiluslee.blogspot.com/2019/01/debootstrap.html>https://nautiluslee.blogspot.com/2019/01/debootstrap.html</a></li><li><a href=https://tistory.0wn.kr/368>https://tistory.0wn.kr/368</a></li></ul><h3 id=이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</h3><h4 id=qemu-설치뇌피셜>qemu 설치(뇌피셜)</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo apt install qemu qemu-system-x86
+pushHistory(now);</script></div></div><div><h2>디버깅을 통해 배우는 리눅스 커널의 구조와 원리</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/debug-linux.md><h5>created : Tue, 08 Sep 2020 22:14:21 +0900</h5><h5>modified : Mon, 05 Oct 2020 20:43:26 +0900</h5></a><a href=https://makerdark98.dev/tags/linux><kbd class=item-tag>linux</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#간략-소개>간략 소개</a></li><li><a href=#설치>설치</a><ul><li><a href=#참고한-곳>참고한 곳</a></li><li><a href=#이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</a></li><li><a href=#vim-설정>vim 설정</a></li></ul></li><li><a href=#책-따라하기>책 따라하기</a><ul><li><a href=#커널-디버깅과-코드-학습>커널 디버깅과 코드 학습</a></li><li><a href=#프로세스>프로세스</a></li><li><a href=#워크큐>워크큐</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=간략-소개>간략 소개</h2><ul><li>디버깅을 통해 배우는 리눅스 커널의 구조와 원리를 읽으면서 공부하는 내용 정리</li></ul><h2 id=설치>설치</h2><ul><li>작업하고 있는 곳의 환경상, 라즈베리파이를 직접적으로 사용하기 어려워 qemu로 가상화하기로 했다.</li><li>오로지 ssh로 붙어서 서버에서만 작업가능해야 한다.</li></ul><h3 id=참고한-곳>참고한 곳</h3><ul><li><a href=https://woodz.tistory.com/72>https://woodz.tistory.com/72</a></li><li><a href=https://mystrlight.tistory.com/90>https://mystrlight.tistory.com/90</a></li><li><a href=https://procdiaru.tistory.com/78>https://procdiaru.tistory.com/78</a></li><li><a href=https://nautiluslee.blogspot.com/2019/01/debootstrap.html>https://nautiluslee.blogspot.com/2019/01/debootstrap.html</a></li><li><a href=https://tistory.0wn.kr/368>https://tistory.0wn.kr/368</a></li></ul><h3 id=이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</h3><h4 id=qemu-설치뇌피셜>qemu 설치(뇌피셜)</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo apt install qemu qemu-system-x86
 </code></pre></div><ul><li>아마도 이렇게 하면 될것이다, 사실 qemu는 pintos 공부하면서 이미 설치를 다 해놔서&mldr;</li></ul><h4 id=리눅스-커널-소스코드-다운로드>리눅스 커널 소스코드 다운로드</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.143.tar.xz
 </code></pre></div><h4 id=kernel-build>kernel build</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>make defconfig
 make menuconfig
@@ -559,7 +559,7 @@ retry:
   <span style=color:#66d9ef>else</span>
     pwd <span style=color:#f92672>=</span> unbound_pwq_by_node(wq, cpu_to_node(cpu));
 
-  las_pool <span style=color:#f92672>=</span> get_work_pool(work);
+  last_pool <span style=color:#f92672>=</span> get_work_pool(work);
   <span style=color:#66d9ef>if</span> (last_pool <span style=color:#f92672>&amp;&amp;</span> last_pool <span style=color:#f92672>!=</span> pwq<span style=color:#f92672>-&gt;</span>pool) {
     <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker;
 
@@ -595,4 +595,128 @@ retry:
   insert_work(pwq, work, worklist, work_flags);
   <span style=color:#75715e>/* skip */</span>
 }
-</code></pre></div><ul><li>풀워크큐 가져오기</li><li>워커 구조체 가져오기</li><li>ftrace 로그 출력</li></ul></li></ul></li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
+</code></pre></div><ul><li>풀워크큐 가져오기</li><li>워커 구조체 가져오기</li><li>ftrace 로그 출력</li><li>워커 풀에 워크의 연결리스트를 등록하고 워커 스레드 깨우기</li></ul></li><li><p>get_work_pool()</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span><span style=color:#a6e22e>get_work_pool</span>(<span style=color:#66d9ef>struct</span> work_struct <span style=color:#f92672>*</span>work)
+{
+  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> data <span style=color:#f92672>=</span> atomic_long_read(<span style=color:#f92672>&amp;</span>work<span style=color:#f92672>-&gt;</span>data);
+  <span style=color:#66d9ef>int</span> pool_id;
+
+  assert_rcu_or_pool_mutex();
+
+  <span style=color:#66d9ef>if</span> (data <span style=color:#f92672>&amp;</span> WORK_STRUCT_PWQ)
+    <span style=color:#66d9ef>return</span> ((<span style=color:#66d9ef>struct</span> pool_workqueue <span style=color:#f92672>*</span>)
+      (data <span style=color:#f92672>&amp;</span> WORK_STRUCT_WQ_DATA_MASK))<span style=color:#f92672>-&gt;</span>pool;
+
+  pool_id <span style=color:#f92672>=</span> data <span style=color:#f92672>&gt;&gt;</span> WORK_OFFQ_POOL_SHIFT;
+  <span style=color:#66d9ef>if</span> (pool_id <span style=color:#f92672>==</span> WORK_OFFQ_POOL_NONE)
+    <span style=color:#66d9ef>return</span> NULL;
+
+  <span style=color:#66d9ef>return</span> idr_find(<span style=color:#f92672>&amp;</span>worker_pool_idr, pool_id);
+}
+</code></pre></div></li><li><p>insert_work()</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>insert_work</span>(<span style=color:#66d9ef>struct</span> pool_workqueue <span style=color:#f92672>*</span>pwq, <span style=color:#66d9ef>struct</span> work_struct <span style=color:#f92672>*</span>work,
+                     <span style=color:#66d9ef>struct</span> list_head <span style=color:#f92672>*</span>head, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> extra_flags)
+{
+  <span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool <span style=color:#f92672>=</span> pwq<span style=color:#f92672>-&gt;</span>pool;
+
+  set_work_pwq(work, pwq, extra_flags);
+  list_add_tail(<span style=color:#f92672>&amp;</span>work<span style=color:#f92672>-&gt;</span>entry, head);
+  get_pwq(pwq);
+
+  smp_mb();
+
+  <span style=color:#66d9ef>if</span> (__need_more_worker(pool))
+    wake_up_worker(pool);
+}
+</code></pre></div></li><li><p>wake_up_worker()</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>wake_up_worker</span>(<span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool)
+{
+  <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker <span style=color:#f92672>=</span> first_idle_worker(pool);
+
+  <span style=color:#66d9ef>if</span> (likely(worker))
+    wake_up_process(worker<span style=color:#f92672>-&gt;</span>task);
+}
+</code></pre></div></li><li><p>find_worker_executing_work()</p></li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span><span style=color:#a6e22e>find_worker_executing_work</span>(<span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool,
+                                                <span style=color:#66d9ef>struct</span> work_struct <span style=color:#f92672>*</span>work)
+{
+  <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker;
+
+  hash_for_each_possible(pool<span style=color:#f92672>-&gt;</span>busy_hash, worker, hentry,
+                      (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)work)
+    <span style=color:#66d9ef>if</span> (worker<span style=color:#f92672>-&gt;</span>current_work <span style=color:#f92672>==</span> work <span style=color:#f92672>&amp;&amp;</span>
+          worker<span style=color:#f92672>-&gt;</span>current_func <span style=color:#f92672>==</span> work<span style=color:#f92672>-&gt;</span>func)
+      <span style=color:#66d9ef>return</span> worker;
+
+  <span style=color:#66d9ef>return</span> NULL;
+}
+</code></pre></div></li></ul><h5 id=워크의-실행-주체>워크의 실행 주체</h5><ul><li>워커 스레드, 워크를 워크큐에 큐잉하면 워커 스레드를 깨운다.</li><li>worker_thread()<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>worker_thread</span>(<span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>__worker)
+{
+  <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker <span style=color:#f92672>=</span> __worker;
+  <span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool <span style=color:#f92672>=</span> worker<span style=color:#f92672>-&gt;</span>pool;
+
+  <span style=color:#75715e>/* skip */</span>
+  <span style=color:#66d9ef>do</span> {
+    <span style=color:#66d9ef>struct</span> work_struct <span style=color:#f92672>*</span>work <span style=color:#f92672>=</span>
+      list_first_entry(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>worklist,
+        <span style=color:#66d9ef>struct</span> work_struct, entry);
+
+    pool<span style=color:#f92672>-&gt;</span>watchdog_ts <span style=color:#f92672>=</span> jiffies;
+
+    <span style=color:#66d9ef>if</span> (likely(<span style=color:#f92672>!</span>(<span style=color:#f92672>*</span>work_data_bits(work) <span style=color:#f92672>&amp;</span> WORK_STRUCT_LINKED))) {
+      <span style=color:#75715e>/* optimization path, not strictly necessary */</span>
+      process_one_work(worker, work);
+      <span style=color:#66d9ef>if</span> (unlikely(<span style=color:#f92672>!</span>list_empty(<span style=color:#f92672>&amp;</span>worker<span style=color:#f92672>-&gt;</span>scheduled)))
+        process_scheduled_works(worker);
+    } <span style=color:#66d9ef>else</span> {
+      move_linked_works(work, <span style=color:#f92672>&amp;</span>worker<span style=color:#f92672>-&gt;</span>scheduled, NULL);
+      process_scheduled_works(worker);
+    }
+  } <span style=color:#66d9ef>while</span> (keep_working(pool));
+}
+</code></pre></div><ul><li>keep_working() : 이미 큐잉된 워크가 있으면 true를 반환하는 역할<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>keep_working</span>(<span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool)
+{
+  <span style=color:#66d9ef>return</span> <span style=color:#f92672>!</span>list_empty(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>worklist) <span style=color:#f92672>&amp;&amp;</span>
+    atomic_read(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>nr_running) <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>1</span>;
+}
+</code></pre></div></li><li>워커 풀에 워크가 큐잉됐는지 체크한다.</li><li>워커 풀에 큐잉된 워크의 연결 리스트를 가져와 워크 구조체를 알아낸다.</li><li>process_one_work() 함수를 호출해 워크를 실행한다.</li></ul></li><li>process_one_work()<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>process_one_work</span>(<span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker. <span style=color:#66d9ef>struct</span> work_struct <span style=color:#f92672>*</span>work)
+__releases(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>lock)
+__acquires(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>lock)
+{
+  <span style=color:#66d9ef>struct</span> pool_workqueue <span style=color:#f92672>*</span>pwq <span style=color:#f92672>=</span> get_work_pwq(work);
+  <span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool <span style=color:#f92672>=</span> worker<span style=color:#f92672>-&gt;</span>pool;
+  <span style=color:#66d9ef>bool</span> cpu_intensive <span style=color:#f92672>=</span> pwq<span style=color:#f92672>-&gt;</span>wq<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> WQ_CPU_INTENSIVE;
+  <span style=color:#66d9ef>int</span> work_color;
+  <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>collision;
+  <span style=color:#75715e>/* skip */</span>
+  collision <span style=color:#f92672>=</span> find_worker_executing_work(pool, work);
+  <span style=color:#66d9ef>if</span> (unlikely(collision)) {
+    move_linked_works(work, <span style=color:#f92672>&amp;</span>collision<span style=color:#f92672>-&gt;</span>scheduled, NULL);
+    <span style=color:#66d9ef>return</span>;
+  }
+
+  <span style=color:#75715e>/* claim and dequeue */</span>
+  debug_work_deactivate(work);
+  hash_add(pool<span style=color:#f92672>-&gt;</span>busy_hash, <span style=color:#f92672>&amp;</span>worker<span style=color:#f92672>-&gt;</span>hentry, (unsgined <span style=color:#66d9ef>long</span>)work);
+  worker<span style=color:#f92672>-&gt;</span>current_work <span style=color:#f92672>=</span> work;
+  worker<span style=color:#f92672>-&gt;</span>current_func <span style=color:#f92672>=</span> work<span style=color:#f92672>-&gt;</span>func;
+  worker<span style=color:#f92672>-&gt;</span>current_pwq <span style=color:#f92672>=</span> pwq;
+  work_color <span style=color:#f92672>=</span> get_work_color(work);
+  <span style=color:#75715e>/* skip */</span>
+
+  list_del_init(<span style=color:#f92672>&amp;</span>work<span style=color:#f92672>-&gt;</span>entry);
+  <span style=color:#75715e>/* skip */</span>
+
+  set_work_pool_and_clear_pending(work, pool<span style=color:#f92672>-&gt;</span>id);
+  <span style=color:#75715e>/* skip */</span>
+
+  trace_workqueue_execute_start(work);
+  worker<span style=color:#f92672>-&gt;</span>current_func(work);
+  trace_workqueue_execute_end(work);
+  <span style=color:#75715e>/* skip */</span>
+  <span style=color:#66d9ef>if</span> (unlikely(in_atomic() <span style=color:#f92672>||</span> lockdep_depth(current) <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>) {
+    pr_err(<span style=color:#e6db74>&#34;BUG: workqueue leaked lock or atomic: %s/0x%08x/%d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+      <span style=color:#e6db74>&#34;last function: %pf</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,
+      current<span style=color:#f92672>-&gt;</span>comm, prempt_count(), task_pid_nr(current),
+      worker<span style=color:#f92672>-&gt;</span>current_func);
+      debug_show_held_locks(current);
+      dump_stack();
+  }
+}
+</code></pre></div><ul><li>워크 전처리 : 하나의 워크를 여러 워커에서 실행하지 않도록 관리</li><li>워크 핸들러 실행</li></ul></li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
