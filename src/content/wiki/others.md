@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-02 23:25:00 +0900
+lastmod : 2020-10-05 20:23:25 +0900
 tags    :
 draft   : false
 parent  :
@@ -29,3 +29,11 @@ parent  :
 ## __read_mostly 매크로 (kernel)
  * 참고 : https://poplinux.tistory.com/160
  * 자주 읽을 꺼니, 캐시에 올려놓는게 유리하다고 전달해주는 매크로
+
+## likely && unlikely 매크로 (kernel)
+ * 참조 : http://jake.dothome.co.kr/likely/
+  ```c
+  #define likely(x)    __builtin_expect((x), 1)
+  #define unlikely(x)   __builtin_expect((x), 0)
+  ```
+ * likely()는 true가 될 확률이 높은 조건문에서 성능을 높이고자 사용한다.
