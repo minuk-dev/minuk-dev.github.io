@@ -4,7 +4,7 @@ else{wrapper.style.cursor="zoom-in";}}}}};shrinkMath();window.addEventListener('
 <button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
 <span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul><ul class="nav navbar-nav navbar-right"><li class=navbar-icon><a href=mailto:makerdark98@gmail.com><i class="fa fa-envelope-o"></i></a></li><li class=navbar-icon><a href=https://github.com/makerdark98/><i class="fa fa-github"></i></a></li><li><div style=max-width:250px;display:inline-block;max-height:40px><script async src="https://cse.google.com/cse.js?cx=003491619885022567520:wnnypdnx4aj"></script><div class=gcse-search></div></div></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick="(function(elem){elem.querySelector('a').click();})(this);">
 <i class="fa fa-arrow-left"></i>[[Book reviews]]</button></div></div><div style=margin-left:auto><div style=display:flex><div style=margin-left:auto><div class=wiki-history></div></div></div><script src=/js/localhistory.js></script><script>var now="debug-linux"
-pushHistory(now);</script></div></div><div><h2>디버깅을 통해 배우는 리눅스 커널의 구조와 원리</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/debug-linux.md><h5>created : Tue, 08 Sep 2020 22:14:21 +0900</h5><h5>modified : Mon, 05 Oct 2020 20:43:26 +0900</h5></a><a href=https://makerdark98.dev/tags/linux><kbd class=item-tag>linux</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#간략-소개>간략 소개</a></li><li><a href=#설치>설치</a><ul><li><a href=#참고한-곳>참고한 곳</a></li><li><a href=#이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</a></li><li><a href=#vim-설정>vim 설정</a></li></ul></li><li><a href=#책-따라하기>책 따라하기</a><ul><li><a href=#커널-디버깅과-코드-학습>커널 디버깅과 코드 학습</a></li><li><a href=#프로세스>프로세스</a></li><li><a href=#워크큐>워크큐</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=간략-소개>간략 소개</h2><ul><li>디버깅을 통해 배우는 리눅스 커널의 구조와 원리를 읽으면서 공부하는 내용 정리</li></ul><h2 id=설치>설치</h2><ul><li>작업하고 있는 곳의 환경상, 라즈베리파이를 직접적으로 사용하기 어려워 qemu로 가상화하기로 했다.</li><li>오로지 ssh로 붙어서 서버에서만 작업가능해야 한다.</li></ul><h3 id=참고한-곳>참고한 곳</h3><ul><li><a href=https://woodz.tistory.com/72>https://woodz.tistory.com/72</a></li><li><a href=https://mystrlight.tistory.com/90>https://mystrlight.tistory.com/90</a></li><li><a href=https://procdiaru.tistory.com/78>https://procdiaru.tistory.com/78</a></li><li><a href=https://nautiluslee.blogspot.com/2019/01/debootstrap.html>https://nautiluslee.blogspot.com/2019/01/debootstrap.html</a></li><li><a href=https://tistory.0wn.kr/368>https://tistory.0wn.kr/368</a></li></ul><h3 id=이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</h3><h4 id=qemu-설치뇌피셜>qemu 설치(뇌피셜)</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo apt install qemu qemu-system-x86
+pushHistory(now);</script></div></div><div><h2>디버깅을 통해 배우는 리눅스 커널의 구조와 원리</h2><a href=https://github.com/makerdark98/makerdark98.github.io/blame/master/src/content/wiki/debug-linux.md><h5>created : Tue, 08 Sep 2020 22:14:21 +0900</h5><h5>modified : Tue, 06 Oct 2020 20:53:53 +0900</h5></a><a href=https://makerdark98.dev/tags/linux><kbd class=item-tag>linux</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#간략-소개>간략 소개</a></li><li><a href=#설치>설치</a><ul><li><a href=#참고한-곳>참고한 곳</a></li><li><a href=#이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</a></li><li><a href=#vim-설정>vim 설정</a></li></ul></li><li><a href=#책-따라하기>책 따라하기</a><ul><li><a href=#커널-디버깅과-코드-학습>커널 디버깅과 코드 학습</a></li><li><a href=#프로세스>프로세스</a></li><li><a href=#워크큐>워크큐</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=간략-소개>간략 소개</h2><ul><li>디버깅을 통해 배우는 리눅스 커널의 구조와 원리를 읽으면서 공부하는 내용 정리</li></ul><h2 id=설치>설치</h2><ul><li>작업하고 있는 곳의 환경상, 라즈베리파이를 직접적으로 사용하기 어려워 qemu로 가상화하기로 했다.</li><li>오로지 ssh로 붙어서 서버에서만 작업가능해야 한다.</li></ul><h3 id=참고한-곳>참고한 곳</h3><ul><li><a href=https://woodz.tistory.com/72>https://woodz.tistory.com/72</a></li><li><a href=https://mystrlight.tistory.com/90>https://mystrlight.tistory.com/90</a></li><li><a href=https://procdiaru.tistory.com/78>https://procdiaru.tistory.com/78</a></li><li><a href=https://nautiluslee.blogspot.com/2019/01/debootstrap.html>https://nautiluslee.blogspot.com/2019/01/debootstrap.html</a></li><li><a href=https://tistory.0wn.kr/368>https://tistory.0wn.kr/368</a></li></ul><h3 id=이미지-다운로드-및-소스코드-다운로드>이미지 다운로드 및 소스코드 다운로드</h3><h4 id=qemu-설치뇌피셜>qemu 설치(뇌피셜)</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>sudo apt install qemu qemu-system-x86
 </code></pre></div><ul><li>아마도 이렇게 하면 될것이다, 사실 qemu는 pintos 공부하면서 이미 설치를 다 해놔서&mldr;</li></ul><h4 id=리눅스-커널-소스코드-다운로드>리눅스 커널 소스코드 다운로드</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.143.tar.xz
 </code></pre></div><h4 id=kernel-build>kernel build</h4><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>make defconfig
 make menuconfig
@@ -719,4 +719,107 @@ __acquires(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-
       dump_stack();
   }
 }
-</code></pre></div><ul><li>워크 전처리 : 하나의 워크를 여러 워커에서 실행하지 않도록 관리</li><li>워크 핸들러 실행</li></ul></li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
+</code></pre></div><ul><li>워크 전처리 : 하나의 워크를 여러 워커에서 실행하지 않도록 관리</li><li>워크 핸들러 실행</li></ul></li></ul><hr><h5 id=워커-스레드>워커 스레드</h5><ul><li><p>워커 스레드의 흐름</p><ol><li>워커 스레드 생성 : create_worker() 함수를 호출하면 워커 스레드를 생성.</li><li>휴면 상태 : 휴면 상태에서 다른 드라이버가 자신을 깨워주기를 기다림.</li><li>실행 : 워크를 워크큐에 큐잉한 후 워커 스레드가 깨어나면 스레드 핸들러인 worker_thread() 함수가 실행</li><li>소멸 : 워커 스레드가 필요 없으면 소멸.</li></ol></li><li><p>worker 구조체</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>struct</span> worker {
+  <span style=color:#66d9ef>union</span> {
+    <span style=color:#66d9ef>struct</span> list_head      entry;
+    <span style=color:#66d9ef>struct</span> hlist_node     hentry;
+  };
+  <span style=color:#66d9ef>struct</span> work_struct      <span style=color:#f92672>*</span>current;
+  work_func_t             current_func;
+  <span style=color:#66d9ef>struct</span> pool_workqueue   <span style=color:#f92672>*</span>current_pwq;
+  <span style=color:#66d9ef>bool</span>                    desc_valid;
+  <span style=color:#66d9ef>struct</span> list_head        scheduled;
+
+  <span style=color:#66d9ef>struct</span> task_struct      <span style=color:#f92672>*</span>task;
+  <span style=color:#66d9ef>struct</span> worker_pool      <span style=color:#f92672>*</span>pool;
+
+  <span style=color:#66d9ef>struct</span> list_head        node;
+  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>           last_active;
+  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>            flags;
+  <span style=color:#66d9ef>int</span>                     id;
+
+  <span style=color:#66d9ef>char</span>                    desc[WORKER_DESC_LEN];
+
+  <span style=color:#66d9ef>struct</span> workqueue_struct <span style=color:#f92672>*</span>rescue_wq;
+}
+</code></pre></div><ul><li>current_work : work_struct 구조체로, 현재 실행하려는 워크를 저장하는 필드</li><li>current_func : 실행하려는 워크 핸들러의 주소를 저장하는 필드</li></ul></li><li><p>워커는 워커 스레드를 표현하는 자료구조이며, worker 구조체</p></li></ul><h5 id=워커-스레드의-생성-시기>워커 스레드의 생성 시기</h5><ul><li>기본적으로 부팅과정에서 워크큐 자료구조를 초기화할 때 워커 스레드를 생성.</li><li>만약 워크큐에 많이 큐잉될 상황이 예측될 때, create_worker() 함수를 호출해 워커 스레드를 생성 가능</li><li>부팅 과정에서 워커 스레드 생성되는 로직<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>int</span> __init <span style=color:#a6e22e>workqueue_init</span>(<span style=color:#66d9ef>void</span>)
+{
+  <span style=color:#66d9ef>struct</span> workqueue_struct <span style=color:#f92672>*</span>wq;
+  <span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool;
+  <span style=color:#66d9ef>int</span> cpu, bkt;
+
+  wq_numa_init();
+
+  mutex_lock(<span style=color:#f92672>&amp;</span>wq_pool_mutex);
+
+  <span style=color:#75715e>/* skip */</span>
+  <span style=color:#75715e>/* create the initial workers */</span>
+  for_each_online_cpu(cpu) {
+    for_each_cpu_worker_pool(pool, cpu) {
+      pool<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;=</span> <span style=color:#f92672>~</span>POOL_DISASSOCIATED;
+      BUG_ON(<span style=color:#f92672>!</span>create_worker(pool));
+    }
+  }
+}
+</code></pre></div></li><li>create_worker()<ul><li>워커 풀의 아이디 읽어오기</li><li>워커 스레드의 이름을 지정해 워커 스레드 생성 요청</li><li>워커 풀에 워커 스레드를 등록</li><li>워커 정보를 갱신하고 생성된 워커 스레드를 깨우기</li></ul><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>struct</span> owrker <span style=color:#f92672>*</span><span style=color:#a6e22e>create_worker</span>(<span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool)
+{
+  <span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker <span style=color:#f92672>=</span> NULL;
+  <span style=color:#66d9ef>int</span> id <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+  <span style=color:#66d9ef>char</span> id_buf[<span style=color:#ae81ff>16</span>];
+
+  id <span style=color:#f92672>=</span> ida_simple_get(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>worker_da, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, GFP_KERNEL);
+  <span style=color:#66d9ef>if</span> (id <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
+    <span style=color:#66d9ef>goto</span> fail;
+
+  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>worker)
+    <span style=color:#66d9ef>goto</span> fail;
+
+  worker<span style=color:#f92672>-&gt;</span>pool <span style=color:#f92672>=</span> pool;
+  worker<span style=color:#f92672>-&gt;</span>id <span style=color:#f92672>=</span> id;
+
+  <span style=color:#66d9ef>if</span> (pool<span style=color:#f92672>-&gt;</span>cpu <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>)
+    snprintf(id_buf, <span style=color:#66d9ef>sizeof</span>(id_buf), <span style=color:#e6db74>&#34;%d:%d%s&#34;</span>, pool<span style=color:#f92672>-&gt;</span>cpu, id,
+      pool<span style=color:#f92672>-&gt;</span>attrs<span style=color:#f92672>-&gt;</span>nice <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>?</span> <span style=color:#e6db74>&#34;H&#34;</span> <span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;&#34;</span>);
+  <span style=color:#66d9ef>else</span>
+    snprintf(id_buf, <span style=color:#66d9ef>sizeof</span>(id_buf), <span style=color:#e6db74>&#34;u%d:%d&#34;</span>, pool<span style=color:#f92672>-&gt;</span>id, id);
+
+  worker<span style=color:#f92672>-&gt;</span>task <span style=color:#f92672>=</span> kthread_create_on_node(worker_thread, worker, pool<span style=color:#f92672>-&gt;</span>node,
+                                    <span style=color:#e6db74>&#34;kworker/%s&#34;</span>, id_buf);
+  <span style=color:#66d9ef>if</span> (IS_ERR(worker<span style=color:#f92672>-&gt;</span>task))
+    <span style=color:#66d9ef>goto</span> fail;
+
+  set_user_nice(worker<span style=color:#f92672>-&gt;</span>task, pool<span style=color:#f92672>-&gt;</span>attrs<span style=color:#f92672>-&gt;</span>nice);
+  kthread_bind_mask(worker<span style=color:#f92672>-&gt;</span>task, pool<span style=color:#f92672>-&gt;</span>attrs<span style=color:#f92672>-&gt;</span>cpumask);
+
+  <span style=color:#75715e>/* successful, attach the worker to the pool */</span>
+  worker_attach_to_pool(worker, pool);
+
+  <span style=color:#75715e>/* start the newly created worker */</span>
+  spin_lock_irq(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>lock);
+  worker<span style=color:#f92672>-&gt;</span>pool<span style=color:#f92672>-&gt;</span>nr_workers<span style=color:#f92672>++</span>;
+  worker_enter_idle(worker);
+  wake_up_process(worker<span style=color:#f92672>-&gt;</span>task);
+  spin_unlock_irq(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>lock);
+
+  <span style=color:#66d9ef>return</span> worker;
+
+fail:
+  <span style=color:#66d9ef>if</span> (id <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>)
+    ida_simple_remove(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>worker_ida, id);
+  kfree(worker);
+  <span style=color:#66d9ef>return</span> NULL;
+}
+</code></pre></div><ul><li>worker_attach_to_pool()<div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>worker_attach_to_pool</span>(<span style=color:#66d9ef>struct</span> worker <span style=color:#f92672>*</span>worker,
+                               <span style=color:#66d9ef>struct</span> worker_pool <span style=color:#f92672>*</span>pool)
+{
+  mutex_lock(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>attach_mutex);
+
+  set_cpus_allowed_ptr(worker<span style=color:#f92672>-&gt;</span>task, pool<span style=color:#f92672>-&gt;</span>attrs<span style=color:#f92672>-&gt;</span>cpumask);
+  <span style=color:#66d9ef>if</span> (pool<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>&amp;</span> POOL_DISASSOCIATED)
+    worker<span style=color:#f92672>-&gt;</span>flags <span style=color:#f92672>|=</span> WORKER_UNBOUND;
+
+  list_add_tail(<span style=color:#f92672>&amp;</span>worker<span style=color:#f92672>-&gt;</span>node, <span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>workers);
+
+  mutex_unlock(<span style=color:#f92672>&amp;</span>pool<span style=color:#f92672>-&gt;</span>attach_mutex);
+}
+</code></pre></div></li></ul></li><li>maybe_create_worker()</li><li>get_unbound_pool()</li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=makerdark98/makerdark98.github.io issue-term=pathname theme=github-light crossorigin=anonymous async></script></div></main><footer><p class="copyright text-muted">© All rights reserved. Powered by <a href=https://gohugo.io>Hugo</a> and <a href=https://github.com/calintat/minimal>Minimal</a>.</p></footer></body></html>
