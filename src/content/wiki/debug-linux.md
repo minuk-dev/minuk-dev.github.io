@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-05 20:43:26 +0900
+lastmod : 2020-10-06 20:53:53 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1456,3 +1456,140 @@ int __init workqueue_init_early(void)
      * 워크 전처리 : 하나의 워크를 여러 워커에서 실행하지 않도록 관리
      * 워크 핸들러 실행
 
+---
+##### 워커 스레드
+ * 워커 스레드의 흐름
+   1. 워커 스레드 생성 : create_worker() 함수를 호출하면 워커 스레드를 생성.
+   1. 휴면 상태 : 휴면 상태에서 다른 드라이버가 자신을 깨워주기를 기다림.
+   1. 실행 : 워크를 워크큐에 큐잉한 후 워커 스레드가 깨어나면 스레드 핸들러인 worker_thread() 함수가 실행
+   1. 소멸 : 워커 스레드가 필요 없으면 소멸.
+
+ * worker 구조체
+   ```c
+   struct worker {
+     union {
+       struct list_head      entry;
+       struct hlist_node     hentry;
+     };
+     struct work_struct      *current;
+     work_func_t             current_func;
+     struct pool_workqueue   *current_pwq;
+     bool                    desc_valid;
+     struct list_head        scheduled;
+
+     struct task_struct      *task;
+     struct worker_pool      *pool;
+
+     struct list_head        node;
+     unsigned long           last_active;
+     unsigned int            flags;
+     int                     id;
+
+     char                    desc[WORKER_DESC_LEN];
+
+     struct workqueue_struct *rescue_wq;
+   }
+   ```
+   * current_work : work_struct 구조체로, 현재 실행하려는 워크를 저장하는 필드
+   * current_func : 실행하려는 워크 핸들러의 주소를 저장하는 필드
+
+ * 워커는 워커 스레드를 표현하는 자료구조이며, worker 구조체
+
+##### 워커 스레드의 생성 시기
+ * 기본적으로 부팅과정에서 워크큐 자료구조를 초기화할 때 워커 스레드를 생성.
+ * 만약 워크큐에 많이 큐잉될 상황이 예측될 때, create_worker() 함수를 호출해 워커 스레드를 생성 가능
+ * 부팅 과정에서 워커 스레드 생성되는 로직
+   ```c
+   int __init workqueue_init(void)
+   {
+     struct workqueue_struct *wq;
+     struct worker_pool *pool;
+     int cpu, bkt;
+
+     wq_numa_init();
+
+     mutex_lock(&wq_pool_mutex);
+
+     /* skip */
+     /* create the initial workers */
+     for_each_online_cpu(cpu) {
+       for_each_cpu_worker_pool(pool, cpu) {
+         pool->flags &= ~POOL_DISASSOCIATED;
+         BUG_ON(!create_worker(pool));
+       }
+     }
+   }
+   ```
+ * create_worker()
+   * 워커 풀의 아이디 읽어오기
+   * 워커 스레드의 이름을 지정해 워커 스레드 생성 요청
+   * 워커 풀에 워커 스레드를 등록
+   * 워커 정보를 갱신하고 생성된 워커 스레드를 깨우기
+   ```c
+   static struct owrker *create_worker(struct worker_pool *pool)
+   {
+     struct worker *worker = NULL;
+     int id = -1;
+     char id_buf[16];
+
+     id = ida_simple_get(&pool->worker_da, 0, 0, GFP_KERNEL);
+     if (id < 0)
+       goto fail;
+
+     if (!worker)
+       goto fail;
+
+     worker->pool = pool;
+     worker->id = id;
+
+     if (pool->cpu >= 0)
+       snprintf(id_buf, sizeof(id_buf), "%d:%d%s", pool->cpu, id,
+         pool->attrs->nice < 0 ? "H" : "");
+     else
+       snprintf(id_buf, sizeof(id_buf), "u%d:%d", pool->id, id);
+
+     worker->task = kthread_create_on_node(worker_thread, worker, pool->node,
+                                       "kworker/%s", id_buf);
+     if (IS_ERR(worker->task))
+       goto fail;
+
+     set_user_nice(worker->task, pool->attrs->nice);
+     kthread_bind_mask(worker->task, pool->attrs->cpumask);
+
+     /* successful, attach the worker to the pool */
+     worker_attach_to_pool(worker, pool);
+
+     /* start the newly created worker */
+     spin_lock_irq(&pool->lock);
+     worker->pool->nr_workers++;
+     worker_enter_idle(worker);
+     wake_up_process(worker->task);
+     spin_unlock_irq(&pool->lock);
+
+     return worker;
+
+   fail:
+     if (id >= 0)
+       ida_simple_remove(&pool->worker_ida, id);
+     kfree(worker);
+     return NULL;
+   }
+   ```
+   * worker_attach_to_pool()
+     ```c
+     static void worker_attach_to_pool(struct worker *worker,
+                                    struct worker_pool *pool)
+     {
+       mutex_lock(&pool->attach_mutex);
+
+       set_cpus_allowed_ptr(worker->task, pool->attrs->cpumask);
+       if (pool->flags & POOL_DISASSOCIATED)
+         worker->flags |= WORKER_UNBOUND;
+
+       list_add_tail(&worker->node, &pool->workers);
+
+       mutex_unlock(&pool->attach_mutex);
+     }
+     ```
+ * maybe_create_worker()
+ * get_unbound_pool()
