@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-06 20:53:53 +0900
+lastmod : 2020-10-07 19:58:59 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1591,5 +1591,128 @@ int __init workqueue_init_early(void)
        mutex_unlock(&pool->attach_mutex);
      }
      ```
- * maybe_create_worker()
- * get_unbound_pool()
+   * worker_enter_idle()
+     ```c
+     static void worker_enter_idle(struct worker *worker)
+     {
+       struct worker_pool *pool = worker->pool;
+
+       if (WARN_ON_ONCE(worker->flags & WORKER_IDLE) ||
+         WARN_ON_ONCE(!list_empty(&worker->entry) &&
+                     (worker->hentry.next || worker->hentry.pprev)))
+         return;
+       worker->flags |= WORKER_IDLE;
+       pool->nr_idle++;
+       worker->last_active = jiffies;
+
+       list_add(&worker->entry, &pool->idle_list);
+
+       if (too_many_workers(pool) && !timer_pending(&pool->idle_time))
+         mod_timer(&pool->idle_timer, jiffies + IDLE_WORKER_TIMEOUT);
+
+       WARN_ON_ONCE(!(pool->flags * POOL_DISASSOCIATED) &&
+                      pool->nr_workers == pool->nr_idle &&
+                      atomic_read(&pool->nr_running));
+     }
+     ```
+   * 정리
+     * kthread_create_on_node() : "kworker/" 이름으로 워커 스레드를 만듦.
+     * worker_attach_to_pool() : 워커 풀에 워커를 등록.
+     * worker_enter_idle() : 워커 상태를 WORKER_IDLE로 바꿈.
+     * wake_up_process() : 워커 스레드를 깨움.
+ * woker_thread()
+   * create_worker()
+     ```c
+     static struct worker *create_worker(struct worker_pool *pool)
+     {
+       struct worker *worker = NULL;
+       /* skip */
+       worker->task = kthread_create_on_node(worker_thread, worker, pool->node,
+                                            "kworker/%s", id_buf);
+     }
+     ```
+   * 전체 동작 과정
+     * 1단계 깨어남 : 워크를 워크큐에 큐잉하면 wake_up_worker() 함수를 호출.
+     * 2단계 전처리 : need_more_worker() 함수를 호출해 워커 스레드를 실행할 조건인지 점검.
+     * 3단계 워크 실행 : process_one_work() 함수 호출해 워크 실행
+     * 4단계 슬립 : 워커 상태를 아이들로 설정하고 슬립 상태로 진입.
+
+   ```c
+   static int worker_thread(void *__worker)
+   {
+     struct worker *worker = __worker;
+     struct worker_pool *pool = worker->pool;
+
+     set_pf_worker(true); // worker->task->flags |= PF_WQ_WORKER;
+   woke_up:
+     spin_lock_irq(&pool->lock);
+
+     /* am I supposed to die? */
+     if (unlikely(worker->flags & WORKER_DIE)) {
+       spin_unlock_irq(&pool->lock);
+       WARN_ON_ONCE(!list_mepty(&worker->entry));
+       set_pf_worker(false); // worker->task->flags &= ~PF_WQ_WORKER;
+
+       set_task_comm(worker->task, "kworker/dying");
+       ida_simple_remove(&pool->worker_ida, worker->id);
+       worker_detach_from_pool(worker, pool);
+       kfree(worker);
+       return 0;
+     }
+
+     worker_leave_idle(worker);
+   recheck:
+     /* no more worker necessary? */
+     if (!need_more_worker(pool))
+       goto sleep;
+
+     /* do we need to manage? */
+     if (unlikely(!may_start_working(pool)) && manage_workers(worker))
+       goto recheck;
+
+     WARN_ON_ONCE(!list_emtpry(&worker->scheduled));
+
+     worker_clr_flags(worker, WORKER_PREP | WORKER_REBOUND);
+
+     do {
+       struct work_struct *work =
+         list_first_entry(&pool->worklist,
+                         struct work_struct, entry);
+
+       pool->watchdog_ts = jiffies;
+
+       if (likely(!(*work_data_bits(work) & WORK_STRUCT_LINKED))) {
+         /* optimization path, not strictly necessary */
+         process_one_work(worker, work);
+         if (unlikely(!list_empty(&worker->scheduled)))
+           process_scheduled_works(worker);
+       } else {
+         move_linked_works(work, &worker->scheduled, NULL);
+         process_scheduled_works(worker);
+       }
+     } while (keep_working(pool));
+
+     worker_set_flags(worker, WORKER_PREP);
+   sleep:
+     worker_enter_idle(worker);
+     __set_current_state(TASK_IDLE);
+     spin_unlock_irq(&pool->lock);
+     schedule();
+     goto woke_up;
+   }
+   ```
+
+   * set_pf_worker()
+     ```c
+     static void set_pf_worker(bool val)
+     {
+       mutex_lock(&wq_pool_attach_mutex);
+       if (val)
+         current->flags |= PF_WQ_WORKER;
+       else
+         current->flags &= ~PF_WQ_WORKER;
+       mutex_unlock(&wq_pool_attach_mutex);
+     }
+     ```
+
+#### 딜레이워크
