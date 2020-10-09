@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-05 20:23:25 +0900
+lastmod : 2020-10-09 23:23:34 +0900
 tags    :
 draft   : false
 parent  :
@@ -37,3 +37,8 @@ parent  :
   #define unlikely(x)   __builtin_expect((x), 0)
   ```
  * likely()는 true가 될 확률이 높은 조건문에서 성능을 높이고자 사용한다.
+
+## ceph
+ * 참고 : https://blurblah.net/1298
+ * 분산 object store이자 file system, 분산 클러스터 위에서 storage 인터페이스를 제공
+ * 찾아보게 된 계기 : linux kernel mail(linux-fsdevel)로부터 처음 보는 파일 시스템이 있길레
