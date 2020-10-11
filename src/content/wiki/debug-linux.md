@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-07 19:58:59 +0900
+lastmod : 2020-10-11 20:00:45 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1716,3 +1716,158 @@ int __init workqueue_init_early(void)
      ```
 
 #### 딜레이워크
+ * 딜레이 워크 : 워크를 일정시간 후에 지연시켜 실행하는 기법.
+
+ ```c
+ struct delayed_work {
+   struct work_struct work;
+   struct timer_list timer;
+
+   struct workqueue_struct *wq;
+   int cpu;
+ };
+ ```
+   * work : 어떤 일을 할지
+   * timer : 워크를 지정된 시간만큰 지연할 수 있는 시간 정보를 저장
+   * wq : 딜레이 워크를 관리하는 워크큐 주소
+   * cpu : 딜레이 워크를 실행한 cpu 번호
+
+##### 딜레이 워크의 전체 흐름
+ * 딜레이 워크 초기화 : INIT_DELAYED_WORK()
+ * 딜레이 워크 타이머 등록 : schedule_delayed_work(), queue_delayed_work(), queue_delayed_work_on(), __queue_delayed_work()
+ * 딜레이 워크 큐잉 : delayed_work_timer_fn(), __queue_wokr()
+ * 딜레이 워크 실행 : process_one_work()
+
+##### INIT_DELAYED_WORK()
+ * 사용법
+  ```c
+  struct delayed_work d_work;
+  static int sample()
+  {
+    INIT_DELAYED_WORK(&d_work, callback_fn);
+  }
+  ```
+
+ * INIT_DELAYED_WORK()
+  ```c
+  #define INIT_DELAYED_WORK(_work, _func)       \
+    __INIT_DELAYED_WORK(_work, _func, 0)
+  ```
+
+ * __INIT_DELAYED_WORK()
+  ```c
+  #define __INIT_DELAYED_WORK(_work, _func, _tflags)  \
+    do {                                              \
+      INIT_WORK(&(_work)->work, (_func));             \
+      __init_timer(&(_work)->timer,                   \
+        delayed_work_timer_fn,                        \
+        (_tflags) | TIMER_IRQSAFE);                   \
+    } while(0);
+  ```
+
+ * __init_timer()
+  ```c
+  #define __init_timer(_timer, _fn, _flags)                       \
+    do {                                                          \
+      static struct lock_class_key __key;                         \
+      init_timer_key((_timer), (_fn), (_flags), #_timer, &__key); \
+    } while (0)
+  ```
+
+ * init_timer_key()
+  ```c
+  void init_timer_key(struct timer_list *timer,
+    void (*func)(truct timer_list *), unsigned int flags,
+    const char *name, struct lock_class_key *key)
+  {
+    debug_init(timer);
+    do_init_timer(timer, func, flags, name, key);
+  }
+  ```
+
+##### schedule_delayed_work()
+ * 사용법
+  ```c
+  schedule_delayed_work(&d_work, timeout);
+  ```
+
+ * schedule_delayed_work()
+  ```c
+  static inline bool schedule_delayed_work(struct delayed_work *dwork,
+                                 unsigned long delay)
+  {
+    return queue_dleayed_work(system_wq, dwork, delay);
+  }
+  ```
+
+ * queue_delayed_work()
+  ```c
+  static inline bool queue_delayed_work(struct workqueue_struct *wq,
+                                struct delayed_work *dwork,
+                                unsigned long delayed)
+  {
+    return queue_delayed_work_on(WORK_CPU_UNBOUND, wq, dwork, delay);
+  }
+  ```
+ * queue_delayed_work_on()
+  ```c
+  bool queue_delayed_work_on(int cpu, struct workqueue_struct *wq,
+            struct delayed_work *dwork, unsigned long delay)
+  {
+    struct work-struct *work = &dwork->work;
+    bool ret = false;
+    unsigned long flags;
+
+    /* read the comment in __queue_work() */
+    local_irq_save(flags);
+
+    if (!test_and_set_bit(WORK_STRUCT_PENDING_BIT, work_data_bits(work))) {
+      __queue_delayed_work(cpu, wq, dwork, delay);
+      ret = true;
+    }
+
+    local_irq_restore(flags);
+    return ret;
+  }
+  ```
+
+ * __queue_delayed_work()
+  ```c
+  static void __queue_delayed_work(int cpu, struct workqueue_struct *wq,
+                            struct dealyed_work *dwork, unsigned long delay)
+  {
+    struct timer_list *timer = &dwork->timer;
+    struct work_struct *work = &dwork->work;
+
+    WARN_ON_ONCE(!wq);
+    WARN_ON_ONCE(timer->function != delayed_work_timer_fn ||
+                timer->data != (unsigned long)dwork);
+    WARN_ON_ONCE(timer_pending(timer));
+    WARN_ON_ONCE(!list_empty(&work->entry));
+
+    if (!delay) {
+      __queue_work(cpu, wq, &dwork->work);
+      return;
+    }
+
+    dwork->wq = wq;
+    dwork->cpu = cpu;
+    timer->expires = jiffies + delay;
+
+    if (unlikely(cpu != WORK_CPU_UNBOUND))
+      add_timer_on(timer, cpu);
+    else
+      add_tiemr(timer);
+  }
+  ```
+
+##### delayed_work_timer_fn()
+ ```c
+ void delayed_work_timer_fn(unsigned long __data)
+ {
+   struct delayed_work *dwork = (struct dleayed_work *)__data;
+
+   /* should have been called from irqsafe timer with irq already off */
+   __queue_work(dwork->cpu, dwork->wq, &dwork->work);
+ }
+ ```
