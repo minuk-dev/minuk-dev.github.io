@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-09 23:23:34 +0900
+lastmod : 2020-10-11 19:29:54 +0900
 tags    :
 draft   : false
 parent  :
@@ -42,3 +42,7 @@ parent  :
  * 참고 : https://blurblah.net/1298
  * 분산 object store이자 file system, 분산 클러스터 위에서 storage 인터페이스를 제공
  * 찾아보게 된 계기 : linux kernel mail(linux-fsdevel)로부터 처음 보는 파일 시스템이 있길레
+
+## do{} while(0)
+ * 참고 : https://woodz.tistory.com/68
+ * if 문 뒤 괄호없이 쓸수 있기 때문에, #define으로 선언할때 do-while(0)로 묶어둔다.
