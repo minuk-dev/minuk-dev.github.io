@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-11 20:00:45 +0900
+lastmod : 2020-10-14 20:39:56 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -1871,3 +1871,187 @@ int __init workqueue_init_early(void)
    __queue_work(dwork->cpu, dwork->wq, &dwork->work);
  }
  ```
+
+---
+
+### 커널 타이머 관리
+ * 주요 개념
+   * HZ와 jiffies
+   * Soft IRQ 서비스
+   * 커널 타이버를 이루는 자료구조
+   * 동적 타이머
+ * HZ : 1초에 jiffies가 업데이트되는 횟수
+ * Soft IRQ의 타이머 서비스
+   1. 타이머 인터럽트가 발생하면 TIMER_SOFTIRQ라는 Soft IRQ 서비스를 요청합니다.
+   2. Soft IRQ 서비스 루틴에서 TIMER_SOFTIRQ 서비스의 아이디 핸들러인 run_timer_softirq() 함수를 호출한다.
+   3. run_timer_softirq() 함수에서는 time_bases라는 전역변수에 등록된 동적 타이머를 처리합니다.
+ * 이외의 시간을 처리하는 기법
+   * SoC(Sytem on chip)에서 제공하는 틱 디바이스, timekeeping, 고해상도 타이머(High Resolution Timer)
+
+#### jiffies
+ * HZ가 너무 크면 시스템에 오버헤드, 너무 작으면 동적 타이머의 오차가 커짐.
+ * `out/.config` 에서 `CONFIG_HZ=100` 같은 구문에서 확인 가능하다.
+ * jiffies로 시간 흐름을 제어하는 코드 분석
+   * mod_timer()
+    ```c
+    static timer_list dynamic_timer
+    int timeout = 0;
+    timeout = jiffies;
+    timeout += 2 * HZ;
+
+    mod_timer(&dynamic_timer, timeout);
+    ```
+    ```c
+    extern int mod_timer(struct timer_list *timer, unsigned long expires);
+    ```
+ * jffieis 와 jiffies_64 변수
+   * System.map 파일
+     ```
+     80c03d00 D jiffies
+     80c03d00 D jiffies_64
+     ```
+ * do_timer
+   ```c
+   void do_timer(unsigned long ticks)
+   {
+     jiffies_64 += ticks;
+     calc_global_load(ticks);
+   }
+   ```
+
+   ```c
+   static void tick_do_update_jiffies64(ktime_t now)
+   {
+   /* skip */
+     if (delta >= tick_period) {
+       delta = ktime_sub(delta, tick_period);
+       last_jiffies_update = ktime_add(last_jiffies_update,
+       /* skip */
+       do_timer(++ticks);
+   /* skip */
+   ```
+ * msecs_to_jiffies()
+   * 밀리초를 입력으로 받아 jiffies 단위 시각 정보를 반환
+     ```c
+     static __always_inline unsigned long msecs_to_jiffies(const unsigned int m);
+     ```
+   * 사용 예제
+     ```c
+     msecs_to_jiffies(ms);
+     ```
+   * 구현부
+     ```c
+     static __always_inline unsigned long msecs_to_jiffies(cosnt unsigned int m)
+     {
+       if (__builtin_constant_p(m)) {
+         if ((int)m < 0)
+           return MAX_JIFFY_OFFSET;
+         return _msecs_to_jiffies(m);
+       } else {
+         return __msecs_to_jiffies(m);
+       }
+     }
+     ```
+
+     ```c
+     #define MAX_JIFFY_OFFSET ((LONG_MAX >> 1)-1)
+     #define LONG_MAX ((long)(~0UL>>1))
+     ```
+
+     ```c
+     static inline unsigned long _msecs_to_jiffies(const unsigned int m)
+     {
+       return (m + (MSEC_PER_SEC / HZ) - 1) / (MSEC_PER_SEC / HZ);
+     }
+     ```
+ * time_after(), time_before()
+   ```c
+   #define time_after(a,b)    \
+     (typecheck(unsigned long, a) && \
+     typecheck(unsigned long, b) && \
+     ((long)((b) - (a)) < 0))
+   #define time_before(a,b) time_after(b,a)
+   ```
+
+#### 동적 타이머 초기화
+ * 기본 흐름
+   1. 동적 타이머 초기화 : 동적 타이머 초기화는 보통 드라이 버레벨에서 수행한다. 동적 타이머를 나타내는 timer_list 구조체의 필드 중에서 flags와 function만 바뀐다.
+   1. 동적 타이머 등록 : 동적 타이머도 마찬가지로 드라이버 레벨에서 등록된다. 각 드라이버의 시나리오에 따라 동적 타이머의 만료 시간을 1/HZ 단위로 지정한 다음 add_timer() 함수를 호출한다.
+   1. 동적 타이머 실행 : 동적 타이머가 지정한 만료 시각이 되면 Soft IRQ 타이머 서비스가 동적 타이머를 실행한다.
+ * 동적 타이머 자료구조
+   ```c
+   struct timer_list {
+     struct hlist_node    entry;
+     unsigned long        expries;
+     void                 (*function)(struct timer_list *);
+     u32                  flags;
+
+   #ifdef CONFIG_LOCKDEP
+     struct lockdep_map   lockdep_map;
+   #endif
+   };
+   ```
+   * entry : 해시 연결리스트, timer_bases 전역변수 에동적 타이머를 등록할 때 쓰인다.
+   * expires : 동적 타이머 만료시각을 나타낸다. 이 시각에 커널 타이머가 동적 타이머의 핸들러 함수를 호출한다. 이때 단위는 1/HZ
+   * function : 동적 타이머 핸들러 함수의 주소를 저장하는 필드. call_tiemr_fn() 함수에 서이 필드에 접근해 동적 타이머 핸들러를 호출한다.
+   * flags : 동적 타이머의 설정 필드이며  다음 값 중 하나로 설정된다.
+     ```c
+     #define TIMER_CPUMASK      0x0003FFFF
+     #define TIMER_MIGRATING    0x00040000
+     #define TIMER_BASEMASK     (TIMER_CPUMASK | TIMER_MIGRATING)
+     #define TIMER_DEFERRABLE   0x00080000
+     #define TIMER_PINNED       0x00100000
+     #define TIMER_IRQSAFE      0x00200000
+     #define TIMER_ARRAYSHIFT   22
+     #define TIMER_ARRAYMASK    0xFFC00000
+     ```
+
+ * 동적 타이머 초기화 함수
+   * timer_setup()
+     ```c
+     void timer_setup(struct timer_list *timer, void *func, unsigned int flags);
+     ```
+     * timer : 동적 타이머를 나타내는 정보
+     * func : 동적 타이머 핸들러 함수
+     * flags : 동적 타이머 플레그
+     * 커널 4.14 버전까지 동적 타이머를 초기화하려면 setup_timer() 함수나 init_timer() 함수를 써야됬다.
+
+     ```c
+     #define timer_setup(timer, callback, flags)       \
+         __init_timer((timer), (callback), (flags))
+
+     #define __init_timer(_timer, _fn, _flags) \
+       init_timer_key((_timer), (_fn), (_flags), NULL, NULL)
+     ```
+
+     ```c
+     void init_timer_key(struct timer_list *timer,
+                   void (*func)(struct timer_list *), unsigned int flags,
+                   const char *name, struct lock_class_key *key)
+     {
+       debug_init(timer);
+       do_init_timer(timer, func, flags, name, key);
+     }
+     ```
+
+     ```c
+     static inline void debug_init(struct timer_list *timer)
+     {
+       debug_timer_init(timer);
+       trace_timer_init(timer);
+     }
+     ```
+
+     ```c
+     static void do_init_timer(struct timer_list *timer,
+                     void (*func)(struct timer_list *),
+                     unsigned int flags,
+                     const char *name, struct lock_class_key *key)
+     {
+       timer->entry.pprev = NULL;
+       timer->function = func;
+       timer->flags = flags | raw_smp_processor_id();
+       lockdep_init_map(&timer->lockdep_map, name, key, 0);
+     }
+     ```
+
