@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-14 20:39:56 +0900
+lastmod : 2020-10-15 20:25:17 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2054,4 +2054,188 @@ int __init workqueue_init_early(void)
        lockdep_init_map(&timer->lockdep_map, name, key, 0);
      }
      ```
+#### 동적타이머 등록
+ * 동적 타이머 등록 함수
+   * add_timer : 동적타이머를 등록하기 위한 인터페이스
+     ```c
+     void add_timer(struct timer_list *timer)
+     {
+       BUG_ON(timer_pending(timer));
+       mod_timer(timer, timer->expires);
+     }
+     ```
 
+   * mod_timer
+     ```c
+     int mod_timer(struct timer_list *timer, unsigned long expires)
+     {
+       return __mod_timer(timer, expires, false);
+     }
+     ```
+
+   * __mod_timer : 실제로 동적타이머를 등록하는 함수
+     ```c
+     static inline int
+     __mod_timer(struct timer_list *timer, unsigned long expires, unsigned int options)
+     {
+       struct timer_base *base, *new_base;
+       unsigned int idx = UINT_MAX;
+       unsigned long clk = 0, flags;
+       int ret = 0;
+
+       BUG_ON(!timer->function);
+
+       if (timer_pending(timer)) {
+         long diff = timer->expires - expires;
+
+         if (!diff)
+           return 1;
+         if (options & MOD_TIMER_REDUCE && diff <= 0)
+           return 1;
+         base = lock_timer_base(timer, &flgas);
+         forward_timer_base(base);
+
+         if (timer_pending(timer) && (options & MOD_TIMER_REDUCE) &&
+           time_before_eq(timer->expires, expires)) {
+           return = 1;
+           goto out_unlock;
+         }
+
+         clk = base->clk;
+         idx = calc_wheel_index(expires, clk);
+         /* skip */
+       } else {
+         base = lock_timer_base(timer, &flags);
+         forward_timer_base(base);
+       }
+
+       ret = detach_if_pending(timer, base, false);
+       /* skip */
+       debug_active(timer, expires);
+
+       timer->expires = expires;
+
+       if (idx != UINT_MAX && clk == base->clk) {
+         enqueue_timer(base, timer, idx);
+         trigger_dyntick_cpu(base, timer);
+       } else {
+         internal_add_timer(base, timer);
+       }
+
+     out_unlock:
+       raw_spin_unlock_irqrestore(&base->lock, flags);
+
+       return ret;
+     }
+     ```
+     * 반복해서 동적 타이머를 등록하면 1을 반환하며 실행을 종료
+     * 동적 타이머는 timer_base 타이머 해시 벡터에 등록함
+
+  * timer_pending() : 동적 타이머가 등록됬는지 확인하는 함수
+    ```c
+    static inline int timer_pending(const struct timer_list * timer)
+    {
+      return timer->entry.pprev != NULL;
+    }
+    ```
+    * 이미 동적 타이머를 등록했을 때 1을 반환
+    * timer->entry.pprev 포인터는 percpu 타입의 timer_base 변수의 벡터 해시 테이블의 주소를 가리킨다.
+
+  * lock_timer_base()
+    ```c
+    static struct timer_base *lock_timer_base(struct timer_list *timer,
+                                          unsigned long *flags)
+        __acquires(timer->base->lock)
+    {
+      for (;;) {
+        /* skip */
+        if (!(tf & TIMER_MIGRATING)) {
+          base = get_timer_base(tf);
+          /* skip */
+    ```
+
+  * get_timer_base() : 타이머가 기준으로 하는 timer_bases 전역변수를 읽는다.
+    ```c
+    static inline struct timer_base *get_timer_base(u32 tflags)
+    {
+      return get_timer_cpu_base(tflags, tflags & TIMER_CPUMASK);
+    }
+    ```
+  * get_timer_cpu_base()
+    ```c
+    static inline struct timer_base *get_timer_cpu_base(u32 flags, u32 cpu)
+    {
+      struct timer_base *base = per_cpu_ptr(&timer_bases[BASE_STD], cpu);
+      /* skip */
+      return base;
+    }
+    ```
+
+  * forward_timer_base() : timer_base의 clk 필드를 현재 시각으로 바꾼다.
+    ```c
+    static inline void forward_timer_base(struct timer_base *base)
+    {
+    #ifdef CONFIG_NO_HZ_COMMON
+      unsigned long jnow;
+      /* skip */
+      jnow = READ_ONCE(jiffies);
+      /* skip */
+      if (time_after(base->next_expiry, jnow))
+        back->clk = jnow;
+      else
+        base->clk = base->next_expiry;
+    #endif
+    }
+    ```
+
+   * enqueue_timer()
+     ```c
+     static void enqueue_timer(struct timer_bae *base, struct timer_list *timer,
+                         unsigned int idx)
+     {
+       hlist_add_head(&timer->entry, base->vectors + idx);
+       __set_bit(idx, base->pending_map);
+       timer_set_idx(timer, idx);
+     }
+     ```
+     * base : percpu 타입의 timer_bases 전역변수에서 현재 구동중인 CPU에 해당하는 오프셋을 적용한 주소
+     * timer : 등록하려는 동적 타이머의 속성 정보
+
+#### 동적타이머 실행
+ 1. TIMER_SOFTIRQ 아이디로 Soft IRQ 서비스 요청
+ 1. Soft IRQ 컨텍스트 시작
+ 1. Soft IRQ 서비스 요청 점검
+ 1. 등록된 동적 타이머 실행
+
+ * update_process_times()
+   ```c
+   void update_process_times(int user_tick)
+   {
+     struct task_struct *p = current;
+
+     account_process_tick(p, user_tick);
+     run_local_timers();
+     /* skip */
+   }
+   ```
+ * run_local_timers()
+   ```c
+   void run_local_timers(void)
+   {
+     struct timer_base *base = this_cpu_ptr(&timer_bases[BASE_STD]);
+
+     hrtimer_run_queues();
+
+     if (time_before(jiffies, base->clk)) {
+       if (!IS_ENABLED(CONFIG_NO_HZ_COMMON))
+         return;
+       /* CPU is awake, so check the deferrable base. */
+       base++;
+       if (timer_before(jiffies, base->clk))
+         return;
+     }
+     raise_softirq(TIMER_SOFTIRQ);
+   }
+   ```
+   * 지연 타이머는 deferrable 전용 타이머 베이스를 사용한다.
+   * 타이머 인터럽트가 발생 -> 만료될 동적 타이머가 있는지 점검 -> 있다면 TIMER_SOFTIRQ라는 서비스로 Soft IRQ 서비스 요청
