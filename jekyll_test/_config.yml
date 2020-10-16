@@ -1,0 +1,74 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+#
+# If you need help with YAML syntax, here are some quick references for you: 
+# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
+# https://learnxinyminutes.com/docs/yaml/
+#
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+
+title: "MD98 page"
+email: makerdark98@gmail.com
+baseurl: "/" # the subpath of your site, e.g. /blog
+url: "https://makerdark98.dev" # the base hostname & protocol for your site, e.g. http://example.com
+languageCode: "ko-kr"
+twitter_username: jekyllrb
+github_username:  jekyll
+
+params:
+  author: "Min-Uk.Lee"
+  description: "개발 위키와 기타 모음"
+  githubUsername: "makerdark98"
+  accent: "#00a3d2"
+  showBorder:  true
+  backgroundColor: "white"
+  font:  "Raleway" # should match the name on Google Fonts!
+  highlight : true
+  highlightStyle : "default"
+  favicon : "images/Rb.png"
+  copyright: "&copy; All rights reserved. Powered by [Minimal](https://github.com/calintat/minimal)."
+
+collections:
+  wiki:
+    output: true
+
+menu:
+  - Home:
+    url: "/"
+    name: "Home"
+    weight: 1
+  - Wiki:
+    url: "/wiki/"
+    name: "Wiki"
+    weight: 2
+  - Posts:
+    url: "/posts/"
+    name: "Posts"
+    weight: 3
+  - About:
+    url: "/about/"
+    name: "About"
+    weight: 5
+icon:
+  - mail:
+    url: "mailto:makerdark98@gmail.com"
+    name: "envelope-o"
+    weight: 1
+  - github:
+    url: "https://github.com/makerdark98/"
+    name: "github"
+    weight: 2
+
+    #[taxonomies]
+    #tag = "tags"

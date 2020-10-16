@@ -1,0 +1,19 @@
+{% include header.html %}
+
+<main>
+    {% include wikinavigator.html %}
+    <div>
+        <h2>{{ page.title }}</h2>
+        {% include created.html %}
+        {% include tags.html %}
+    </div>
+
+    <!--<aside class="navbar" id="nav-toc" style="text-align:left;"></aside>-->
+    <div align="start" class="content" data-spy="scroll" data-offset="20" data-target="#nav-toc" style="position:relative;">
+      {{ content }}
+    </div>
+
+  {% include wikilink.html %}
+  {% include comment.html %}
+</main>
+{% include footer.html %}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{ .Title }}</title>
+        {{ if .Site.Params.favicon }}
+            <link rel="icon" href="{{ .Site.Params.favicon | absURL }}">
+            <meta property="og:title" content="{{ .Title }}">
+            <meta property="og:description" content="MD98 블로그 : {{ .Title }}">
+            <meta property="og:image" content="{{ .Site.Params.favicon | absURL }}">
+        {{ end }}
+        {% include css.html %}
+        {% include js.html %}
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'UA-98056974-1');
+          </script>
+
+        {% include mathjax.html %}
+
+        {% include google-site-verification.html %}
+    </head>
+
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">{{ page.title }}</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                  <ul class="nav navbar-nav">
+                    {% for item in site.menu %}
+                      <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+
+                  <ul class="nav navbar-nav navbar-right">
+                    {% for item in site.icon %}
+                      <li class="navbar-icon"><a href="{{ item.URL }}"><i class="fa fa-{{ item.name }}"></i></a></li>
+                    {% endfor %}
+                    <li>
+                      <div style="max-width:250px;display:inline-block;max-height:40px;">
+                        {% include search.html %}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+            </div>
+        </nav>

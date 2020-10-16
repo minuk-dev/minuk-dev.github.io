@@ -1,0 +1,12 @@
+<div class="navigator" style="display:flex;">
+  <div style="display:flex;">
+    {% if .Params.parent %}
+    {% include wikiparent.html %}
+    {% else %}
+    <a href="/wiki/"><button class="btn btn-link"><i class="fa fa-arrow-left"></i>&nbsp;Front Page</button></a>
+    {% endif %}
+  </div>
+  <div style="margin-left:auto;">
+    {% include wikihistory.html %}
+  </div>
+</div>

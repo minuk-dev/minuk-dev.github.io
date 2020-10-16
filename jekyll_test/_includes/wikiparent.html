@@ -1,0 +1,9 @@
+<div class="parent-doc" style="flex:none;">
+  {{ if .Params.parent }}
+  <button class="btn btn-link" onclick="(function(elem){elem.querySelector('a').click();})(this);">
+    <i class="fa fa-arrow-left"></i>
+    [[{{ .Params.parent }}]]
+  </button>
+  {{ end }}
+</div>
+
