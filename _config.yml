@@ -53,7 +53,7 @@ menu:
     name: "Wiki"
     weight: 2
   - Posts:
-    url: "/posts/"
+    url: "/posts"
     name: "Posts"
     weight: 3
   - About:
