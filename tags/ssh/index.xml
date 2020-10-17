@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ssh on MD98 page</title><link>https://makerdark98.dev/tags/ssh/</link><description>Recent content in ssh on MD98 page</description><generator>Hugo -- gohugo.io</generator><language>ko-kr</language><lastBuildDate>Tue, 07 Apr 2020 20:36:17 +0900</lastBuildDate><atom:link href="https://makerdark98.dev/tags/ssh/index.xml" rel="self" type="application/rss+xml"/><item><title>SSH Server Configuration</title><link>https://makerdark98.dev/wiki/ssh-server/</link><pubDate>Tue, 07 Apr 2020 20:36:17 +0900</pubDate><guid>https://makerdark98.dev/wiki/ssh-server/</guid><description> Installation
-sudo apt install openssh-server
-sudo vim /etc/ssh/sshd_config
-generate key
-ssh-keygen -R {id}@{host}
-PermitRootLogin prohibit-password</description></item></channel></rss>

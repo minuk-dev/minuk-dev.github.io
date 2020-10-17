@@ -4,7 +4,7 @@ function convertWikiLink(elem) {
       display = "Front Page";
       matching = "";
     }
-    return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/--/g, '--').replace(/[()]/g, '')}">${display}</a>`;
+    return `<a href="/wiki/${matching.replace(/[()]/g, '')}">${display}</a>`;
   });
   elem.innerHTML = elem.innerHTML.replace(/\[\[(.+?)\]\]/g, (original, matching) => {
     var display = matching;
@@ -12,7 +12,7 @@ function convertWikiLink(elem) {
       display = "Front Page";
       matching = "";
     }
-    return `<a href="/wiki/${matching.toLowerCase().replace(/ /g, '-').replace(/--/g, '-').replace(/[()]/g, '')}">${display}</a>`;
+    return `<a href="/wiki/${matching.replace(/[()]/g, '')}">${display}</a>`;
   });
 }
 ;(function() {

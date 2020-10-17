@@ -26,16 +26,16 @@ function getHistory() {
   }
 }
 
-function pushHistory(wikilink) {
+function pushHistory(name, url) {
   try {
     if (!isValidLocalStorage()) {
       initLocalStorage();
     }
 
     var originalHistory = getHistory();
-    var beforeIdx = originalHistory.indexOf(wikilink);
+    var beforeIdx = originalHistory.indexOf({name, url}); /* todo : it has bug, must use filter */
     if (beforeIdx > -1) originalHistory.splice(beforeIdx, 1);
-    originalHistory.push(wikilink);
+    originalHistory.push({name, url});
     localStorage.md98wikiData = JSON.stringify(originalHistory);
 
     return true;
@@ -48,7 +48,7 @@ function pushHistory(wikilink) {
 function showAllHistory(container, show) {
   var hist = getHistory();
   if (show) {
-    container.innerHTML = hist.slice(0, hist.length-3).map(h=> `<li class="breadcrumb-item">[[${h}]]{${h.slice(0, 10)}}</li>`).join('\n');
+    container.innerHTML = hist.slice(0, hist.length-3).map(h=> `<li class="breadcrumb-item"><a href="${h.url}">${h.name}</a></li>`).join('\n');
 
     convertWikiLink(container);
   } else {
@@ -64,7 +64,7 @@ function displayHistory(container) {
       
       container.innerHTML = '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
         + (hist.length > 3 ? '<li style="cursor:pointer;" class="hidden-history">...</li>' : "")
-        + hist.slice(-3).map(h =>`<li class="breadcrumb-item">[[${h}]]{${h.slice(0, 10)}}</li>`).join('\n');
+        + hist.slice(-3).map(h =>`<li class="breadcrumb-item"><a href="${h.url}">${h.name}</a></li>`).join('\n');
         + '</ol></nav>';
 
     }
@@ -78,7 +78,6 @@ function displayHistory(container) {
 document.addEventListener('DOMContentLoaded', () => {
   var hist = document.querySelector('.wiki-history');
   displayHistory(hist);
-  if (hist) convertWikiLink(hist);
   let hidden_history = document.querySelector('.hidden-history');
   if (hidden_history !== null) {
     hidden_history.addEventListener('click', (event) => {
