@@ -1,4 +1,5 @@
 ---
+layout: default
 title : Min-Uk.Lee
 draft : false
 ---
@@ -6,11 +7,8 @@ draft : false
 ## Courses
  * Chung-Ang University
 
-{{< details >}}
-{{< summary >}}
- Courses (Major : Computer Science, Minor : Statistics)
-{{< /summary >}}
-{{< markdownify >}}
+{::nomarkdown} <details> {:/nomarkdown}
+{::nomarkdown}<summary> Courses (Major : Computer Science, Minor : Statistics) </summary> {:/nomarkdown}
 2017 Spring
 
 - General Physics I (Only Theory)
@@ -42,9 +40,7 @@ draft : false
 - Object-Oriented Programming (Theory & C++)
 - Algorithm (Theory & Toy Project)
 - Programming Language (Lexical Analysis, Syntax Analysis & Make converter from nnef to tensorflow with JavaCC)
-
-{{< /markdownify >}}
-{{< /details >}}
+{::nomarkdown} </details> {:/nomarkdown}
 
 ## Interests
  * Storage & System (SSD, filesystem, Database, Distributed System)

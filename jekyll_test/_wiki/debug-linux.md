@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-15 20:25:17 +0900
+lastmod : 2020-10-17 18:35:46 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -307,6 +307,7 @@ do_syscall_64+0x101/0x110
 * 시그널 전달 여부
 * 인터럽트 컨텍스트와 Soft IRQ 컨텍스트 상태
 * 휴면 상태로 진입하기 직전 레지스터 세트를 로딩 및 백업
+
 ```c
 struct thread_info {
   struct task_struct	*task;		/* main task structure */
@@ -344,6 +345,7 @@ unsigned long           ksp;
 ##### 프로세스의 태스크 디스크립터에 접근하는 매크로 함수
  * current : 현재 구동 중인 프로세스의 태스크 디스크립터 주소
  * arch/x86/include/asm/current.h
+
  ```c
   DECLARE_PER_CPU(struct task_struct *, current_task);
   static __always_inline struct task_struct *get_current(void)
@@ -354,6 +356,7 @@ unsigned long           ksp;
   #define current get_current()
  ```
  * 보면은, cpu 마다 task_struct를 선언하는데, 이 변수 명은 current_task 인데, arch/x86/kernel/process_64.c 에 있는 `__switch_to()`에서
+
  ```c
   this_cpu_write(current_task, next_p);
   this_cpu_write(cpu_current_top_of_stack, task_top_of_stack(next_p));
@@ -375,6 +378,7 @@ unsigned long           ksp;
 #### 인터럽트
  * 인터럽트 벡터와 인터럽트 핸들러
  * IRQ(Interrupt ReQuest)
+
  ```c
  int (*request_irq)(struct dispc_device *dispc, irq_handler_t handler, void *dev_id);
  ```
@@ -413,6 +417,7 @@ unsigned long           ksp;
 ##### 리눅스 커널
  * `arch/x86/entry/entry_64.S` line number 655 common_interrupt: -> call `do_IRQ`
  * `arch/x86/kernel/irq.c`
+
   ```c
   /*
    * do_IRQ handles all normal device IRQ's (the special
@@ -451,11 +456,13 @@ unsigned long           ksp;
     return 1;
   }
   ```
+
  * check handler at `if (!handle_irq(desc, regs))`. handler_irq is defined by an irq chip driver.
  * gic_handle_irq -> __handler_domain_irq -> generic_handle_irq -> handle_fasteoi_irq -> handle_irq_event -> handle_irq_event_percpu
 
 
 ##### Interrupt Context
+
  ```asm
 common_interrupt:
   addq	$-0x80, (%rsp)			/* Adjust vector to [-256, -1] range */
@@ -540,6 +547,7 @@ END(interrupt_entry)
 
 ##### in_interrupt
   * `include/linux/preempt.h`
+
   ```c
   #define in_interrupt()		(irq_count())
   ```
@@ -548,6 +556,7 @@ END(interrupt_entry)
   #define irq_count()	(preempt_count() & (HARDIRQ_MASK | SOFTIRQ_MASK \
      | NMI_MASK))
   ```
+
   ```c
   DECLARE_PER_CPU(int, __preempt_count);
   /*
@@ -571,6 +580,7 @@ END(interrupt_entry)
 
 ##### 인터럽트 핸들러 등록
  * request_irq
+
  ```c
  static inline int __must_check
  request_irq(unsigned int irq, irq_handler_t handler, unsigned long flags,
@@ -598,6 +608,7 @@ END(interrupt_entry)
 ##### 인터럽트 디스크립터
  * 커널이 특정 드라이버나 메모리 같은 중요한 객체를 관리하려고 쓰는 자료구조
    * 주로 `task_struct`, `page`, `files_struct`
+
  ```c
  struct irq_desc {
    struct irq_common_data irq_common_data;
@@ -664,6 +675,7 @@ static inline void native_irq_enable(void)
 
 
 ##### 인터럽트 디버깅
+
 ```bash
 #!/bin/bash
 
@@ -721,6 +733,7 @@ echo "tracing_on"
 ##### IRQ 생성 방법
  * request_threaded_irq -> __setup_irq -> setup_irq_thread -> kthread_create 과정을 통해서 커널 스레드를 생성
  * request_threaded_irq
+
    ```c
    int request_threaded_irq(unsigned int irq, irq_handler_t handler,
     irq_handler_t thread_fn, unsigned long irqflags,
@@ -739,6 +752,7 @@ echo "tracing_on"
      2. IRQ 스레드 생성 : thread_fn 인자에 IRQ 스레드 처리 함수 주소를 지정하면 IRQ 스레드 생성
 
  * __setup_irq
+
    ```c
     static int
     __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
@@ -752,6 +766,7 @@ echo "tracing_on"
      * IRQ 스레드 처리 함수가 등록됐는지 점검
      * 만약 IRQ 스레드가 등록됐으면 setup_irq_thread 함수를 호출해 IRQ 스레드를 생성
  * setup_irq_thread
+
    ```c
     static int
     setup_irq_thread(struct irqaction *new, unsigned int irq, bool secondary)
@@ -838,6 +853,7 @@ echo "tracing_on"
  * 인터럽트 컨텍스트가 아닌 상황에서 Soft IRQ 서비스를 요청할 때
 
  * __do_softirq() 함수에서 Soft IRQ 서비스의 실행 시간이 MAX_SOFTIRQ_TIME 을 초과 했을 때
+
  ```c
  asmlinkage __visible void __softirq_entry __do_softirq(void)
  {
@@ -865,6 +881,7 @@ echo "tracing_on"
  }
 
  * Soft IRQ 서비스를 요청할 때 (raise_softirq_irqoff)
+
    ```c
    inline void raise_softirq_irqoff(unsigned int nr)
    {
@@ -876,6 +893,7 @@ echo "tracing_on"
    ```
 
 ##### ksoftirqd 핸들러 run_ksoftirqd
+
 ```c
 static void run_ksoftirqd(unsigned int cpu)
 {
@@ -907,6 +925,7 @@ static void run_ksoftirqd(unsigned int cpu)
  * tasklet_action()
 
 ##### 태스크릿 자료 구조
+
 ```c
 struct tasklet_struct
 {
@@ -919,6 +938,7 @@ struct tasklet_struct
 ```
  * next : 다음 태스크릿을 가리키는 용도의 포인터
  * state : 캐스크릿의 세부 상태 정보를 저장하는 필드, 아래 나오는 플레그 중 하나를 저장한다.
+
   ```c
   enum
   {
@@ -934,6 +954,7 @@ struct tasklet_struct
 
 ##### 태스크릿 등록 방법
  * 태스크릿 전역변수 선언 : DECLARE_TASKLET() 또는 DECLARE_TASKLET_DISABLED() 함수 호출
+
    ```c
    #define DECLARE_TASKLET(name, func, data) \
    struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(0), func, data }
@@ -955,6 +976,7 @@ struct tasklet_struct
    ```
    * 기본적으로는 태스크릿을 비활성화해 초기화 한 후 tasklet_enable() 함수를 호출하면 태스크릿을 활성화 할수 있다.
  * 테스크릿 초기화 함수 호출 : tasklet_init() 함수
+
    ```c
    extern void tasklet_init(struct tasklet_struct *t,
      void (*func)(unsigned long), unsigned long data);
@@ -972,7 +994,8 @@ struct tasklet_struct
 
 ##### Soft IRQ 디버깅 해보기
  * ftrace 코드
-   ```bash
+
+  ```bash
   #!/bin/bash
 
   echo 0 > /sys/kernel/debug/tracing/tracing_on
@@ -992,8 +1015,9 @@ struct tasklet_struct
 
   echo 1 > /sys/kernel/debug/tracing/tracing_on
   echo "tracing_on"
-   ```
+  ```
  * ftrace log 확인하기
+
    ```log
     soft_irq_ftrace-2255  [000] d.h. 19085.301866: softirq_raise: vec=7 [action=SCHED]
     soft_irq_ftrace-2255  [000] ..s. 19085.301920: softirq_entry: vec=1 [action=TIMER]
@@ -1002,6 +1026,7 @@ struct tasklet_struct
    ```
    * softirq_entry : 시작, softirq_exit : 실행 마무리, softirq_raise : 서비스 요청
  * Soft IRQ 서비스 실행 횟수 확인
+
    ```bash
    cat /proc/softirqs
    ```
@@ -1064,6 +1089,7 @@ struct tasklet_struct
 
 #### 워크큐의 종류
 ##### alloc_workqueue()
+
 ```c
 #define alloc_workqueue(fmt, flags, max_active, args...) \
   __alloc_workqueue_key((fmt), (flags), (max_active), \
@@ -1071,6 +1097,7 @@ struct tasklet_struct
 ```
  * fmt : 워크큐의 이름을 지정하며, workqueue_struct 구조체의 name 필드에 저장된다.
  * flags : 워크큐의 속성 정보 저장, workqueue_struct 구조체의 flags 필드에 저장.
+
    ```c
    enum {
      WQ_UNBOUND = 1 << 1,
@@ -1087,6 +1114,7 @@ struct tasklet_struct
  * workqueue_init_early 함수에서 호출됨.
 
 ##### 7가지 워크큐
+
 ```c
 int __init workqueue_init_early(void)
 {
@@ -1125,6 +1153,7 @@ int __init workqueue_init_early(void)
 
 ##### 워크
  * 워크큐를 실행하는 기본 단위
+
  ```c
  struct work_struct {
    atomic_long_t data;
@@ -1143,6 +1172,7 @@ int __init workqueue_init_early(void)
 
  * 초기화 방법 : INIT_WORK, DECLARE_WORK
    * INIT_WORK : 커널이 INIT_WORK 함수를 실행할 때 워크를 초기화
+
       ```c
       INIT_WORK(&work, callback);
       ```
@@ -1163,6 +1193,7 @@ int __init workqueue_init_early(void)
       ```
       * 6번째 줄의 __init_work 함수는 CONFIG_DEBUG_OBJECTS 커널 컨피그가 활성화돼 있어야 실행, 대부분 비활성
    * DECLARE_WORK : 커널이 컴파일될 때 워크 세부 정보가 포함된 전역 변수 생성
+
       ```c
       static DECLARE_WORK(work, callback);
       ```
@@ -1205,6 +1236,7 @@ int __init workqueue_init_early(void)
      ```
 
      * queue_work()
+
      ```c
      static inline bool queue_work(struct workqueue_struct *wq,
                   struct work_struct *work)
@@ -1214,6 +1246,7 @@ int __init workqueue_init_early(void)
      ```
 
      * queue_work_on()
+
      ```c
      bool queue_work_on(int cpu, struct workqueue_struct *wq,
         struct work_struct *work)
@@ -1234,6 +1267,7 @@ int __init workqueue_init_early(void)
      ```
 
      * __queue_work()
+
      ```c
      static void __queue_work(int cpu, struct workqueue_struct *wq,
                 struct work_struct *work);
@@ -1242,6 +1276,7 @@ int __init workqueue_init_early(void)
        * cpu : WORK_CPU_UNBOUND
        * wq : system_wq
        * work : work_struct 구조체의 주소
+
      ```c
      static void __queue_work(int cpu, struct workqueue_struct *wq,
                 struct work_struct *work)
@@ -1303,6 +1338,7 @@ int __init workqueue_init_early(void)
        * ftrace 로그 출력
        * 워커 풀에 워크의 연결리스트를 등록하고 워커 스레드 깨우기
    * get_work_pool()
+
      ```c
      static struct worker_pool *get_work_pool(struct work_struct *work)
      {
@@ -1323,6 +1359,7 @@ int __init workqueue_init_early(void)
      }
      ```
    * insert_work()
+
      ```c
      static void insert_work(struct pool_workqueue *pwq, struct work_struct *work,
                           struct list_head *head, unsigned int extra_flags)
@@ -1340,6 +1377,7 @@ int __init workqueue_init_early(void)
      }
      ```
    * wake_up_worker()
+
      ```c
      static void wake_up_worker(struct worker_pool *pool)
      {
@@ -1350,6 +1388,7 @@ int __init workqueue_init_early(void)
      }
      ```
    * find_worker_executing_work()
+
     ```c
     static struct worker *find_worker_executing_work(struct worker_pool *pool,
                                                     struct work_struct *work)
@@ -1369,6 +1408,7 @@ int __init workqueue_init_early(void)
 ##### 워크의 실행 주체
  * 워커 스레드, 워크를 워크큐에 큐잉하면 워커 스레드를 깨운다.
  * worker_thread()
+
    ```c
    static int worker_thread(void *__worker)
    {
@@ -1396,6 +1436,7 @@ int __init workqueue_init_early(void)
    }
    ```
    * keep_working() : 이미 큐잉된 워크가 있으면 true를 반환하는 역할
+
      ```c
      static bool keep_working(struct worker_pool *pool)
      {
@@ -1407,6 +1448,7 @@ int __init workqueue_init_early(void)
    * 워커 풀에 큐잉된 워크의 연결 리스트를 가져와 워크 구조체를 알아낸다.
    * process_one_work() 함수를 호출해 워크를 실행한다.
  * process_one_work()
+
    ```c
    static void process_one_work(struct worker *worker. struct work_struct *work)
    __releases(&pool->lock)
@@ -1465,6 +1507,7 @@ int __init workqueue_init_early(void)
    1. 소멸 : 워커 스레드가 필요 없으면 소멸.
 
  * worker 구조체
+
    ```c
    struct worker {
      union {
@@ -1499,6 +1542,7 @@ int __init workqueue_init_early(void)
  * 기본적으로 부팅과정에서 워크큐 자료구조를 초기화할 때 워커 스레드를 생성.
  * 만약 워크큐에 많이 큐잉될 상황이 예측될 때, create_worker() 함수를 호출해 워커 스레드를 생성 가능
  * 부팅 과정에서 워커 스레드 생성되는 로직
+
    ```c
    int __init workqueue_init(void)
    {
@@ -1525,6 +1569,7 @@ int __init workqueue_init_early(void)
    * 워커 스레드의 이름을 지정해 워커 스레드 생성 요청
    * 워커 풀에 워커 스레드를 등록
    * 워커 정보를 갱신하고 생성된 워커 스레드를 깨우기
+
    ```c
    static struct owrker *create_worker(struct worker_pool *pool)
    {
@@ -1576,6 +1621,7 @@ int __init workqueue_init_early(void)
    }
    ```
    * worker_attach_to_pool()
+
      ```c
      static void worker_attach_to_pool(struct worker *worker,
                                     struct worker_pool *pool)
@@ -1592,6 +1638,7 @@ int __init workqueue_init_early(void)
      }
      ```
    * worker_enter_idle()
+
      ```c
      static void worker_enter_idle(struct worker *worker)
      {
@@ -1622,6 +1669,7 @@ int __init workqueue_init_early(void)
      * wake_up_process() : 워커 스레드를 깨움.
  * woker_thread()
    * create_worker()
+
      ```c
      static struct worker *create_worker(struct worker_pool *pool)
      {
@@ -1703,6 +1751,7 @@ int __init workqueue_init_early(void)
    ```
 
    * set_pf_worker()
+
      ```c
      static void set_pf_worker(bool val)
      {
@@ -1740,6 +1789,7 @@ int __init workqueue_init_early(void)
 
 ##### INIT_DELAYED_WORK()
  * 사용법
+
   ```c
   struct delayed_work d_work;
   static int sample()
@@ -1749,12 +1799,14 @@ int __init workqueue_init_early(void)
   ```
 
  * INIT_DELAYED_WORK()
+
   ```c
   #define INIT_DELAYED_WORK(_work, _func)       \
     __INIT_DELAYED_WORK(_work, _func, 0)
   ```
 
  * __INIT_DELAYED_WORK()
+
   ```c
   #define __INIT_DELAYED_WORK(_work, _func, _tflags)  \
     do {                                              \
@@ -1766,6 +1818,7 @@ int __init workqueue_init_early(void)
   ```
 
  * __init_timer()
+
   ```c
   #define __init_timer(_timer, _fn, _flags)                       \
     do {                                                          \
@@ -1775,6 +1828,7 @@ int __init workqueue_init_early(void)
   ```
 
  * init_timer_key()
+
   ```c
   void init_timer_key(struct timer_list *timer,
     void (*func)(truct timer_list *), unsigned int flags,
@@ -1787,11 +1841,13 @@ int __init workqueue_init_early(void)
 
 ##### schedule_delayed_work()
  * 사용법
+
   ```c
   schedule_delayed_work(&d_work, timeout);
   ```
 
  * schedule_delayed_work()
+
   ```c
   static inline bool schedule_delayed_work(struct delayed_work *dwork,
                                  unsigned long delay)
@@ -1801,6 +1857,7 @@ int __init workqueue_init_early(void)
   ```
 
  * queue_delayed_work()
+
   ```c
   static inline bool queue_delayed_work(struct workqueue_struct *wq,
                                 struct delayed_work *dwork,

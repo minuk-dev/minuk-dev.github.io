@@ -2,12 +2,17 @@
 
     html body {
         font-family: '{{ site.params.font }}', sans-serif;
-        background-color: {{ site.params.backgroundColor | default "white" }};
+        background-color: {{ site.params.backgroundColor | default: "white" }};
     }
 
     :root {
         --accent: {{ site.params.accent | default "#2196F3" }};
-        --border-width: {{ if site.params.showBorder | default false }} 5px {{ else }} 0 {{ end }};
+        --border-width:
+          {% if site.params.showBorder==true %}
+            5px
+          {% else %}
+            0
+          {% endif %};
     }
 
 </style>
@@ -20,6 +25,9 @@
 <!-- font awesome -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
+<!-- highlight.js -->
+<link rel="stylesheet"
+      href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.1/build/styles/default.min.css">
 <!-- main -->
 <link rel="stylesheet" href="/css/main.css">
 <link rel="stylesheet" href="/css/copy-btn.css">

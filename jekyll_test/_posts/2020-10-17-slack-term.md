@@ -1,7 +1,7 @@
 ---
+layout: default
 title: slack terminal에서 사용하기
 date: 2020-07-03T22:00:00+09:00
-draft: false
 ---
 
 # slack 을 terminal에서 사용하기

@@ -1,4 +1,8 @@
 <div class="item">
-    <h4><a href="{{ item.url }}">{{ item.title | default: "untitled" }}</a></h4>
-    {{ item.date }}
+    <h4><a href="{{ doc.url }}">{{ doc.title | default: "untitled" }}</a></h4>
+    {% for t in doc.tags %}
+      {{ t }}
+    {% endfor %}
+    {{ doc.tags }}
+    {{ doc.lastmod }}
 </div>

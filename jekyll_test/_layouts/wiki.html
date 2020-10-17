@@ -1,5 +1,11 @@
 {% include header.html %}
 
+{% if page.draft %}
+<main>
+  <h1>¯\_(ツ)_/¯</h1>
+  <h2>Nothing here</h2>
+</main>
+{% else %}
 <main>
     {% include wikinavigator.html %}
     <div>
@@ -16,4 +22,5 @@
   {% include wikilink.html %}
   {% include comment.html %}
 </main>
+{% endif %}
 {% include footer.html %}
