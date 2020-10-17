@@ -6,7 +6,7 @@ function getParam(sname) {
         temp = params[i].split("=");
         if ([temp[0]] == sname) { sval = temp[1]; }
     }
-    return sval;
+  return decodeURIComponent(sval);
 }
 
 function moveToTag(tagName) {
