@@ -21,7 +21,7 @@
           <a href="{{- doc.url -}}"> {{- doc.title -}} </a>
           {% for t in doc.tags %}
         </h4>
-        <a href="/wiki/tags/{{t}}">
+        <a href="/wiki/tags?tag={{t}}">
           <kbd class="item-tag">{{t}}</kbd>
         </a>
         {% endfor %}
