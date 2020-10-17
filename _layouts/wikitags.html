@@ -40,11 +40,8 @@
   <script>
     (()=>{
       try {
-        const paths = window.location.pathname.split('/');
-        if (paths.length >= 4) {
-          const tag = paths[3];
-          moveToTag(tag);
-        }
+        const tag = getParam("tag");
+        moveToTag(tag);
       } catch (err) {
         console.error(err);
       }
