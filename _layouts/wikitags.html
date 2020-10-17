@@ -1,0 +1,53 @@
+{% include header.html %}
+<main>
+  <div>
+    <h2>{{ page.title }}</h2>
+    <h5>{{ page.description }}</h5>
+  </div>
+
+  <div align="start" class="content">
+{% assign allwiki = site.wiki %}
+{% assign wiki_tags = allwiki | map: 'tags' | uniq %}
+<!--{{ allwiki.tags }} -->
+{%- for tag in wiki_tags -%}
+  <div id="{{tag}}">
+  {% assign i = 0 %}
+  {% capture output %}
+    {%- for doc in allwiki -%}
+      {% if doc.tags contains tag %}
+      {% assign i = i | plus:1 %}
+      <div class="item">
+        <h4>
+          <a href="{{- doc.url -}}"> {{- doc.title -}} </a>
+          {% for t in doc.tags %}
+        </h4>
+        <a href="/wiki/tags/{{t}}">
+          <kbd class="item-tag">{{t}}</kbd>
+        </a>
+        {% endfor %}
+        <h5> {{- doc.lastmod -}} </h5>
+      </div>
+      {% endif %}
+    {%- endfor -%}
+  {% endcapture %}
+  <h2>{{- tag -}} </span>- {{ i }}</h2>
+  {{ output }}
+  </div>
+{%- endfor -%}
+  </div>
+</main>
+<script src="/js/tag.js"></script>
+  <script>
+    (()=>{
+      try {
+        const paths = window.location.pathname.split('/');
+        if (paths.length >= 4) {
+          const tag = paths[3];
+          moveToTag(tag);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  </script>
+{% include footer.html %}
