@@ -33,8 +33,11 @@ function pushHistory(name, url) {
     }
 
     var originalHistory = getHistory();
-    var beforeIdx = originalHistory.indexOf({name, url}); /* todo : it has bug, must use filter */
-    if (beforeIdx > -1) originalHistory.splice(beforeIdx, 1);
+    var beforeHistory = originalHistory.filter(hist => hist.url===url);
+    if (beforeHistory.length != 0) {
+      var beforeIdx = originalHistory.indexOf(beforeHistory[0]);
+      if (beforeIdx > -1) originalHistory.splice(beforeIdx, 1);
+    }
     originalHistory.push({name, url});
     localStorage.md98wikiData = JSON.stringify(originalHistory);
 
@@ -64,7 +67,7 @@ function displayHistory(container) {
       
       container.innerHTML = '<nav aria-label="breadcrumb"><ol class="breadcrumb">'
         + (hist.length > 3 ? '<li style="cursor:pointer;" class="hidden-history">...</li>' : "")
-        + hist.slice(-3).map(h =>`<li class="breadcrumb-item"><a href="${h.url}">${h.name}</a></li>`).join('\n');
+        + hist.slice(-3).map(h =>`<li class="breadcrumb-item"><a href="${h.url}">${h.name.slice(0, 10)}</a></li>`).join('\n');
         + '</ol></nav>';
 
     }
