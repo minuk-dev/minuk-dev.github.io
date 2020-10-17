@@ -19,7 +19,8 @@
 
     <h2> 최근 게시물 </h2>
     <div class="recent">
-      {% for doc in site.wiki %}
+      {% assign wikis = site.wiki | sort: 'lastmod' | reverse %}
+      {% for doc in wikis %}
         {% include list-item.html %}
       {% endfor %}
       <nav style="font-size: 2rem;">

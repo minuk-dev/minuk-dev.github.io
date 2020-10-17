@@ -1,6 +1,9 @@
 # universial tags
+tags
 tags/tags.temp
 tags.lock
 tags.temp
 **/tags.lock
 **/tags.temp
+# jekyll
+_site
