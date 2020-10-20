@@ -3,7 +3,7 @@ layout  : wiki
 title   : statistics
 summary :
 date    : 2020-07-06 20:02:25 +0900
-lastmod : 2020-09-26 23:30:05 +0900
+lastmod : 2020-10-21 01:38:01 +0900
 tags    : [statistics, math]
 draft   : false
 parent  :
@@ -41,7 +41,7 @@ parent  :
  * `Proudct Rule, Multiplicative Rule`
    * $$P(A \cap B) = P(A) \cdot P(B | A)$$
  * `Law of Total Probability`
-   * $$\text{In sample space } S, \bigcup_{^{\forall} B_i}{B_i} = S \Rightarrow ^{\forall} A, P(A) = \sum_{^{\forall} B_i} {P(B_i) \cap A} = \sum_{^{\forall} B_i} {P(B_i) \cdot P(A | B_i)}$$
+   * $$\text{In sample space } S, \bigcup_{^{\forall} B_i}{B_i} = S \\\\ \Rightarrow ^{\forall} A, P(A) = \sum_{^{\forall} B_i} {P(B_i) \cap A} = \sum_{^{\forall} B_i} {P(B_i) \cdot P(A | B_i)}$$
  * `Bayes' Theorem, Bayes' Rule`
    * $$\bigcup_{^{\forall} B_i}{B_i} = S \Rightarrow ^{\forall} A, P(B_i | A) = \frac{P(B_i) \cdot P(A|B_i)}{\sum_{^{\forall} B_i} P(B_i) \cdot P(A|B_i)}$$
    * The meaning of Bayes' Rule is that we can fetch reasons from outcomes.
@@ -67,7 +67,7 @@ parent  :
    * $$\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f(x, y) dy dx =1$$
    * $$P[(x, y) \in A] = \int \int_A f(x, y) dy dx$$
  * `Marginal Probability Distribution`
-   * $$f_X(x) = \int_\{- \infty}^{\infty} f(x, y) dy$$
+   * $$f_X(x) = \int_{- \infty}^{\infty} f(x, y) dy$$
  * `Conditional Distribution`
    * $$f(y|x) = \frac{f(x, y)}{f_x(x)}$$
  * `Expected Value`
@@ -315,16 +315,16 @@ parent  :
  * `Hypothesis Test on the Difference between Two Means`
    * Known the variances of two populations.
      * $$Z = \frac{(\bar X - \bar Y) - (\mu_1 - \mu_2)}{\sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}}$$
-     * Two Sided Test : \\(|Z| \ge z_{\frac{\alpha}{2}} \\)
-     * One Sided Test : \\(Z \ge z_{\alpha} \\) or \\(Z \le z_{\alpha} \\)
+     * Two Sided Test : \\( \vert Z \vert \ge z_{\frac{\alpha}{2}} \\)
+     * One Sided Test : \\( Z \ge z_{\alpha} \\) or \\(Z \le z_{\alpha} \\)
    * Unkown the variance of two populations.(n >= 30)
      * $$Z = \frac{(\bar X - \bar Y) - (\mu_1 - \mu_2)}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
-     * Two Sided Test : \\(|Z| \ge z_{\frac{\alpha}{2}} \\)
-     * One Sided Test : \\(Z \ge z_{\alpha} \\) or \\(Z \le z_{\alpha} \\)
+     * Two Sided Test : \\( \vert Z \vert \ge z_{\frac{\alpha}{2}} \\)
+     * One Sided Test : \\( \vert Z \vert \ge z_{\alpha} \\) or \\(Z \le z_{\alpha} \\)
    * Unkown the variance of two populations.(n < 30)
      * $$T = \frac{(\bar X - \bar Y) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
      * $$S_p = \sqrt{\frac{(n_1 - 1) S_1^2 + (n_2 - 1)S_2 ^2}{n_1 + n_2 - 2}}$$
-     * Two Sided Test : \\(|T| \ge t_{\frac{\alpha}{2}} (n_1 + n_2 - 2) \\)
+     * Two Sided Test : \\( \vert T \vert \ge t_{\frac{\alpha}{2}} (n_1 + n_2 - 2) \\)
      * One Sided Test : \\(T \ge t_{\alpha} ( n_1 + n_2 - 2) \\) or \\(T \le -t_{\alpha} (n_1 + n_2 - 2) \\)
 
  * `Hypothesis Test on the Ratio between Two Variances`
@@ -337,7 +337,7 @@ parent  :
  * `Hypothesis Test on the Difference between Two Proportion`
    * We hypothesize the two proportion is same. \\(p_1 = p_2 \\)
    * $$ Z = \frac{\hat p_1 - \hat p_2}{\sqrt{\hat p ( 1 - \hat p) ( \frac{1}{n_1} + \frac{1}{n_2})}} $$
-   * Two Sided Test : \\(|Z| \ge z_{\frac{\alpha}{2}} \\)
+   * Two Sided Test : \\( \vert Z \vert \ge z_{\frac{\alpha}{2}} \\)
    * One Sided Test : \\(z \ge z_{\alpha} \\) or \\(z \le z_{\alpha} \\)
  * `Correlation Analysis`
    * $$Cov(X, Y) = E(XY) - E(X)E(Y)$$
