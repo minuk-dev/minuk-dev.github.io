@@ -72,3 +72,8 @@ icon:
 
     #[taxonomies]
     #tag = "tags"
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - tags
+  - README.md
