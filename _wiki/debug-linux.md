@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-17 18:35:46 +0900
+lastmod : 2020-10-24 17:31:35 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2296,3 +2296,150 @@ int __init workqueue_init_early(void)
    ```
    * 지연 타이머는 deferrable 전용 타이머 베이스를 사용한다.
    * 타이머 인터럽트가 발생 -> 만료될 동적 타이머가 있는지 점검 -> 있다면 TIMER_SOFTIRQ라는 서비스로 Soft IRQ 서비스 요청
+
+ * __do_softirq()
+   ```c
+   asmlinkage __visible void __softirq_entry(void)
+   {
+     unsigned long end = jiffies + MAX_SOFTIRQ_TIME;
+     unsigned long old_flags = current->flags;
+     struct softirq_action *h;
+     /* skip */
+   restart:
+     set_softirq_pending(0);
+
+     local_irq_enable();
+
+     h = softirq_vec;
+     while ((softirq_bit = ffs(pending))) {
+       unsigned int vec_nr;
+       int prev_count;
+
+       h += softirq_bit - 1;
+
+       vec_nr = h - softirq_vec;
+       prev_count = preempt_count();
+
+       kstat_incr_softirqs_this_cpu(vec_nr);
+
+       trace_softirq_entry(vec_nr);
+       h->action(h);
+     /* skip */
+     }
+   }
+   ```
+
+ * run_timer_softirq()
+   * TIMER_SOFTIRQ 의 handler 는 run_timer_softirq 임
+   ```c
+   static __latent_entropy void run_timer_softirq(struct softirq_action *h)
+   {
+     struct timer_base *base = this_cpu_ptr(&timer_bases[BASE_STD]);
+     base->must_forward_clk = false;
+
+     __run_timers9base);
+     if (IS_ENABLED(CONFIG_NO_HZ_COMMON))
+       __run_timers(this_cpu_ptr(&timer_bases[BASE_DEF]));
+   }
+   ```
+ * __run_timers()
+   ```c
+   static inline void __run_timers(struct timer_base *base)
+   {
+     struct hlist_head heads[LVLDEPTH];
+     int levels;
+
+     if (!timer_after_eq(jiffies, base->clk))
+       return;
+
+     raw_spin_lock_irq(&base->lock);
+
+     while (time_after_eq(jiffies, base->clk)) {
+
+       levels = collect_expired_timers(base, heads);
+       base->clk++;
+
+       while (levels--)
+         expire_timers(base, heads + levels);
+     }
+     base->running_timer = NULL;
+     raw_spin_unlock_irq(&base->lock);
+   }
+   ```
+
+ * __collect_expired_timers()
+   ```c
+   static int collect_expired_timers(struct timer_base *base,
+                                  struct hlist_head *heads)
+   {
+   /* skip */
+     return __collect_expired_timers(base, heads);
+   }
+   ```
+
+   ```c
+   static int __colect_expired_timers(struct timer_base *base,
+                                  struct hlist_head *heads)
+   {
+     unsigned long clk = base->clk;
+     struct hlist_head *vec;
+     int i, levels = 0;
+     unsigned int idx;
+
+     for (i = 0; i < LVL_DEPTH; i ++) {
+       idx = (clk & LVL_MASK) + i * LVL_SIZE;
+
+       if (__test_and_clear_bit(idx, base->pending_map)) {
+         vec = base->vectors + idx;
+         hlist_move_list(vec, heads++);
+         levels++;
+       }
+     }
+     /* skip */
+     return levels;
+   }
+   ```
+
+ * expire_timers()
+   ```c
+   static void expire_timers(struct timer_base *base, struct hlist_head *head)
+   {
+     while (!hlist_empty(head)) {
+       struct timer_list *timer;
+       void (*fn)(struct tiemr_list *);
+
+       timer = hlist_entry(head->first, struct timer_list, entry);
+
+       base->running_timer = timer;
+       detach_timer(timer, true);
+
+       fn = timer->function;
+
+       if (timer->flags & TIMER_IRQSAFE) {
+         raw_spin_unlock(&base->lock);
+         call_timer_fn(timer, fn);
+         raw_spin_lock(&base->lock);
+       } else {
+         raw_spin_unlock_irq(&base->lock);
+         call_timer_fn(timer, fn);
+         raw_spin_lock_irq(&base->lock);
+       }
+     }
+   }
+   ```
+   * list에서 timer를 꺼낸후, running_timer 로 만들어 놓고, list 에서 detach 시킨다.
+   * 그 뒤 fn 에다가 timer callback 을 넣어주고, TIMER_IRQSAFE(TIMER 가 irq disabled 이고 irq handler 가 실행 중인걸 기다려야되는지)인지 확인하고, 그에 따라 lock 걸고 timer를 실행한다.
+
+ * call_timer_fn()
+   ```c
+   static void call_timer_fn(struct timer_list *timer, void (*fn)(unsigned long),
+                        unsigned long data)
+   {
+     int count = preempt_count();
+     /* skip */
+     trace_timer_expire_entry(timer);
+     fn(data);
+     trace_timer_expire_exit(timer);
+     /* skip */
+   }
+   ```
