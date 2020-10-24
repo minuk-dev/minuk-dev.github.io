@@ -1,12 +1,11 @@
 ---
 layout  : wiki
 title   : algorithm teamnote
-summary : 
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-08-17 18:41:06 +0900
+lastmod : 2020-10-24 16:01:24 +0900
 tags    : [algorithm, teamnote]
 draft   : false
-parent  : 
+parent  : algorithm
 ---
 
 ## Binary Search
@@ -38,7 +37,7 @@ if (array[k] == x) {
 int x = -1;
 for (int b = z; b >= 1; b /= 2) {
   while (!valid(x + b)) x += b;
-} 
+}
 int k = x + 1;
 /* valid(x) : true when x >= k, false when x < k */
 ```
@@ -102,7 +101,7 @@ struct node_t {
 /* sum tree */
 struct seg_tree {
   node_t node[4 * SEG_SIZE];
-  
+
   lld build(lld* d, lld idx, lld s, lld e) {
     if (s == e) return node[idx].value = d[s];
     return node[idx].value = build(d, idx * 2, s, (s + e) / 2) + build(d, idx * 2 + 1, (s + e) / 2 + 1, e);
@@ -127,7 +126,7 @@ struct seg_tree {
       update_lazy(idx, s, e);
       return node[idx].value;
     }
-    return node[idx].value = 
+    return node[idx].value =
       update_range(idx * 2, diff ,s, (s + e) / 2, l, r) + update_range(idx * 2 + 1, diff, (s + e) / 2 + 1, e, l, r);
   }
 
@@ -191,7 +190,7 @@ int main () {
     cin.getline(T, SIZE);
     cin.getline(P, SIZE);
     int n = strlen(T), m = strlen(P);
-    
+
     kmp(P+1, m - 1, P, PI, PI + 1);
     kmp(T, n, P, PI, result);
     int c = 0;
@@ -201,7 +200,7 @@ int main () {
     for (int i = 0; i < n; i ++) {
         if (result[i] == m) printf("%d ", i - m + 2);
     }
-    
+
     return 0;
 }
 ```
@@ -218,7 +217,7 @@ void suffix(const char* s, int *sa) {
   int n = strlen (s);
   vector<int> g(n+1), nextg(n+1);
   int base;
-  
+
   auto cmp = [&s, &n, &g, &base](const int& a, const int& b) -> bool {
     return g[a] == g[b] ? g[a + base] < g[b + base] : g[a] < g[b];
   };
@@ -377,88 +376,129 @@ void lca_build(int N) {
 
 ## Network Flow
 ```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#define sci(N) scanf("%d", &(N))
+#define INF 987654321
+using namespace std;
 class NetworkFlow {
-private:
-  struct edge {
-    int dest, invi, fl;
-  };
+  public:
+    struct edge {
+      int dest, invi, fl;
+    };
+    int vn;
+    vector<int> lv, work;
+    vector<vector<edge>> edges;
 
-  int vn;
-  vi lv;
-  const static int INF = numeric_limits<int>::max();
-  vector< vector<edge> > edges;
+  public:
+    NetworkFlow (int n)
+      : vn(n), lv(vn), edges(vn), work(vn)
+    {}
 
-public:
-  NetworkFlow (int n)
-    : vn(n), lv(vn), edges(vn)
-  {}
+    void addEdge(int s, int d, int f) {
+      edge x{ d, (int)edges[d].size(), f};
+      edge y{ s, (int)edges[s].size(), 0};
 
-  void addEdge(int s, int d, int f) {
-    edge x{ d, (int)edges[d].size(), f};
-    edge y{ s, (int)edges[s].size(), 0};
+      edges[s].push_back(x);
+      edges[d].push_back(y);
+    }
 
-    edges[s].push_back(x);
-    edges[d].push_back(y);
-  }
+    bool bfsv(int s, int d)
+    {
+      int i;
+      int nv, nlv;
 
-  bool bfsv(int s, int d)
-  {
-    int i;
-    int nv, nlv;
+      fill(lv.begin(), lv.end(), 0);
 
-    fill(lv.begin(), lv.end(), 0);
+      lv[s] = 1;
+      queue<int> q;
+      q.push(s);
 
-    lv[s] = 1;
-    queue<int> q;
-    q.push(s);
+      while (!q.empty()){
+        nv = q.front();
+        q.pop();
+        nlv = lv[nv];
 
-    while (!q.empty()){
-      nv = q.front();
-      q.pop();
-      nlv = lv[nv];
-
-      for (const auto& e: edges[nv]) {
-        if (e.fl > 0 && lv[e.dest] == 0) {
-          lv[e.dest] = nlv + 1;
-          q.push(e.dest);
-          if (e.dest == d) return true;
+        for (const auto& e: edges[nv]) {
+          if (e.fl > 0 && lv[e.dest] == 0) {
+            lv[e.dest] = nlv + 1;
+            q.push(e.dest);
+            if (e.dest == d) return true;
+          }
         }
       }
+      return false;
     }
-    return false;
-  }
 
-  int flowing(int s, int d, int f) {
-    if (s == d) return f;
-    int nf;
+    int flowing(int s, int d, int f) {
+      if (s == d) return f;
+      int nf;
 
-    for (auto &e : edges[s]) {
-      if (e.fl > 0 && lv[e.dest] == lv[s] +1) {
-        nf = flowing(e.dest, d, min(f, e.fl));
-        if (nf > 0) {
-          edge &ei = edges[e.dest][e.invi];
-          e.fl -= nf;
-          ei.fl += nf;
-          return nf;
+      for (int &i = work[s]; i < edges[s].size(); ++ i) {
+        auto& e = edges[s][i];
+        if (e.fl > 0 && lv[e.dest] == lv[s] +1) {
+          nf = flowing(e.dest, d, min(f, e.fl));
+          if (nf > 0) {
+            edge &ei = edges[e.dest][e.invi];
+            e.fl -= nf;
+            ei.fl += nf;
+            return nf;
+          }
         }
       }
+      return 0;
     }
-    return 0;
-  }
 
-  int solve (int s, int d) {
-    int res = 0;
-    int nres;
-    
-    while (bfsv(s, d)) {
-      while (true) {
-        nres = flowing(s, d, INF);
-        if (nres == 0) break;
-        res += nres;
+    int solve (int s, int d) {
+      int res = 0;
+      int nres;
+      while (bfsv(s, d)) {
+        fill(work.begin(), work.end(), 0);
+        while (true) {
+          nres = flowing(s, d, INF);
+          if (nres == 0) break;
+          res += nres;
+        }
       }
+
+      return res;
     }
-    
-    return res;
-  }
 };
+```
+
+## 소수 판별(Miller-Rabin)
+ * unsigned long long 까지만 됨, 음수 안 넣게 조심!!
+```cpp
+#include <iostream>
+#define scl(N) scanf("%lld", &(N))
+using namespace std;
+using lld = long long;
+using ulld = unsigned long long;
+ulld fast_pow(ulld a, ulld n, ulld mod) {
+  if (n == 1) return a;
+  else if (n == 0) return 1;
+  lld retval = fast_pow(a, n / 2, mod);
+  retval = retval * retval % mod;
+  if (n % 2 == 1) retval = retval * a % mod;
+  return retval;
+}
+const ulld miller_rabin_prime[] = {
+  2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37
+};
+bool isPrime(const ulld p) {
+  ulld d = p - 1;
+  for (int i = 0; i < 12; ++ i) {
+    if (miller_rabin_prime[i] == p) return true;
+    if (miller_rabin_prime[i] > p) return true;
+    lld t = fast_pow(miller_rabin_prime[i], d, p);
+    while (t == p - 1 && d % 2 == 0) {
+      d /= 2;
+      t = fast_pow(miller_rabin_prime[i], d, p);
+    }
+    if (t != 1) return false;
+  }
+  return true;
+}
 ```
