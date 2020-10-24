@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-11 19:29:54 +0900
+lastmod : 2020-10-24 16:48:27 +0900
 tags    :
 draft   : false
 parent  :
@@ -46,3 +46,23 @@ parent  :
 ## do{} while(0)
  * 참고 : https://woodz.tistory.com/68
  * if 문 뒤 괄호없이 쓸수 있기 때문에, #define으로 선언할때 do-while(0)로 묶어둔다.
+
+## asmlinkage
+ * 참고 : http://egloos.zum.com/studyfoss/v/4951809
+ * 어셈블리 코드에서 직접 호출할 수 있다는 의미
+ * 정의 (include/linux/linkage.h)
+   ```c
+   #include <linux/config.h>
+   #include <asm/linkage.h>
+
+   #ifdef __cplusplus
+   #define CPP_ASMLINKAGE exter "C"
+   #else
+   #define CPP_ASMLINKAGE
+   #endif
+
+   #ifndef asmlinkage
+   #define asmlinkage CPP_ASMLINKAGE
+   #endif
+   ```
+ * 함수부 앞에 붙이게 된다면 함수 인자 전달을 모두 스택을 통해서 전달하게된다.
