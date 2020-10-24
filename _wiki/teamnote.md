@@ -476,13 +476,15 @@ class NetworkFlow {
 using namespace std;
 using lld = long long;
 using ulld = unsigned long long;
-ulld fast_pow(ulld a, ulld n, ulld mod) {
-  if (n == 1) return a;
-  else if (n == 0) return 1;
-  lld retval = fast_pow(a, n / 2, mod);
-  retval = retval * retval % mod;
-  if (n % 2 == 1) retval = retval * a % mod;
-  return retval;
+ulld fast_pow(ulld x, ulld y, ulld m){
+  ulld r = 1;
+  x %= m;
+  while (y != 0){
+    if(y % 2 == 1) r = (llld)r * x % m;
+    x = (llld)x * x % m;
+    y /= 2;
+  }
+  return r;
 }
 const ulld miller_rabin_prime[] = {
   2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37
