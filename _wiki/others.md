@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-24 16:48:27 +0900
+lastmod : 2020-10-24 17:03:10 +0900
 tags    :
 draft   : false
 parent  :
@@ -47,7 +47,7 @@ parent  :
  * 참고 : https://woodz.tistory.com/68
  * if 문 뒤 괄호없이 쓸수 있기 때문에, #define으로 선언할때 do-while(0)로 묶어둔다.
 
-## asmlinkage
+## asmlinkage 매크로
  * 참고 : http://egloos.zum.com/studyfoss/v/4951809
  * 어셈블리 코드에서 직접 호출할 수 있다는 의미
  * 정의 (include/linux/linkage.h)
@@ -66,3 +66,14 @@ parent  :
    #endif
    ```
  * 함수부 앞에 붙이게 된다면 함수 인자 전달을 모두 스택을 통해서 전달하게된다.
+
+## latent_entropy 매크로
+ * 참고 : https://lwn.net/Articles/689145/
+ * 참고 내용 대충 번역
+   ```
+   latent_entropy 라는 gcc plugin 을 소개한다.
+   이 플러그인을 사용하면 부팅 과정 중과 부팅 이후, 암호화 키를 생성하는 과정에서 너무 entropy 가 낮아지는 문제를 완화한다. => 부팅할 때 무작위성과 관련하여 문제가 있어서 이를 해결하는 plugin 이라는 뜻인듯?
+
+   이 플러그인은 함수 앞에 __latent_entropy 라는 속성을 적어주면 랜덤한 값을 전역 변수에 섞어준다. (~~~) 한국어로 번역하기 힘든데, 이렇게 전역변수를 건들여주면 전체적으로 무작위성이 증가해서 커널의 엔트로피가 커진다.(무작위성을 저격해서 취약점을 공격하기 어려워진다.) 라는 뜻인듯
+   ```
+ * 보안 패치와 관련된 플러그인을 사용하겠다는 것이고, 커널의 무작위성을 높여주는 속성이다. 무작위성과 관련된 취약점이 많다고 생각해서 추가한듯.
