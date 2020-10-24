@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-24 17:31:35 +0900
+lastmod : 2020-10-24 20:19:17 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2443,3 +2443,18 @@ int __init workqueue_init_early(void)
      /* skip */
    }
    ```
+##### 커널 타이머 정리
+ 1. 동적 타이머 등록 : mod_timer
+ 1. TIMER_SOFTIRQ 서비스 요청
+ 1. Soft IRQ 서비스 실행
+ 1. 동적 타이머 만료 후 타이머 핸들러 실행
+
+---
+ * HZ : 진동수, 1초에 jiffies 가 업데이트 되는 횟수
+ * TIMER_SOFTIRQ 로 Soft IRQ 서비스를 요청
+ * msecs_to_jiffies 를 통해서 밀리초 입력을 jiffies 로 시각 정보를 반환
+ * 내부 시간 비교는 time_after() 와 time_before() 를 사용
+ * 동적타이머 등록 함수 : add_timer(), mod_timer()
+ * Soft IRQ 컨텍스트에서 처리되므로 실행 시간이 빨라야한다.
+ * ftrace 에서 동적 타이머 추적 가능 이벤트
+   * timer_init, timer_start, timer_expire_entry, timer_expire_exit, timer_cancel
