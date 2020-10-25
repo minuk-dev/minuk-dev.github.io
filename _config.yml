@@ -39,6 +39,9 @@ params:
   favicon : "images/Rb.png"
   copyright: "&copy; All rights reserved. Powered by [Minimal](https://github.com/calintat/minimal)."
 
+kramdown:
+  parse_block_html: true
+
 collections:
   wiki:
     output: true
