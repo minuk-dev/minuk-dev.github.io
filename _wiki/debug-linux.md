@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-24 20:19:17 +0900
+lastmod : 2020-10-25 20:46:42 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2458,3 +2458,122 @@ int __init workqueue_init_early(void)
  * Soft IRQ 컨텍스트에서 처리되므로 실행 시간이 빨라야한다.
  * ftrace 에서 동적 타이머 추적 가능 이벤트
    * timer_init, timer_start, timer_expire_entry, timer_expire_exit, timer_cancel
+
+### 커널 동기화
+ * 주요 개념 : critical section, race condition
+ * SMP : symmetric multiprocessing
+
+#### 커널 동기화 기법
+ * 스핀락과 뮤텍스
+
+##### 스핀락
+ * 구현부가 상대적으로 간단하다
+ * 아키텍쳐에 의존적인 코드로 구현
+ * 휴면상태로 가지 않고 계속 기다림 (Busy-Wait)
+ * spin_lock_irq(), spin_lock_irq_save()
+ * spin_lock data structure
+   ```c
+   typedef struct spinlock {
+     union {
+       struct raw_spinlock rlock;
+     };
+   } spinlock_t;
+   ```
+
+   ```c
+   typedef struct raw_spinlock {
+     arch_spinlock_t raw_lock;
+   #ifdef CONFIG_DEBUG_SPINLOCK
+     unsigned int magic, owner_cpu;
+     void *owner;
+   #endif
+   #ifdef CONFIG_DEBUG_LOCK_ALLOC
+     struct lockdep_map dep_map;
+   #endif
+   } raw_spinlock_t;
+   ```
+
+   * 아키텍쳐마다 다른데, x86은 asm-generic의 qspinlock 을 사용한다.
+   ```c
+   typedef struct qspinlock {
+     union {
+       atomic_t val;
+
+     /*
+   * By using the whole 2nd least significant byte for the
+   * pending bit, we can allow better optimization of the lock
+   * acquisition for the pending bit holder.
+   */
+   #ifdef __LITTLE_ENDIAN
+       struct {
+         u8	locked;
+         u8	pending;
+       };
+       struct {
+         u16	locked_pending;
+         u16	tail;
+       };
+   #else
+       struct {
+         u16	tail;
+         u16	locked_pending;
+       };
+       struct {
+         u8	reserved[2];
+         u8	pending;
+         u8	locked;
+       };
+   #endif
+     };
+   } arch_spinlock_t;
+   ```
+
+ * 스핀락 사용 예제
+   ```c
+   static __always_inline void spin_lock(spinlock_t *lock);
+   ```
+ * 스핀락 획득 과정
+   1. 스핀락을 이미 획득했는지 판단 : lock instance의 next와 owner 필드를 확인한다.
+   1. 스핀락을 획득한 후 바뀌는 자료구조 : next 값을 1증가 시킨다.
+   1. 획득한 스핀락을 해제한 후 바뀌는 자료구조 : owner를 1만큼 증가시킨다.
+
+ * 스핀락 구현부
+   * spin_lock()
+     ```c
+     static __alwyas_inline void spin_lock(spinlock_t *lock)
+     {
+       raw_spin_lock(&lock->rlock);
+     }
+     ```
+   * raw_spin_lock()
+     ```c
+     #define raw_spin_lock(lock) _raw_spin_lock(lock)
+     ```
+   * _raw_spin_lock()
+     ```c
+     void __lock_func _raw_spin_lock(raw_spinlock_t *lock)
+     {
+       __raw_spin_lock(lock);
+     }
+     ```
+   * __raw_spin_lock()
+     ```c
+     static inline void __raw_spin_lock(raw_spinlock_t *lock)
+     {
+       preempt_disable();
+       spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+       LOCK_CONTENDED(lock< do_raw_spin_trylock, do_raw_spin_lock);
+     }
+     ```
+     * 스핀락을 획득 한 후 preempt_disable() 함수를 호출할 필요가 없다. 내부적으로 호출해준다.
+
+   * do_raw_spin_lock()
+     ```c
+     static inline void do_raw_spin_lock(raw_spinlock_t *lock) __acquires(lock)
+     {
+       __acquire(lock);
+       arch_spin_lock(&lock->raw_lock);
+     }
+     ```
+
+   * arch_spin_lock()
