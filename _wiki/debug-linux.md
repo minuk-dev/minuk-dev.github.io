@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-25 20:46:42 +0900
+lastmod : 2020-10-26 20:53:12 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2577,3 +2577,36 @@ int __init workqueue_init_early(void)
      ```
 
    * arch_spin_lock()
+     ```c
+     #define arch_spin_lock(l)		queued_spin_lock(l)
+     /**
+      * queued_spin_lock - acquire a queued spinlock
+      * @lock: Pointer to queued spinlock structure
+      */
+     static __always_inline void queued_spin_lock(struct qspinlock *lock)
+     {
+       u32 val;
+
+       val = atomic_cmpxchg_acquire(&lock->val, 0, _Q_LOCKED_VAL);
+       if (likely(val == 0))
+         return;
+       queued_spin_lock_slowpath(lock, val);
+     }
+     ```
+
+     ```c
+     struct pv_lock_ops pv_lock_ops = {
+     #ifdef CONFIG_SMP
+       .queued_spin_lock_slowpath = native_queued_spin_lock_slowpath,
+       .queued_spin_unlock = PV_CALLEE_SAVE(__native_queued_spin_unlock),
+       .wait = paravirt_nop,
+       .kick = paravirt_nop,
+       .vcpu_is_preempted = PV_CALLEE_SAVE(__native_vcpu_is_preempted),
+     #endif /* SMP */
+     };
+     ```
+
+   * 이후부터는 링크를 참고했다. [LWN.net](https://lwn.net/Articles/561775/)
+     * 간단하게 하면 0-1 비트는 4개의 entries로 per-cpu array 안에 들어있는 queue node의 index, 2-16은 cpu number + 1 로 (최대 cpu 개수는 16383)
+     * ticket spinlock 보다 빠르며, [[NUMA]] 를 사용하는 여러개의 코어가 존재하는 곳에서 더욱더 적합하다.
+     * 추가적인 링크는 [큐 스핀락](https://m.blog.naver.com/PostView.nhn?blogId=jjoommnn&logNo=130141126016&proxyReferer=https:%2F%2Fwww.google.com%2F) 여기를 참고하자.
