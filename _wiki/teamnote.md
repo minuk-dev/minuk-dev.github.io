@@ -2,11 +2,23 @@
 layout  : wiki
 title   : algorithm teamnote
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-10-26 22:14:21 +0900
+lastmod : 2020-11-01 22:38:49 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
 ---
+
+## C++ IO
+```cpp
+#include <iostream>
+using namespace std;
+int main () {
+	cin.tie(0);
+  cout.tie(0);
+	ios_base::sync_with_stdio(false);
+	return 0;
+}
+```
 
 ## Binary Search
  * 1 차이로 문제를 틀리는 일이 빈번해서, 틀리지 않게 자주 쓰이는 폼 정리
