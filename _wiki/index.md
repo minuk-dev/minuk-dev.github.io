@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-10-17 18:50:58 +0900
+lastmod: 2020-11-01 22:00:18 +0900
 ---
 ## 즐겨찾기
  * [[사지방]]
@@ -34,9 +34,6 @@ lastmod: 2020-10-17 18:50:58 +0900
  * [[boj]]
  * [[UCPC_2018_예선]]
  * [[정우 대회]]
-
-### 정리하는거
- * [[5 articles per week]]
 
 ### School
  * [[lectures]]

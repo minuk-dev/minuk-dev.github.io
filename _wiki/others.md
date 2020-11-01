@@ -3,11 +3,14 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-10-24 17:03:10 +0900
+lastmod : 2020-11-01 22:00:14 +0900
 tags    :
 draft   : false
 parent  :
 ---
+
+## 잡다한거
+ * [[5 articles per week]]
 
 ## coarse-grained vs fine-grained
  * 참고 : http://egloos.zum.com/kwon37xi/v/1419790
