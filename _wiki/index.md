@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-11-01 22:00:18 +0900
+lastmod: 2020-11-03 20:28:55 +0900
 ---
 ## 즐겨찾기
  * [[사지방]]
@@ -39,6 +39,7 @@ lastmod: 2020-11-01 22:00:18 +0900
  * [[lectures]]
 
 ### Language
+ * [[assembly]]
  * [[C++]]
  * [[Javascript]]
  * [[Typescript]]
