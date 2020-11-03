@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-10-26 20:53:12 +0900
+lastmod : 2020-11-03 20:55:33 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2610,3 +2610,49 @@ int __init workqueue_init_early(void)
      * 간단하게 하면 0-1 비트는 4개의 entries로 per-cpu array 안에 들어있는 queue node의 index, 2-16은 cpu number + 1 로 (최대 cpu 개수는 16383)
      * ticket spinlock 보다 빠르며, [[NUMA]] 를 사용하는 여러개의 코어가 존재하는 곳에서 더욱더 적합하다.
      * 추가적인 링크는 [큐 스핀락](https://m.blog.naver.com/PostView.nhn?blogId=jjoommnn&logNo=130141126016&proxyReferer=https:%2F%2Fwww.google.com%2F) 여기를 참고하자.
+
+  * [[assembly]]
+  * 흐으으음... 책은 대부분 arm 아키텍쳐와 관련된 내용이 많네 스킵
+
+##### 스핀락 플러그인 함수
+ * spin_lock_irq()
+ * spin_unlock_irq()
+   * 임계 영역에서 스핀락을 걸 때 인터럽트가 발생하지 않으면 좋겠다.
+   스핀락을 획득해 다른 모듈이 접근하지 못하는건 좋지만, 임계 영역에서 인터럽트 발생이 문제다.
+ * 임계 영역의 코드 구간에서 인터럽트를 비활성화
+
+ * spin_lock_irq()
+   ```c
+   static __always_inline void spin_lock_irq(spinlock_t *lock)
+   {
+     raw_spin_lock_irq(&lock->rlock);
+   }
+   ```
+ * raw_spin_lock_irq()
+   ```c
+   static inline void __raw_spin_lock_irq(raw_spinlock_t *lock)
+   {
+     local_irq_disable();
+     preempt_disable();
+     spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+     LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
+   }
+   ```
+ * __raw_spin_lock()
+   ```c
+   static inline void __raw_spin_lock(raw_spinlock_t *lock)
+   {
+     preempt_disable();
+     spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+     LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
+   }
+   ```
+ * local_irq_disable()
+   ```c
+   #define local_irq_disable() \
+     do { raw_local_irq_disable(); trace_hardirqs_off(); } while (0)
+   ```
+ * raw_local_irq_disable()
+   ```c
+   #define raw_local_irq_disable() arch_local_irq_disable()
+   ```
