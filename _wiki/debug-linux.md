@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-11-03 20:55:33 +0900
+lastmod : 2020-11-09 17:33:46 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -2655,4 +2655,88 @@ int __init workqueue_init_early(void)
  * raw_local_irq_disable()
    ```c
    #define raw_local_irq_disable() arch_local_irq_disable()
+   ```
+ * arch_local_irq_disable()
+   ```c
+   static inline notrace void arch_local_irq_disable(void)
+   {
+     PVOP_VCALLEE0(pv_irq_ops.irq_disable);
+   }
+   ```
+   * irq_disable is driver specific.
+     ```c
+     struct irq_chip i8259A_chip = {
+       .name		= "XT-PIC",
+       .irq_mask	= disable_8259A_irq,
+       .irq_disable	= disable_8259A_irq,
+       .irq_unmask	= enable_8259A_irq,
+       .irq_mask_ack	= mask_and_ack_8259A,
+     };
+     ```
+
+ * spin_unlock_irq()
+   ```c
+   static inline void __raw_spin_unlock_irq(raw_spinlock_t *lock)
+   {
+     spin_release(&lock->dep_map, 1, _RET_IP_);
+     do_raw_spin_unlock(lock);
+     local_irq_enable();
+     preempt_enable();
+   }
+   ```
+ * local_irq_enable()
+   ```c
+   #define local_irq_enable() \
+     do { trace_hardirqs_on(); raw_local_irq_enable(); } while (0)
+
+   #define raw_local_irq_enable() arch_local_irq_enable()
+   ```
+
+ * spin_lock_irqsave()/spin_unlock_irqrestore()
+   * acquire spinlock, disable interrupt line, return interrupt state.
+
+ * spin_lock_irq_save()
+   ```c
+   #define spin_lock_irqsave(lock, flags)                  \
+     do {                                                  \
+       raw_spin_lock_irqsave(spinlock_check(lock), flags); \
+     } while (0)
+   ```
+
+ * __raw_spin_lock_irqsave()
+   ```c
+   static inline unsigned long __raw_spin_lock_irqsave(raw_spinlock_t *lock)
+   {
+     unsigned long lfags;
+
+     local_irq_save(flags);
+     preempt_disable();
+     spin_acquire(&lock->dep_map, 0, 0, _RET_IP_);
+
+   #ifdef CONFIG_LOCKDEP
+     LOCK_CONTENDED(lock, do_raw_spin_trylock, do_raw_spin_lock);
+   #else
+     do_raw_spin_lock_falgs(lock, &flags);
+   #endif
+     return flags;
+   }
+   ```
+
+##### Mutex?
+ * mutex data structure
+   ```c
+   struct mutex {
+     atomic_long_t      owner;
+     spinlock_t         wait_lock;
+   #ifdef CONFIG_MUTEX_SPIN_ON_ONWER
+     struct optimistic_spin_queue osq; /* Spinner MCS lock */
+   #endif
+     struct list_head   wait_list;
+   #ifdef CONFIG_DEBUG_MUTEXES
+     void               *magic;
+   #endif
+   #ifdef CONFIG_DEBUG_LOCK_ALLOC
+     struct lockdep_map dep_map;
+   #endif
+   };
    ```
