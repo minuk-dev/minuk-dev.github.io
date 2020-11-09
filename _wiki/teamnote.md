@@ -2,7 +2,7 @@
 layout  : wiki
 title   : algorithm teamnote
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-11-01 22:38:49 +0900
+lastmod : 2020-11-09 15:36:06 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -520,5 +520,132 @@ bool isPrime(const ulld p) {
     if (t != 1) return false;
   }
   return true;
+}
+```
+
+## Aho-Corasick
+ * boj 9250
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <map>
+#include <cstring>
+#define FASTIO() do{cin.tie(0);cout.tie(0); ios_base::sync_with_stdio(false);}while(0)
+
+using namespace std;
+
+struct AhoCorasick {
+  struct node_t {
+    int fail;
+    int end;
+    map<char, int> children;
+    char debug;
+    node_t() : fail(0), end(0) {};
+  };
+
+  vector<node_t> nodes;
+  AhoCorasick() :nodes(1){ }
+
+  void appendToTrie(const char* data) {
+    int cur = 0;
+    int length = strlen(data);
+    for (int i = 0; i < length; ++ i) {
+      auto it = nodes[cur].children.find(data[i]);
+      if (it != nodes[cur].children.end()) {
+        cur = nodes[cur].children[data[i]];
+      } else {
+        nodes[cur].children[data[i]] = nodes.size();
+        cur = nodes.size();
+        node_t t;
+        t.debug = data[i];
+        nodes.push_back(t);
+      }
+    }
+    nodes[cur].end ++;
+  }
+
+  void appendToTrie(string data) {
+    appendToTrie(data.c_str());
+  }
+
+  void build() {
+    queue<int> q;
+    q.push(0);
+
+    while (!q.empty()) {
+      int f = q.front(); q.pop();
+      node_t& parent = nodes[f];
+      for (const auto& e: parent.children) {
+        node_t& child = nodes[e.second];
+        int fail = parent.fail;
+
+        q.push(e.second);
+        if (f == 0) continue;
+        while (fail != 0 && nodes[fail].children.find(e.first) == nodes[fail].children.end())
+          fail = nodes[fail].fail;
+        if (nodes[fail].children.find(e.first) != nodes[fail].children.end())
+          fail = nodes[fail].children[e.first];
+        child.fail = fail;
+
+         if (nodes[child.fail].end > 0)
+         child.end ++;
+      }
+    }
+  }
+
+  bool contain(const char* heystack) {
+    int matched = 0, leng = strlen(heystack);
+    for (int i = 0; i < leng; ++ i) {
+      while (matched > 0 && nodes[matched].children.find(heystack[i]) == nodes[matched].children.end())
+        matched = nodes[matched].fail;
+      if (nodes[matched].children.find(heystack[i]) != nodes[matched].children.end()) {
+        matched = nodes[matched].children[heystack[i]];
+        if (nodes[matched].end > 0)
+          return true;
+      }
+    }
+    return false;
+  }
+
+  void printTrie() {
+    printTrie(nodes[0], 1);
+  }
+  void printTrie(const node_t& node, int depth) {
+    for (const auto& e : node.children) {
+      cout << e.second;
+      for (int i = 0 ; i < depth; ++ i) cout << "-";
+      cout << e.first <<  "\t\t fail : " << nodes[e.second].fail << "end : " << nodes[e.second].end << "\n";
+      printTrie(nodes[e.second], depth + 1);
+    } } void printNodes() {
+      for (int i = 0; i < nodes.size(); ++ i) {
+        cout << i << " - " << nodes[i].debug << "\n";
+        for (const auto& e : nodes[i].children) {
+          cout << "-----"<< e.first << ", " << e.second << "\n";
+        }
+      }
+    }
+};
+
+int N, M;
+string data;
+int main () {
+  FASTIO();
+  AhoCorasick ah;
+  cin >> N;
+  for (int i = 0; i < N; ++ i) {
+    cin >> data;
+    ah.appendToTrie(data);
+  }
+  ah.build();
+  //ah.printTrie();
+  ///ah.printNodes();
+  cin >> M;
+  for (int i = 0; i < M; ++ i) {
+    cin >> data;
+    cout << (ah.contain(data.c_str()) ? "YES\n" : "NO\n");
+  }
+
+  return 0;
 }
 ```
