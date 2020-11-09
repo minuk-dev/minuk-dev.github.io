@@ -3,7 +3,7 @@ layout  : wiki
 title   : TODO Lists
 summary : 해야할 일들
 date    : 2020-04-08 23:56:59 +0900
-lastmod : 2020-10-21 01:44:43 +0900
+lastmod : 2020-11-09 17:39:13 +0900
 tags    : [todo]
 draft   : false
 parent  :
@@ -12,6 +12,7 @@ parent  :
 * 관리 측면에서, 우선순위가 높을 수록, 당장 실행할 순서대로 문서의 상단에 배치
 
 ## 공부
+ * [ ] linux input method bug, alacritty and ibus. Some people say xim doesn't have it and try "ibus -xim" option.
 ### 리눅스 커널 공부
  * [X] 디버깅을 통해 배우는 리눅스 커널의 구조와 원리 책 정리하기 1
  * [ ] 디버깅을 통해 배우는 리눅스 커널의 구조와 원리 책 정리하기 2
