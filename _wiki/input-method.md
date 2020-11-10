@@ -3,7 +3,7 @@ layout  : wiki
 title   : linux input-method 삽질
 summary : 그래도 fcitx 쓴다.
 date    : 2020-11-10 22:30:38 +0900
-lastmod : 2020-11-10 23:01:57 +0900
+lastmod : 2020-11-11 01:03:15 +0900
 tags    : [linux, input-method]
 draft   : false
 parent  : linux
@@ -12,6 +12,12 @@ parent  : linux
 ## 타겟층
  * 입력기들(ibus, nabi, fcitx, uim)을 통해서 한국어를 alacritty 터미널에 입력되지 않는 문제를 겪고 있는 사람들 중 왜? 라는 생각을 하는 분들이 타겟입니다.
  * 단순히 한국어 입력을 하고 싶은 linux 유저는 타겟이 아니며, 다른 친절한 사람들처럼 되는 명령어를 기재해놓지도 않았습니다.
+
+## 수정 - 아래내용 볼 필요 없습니다.
+ * nimf 라는 입력기가 있다는걸 알았다. 가장 만족스럽다.
+ * 기본적으로 터미널 하단부에 조합전 글자가 생기는 것이 아닌, 하단부에 생긴다.
+ * 그리고 입력기 전환 키를 잘 설정하면 esc 키를 누르면 자동으로 영어로 바뀌도록 설정할수 있다. -> 이는 vi에서 매우 유용하게 쓰인다. 드디어 매번 일반모드로 갈때마다 esc키와 함께 한글키를 안눌러도 된다.
+ * 링크 : [nimf](https://github.com/hamonikr/nimf)
 
 ## 사건의 발달
  * 곱게 ubuntu-desktop이랑 기본 터미널 쓰면 되는데, 예전에 쓰던 ubuntu-server 를 굳이 밀고 싶지 않아서 삽질을 시작했다.
