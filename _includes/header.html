@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}">
+<html lang="ko">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ page.title }}</title>
-        {{ if .Site.Params.favicon }}
-            <link rel="shortcut icon" href="{{ site.params.favicon | absolute_url }}">
-            <meta property="og:title" content="{{ .Title }}">
-            <meta property="og:description" content="MD98 블로그 : {{ page.title }}">
-            <meta property="og:image" content="{{ site.params.favicon | absolute_url }}">
-        {{ end }}
+        <link rel="shortcut icon" href="{{ site.params.favicon | absolute_url }}">
+        <meta property="og:title" content="{{ page.title }}">
+        <meta property="og:description" content="MD98 블로그 : {{ page.title }}">
+        <meta property="og:image" content="{{ site.params.favicon | absolute_url }}">
         {% include css.html %}
         {% include js.html %}
         {% include mathjax.html %}
