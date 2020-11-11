@@ -2,7 +2,7 @@
 layout  : wiki
 title   : algorithm teamnote
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-11-09 15:36:06 +0900
+lastmod : 2020-11-11 17:06:36 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -525,6 +525,7 @@ bool isPrime(const ulld p) {
 
 ## Aho-Corasick
  * boj 9250
+
 ```cpp
 #include <iostream>
 #include <vector>
