@@ -2,7 +2,7 @@
 layout  : wiki
 title   : algorithm teamnote
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-11-27 23:58:39 +0900
+lastmod : 2020-11-28 00:34:48 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -741,6 +741,81 @@ int main () {
     cout << (ah.contain(data.c_str()) ? "YES\n" : "NO\n");
   }
 
+  return 0;
+}
+```
+
+## Offline Query (Mo's Algorithm)
+
+```cpp
+#include <iostream>
+#include <cmath>
+#include <algorithm>
+using namespace std;
+#define SIZE 100100
+#define NUM_SIZE 1000100
+int N, M, sn;
+using lld = long long;
+lld data[SIZE];
+lld cnt[NUM_SIZE];
+struct query_t {
+  int s, e, i;
+} query[SIZE];
+lld result[SIZE];
+int main () {
+  cin.tie(0);
+  cout.tie(0);
+  ios_base::sync_with_stdio(false);
+  cin >> N;
+  cin >> M;
+  for (int i = 0; i < N; ++ i)
+    cin >> data[i];
+  for (int i = 0; i < M; ++ i) {
+    cin >> query[i].s >> query[i].e;
+    query[i].s --;
+    query[i].e --;
+    query[i].i = i;
+  }
+  sn = sqrt(N);
+  sort(query, query + M, [](const query_t& a, const query_t& b) -> bool {
+    return a.s / sn == b.s / sn ? a.e  < b.e : a.s / sn < b.s / sn;
+  });
+
+  int scur = 1, ecur = 0;
+  lld cur_result = 0;
+  for (int i = 0; i < M; ++ i) {
+    int s = query[i].s, e = query[i].e;
+    while (scur > s) {
+      int idx = data[-- scur];
+      cur_result -= cnt[idx] * cnt[idx] * idx;
+      cnt[idx] ++;
+      cur_result += cnt[idx] * cnt[idx] * idx;
+    }
+    while (scur < s) {
+      int idx = data[scur ++];
+      cur_result -= cnt[idx] * cnt[idx] * idx;
+      cnt[idx] --;
+      cur_result += cnt[idx] * cnt[idx] * idx;
+    }
+
+    while (ecur < e) {
+      int idx = data[++ ecur];
+      cur_result -= cnt[idx] * cnt[idx] * idx;
+      cnt[idx] ++;
+      cur_result += cnt[idx] * cnt[idx] * idx;
+    }
+
+    while (ecur > e) {
+      int idx = data[ecur --];
+      cur_result -= cnt[idx] * cnt[idx] * idx;
+      cnt[idx] --;
+      cur_result += cnt[idx] * cnt[idx] * idx;
+    }
+    result[query[i].i] = cur_result;
+  }
+  for (int i = 0; i < M; ++ i) {
+    cout << result[i] << "\n";
+  }
   return 0;
 }
 ```
