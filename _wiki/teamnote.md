@@ -1,8 +1,8 @@
----
+# ---
 layout  : wiki
 title   : algorithm teamnote
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-11-11 17:06:36 +0900
+lastmod : 2020-11-27 23:58:39 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -10,14 +10,7 @@ parent  : algorithm
 
 ## C++ IO
 ```cpp
-#include <iostream>
-using namespace std;
-int main () {
-	cin.tie(0);
-  cout.tie(0);
-	ios_base::sync_with_stdio(false);
-	return 0;
-}
+#define FASTIO() do{ cin.tie(0); cout.tie(0); ios_base::sync_with_stdio(false); } while(0)
 ```
 
 ## Binary Search
@@ -66,14 +59,13 @@ int d = distance(C.begin(), lower_bound(C.begin(), C.end(), P));
 int P = C[D];
 ```
 
-## Segment Tree (Range Update) & Index Tree (Point Update)
+## Index Tree
 ```cpp
 #include <iostream>
 #include <vector>
 using namespace std;
 #define IDX_SIZE (1 << 21)
 #define IDX_BASE (IDX_SIZE >> 1)
-
 /* min tree */
 struct index_tree {
   int sz = IDX_SIZE, bs = IDX_BASE;
@@ -93,8 +85,8 @@ struct index_tree {
     e |= bs;
     int retval = 1e9;
     while (s < e) {
-      if (s & 1) retval = min(retval, node[s++]);
-      if (e & ~1) retval = min(retval, node[e--]);
+      if (s % 2 == 1) retval = min(retval, node[s++]);
+      if (e % 2 == 0) retval = min(retval, node[e--]);
       s >>= 1;
       e >>= 1;
     }
@@ -104,6 +96,13 @@ struct index_tree {
 };
 
 
+```
+
+## Segment Tree (Range Update)
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
 using lld = long long;
 #define SEG_SIZE 1 << 18
 struct node_t {
@@ -173,6 +172,101 @@ int main () {
       printf("%lld\n", seg.query(1, 1, N, b, c));
     }
   }
+  return 0;
+}
+```
+
+## Segment Tree - Coloring Version
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define SIZE 200000
+#define sci(N) scanf("%d", &(N))
+using namespace std;
+using lld = long long;
+struct rect {
+    int x1, x2, y1, y2;
+}data[SIZE], data2[SIZE];
+
+vector<int> cx;
+vector<int> cy;
+struct seg_tree {
+  struct node_t {
+    lld sum, cnt;
+  } node[SIZE * 8];
+
+  void update(int idx, int val, int s, int e, int l, int r) {
+    if (s > r || e < l) return;
+    if (l <= s && e <= r) {
+      node[idx].cnt += val;
+      if (node[idx].cnt > 0) node[idx].sum = (cy[e + 1] - cy[s]);
+        else {
+          if (idx >= SIZE * 4) node[idx].sum = 0;
+          else node[idx].sum = node[idx * 2].sum + node[idx * 2 + 1].sum;
+        }
+      } else {
+        update(idx * 2, val, s, (s + e)/ 2, l, r);
+        update(idx * 2 + 1, val, (s + e)/ 2 + 1, e, l, r);
+        if (idx >= SIZE * 4) node[idx].sum = 0;
+        else node[idx].sum = node[idx * 2].sum + node[idx * 2 + 1].sum;
+
+        if (node[idx].cnt > 0) node[idx].sum = (cy[e + 1] - cy[s]);
+      }
+    }
+
+  lld value() {
+    return node[1].sum;
+  }
+} seg;
+int N;
+int main () {
+  sci(N);
+  cx.resize(2 * N);
+  cy.resize(2 * N);
+  for (int i = 0; i < N; ++ i) {
+    sci(data[i].x1), sci(data[i].x2), sci(data[i].y1), sci(data[i].y2);
+    cx[i * 2] = data[i].x1;
+    cx[i * 2 + 1] = data[i].x2;
+    cy[i * 2] = data[i].y1;
+    cy[i * 2 + 1] = data[i].y2;
+    data2[i].x1 = data[i].x1;
+    data2[i].x2 = data[i].x2;
+    data2[i].y1 = data[i].y1;
+    data2[i].y2 = data[i].y2;
+  }
+  sort(cy.begin(), cy.end());
+  cy.erase(unique(cy.begin(), cy.end()), cy.end());
+  sort(cx.begin(), cx.end());
+  cx.erase(unique(cx.begin(), cx.end()), cx.end());
+  sort(data, data + N, [](const rect& a, const rect& b)-> bool {
+    return a.x1 == b.x1 ? a.x2 < b.x2 : a.x1 < b.x1;
+  });
+  sort(data2, data2 + N, [](const rect& a, const rect& b)-> bool {
+    return a.x2 == b.x2 ? a.x1 < b.x1 : a.x2 < b.x2;
+  });
+
+  int acur = 0, scur = 0;
+  int length = cx.size();
+  int maxCuttingLine = cy.size();
+  lld result = 0;
+  for (int i = 0; i < length - 1; ++ i) {
+    while (acur < N && data[acur].x1 <= cx[i]) {
+      int cy1 = distance(cy.begin(), lower_bound(cy.begin(), cy.end(), data[acur].y1));
+      int cy2 = distance(cy.begin(), lower_bound(cy.begin(), cy.end(), data[acur].y2));
+      seg.update(1, 1, 0, maxCuttingLine - 1, cy1, cy2-1);
+      acur ++;
+    }
+
+    while (scur < N && data2[scur].x2 <= cx[i]) {
+      int cy1 = distance(cy.begin(), lower_bound(cy.begin(), cy.end(), data2[scur].y1));
+      int cy2 = distance(cy.begin(), lower_bound(cy.begin(), cy.end(), data2[scur].y2));
+      seg.update(1, -1, 0, maxCuttingLine - 1, cy1, cy2-1);
+      scur ++;
+    }
+    result += seg.value() * (cx[i + 1] - cx[i]);
+  }
+  printf("%lld", result);
   return 0;
 }
 ```
