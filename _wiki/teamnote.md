@@ -1,4 +1,4 @@
-# ---
+---
 layout  : wiki
 title   : algorithm teamnote
 date    : 2020-08-08 00:10:21 +0900
