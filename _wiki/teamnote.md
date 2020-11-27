@@ -1,8 +1,9 @@
 ---
 layout  : wiki
-title   : algorithm teamnote
+title   : teamnote
+summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-11-28 00:34:48 +0900
+lastmod : 2020-11-28 01:08:59 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
