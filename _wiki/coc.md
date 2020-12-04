@@ -1,15 +1,15 @@
 ---
 layout  : wiki
 title   : coc (vim plugin coc)
-summary : 
+summary : coc 설정 + ccls 설정
 date    : 2020-04-15 23:13:04 +0900
-lastmod : 2020-04-21 23:11:22 +0900
-tags    : 
+lastmod : 2020-12-04 13:12:09 +0900
+tags    : [coc, vim]
 draft   : false
-parent  : 
+parent  : vim
 ---
 
-## 간단 설명 
+## 간단 설명
  * Visual Studio Code 와 동시에 나온 Language Server (동시에 나왔는지는 확실치 않음)을 vim에도 적용하는 플러그인이다.
  * 일부 언어들은 이미 이 플러그인을 만든 사람이 쉽게쉽게 설치 가능하도록 해놨다.
  * 다른 언어는 삽질을 해서 알아냈다.
@@ -27,7 +27,8 @@ Plug 'neoclide/coc.nvim', { 'do': './install.sh' }
 
 ## 설정하기
 * 공식에 나와있는거 + 맨 아랫줄 delimitMate만 추가해줬다.(Q&A에 있길래 하란대로 했다.)
-```vim
+
+```
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -180,6 +181,7 @@ imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
 * `snap install ccls --classic`을 실행했다.
 * 이제 언어서버를 연결해줘야한다.
 * CocConfig 를 vim에서 실행한다.
+
 ```json
 {
     "languageserver": {
@@ -238,9 +240,15 @@ imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>delimitMateCR"
                   "resourceDir": ".",
                   "extraArgs": ["-isystem./", "-isystem./lib/kernel", "-isystem./lib"]
                 }
-                
             }
         }
     }
 }
+```
+
+* CMake 를 쓸때의 방법
+
+```bash
+$ cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
+$ ln -s Debug/compile_commands.json .
 ```
