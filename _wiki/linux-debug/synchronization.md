@@ -3,7 +3,7 @@ layout  : wiki
 title   : linux-debug/synchronization
 summary : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리/동기화
 date    : 2020-11-11 00:07:13 +0900
-lastmod : 2020-11-11 00:07:58 +0900
+lastmod : 2020-12-06 20:46:50 +0900
 tags    : [linux-debug, synchronization]
 draft   : false
 parent  : linux-debug
@@ -290,3 +290,167 @@ parent  : linux-debug
    #endif
    };
    ```
+   * owner : 뮤텍스를 획득한 프로세스의 태스크 디스크립터 주소, 이 필드를 보고 잠겼는지 확인
+   * wait_list : 뮤텍스를 기다리는 프로세스의 정보
+
+   ```c
+   struct mutex_waiter {
+     struct list_head      list;
+     struct task_struct    *task;
+     struct ww_acquire_ctx *ww_ctx;
+   #ifdef CONFIG_DEBUG_MUTEXES
+     void                  *magic;
+   #endif
+   }
+   ```
+   * list : 뮤텍스를 기다리는 잠든 프로세스 리스트
+   * task : 뮤텍스를 기다리는 프로세스의 테스크 디스크립터 주소(???)
+   * ww_ctx : wait/wound deadlock proof mutex 로 deadlock을 회피하여 뮤텍스 락을 처리하는 알고리즘에 사용
+
+ * fastpath : 뮤텍스를 다른 프로세스가 이미 획득하지 않은 상태때 동작 방식
+   * mutex 구조체의 owner 필드 점검
+   * owner 가 0x0이니 뮤텍스를 다른 프로세스가 획득하지 않은 상태로 판단
+   * 뮤텍스 자료구조인 mutex 구조체의 onwer 필드에 획득한 프로세스의 테스크 디스크립터 저장
+
+   * mutex_lock()
+   ```c
+   void __sched mutex_lock(struct mutex *lock)
+   {
+     might_sleep();
+
+     if (!__mutex_trylock_fast(lock))
+       __mutex_lock_slowpath(lock);
+   }
+   EXPORT_SYMBOL(mutex_lock);
+   ```
+
+   * __mutex_trylock_fast()
+   ```c
+   static __always_inline bool __mutex_trylock_fast(struct mutex *lock)
+   {
+     unsigned long curr = (unsigned long)current;
+
+     if (!atomic_long_cmpxchg_acquire(&lock->owner, 0UL, curr))
+       return true;
+
+     return false;
+   }
+   ```
+   * __mutx_unlock_fast()
+   ```c
+   static __always_inline bool_mutex_unlock_fast(struct mutex *lock)
+   {
+     unsigned long curr = (unsigned long)current;
+
+     if (atomic_long_cmpxchg_release(&lock->owner, curr, 0UL) == curr)
+       return true;
+
+     return false;
+   }
+   ```
+ * slowpath : 뮤텍스를 이미 획득해 휴면 상태에 진입한 후 깨어남
+   * __mutex_lock_slowpath()
+
+   ```c
+   static noinline void __sched
+   __mutex_lock_slowpath(struct mutex *lock)
+   {
+     __mutex_lock(lock, TASK_UNINTERRUPTIBLE, 0, NULL, _RET_IP_);
+   }
+   ```
+
+   * __mutex_lock()
+
+   ```c
+   static int __sched
+   __mutex_lock(struct mutex *lock, long state, unsgiend int subclass,
+     struct lockdep_map *nest_lock, unsigned long ip)
+   {
+     return __mutex_lock_common(lock, state, subclass, nest_lock, ip, NULL, false);
+   }
+   ```
+
+   * __mutex_lock_common()
+
+   ```c
+
+   static __always_inline int __sched
+   __mutex_lock_common(struct mutex *lock, long state, unsgiend int subclass,
+     struct lockdep_map *nest_lock, unsigned long ip,
+     struct ww_acquire_ctx *ww_ctx, const bool use_ww_ctx)
+   {
+     struct mutex_waiter waiter;
+     bool first = false;
+     struct ww_mutex *ww;
+     int ret;
+     /* skip */
+     waiter.task = current;
+
+     set_current_state(state);
+     for (;;) {
+       /* skip */
+       spin_unlock(&lock->wait_lock);
+       schedule_preempt_disabled();
+       /* skip */
+       set_current_state(state);
+     }
+     spin_lock(&lock->wait_lock);
+   acquired:
+     __set_current_state(TASK_RUNNING);
+     /* skip */
+     mutex_remove_waiter(lock, &waiter, current);
+     if (likely(list_empty(&lock->wait_list)))
+       __mutex_clear_flag(lock, MUTEX_FLAGS);
+
+     debug_mutex_free_waiter(&waiter);
+     /* skip */
+   }
+   ```
+
+   * mutex_unlock()
+   ```c
+   void __sched mutex_unlock(struct mutex *lock)
+   {
+   #ifndef CONFIG_DEBUG_LOCK_ALLOC
+     if (__mutex_unlock_fast(lock))
+       return;
+   #endif
+     __mutex_unlock_slowpath(lock, _RET_IP_);
+   }
+   ```
+
+   * __mutex_unlock_slowpath(struct mutex *lock, unsigned long ip)
+   ```c
+   struct noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsgiend long ip)
+   {
+     struct task_struct *next = NULL;
+     DEFINE_WAKE_Q(wake_q);
+     unsigned long owner;
+     /* skip */
+     if (!list_empty(&lock->wait_list)) {
+       /* get the first entry from the wait-list */
+       struct mutex_waiter *waiter =
+         list_first_entry(&lock->wait_list,
+           struct mutex_waiter, list);
+       next = waiter->task;
+
+       debug_mutex_wake_waiter(lock, waiter);
+       wake_q_add(&wake_q, next);
+     }
+     /* skip */
+     wake_up_q(&wake_q);
+   }
+   ```
+
+---
+
+## 정리
+ * 커널 동기화란 1개의 프로세스만 특정 코드 구간을 실행할 때 접근하거나 정해진 순서로 코드 구간을 실행하도록 설계하는 기업
+ * 임계 영역은 2개 이상의 프로세스가 동시에 실행하면 동시 접근 문제를 일으킬 수 있는 코드 블록
+ * 레이스 컨디션은 임계 영역에 두 개의 프로세스가 동시에 접근하는 상황
+ * 레이스 컨디션이 발생하는 요인은 선점 스케줄링, 인터럽트 발생, SMP 시스템에서 2개 이상의 프로세스가 같은 코드를 싱행하는 상황 등
+ * 레이스 컨디션 방지를 위해 선점 스케줄링이나 인터럽트 발생을 비활성화하거나 임계 영역에 락을 걸어야한다.
+ * 리눅스 커널에서 가장 많이 쓰이는 커널 동기화 기법은 스핀락과 뮤텍스
+ * 스핀락 획득을 시도할 때 __raw_tickets 구조체의 next 필드와 owner를 체크. next 와 owner가 동일하다면 스핀락을 획득한 적이 없으니 바로 획득 가능, next 필드가 owner 필드보다 크면 스핀락을 획득하기 전까지 계속 기다린다.
+ * 뮤텍스 획득을 시도할 때 mutex 구조체의 owner 필드를 체크한다. owner 필드가 0이면 프로세스는 바로 뮤텍스를 획득. 뮤텍스 획득에 성공했다면 mutex 구조체의 owner에 테스크 디스크립터 주소를 저장한다.
+ * 뮤텍스를 해제하는 프로세스는 뮤텍스 대기열을 체크하고 뮤텍스를 기다리며 잠든 프로세스를 깨운다. 이후 깨어난 프로세스는 뮤텍스를 획득한다.
