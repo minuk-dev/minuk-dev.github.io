@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-11-28 01:08:59 +0900
+lastmod : 2020-12-06 18:45:28 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -817,6 +817,48 @@ int main () {
   for (int i = 0; i < M; ++ i) {
     cout << result[i] << "\n";
   }
+  return 0;
+}
+```
+
+## Sliding Window DP
+ * 원래 dp 식은 O(nm) 걸리는건데, deque를 활용해서 시간 줄이기
+ * $$dp_0 = data_0$$
+ * $$dp_i = max_{1 \le j \le max(i, k)} dp_{i-j} + data_i$$
+```cpp
+#include <iostream>
+#include <deque>
+#define SIZE 100100
+#define FASTIO() do{ cin.tie(0); cout.tie(0); ios_base::sync_with_stdio(false); } while(0)
+using namespace std;
+using lld = long long;
+deque<pair<lld, int>> dq;
+lld dp[SIZE];
+lld N, D;
+lld data[SIZE];
+int main () {
+  FASTIO();
+  cin >> N >> D;
+  for (int i = 0; i < N; ++ i)
+    cin >> data[i];
+
+  lld result = data[0];
+  for (int i = 1; i < N; ++ i) {
+    result = max(data[i], result);
+  }
+  dp[0] = data[0];
+  dq.push_back({dp[0], 0});
+  for (int i = 1; i < N; ++ i) {
+    while (!dq.empty() && dq.front().second < i - D) dq.pop_front();
+    while (!dq.empty() && dq.back().first < dp[i - 1]) dq.pop_back();
+    dq.push_back({dp[i - 1], i - 1});
+    //cout << i << " : " << dq.front().first << "\n";
+    dp[i] = max(0LL, dq.front().first) + data[i];
+  }
+  for (int i = 0; i < N; ++ i) {
+    result = max(dp[i], result);
+  }
+  cout << result;
   return 0;
 }
 ```
