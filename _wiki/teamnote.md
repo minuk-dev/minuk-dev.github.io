@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-12-06 18:45:28 +0900
+lastmod : 2020-12-06 18:47:02 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -825,6 +825,7 @@ int main () {
  * 원래 dp 식은 O(nm) 걸리는건데, deque를 활용해서 시간 줄이기
  * $$dp_0 = data_0$$
  * $$dp_i = max_{1 \le j \le max(i, k)} dp_{i-j} + data_i$$
+
 ```cpp
 #include <iostream>
 #include <deque>
