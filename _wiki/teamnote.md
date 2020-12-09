@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-12-06 18:47:02 +0900
+lastmod : 2020-12-09 10:58:08 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -860,6 +860,73 @@ int main () {
     result = max(dp[i], result);
   }
   cout << result;
+  return 0;
+}
+```
+
+## ConvexhullTrick DP (cht)
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+#define FASTIO() do{ cin.tie(0); cout.tie(0); ios_base::sync_with_stdio(false); } while(0)
+#define SIZE 100100
+using lld = long long;
+using pii = pair<lld, lld>;
+int N;
+lld A[SIZE], B[SIZE];
+lld dp[SIZE];
+struct line_t {
+  lld a, b;
+};
+// dp[i] = min_{1 <= j < i} (a[i]b[j] + dp[j])
+
+struct cht_t {
+  int s = 0, e = 0;
+  int idx[SIZE];
+  line_t deq[SIZE];
+
+  double cross(int a, int b) {
+    return 1.0 * (deq[a].b - deq[b].b) / (deq[b].a - deq[a].a);
+  }
+
+  void insert(line_t v, int line_idx) {
+    deq[e] = v;
+    idx[e] = line_idx;
+    while (s + 1 < e && cross(e - 2, e- 1) > cross (e - 1, e)) {
+      deq[e - 1] = deq[e];
+      idx[e - 1] = idx[e];
+      e --;
+    }
+    e ++;
+  }
+
+  pii query(lld x) {
+    int l = 0, r = e - 1;
+    while (l < r) {
+      int m = (l + r) / 2;
+      if (cross(m, m + 1) <= x) l = m + 1;
+      else r = m;
+    }
+    return {deq[l].a * x + deq[l].b, idx[l]};
+  }
+} cht;
+
+int main () {
+  FASTIO();
+  cin >> N;
+  for (int i = 0; i < N; ++ i) cin >> A[i];
+  for (int i = 0; i < N; ++ i) cin >> B[i];
+
+  dp[0] = 0;
+  cht.insert(line_t{B[0], dp[0]}, 0);
+  for (int i = 1; i < N; ++ i) {
+    dp[i] = cht.query(A[i]).first;
+    cht.insert(line_t{B[i], dp[i]}, i);
+  }
+  cout << dp[N - 1];
   return 0;
 }
 ```
