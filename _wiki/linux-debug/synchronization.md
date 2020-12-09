@@ -3,10 +3,10 @@ layout  : wiki
 title   : linux-debug/synchronization
 summary : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리/동기화
 date    : 2020-11-11 00:07:13 +0900
-lastmod : 2020-12-06 20:46:50 +0900
+lastmod : 2020-12-09 13:31:12 +0900
 tags    : [linux-debug, synchronization]
 draft   : false
-parent  : linux-debug
+parent  : debug-linux
 ---
 
 ### 커널 동기화

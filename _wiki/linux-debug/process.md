@@ -3,10 +3,10 @@ layout  : wiki
 title   : linux-debug/process
 summary : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리/프로세스
 date    : 2020-11-10 23:51:56 +0900
-lastmod : 2020-11-10 23:54:29 +0900
+lastmod : 2020-12-09 13:31:33 +0900
 tags    : [linux-debug, process]
 draft   : false
-parent  : linux-debug
+parent  : debug-linux
 ---
 
 ### 프로세스

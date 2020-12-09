@@ -3,10 +3,10 @@ layout  : wiki
 title   : linux-debug/workqueue
 summary : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-11-10 23:56:55 +0900
-lastmod : 2020-11-10 23:57:26 +0900
+lastmod : 2020-12-09 13:31:24 +0900
 tags    : [linux-debug, workqueue]
 draft   : false
-parent  : linux-debug
+parent  : debug-linux
 ---
 
 ### 워크큐

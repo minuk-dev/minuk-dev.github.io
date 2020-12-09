@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-09-08 22:14:21 +0900
-lastmod : 2020-12-06 18:51:56 +0900
+lastmod : 2020-12-09 13:30:44 +0900
 tags    : [linux]
 draft   : false
 parent  : Book reviews
@@ -85,3 +85,4 @@ qemu-system-x86_64 \
 * [[linux-debug/workqueue]]
 * [[linux-debug/timer]]
 * [[linux-debug/synchronization]]
+* [[linux-debug/scheduling]]

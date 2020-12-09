@@ -3,10 +3,10 @@ layout  : wiki
 title   : linux-debug/timer
 summary : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리
 date    : 2020-11-10 23:57:38 +0900
-lastmod : 2020-11-10 23:58:24 +0900
+lastmod : 2020-12-09 13:31:16 +0900
 tags    : [linux-debug, timer]
 draft   : false
-parent  : linux-debug
+parent  : debug-linux
 ---
 
 ### 커널 타이머 관리

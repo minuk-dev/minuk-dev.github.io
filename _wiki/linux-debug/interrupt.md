@@ -3,10 +3,10 @@ layout  : wiki
 title   : linux-debug/interrupt
 summary : 디버깅을 통해 배우는 리눅스 커널의 구조와 원리/인터럽트
 date    : 2020-11-10 23:55:41 +0900
-lastmod : 2020-11-10 23:56:25 +0900
+lastmod : 2020-12-09 13:31:37 +0900
 tags    : [linux-debug, interrupt]
 draft   : false
-parent  : linux-debug
+parent  : debug-linux
 ---
 
 #### 인터럽트
