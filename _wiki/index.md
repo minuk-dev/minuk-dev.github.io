@@ -2,10 +2,9 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-11-03 20:28:55 +0900
+lastmod: 2020-12-09 13:27:32 +0900
 ---
 ## 즐겨찾기
- * [[사지방]]
  * [[TODO]]
  * [[schedules]]
  * [[debug-linux]]
