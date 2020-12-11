@@ -2,7 +2,7 @@
 layout  : wiki
 title   : linux-debug/scheduling
 date    : 2020-12-09 13:30:45 +0900
-lastmod : 2020-12-09 14:47:12 +0900
+lastmod : 2020-12-11 15:53:17 +0900
 tags    : [linux]
 parent  : linux-debug
 ---
@@ -115,3 +115,110 @@ parent  : linux-debug
    * 프로세스가 특정 조건으로 깨워나고 싶을 때 설정하는 상태
    * 보통 스스로 깨어날 조건을 설정한 다음에 TASK_UNINTERRUPTIBLE 상태로 변경
    * 뮤텍스를 얻지 못하거나 입출력(I/O) 동작 중에 TASK_UNINTERRUPTIBLE 상태로 변경
+
+#### TASK_INTERRUPTIBLE과 TASK_UNINTERRUPTIBLE 상태의 차이점
+ * I/O 나 mutex 같이 깨어나봤자 의미가 없을때, 자신을 깨울수 있는 방법과 시기(I/O가 종료되거나, mutex를 획득할수 있어질때)를 설정하고 TASK_UNINTERRUPTIBLE 로 둔다.
+ * TASK_UNINTERRUPTIBLE 상태의 프로세스가 비정상으로 많은 경우
+   * 다수의 프로세스들이 뮤텍스를 획득하지 못해 자신을 TASK_UNINTERRUPTIBLE 상태로 바꾸고 휴면 상태에 진입
+   * I/O 동작 중에 외부 장치와 인터페이싱에 문제가 있음
+ * TASK_RUNNING 상태의 프로세스가 비정상으로 많은 경우
+   * 특정 프로세스가 CPU를 계속 점유하고 실행중
+   * 인터럽트가 비정상적으로 많이 발생해서 프로세스 선점 스케줄링이 제대로 수행되지 못함.
+
+### 프로세스 상태 변화
+```uml
+@startuml
+[*] --> TASK_RUNNING_실행대기
+TASK_RUNNING_실행대기 --> TASK_RUNNING_CPU실행 : 1
+TASK_RUNNING_CPU실행 --> TASK_INTERRUPTIBLE : 2
+TASK_RUNNING_CPU실행 --> TASK_UNINTERRUPTIBLE : 3
+TASK_INTERRUPTIBLE --> TASK_RUNNING_실행대기 : 4
+TASK_RUNNING_CPU실행 --> TASK_DEAD : 5
+TASK_UNINTERRUPTIBLE --> TASK_RUNNING_실행대기
+TASK_DEAD --> [*]
+@enduml
+```
+ * 1. 실행대기(TASK_RUNNING) -> CPU 실행중(TASK_RUNNING)
+   * context switching 이라 부르며, CPU register sets을 저장하고, 다음 실행될 THREAD의 CPU register sets을 불러온다.
+ * 2. CPU 실행(TASK_RUNNING) -> 휴면(TASK_INTERRUPTIBLE)
+ * 3. CPU 실행(TASK_RUNNING) -> 휴면(TASK_UNINTERRUPTIBLE)
+   * 특정 조건에서만 깨어날수 있게 됨
+   * 자신이 깨어날 조건 설정 -> TASK_UNINTERRUPTIBLE 상태로 변경 -> `schedule()` 함수를 호출해 휴면상태에 진입
+   * I/O를 실행할때, 뮤텍스를 획득하지 못했을 때
+ * 4. 휴면(TASK_INTERRUPTIBLE) -> 실행 대기(TASK_RUNNING)
+   * `wake_up_process()` 함수를 호출해서 프로세스를 깨울때의 상황
+ * 5. 휴면(TASK_UNINTERRUPTIBLE) -> 실행 대기(TASK_RUNNING)
+   * I/O 실행 완료 또는 뮤텍스를 해제한 프로세스가 뮤텍스를 기다리고 있는 프로세스를 깨울때
+
+### 프로세스 상태 변화 함수 목록
+ * TASK_RUNNING(실행 대기)
+   * wake_up_interruptible()
+   * wake_up_new_task()
+   * wake_up_process()
+   * yeild()
+   * do_nanosleep()
+ * TASK_RUNNING(CPU 실행)
+   * schedule()
+ * TASK_INTERRUPTIBLE
+   * wait_event_interruptible()
+   * do_sigtimedwiat()
+   * sys_pause()
+   * do_nano_sleep()
+ * TASK_UNINTERRUPTIBLE
+   * io_wait_event()
+   * mutex_lock()
+   * usleep_range()
+   * msleep()
+   * wait_for_completion()
+
+### TASK_RUNNING(실행 대기)으로 바뀔 때 호출되는 함수
+ * 프로세스를 깨울때
+ * 프로세스를 처음 생성하고 실행 요청을 할 때
+ * 프로세스 관련 정보를 업데이트 할때
+ * wake_up_new_task()
+   ```c
+   void wake_up_new_task(struct task_struct *p)
+   {
+     struct rq_flags rf;
+     struct rq *rq;
+
+     raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
+     p->state = TASK_RUNNING;
+     /* skip */
+   }
+   ```
+   * _do_fork 에서 호출됨
+
+ * wake_up_process()
+   * wake_up_process() -> try_to_wake_up() -> ttwu_do_activate() -> ttwu_do_wakeup()
+   * ttwu : try to wake up 의 약어
+   ```c
+   static void ttwu_do_wakeup(struct rq *rq, struct task_struct *p, int wake_flags,
+     struct rq_flags *rf)
+   {
+     check_preempt_curr(rq, p, wake_flags);/
+     p->state = TASK_RUNNING;
+     trace_sched_wakeup(p);
+     /* skip */
+   }
+   ```
+
+ * yield()
+   ```c
+   void __sched yield(void)
+   {
+     set_current_state(TASK_RUNNING);
+     do_sched_yield();
+   }
+   ```
+
+ * do_nanosleep()
+   ```c
+   static int __sched do_nanosleep(struct hrttimer_sleepr *t, enum hrtimer_mode mode)
+   {
+     struct restart_block *restart;
+     /* skip */
+     __set_current_state(TASK_RUNNING);
+     /* skip */
+   }
+   ```

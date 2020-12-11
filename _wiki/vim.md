@@ -3,7 +3,7 @@ layout  : wiki
 title   : vim
 summary :
 date    : 2020-04-08 23:44:39 +0900
-lastmod : 2020-09-26 22:54:35 +0900
+lastmod : 2020-12-11 14:23:27 +0900
 tags    : [vim]
 draft   : false
 parent  : tool
@@ -20,6 +20,8 @@ parent  : tool
  * `<Leader>c` : 커서에 있는 함수명을 호출하는 부분을 찾아준다.
  * `<Leader>f` : 커서에 있는 파일명에 대한 모든 파일을 찾아준다.
  * `<Laeder>i` : 커서에 있는 include하는 파일을 모두 찾아준다.
+ * `+o` : boxdraw
+ * `+-` : draw line
 ## UltiSnip
  * 어캐쓰는지 아직 잘 모르겠다.ㅠ 더 읽어봐야겠다.
 ## vimwiki
