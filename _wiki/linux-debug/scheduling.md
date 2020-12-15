@@ -2,7 +2,7 @@
 layout  : wiki
 title   : linux-debug/scheduling
 date    : 2020-12-09 13:30:45 +0900
-lastmod : 2020-12-11 15:53:17 +0900
+lastmod : 2020-12-15 22:55:24 +0900
 tags    : [linux]
 parent  : linux-debug
 ---
@@ -222,3 +222,158 @@ TASK_DEAD --> [*]
      /* skip */
    }
    ```
+
+### TASK_RUNNING(CPU 실행)로 바뀔 때 호출하는 함수
+ * schedule()
+  ```c
+  static void __sched notrace __schedule(bool preempt)
+  {
+    struct rq *rq;
+    int cput;
+
+    cpu = smp_processor_id();
+    rq = cpu_rq(cpu);
+
+    if (likely(prev != next)) {
+      rq->nr_switches ++;
+      rq->curr = next;
+
+      /* Also unlocks the rq: */
+      rq = context_switch(rq, prev, next, &rf);
+    } else {
+    /* skip */
+  }
+  ```
+
+### TASK_INTERRUPTIBLE 상태로 바뀔 때 호출하는 함수
+ * wait_event_interruptible()
+  ```c
+  #define wait_event_interruptible(wq_head, condition)            \
+  ({                                                              \
+    int __ret = 0;                                                \
+    might_sleep();                                                \
+    if (!(condition))                                             \
+      __retval = __wait_event_interruptible(wq_head, condition);  \
+    __ret;                                                        \
+  })
+
+  #define __wait_event_interruptible(wq_head, condition)          \
+    ___wait_event(wq_head, condition, TASK_INTERRUPTIBLE, 0, 0,   \
+      schedule())
+  ```
+
+   * ___wait_event()
+   ```c
+   #define ___wait_event(wq_head, condition, state, exclusive, ret, cmd)  \
+   ({                                                                     \
+     __label__ __out;                                                     \
+     struct wait_queue_entry __wq_entry;                                  \
+     long __ret = ret; /* explicit shadow */                              \
+                                                                          \
+     init_wait_entry(&__wq_entry, exclusive ? WQ_FLAG_EXCLUSIVE : 0);     \
+     for (;;) {                                                           \
+       long __int = prepare_to_wait_event(&wq_head, &__wq_entry, state);  \
+       /* skip */                                                         \
+     }                                                                    \
+     finish_wait(&wq_head, &__wq_entry);                                  \
+   __out: __ret;                                                          \
+   })
+   ```
+   * prepare_to_wait_event()
+   ```c
+   long prepare_to_wait_event(struct wait_queue_head *wq_head, struct wait_queue_entry *wq_entry.
+     int saste)
+   {
+     unsigned long flags;
+     long ret = 0;
+
+     spin_lock_irqsave(&wq_head->lock, flags);
+     if (unlikely(signal_pending_state(state, current))) {
+       /* skip */
+     } else {
+       if (list_empty(&wq_entry->entry)) {
+         if (wq_entry->flags & WQ_FLAGS_EXCLUSIVE)
+           __add_wait_queue_entry_tail(wq_head, wq_entry);
+         else
+           __add_wait_queue(wq_head, wq_entry);
+       }
+       set_current_state(state);
+     }
+     /* skip */
+   }
+   ```
+ * do_sigtimedwait()
+ * sys_pause()
+   ```c
+   SYSCALL_DEFINE0(pause)
+   {
+     while (!signal_pending(current)) {
+       __set_current_state(TASK_INTERRUPTIBLE);
+       schedule();
+     }
+     return -ERESTARTNOHAND;
+   }
+   ```
+   * 펜딩된 시그널(자신에게 전달된 시그널)이 없는지 점검
+   * 자신을 TASK_INTERRUPTIBLE(휴면 상태)로 변경
+   * schedule() 함수를 호출해 휴면상태로 진입
+ * do_nanosleep()
+
+### TASK_UNINTERRUPTIBLE 상태로 바뀔 때 호출하는 함수
+ * io_wait_event()
+   ```c
+   #define io_wait_event(wq_head, condition)        \
+   do {                                             \
+     might_sleep();                                 \
+     if (condition)                                 \
+       break;                                       \
+     __io_wait_event(wq_head, condition);           \
+   } while (0)
+
+   #define __io_wait_event(wq_head, condition)                        \
+   (void)__wait_event(wq_head, condition, TASK_UNINTERRUPTIBLE, 0, 0, \
+     io_schedule())
+   ```
+ * mutex_lock()
+   ```c
+   static int __sched
+   __mutex_lock(struct mutex *lock, long state, unsgined int subclass,
+     struct lockdep_map *nest_lock, unsigned long ip)
+   {
+     return __mutex_lock_common(lock, state, subclass, nest_lock, ip, NULL, false);
+   }
+   ```
+
+   ```c
+   static __always_inline int __sched
+   __mutex_lock_common(struct mutex *lock, long state, unsigned int subclass,
+     struct lockdep_map *nest_lock, unsigned long ip,
+     struct ww_acquire_ctx *ww_ctx, const bool use_ww_ctx)
+   {
+     /* skip */
+     set_current_state(state);
+     for (;;) {
+       /* skip */
+       schedule_preempt_disabled();
+       /* skip */
+     }
+     /* skip */
+   }
+   ```
+ * usleep_range()
+   ```c
+   void __sched usleep_range(unsigned long min, unsigned long max)
+   {
+     ktime_t exp = ktime_add_us(ktime_get(), min);
+     u64 delta = (u64)(max - min) * NSEC_PER_USEC;
+
+     for (;;) {
+       __set_current_state(TASK_UNINTERRUPTIBLE);
+       /* Do not return before teh requested sleep time has elapsed */
+       if (!schedule_hrtimeout_range(& exp, delta, HRTIMER_MODE_ABS))
+         break;
+     }
+   }
+   ```
+ * msleep()
+ * wait_for_completion()
