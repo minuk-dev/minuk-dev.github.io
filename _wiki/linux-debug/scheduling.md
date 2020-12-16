@@ -2,7 +2,7 @@
 layout  : wiki
 title   : linux-debug/scheduling
 date    : 2020-12-09 13:30:45 +0900
-lastmod : 2020-12-15 22:55:24 +0900
+lastmod : 2020-12-16 13:19:54 +0900
 tags    : [linux]
 parent  : linux-debug
 ---
@@ -376,4 +376,185 @@ TASK_DEAD --> [*]
    }
    ```
  * msleep()
+   ```c
+   void msleep(unsigned int msec)
+   {
+     unsigned long timeout = msecs_to_jiffies(msecs) + 1;
+
+     while (timeout)
+       timeout = schedule_timeout_uninterruptible(timeout);
+   }
+
+   signed long __sched schedule_timeout_uninterruptible(signed long timeout)
+   {
+     __set_current_state(TASK_UNINTERRUPTIBLE);
+     return schedule_timeout(timeout);
+   }
+   ```
  * wait_for_completion()
+   ```c
+   void __sched wait_for_completion(struct completion *x)
+   {
+     wait_for_common(x, MAX_SCHEDULE_TIMEOUT, TASK_UNINTERRUPTIBLE);
+   }
+   ```
+
+## 스케줄러 클래스
+ * 프로세스가 스케줄러 클래스르 ㄹ통해 유연하게 스케줄러를 바꾸게 지원하기 위해서
+
+### sched_class 구조체
+ ```c
+ struct sched_class {
+   const struct sched_class *next;
+
+   void (*enqueue_task) (struct rq *rq, struct task_struct *p, int flags);
+   void (*dequeue_task) (struct rq *rq, struct task_struct *p, int flags);
+   void (*yield_task) (struct rq *rq);
+   bool (*yeild_to_task) (struct rq *rq, struct task_struct *p, bool preempt);
+
+   void (*check_preempt_curr) (struct rq *rq, struct task_struct *p, int flags);
+
+   struct task_struct * (*pick_next_task) (struct rq *rq,
+                                        struct task_struct *prev,
+                                        struct rq_flags *rf);
+   void (*put_prev_task) (struct rq *rq, struct task_struct *p);
+   int (*select_task_rq) (struct task_struct *p, int task_cpu, int sd_flag, int flags);
+   void (*migrate_task_rq) (struct task_struct *p);
+   void (*task_woken) (struct rq *this_rq, struct task_struct *task);
+   void (*set_cpus_allowed)(struct task_struct *p,
+                        const struct cpumask *newmask);
+   /* skip */
+ }
+ ```
+   * enqueue_task : 프로세스가 실행 가능한 상태로 진입
+   * dequeue_task : 프로세스가 더 이상 실행 가능한 상태가 아닐 때
+   * yeild_task : 프로세스가 스스로 yield() 시스템 콜을 실행했을 때
+   * check_preempt_curr : 현재 실행 중인 프로세스를 선점할 수 있는지 검사
+   * pick_next_task : 실행할 다음 프로세스를 선택
+   * put_prev_task : 실행 중인 프로세스를 다시 내부 자료구조(런큐)에 삽입
+   * load_balance : 코어 스케줄러가 태스크 부하를 분산하고자 할 때
+     * [참고-문C블로그](http://jake.dothome.co.kr/load-balance-1/)
+     * Passive Balancing : Fork Balancing, Exec Balancing, Wake Balancing, Idle Balancing
+     * Periodic Balancing
+   * set_current_task : 프로세스의 스케줄러 클래스나 태스크 그룹을 바꿀 때
+   * task_tick : 타이머 틱 함수를 호출
+
+### 5가지 스케줄러 클래스
+ ```c
+ extern const struct sched_class stop_sched_class;
+ extern const struct sched_class dl_sched_class;
+ extern const struct sched_class rt_sched_class;
+ extern const struct sched_class fair_sched_class;
+ extern const struct sched_class idle_sched_class;
+ ```
+ * 리눅스 시스템에서 전체 프로세스 가운데 RT 클래스 프로세스와 CFS 클래스 프로세스의 비율 : 99% 는 CFS, 1%정도가 나머지 그마저도 대부분 RT
+
+#### 스케줄러 클래스의 우선 순위
+ * stop -> dl -> rt -> fair -> idle
+ * struct 내부 변수 next를 사용해서 다음 우선 순위의 스케줄러를 가르킨다.
+
+### 프로세스를 스케줄러에 등록
+ * 1. 스케줄러 클래스 설정
+   * sched_fork()
+    ```c
+    int sched_fork(unsigned long clone_flags, struct task_struct *p)
+    {
+      unsigned long flags;
+      /* skip */
+      if (dl_prio(p->prio))
+        return -EAGAIN;
+      else if (rt_prio(p->prio))
+        p->sched_class = &rt_sched_class;
+      else
+        p->sched_class = &fair_sched_class;
+    }
+    ```
+ * 2. 스케줄러 클래스 변경
+   * __setscheduler()
+     ```c
+     static void __setscheduler(struct rq *rq, struct task_struct *p,
+                    const struct sched_attr *attr, bool keep_boost)
+     {
+       __setscheduler_params(p, attr);
+
+       p->prio = normal_prio(p);
+       if (keep_boost)
+         p->prio = rt_effective_prio(p, p->prio);
+
+       if (dl_prio(p->prio))
+         p->sched_class = &dl_sched_class;
+       else if (rt_prio(p->prio))
+         p->sched_class = &rt_sched_class;
+       else
+         p->sched_class = &fair_sched_class;
+     }
+     ```
+
+### 세부 함수 호출
+ * enqueue_task()
+   ```c
+   static inline void enqueue_task(struct rq *rq, struct task_struct *p, int flags)
+   {
+     if (!(flags & ENQUEUE_NOCLOCK))
+       update_rq_clock(rq);
+     if (!(flags & ENQUEUE_RESTOR))
+       sched_info_queued(rq, p);
+
+     p->sched_class->enqueue_task(rq, p, flags);
+   }
+   ```
+* dequeue_task()
+   ```c
+   static inline void dequeue_task(struct rq *rq, struct task_struct *p, int flags)
+   {
+     if (!flags & DEQUEUE_NOCLOCK)
+       update_rq_clock(rq);
+     if (!(flags & DEQUEUE_SAVE))
+       sched_info_dequeued(rq, p);
+
+     p->shced_class->dequeue_task(rq, p, flags);
+   }
+   ```
+
+## 런큐
+ * percpu 타입의 전역변수
+ * RT, CFS, Deadline 서브 런큐를 관리
+ * 실행 요청을 한 프로세스가 런큐에 삽입됨
+ * CPU를 점유하면서 실행 중인 current 프로세스를 관리
+
+ ```c
+ struct rq {
+   raw_spinlock_t lock;
+
+   unsigned int nr_running;
+   /* skip */
+   struct load_wait load;
+   unsigned long nr_load_updates;
+   u64 nr_switches;
+
+   struct cfs_rq cfs;
+   struct rt_rq rt;
+   struct dl_rq dl;
+   /* skip */
+   unsigned long nr_uninterruptible;
+
+   struct task_struct *curr, *dle, *stop;
+   /* skip */
+ };
+ ```
+
+ * lock : 런큐 자료구조를 변경할 때 경쟁 조건을 피하기 위한 락
+ * nr_running : 런큐에 삽입된 모든 프로세스 개수
+ * nr_switches : 컨텍스트 스위칭을 수행한 개수
+ * cfs, rt : cfs, rt 런큐
+ * nr_uninterruptible : 런큐에 있는 태스크 중 TASK_UNINTERRUPTIBLE 상태의 프로세스 개수
+ * curr : 해당 런큐에서 CPU를 점유하면서 실행 중인 프로세스의 태스크 디스크립터
+ * idle : idle 프로세스의 태스크 디스크립터
+ * cfs_task : cfs 런큐에 삽입된 모든 일반 프로세스의 연결 리스트
+
+### runqueues 변수
+ ```c
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
+ #define cpu_rq(cpu) (&per_cpu(runqueues, (cpu)))
+ #define this_rq() this_cpu_ptr(&runqueues)
+ ```
