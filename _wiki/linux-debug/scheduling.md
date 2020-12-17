@@ -2,7 +2,7 @@
 layout  : wiki
 title   : linux-debug/scheduling
 date    : 2020-12-09 13:30:45 +0900
-lastmod : 2020-12-16 13:19:54 +0900
+lastmod : 2020-12-17 13:59:47 +0900
 tags    : [linux]
 parent  : linux-debug
 ---
@@ -558,3 +558,198 @@ TASK_DEAD --> [*]
  #define cpu_rq(cpu) (&per_cpu(runqueues, (cpu)))
  #define this_rq() this_cpu_ptr(&runqueues)
  ```
+
+## CFS 스케줄러
+ * CFS(Completely Fair Scheduler)
+ * 2.6.23 버전 이후로 적용된 리눅스 기본 스케줄러
+ * 특징
+   * 타임 슬라이스 : 스케줄러가 프로세스에게 부여한 실행 시간
+   * 우선순위
+     * 우선순위가 높은 프로세스에 대해 가장 먼저 CPU 에서 실행 시키고, 더 많은 타임 슬라이스를 할당해준다.
+   * 가상 실행 시간(vruntime)
+     * 프로세스가 그동안 실행 시간을 정규화한 시간 정보
+
+### CFS 스케줄러 알고리즘
+ * load weight : 프로세스의 우선순위에 주는 가중치
+   ```c
+   static void set_load_weight(struct task_struct *p)
+   {
+     int prio = p->static_prio - MAX_RT_PRIO;
+     struct load_weight *load = &p->se.load;
+     /* skip */
+     if (update_load && p->sched_class == &fiar_sched_class) {
+       reweight_task(p, prio);
+     } else {
+       load->weight = scale_load(sched_prio_to_weight[prio]);
+       load->inv_weight = sched_prio_to_wmult[prio];
+     }
+   }
+   ```
+ * 타임 슬라이스
+   * $$(time slice) = \frac{(load weight of process)}{(sum of load weight in CFS runqueue)} \time (scheduling latency)$$
+
+ * vruntime : 프로세스가 그동안 실행한 시간을 정규화한 시간 정보
+ * CFS 스케줄러는 런큐에 등록된 프로세스 중 vruntime이 가장 작은 프로세스를 다음에 실행할 프로세스로 선택
+ * update_curr()
+   ```c
+   static void update_curr(struct cfs_rq *cfs_rq)
+   {
+     /* skip */
+     u64 delta_exec;
+     /* skip */
+     curr->vruntime += calc_delta_fair(delta_exec, curr);
+     /* skip */
+   }
+   static inline u64 calc_delta_fair(u64 delta, struct sched_entity *se)
+   {
+     if (unlikely(se->load.weight != NICE_0_LOAD))
+       delta = __cal_delta(delta, NICE_0_Load, &se->load);
+     return delta;
+   }
+   ```
+   * $$vruntime += delta_exc * \frac{1024}{load weight}$$
+
+ * 위의 공식대로라면, 휴면상태였던 프로세스 또는 새롭게 생성된 프로세스는 CPU를 더 많이 할당받게 된다. 따라서 주기적으로 vruntime의 최소값을 설정해준다.
+ * update_min_vruntime()
+   ```c
+   static void update_min_vruntime(struct cfs_rq *cfs_rq)
+   {
+     struct sched_entity *curr = cfs_rq->curr;
+     struct rb_node *leftmost = rb_first_cached(&cfs_rq->tasks_timeline);
+
+     u64 vruntime = cfs_rq->min_vruntime;
+     /* skip */
+     /* ensure we never gain time by being placed backwards. */
+     cfs_rq->min_vruntime = max_vruntime(cfs_rq->min_vruntime, vruntime);
+     /* skip */
+   }
+   ```
+
+### CFS 관련 세부 함수
+#### 타임 슬라이스 관리
+ * 프로세스가 타임 슬라이스를 소진했는지 점검, 프로세스의 타임 슬라이스를 업데이트, 타임 슬라이스를 모두 소진한 프로세스를 선점될 조건임을 마킹
+ * scheduler_tick()
+   ```c
+   void scheduler_tick(void)
+   {
+     int cpu = smp_processor_id();
+     struct rq *rq = cpu_rq(cpu);
+     struct task_struct *curr = rq->curr;
+     struct rq_flags rf;
+
+     sched_clock_tick();
+
+     rq_lock(rq, &rf);
+
+     update_rq_clock(rq);
+     curr->sched_class->task_tick(rq, curr, 0);
+     /* skip */
+   }
+   ```
+ * task_tick_fair()
+   ```c
+   static void task_tick_fair(struct rq *rq, struct task_struct *curr, int queued)
+   {
+     struct cfs_rq *cfs_rq;
+     struct shced_entity *se = &curr->se;
+
+     for_each_sched_entity(se) {
+       cfs_rq = cfs_rq_of(se);
+       entity_tick(cfs_rq, se, queued);
+     }
+     /* skip */
+   }
+   ```
+   * eneity_tick()
+     ```c
+     static void
+     entity_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr, int queued)
+     {
+       update_curr(cfs_rq);
+
+       update_load_avg(curr, UPDATE_TG);
+       update_cfs_shares(curr);
+       /* skip */
+       if (cfs_rq->nr_running > 1)
+         check_preempt_tick(cfs_rq, curr);
+     }
+     ```
+ * check_preempt_tick()
+   ```c
+   static void
+   check_preempt_tick(struct cfs_rq *cfs_rq, struct sched_entity *curr)
+   {
+     unsigned long ideal_runtime, delta_exec;
+     struct sched_entity *se;
+     s64 delta;
+
+     ideal_runtime = sched_slice(cfs_rq, curr);
+     delta_exec = curr->sum_exec_runtime - curr->prev_sum_exec_runtime;
+     if (delta_exec > ideal_runtime) {
+       resched_curr(rq_of(cfs_rq));
+       /* skip */
+     }
+
+     if (delta_exec < sysctl_sched_min_granularity)
+       return;
+
+     se = __pick_first_entity(cfs_rq);
+     delta = curr->vruntime - se->vruntime;
+
+     if (delta < e)
+       return;
+
+     if (delta > ideal_runtime)
+       resched_curr(rq_off(cfs_rq));
+   }
+   ```
+   * 1. 프로세스가 소진한 타임 슬라이스 읽기
+   * 2. 프로세스 선점 요청 : 프로세스가 타임 슬라이스를 모두 소진했으면 선점 요청을 한다.
+   * 프로세스가 선점 요청을 하면, 인터럽트를 핸들링한 후 또는 시스템 콜을 핸들링한 후 유저 공간으로 복귀하기 전에 프로세스가 선점된다.
+#### vruntime 관리와 관련된 세부 함수
+ * 프로세스를 vruntime 기준으로 CFS 런큐의 레드 블랙 트리에 등록
+ * CFS가 다음 프로세스를 레드 블랙 트리에서 선택(pick)하는 과정
+ * enqueue_entity()
+   ```c
+   static void
+   enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+   {
+     bool renorm = !(flags & ENQUEUE_WAKEUP) || (flags & ENQUEUE_MIGRATED);
+     bool curr = cfs_rq->curr == se;
+     /* skip */
+     update_curr(cfs_rq);
+     /* skip */
+     account_tntity_enqueue(cfs_rq, se);
+     /* skip */
+     if (!curr)
+       __enqueue_entity(cfs_rq, se);
+     se->on_rq = 1;
+     /* skip */
+   }
+   ```
+ * __enqueue_entity()
+   ```c
+   static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+   {
+     struct rb_node **link = &cfs_rq->tasks_timeline.rb_root.rb_node;
+     struct rb_node *parent = NULL;
+     struct shced_entity *entry;
+     bool leftmost = true;
+
+     while (*link) {
+       parent = *link;
+       entry = rb_entry(parent, struct sched_entity, run_node);
+
+       if (entity_before(se, entry)) {
+         link = &parent->rb_left;
+       } else {
+         link = &parent->rb_right;
+         leftmost = false;
+       }
+     }
+
+     rb_link_node(&se->run_node, parent, link);
+     rb_insert_color_cached(&se->run_node,
+                       &cfs_rq->tasks_timeline, leftmost);
+   }
+   ```
