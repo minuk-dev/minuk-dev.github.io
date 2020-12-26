@@ -3,7 +3,7 @@ layout  : wiki
 title   : tool
 summary :
 date    : 2020-06-27 15:17:31 +0900
-lastmod : 2020-10-22 03:47:57 +0900
+lastmod : 2020-12-26 17:31:45 +0900
 tags    : [tool]
 draft   : false
 parent  :
@@ -21,5 +21,6 @@ parent  :
 
 ## script
  * [[사지방]]
+
 ## 설정
  * [[tool configuration]]
