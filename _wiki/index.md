@@ -2,23 +2,18 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2020-12-09 13:27:32 +0900
+lastmod: 2020-12-28 09:59:25 +0900
 ---
 ## 즐겨찾기
- * [[TODO]]
  * [[schedules]]
  * [[debug-linux]]
  * [[회고]]
+ * [[lectures/human_behavior_and_psychology]]
 
 ---
-## 개인 글쓰기
- * [[vimwiki로 블로그 구축하기]]
 
-## 계룡 개발 모임
- * [[계룡 개발 모임]]
-
----
 ## 공부
+ * [[TODO]]
  * [[web]]
  * [[Pintos]]
  * [[tool]]
@@ -37,6 +32,7 @@ lastmod: 2020-12-09 13:27:32 +0900
 ### School
  * [[lectures]]
 
+
 ### Language
  * [[assembly]]
  * [[C++]]
@@ -53,7 +49,12 @@ lastmod: 2020-12-09 13:27:32 +0900
  * [[statistics]]
 
 ---
+## 계룡 개발 모임
+ * [[계룡 개발 모임]]
+
+---
 ## 잡스러운 것들 모음
+ * [[vimwiki로 블로그 구축하기]]
  * [[3공노트]]
  * [[버스 시간 메모]]
 
