@@ -3,7 +3,7 @@ layout  : wiki
 title   : Endurable Transient Inconsistency in Byte Addressable Persistent B+-Tree
 summary : 
 date    : 2020-04-07 20:15:43 +0900
-lastmod : 2020-06-10 19:22:07 +0900
+lastmod : 2021-01-01 18:20:51 +0900
 tags    : 
 parent  : "database"
 ---
@@ -185,3 +185,37 @@ Hardware transactional memory
 ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/84038cb3-9c99-4278-91c8-fe29f4ab21ae/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/84038cb3-9c99-4278-91c8-fe29f4ab21ae/Untitled.png)
 
 ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e2b0f408-5d36-4247-ad98-0a378138703e/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e2b0f408-5d36-4247-ad98-0a378138703e/Untitled.png)
+
+
+## 내만의 스크립트
+```
+Persisent Memory의 특징은
+빠르지만 비대칭 액세스 레이턴시
+비휘발성
+Byte 단위 주소
+큰 용량입니다.
+```
+```
+B+ Tree에서 삽입과 Rebalancing을 봐보도록 하겠습니다.
+만약 30이라는 숫자를 다음과 같이 있는 노드에 삽입한다고 가정하고 CPU 캐시와 PM을 봐보면
+먼저 40을 캐시로 가져옵니다. 그 다음 30을 가져오고, 40을 밀어내고 30을 쓰게 됩니다.
+이 과정에서 30, 30 이 먼저 FLUSH가 된다고 생각해보겠습니다. 그러면 Power Failure 같은 이유로 실패하게 되면 40이라는 데이터가 유실됩니다.
+다음으로 Rebalancing 연산이 있는데, 이는 전통적으로는 Logging을 사용했고, 최근에는  Selective Persistence 가 제시되었습니다.
+어쨋 거나 이런 문제들 해결하기 위해서 사용되던 Append-Only 와 Selective Persistence 가 아닌 새로운 2가지 연산을 제시하며, 이 연산을 사용하면 Lock-Free Search 를 사용할수 있게 됩니다.
+```
+```
+먼저 FAST 연산은 다음과 같은 배경에서 탄생하는데
+B+-Tree는 유일한 메모리 주소를 저장한다. 8바이트 포인터는 원자적 갱신이 가능하다.
+이 두가지 점을 합쳐서 일시적 불일치 라는 상태를 제시하는데, 이는 읽기 과정에서 중복된 포인터를 발견하는 걸 말합니다.
+이게 어떻게 가능한가르 봐보기 위해서 현대 CPU에서 지원하는 기능을 봐보면
+x86은 저장간의 순서를 보장하고, x86과 ARM 은 의존성이 있을 경우 순서를 보장합니다.
+이때 x86의 저장간 순서 보장을 TSO라고 부릅니다.
+키로 25, 그에 대한 포인터로 P6을 삽입하는 경우를 봐보겠습니다.
+먼저 40과 P5를 뒤로 밀고, TSO를 지원하지 않는다면 mfence를 사용해야 합니다.
+이렇게 되면 한개씩 뒤로 포인터, 값 순서로 미뤄가면서 값을 쓰면 됩니다.
+```
+```
+이제 FAIR를 봐보면,
+NULL 포인터를 설정하면 가상적으로 Node A 와 Node B는 하나의 노드로 취급되는데, 이렇게 할때 상황을 봐보겠습니다.
+```
+
