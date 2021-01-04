@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Multi-Queue Block IO Queueing (blk-mq)
 date    : 2020-12-27 17:46:35 +0900
-lastmod : 2020-12-27 20:46:30 +0900
+lastmod : 2021-01-03 18:25:45 +0900
 tags    : [linux, blk-mq]
 parent  : linux-study
 ---
@@ -78,3 +78,30 @@ parent  : linux-study
               * copy_page_to_iter()
 
 
+ * blk_mq_make_request()
+   * blk_queue_bounce()
+     * `!(q->bounce_gfp & GFP_DMA) && q->limits.bounce_pfn >= blk_max_pfn` : 이때는 바로 나감 왜 그런지 이해 아직 못함.
+---
+
+### 바운스 버퍼
+ * 출처 : https://wiki.kldp.org/wiki.php/IOPerformanceHOWTO
+ * 높은 주소의 메모리에 DMA I/O 가 수행될 때는, 낮은 주소의 메모리에 버운스 버퍼가 할당되고, 이 바운스 버버를 통해서 복사가 된다.
+ * 많은 양의 메모리를 가지고 있는 시스템에서 집중적 I/O를 수행하면 낮은 주소의 메모리에 바운스 버퍼도 많이 할당되고, 낮은 주소 영역에 쓸 읽도 많아 성능이 저하된다.
+ * 또한 바운스 버퍼를 통한 데이터 복사가 대량으로 발생하기도 하여 성능이 저하된다.
+
+---
+
+## blk_mq_make_request()
+ * blk_mq_make_request()
+   * blk_queue_bounce()
+     * __blk_queue_bounce()
+       * bounce 버퍼가 필요하지 않다면, 그냥 종료
+       * segment sector의 합이 bio의 sector보다 작다면, bio_split()
+       * bounce_clone_bio()
+       * bounce_pfn보다 pfn이 큰 page에 대해서만 bounce buffer memory pool 에서 페이지를 가져오고(`mempool_alloc()`)
+         * 읽기에 대해서는 이 페이지 주소로 타겟 페이지를 지정하고,
+         * 쓰기에 대해서는 이 페이지 주소를 테겟 페이지로 지정하고,, memcpy로 복사시킨다.
+   * __blk_queue_split()
+   * rq_qos_throttle()
+     * __rq_qos_throttle()
+       * rqos->ops->throttle() : iocost 모델, iolatency 모델, wbt 기본 모델
