@@ -3,7 +3,7 @@ layout  : wiki
 title   : 라틴어
 summary :
 date    : 2021-01-11 13:53:08 +0900
-lastmod : 2021-01-11 14:04:23 +0900
+lastmod : 2021-01-12 13:07:19 +0900
 tags    :
 draft   : false
 parent  :
@@ -28,3 +28,36 @@ parent  :
      * Filia est in casa. 딸이 집에 있다.
    * 호격(vocativus; voc.) : 호칭할때 사용하는 말
      * Domine, quo vadis? 주여, 어디로 가십니까?
+
+### 형용사의 기초
+ * 수식적 용법(Usus attributivus)
+ * 서술적 용법(Usus praedicativus)
+ * 명사적 용법(Usus substantivus)
+
+### 동사의 기초
+ * 주어의 수(numerus)와 인칭(persona)에 따라 어미 활용(coniugatio)
+ * 능동과 수동 두가지 태(vox)
+ * 직설법, 접속법, 명령법, 부정법 : 네가지 서법(modus)
+ * 여섯가지 시제(tempus)
+
+#### 동사의 시제
+ * 현재(praeseens) : "~한다, ~하고 있다"
+   * portas : 너는 옮긴다, 옮기고 있다
+ * 미완료(imperfectum) : "~하고 있었다, ~하곤 하였다"
+   * portabas : 너는 옮기고 있었다. 옮기곤 하였다.
+ * 미래(futurum) : "~ 할 것이다"
+   * portabis : 너는 옮길 것이다
+ * 단순과거(perfectum) : "~하였다, ~했다"
+   * portavisti : 너는 옮겼다.
+ * 과거완료(plusquam perfectum) : "~하였었다"
+   * portaveras : 너는 옮겼었다
+ * 미래완료(futurum exactum) : "~하였을 것이다"
+   * portaveris : 너는 옮겼을 것이다.
+
+#### 동사의 서법
+ * Pater noster, qui es in coelis, sanctificetur(접속법, 거룩히 되기를(기원, 바람)) nomen tuum.
+ * Adveniat(접속법, 도래하기를) regnum tuum. Fiat(접속법, 이루어지기를) volutas tua sicut in coelo et in terr.
+ * Panem nostrum quotidianum da(명령법, 주시오) nobis hodie.
+ * Et dimmitte(명령법, 용서하여 주오) nobis debita nostra.
+ * sicut et nos dimittimus(접속법, 용서하기를) debitoribus nostris.
+ * Et ne nos inducas(직설법, ~를 유혹에 빠뜨리지 않다) in tentationem: sed libera(명령법, 자유롭게 하시오) nos a malo. Amen.
