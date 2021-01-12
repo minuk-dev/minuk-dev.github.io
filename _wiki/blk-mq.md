@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Multi-Queue Block IO Queueing (blk-mq)
 date    : 2020-12-27 17:46:35 +0900
-lastmod : 2021-01-03 18:25:45 +0900
+lastmod : 2021-01-12 20:42:47 +0900
 tags    : [linux, blk-mq]
 parent  : linux-study
 ---
@@ -102,6 +102,12 @@ parent  : linux-study
          * 읽기에 대해서는 이 페이지 주소로 타겟 페이지를 지정하고,
          * 쓰기에 대해서는 이 페이지 주소를 테겟 페이지로 지정하고,, memcpy로 복사시킨다.
    * __blk_queue_split()
-   * rq_qos_throttle()
+   * rq_qos_throttle() : io controller 의 함수를 호출하는 구조
      * __rq_qos_throttle()
        * rqos->ops->throttle() : iocost 모델, iolatency 모델, wbt 기본 모델
+   * blk_mq_get_request() : 앞으로의 operation에서 사용할 lock 같은 자원들을 할당받아오는 함수
+   * blk_mq_bio_to_request() : bio 구조체를 request 구조체로 바꿔주는 함수
+   * blk_mq_plug() : plugging
+   * blk_insert_flush() : flush 연산일때만 호출되며, 큐에 있는 내용을 비우도록 동작
+   * blk_add_rq_to_plug() : plugging 가능하면 합치는 내용
+   * blk_mq_sched_insert_request() : 실질적으로 request를 보내는 함수
