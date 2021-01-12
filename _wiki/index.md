@@ -2,19 +2,21 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-01-03 15:14:20 +0900
+lastmod: 2021-01-11 20:55:25 +0900
 ---
 ## 즐겨찾기
- * [[schedules]]
  * [[debug-linux]]
  * [[blk-mq]]
  * [[회고]]
  * [[lectures/human_behavior_and_psychology]]
+ * [[latina]]
 
 ---
 
 ## 공부
+ * [[schedules]]
  * [[TODO]]
+ * [[latina]]
  * [[web]]
  * [[Pintos]]
  * [[tool]]
