@@ -3,7 +3,7 @@ layout  : wiki
 title   : 라틴어
 summary :
 date    : 2021-01-11 13:53:08 +0900
-lastmod : 2021-01-12 13:07:19 +0900
+lastmod : 2021-01-20 15:47:50 +0900
 tags    :
 draft   : false
 parent  :
@@ -61,3 +61,116 @@ parent  :
  * Et dimmitte(명령법, 용서하여 주오) nobis debita nostra.
  * sicut et nos dimittimus(접속법, 용서하기를) debitoribus nostris.
  * Et ne nos inducas(직설법, ~를 유혹에 빠뜨리지 않다) in tentationem: sed libera(명령법, 자유롭게 하시오) nos a malo. Amen.
+
+### 라틴어의 어순
+ * 어순이 엄격하지 않다.
+ * 일반적인 어순은
+   * 주어(동사에 의해 생략 가능) + 주어의 형용사 + 간접목적어 + 직접목적어 + 부사 또는 부사구 + 동사
+ * 어미의 변화로 정확한 격과 인칭을 알수 있기 때문에 의미 전달에 문제가 없다.
+   * Puer puellae pulchrae rosam dat.
+   * Pulchrae puellae puer rosam dat.
+   * Pulchrae puellae rosam dat puer.
+   * Rosam puer puellae pulchrae dat.
+
+### 오늘날 자주 사용되는 라틴어 약어
+ * N.B : Nota bene! - 주의! 일러두기!
+ * e.g : exempli gratia - 예, 보기
+ * cf. : confer! - 참조, 라틴어 동사 원형은 confero
+ * i.e. : id est - 곧, 말하자면, 즉
+ * etc. : et cetera - 기타 등등
+ * opp. : oppositum - 반대(말)
+ * t.t. : terminus technicus - 전문용어
+ * et al : et alii - 그 밖의 다른 저자
+ * ed. : editio, editor : 판, 편
+ * p. : pagina : 쪽, 면
+ * A.D. : Anno Domini : 원뜻은 주님의 해, 서기
+ * a.Chr.n : ante Christum natum : 원뜻은 그리스도 탄생 전, 기원전
+ * p.Chr.n : post Christum natum : 원뜻은 그리스도 탄생 후, 기원후
+ * P.S : post striptum - 후기, 추신
+ * a.m. : ante meridiem : 원뜻은 정오 전, 오전
+ * p.m. : post meridiem : 원뜻은 정오 후, 오후
+ * @ : ad : (praep). ~에게, ~에
+ * & : et : 그리고, ~과
+ * Milennium : mile+anni : 천년대
+ * FAX : fac simile! : 비슷하게 만들어라!
+ * BUS : omnibus : 모든 사람에게
+
+### 라틴어 발음
+ * 로마 발음
+ * 고전 발음
+
+#### 모음
+ * 모음 i
+   * i가 단어 처음에 있을 때
+     * Iulius 율리우스
+     * iustitia 유스티티아(정의)
+     * iam 얌(이미)
+   * i가 단어 중간에 있을 때
+     * huius 후유스(이것의)
+     * Maius 마유스(5월의)
+     * 반모음 i는 후에 j가 된다. iustitia -> justitia -> justice
+     * 산스크리어 y 음가의 영향을 받아 형성된 라틴어 단어들이다.
+ * 모음 u
+   * 반모음 u는 현대 라틴어에서는 v로 표기되지만 고전 라틴어에서는 u로 표기 되었다.
+   * uita -> vita
+   * uenio -> venio
+ * 이중모음(diphthongus)
+   * au -> aurum 아우룸(금)
+   * ae -> saepe 쌔빼(가끔)
+   * oe -> poena 푀나(벌)
+   * eu -> Europa 에우로빠(유럽)
+   * ei -> deinde 데인데(rmfjrh sktj)
+   * ui -> qui 뀌(어느, 무슨)
+   * yi -> Harpyia 하르피아
+
+## 명사
+ 
+|        | sg.    | pl.      |
+|--------|--------|----------|
+| nom    | ros-a  | ros-ae   |
+| gen    | ros-ae | ros-arum |
+| dat    | ros-ae | ros-is   |
+| acc    | ros-am | ros-as   |
+| abl    | ros-a  | ros-is   |
+| voc    | ros-a  | ros-ae   |
+ * agricultura, -ae, f. 농업
+ * aqua, -ae, f. 물
+ * constantia, -ae, f. 항구성
+ * casa, -ae, f. 집
+ * causa, -ae, f. 원인, 소송
+ * corona, -ae, f. 화관, 왕관
+ * epistula, -ae, f. 편지
+ * fama, -ae, f. 소문, 명성
+ * familia, -ae, f. 가정
+ * forma, -ae, f. 모양, 고운 몸매
+ * formica, -ae, f. 개미
+ * fortuna, -ae, f. 행운, 운명
+ * historia, -ae, f. 역사
+ * ira, -ae, f. 화, 분노
+ * iustitia, -ae, f. 정의
+ * iniustitia, -ae, f. 불의, 불평등
+ * insula, -ae, f. 섬
+ * luna, -ae, f. 달
+ * magistra, -ae, f. 여선생
+ * mensa, -ae, f. 책상, 식탁
+ * patria, -ae, f. 조국, 자기 나라
+ * pecunia, -ae, f. 돈
+ * planta, -ae, f. 식물
+ * porta, -ae, f. 문, 입구
+ * puella, -ae, f. 소녀, 젊은 여자
+ * regina, -ae, f. 여왕
+ * rosa, -ae, f. 장미
+ * sapientia, -ae, f. 지혜
+ * schola, -ae, f. 학교
+ * silva, -ae, f. 숲
+ * stella, -ae, f. 별
+ * terra, -ae, f. 땅
+ * via, -ae, f. 길
+ * violentia, -ae, f. 폭력
+ * vita, -ae, f. 인생
+
+ * 제1변화 명사들은 대부분 여성명사이지만 예외적으로 남성명사가 있다.
+ * agricola, -ae, m.농부
+ * advena, -ae, m.이방인
+ * nauta, -ae, m. 선원
+ * poeta, -ae, m. 시인
