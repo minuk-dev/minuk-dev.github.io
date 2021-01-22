@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2020-12-09 10:58:08 +0900
+lastmod : 2021-01-22 13:46:36 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -927,6 +927,78 @@ int main () {
     cht.insert(line_t{B[i], dp[i]}, i);
   }
   cout << dp[N - 1];
+  return 0;
+}
+```
+
+## 기하 알고리즘
+### 교차점 검출
+```cpp
+#include <iostream>
+#include <vector>
+#define FASTIO() do{cin.tie(0);cout.tie(0);ios_base::sync_with_stdio(0);}while(0)
+using lld = long long;
+using namespace std;
+struct vector_t : public pair<lld, lld> {
+    lld& x;
+    lld& y;
+    vector_t() : x{first}, y{second}
+    {};
+    vector_t(lld f, lld s) : x{first}, y{second}
+    {first = f; second = s;};
+};
+
+lld crossValue(const vector_t& a, const vector_t& b) {
+  return a.x * b.y - b.x * a.y;
+}
+
+lld ccw(const vector_t& p1, const vector_t& p2, const vector_t& p3) {
+  lld cv = crossValue({p1.x - p2.x, p1.y - p2.y}, {p3.x - p2.x, p3.y - p2.y});
+  if (cv > 0) return 1;
+  if (cv == 0) return 0;
+  return -1;
+}
+
+bool isIntersect(vector_t p1, vector_t p2,
+    vector_t q1, vector_t q2) {
+    lld pq = ccw (p1, p2, q1) * ccw(p1, p2, q2);
+    lld qp = ccw (q1, q2, p1) * ccw(q1, q2, p2);
+    if (p1 > p2) swap(p1, p2);
+    if (q1 > q2) swap(q1, q2);
+    return (!pq && !qp) ? q1 <= p2 && p1 <= q2 : pq <= 0 && qp <= 0;
+}
+int main () {
+  vector_t p1, p2, p3, p4;
+  cin >> p1.x >> p1.y; cin >> p2.x >> p2.y;
+  cin >> p3.x >> p3.y; cin >> p4.x >> p4.y;
+  if (p1 > p2) swap(p1, p2);
+  if (p3 > p4) swap(p3, p4);
+  if (isIntersect(p1, p2, p3, p4)) {
+    cout << "1\n";
+    if (p1 == p3 && p2 != p4) {
+      cout << p1.x << " " << p1.y;
+    } else if (p1 == p4) {
+      cout << p1.x << " " << p1.y;
+    } else if (p2 == p3) {
+      cout << p2.x << " " << p2.y;
+    } else {
+      lld A = (p2.y - p1.y);
+      lld B = (p1.x - p2.x);
+      lld E = (A * p1.x) + (B * p1.y);
+      lld C = (p4.y - p3.y);
+      lld D = (p3.x - p4.x);
+      lld F = (C * p3.x) + (D * p3.y);
+      lld DE = A * D - B * C;
+      //printf("%lld %lld %lld %lld %lld %lld \n", A, B, C, D, E, F);
+      if (DE == 0) return 0;
+      long double x = (long double)((E * D) - (B * F)) / DE;
+      long double y = (long double)((A * F) - (E * C)) / DE;
+      cout.precision(20);
+      cout << x << " " << y;
+    }
+  } else {
+    cout << "0";
+  }
   return 0;
 }
 ```
