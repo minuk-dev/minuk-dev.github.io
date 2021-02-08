@@ -3,7 +3,7 @@ layout  : wiki
 title   : 라틴어
 summary :
 date    : 2021-01-11 13:53:08 +0900
-lastmod : 2021-01-20 15:47:50 +0900
+lastmod : 2021-01-25 10:20:26 +0900
 tags    :
 draft   : false
 parent  :
@@ -170,7 +170,28 @@ parent  :
  * vita, -ae, f. 인생
 
  * 제1변화 명사들은 대부분 여성명사이지만 예외적으로 남성명사가 있다.
- * agricola, -ae, m.농부
- * advena, -ae, m.이방인
- * nauta, -ae, m. 선원
- * poeta, -ae, m. 시인
+   * agricola, -ae, m.농부
+   * advena, -ae, m.이방인
+   * nauta, -ae, m. 선원
+   * poeta, -ae, m. 시인
+ * 겪에 있어서 예외명사
+   * pater familias 가장
+   * mater familias 주부
+   * filius familias 가남
+   * fillia familias 가녀
+ * 일부 여성명사들은 비슷한 뜻을 가진 남성명사의 복수 여격과 구별하기 위해 복수 여격과 탈격이 -abus가 된다.
+   * animus, -i, m. 정신, 마음 animis
+     * anima, -ae, f. 영혼
+     * animis -> animabus
+   * deus, -i, m. 신 deis
+     * dea, -ae, f. 여신
+     * deis -> deabus
+   * famulus, -i, m. 하인 famulis
+     * famula, -ae, f. 하녀
+     * famulis -> famulaebus
+   * filius, -i, m. filis
+     * filia, -ae, f. 딸
+     * fillies -> filliabus
+   * libertus, -i, m. 자유인 libertis
+     * liberta, -ae, f. 자유인 여자
+     * libertis -> libertabus

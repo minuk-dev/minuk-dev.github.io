@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-01-22 13:46:36 +0900
+lastmod : 2021-02-08 10:53:13 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -578,6 +578,144 @@ class NetworkFlow {
 
       return res;
     }
+};
+```
+
+## MCMF
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <algorithm>
+
+#define INF 987654321
+using namespace std;
+struct MCMF {
+  struct edge_t {
+    int t, inv, fl, dist;
+  };
+
+  int vn;
+  vector<int> lv, work, dst, h;
+  vector<bool> inq, chk;
+  vector<vector<edge_t>> edges;
+
+  MCMF(int n): vn(n), edges(vn), work(vn), dst(vn), inq(vn), chk(vn), h(vn) {}
+
+  void addEdge(int s, int d, int dist, int c) {
+    edge_t x { d, (int) edges[d].size(), c, dist};
+    edge_t y { s, (int) edges[s].size(), 0, -dist};
+
+    edges[s].push_back(x);
+    edges[d].push_back(y);
+  }
+
+  void init(int s, int d) {
+    dst.assign(vn, INF);
+    h.assign(vn, INF);
+    queue<int> q;
+    q.push(s);
+
+    while (!q.empty()) {
+      int f = q.front();
+      q.pop();
+      inq[f] = false;
+
+      for (const edge_t& e: edges[f]) {
+        if (e.fl && h[e.t] > h[f] + e.dist) {
+          h[e.t] = h[f] + e.dist;
+          if (!inq[e.t]) {
+            inq[e.t] = true;
+            q.push(e.t);
+          }
+        }
+      }
+    }
+
+    for (int i = 0; i < vn; ++ i) {
+      for (auto& e: edges[i]) {
+        if (e.fl) e.dist += h[i] - h[e.t];
+      }
+    }
+    priority_queue<pair<int, int>> pq;
+    pq.push({0, s});
+    dst[s] = 0;
+
+    while (!pq.empty()) {
+      pair<int, int> f = pq.top();
+      pq.pop();
+      int cost = - f.first;
+      int cur = f.second;
+
+      if (dst[cur] - cost) continue;
+      for (const auto& e: edges[cur]) {
+        if (e.fl && dst[e.t] > dst[cur] + e.dist) {
+          dst[e.t] = dst[cur] + e.dist;
+          pq.push({- dst[e.t], e.t});
+        }
+      }
+    }
+
+    for (int i = 0; i < vn; ++ i) {
+      dst[i] += h[d] - h[s];
+    }
+  }
+
+  bool update() {
+    int min_d = INF;
+    for (int i = 0; i < vn; ++ i) {
+      if (!chk[i]) continue;
+      for (const edge_t& e : edges[i]) {
+        if (e.fl && !chk[e.t])
+          min_d = min(min_d, dst[i] + e.dist - dst[e.t]);
+      }
+    }
+    if (min_d >= INF) return false;
+    for (int i = 0; i < vn; ++ i) {
+      if (!chk[i]) dst[i] += min_d;
+    }
+    return true;
+  }
+
+  int flowing(int s, int d, int fl) {
+    chk[s] = true;
+    if (s == d) return fl;
+
+    int nf;
+    for (int &i = work[s]; i < edges[s].size(); ++ i) {
+      edge_t& e = edges[s][i];
+      if (!chk[e.t] && dst[e.t] == dst[s] + e.dist && e.fl) {
+        int ret = flowing(e.t, d, min(fl, e.fl));
+        if (ret) {
+          e.fl -= ret;
+          edges[e.t][e.inv].fl += ret;
+          return ret;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  pair<int, int> solve(int s, int e) {
+    int cost = 0, dist = 0;
+    init(s, e);
+    do {
+      int tmp;
+      work.assign(vn, 0);
+      chk.assign(vn, false);
+      while (true) {
+        tmp = flowing(s, e, INF);
+        if (tmp == 0) break;
+
+        cost += dst[e] * tmp;
+        dist += tmp;
+        chk.assign(vn, false);
+      }
+    } while (update());
+    return {cost, dist};
+  }
 };
 ```
 
