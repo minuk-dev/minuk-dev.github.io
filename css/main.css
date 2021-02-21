@@ -149,3 +149,8 @@ form.gsc-search-box {
 .content td {
   border: solid;
 }
+
+img[src$="centerme"] {
+    display: block;
+    margin: 0, auto;
+}
