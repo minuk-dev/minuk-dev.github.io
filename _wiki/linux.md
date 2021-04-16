@@ -3,7 +3,7 @@ layout  : wiki
 title   : linux
 summary :
 date    : 2020-07-03 20:29:46 +0900
-lastmod : 2020-12-27 17:45:35 +0900
+lastmod : 2021-04-16 23:37:26 +0900
 tags    : [linux]
 draft   : false
 parent  :
@@ -14,6 +14,7 @@ parent  :
  * [[debug-linux]]
  * [[input-method]]
  * [[linux-study]]
+ * [[blk-mq]]
 
 ## 참고 사이트
 ### 참고사이트 모음

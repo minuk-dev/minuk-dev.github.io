@@ -2,19 +2,14 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-02-21 21:03:41 +0900
+lastmod: 2021-04-16 23:39:06 +0900
 ---
 ## 즐겨찾기
- * [[debug-linux]]
- * [[blk-mq]]
  * [[회고]]
- * [[lectures/human_behavior_and_psychology]]
  * [[latina]]
-* [[사지방]]
- * [[linux]]
- * [[Storage]]
  * [[english]]
  * [[others]]
+ * [[soma]]
 
 ### Algorithm
  * [[teamnote]]
@@ -22,9 +17,13 @@ lastmod: 2021-02-21 21:03:41 +0900
  * [[UCPC_2018_예선]]
  * [[정우 대회]]
 
+### Study
+ * [[soma]]
+ * [[linux]]
+ * [[Storage]]
+
 ### School
  * [[lectures]]
-
 
 ### Language
  * [[assembly]]
@@ -41,9 +40,12 @@ lastmod: 2021-02-21 21:03:41 +0900
 ### Mathematics
  * [[statistics]]
 
+### Tool
+ * [[tool]]
 ---
-## 계룡 개발 모임
+## 군대
  * [[계룡 개발 모임]]
+ * [[사지방]]
 
 ---
 ## 잡스러운 것들 모음
@@ -52,7 +54,7 @@ lastmod: 2021-02-21 21:03:41 +0900
  * [[버스 시간 메모]]
 
 ## 개인 생각
-### 군생활 회고
+### 회고
  * [[회고]]
 
 ### 잡생각
