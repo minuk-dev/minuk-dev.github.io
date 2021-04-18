@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-04-18 20:04:46 +0900
+lastmod : 2021-04-18 21:54:54 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -188,7 +188,7 @@ parent  : lectures
    * Store as fiels managed by database
    * Break into pieces and store in multiple tuples in separate relation
 
-### Organization of Recrods in Files
+### Organization of Records in Files
  * Heap : record can be placed anywhere in the file where there is space
  * Sequential : store records in sequential order, based on the value of the search key of each record
  * In a multitable clustring file oragnization : records of several different relations can be sotred in the same file
@@ -216,7 +216,7 @@ parent  : lectures
 
 ### Multitable Clustring File Organization
  * Store several relations in one file using a multitable clustering file organization
- * Good for queries involving department $\Bowtie$(`join`) instructor, and for queries involving one single department and its instructors
+ * Good for queries involving department $$\Bowtie$$(`join`) instructor, and for queries involving one single department and its instructors
  * Bad for queries involving only department
  * results in variable size records
  * Can add pointer chains to link records of a particular relation
@@ -308,3 +308,307 @@ parent  : lectures
  * Some databases support both representations
    * Called hybrid row/column stores
 
+## Chatper 14. Indexing
+### Basic Concepts
+ * Indexing mechanisms used to speed up access to desired data.
+ * Searhc Key - attribute to set of attributes used to look up rcords in a file
+ * An index file consists of records(called index entries) of the form (search-key + pointer)
+ * Index files are typically much smaller than the original file
+ * Two basic kinds of indices
+   * Ordered indices : search keys are stored in sorted order
+   * Hash indices: search keys are distributed uniformly across "uckets" using a "hash function".
+
+### Index Evaluation Metrics
+ * Access types supported efficiently
+   * Records with a specified value in the attribute
+   * Records with an attribute value falling in a speicifed range of values.
+ * Access time
+ * Insertion time
+ * Deletion time
+ * Space overhead
+
+### Ordered Indicies
+ * In an ordered index, index entires are stored sorted on the search key value.
+ * Clustring index : in a sequentially ordered file, the index whose search key specifies the sequential order of the file.
+   * Also called primary index
+   * The search key of a primary index is usaully but not necessarily the primary key.
+ * Secondary index : an index whose search key speicifies an order different from the sequential order of the file. Also called nonclustering index.
+ * Index-sequential file : sequential file ordered on a search key, with a clustering index on the search key.
+
+### Dense Index Files
+ * Dense index : index record appears for every search-key value in the file
+
+### Sparse Index Files
+ * Sparse Index : contains index records for only some search-key values.
+   * Applicable when records are sequentially ordered on search-key
+ * To locate a record with search-key vlaue K we:
+   * Find index record with largest search-key value < K
+   * Search file sequentially starting at the record to which the index record points
+ * Compared to dense indices:
+   * Less space and less maintenance overhead for insertions and deletions.
+   * Genearlly slower than dense index for locating records.
+ * Good tradeoff:
+   * for clustered index: sparse index with an index entry for every block in file, corresponding to least search-key value in the block.
+   * For unclusted index : sparse index on top of dense index(multilevel index)
+ * Index record points to a bucket that contains pointers to all the actual records with that particular search-key value.
+ * Secondary indices have to be dense
+
+### Multilevel Index
+ * If index dows not fit in memory, access becomes expensive.
+ * Solution: treat index kept on disk as a sequential file and construct a sparse index on it.
+   * outer index : a sparse index of the basic index
+   * inner index : the basic index file
+ * If even outer index is too large to fit in main memory, yet another level of index can be created, and so on.
+ * Indices at all levels much be updated on insertion or deletion from the file.
+ * Composite search key
+   * Values are sorted lexicographically
+
+### B+-Tree Index Files
+ * A B+-tree is a rooted tree satisfying the following properties:
+   * All paths from root to leaf are of the same length
+   * Each node that is not a root or a leaf has between $$\lceil x / 2 \rceil$$ and n children.
+   * A leaf node has between $$\lceil (n-1) / 2 \rceil$$ and n - 1 values
+   * Special cases:
+     * If the root is not aleaf, it has at least 2 children.
+     * If the root is a leaf (that is, there are no other nodes in the tree), it can have between 0 and (n-1) values.
+
+### B+-Tree Node Structure
+ * Typical node
+   * $$P_1, K_1, P_2, ..., P_{n-1}, K_{n-1}, P_n$$
+   * $$K_i$$ are the search-key values
+   * $$P_i$$ are pointers to children (for non-leaf nodes) or pointers to records or buckets of records (for leaf nodes).
+ * The search-keys in a node are ordered
+   * $$K_1 < K_2 < ... < K_${n-1}$$
+   * (Initially assume no duplicate keys, address duplicates later)
+
+### Leaf Nodes in B+-Trees
+ * Properties of a leaf node:
+   * For i= 1, ..., n-1, pointer $$P_i$$ points to a file record with search-key value $$K_i$$.
+   * If $$L_i, L_j$$ are leaf nodes and i < j, $$L_i$$'s search-key values are less than or equal to $$L_j$$'s search values
+   * $$P_n$$ points to next leaf node in search-key order
+
+### Non-Leaf Nodes in B+-Trees
+ * Non leaf nodes form a multi-level sparse index on the leaf nodes. For a non-leaf node with m pointer:
+   * All the search-keys in the subtree to which $$P_1$$ points are less than $$K_1$$
+   * For $$2 \le i \le n-1$$, all the search-keys in the subtree to which $$P_i$$ points have values greater than or equal to $$K_{i-1}$$ and less than $$K_i$$
+   * All the search-keys in the subtree to which $$P_n$$ points have values greater than or equal to $$K_{n-1}$$
+
+### Observations about B+-Trees
+ * Since the inter-node connections are done by pointers, "logically" close blocks need not be "physically" close.
+ * The non-leaf levels of the B+-tree form a hierarchy of sparse indices.
+ * The B+-tree contains a relatively small number of levels
+   * Level below root has at least 2 * $$\lceil n/2 \rceil$$ values
+   * Next level has at least 2 * $$\lceil n/2 \rceil * \lceil n/2 \rceil$$ values
+   * ... etc.
+   * If there are K search-key values in the file, the tree height is no more than $$\lceil log_{\lceil n/2 \rceil}(K) \rceil$$
+   * thus searches can be conduced efficiently.
+ * Insertions and deletions to the main file can be handled efficiently, as the index can be restructured in logarithmic time.
+
+### Queries on B+-Trees
+```
+funciton find(v)
+1. C = root
+2. while (C is not a leaf node)
+  1. Let i be least number s.t V <= K_i,
+  2. if there is no such number i then
+  3.  Set C = last non-null pointer in C
+  4. else if (v = C.K_i) Set C = P_{i+1}
+  5. else set C= C.P_{i}
+3. if for some i, K_i - V then return C.P_i
+4. else return null /* no record with search-key value v exists. */
+```
+
+ * Range qureies find all records with search key values in a given range
+   * See `function findRange(lb, ub)`
+   * Real implementations usually provide an iterator interface to fetch matching records one at a time, using a `next()` function
+
+```
+function findRange(lb, ub)
+/* Returns all records with search key value V such that lb <= V <= ub */
+  Set result Set = {};
+  Set C = root node
+  while (C is not a leaf node) begin
+    Let i = smallest nubmer such that lb <= C.K_i
+    if there is no such number i then begin
+      Let P_m = last non-null pointer in the node
+      Set C= C.P_m
+    end
+    else if (lb = C.K_i) then Set C = C.P_{i+1}
+    else Set C = C.P_i /* lb < C.K_i */
+  end
+  /* C is a leaf node */
+  Let i be the least value such that K_i >= lb
+  if there is no such i
+    then Set i = 1 + number of keys in C; /* To force move to next leaf */
+  Set done = false;
+  while (not done) begin
+    Let n = nubmer of keys in C.
+    if (i <= n and C.K_i <= ub) then begin
+      Add C.P_i to resultSet
+      Set i = i + 1
+    end
+    else if (i <= and C.K_i > ub)
+      then Set done = true;
+    else if (i > n and C.P_{n + 1} is not null)
+      then Set C = C.P_{n + 1}, and i = 1 /* Move to next leaf */
+    else Set done = true; /* No more leaves to the right */
+  end
+  return result Set;
+```
+
+ * If ther e are K search-key values in the file, the height of the tree is no more than $$\lceil log_{\lceil n / 2 \rceil} (K) \rceil$$.
+ * A node is generally the same size as a disk block, typically 4 kilobytes
+   *and n is typicall around 100 (40 bytes per index entry).
+ * With 1 million search key values and n = 100
+   * at most $$log_{50}(1,000,000)$$ = 4 nodes are accessed in a lookup traversal from root to leaf.
+ * Contrast this with a balanced binary tree with 1 million searhc key values around 20 nodes are accessed in a look up
+   * above difference is significant since very node access may need a disk I/O, costing around 20 milliseconds
+
+### Non-Unique Keys
+ * If a search key $$a_i$$ is not unique, create instead an index on a composite key ($$a_i, A_p$$), which is unique
+   * $$A_p$$ could be a primary key, record ID, or any other attribute that guarantees uniqueness
+ * Search for $$a_j = v$$ can be implemented by a range search on composite key, with range $$(v, - \inf)$$ to $$(v, + \inf)$$
+ * But more I/O operations are needed to fetch the actual records
+   * If the index is clustering, all accesses are sequential
+   * If the index is non-clustering, each record access may need an I/O operation
+
+### Updates on B+-Trees: Insertion
+ * Assume record already added to the file. Let:
+   * pr be pointer to the record
+   * v be the search key value of the record
+ * Find the leaf node in which teh search-key value would appear
+   * If there is room in the leaf node, insert (v, pr) pair in the leaf node
+   * Otherwise, split the node (along with the new (v, pr) entry) and propagate updates to parent nodes.
+ * Splitting a leaf node:
+   * take the n(search-key value, pointer) pairs( including the one being inserted) in sorted order. Place the first $$\lceil n/2 \rceil$$ in the original node, and the rest in a new node.
+   * let the new node be p, and let k be the least key value in p. Insert (k, p) in the parent of the node being split.
+   * If the parent is full, split it and propagate the split further up.
+ * Splitting of nodes proceeds upwards till a node that is not full is found.
+   * In the worst case the root node may be split increasing the height of the tree by 1.
+
+```
+procedure insert(value K, pointer P)
+  if (tree is empty) create an empty leaf node L, which is also the root
+  else Find the leaf node L that should contain key value K
+  if (L has less than n - 1 key values)
+    then insert_in_leaf(L, K, P)
+    else begin /* L has n - 1 key values already, split it */
+      Create node L`
+      Copy L.P_1, ... L.K_{n-1} to a block of memory T that can hold n (pointer, key-value) pairs
+      insert_in_leaf(T, K, P)
+      Set L`.P_n = L.P_n; Set L.P_n = L`
+      Erase L.P1 through L.K_{n-1} from L
+      Copy T.P_1 through T.K_{\lceil n/2 \rceil} from T into L starting at L.P_1
+      Copy T.P_{\lceil n/2 \rceil + 1} through T.K_n from T into L` strarting at L`.P_1
+      Let K` be the smallest key-value in L`
+      insert_in_parent(L, K`, L`)
+    end
+
+procedure insert_in_leaf(node L, value K, pointer P)
+  if (K < L.K_1)
+    then insert P, K into L just before L.P_1
+    else begin
+      Let K_i be the highest value in L that is less than or equal to K
+      Insert P, K into L just after L.K_i
+    end
+
+procedure insert_in_parent(node N, value K`, node N`)
+  if (N is the root of the tree)
+    then begin
+      Create a new node R containing N, K`, N` /* N and N` are pointers */
+      Make R the root of the tree
+      return
+    end
+  Let P = parent(N)
+  if (P has less than n pointers)
+    then insert (K`, N`) in P just after N
+    else begin /* Split P */
+      Copy P to a block of memory T that can hold P and (K`, N`)
+      Insert (K`, N`) into T jsut after N
+      Erase all entries from P; Create node P`
+      Copy T.P_1 ... T.P_{\lceil (n+1)/2 \rceil} into P
+      Let `` = T.K_{\lceil(n+1) / 2 \rceil} 
+      Copy T.P_{\lceil (n+1)/2 \rceil + 1} ... T.P_{n + 1} into P`
+      insert_in_parent(P, K``, P`)
+    end
+```
+
+### Updates on B+-Trees: Deletion
+ * Assume record already deleted from file. Let V be the search key value of the record, and Pr be the pointer to the record.
+ * Remove (Pr, V) from the leaf node
+ * If the node has too few entries due to the removal, and the entries in the node and a sibiling fit into a single node, the merge sibilings:
+   * Insert all the search-key values in the two nodes into a single node (the one on the left), and delete the other node.
+   * Delete the pari($$K_{i-1}, P_i$$), where $$P_i$$ is the pointer to the delted node, from its parent, recursively using the above procedure.
+ * Otherwise, if the node has too few entries due to the removal, but the entries in the node and a sibiling do not fit into a single node, then redistribute pointers:
+   * Redistribute the pointers between the node and a sibling such that both have more than the minimum number of entries.
+   * Update the coreesponding search-eky value in the parent of the node.
+ * The node deletions may cascade upwards till a node which has $$\lceil n/2 \rceil$$ or more pointers is found.
+ * If the root node has only one pointer after deletion, it is delted and the sole child becomes the root.
+
+### Complexity of Updates
+ * Cost (in terms of number of I/O Operations) of insertion and deletion of a single entry proportional to height of the tree
+   * With K entries and maximum fanout of n, worst case complexity of insert/delete of an entry is $$O(log_{\lceil n/2 \rceil}(K))$$
+ * In practice, number of I/O operations is less:
+   * Internal nodes tend to be in buffer
+   * Splits/merges are rare, most insert/delete operations only affect a leaf node
+ * Average node occupancy depends on insertion order
+   * 2/3rds with random, 1/2 with insertion in sorted order
+
+### Non-Unique Search Keys
+ * Alternatives to scheme described earlier
+   * Buckets on separate block (bad idea)
+   * List of tuple pointers with each key
+     * Extra code to handle long lists
+     * Deletion of a tuple can be expensive if there are many duplicates on search key
+       * Worst case complexity may be linear.
+     * Low space overhead, no extra cost for queries
+   * Make search key unique by adding a record-identifier
+     * Extr storage overhead for keys
+     * Simpler code for insertion/deletion
+     * Widely used
+
+### B+-Tree File Organization
+ * B+-Tree File Organization:
+   * Leaf nodes in a B+-tree file organization store records, instead of pointers
+   * Helps keep data records clustereed even when there are insertions/deletions/updates
+ * Leaf nodes are still required to be half full
+   * Since records are larger than pointers, the maximum number of records that can be stored in a leaf node is less than the number of pointers in a nonleaf node.
+ * Insertion and deletion are handled in the same way as insertion and deletion of entries in a B+-tree index.
+ * Good space utilization important since records use more space than pointers.
+ * To improve space utilization, involve more sibling nodes in redistribution during splits and merges
+   * Involving 2 siblings in redistribution (to avoid split / merge where possible) results in each node having at least $$\lfloor 2n/3 \rfloor$$ entries
+
+### Other Issues in Indexing
+ * Record relocation and secondary indices
+   * If a record moves, all secondary indices that store record pointers have to be updated
+   * Node splits in B+-tree file organizations become very expensive
+   * Solution: use search key of B+-tree file organization instead of record pointer in secondary index
+     * Add record-id if B+-tree file organization search key is non-uniuqe
+     * Extra traversal of file organization to locate record
+       * Higher cost for queries, but node splits are cheap
+
+---
+ * ?? 이건 왜 수업때 안하셨지 알아야하는거 같긴한데
+
+### Indexing Strings
+ * Variable length strings as keys
+   * Variable fanout
+   * Use space utilization as criterion for splitting, not number of pointers
+ * Prefix compression
+   * Key values at internal nodes can be prefixes of full key
+     * Keep enough characters to distringuish entries in the subtrees separated by the key value
+   * Keys in leaf node can be compressed by sharing common prefixes
+
+### Bulk Loading and Bottom-Up Build
+ * Inserting entries on-at-a-time into a B+-tree requires >= 1 IO per entry
+   * assuming leaf level does not fit in memory
+   * can be very inefficient for loading a large number of entries at a time (bulk loading)
+ * Efficient alternative 1:
+   * sort entries first (using efficient external-memory sort algorithms)
+   * insert in sorted order
+     * insertion will go to existing page (or cause a split)
+     * much improved IO performance, but most leaf nodes half full
+ * Efficient alternative 2: Bottom-up B+-tree construction
+   * As before sort entries
+   * And then create tree layer-by-layer, starting with leaf level
+   * Implemented as part of bulk-load utility by most database systems
