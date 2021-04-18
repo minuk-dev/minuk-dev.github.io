@@ -3,7 +3,7 @@ layout  : wiki
 title   : C++ Language
 summary : 
 date    : 2020-06-02 19:14:04 +0900
-lastmod : 2020-12-26 17:33:43 +0900
+lastmod : 2021-04-18 20:06:33 +0900
 tags    : [cpp]
 draft   : false
 parent  : 
@@ -15,6 +15,7 @@ parent  :
 ## Tips
 ### String
  * 문자열 관련해서 사용하기 쉬운 함수들
+
   ```cpp
   #define TRIM_SPACE "\t\n\v "
   vector<string> split(string input, char delimiter) {
@@ -32,12 +33,12 @@ parent  :
     string r = s.erase(s.find_last_not_of(drop) + 1);
     return r.erase(0, r.find_first_not_of(drop));
   }
-
   ```
 
 ### Time
  * 시간 잴때 사용하는 코드 더미
  * minuk.h
+
    ```c
    #ifndef __MINUK_H__
    #define __MINUK_H__
@@ -49,6 +50,7 @@ parent  :
    #endif /* __MINUK_H__ */
    ```
  * minuk.cc
+
    ```c
    #include "minuk.h"
    unsigned long long calclock(struct timespec *spclock, unsigned long long *total_time, unsigned long long *total_count){
