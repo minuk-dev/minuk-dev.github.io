@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-04-18 21:54:54 +0900
+lastmod : 2021-04-18 22:51:53 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -612,3 +612,139 @@ procedure insert_in_parent(node N, value K`, node N`)
    * As before sort entries
    * And then create tree layer-by-layer, starting with leaf level
    * Implemented as part of bulk-load utility by most database systems
+
+### Static Hasing
+ * A bucket is a unit of storage containing one or more entries (a bucket is typically a disk block).
+   * we obtain the bucket of an entry from its search-key value using a hash function
+ * Hash function h is a function from the set of all search-key values K to the set of all bucket addresses B.
+ * Hash function is used to locate entries for access, insertion as well as deletion.
+ * Entries with different search-key values may be mapped to the same bucket; thus entire bucket has to be searched sequentially to locate an entry.
+ * In a hash index, buckets sotre entries with pointers to records
+ * In a hash file-organization buckets store records
+
+### Handling of Bucket Overflows
+ * Bucket overflow can occur because of
+   * Insufficient buckets
+   * Skew in distribution of records. This can occur due to two reasons:
+     * multiple records has same serach-key value
+     * chosen hash function produces non-uniform distribution of key values
+ * Although the probability of bucket overflow can be reduced, it cannot be eliminated; it is handled by using overflow buckets.
+ * Overflow chaining : the overflow buckets of a given bucket are chained together in a linked list.
+ * Above scheme is called closed addressing(also called closed hasing or open hashing depending on the book you use)
+   * An alternavtive , called open addressing(also called open hasing or closed hasing depending on the book you use) which doese not use overflow buckets, is not suitable for database applications.
+
+### Deficiencies of Static Hasing
+ * In static hasing, function h maps search-key values to a fixed set of B of bucket addresses. Databases grow or shrink with time.
+   * If initial number of buckets is too small, and file grows, performance will degrade due to too much overflows.
+   * If space is allocated for anticipated growth, a significant amount of space will be wasted initially (and buckets will be underfull).
+   * If database shrinks , again space will be wasted.
+ * One solution: periodic re-organization of the file with a new hash function
+   * Expensive, disrupts normal operations
+ * Better solution : allow the number of buckets to be modified dynamically.
+
+### Dynamic Hasing
+ * Priodic rehasing
+   * If number of entries in a hash table becoms (say) 1.6 times size of hash table,
+     * create new hash table of size (say) 2 times the size of the previous hash table
+     * rehash all entries to new table
+ * Linear Hasing : Do rehasing in an incremental manner
+ * Extendable Hasing
+   * Tailored to disk based hasing, with buckets shared by multiple hash values
+   * Doubling of # of entreis in hash table, without doubling of buckets
+
+### Comparison of Ordered Indexing and Hashing
+ * Cost of periodic re-organization
+ * Relative frequency of insertions aned deletions
+ * Is it desirable to optimize average access time at the expense of worst-case access time?
+ * Expected type of queries:
+   * Hashing is generally better at retrieving records having a specified value of the key.
+   * If range queries are common, ordered indices are to be preferred
+ * In practice:
+   * PostgreSQL supports hash indices, but discourages use tdue to poor performance
+   * Oracle supports static hash organization, but not hash indices
+   * SQLServer supports only B+-trees
+
+### Multiple-Key Access
+ * Use multiple indices for certain types of queries.
+ * Possible strategies for processing query using indices on single attributes
+
+### Indicies on Multiple Keys
+ * Composite search keys are search keys containing more than one attribute
+ * Lexicographic ordering (a_1, a_2) < (b_1, b_2) if either
+   * a_1 < b_1 or, a_1 = b_1 and a_2 < b_2
+
+### Indices on Multiple Attributes
+ * With the where clause
+   * where A = "a" and B = "b"
+   * Using separate indices in less efficient - we may fetch many reecords (or pointers) that satisfy only one of the conditions.
+ * Can also efficiently handle
+   * where A = "a" and B < "b"
+ * But cannot efficiently handle
+   * where A < "a" and B = "b"
+
+### Other Features
+ * Covering indices
+   * Add extra attributes to index so (some) queries can avoid fetching the actual records
+   * Store extra attributes only at leaf
+ * Particularly useful for secondary indices
+
+### Creation of Indices
+ * Example
+   ```sql
+   create index takes_pk on takes (ID, course_ID, year, semester, section)
+   drop index takes_pk
+   ```
+ * Most database systems allow specification of type of index, and clustering
+ * Indices on primary key created automatically by all databases
+ * Some database also create indices on foreign key attributes
+ * Indices can greately speed up lookups, but impose cost on updates
+
+### Index Definition in SQL
+ * Create an index
+   ```sql
+   create index <index-name> on <relation-name> (<attribute-list>)
+   ```
+ * Use create unique index to indirectly specify and enforce the condition that the search kye is a candidate key is a candidate key.
+   * Not really required if SQL unique integrity constraint is supported
+ * To drop an index
+   ```sql
+   drop index <index-name>
+   ```
+ * Most database systems allow specification of type of index, and clustering.
+
+### Write Optimized Indices
+ * Performance of B+-trees can be poor for write-intensive workloads
+   * One I/O per leaf, assuming all internal nodes are in memory
+   * With magnetic disks, < 100 inserts per second per disk
+   * With flash memory, one page overwrite per insert
+ * Two approaches to reducing cost of writes:
+   * Lost-structured merge tree
+   * Buffer tree
+
+ *  이거 안한거 같은데? LSM 하고 Buffer Tree 는 내용이 많아서 하면 오래 걸리니까 일단 그만하고 Bitmap Index로 건너뛰어야겠다.
+
+---
+### Bitmap Indices
+ * Bitmap indices are a special type of index designed for efficient querying on multiple keys
+ * Records in a relation are assumed to be numbered sequentiall from, sqy, 0
+   * Given a number n it must be easy to retrieve record n
+     * Particularly easy if records are of fixed size
+ * Applicable on attributes that take on a relatively small number of distinct values
+ * A bitmap is simply an array of bits
+ * In its simplest form a bitmap index on an attribute has a bitmap for each value of the attribute
+   * Bitmap has as many bits as records
+   * In a bitmap for value v, the bit for a record is 1 if the record has the value v for the attribute, and is 0 otherwise
+ * Bitmap indices are useful for queries on multiple attributes
+   * not particularly useful for single attribute queries
+ * Queries are answered using bitmap operations
+   * Intersection (and)
+   * Union (or)
+ * Each operation takes two bitmaps of the same size and applies the operation on corresponding bits to get the result bitmap
+ * Bitmap indices generally very small compared with relation size
+ * Deletion needs to be handled properly:
+   * Existence bitmap to note if there is a vliad record at a record location
+   * Needed for complementation. not(A=v)
+ * Should keep bitmaps for all values, even null value:
+   * To correctly handle SQL null semantics for Not(A=v):
+     * intersect above result with (NOT bitmap-A-null)
+
