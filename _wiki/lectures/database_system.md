@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-04-18 22:51:53 +0900
+lastmod : 2021-04-19 13:48:18 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -748,3 +748,80 @@ procedure insert_in_parent(node N, value K`, node N`)
    * To correctly handle SQL null semantics for Not(A=v):
      * intersect above result with (NOT bitmap-A-null)
 
+## An Introduction to DB Programming
+ * Host Langauge
+ * Data sublanguage
+
+### DB API
+ * ESQL (Embedded SQL)
+ * ODBC (Open database connectivity)
+ * JDBC (java database connectivity)
+ * Web/DB interoperability : ASP/ADO
+
+### Tracsactions in application program
+ * AP contains one or more transactions
+ * A transaction contains one or more SQL statements
+
+### JDBC
+ * Connection:
+   * DriverManager.getConnection() : create connection instance
+   * createStatement() : create Statement instance
+ * Statement:
+   * executeQuery() : create ResultSet instance
+   * executeUpdate()
+ * ResultSet:
+   * next()
+   * getSTring()
+   * getInt()
+ * PreparedStatement:
+   * created by Connection's prepareStatement()
+   * Dynamic SQL
+   * setSTring()
+   * setInt()
+
+### Dynamic SQL
+ * Prepared statment:
+   * query를 컴파일하여 저장한 후 인자 값을 바꾸어가며 여러 번 수행가능
+
+```java
+public static void CSEE_Student_Name(String userid, String paswd) {
+  try {
+    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/dbname?useUnicode=True", userid, passwd);
+    Statement stmt = conn.createStatemet();
+    ResultSet rset = stmt.executeQuery("select name from student where dept_name= 'test'");
+
+    while (rset.next()) {
+      System.out.println("Student name: " + rset.getString("name"));
+    }
+  } catch (SQLException sqle) {
+    System.out.println("SQLException : " + sqle);
+  }
+}
+```
+
+### ESQL
+ * Source Program -> Oracle Precompiler -> Modified Source Program -> Compiler -> Object Program -> Linker -> Executable File
+ * Oracle Runtime Library(SQLLIB) is linked by Linker.
+
+### Dynamic SQL in ESQL
+ * PREPARE
+ * EXECUTE
+ * EXECUTE IMMEDIATE
+
+### ODBC
+ * Four types of Handle:
+   * Environment handle
+   * Connection handle
+   * Statement handle
+   * Descriptor handle
+
+### Web/DB Interoperability:ASP/ADO
+#### Web/DB Interoperability
+ * Web/DB 연동:
+   * 데이터베이스 기반의 웹 응용(Database-backed web application)
+   * Dynamic Web page (contents)
+   * DB 검색 결과 데이터를 browser를 통해 display하기 위한 HTML tagging
+ * Web programming with DB APIs:
+   * Stored Procedure 및 Oracle의 PL/SQL을 이용한 Web/DB 연동
+   * ASP, JSP, PHP의 Web/DB 연동 기능
+   * Example: ASP/ADO
