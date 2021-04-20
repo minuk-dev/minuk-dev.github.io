@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-04-19 13:48:18 +0900
+lastmod : 2021-04-20 11:44:39 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -15,27 +15,27 @@ parent  : lectures
    * Contents persist even when power is switched off.
    * Includes secondary and tertiary storea, as well as batter-backed up main-memory.
  * Factors
-   * Speed with which data can be accessed
-   * Cost per unit of data
-   * Reliability
+   * Speed with which data can be accessed (얼마나 데이터에 빠르게 접근 할수 있는가?)
+   * Cost per unit of data (데이터 당 비용, 가격적 측면)
+   * Reliability (신뢰성, 얼마나 안 날아가느냐? 고장이 안나느냐)
 
 ### Storage Hierarchy
  * Cache, Main memory, flash memory, magnetic disk, optical disk, magnetic tapes
- * primary storage : Fastest but volatile (cache, main memory)
- * secondary storage(on-line storage) : non-volatile, moderately fast access time (flash memory, magnetic disks)
- * tertiary storage(off-line storage, archival storage) : non-volatile, slow accesstime (magnetic tape, optical storage)
+ * primary storage : Fastest but volatile (cache, main memory), 매우 빠르지만 휘발성임. buffer로써 쓰임.
+ * secondary storage(on-line storage) : non-volatile, moderately fast access time (flash memory, magnetic disks), 비휘발성이고 상대적으로 빠른 접근 속도임
+ * tertiary storage(off-line storage, archival storage) : non-volatile, slow accesstime (magnetic tape, optical storage), 비휘발성이고 상대적으로 느리지만, 가격적 측면에서 좋음. 그래서 백업 플랜으로 사용
 
 ### Storage Interfaces
- * Disk interface standards families
+ * Disk interface standards families :이런게 있다만 알고가면 될듯
    * SATA (Seiral ATA), SAS(Serial Attached SCSI), NVMe(Non-Volatile Memory Express)
- * Disks usually connected directly to computer system
+ * Disks usually connected directly to computer system, 대부분의 경우 컴퓨터 시스템과 직접 연결되지만, 아닌 경우도 있는데, 아래와 같은 2 경우가 대표적이다.
  * Storage Area Networks (SAN) : a large nubmer of disks are connected by a high-speed network to a number of servers.
  * Network Attached Storage (NAS) : networked storage provides a file system interface using networked file system protocol, instead of providing a disk system interface.
 
 ### Magnetic Disks
- * Read-write head
- * Surface of platter divided into circular tracks : Over 50K-100K tracks sper platter on typical hard disks
- * Each track is divided into sectors.
+ * Read-write head (읽고 쓸때 head라는 것을 통해서 하게 된다. 이게 결과적으로 기계 장치이기 떄문에 속도가 느린것이다.)
+ * Surface of platter divided into circular tracks : Over 50K-100K tracks sper platter on typical hard disks (platter는 디스크의 한 판을 의미하는데 이를 원형 track들로 쪼갠다. 안쪽 track일수록 sector 개수가 적음.)
+ * Each track is divided into sectors. (각 track은 sector로 구성되어 있다.)
    * A sector is the smallest unit of data that can be read or written.
    * Sector size typically 512 bytes
    * Typical sectors per track : 500 to 1000 (on inner tracks) to 1000 to 2000 (on outer tracks)
@@ -51,7 +51,7 @@ parent  : lectures
    * initiates actions such as moving the disk arm to the right track and actually reading or writing the data
    * Computes and attaches checksums to each sector to verityf that data is read back correctly
      * If data is corrupted, with very high probability stored checksum won't match recomputed checksum
-   * Ensures successful writigin by reading back sector after wiriting it
+   * Ensures successful writigin by reading back sector after writing it
    * Perforams reammping of bad sectors
 
 ### Magnetic Hard disk Mechanism
@@ -64,33 +64,33 @@ parent  : lectures
 
 ### Performance Measures of Disks
  * Access time - the time it takes from when a read or write request is issued to when data transfer begins.
-   * Seek time - time it takes to reposition the arm over the correct track.
-     * Average seek time is 1/2 the worst case seek time.
+   * Seek time - time it takes to reposition the arm over the correct track. (head가 앞뒤로 움직이는 시간)
+     * Average seek time is 1/2 the worst case seek time. (평균 검색 시간은 최악의 경우의 1/2 이다.)
        * Would be 1/3 if all tracks had the same number of sectors, and we ignore the time to start and stop arm movement
      * 4 to 10 milliseconds on typical disks
-   * Rotational latency - time it takes for the sector to be accessed to appear under th thead.
+   * Rotational latency - time it takes for the sector to be accessed to appear under the thead. (회전시간)
      * 4 to 11 milliseconds on typical disks (5400 to 10000 r.p.m.)
-     * Average latency is 1/2 of the above latency.
+     * Average latency is 1/2 of the above latency. (평균 회전 시간은 최대 시간의 1/2이다.)
    * Overall latency is 5 to 20 msec depeding on disk model
- * Data-transfer rate - the rate at which data can be retrieved from or stored to the disk.
+ * Data-transfer rate - the rate at which data can be retrieved from or stored to the disk. (데이터 전송속도)
    * 25 to 200 MB per second max rate, lower for inner tracks.
 
- * Disk block is a logical unit for storage allocation and retrieval
-   * 4 to 16 kilobytes typciall
-     * Smaller blocks : more transfers from disk
-     * Larger blocks : more space wasted due to partially filled blocks
- * Sequential acccess pattern
-   * Successive requests are for successive disk blocks
-   * Disk seek required only for first block
- * Random access pattern
-   * Successive requrests are for blocks that can be anywhere on disk
-   * Each access requires a seek
-   * Transfer rates are low since a lot of time is wasted in seeks
- * I/O operations per second (IOPS)
+ * Disk block is a logical unit for storage allocation and retrieval (디스크 블록은 공간 할당과 검색의 논리적인 단위)
+   * 4 to 16 kilobytes typcially (일반적으로는 4kb~16kb 정도로 잡는다.)
+     * Smaller blocks : more transfers from disk (작게 잡는다면 디스크로부터 많이 전송받아야하고)
+     * Larger blocks : more space wasted due to partially filled blocks (크게 잡는다면 낭비되는 공간이 생긴다)
+ * Sequential acccess pattern (연속적인 접근 패턴)
+   * Successive requests are for successive disk blocks (연속적인 디스크 블록에서 연속적인 요청을 하는 패턴)
+   * Disk seek required only for first block (첫번째 block만을 찾으면 된다.)
+ * Random access pattern (랜덤 접근 패턴)
+   * Successive requrests are for blocks that can be anywhere on disk (연속적이지 않은 아무 영역의 블록을 연속적으로 요청하는 패턴)
+   * Each access requires a seek (매번 새롭게 찾아야한다.)
+   * Transfer rates are low since a lot of time is wasted in seeks (검색 시간으로 많이 버려지기에 데이터전송속도가 낮다.)
+ * I/O operations per second (IOPS) (초당 I/O 연산율)
    * Number of random block reads that a disk can support per second
    * 50 to 200 IOPS on current generation magnetic disks
- * Mean time to failure (MTTF) - the average time the disk is expected to run continuously without any failure.
-   * Typically 3 to 5 years
+ * Mean time to failure (MTTF) - the average time the disk is expected to run continuously without any failure. (고장까지 평균 시간)
+   * Typically 3 to 5 years (3년에서 5년)
    * Probability of failure of new disks is quite low, corresponding to a "theoretical MTTF" of 500,000 to 1,200,000 hours for a new disk
      * E.g an MTTF of 1,200,00 hours for a new disk means that given 1000 relatively new disks, on an average one will fail every 1200 hours
    * MTTF decreases as disk ages
@@ -134,25 +134,25 @@ parent  : lectures
 
 ### Summary
  * Magnetic disk
-   * Disk access time : seek time + rotational latency + data transfer time
-   * major portion : seek tiem + rotation latency
+   * Disk access time : seek time + rotational latency + data transfer time (탐색시간 + 회전 시간 + 전송 시간)
+   * major portion : seek time + rotation latency (대부분 탐색과 회전 시간이다)
  * Disk block : Unit of I/O between memory (DBMS buffer) and disk (database)
  * Disk : sete of disk blocks, entire database is persistently stored in blocks
  * DBMS buffer
    * set of buffer pages
    * limited space
-   * frequently and/or recetly accessed disk blocks are [[cached]]
+   * frequently and/or recently accessed disk blocks are cached.
 
 ## Chapter 13. Data Storage Structures
 ### File Organization
- * The database is stored as a coolection of files. Each file is a sequence of records. A record is a sequence of fields.
+ * The database is stored as a collection of files. Each file is a sequence of records. A record is a sequence of fields.
  * One approach
    * Assume record size if fixed
    * Each file has records of one particular type only
    * Different files are used for different relations
    * This case is easiest to implement.
 
-### Fixed-Length Records
+### Fixed-Length Records (고정 길이 레코드)
  * Simple approach
    * Store record i starting from byte n * (i - 1), where n is the size of each record.
    * Record access is simple but records may cross blocks
@@ -160,106 +160,115 @@ parent  : lectures
      * Deletion of record i:
        * move records i + 1, ..., n to i, ... , n - 1
        * move record n to i
-       * do not move records, but link all free records on a free list
+       * do not move records, but link all free records on a free list(링크드리스트로 관리하기 때문에 그냥 링크만 지운다.)
 
-### Variable-Length Records
+### Variable-Length Records (가변 길이 레코드)
  * Variable-length records arise in database systems in several ways:
    * Storage of multiple record types in a file.
-   * Record types that allow varaible lengths for one or more fields such as strings (varchar)
+   * Record types that allow varaible lengths for one or more fields such as strings (varchar).
    * Record types that allow repeating fields (used in some older data models).
  * Attributes are stored in order
  * Variable length attributes represented by fixed size (offset, length), with actual data stored after all fixed length attributes
  * Null values represented by null-value bitmap
 
-### Variable-Length Records : Slotted Page Structure
+### Variable-Length Records : Slotted Page Structure (가변 길이 레코드가 페이지에 저장되는 구조, Slotted Page structure)
  * Slotted page header contains:
-   * number of record enttries
-   * end of free space in the block
-   * location and size of each record
+   * number of record entries (몇개의 레코드를 가지고 있는지 이값으로 빈공간의 첫부분을 알아낼 수 있다)
+   * end of free space in the block (블록의 빈 공간의 끝이 어디인지)
+   * location and size of each record (각 레코드의 사이즈와 위치, 이걸 slot으로 저장)
  * Records can be moved around within a page to keep them contiguous with no empty space between them; entry in the header must be updated.
- * Pointers should not point directly to record -instead they should point to the entry for the record in header.
+ * Pointers should not point directly to record - instead they should point to the entry for the record in header.
 
 ### Storing Large Objects
  * ?? 이건 수업시간에 안한거 같긴 한데
  * E.g., blob/clob types
  * Records must be smaller than pages
  * Alternatives:
-   * Sore as files in file systems
+   * Store as files in file systems
    * Store as fiels managed by database
    * Break into pieces and store in multiple tuples in separate relation
 
 ### Organization of Records in Files
- * Heap : record can be placed anywhere in the file where there is space
- * Sequential : store records in sequential order, based on the value of the search key of each record
- * In a multitable clustring file oragnization : records of several different relations can be sotred in the same file
+ * Heap : record can be placed anywhere in the file where there is space (그냥 다 쌓아두는 거, 찾을 때 오래 걸림)
+ * Sequential : store records in sequential order, based on the value of the search key of each record (정렬해두는 것, 삽입 삭제때 문제가 생김)
+ * In a multitable clustering file oragnization : records of several different relations can be stored in the same file (관련성이 깊은 서로 다른 릴레이션 끼리 같은 파일에 저장해놓는것)
    * Motivation : store related records on the same block to minimize I/O
- * B+-tree file organization : Ordered storage even with inserts/ deletes
+ * B+-tree file organization : Ordered storage even with inserts/deletes
  * Hasing : a hash function computed on search key; the result specifies in which block of the file the record should be placed
 
 ### Heap File Organization
  * Records can be placed anywhere in the file where there is free space
- * Records usually do not moveonce allocated
+ * Records usually do not move once allocated
  * Important to be able to efficiently find free space within file
- * Free-space mape
+ * Free-space map
    * Array with 1 entry per block. Each entry is a few bits to a byte, and records fraction of block that is free
  * Free space map written to disk periodically, OK to have wrong (old) values for some entries (will be detected and fixed)
+ * 레벨을 여러겹을 두어서 Entry를 저장할 수도 있는데, 이때 상위 level의 entry는 하위 entries의 max값을 저장하여 최소한 몇개의 빈공간은 있을 것이다를 저장한다.
 
 ### Sequential File Organization
  * Suitable for applications that require sequtntial processing of the entire file
  * The records in the file are ordered by a search key.
  * Deletion : use pointer chains
  * Insertion : locate the position where the record is to be inserted
-   * if there is free space insert there
-   * If no free space, insert the record in an overflow block
-   * In either case, pointer chain must be updated
- * Neded to reorganized the file from time to time to restore sequential order
+   * if there is free space insert there (빈 공간이 있으면 거기에 삽입한다.)
+   * If no free space, insert the record in an overflow block (빈공간이 없다면 넘처셔 다른 블록에 저장한다.)
+   * In either case, pointer chain must be updated (두 경우 모두 pointer는 udpate해줘야 한다.)
+ * Needed to reorganized the file from time to time to restore sequential order
 
 ### Multitable Clustring File Organization
- * Store several relations in one file using a multitable clustering file organization
- * Good for queries involving department $$\Bowtie$$(`join`) instructor, and for queries involving one single department and its instructors
- * Bad for queries involving only department
- * results in variable size records
- * Can add pointer chains to link records of a particular relation
+ * Store several relations in one file using a multitable clustering file organization (관련이 깊은 여러개의 릴레이션을 하나의 파일에 모아서 저장하는 방식)
+ * Good for queries involving department $$\bowtie$$(`join`) instructor, and for queries involving one single department and its instructors (join연산에 효율적이다)
+ * Bad for queries involving only department (join연산을 하지 않고 하나의 릴레이션에 대해서만 조회하는 것은 성능이 나쁘다.)
+ * results in variable size records (가변 길이의 결과를 준다? ?? 이건 뭔 뜻이지?)
+ * Can add pointer chains to link records of a particular relation (관련 있는 릴레이션을 포인터를 통해서 묶을 수 있다.)
 
----
- * 이 뒤는 수업때는 안했는데 RAID랑은 다르게 모르는 내용이 있기 때문에 그냥 공부함.
+### Partitioning
+ * Table partitioning : Records in a relation can be partitioned into smaller relations that are stored separately
+ * Queries wrtieen on transaction must access records in all partitions
+ * Partitioning:
+   * Reduces costs of some operations such as free space management
+   * Allows different partitions to be stored on different storage devices
 
 ### Data Dictionary Storage
- * The Data dictionary (also called system catalog) stores metadata; that is, data about data, such as
-   * Inforamtion about relations
-     * names of relations
-     * names, types and lengths of attributes of each relation
-     * names and definitions of views
-     * integrity constraints
-   * User and accounting information, including passwords
-   * Statistical and descriptive data
+ * The Data dictionary (also called system catalog) stores metadata; that is, data about data, such as (메타데이터를 저장하는 곳을 데이터 딕셔너리, 시스템 카칼로그라고한다.)
+   * Inforamtion about relations (릴레이션에 대한 정보)
+     * names of relations (릴레이션들의 이름)
+     * names, types and lengths of attributes of each relation (각 릴레이션에 들어있는 요소의 이름, 타입, 길이)
+     * names and definitions of views (view에 대한 이름과 정의)
+     * integrity constraints (무결성 제약조건들)
+   * User and accounting information, including passwords (유저와 패스워드를 포함한 계정 정보들)
+   * Statistical and descriptive data (통계적, 설명적 자료)
      * number of tuples in each realtion
-   * Physical file organization information
+   * Physical file organization information (물리적인 파일 조직에 대한 정보)
      * How relation is stored (sequential/has/...)
      * Physical location of relation
-   * Information about indices
+   * Information about indices (인덱스에 대한 정보)
 
 ### Storage Access
- * blocks are units of both storage allocation and data transfer.
+ * blocks are units of both storage allocation and data transfer. (블록은 저장공간 할당과 데이터 전송의 기본 단위이다.)
  * Database system seeks to minimize the number of block transfers between the disk and memory. We can reduce the number of disk accesses by keeping as many blocks as possible in main memory.
- * Buffer : portion of main memory available to store copies of disk blocks.
- * Buffer manager : subsystem responsible for allocating buffer space in main memory.
+ * (데이터베이스는 디스크와 메모리 사이의 블록 전송의 횟수를 최소하하기 위한 방법을 찾는다. 메인 메모리에 최대한 많은 블록들을 저장하므로써 디스크 접근 횟수를 줄일 수 있다.)
+ * Buffer : portion of main memory available to store copies of disk blocks. (디스크 블록들의 복사본 저장을 하기 위한 메인메모리의 가용 영역)
+ * Buffer manager : subsystem responsible for allocating buffer space in main memory. (메인 메모리에 버퍼 공간을 할당하기 위한 서브시스템)
 
 ### Buffer Manger
- * Programs call on the buffer manager when they need a block from disk.
-   * If the block is already in the buffer, buffer manager returens the address of the block in main memory.
+ * Programs call on the buffer manager when they need a block from disk. (디스크에 있는 블록이 필요할 때, 프로그램은 버퍼 매니저를 호출하게 된다.)
+   * If the block is already in the buffer, buffer manager returns the address of the block in main memory. (만약 이미 버퍼에 블록이 존재한다면, 메인 메모리 상의 해당 블록의 주소를 넘겨준다.)
    * If the block is not in the buffer, the burffer manager
      * Allocates space in the buffer for the block.
        * Replacing (throwing out) some other block, if required, to make space for the new block.
-       * Replaced block writeen back to disk only if it was modified since the most recent time that it was written to/fetched from the disk.
+       * Replaced block written back to disk only if it was modified since the most recent time that it was written to/fetched from the disk.
      * Reads the block from the disk to the buffer, and returns the address of the block in main memory to requester.
- * Buffer replacement strategy
- * Pinned block : memory block that is not allowed to be writeen back to disk
-   * Pin done before reading/writing data from a block
-   * Unpin done when read/write is complete
-   * Multiple concurrent pin/unpin operations possible
-     * Keep a pin count, buffer block can be evicted only if pin count = 0
- * Shared and exclusive locks on buffer
+   * 만약 블록이 버퍼에 존재하지 않는다면,
+     * 블록을 위한 버퍼를 할당하고, 디스크로부터 내용을 읽어들인다. 그 뒤 요청자에게 메인메모리 상의 블록의 주소를 반환한다.
+     * 이때, 새로운 블록을 위한 공간이 없다면, 다른 블록을 교체한다. 교체할 때, 교체 대상 블록이 디스크로부터 꺼내온 뒤 수정이 된적이 있다면 디스크에 쓰게된다.
+ * Buffer replacement strategy (이후로부터는 버퍼를 어떻게 교체할것인지 서술)
+ * Pinned block : memory block that is not allowed to be written back to disk (디스크로 내려가는 것을 금지하는 블록을 Pinned 블록이라고 한다)
+   * Pin done before reading/writing data from a block (블록으로부터 읽기 전, 쓰기 전에 핀 작업이 수행되며)
+   * Unpin done when read/write is complete (읽기와 쓰기가 완료된 후에는 핀이 해제된다.)
+   * Multiple concurrent pin/unpin operations possible (여러개가 동시에 핀/언핀 연산이 가능하다)
+     * Keep a pin count, buffer block can be evicted only if pin count = 0 (만약 핀카운트가 0이 되었을 때 버퍼에서 내려가는게 가능하다)
+ * Shared and exclusive locks on buffer (버퍼는 공유되고 상호 베타적인 락을 가지게 된다.)
    * Needed to prevent concurrent operations from reading page contents as they are moved/reorganized, and to ensure only one move/reorganize at a time
    * Readers get shared lock, updates to a block require exclusive lock
    * Locking rules:
@@ -275,17 +284,19 @@ parent  : lectures
  * Mix strategy with hints on replacement strategy provided by the query optimizer is preferable
  * Toss-immediate strategy - frees the space occupied by a block as soon as the final tuple of that block has been processed
  * Most recently used (MRU) strategy - system must pin the block currently being processed. After final tuple of that block has been processed, the block is unpinned, and it becomes the most recently used block.
+ * LRU는 query 처리에는 적합하지 않은 Cache 방식인데, 가장 최근에 Access 된 데이터가 Access 될 가능성이 낮기 때문이다.
+ * 따라서 MRU를 채택하므로써 가장 최근에 접속 된 것이 나가도록 한다.
  * Buffer manager can use statistical information regarding the probability that a request will reference a particular relation
    * E.g. the data dictionary is frequently accessed. Heuristic : keep data-dictionary blocks in main memory buffer
- * Operating system or buffer manager may reorder wirtes
+ * Operating system or buffer manager may reorder writes
    * Can lead to corruption of data structures on disk.
      * E.g, linked list of blocks with mssing block on disk
      * File systems perform consistency check to detect such situations
    * Careful ordering of writes can avoid many such problems
- * BUffer mangaers support forced output of blocks for the purpose of recovery
+ * Buffer managers support forced output of blocks for the purpose of recovery
  * Nonvolatile write buffers speed up disk writes by writing blocks to a non-volatile RAM or flash buffer immeditately
    * Writes can be reordered to minimize disk arm movement
- * Log disk - adisk devoted to writing a sequential log of block updates
+ * Log disk - a disk devoted to writing a sequential log of block updates
    * Used exactly like nonvolatile RAM
      * Write to log disk is very fast since no seeks are required
  * Journaling file systems write data in-order to NV-RAM or log disk
@@ -311,12 +322,12 @@ parent  : lectures
 ## Chatper 14. Indexing
 ### Basic Concepts
  * Indexing mechanisms used to speed up access to desired data.
- * Searhc Key - attribute to set of attributes used to look up rcords in a file
+ * Search Key - attribute to set of attributes used to look up rcords in a file
  * An index file consists of records(called index entries) of the form (search-key + pointer)
  * Index files are typically much smaller than the original file
  * Two basic kinds of indices
    * Ordered indices : search keys are stored in sorted order
-   * Hash indices: search keys are distributed uniformly across "uckets" using a "hash function".
+   * Hash indices: search keys are distributed uniformly across "buckets" using a "hash function".
 
 ### Index Evaluation Metrics
  * Access types supported efficiently
@@ -331,7 +342,7 @@ parent  : lectures
  * In an ordered index, index entires are stored sorted on the search key value.
  * Clustring index : in a sequentially ordered file, the index whose search key specifies the sequential order of the file.
    * Also called primary index
-   * The search key of a primary index is usaully but not necessarily the primary key.
+   * The search key of a primary index is usually but not necessarily the primary key.
  * Secondary index : an index whose search key speicifies an order different from the sequential order of the file. Also called nonclustering index.
  * Index-sequential file : sequential file ordered on a search key, with a clustering index on the search key.
 
@@ -341,7 +352,7 @@ parent  : lectures
 ### Sparse Index Files
  * Sparse Index : contains index records for only some search-key values.
    * Applicable when records are sequentially ordered on search-key
- * To locate a record with search-key vlaue K we:
+ * To locate a record with search-key value K we:
    * Find index record with largest search-key value < K
    * Search file sequentially starting at the record to which the index record points
  * Compared to dense indices:

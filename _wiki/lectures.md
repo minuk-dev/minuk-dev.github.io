@@ -1,11 +1,11 @@
 ---
 layout  : wiki
 title   : 학교 수업
-summary : 
+summary :
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2021-04-18 18:42:47 +0900
+lastmod : 2021-04-20 19:23:17 +0900
 tags    : [lecture]
-parent  : 
+parent  :
 ---
 
 # 학교 수업
@@ -14,3 +14,4 @@ parent  :
 * [[lectures/image processing]]
 * [[lectures/human_behavior_and_psychology]]
 * [[lectures/database_system]]
+* [[lectures/wireless]]
