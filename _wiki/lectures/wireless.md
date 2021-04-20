@@ -1,10 +1,10 @@
 ---
 layout  : wiki
 title   : wireless 무선이동통신 수업
-summary : 
+summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-20 19:57:43 +0900
-tags    : 
+lastmod : 2021-04-20 22:38:43 +0900
+tags    : [wireless, lectures]
 parent  : lectures
 ---
 
@@ -84,7 +84,7 @@ parent  : lectures
 #### Binomial
  * Out of n dice, exactly k dice have the same value, and (n - k) dice have different values: $$(1-p)^{n-k}$$
  * $$P(X=k)=\binom{n}{k} p^{k}(1-p)^{n-k}$$
- * where k = 0, 1, 2, ..., n; n = 0, 1, 2, ...; p is teh success probability
+ * where k = 0, 1, 2, ..., n; n = 0, 1, 2, ...; p is the success probability
 
 #### Normal
  * $$f_X(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{\frac{-(x - \mu)^2}{2 \sigma ^2}}, for -\inf < x < \inf$$
@@ -93,4 +93,190 @@ parent  : lectures
  * $$E[X] = \mu, and Var(X) = \sigma^2$$
 
 #### Uniform
- * $$f_x(x) = \begin{cases} \frac{1}{b-a}, & \text{for $a \le x \le b$} \\ 0, \text{otherwise} \end{cases}$$
+ * $$f_x(x) = \begin{cases} \frac{1}{b-a}, & \text{for $a \le x \le b$} \\ 0, & \text{otherwise} \end{cases}$$
+ * $$F_X(x) = \begin{cases} 0, & \text{for $x < a$} \\ \frac{x-a}{b-a}, & \text{ for $a \le x \le b$} \\ 1, & \text{for $x > b$} \end{cases}$$
+ * $$E[X] = \frac{a+b}{2}, \text{ and } Var(X) = \frac{(b-a)^2}{12}$$
+
+#### Exponential
+ * $$f_X(x) = \begin{cases} 0, & $x<0$ \\ \labmda e^{-\lambda x}, & \text{for $0 \le x < \inf$} \end{cases}$$
+ * $$F_X(x) = \begin{cases} 0, & $x<0$ \\ 1 - e^{- \lambda x}, & \text{for $0 \le x < \inf$}$$
+ * $$E[X] = \frac{1}{\lambda}$$
+ * $$Var(X) = \frac{1}{\labmda ^ 2}$$
+
+### Multiple Random Variables
+ * There are cases whter the result of one experiment determines the values of several random variables
+ * The joint probabilities of these variables are:
+   * Discreate variables:
+     * $$p(x_1, ..., x_n) = P(X_1 = x_1, ..., X_n = x_n)$$
+   * Continuous variables:
+     * cdf : $$F_{x_1, x_2, ..., x_n}(x_1, ..., x_n) = P(X_1 \le x_1, ..., X_n \le x_n)$$
+     * pdf : $$f_{X_1, X_2, ..., X_n}(x_1, ..., x_n) = \frac{\partial^n F_{X_1, ..., X_n}(x_1, ..., x_n)}{\parital x_1 \partial x_2 ... \partial x_n}$$
+
+### Indpendence and Conditional Probability
+ * Independence : The random variables are said to be independent of each other when the occurrence of one does not affect the other. The pmf for discrete random variables in such a case is given by:
+     * $$p(x_1, x_2, ..., x_n) = P(X_1 = x_1)P(X_2=x_2) \cdots P(X_n = x_n)$$
+   * and for continous random variables as:
+     * $$F_{X_1, X_2, ..., X_n} = F_{X_1}(x_1)F_{X_2}(x_2) \cdots P(X_n = x_n)$$
+
+ * Conditional probability : is the probability that $$X_1 = x_1$$ given that $$X_2 = x_2$$. Then for discrete random variables the probability becomes:
+   * $$P(X_1 = x_1 | X_2 = x_2, ... , X_n = x_n) = \frac{P(X_1 = x_1, X_2 = x_2, ..., X_n = x_n)}{P(X_2 = x_2, ..., X_n = x_n)}$$
+ * and for continous random variables it is:
+   * $$P(X_1 \le x_1 | X_2 \le x_2 , ... , X_n \le x_n) = \frac{X_1 \le x_1, X_2 \le x_2, ..., X_n \le x_n}{P(X_2 \le x_2, ... , X_n \le x_n)}$$
+
+### Bayes Theorem
+ * A theorem concerning conditional probabilities of the form P(X | Y) (read: the proability of X, given Y) is:
+   * $$P(X|Y) = \frac{P(Y|X)P(X)}{P(Y)}$$
+   * where P(X) and P(Y) are the unconditional probabilities of X and Y respectively.
+
+### Importatnt Properties of Random Variables
+ * Sum property of the expected value:
+   * Expected value of the sum of random variables:
+     * $$E[\sum_{i=1}^n a_i X_i] = \sum_{i=1}^n a_iE[X_i]$$
+ * Product property of the expected value:
+   * Expected value of product of stochastically independent random variables:
+     * $$E[\prod_{i=1}^n X_i] = \prod_{i=1}^n E[X_i]$$
+ * Sum property of the variance:
+   * Variance of the sum of random variables is:
+     * $$Var[\sum_{i=1}^n a_iX_i] = \sum{i=1}^n a_i^2 Var(X_i) + 2 \sum_{i=1}^{n-1} \sum_{j=i+1}^n a_i a_j cov[X_i, X_j]$$
+     * where $$cov[X_i, X_j]$$ is the covariance of random variables $$X_i$$ and $$X_j$$ and
+     * $$cov[X_i, X_j] = E[(X_i-E[X_i])(E_j - E[X_j) \\ = E[X_i X_j] - E[X_i]E[X_j]$$
+ * If random variables are independent of each other, i.e., $$cov[X_i, X_j] = 0$$, then
+   * $$Var(\sum_{i=1}^n a_i X_i) = \sum_{i=1}^n a_i^2 Var(X_i)$$
+
+### Central Limit Theorem
+ * The Central Limit Theorem states that whenever a random sample ($$X_1, X_2, ..., X_n$$) of size n is taken from any distribution with expected value $$E[X_i] = \mu$$ and variance $$Var(X_i) = \sigma^2$$, where i=1, 2, ..., n, then their arithmetic mean is defined by:
+   * $$S_n = \frac{1}{n} \sum_{i=1}^{n} X_i$$
+
+ * The sample mean is approximated to a normal distribution with:
+   * $$E[S_n] = \mu$$ and $$Var(S_n) = \sigma^2 /n $$
+ * The larger the value of the sample size n, the better the approximation to the normal.
+ * This is very useful when inference between signals needs to be considered.
+
+## Queueing Theory
+### Poisson Arrival Model
+ * A Possion process is a sequence of events randomly spaced in time.
+ * For example, customers arriving at a bank and Geiger counter clicks are similar to packets arriving at a buffer.
+ * The rate $$\lambda$$ of a Possion process is the average number of events per unit time(over a long time).
+
+### Properties of a Poisson Process
+ * Properties of a Poisson process
+   * For a time interval [0, t), the probability of n arrivals in t units of time is:
+     * $$P_n(t) = \frac{(\labmda t)^n}{n!}e^{-\lambda t}$$
+   * For two disjoint (non overlapping) intervals (t1, t2) and (t3, t4), the number of arrivals in (t1, t2) is independent of arrivals in (t3, t4).
+
+### Interarrival Times of Poisson Process
+ * Interarrival times of a Possion process
+   * We pick an arbitrary starting point $$t_0$$ in time. Let $$T_1$$ be the time until the next arrival. We have
+     * $$P(T_1 > t) = P_0 (t) = e^{-\lambda t}$$
+   * Thus the distribution function of $$T_1$$ is given by
+     * $$F_{T_1} (t) = P(T_1 \le t) = 1 - e ^ {- \labmda t}$$
+ * The pdf of $$T_1$$ is given by:
+   * $$f_{T_1} (t) = \labmda e^{- \lambda t}$$
+   * Therefore, $$T_1$$ has an exponential distribution with mean rate $$\lambda$$.
+
+### Memoryless and Merging Properties
+ * Memoryless property:
+   * A random variable X has the property that "the future is independent of the past". i.e., the fact taht it hasn't happened yet, tells us nothing about how much longer it will take before it does happen.
+     * $$P(X > \delta +t | X > \delta) = P(X > t)$$
+ * Merging property:
+   * If we merge n Possion processes with distributions for the inter arrival times
+     * $$1 - e^{- \lambda i t}$$,
+     * where i = 1, 2, ..., n
+
+ * into one single process, then the result is a Possion process for which the inter arriavl times have the distribution $$1 - e^{-\lambda t}$$ with mean
+   * $$\lambda = \lambda_1 + \lambda_2 + ... + \lambda_n$$
+
+### Basic Queuing Systems
+ * What is queuing theory?:
+   * Queuing theory is the study of queues(sometimes called waiting lines).
+   * Can be used to describe real world queues, or more abstract queues, found in many branches of computer science, such as operating systems and networks.
+ * Basic queuing theory
+   * Queuing theory is divided into 3 main sections:
+     * Traffic flow
+     * Scheduling
+     * Facility design and employee allocation
+
+### Kendall's Notation
+ * D.G. Kendall in 1951 propsed a standard notation for classifying queuing systems into different types.
+ * Accordingly the systems were described by the notation A/B/C/D/E where:
+   * A : Distribution of inter arrival times of customers
+   * B : Distribution of service times
+   * C : Number of servers
+   * D : Maximum number of customers in the system
+   * E : Calling population size
+
+ * A and B can take any of the following distributions types:
+   * M : Exponential distribution (Markovian)
+   * D : Degenerate (or deterministic) distribution
+   * $$E_k$$ : Erlang distribution (k = shape parameter)
+   * $$H_k$$ : Hyper expoential with parameter k
+
+### Little's Law
+ * Assuming a queuing environment to be operating in a stable steady state where all initial transients have vanished, the key parameters characterizing the system are:
+   * $$\lambda$$ - the mean steady state consumer arrival
+   * $$N$$ - the average no. of customers in the system
+   * $$T$$ - the mean time spent by each customer in the system which gives:
+     * $$N = \lambda T$$
+
+### Markov Process
+ * A Markov process is one in which the next state of the process depends only on the present state, irrespective of any previous states taken by the process.
+ * The knowledge of the current state and the transition probabilties from this state allows us to predict the next state.
+
+### Birth-Death Process
+ * Special type of Markov process
+ * Often used to model a population (or, no.of jobs in a queue).
+ * If, at some time, the population has n entities (n jobs in a queue), then birth of another entity (arrival of another job) causes the state to change to n + 1.
+ * On the other hand, a death(a job removed from the queue for service) would cause the state to change to n-1.
+ * Any state transitions can be made only to one of the two neighboring states.
+
+### State Transition Diagram
+ * The state transition diagram of the continuous birth-death process.
+
+### M/M/1/inf or M/M/1 Queuing System
+ * When a customer arrives in this system it will be served if the server is free. Otherwise the customer is queued.
+ * In this system customers arrive according to a Poisson distribution and compete for the service in a FIFO (first in first out) manner.
+ * Service tiems are independent identically distributed (IID) random variables, the common distribution being exponential.
+
+### Queuing Model and State Transition Diagram
+ * The M/M/1/inf queuing model
+ * The state transition diagram of the M/M/1/inf queuing system
+
+### Equilibrium State Equations
+ * If mean arrival rate is $$\lambda$$ and mean service rate is $$\mu$$, i = 0, 1, 2, .. be the number of customers in the system and P(i) be the state probability of the system having i customers.
+ * From the state transition diagram, the equilibrium state equations are given by:
+   * $$\lambda P(0) = \mu P(1), i=0$$
+   * $$(\lambda + \mu) P(i) = \lambda P(i-1) + \mu P(i + 1), i \ge 1$$
+
+### Traffic Intensity
+ * We know that the P(0) is the probability of server being free. Since P(0) > 0, the necessary condition for a system being in steady state is,:
+   * $$\rho = \frac{\lambda}{\mu} < 1$$
+ * This means taht the arrival rate cannot be more than the service rate, otherwise an infinite queue will form and jobs will experience infinite service time.
+
+### Queuing System Metrics
+ * $$\rho = 1 - P(0)$$, is the probability of the server being busy. Therefore, we have
+   * $$P(i) = \rho^i (1 - \rho)$$
+ * The average number of customers in the system is
+   * $$L_s = \frac{\labmda}{\mu - \lambda}$$
+ * The average dwell time of customers is
+   * $$W_s = \frac{1}{\mu - \lambda}$$
+
+### Queuing System Metrics
+ * The average queuing length is
+   * $$L_q = \sum_{i=1}^{\inf} (i-1) P(i) = \frac{\rho^2}{1 - \rho} = \frac{\lambda ^ 2}{\mu(\mu-\lambda)}$$
+ * The average waiting time of customers is
+   * $$W_q = \frac{L_q}{\lambda} = \frac{\rho ^ 2}{\lambda(1 - \rho)} = \frac{\labmda}{\mu(\mu - \lambda)}$$
+ * The average number of customers in the system is
+   * $$L_s = \sum_{i=0}{\inf} i P(i) = \alpha + \frac{\rho \alpha ^ S P(0)}{S! (1 - \rho)^2}$$
+ * The average number dwell time of a customer in the system is given by
+   * $$W_S = \frac{L_S}{\lambda} = \frac{1}{\mu} + \frac{\alpha^S P(0)}{S_{\mu} S! (1 - \rho)^2}$$
+
+### M/G/1/inf Queuing Model
+ * We consider a single server queuing system whose arrival process is Poisson with mean arrival rate $$\lambda$$.
+ * Service times are independent and identically distributed with distribution function $$F_B$$ and pdf $$f_b$$.
+ * Jobs are scheduled for service as FIFO.
+
+### Basic Queuing Model
+ * Let N(t) denote the number of jobs in the system (those in queue plus in service) at time t.
+ * Let $$t_n$$ (n = 1, 2, ...) be the time of departure of the nth job and $$X_n$$ be the number of jobs in the system at time $$t_n$$ so that:
+   * $$X_n = N(t_n), \text{for n = $1, 2, ...}$$
+ * The stochastic process can be modeled as a discrete Markov chain known as imbedded Markov chain, which helps convert a non-Markovian problem into a Markovian one.
