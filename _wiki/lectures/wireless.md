@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-20 19:55:14 +0900
+lastmod : 2021-04-20 19:57:43 +0900
 tags    : 
 parent  : lectures
 ---
@@ -93,4 +93,4 @@ parent  : lectures
  * $$E[X] = \mu, and Var(X) = \sigma^2$$
 
 #### Uniform
- * $$f_x(x) = \begin{cases} \frac{1}{b-a}, & \text{for $$a \le x \le b$$} \\ 0, \text{otherwise} \end{cases}$$
+ * $$f_x(x) = \begin{cases} \frac{1}{b-a}, & \text{for $a \le x \le b$} \\ 0, \text{otherwise} \end{cases}$$
