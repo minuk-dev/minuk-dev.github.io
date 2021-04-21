@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-21 20:40:03 +0900
+lastmod : 2021-04-21 20:44:55 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -124,7 +124,7 @@ parent  : lectures
    * $$P(X_1 \le x_1 | X_2 \le x_2 , ... , X_n \le x_n) = \frac{X_1 \le x_1, X_2 \le x_2, ..., X_n \le x_n}{P(X_2 \le x_2, ... , X_n \le x_n)}$$
 
 ### Bayes Theorem
- * A theorem concerning conditional probabilities of the form P(X | Y) (read: the proability of X, given Y) is:
+ * A theorem concerning conditional probabilities of the form $$P(X | Y)$$ (read: the proability of X, given Y) is:
    * $$P(X|Y) = \frac{P(Y|X)P(X)}{P(Y)}$$
    * where P(X) and P(Y) are the unconditional probabilities of X and Y respectively.
 
@@ -266,7 +266,7 @@ parent  : lectures
  * The average waiting time of customers is
    * $$W_q = \frac{L_q}{\lambda} = \frac{\rho ^ 2}{\lambda(1 - \rho)} = \frac{\lambda}{\mu(\mu - \lambda)}$$
  * The average number of customers in the system is
-   * $$L_s = \sum_{i=0}{\infty} i P(i) = \alpha + \frac{\rho \alpha ^ S P(0)}{S! (1 - \rho)^2}$$
+   * $$L_s = \sum_{i=0}^{\infty} i P(i) = \alpha + \frac{\rho \alpha ^ S P(0)}{S! (1 - \rho)^2}$$
  * The average number dwell time of a customer in the system is given by
    * $$W_S = \frac{L_S}{\lambda} = \frac{1}{\mu} + \frac{\alpha^S P(0)}{S_{\mu} S! (1 - \rho)^2}$$
 
@@ -360,7 +360,7 @@ parent  : lectures
 ### Fouerier Transform Properties
  * $$\mathcal{F}(a g(t) + b h(t)) = a G(f) + b H(f)$$ : Linearity
  * $$\mathcal{F}(g(t - a)) = e^{- i 2 \pi a f}G(f)$$ : Shift in time
- * $$\mathcal{F}(e^{iat}g(t) = G(f - \frac{a}{2 \pi})$$ : Shift in frequency
+ * $$\mathcal{F}(e^{iat} g(t)) = G(f - \frac{a}{2 \pi})$$ : Shift in frequency
  * $$\mathcal{F}(g(at)) = \frac{1}{|a|} G(\frac{f}{a})$$ : Widening in time makes narrowing in frequency, or vice versa
  * $$\mathcal{F}(G(t)) = g(-f)$$ : Duality property
  * $$\mathcal{F}(\frac{d^n g(t)}{d t^n}) = (i 2 \pi f)^n G(f)$$
@@ -394,4 +394,4 @@ parent  : lectures
  * $$\mathcal{F}(sgn(t)) = \frac{1}{i \pi f}$$
  * $$\mathcal{F}(u (t)) = \frac{1}{2} (\frac{1}{i \pi f} + \delta (f))$$
  * $$\mathcal{F}(e^{- at} u(t)) = \frac{1}{a + i 2 \pi f}$$
- * $$\mathcal{F}(\sum_{n = - \infty}^{\infty} \delta (t - n T)) = \frac{1}{T} \sum_{k = - \infty}{\infty} \delta(f - \frac{k}{T})$$
+ * $$\mathcal{F}(\sum_{n = - \infty}^{\infty} \delta (t - n T)) = \frac{1}{T} \sum_{k = - \infty}^{\infty} \delta(f - \frac{k}{T})$$
