@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-21 15:52:52 +0900
+lastmod : 2021-04-21 16:38:13 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -44,7 +44,7 @@ parent  : lectures
    * For discreate random variables:
      * $$P(k) = P(X \le k) = \sum_{all \le k} P(X = k)$$
    * For continous random variables:
-     * $$F(x) = P(X \le x) = \int_{- \inf}^X f(x) dx$$
+     * $$F(x) = P(X \le x) = \int_{- \infty}^X f(x) dx$$
 
 ### Probability Density Function
  * The pdf f(x) of a continous random variable X is the derivative of the cdf F(x),
@@ -63,11 +63,11 @@ parent  : lectures
 
  * Continous Random Variable:
    * Expected value or mean value:
-     * $$E[X] = \int_{-\inf}^{\inf} xf(x) dx$$
+     * $$E[X] = \int_{-\infty}^{\infty} xf(x) dx$$
    * nth moment
-     * $$E[X^n] = \int_{-\inf}^{\inf} x^n f(x) dx$$
+     * $$E[X^n] = \int_{-\infty}^{\infty} x^n f(x) dx$$
    * nth central moment
-     * $$E[(X - E[X])^n] = \int_{-\inf}^{\inf} (x - E[X])^n f(x) dx$$
+     * $$E[(X - E[X])^n] = \int_{-\infty}^{\infty} (x - E[X])^n f(x) dx$$
    * Variance or the second central moment
      * $$\sigma^2 = Var(X) = E[(X-E[X])^2] = E[X^2] - E([X])^2$$
 
@@ -87,9 +87,9 @@ parent  : lectures
  * where k = 0, 1, 2, ..., n; n = 0, 1, 2, ...; p is the success probability
 
 #### Normal
- * $$f_X(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{\frac{-(x - \mu)^2}{2 \sigma ^2}}, for -\inf < x < \inf$$
+ * $$f_X(x)=\frac{1}{\sqrt{2 \pi} \sigma} e^{\frac{-(x - \mu)^2}{2 \sigma ^2}}, for -\infty < x < \infty$$
  * and the cumulative distribution function can be obtained by
- * $$F_X(x) = \frac{1}{\sqrt{2 \pi} \sigma} \int_{- \inf}^{x} e ^ {\frac{- (y - \mu)^2}{2 \sigma^2}} dy$$
+ * $$F_X(x) = \frac{1}{\sqrt{2 \pi} \sigma} \int_{- \infty}^{x} e ^ {\frac{- (y - \mu)^2}{2 \sigma^2}} dy$$
  * $$E[X] = \mu, and Var(X) = \sigma^2$$
 
 #### Uniform
@@ -98,10 +98,10 @@ parent  : lectures
  * $$E[X] = \frac{a+b}{2}, \text{ and } Var(X) = \frac{(b-a)^2}{12}$$
 
 #### Exponential
- * $$f_X(x) = \begin{cases} 0, & $x<0$ \\ \labmda e^{-\lambda x}, & \text{for $0 \le x < \inf$} \end{cases}$$
- * $$F_X(x) = \begin{cases} 0, & $x<0$ \\ 1 - e^{- \lambda x}, & \text{for $0 \le x < \inf$}$$
+ * $$f_X(x) = \begin{cases} 0, & $x<0$ \\ \lambda e^{-\lambda x}, & \text{for $0 \le x < \infty$} \end{cases}$$
+ * $$F_X(x) = \begin{cases} 0, & $x<0$ \\ 1 - e^{- \lambda x}, & \text{for $0 \le x < \infty$}$$
  * $$E[X] = \frac{1}{\lambda}$$
- * $$Var(X) = \frac{1}{\labmda ^ 2}$$
+ * $$Var(X) = \frac{1}{\lambda ^ 2}$$
 
 ### Multiple Random Variables
  * There are cases whter the result of one experiment determines the values of several random variables
@@ -161,7 +161,7 @@ parent  : lectures
 ### Properties of a Poisson Process
  * Properties of a Poisson process
    * For a time interval [0, t), the probability of n arrivals in t units of time is:
-     * $$P_n(t) = \frac{(\labmda t)^n}{n!}e^{-\lambda t}$$
+     * $$P_n(t) = \frac{(\lambda t)^n}{n!}e^{-\lambda t}$$
    * For two disjoint (non overlapping) intervals (t1, t2) and (t3, t4), the number of arrivals in (t1, t2) is independent of arrivals in (t3, t4).
 
 ### Interarrival Times of Poisson Process
@@ -169,9 +169,9 @@ parent  : lectures
    * We pick an arbitrary starting point $$t_0$$ in time. Let $$T_1$$ be the time until the next arrival. We have
      * $$P(T_1 > t) = P_0 (t) = e^{-\lambda t}$$
    * Thus the distribution function of $$T_1$$ is given by
-     * $$F_{T_1} (t) = P(T_1 \le t) = 1 - e ^ {- \labmda t}$$
+     * $$F_{T_1} (t) = P(T_1 \le t) = 1 - e ^ {- \lambda t}$$
  * The pdf of $$T_1$$ is given by:
-   * $$f_{T_1} (t) = \labmda e^{- \lambda t}$$
+   * $$f_{T_1} (t) = \lambda e^{- \lambda t}$$
    * Therefore, $$T_1$$ has an exponential distribution with mean rate $$\lambda$$.
 
 ### Memoryless and Merging Properties
@@ -256,17 +256,17 @@ parent  : lectures
  * $$\rho = 1 - P(0)$$, is the probability of the server being busy. Therefore, we have
    * $$P(i) = \rho^i (1 - \rho)$$
  * The average number of customers in the system is
-   * $$L_s = \frac{\labmda}{\mu - \lambda}$$
+   * $$L_s = \frac{\lambda}{\mu - \lambda}$$
  * The average dwell time of customers is
    * $$W_s = \frac{1}{\mu - \lambda}$$
 
 ### Queuing System Metrics
  * The average queuing length is
-   * $$L_q = \sum_{i=1}^{\inf} (i-1) P(i) = \frac{\rho^2}{1 - \rho} = \frac{\lambda ^ 2}{\mu(\mu-\lambda)}$$
+   * $$L_q = \sum_{i=1}^{\infty} (i-1) P(i) = \frac{\rho^2}{1 - \rho} = \frac{\lambda ^ 2}{\mu(\mu-\lambda)}$$
  * The average waiting time of customers is
-   * $$W_q = \frac{L_q}{\lambda} = \frac{\rho ^ 2}{\lambda(1 - \rho)} = \frac{\labmda}{\mu(\mu - \lambda)}$$
+   * $$W_q = \frac{L_q}{\lambda} = \frac{\rho ^ 2}{\lambda(1 - \rho)} = \frac{\lambda}{\mu(\mu - \lambda)}$$
  * The average number of customers in the system is
-   * $$L_s = \sum_{i=0}{\inf} i P(i) = \alpha + \frac{\rho \alpha ^ S P(0)}{S! (1 - \rho)^2}$$
+   * $$L_s = \sum_{i=0}{\infty} i P(i) = \alpha + \frac{\rho \alpha ^ S P(0)}{S! (1 - \rho)^2}$$
  * The average number dwell time of a customer in the system is given by
    * $$W_S = \frac{L_S}{\lambda} = \frac{1}{\mu} + \frac{\alpha^S P(0)}{S_{\mu} S! (1 - \rho)^2}$$
 
@@ -278,29 +278,29 @@ parent  : lectures
 ### Basic Queuing Model
  * Let N(t) denote the number of jobs in the system (those in queue plus in service) at time t.
  * Let $$t_n$$ (n = 1, 2, ...) be the time of departure of the nth job and $$X_n$$ be the number of jobs in the system at time $$t_n$$ so that:
-   * $$X_n = N(t_n), \text{for n = $1, 2, ...}$$
+   * $$X_n = N(t_n), \text{for n = 1, 2, ...}$$
  * The stochastic process can be modeled as a discrete Markov chain known as imbedded Markov chain, which helps convert a non-Markovian problem into a Markovian one.
 
 ### Queuing System Metrics
  * The average number of jobs in the system, in the steady state is:
    * $$E[N] = \rho + \frac{\lambda^2 E[B^2]}{2(1-\rho)}$$
  * The average dwell time of customers in the system is:
-   * $$W_s = \frac{E[N]}{\labmda} = \frac{1}{\mu} + \frac{\lambdaE[B^2]}{2(1-\rho)}$$
+   * $$W_s = \frac{E[N]}{\lambda} = \frac{1}{\mu} + \frac{\lambda E[B^2]}{2(1-\rho)}$$
  * The average waiting time of customers in the queue is:
    * $$E[N] = \lambda W_q + \rho$$
  * Average wiating time of customers in the queue is:
-   * $$W_q = \frac{\labmdaE[B^2]}{2(1-\rho)}$$
+   * $$W_q = \frac{\lambda E[B^2]}{2(1-\rho)}$$
  * The average queue length is:
-   * $$L_q = \frac{\labmda^2E[B^2]}{2(1-\rho)}$$
+   * $$L_q = \frac{\lambda^2E[B^2]}{2(1-\rho)}$$
 
 ## Fourier Transform
 ### Dirac Delta Function
  * The dirac delta function can be loosely thought of as a function on the real line which is zero everywhere except at the origin, where it is infinite:
-   * $$\delta(x) = \begin{cases} \inf, & x = 0 \\ 0, & x \not = 0 \end{cases}$$
+   * $$\delta(x) = \begin{cases} \infty, & x = 0 \\ 0, & x \not = 0 \end{cases}$$
  * and which is also constrained to satisfy the identity:
-   * $$\int_{-\inf}^{\inf} \delta (x) dx = 1$$
+   * $$\int_{-\infty}^{\infty} \delta (x) dx = 1$$
  * An important property:
-   * $$\int_{-\inf}^{\inf} f(x) \detal(x) dx = f(0)$$
+   * $$\int_{-\infty}^{\infty} f(x) \delta(x) dx = f(0)$$
    * where f is a suita ble test function.
 
 ### Unit Step Function
@@ -336,4 +336,28 @@ parent  : lectures
      * Is the response of the system to a unit impulse input $$\delta (t)$$
      * $$h(t) = LTI[\delta(t)]$$
    * Very Important Result:
-     * $$y(t) = LTI[x(t)] \\ = LTI[x(t) * \delta(t)] \\ = LTI[\int_{-\inf}^{\inf} x(\tau)\delta(t - \tau) d \tau] \\ = \int_{-\inf}^{\inf} x(\tau) LTI[\delta(t - \tau)] d \tau \\ = \int_{-\inf}^{\inf} x(\tau)h(t - \tau) d \tau \\ = x(t)*h(t)$$
+     * $$y(t) = LTI[x(t)] \\ = LTI[x(t) * \delta(t)] \\ = LTI[\int_{-\infty}^{\infty} x(\tau)\delta(t - \tau) d \tau] \\ = \int_{-\infty}^{\infty} x(\tau) LTI[\delta(t - \tau)] d \tau \\ = \int_{-\infty}^{\infty} x(\tau)h(t - \tau) d \tau \\ = x(t)*h(t)$$
+     * 여기서 적분을 LTI 밖으로 꺼낼 수 있는 것은 Linearity, $$LTI[\delta(t-\tau)]$$ 를 계산할수 있는 것은 Time-invariant 때문이다.
+
+### Taylor Series
+ * Definition:
+   * The Taylor series of a function f that is differentiable in a neighborhood of a, is the power series:
+     * $$f(a) + \frac{f'(a)}{1!} (x - a) + \frac{f''(a)}{2!} (x - a)^2 + \frac{f^{(3)}(a)}{3!} (x - a)^3 + \cdots$$
+   * Thus, we can say:
+     * $$e^x = \sum_{n = 0}^{\infty} \frac{x^n}{n!} \text{for all x}$$
+     * $$cos x = \sum_{n = 0}^{\infty} \frac{(-1)^n}{(2n)!} x^{2n} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots \text{for all x}$$
+     * $$sin x = \sum_{n = 0}^{\infty} \frac{(-1)^n}{(2n + 1)!} x^{2n + 1} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots \text{for all x}$$
+ * Euler's Formula:
+   * $$e^{ix} = cos(x) + i sin(x)$$
+   * since:
+     * $$e^{iz} = 1 + iz + \frac{(iz)^2}{2!} + \frac{(iz)^3}{3!} + \cdots \\ = 1 + iz - \frac{z^2}{2!} - \frac{iz^3}{3!} + \cdots \\ = (1 - \frac{z^2}{2!} + \frac{z^4}{4!} - \cdots) + i (z - \frac{z^3}{3!} + \frac{z^5}{5!} - \cdots ) \\ = cos(z) + i sin(z)$$
+ * The Fourier transform of a funciton x is defined by $$X(f) = \int_{- \infty}^{\infty} x(t) e ^{-i 2 \pi f t} dt, \text{ for } f$$.
+ * When the idependent variable t represents time (with unit of seconds), the transform variable f represents frequecy (in hertz).
+ * If x is a continuous function, then it can be reconstructed from x by the inverse transform:
+   * $$x(t) = \int_{-\infty}{\infty} X(f) e^{i 2 \pi f t} df, \text{ for } t$$
+ * Note that a symbol of a Fourier transform is capitalized.
+
+### Fouerier Transform Properties
+ * $$\mathcal{F}(a g(t) + b h(t)) = a G(f) + b H(f)$$ : Linearity
+ * $$\mathcal{F}(g(t - a)) = e^{- i 2 \pi a f}G(f)$$ : Shift in time
+ * $$\mathcal{F}(e^{iat} g(t)} = G(f - \frac{a}{2 \pi})$$ : Shift in frequency
