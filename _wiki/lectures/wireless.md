@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-21 16:38:13 +0900
+lastmod : 2021-04-21 20:40:03 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -99,7 +99,7 @@ parent  : lectures
 
 #### Exponential
  * $$f_X(x) = \begin{cases} 0, & $x<0$ \\ \lambda e^{-\lambda x}, & \text{for $0 \le x < \infty$} \end{cases}$$
- * $$F_X(x) = \begin{cases} 0, & $x<0$ \\ 1 - e^{- \lambda x}, & \text{for $0 \le x < \infty$}$$
+ * $$F_X(x) = \begin{cases} 0, & $x<0$ \\ 1 - e^{- \lambda x}, & \text{for $0 \le x < \infty$} \end{cases} $$
  * $$E[X] = \frac{1}{\lambda}$$
  * $$Var(X) = \frac{1}{\lambda ^ 2}$$
 
@@ -110,7 +110,7 @@ parent  : lectures
      * $$p(x_1, ..., x_n) = P(X_1 = x_1, ..., X_n = x_n)$$
    * Continuous variables:
      * cdf : $$F_{x_1, x_2, ..., x_n}(x_1, ..., x_n) = P(X_1 \le x_1, ..., X_n \le x_n)$$
-     * pdf : $$f_{X_1, X_2, ..., X_n}(x_1, ..., x_n) = \frac{\partial^n F_{X_1, ..., X_n}(x_1, ..., x_n)}{\parital x_1 \partial x_2 ... \partial x_n}$$
+     * pdf : $$f_{X_1, X_2, ..., X_n}(x_1, ..., x_n) = \frac{\partial^n F_{X_1, ..., X_n}(x_1, ..., x_n)}{\partial x_1 \partial x_2 ... \partial x_n}$$
 
 ### Indpendence and Conditional Probability
  * Independence : The random variables are said to be independent of each other when the occurrence of one does not affect the other. The pmf for discrete random variables in such a case is given by:
@@ -360,4 +360,38 @@ parent  : lectures
 ### Fouerier Transform Properties
  * $$\mathcal{F}(a g(t) + b h(t)) = a G(f) + b H(f)$$ : Linearity
  * $$\mathcal{F}(g(t - a)) = e^{- i 2 \pi a f}G(f)$$ : Shift in time
- * $$\mathcal{F}(e^{iat} g(t)} = G(f - \frac{a}{2 \pi})$$ : Shift in frequency
+ * $$\mathcal{F}(e^{iat}g(t) = G(f - \frac{a}{2 \pi})$$ : Shift in frequency
+ * $$\mathcal{F}(g(at)) = \frac{1}{|a|} G(\frac{f}{a})$$ : Widening in time makes narrowing in frequency, or vice versa
+ * $$\mathcal{F}(G(t)) = g(-f)$$ : Duality property
+ * $$\mathcal{F}(\frac{d^n g(t)}{d t^n}) = (i 2 \pi f)^n G(f)$$
+ * $$\mathcal{F}(t^n g(t) = (\frac{i}{2 \pi}) ^n \frac{d^n G(f)}{df^n}$$
+ * $$\mathcal{F}((g * h)(t)) = G(f)H(f)$$
+ * $$\mathcal{F}(g(t)h(t)) = (G*H)(f)$$
+
+ * Fourier Transform of $$f(t) e^{i 2 \pi f_0 t}$$:
+   * $$F(f + f_0)$$ 이므로 $$e^{i 2 \pi f_0 t}$$ 를 원함수에 곱한다는 것은 주파수 영역에서 $$f_0$$만큼 평행이동한다는 것을 의미한다.
+   * 이때 $$e^{i 2 \pi f_0 t} = cos(2 \pi f_0 t)$$ 이기 때문에, 아래 식 또한 같은 의미를 가진다.
+   * $$f(t) cos(2 \pi f_0 t)$$
+
+### Fourier Transform of Various Function
+ * $$\mathcal{F}(rect(at)) = \frac{1}{|a|} sinc(\frac{f}{a})$$
+ * $$\mathcal{F}(sinc(at)) = \frac{1}{|a|} rect(\frac{f}{a})$$
+ * $$\mathcal{F}(sinc^2(at)) = \frac{1}{|a|} tri(\frac{f}{a})$$
+ * $$\mathcal{F}(tri(at)) = \frac{1}{|a|} sinc^2 (\frac{f}{a})$$
+ * $$\mathcal{F}(e^{- \alpha t^2}) = \sqrt{\frac{\pi}{\alpha}} e^{-\frac{(\pi f)^2}{\alpha}}$$
+ * $$\mathcal{F}(e^{i \alpha t^2}) = \sqrt{\frac{\pi}{\alpha}} e^{-i \frac{\pi ^2 f ^2}{\alpha} - \frac{\pi}{4}}$$
+ * $$\mathcal{F}(cos(at^2)) = \sqrt{\frac{\pi^2 f^2}{a} cos(\frac{\pi^2 f^2}{a} - \frac{\pi}{4})}$$
+ * $$\mathcal{F}(sin(at^2)) = -\sqrt{\frac{\pi^2 f^2}{a} sin(\frac{\pi^2 f^2}{a} - \frac{\pi}{4})}$$
+ * $$\mathcal{F}(e^{-a |t|}) = \frac{2 a}{a^2 + 4 \pi^2 f ^2}$$
+ * $$\mathcal{F}(\frac{1}{\sqrt{|t|}}) = \frac{1}{\sqrt{|f|}}$$
+ * $$\mathcal{F}(1) = \delta (f)$$
+ * $$\mathcal{F}(\delta (t)) = 1$$
+ * $$\mathcal{F}(e^{iat}) = \delta (f - \frac{a}{2 \pi })$$
+ * $$\mathcal{F}(cos(at)) = \frac{\delta (f - \frac{a}{2 \pi}) + \delta (f + \frac{a}{2 \pi})}{2}$$
+ * $$\mathcal{F}(sin(at)) = i \frac{\delta (f + \frac{a}{2 \pi}) + \delta (f - \frac{a}{2 \pi})}{2}$$
+ * $$\mathcal{F}(t^n) = (\frac{i}{2 \pi})^n \delta^{(n)} (f)$$
+ * $$\mathcal{F}(\frac{1}{t^n}) = -i \pi \frac{(-i 2 \pi f)^{n - 1}}{(n-1)!} sgn(f)$$
+ * $$\mathcal{F}(sgn(t)) = \frac{1}{i \pi f}$$
+ * $$\mathcal{F}(u (t)) = \frac{1}{2} (\frac{1}{i \pi f} + \delta (f))$$
+ * $$\mathcal{F}(e^{- at} u(t)) = \frac{1}{a + i 2 \pi f}$$
+ * $$\mathcal{F}(\sum_{n = - \infty}^{\infty} \delta (t - n T)) = \frac{1}{T} \sum_{k = - \infty}{\infty} \delta(f - \frac{k}{T})$$
