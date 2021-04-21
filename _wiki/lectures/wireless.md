@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-20 22:38:43 +0900
+lastmod : 2021-04-21 15:52:52 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -280,3 +280,60 @@ parent  : lectures
  * Let $$t_n$$ (n = 1, 2, ...) be the time of departure of the nth job and $$X_n$$ be the number of jobs in the system at time $$t_n$$ so that:
    * $$X_n = N(t_n), \text{for n = $1, 2, ...}$$
  * The stochastic process can be modeled as a discrete Markov chain known as imbedded Markov chain, which helps convert a non-Markovian problem into a Markovian one.
+
+### Queuing System Metrics
+ * The average number of jobs in the system, in the steady state is:
+   * $$E[N] = \rho + \frac{\lambda^2 E[B^2]}{2(1-\rho)}$$
+ * The average dwell time of customers in the system is:
+   * $$W_s = \frac{E[N]}{\labmda} = \frac{1}{\mu} + \frac{\lambdaE[B^2]}{2(1-\rho)}$$
+ * The average waiting time of customers in the queue is:
+   * $$E[N] = \lambda W_q + \rho$$
+ * Average wiating time of customers in the queue is:
+   * $$W_q = \frac{\labmdaE[B^2]}{2(1-\rho)}$$
+ * The average queue length is:
+   * $$L_q = \frac{\labmda^2E[B^2]}{2(1-\rho)}$$
+
+## Fourier Transform
+### Dirac Delta Function
+ * The dirac delta function can be loosely thought of as a function on the real line which is zero everywhere except at the origin, where it is infinite:
+   * $$\delta(x) = \begin{cases} \inf, & x = 0 \\ 0, & x \not = 0 \end{cases}$$
+ * and which is also constrained to satisfy the identity:
+   * $$\int_{-\inf}^{\inf} \delta (x) dx = 1$$
+ * An important property:
+   * $$\int_{-\inf}^{\inf} f(x) \detal(x) dx = f(0)$$
+   * where f is a suita ble test function.
+
+### Unit Step Function
+ * Unit Step funciton is defined by:
+   * $$u(t) = \begin{cases} 1, & t > 0 \\ 1/2, & t = 0 \\ 0, & t < 0 \end{cases}$$
+
+### Sinc Function
+ * Sinc Function is defined by:
+   * $$sinc(x) = \frac{sin(\pi x)}{\pi x}$$
+   * For all x except x = 0. For x = 0, sinc(0) = 1
+
+### Rectangular Function
+ * Rectangular funciton is defined by
+   * $$rect(t) = \sqcap(t) = \begin{cases} 0 & if |t| > \frac{1}{2} \\ \frac{1}{2} & if |t| = \frac{1}{2} \\ 1 & if |t| < \frac{1}{2} \end{cases}$$
+
+### Triangular Function
+ * Triangular Function is defined by
+   * $$tri(t) = \wedge (t) = \begin{cases} 1 - |t|; & |t| < 1 \\ 0 & otherwise \end{cases}$$
+
+### LTI System
+ * LTI (Linear Time Invariant) system is the system satisfies the following two:
+   * Linearity:
+     * If the input to the system is the sum of two component signals:
+       * $$x(t) = x_1(t) + x_2(t)$$
+     * then the output of the system will be $$y(t) = y_1(t) + y_2(t)$$ where $$y_n(t)$$ is the output resulting from the sole input $$x_n(t)$$
+     * Formally, a linear system is a system which exhibits the following property:
+       * if the input of the system is $$x(t) = \sum_{n} c_n x_n(t)$$
+       * then the output of the system will be $$y(t) = \sum_{n} c_n y_n(t)$$ for any constants $$c_n$$ and where each $$y_n(t)$$ is the output resulting from the sole input $$x_n(t)$$
+   * Time-Invariance:
+     * means that whether we apply an input to the system now of T seconds from now, the output will be identical except for a time delay of the T seconds.
+     * If the output due to input x(t) is y(t), then the output due to input x(t - T) is y(t - T). More specifically, an input affected by a time delay should effect a corresponding time delay in the output, hence time-invariant.
+   * Impulse Response h(t):
+     * Is the response of the system to a unit impulse input $$\delta (t)$$
+     * $$h(t) = LTI[\delta(t)]$$
+   * Very Important Result:
+     * $$y(t) = LTI[x(t)] \\ = LTI[x(t) * \delta(t)] \\ = LTI[\int_{-\inf}^{\inf} x(\tau)\delta(t - \tau) d \tau] \\ = \int_{-\inf}^{\inf} x(\tau) LTI[\delta(t - \tau)] d \tau \\ = \int_{-\inf}^{\inf} x(\tau)h(t - \tau) d \tau \\ = x(t)*h(t)$$
