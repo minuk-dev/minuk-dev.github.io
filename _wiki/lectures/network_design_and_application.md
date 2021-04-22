@@ -3,7 +3,7 @@ layout  : wiki
 title   : 네트워크 응용 설계
 summary : 네설 정리
 date    : 2021-04-21 20:50:32 +0900
-lastmod : 2021-04-21 23:53:28 +0900
+lastmod : 2021-04-22 17:32:55 +0900
 tags    : [lectures]
 parent  : lectures
 draft   : true
@@ -327,3 +327,523 @@ draft   : true
 
 #### What can you  do about loss?
  * Lost packet may be retransmitted by previous node, by source end system or not at all.
+
+#### Throuput
+ * throuput : rate (bits/ time unit) at which bits are transferred between sender/receiver:
+   * instaneous : rate at given point in time
+   * average : rate over longer period of time
+ * bottleneck link:
+   * link on end-to-end path that constrains end-to-end throughput
+
+### Chapter 1.5 protocol layers, service models
+#### Protocol "layers"
+ * Networks are complex, with many "pieces":
+   * Hosts, routers, links of various media, applications, protocols, hardware, software, etc.
+ * Layers:
+   * Each layer implements a service (to the layer above)
+   * Via its own internal-layer actions
+   * Relying on services provided by layer below
+ * Why layering?:
+   * Dealing with complex systems : explicit structure allows identification, relationship of complex system's pieces
+   * Modularization eases maintenance, updating of system : change of implementation of lyaer's service transparent to rest of system
+
+#### Abstraction
+ * Abstraction helps us deal with complexity:
+   * Enablue modular design
+   * Hide lower-elvel detail and implementation
+   * Allow different implementations of the same abstraction
+ * In networking, "layering" is the key abstraction:
+   * Lower layer provides 'service' to the upper layer
+   * Higher layer 'uses' the lower layer's service
+
+#### OSI 7-Layer Model/Architecture
+ * Open Systems Interconnect (OSI) Architecture
+   * International Standards Organization (ISO)
+   * OSI Reference Model
+     * Application : supporting network applications
+     * Presentation : allow applications to interpret meaning of data
+     * Session : synchronization, checkpointing, recovery of data exchange
+     * Transport : process-to-process data transfer
+     * Network : routing of datagrams from source to destination
+     * Link : data transfer between neighboring network elements
+     * Physical : bits "on the wire"
+
+#### Internet protocol stack
+ * Internet's 5-layer Architecture
+ * Internet stack "missing" two layers:
+   * Application : HTTP, FTP, SMTP, etc.
+   * Transport : TCP, UDP
+   * Network : IP, routing protocols
+   * Link : Ethernet, 802.11, etc.
+   * Physical : copper, fiber, RF, etc.
+
+#### Narrow Waist Model
+ * Goal : Interconnection:
+   * Interconnect many existing networks.
+   * Hide underlying technology from applications
+
+#### From the Application Layer's perspective
+ * Socket API of the transport layer (e.g. TCP or UDP) provides data delivery services to the application
+
+#### From the Transport Layer's perspective
+ * Transport layer uses the network layer (IP) to reach the destination host (IP address), and use port number to identify its session/application
+
+#### From the Network Layer's perspective
+ * Network layer sends packest to the destination, end-to-end
+   * while doing so, it may need to know a little about the next router
+
+#### From the Link Layer's perspective
+ * Link layer sends packets (frames) to, and receives from, the next hop device.
+   * To do so, may need to translate IP address to MAC address (a.k.a HW addr) -> ARP!
+
+#### Packet Encapsulation
+ * Application : Application message
+ * Transport : TCP/UDP Header(src port number, dst port number and other info) + TCP or UDP payload = TCP or UDP segment
+ * Network : IP Header(IP src address, IP dst address and other info) + IP payload = IP datagram
+ * Link : Link Header(link src address, link dst address and other info) + Link payload = Link frame
+
+## Chapter 2. Application Layer
+### Chapter 2.1 Principles of network applications
+#### Creating a network app
+ * write programs that:
+   * run on (different) end systems
+   * communicate over network
+ * no need to write software for network-core devices:
+   * network-core devices do not run user applications
+   * applications on end systems allows for rapid app devlopment, propagation
+
+#### Client-Server architecture
+ * server:
+   * always-on host
+   * permanent IP address
+   * data centers for scaling
+ * clients:
+   * communicate with server
+   * may be intermittently connected
+   * may have dynamic IP addresses
+   * do not communicate directly with each other
+
+#### P2P architecture
+ * arbitrary end systems directly communicate:
+   * any host can be a server and a client at the same time
+   * no always-on server
+ * peers request service from other peers, provide service in return to other peers:
+   * self scalability - new peers bring new service capacity, as well as new service demands
+ * peers are intermittently connected and change IP addresses
+   * complex management
+
+#### Processes communicating
+ * Process - program running withing a host:
+   * within same host, two processes communicate using inter-process communication
+   * processes in different hosts communicate by exchanging messages
+   * within same host, two processes can communicate using messages as well
+ * Client, server:
+   * client process: process that initiates communication
+   * server process: process that waits to be contacted
+ * Applications with P2P architectures usually have client processes & server processes
+
+#### Socket
+ * Process sends/receives messages to/from its socket
+ * Socket analogous to door:
+   * sending process shoves message out door
+   * sending process relies on transport infrastructure on other side of door to deliver message to socket at receiving process
+
+#### Addressing processes
+ * To receive messages, process must have identifier
+ * Identifier includes both IP address and port numbers associated with process on host
+
+#### Application layer protocol
+ * Application layer protocol defines:
+   * Types of messages exchanged:
+     * e.g. request, response
+   * Message syntax:
+     * what fields in messages & how fields are delineated
+   * Message semantics:
+     * meaning of information in fields
+   * Rules for when and how processes send & respond to messages
+ * Not all applications use standard protocols:
+   * Open/standard protocols:
+     * defined in RFC. allows for interoperability
+   * Properietary protocols:
+     * Skype
+
+#### What transport service does an app ndeed?
+ * Reliable delivery (a.k.a. reliability, data integrity)
+   * some apps (e.g., file transfer, web transactions) require 100% reliable data transfer
+   * other apps (e.g., audio) can tolerate some loss
+   * Also, related to (but not same as) "in-order delivery"
+ * Timing:
+   * some apps (e.g., Internet telephony, interactive games) require low delay to be "effective"
+   * well, timing is not really delay. timing is more about variation in delay
+ * Throuput:
+   * some apps(e.g., multimedia) require miniumum amount of throughput to be "effective"
+   * other apps("elastic apps") make use of whatever throughput they get
+ * Security:
+   * encryption, data integrity,
+
+#### Delay, Timing, Throughput, In-order, Outstanding...
+ * Delay : Sender <-> Receiver
+ * Timing : 도착하는 순서
+ * Throughput : 얼마나 많이 보내는가
+
+#### Internet transport protocols services
+ * TCP service:
+   * reliable transport between sending and receiving process
+   * flow control : sender won't overwhelm receiver
+   * congestion control: throttle sender when network overloaded
+   * does not provide: timing, minimum throughput guarantee, security
+   * connection-oriented: setup required between client and server processes
+ * UDP service:
+   * unreliable data transfer between sending and receiving process
+   * does not provide: reliability, flow control, congestion control, timing, throughput guarntee, security, or connection setup
+
+#### Securing TCP
+ * TCP & UDP:
+   * no encryption
+   * cleartext passwords sent into socket traverse Internet in cleartext
+ * SSL:
+   * provides encrypted TCP connection
+   * data integrity
+   * end-point authentication
+ * SSL is at application layer:
+   * applications use SSL libraries, that "talk" to TCP
+ * SSL socket API:
+   * cleartext passwords sent into socket traverse Internet encrypted
+
+### Chapter 2.7 Socket programming with UDP and TCP
+#### Socket programming
+ * Goal: learn how to build client/server applications that communicate using sockets
+ * Socket: door between application process and end-end-transport protocol
+
+#### Socket programming with UDP
+ * UDP: no "connection" between client & server:
+   * no handshaking before sending data
+   * sender explicitly attaches destination IP address and port number to each packet
+   * receiver extracts sender IP address and port number from received packet
+   * transmitted data may be lost or received out-of-order
+ * Application viewpoint:
+   * UDP provides unreliable transfer of groups of bytes ("datgrams") between client and server
+
+### Chapter 2.2 Web and HTTP
+#### Web and HTTP
+ * web page consists of objects
+ * object can be HTML file, JPEG image, Java applet, audio file,...
+ * web page consists of base HTML-file which includes serveral referenced objects
+ * each object is addressable by a URL
+
+#### HTTP overview
+ * HTTP: hypertext transfer protocol
+   * Web's application layer protocol
+ * client/server model:
+   * client: browser that requests, receives, (using HTTP protocol) and "displays" Web objects
+   * server: Web server sends (using HTTP protocol) objects in reponse to requests
+ * Uses TCP:
+   * client initiates TCP connection (creates socket) to server, port 80
+   * server accepts TCP connection from client
+   * HTTP messages (application-layer protocol messages) exchanged between browser (HTTP sclient) and Web server(HTTP server)
+   * TCP connection closed
+ * HTTP is "stateless":
+   * Server maintins no information about past client requests:
+     * I mean, HTTP is stateless. This does not mean that web server or browser is stateless.
+
+#### HTTP connections
+ * Non-persistent HTTP:
+   * at most one object sent over TCP connection:
+     * connection then closed
+   * downloading multiple objects required multiple connections
+ * Persistent HTTP:
+   * multiple ojbects can be sent over single TCP connection between client, server
+
+#### Non-persistent HTTP: response time
+ * RTT (round-trip time):
+   * time for a small packet to travel from client to server and back
+ * HTTP response time:
+   * 2 * RTT + file transmission time:
+     * one RTT to initiate TCP connection
+     * one RTT for HTTP request and first few bytes of HTTP response to return
+     * file transmission time
+
+#### Persistent
+ * Non-persistent HTTP issues:
+   * requires 2 RTTs per object
+   * OS overhead for each TCP connection
+   * browser often open parallel TCP connections to fetch referenced objects
+ * Persistent HTTP:
+   * server leaves connection open after sending reponse
+   * subsequent HTTP messages between same client/server sent over open connection
+   * client sends requests as soon as it encounters a referenced object
+   * as little as one RTT for all the refernced objects
+
+#### HTTP request message
+ * Two types of HTTP messages: request, response
+ * HTTP request message: ASCII
+
+#### Uploading form input
+ * POST method:
+   * web page often includes form input
+   * input is uploaded to server in entity body
+ * URL method:
+   * uses GET method
+   * input is uploaded in URL field of request line
+
+#### HTTP response status codes
+ * Status code appears in 1st line in server-to-client reposne message
+ * Some sample codes:
+   * 200 OK:
+     * request succeeded, requested object later in this msg
+   * 301 Moved Permantely:
+     * requested object moved, net location specified later in this msg
+   * 400 Bad Request:
+     * request msg not understood by server
+   * 404 Not Found:
+     * requested document not found on this server
+   * 505 HTTP Version Not Supported
+
+#### User-server state: cookies
+ * Four components:
+   * cookie header line in HTTP response message
+   * cookie header line in next HTTp request message
+   * cookie file kept on user's host, managed by user's browser
+   * backend database at Web site
+ * What cookies can be used for:
+   * authorization, etc.
+ * How to keep "state":
+   * protocol endpoints: maintain state at sender/receiver over multiple transactions
+   * cookies: http messages carry state
+ * Cookies and privacy:
+   * cookies permit sites to learn a lot about you
+   * you may supply name and email to sites
+
+#### Web caches (proxy server)
+ * goal : satisfy client request without involving origin server
+ * user sets browser: Web accesses via cache
+ * browser sends all HTTP requests to cache
+
+ * typically cache is installed by ISP
+
+#### Conditional GET
+ * Goal: don't send object if cache has up-to-date cached version
+   * no object transmission dealy
+   * lower link utilization
+ * cache: specify date of cached copy in HTTp request
+ * server: reponse contains no object if cached copy is up-to-date
+
+### Chapter 2.3 electronic mail (SMTP, POP3, IMAP)
+ * SMTP: delivery/storage to receiver's server
+ * mail access protocol: retrieval from server
+   * POP- Post Office Protocol : authorization, download
+   * IMAP- Internet Mail Access Protocol : more features, including manipulation of stored messages on server
+
+### Chapter 2.4 DNS
+#### DNS: domain name system
+ * Internet hosts, routers:
+   * IP address (32 bit) : used for addressing datagrams
+   * name : used by humans
+ * Domain Name System:
+   * Distributed database implemented in hierarchy of many name servers
+   * Application-layer protocol: hosts, name servers communicated to resolve names
+
+#### DNS: services, structure
+ * DNS services:
+   * hostname to IP address translation
+   * host aliasing
+   * mail server aliasing
+   * load distribution
+ * Why not centralize DNS?:
+   * single point of failure
+   * traffic volume
+   * distance centralized database
+   * maintenance
+
+#### DNS: a distributed, hierarchical database
+#### TLD, authoritative, local servers
+ * Top-level domain (TLD) servers:
+   * Responsible for com ... and all top-level country domains
+   * Network Solutions maintains servers for .com TLD
+ * Authoritative DNS server:
+   * Organization's own DNS server(s), providing authoritative bhostname to IP mappings for organizations' named hosts
+   * Can be maintained by organization or service prodier
+ * Local DNS name server:
+   * Does not strictly belong to hierarchy
+   * Each ISP (resiendtial ISP, company, university) has one
+   * When host makes DNS query, query is sent to its local DNS server
+
+#### DNS name resolution example
+ * Two approaches:
+   * iterated query
+   * recursive query
+ * iterated query:
+   * contacted server replies with name of server to contact
+ * recursive query
+
+#### DNS: caching, updating, inserting records
+ * Once (any) name server learns mapping, it caches mapping
+   * Cache entries timeout (disappear) after some time(TTL)
+   * TLD servers typically cached in local name servers
+ * Cached entries may be out-of-date (best effort name-to-address translation!)
+   * If name host changes IP address, may not be known Internet-wide until all TTLs expire
+
+## Chapter 3. Transport Layer
+### Chatper 3.1 Transport-layer services
+#### Transport services and protocols
+ * Provide logical end-to-end communication between application "processes" running on different hosts
+   * as if connected directly...
+   * trasnport layer "uses" the network layer
+     * network layer "provides" logical end-to-end communication between "hosts"
+ * Transport protocols run in end systems:
+   * send side: breaks app messages into segments, passes to network layer
+   * receive side: reassembles segments into messages, passes to application layer
+ * More than one transport protocol may be avilable to apps
+
+#### Transport vs. Network layer
+ * Network layer: logical communication between "hosts"
+ * Transport layer: logical communication between "processes"
+   * relies on, and enhances, network layer services
+
+#### Internet trasnport-layer protocols
+ * TCP:
+   * Reliable, in-order delivery:
+     * connection setup
+     * reliable data transfer
+     * congestion control
+     * flow control
+
+ * UDP:
+   * Unreliable, unordered delivery:
+     * no connection setup
+     * no reliability
+     * no congestion/flow control
+   * no-frills extension of "best-effort" IP:
+     * adds nothing much to IP
+
+ * Both TCP and UDP:
+   * provides:
+     * multiplexing/demultiplexing : using port numbers
+     * error checking: using checksum
+   * do not provide:
+     * delay guarantees
+     * bandwidth guarantees
+   * on top of the "IP" network layer:
+     * which provides "best effort" (unreliable) delivery service
+
+### Chapter 3.2 multiplexsing and demultiplexing
+#### Multiplexing/demultiplexing
+ * Extending host-to-host delivery service to process-to-process delivery service for applications running on the hosts
+   * responsibility of delivering the data in segments to appropirate application process
+   * we'll talk about the Internet, but same idea holds for other networks also.
+ * Multiplexing at sender:
+   * handle data from multiple sockets, add transport header (later used for demultiplexing)
+ * demultiplexing at receiver:
+   * use header info to deliver received segments to correct socket
+
+#### How demultiplexing works
+ * Host receives IP datagrams
+   * Each datagram has:
+     * source IP address, destination IP address,
+     * and one transport-layer segment
+   * Each segment has:
+     * source port number, destination port number
+ * When receiver host receives a segment:
+   * network layer checks the IP addresses,
+   * transport layer checks the port numbers
+ * Port numbers: 16bits
+
+#### Connectionless vs. Connection-oriented demux
+ * UDP (connectionless)
+   * a socket has host-local port#, but no destination port#:
+     * server & client
+   * When creating datagram to send into UDP socket, must sepcify:
+     * destination IP address
+     * destination port #
+ * TCP (connection-oriented)
+   * a socket identified by 4-tuple: `[src iIP, src port, dst IP, dst port]`
+   * server host may support many simultaneous TCP sockets:
+     * Each socket identified by its own 4-tuple (different src means different socket)
+
+### Chapter 3.3 connectionless transport:UDP
+#### UDP: User Datagram Protocol
+ * "Bare bones" Internet transport protocol:
+   * (almost) direct use of IP.
+   * nothing much added. only port numbers, length, and checksum
+ * "Best effort" service:
+   * UDP segments may be lost or delivered out-of-order to app
+ * Connectionless:
+   * no handshaking between UDP sender, receiver
+   * each UDP segment handled independently of others
+ * UDP used by,
+   * DNS, SNMP, streaming multimedia pps, Internet telephone, etc.
+   * loss tolerant, rate & delay sensitive apps
+
+#### Why is there UDP? Why do we need UDP?
+ * Simple, light, and easy!
+   * no connection establishment
+   * no connection state at sender, receiver
+   * small header size
+   * no congestion control (or flow control)
+   * better application level control over what data is sent and when!
+ * What if you lose data?:
+   * UDP does not know
+ * Reliable transfer over UDP?
+
+#### checksum
+ * Goal: detect "errors" in transmitted segment
+ * Sender:
+   * treat segment contents, including header fields, as sequence of 16-bit integers
+   * checksum: one's complement of sum of segment contents
+   * sender puts checksum value into UDP checksum field
+ * Receiver:
+   * compute checksum of received segment
+   * check if computed checksum equals checksum field value:
+     * No - error detected
+     * YES - no error detected. But maybe errors nonetheless?
+
+### Chapter 3.4 principles of reliable data transfer
+#### Principles of reliable data transfer
+ * Important in application, transport, link layers
+ * Upper layer "uses" lower layer channel
+   * if the lower layer is reliable, nothing to do in the upper layer
+   * if the lower layer is unreliable, need to do some work
+ * Where to put the reliability?:
+   * Application layer does not need reliable data transfer -> nothing to do.
+   * Application layer needs reliable data transfer
+ * `rdt_send()`, `udt_send()`, `rdt_rcv()`, `deliver_data()`
+
+#### Basic primitives
+ * Error detection
+ * ACK
+ * NACK
+ * Loss detection
+ * Retransmission
+ * Timeout
+ * Sequence number
+
+#### Simple scenario
+ * Let's say, the packet error rate of a transmission is `p`
+ * ETX : Expected Transmission Count : `1 / (1 - p)^2`
+
+#### ACK (acknowledgement)
+ * Let's say, the packet delivery success rate of a transmission is `p`
+ * ETX of data transmission : `1 / p^2`
+ * ETX of ack transmission : `1 / p`
+
+#### NACK (negative ACK)
+ * Notify the unsuccessful reception of packet
+
+#### Timeout
+ * After sending a packet, wait for a feedback (ACK or NACK), but waited too long do something.
+ * need a countdown timer
+
+#### ARQ (Automatic Reqpeat reQuest)
+ * `Automatic Repeat reQuest` protocol:
+   * a generic term
+   * a protocol that automatically re-sends erroneous/corrupt/lost packets
+   * uses techniques such as ACK, NACk, timeout, retransmission, sequence number, etc.
+
+#### Example rdt2.0 design
+ * Assumption:
+   * Undelying channel may flip bits in packet:
+     * checksum to detect bit errors
+   * No packet loss (unrelistic assumption for simplicity) for now
+ * Mechanisms needed in rdt2.0:
+   * error detection
+   * feedback: control messages (ACK, NACK) from receiver to sender
