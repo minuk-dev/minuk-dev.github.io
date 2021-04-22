@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-21 20:44:55 +0900
+lastmod : 2021-04-23 00:11:11 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -395,3 +395,179 @@ parent  : lectures
  * $$\mathcal{F}(u (t)) = \frac{1}{2} (\frac{1}{i \pi f} + \delta (f))$$
  * $$\mathcal{F}(e^{- at} u(t)) = \frac{1}{a + i 2 \pi f}$$
  * $$\mathcal{F}(\sum_{n = - \infty}^{\infty} \delta (t - n T)) = \frac{1}{T} \sum_{k = - \infty}^{\infty} \delta(f - \frac{k}{T})$$
+
+## Chapter 3. Radio Propagation, Sampling & Quantization
+### Information, Signals, and Communications
+ * Goal of communication is to deliver (send, transmit) information from a source to a destination
+ * AWGN(Additive whit Gaussian noise) : is a baisc noise model used in information theory to mimic the effect of many raondom processes that occur in nature.:
+   * Additive becuase it is added to any noise that might be intrinsic to the information system.
+   * White refers to the idea that it has uniform power across the frequency band for the information system. It is an analogy to the color white which has uniform emissions at all frequencies in the visible spectrum.
+   * Gaussian because it has a normal distribution in the time domain with an average time domain value of zero.
+
+### Radio Frequency Bands
+| Classification Band | Initials | Frequency Range    | Characteristics |
+| ------------------- | -------- | ---------------    | --------------- |
+| Extremely low       | ELF      | < 300 Hz           | Ground wave     |
+| Infra low           | ILF      | 300 Hz ~ 3 kHz     | Ground wave     |
+| Very low            | VLF      | 3kHz ~ 30 kHz      | Ground wave     |
+| Low                 | LF       | 30 kHz ~ 300 kHz   | Ground wave     |
+| Medium              | MF       | 300 kHz ~ 3 MHz    | Ground/Sky      |
+| High                | HF       | 3 MHz ~ 30 MHz     | Sky wave        |
+| Very high           | VHF      | 30 MHz ~ 300 MHz   | Space wave      |
+| Ultra high          | UHF      | 300 MHz ~ 3 GHz    | Space wave      |
+| Super high          | SHF      | 3 GHz ~ 30 GHz     | Space wave      |
+| Extremely high      | EHF      | 30 GHz ~ 300 GHz   | Space wave      |
+| Tremendously high   | THF      | 300 GHz ~ 3000 GHz | Space wave      |
+
+### Propagation Mechanisms
+ * Reflection:
+   * Propagtation wave impinges on an object which is large as compared to wavelength
+ * Diffraction:
+   * Radio path between transmitter and receiver obstructed by surface with sharp irregular edges.
+ * Scattering:
+   * Objects smaller than the wavelength of the propagtion wave
+
+### Free-space Propagation
+ * The recieved signal power at distance d:
+   * $$P_r = \frac{A_e G_t P_t}{4 \pi d^2}$$
+   * where $$P_t$$ is transmitting power, $$A_e$$ is effective area, and $$G_t$$ is the transmitting antenna gain. Assuming that the radiated power is uniformly distributed over the surface of the sphere.
+
+### Antenna Gain
+ * For a circular reflector antenna:
+   * $$ G = \eta ( \pi D / \lambda)^2$$
+   * where $$\eta$$ is net efficiency (depends on the electric field distribution over the antenna aperture, losses, ohmic heating, typically 0.55) and $$D$$ is diameter
+   * thus $$G = \eta (\pi D f / c)^2, c = \lambda f$$
+
+### Land Propagation
+ * The received signal power:
+   * $$P_r = \frac{G_t G_r P_t}{L}$$
+   * where $$G_r$$ is the receiver antenna gain, $$L$$ is the propagation loss in the channel
+   * $$L = L_p L_S L_F$$
+   * where $$L_p$$ is path loss, $$L_S$$ is Slow fading, and $$L_F$$ is Fast fading
+
+### Path Loss (Free-space)
+ * Definition of path Loss $$L_p$$:
+   * $$L_P = \frac{P_t}{P_r}$$
+ * Path Loss in Free-space:
+   * $$L_{PF}(dB) = 32.45 + 20 log_{10} f_c(MHz) + 20 log_{10} d (km)$$
+   * where $$f_c$$ is teh carrier frequency. This shows greater than $$f_c$$, more is the loss.
+
+### Path Loss (Land Propagation)
+ * Simplest Formula:
+   * $$L_p = Ad^{-\alpha}$$
+   * where $$A$$ and $$ \alpha$$ : propgation constants
+   * $$d$$ : distance between transmitter and receiver
+   * $$\alpha$$ : value of 3 ~ 4 in typical urban area
+
+### Path Loss
+ * Path loss in decreasing order:
+   * Urban area > Urban area(medium and small city) > Suburban area > Open area
+
+### Slow Fading
+ * The long-term variation in the mean level is known as slow fading (shadowing or long-normal fading)_. This fading caused by shadowing.
+ * Log-normal distribution :
+   * The pdf of the received signal level is given in decibels by:
+     * $$p(M) = \frac{1}{\sqrt{2 \pi} \sigma} e^{- \frac{(M - \bar M)^2 }{2 \sigma^2}}$$
+     * where M is the treue received signal level m in decibels,
+     * $$\bar M$$ is the area average signal level
+     * $$\sigma$$ the standard deviation in decibels
+
+### Fast Fading
+ * The signal from the transmitter may be reflected from objects such as hills, buildings, or vehicles.
+ * When LOS does not exist, the envelope distribution of received signal is Rayleigh distribution.
+ * The pdf is:
+   * $$p(r) = \frac{r}{\sigma^2} e ^{- \frac{r^2}{2 \sigma^2}}, r > 0 $$
+   * where $$\sigma$$ is the standard deviation.
+   * Middle value $$r_m$$ of evelope signal within sampe range to be satisfied by $$P(r \le r_m) = 0.5$$
+   * We have $$r_m = 1.777 \sigma$$
+ * It called Reyleigh Distribution
+
+ * When LOS exists, the envelope distribution of received signal is Rician distribution. The pdf is:
+   * $$ p(r) = \frac{r}{\sigma^2} e ^{- \frac{r^2 + \alpha ^ 2}{2 \sigma^2}} I_0 (\frac{r \alpha}{\sigma}), r \ge 0$$
+   * where $$\sigma$$ is the standard deviation,
+   * $$I_0(x)$$ is the zero-order Bessel function of the first kind.
+ * When $$\alpha = 0$$, Rician Distribution are equal to Rayleigh Distribution
+
+### Characteristics of Instantaneous Amplitude
+ * Level Crossing Rate:
+   * Average number of times per second that the signal envelope crosses the level in positive going direction
+ * Fading Rate:
+   * Number of times signal evelope crosses middle value in positive going direction per unit time.
+ * Fading Duration:
+   * Time for which signal is below given threshold.
+
+### Doppler Shift
+ * Doppler Effect : When a wave source and a receiver are moving towards each other, the frequency of the received signal will not be the same as the source.:
+   * When they are moving toward each other, the frequency of the received signal is higher than the source.
+   * When they are opposing each other, the frequency decreases.
+ * Thus the frequency of the received signal is:
+   * $$f_R = f_C - f_D$$
+   * where $$f_C$$ is the frequency of source carrier,
+   * $$f_D$$ is the Doppler frequency.
+* $$f_D = \frac{v}{\lambda} cos \theta$$
+* where $$v$$ is the moving speed, $$\lambda$$ is the wavelength of carrier.
+
+### Delay Spread
+ * When a signal propagates from a transmitter to a receiver, signal suffers one or more reflections.
+ * This forces signal to follow different paths.
+ * Each path has different path length, so the time of arrival for each path is different.
+ * This effect which spreads out the signal is called "Delay Spread".
+
+### Intersymbol Interference (ISI)
+ * Caused by time delayed multipath signals
+ * Has impact on burst error rate of channel
+ * Second multipath is delayed and is received during next symbol
+ * Second multipath is delayed and is received during next symbol
+ * For low bit-error-rate (BER):
+   * $$ R < \frac{1}{2 \tau_d}$$
+   * R(digital transmission rate) limited by delay spread.
+
+### Digital Communications
+### General Structure of a Communication Systems
+ * Source -(info) -> Transmitter -(Transmitted signal) -> Channel -(Recieved signal) -> Receiver - (Received info) -> Destination
+
+### Digital versus Analog
+ * Regnerator receiver
+ * Diffrent kinds of digital signal are treated identically.
+
+### Advantages of Digital Communications over Analog
+ * Digital signals are more easily regenerated.
+ * Extremely low error rates producing high signal fidelity are possible through error detection & correction.
+ * Easy availability of digital circuits & u-processors.
+ * Multiplexing & switching is easier
+ * Much data (e.g., computers) is inherently digital.
+
+### Formatting and Transmission of Signal
+ * Analog Info -> Sample -> Quantize -> Encode -> Pulse Moduolated -> Transmitted.
+ * Textual Info -> Encode -> Pulse Modulate -> Transmitted.
+ * Digital Info -> Pulse Modulate -> Transmitted.
+ * Received Data -> Demodulate/Detect -> Decode -> Low-pass filter -> Analog Info
+ * Received Data -> Demodulate/Detect -> Decode -> Textual info
+ * Received Data -> Demodulate/Detect -> Digital info.
+
+### Sampling
+### Sampling of Analog Signal
+ * Time domain 에서는 연속적인 데이터를 잘라서 샘플링 한다.
+ * 이는 Frequency Domain 에서는 하나의 함수를 중복해서 반복시키는 것 (frequency 영역에서 주기를 가지는 delta 함수와 convolution) 과 동일한 의미이다.
+ * 다시말해서 주파수 영역에서 반복되는 함수를 찾아서 시간 영역으로 옮기면 원 함수를 추출할수 있다고 할 수 있다.
+ * 이때 하나의 고유값이 나오게 된다.(Nyquist rate) 바로 아래에서 추가 설명한다.
+
+### Aliasing effect & Nyquist Rate
+ * 도메인 영역에서 반복되는 함수를 추출하기 위해서 필터를 씌우는데 이를 LP filter 라고 한다.
+ * 원함수의 정의역의 최솟값($$-f_m$$)과 최댓값($$f_m$$)이라고 할때 LP filter의 최소 크기를 Nyquist rate 라고 하며 $$f_s = 2f_m$$ 이다.
+ * 이보다 작게 된다면 aliasing 이 일어나게 된다.
+
+### Sampling Theorem
+ * Sampling theorm: A bandlimited signal with no spectral components beyond $$f_m$$, can be uniquely determined by values sampled at uniform intervals of $$T_s \le \frac{1}{2 f_m}$$
+ * The samplign rate:
+   * $$f_s = \frac{1}{T_S} = 2 f_m$$
+   * is called Nyquist rate.
+
+### Quantization
+ * Amplitutde quantizing : Mpaaing samples of a continuous amplitude waveform to a finite set of amplitudes.
+ * Average quantization noise power:
+   * $$\sigma^2 = \frac{q^2}{12}$$
+ * Signal peak power:
+   * $$V_p^2 = \frac{L^2 q^2}{4}$$
+ * Signal power to average quantization noise power:
+   * $$(\frac{S}{N})_q = \frac{V_p^2}{\sigma^2} = 3 L^2$$
