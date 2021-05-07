@@ -3,11 +3,15 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-04-23 00:11:11 +0900
+lastmod : 2021-05-07 08:59:07 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
 
+## NS3
+ * [[ns3]]
+
+## Theory
 ## Chapter 2. Probability & Fourier Transform
 ### Introduction
  * Several factors influence the performance of wireless systems:
