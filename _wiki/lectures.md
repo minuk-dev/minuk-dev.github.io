@@ -3,7 +3,7 @@ layout  : wiki
 title   : 학교 수업
 summary :
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2021-05-07 11:07:51 +0900
+lastmod : 2021-06-02 17:11:08 +0900
 tags    : [lecture]
 parent  :
 ---
@@ -17,3 +17,4 @@ parent  :
 * [[lectures/wireless]]
 * [[lectures/network_design_and_application]]
 * [[lectures/nonparametric-statistic]]
+* [[lectures/multicore]]
