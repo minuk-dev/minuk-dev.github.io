@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multicore Computing
 summary : 
 date    : 2021-06-02 17:11:08 +0900
-lastmod : 2021-06-02 18:22:02 +0900
+lastmod : 2021-06-03 06:53:06 +0900
 tags    : 
 parent  : lectures
 ---
@@ -434,3 +434,343 @@ for (i 1 to n)
    * Combination of Shared/Distributed architecture
    * Scalable
    * Increased programmer complexity
+
+## JAVA Thread Programming
+### Process
+ * Process:
+   * Operating system abstraction to represent what is needed to run a single program
+   * a sequential stream of execution in its own address space
+   * program in execution
+
+### Unix process
+ * Every process, except process 0, is cresated by the fork() systemcall:
+   * fork() allocates entry in process table and assigns a unique PID to the child process
+   * child gets a copy of process image of parent
+   * both child and parent are executing the same code following fork()
+```cpp
+main()
+{
+  int pid;
+  cout << "just one process so far" << endl;
+  pid = fork();
+  if (pid == 0)
+    cout << "im the child" << endl;
+  else if (pid > 0)
+    cout << "im the parent" << endl;
+  else
+    cout << "fork failed" << endl;
+}
+```
+
+### Threads
+ * Definition:
+   * single sequential flow of control within a program
+   * A thread runs within the context of a program's process and takes advantage of the resources allocated for that process and it's environment
+ * Each thread is comprised of (from OS perspective):
+   * Program counter
+   * Register set
+   * Stack
+ * Threads belonging to the same process share:
+   * Code sectino
+   * Data section
+   * OS resources such as open files
+
+### Multi-process vs Multi-thread
+ * Process:
+   * Child process gets a copy of parents variables
+   * Relatively expensive to start
+   * Don't have to worry about concurrent access to variables
+ * Thread:
+   * Child process shares parent's variables
+   * Relatively cheap to satrt
+   * Concurrent access to variables is an issue
+
+### Programming JAVA Threads
+### Java Threading Models
+ * Java has thread built-in(java.lang.thread)
+ * Applicatons consist of at least on thread:
+   * Often called main
+ * Thre Java Virtual Machine creates the initial thread which exectues the main method of the class passed to the JVM
+ * The methods executed by the 'main' thread can then create other threads
+
+### Creating THreads: method1
+```java
+class Mythreads extends Thread {
+  public void run() {
+    // work to do
+  }
+}
+
+/*
+ MyThread t = new THread();
+ t.start
+ */
+```
+
+### Thread Names
+ * All threads have a name to be printed out.
+ * The default name is of the format: `Thread-No`:
+   * Thread-1, THread-2, ...
+ * User-defined names can be given thru consturctor:
+   `Thread myThread = new THread("HappyThread");`
+ * Or using the `setName(aString)` method
+ * There is a method in THread class, claeed `getName()`, to obtain a thread's name
+
+### Creating Threads: method 2
+ * Since Java does not permit multiple inheritance, we often implement the run() method in a class not derived from Thread but from the interface Runnable.
+```java
+public interface Runnable {
+  public abstract void run();
+}
+class MyRun implements Runnable {
+  public void run() {
+    // do something
+  }
+}
+/*
+ Thread t = new Thread(new MyRun());
+ t.start();
+ */
+```
+
+### Thread Life-Cycle
+ * Created : start() -> Alive, stop() -> Terminated
+ * Alive : stop() or run returns -> Terminated
+ * Terminated
+
+ * The predicate `isAlive()` can be used to test if a thread has been started but not terminated. Once terminated, it cannot be restarted.
+
+### Alive States
+ * Runnuing : wait(), sleep(), I/O blocking -> Non-Runnable, yield() -> Runnable(Ready)
+ * Runnable(Ready) : dispatch -> Running
+ * Non-Runnable : notify(), Time expires, I/O completed -> Runnable(Ready)
+
+### Thread Priority
+ * All Java Threads have a priority value, currently between 1 and 10.
+ * Priority can be changed at any time:
+   * `setPrioirty(int newPriority)`
+ * Initial priority is that of the creating thread
+ * Preemptive scheduling:
+   * JVM gives preference to higher priority threads, (Not guarentted)
+
+### yield
+ * Release the right of CPU
+ * static void yeild():
+   * allows the scheduler to select another runnable thread(of the same priority)
+   * no guaranttes as to which thread
+
+### Thread identity
+ * Thread.currentThread():
+   * Returns reference to the running thread
+ * Compare running thread with created thread
+
+### Thread sleep, suspend, resume
+ * static void sleep(long millis):
+   * Blocks this thread for at least the time specified
+ * void stop(), void suspend(), void resume()
+   * deprecated
+
+### Thread Waiting & Status check
+ * void join(), void join(long), void join(long, int):
+   * Once thread (A) can wait for another thread (B) to end
+ * boolean isAlive():
+   * returnes true if the thread has been styarted and not stopped
+
+### THread syncrhonization
+ * The advantage of threads is that they allow many things to happen at the same time
+ * The problem with threads is that they allow many thigns to happen at the same time
+ * Safety:
+   * Nothing bad ever happens
+   * no race condition
+ * Liveness:
+   * Something eventually happens: no deadlock
+ * Concurrent access to shared data in an object
+ * Need a way to limit thread's access to shared data:
+   * Reduce concurrency
+ * Mutual Exclusion of Critical Section
+ * Add a lock to an obejct
+ * Any thread must acquire the loc kbefore executing the methods.
+ * If lock is currently unavailable, thread will block
+
+### Synchronized JAVA methods
+ * We can control access to an object by using the `synchronized` keyword
+ * Using the `synchronized` keyword will force the lock on the object to be used
+
+### Synchronized Lock Object
+ * Every Java obejct has an associated lock acquired via
+ * synchronized statements (block)
+```java
+synchronized(anObject) {
+  // execute code while holding an Object's lock
+}
+```
+ * Only one thread can hold a lock at a time
+ * Lock granularity: small criticial section is better for concurrency object
+
+### Condition Variables
+ * Lock(synchronized):
+   * control thread access to data
+ * condition variable (wait, notify/notifyall):
+   * synchronization primitives that enable threads to wait until a particular condition occurs.
+   * enable threads to atomically release a lock and enter the sleeping state.
+   * Without condition variables:
+     * the programmer would need to have threads continually polling, to check if the condition is met.
+     * A condition variable is a way to achieve the same goal without polling.
+   * A condition variable is always used in conjunction with a mutex lock.
+
+### wait() and notify()
+ * wait():
+   * If no interrupt(normal case), current thread is blocked
+   * The thread is placed into wait set associated with the object
+   * Synchronization lock for the object is rleased
+ * notify():
+   * One thread, say T, is removed from wait se,t if exists.
+   * T retains the lock for the object
+   * T is resumed from waiting status
+
+## Producer-Consumer Problem
+ * The problem describes two processes, the producer and the consumer, who share a coommon, fixed-size buffer used as a queue.
+ * The solution for the producer is to go to sleep if the buffer is full. The next time the consumer removes an item from the buffer, it notifies the producer, who starts to fill the buffer agin.
+ * In the sameway, the consumer can go to sleep if it finds the buffer to be empty. The next tiem the producer puts data into the buffer, it wakes up the sleeping consumer.
+ * generalized to have multiple producers and consumers.
+
+## Potential Concurrency Problejms
+ * Deadlock : Two or more threads stop and wait for each other
+ * Livelock : Two or more threads continue to execute, but make no progress toward the ultimate goal.
+ * Starvation : Some thread gets deferred forever.
+ * Lack of fairness : Each thread gets a turn to make progress.
+ * Race Condition : Some possible interleaving of threads results in an undesired computation result.
+
+## Important Concepts in Concurrent Programming
+ * Concurrency/Prallelism : logically/physically simultaneous processing.
+ * Synchronization
+ * Mutual Exclusion
+ * Critical Section
+ * Race Condition
+ * Semaphore
+ * Concurrent hash map
+ * copy on write arrays
+ * Barrier
+
+## Devide-and-Conquer way for parallelization
+ * In theory, you can divide down to single elements, do all your result-combining in parallel and get optimal speed up:
+   * Total time : O(n/numProcessors + log n)
+ * In practice, creating all those threads and communicating swamps the savings, so:
+   * Use a sequential cutoff, typically around 500-1000:
+     * Eliminates almost all the recursive thread creation(bottom levels of three)
+     * Exactly like quicksort switching to insertion sort for small subproblems, but more important here
+   * Do not create two recursive threads: create one and do the other yourself
+
+## Pthread Programming
+### Thread Properties
+ * Exists within a process and uses the process resources
+ * Has its own independent flow of control as long as its parent process exists and the OS supports it.
+ * Duplicates only the essential resources it needs to be independently schedulable
+ * May share the process resources with other threads that act equally independently (and dependently)
+ * Dies if the parent process dies - or something similar
+ * Is lightweight because most of the overhead has already been accomplished through the creation of its process.
+ * All threads within a process share same address space.
+ * Therefore, inter-thread communication is more efficient than inter-process communication
+
+### pthread
+ * pthread:
+   * POSIX thread
+   * Standardized C language threads for UNIX
+   * For portability
+   * Working in shared memory multiprocessor
+ * Why pthreads?:
+   * Performance gains
+   * Requires fewer system resources than process
+
+### Pthreads API
+ * Three groups:
+   * Thread Management:
+     * Thread creation, and destruction
+   * Mutexes (mutual exclusion):
+     * synchronization
+   * Conditional Variables:
+     * Communication between threads that share a mutex
+
+### Thread Management
+ * `pthread_create(thread, attr, start_routine, arg)`
+ * `pthread_exit(status)`
+ * `pthread_cancel(thread)``
+
+#### Thread Creation
+ * Creates a new thread and makes it excuatable.
+ * The creating process (or thread) must provide a location for storage of the thread id.
+ * The third parameter is just the name of the funciton for the thread to run.
+ * The last parameter is a pointer to the arguments.
+ * When a new thread is created, it runs concurrently with the creating process.
+ * When creating a thread, you indicate which funciton the thread should execute.
+ * Thread handle returned via pthread_t structure
+ * Specify NULL to use default attributes
+ * Single argument sent to the function
+ * If no arguments to funciton, speicify NULL
+ * Check error codes
+
+#### Thread Termination
+ * There are several ways in which a pthread may be terminated:
+   * The thread returns from its starting routinge (the main routine for the initial thread).
+   * The thread makes a call to the `pthread_exit` subroutine.
+   * The thread is canceled by another thread via the `pthread_cancel` routine
+   * The entire process is terminated due to making a call to either the `exec()` or `exit()`
+   * If `main()` finises first, without calling `pthread_exit` explicitly itself.
+ * The programmers may optionally specify a termination status, which is sotred as a void pointer for any thread that may join the calling thread.,
+ * Cleanup: the pthread_exit() routine does not close files; any files opened inside the thread will reamin open after the thread is terminated.
+
+#### Thread Cancellation
+ * Once thread can request that another exit with `pthread_cacel`
+ * `int pthread_cancel(pthread_t thread);`
+ * The pthread_cancel returns after making the request.
+
+#### Joinning
+ * The `pthread_join()` subroutine blocks the claling thread until the specified thread terminates.
+ * The programmer is able to obtain the target thread's termination returns status if it was specified in the target thread's call to `pthread_exit()`.
+ * A joining thread can match one `pthread_join()` call. It is a logical error to attempt multiple joins on the same thread.
+
+### Mutexes
+ * Mutual Exclusion
+ * implementing thread synchronization and protecting shared data when multiple writes occur.
+ * A mutex variable acts like a lock protecting access to a shared data resource
+ * Used for preventing race condition
+ * When several threads compete for a mutex, the losers block at the call.
+
+#### Mutex Routins
+ * `pthread_mutex_init( mutex, attr)`
+ * `pthread_mutex_destroy(mutex)`
+ * Mutex variables must be declared with type ptyhread_mutex_t, and must be initialzed before they can be used.
+
+#### Locking/Unlocking Mutexes
+ * `pthread_mutex_lock(mutex)`
+ * `pthread_mutex_trylock(mutex)`
+ * `pthread_mutex_unlock(mutex)`
+
+#### User's Responsibility for Using Mutex
+ * When protecting shared data, it is the programmer's reponsibility to make sure every thread that needs to use a mutex does so.
+
+### Condition Variables
+ * another way for threads to synchronize
+ * mutexes:
+   * synchronization by controlling thread access to data
+ * condition variables:
+   * synchronization based upon the actual value of data.
+   * without condition variables, the programmer would need to have threads continually polling, to check if the conditoin is met.
+   * always used in conjunction with a mutex lock
+
+#### Condition Variables Routines
+ * `pthread_cond_init(condition, attr)`
+ * `pthread_cond_destory(condition)`
+ * Condition variables must be declared with type `pthread_cond_t`, and must be initialized before they can be used.
+ * attr is used to set condition variable attribute(NULL: defaults)
+ * `pthread_cond_destory()` should be used to free a condition variable that is no longer needed.
+ * `pthread_cond_wait(condition, mutex)`:
+   * blocks the claling thread until the specified condition is signalled.
+   * This routine should be called while mutex is locked
+   * will automatically release the mutex lock while it waits
+   * After signal is received and thread is awakened, mutex will be automatically locked for use
+ * `pthread_cond_signal(condition)`
+   * signal(or wake up) another thread which is waiting on the condition variable.
+ * It is a logical error to call pthread_cond_signal() before calling pthread_cond_wiat()
+ * `pthread_cond_broadcast(condition)`
+   * should be used instead of pthread_cond_signal() if more than one thread is in a blocking wait state.
