@@ -1,10 +1,10 @@
 ---
 layout  : wiki
 title   : Multicore Computing
-summary : 
+summary :
 date    : 2021-06-02 17:11:08 +0900
-lastmod : 2021-06-03 06:53:06 +0900
-tags    : 
+lastmod : 2021-06-03 08:37:27 +0900
+tags    :
 parent  : lectures
 ---
 
@@ -774,3 +774,400 @@ synchronized(anObject) {
  * It is a logical error to call pthread_cond_signal() before calling pthread_cond_wiat()
  * `pthread_cond_broadcast(condition)`
    * should be used instead of pthread_cond_signal() if more than one thread is in a blocking wait state.
+
+## OpenMP
+### Shared Memory Model
+ * All threads have access to the same, globally shared memory.
+ * Data can be shred or private
+ * Shared data is accessible by all threads
+ * Private data can be accessed only by the threads that owns it.
+ * Data transfer is transpearent to the programmer
+ * Synchronization takes place, but it is motely implicit.
+
+### Example -Matrix times vector
+```c
+#pragma omp parallel for default(none) \
+            private(i, j, sum) shared(m, n, a, b, c)
+for (i = 0; i < m; i ++)
+{
+  sum = 0.0;
+  for (j = 0; j < n; j ++)
+    sum += b[i][j] * c[j];
+  a[i] = sum;
+}
+```
+
+### When to consider using OpenMP
+ * The compiler may not be able to do the parallelization in the way you like to see it:
+   * A loop is not parallelized:
+     * The data dependency analysis is not able to determine whether it is safe to parallelize or not
+   * The granularity is not high enough:
+     * The compiler lacks information to parallelize at the highest possible level
+ * This is when explicit parallelization through OpenMP directives and functions comes into the picture.
+
+### About OpenMP
+ * The OpenMP programming model is a powerful, yet compact, de-facto standard for Shared Memory Programming
+ * Languages supoprted: Fortran and C/C++
+
+### Terminology
+ * OpenMP Tema := Master + Workers
+ * A Parallel Region is a block of code executed by all threads simultaneously:
+   * The master thread always has thread ID 0
+   * Thread adjustment (if enabled) is only done before entering a parallel region
+   * parallel regions can be nested, but support for this is implementation dependent
+   * An if clause can be used to guard the parallel region; in case the condition evaluates to "false", the code is executed serially
+ * A work-sharing construct divides the execution of the enclosed code region among the members of the team; in other words: they split the work
+
+### Components of OpenMP
+ * Directives:
+   * Parallel regions
+   * Work sharing
+   * Synchronization
+   * Data scope attributes:
+     * private
+     * firstprivate
+     * lastprivate
+     * shared
+     * reduction
+   * Orphaning
+ * Environment Variables:
+   * Number of threads
+   * Scheduling type
+   * Dynamic thread adjustment
+   * Nested parallelism
+ * Runtime environment:
+   * Number of threads
+   * Thread ID
+   * Dynamic thread adjustment
+   * Nested parallelism
+   * Timers
+   * API for locking
+
+### About OpenMP clauses
+ * Many OpenMP directives supoprt clauses
+ * These clauses are used to specify additional information with the directive.
+ * For example, `private(a)` is a clause to the for directive:
+   * `#progma omp for private(a)`
+ * Before we present an overview of all the directives, we discuss several of the OpenMP clauses first
+ * The specific claus(s) that can be used, depends on the directive
+
+### The if/private/shared clauses
+ * `if(scalar expression)`:
+   * Only execute in parallel if expression evaluates to true
+   * Otherwise, execute serially
+ * `private(list)`:
+   * No storage association with original object
+   * All references are to the local object
+   * Values are undefined on entry and exit
+ * `shared(list)`:
+   * Data is accessible by all threads in the team
+   * All threads access the same address space.
+
+### About storage association
+ * Private variables are undefined on entry and exit of the parallel region
+ * The value of the original variable (before the parallel region) is undeinfed after the parallel region.
+ * A private variable within a parallel region has no storage association with the same variable outside of the region
+ * Use the first/last private clause to override this behaviour
+
+### The first/last private cluases
+ * firstprivate(list):
+   * All variables in the list are initialized with the value the original object had before entering the parallel construct
+ * lastprivate(list):
+   * The thread that exectues the sequentially last iteration or section updates the value of the objects in the list
+
+### The default clause
+ * default(none | shared | private)
+ * default(none | shared) (default(private) is not supported in C/C++)
+ * none:
+   * No implicit defatuls
+   * Have to scope all variables explicitly
+ * shared:
+   * All variables are shared
+   * The default in absence of an explicit default clause
+ * private:
+   * All variables are private to the thread
+   * Includes common block data, unless THREADPRIVATE
+
+### The reduction clause
+ * reduction(operator:list)
+ * Reduction variable(s) must be shared variables
+ * The reduction can be hidden in a funciton call
+
+### The nowait clause
+ * To minimize synchronization, some OpenMP directives/pragmas support the optional nowait clause
+ * If present, threads will synchronize/wait at the end of that particular construct
+ * In C, it is one of the clauses on the pragma
+
+### The parallel region
+ * A parallel region is a block of code executed by multiple threads simultaneously
+
+### Work-sharing constructs
+ * The work is distributed over the threads
+ * Must be enclosed in a parllel region
+ * Must be encountered by all threads in the team, or none at all
+ * No implied barrier on entry; implied barrier on exit(unless nowait is specified)
+ * A work-sharing construct does not launch any new threads
+
+### The omp for/do directive
+```
+#pragma omp for [cluase[[,] clause] ...]
+  <origianl for-loop>
+```
+
+### Load balancing
+ * Load balancing is an important aspect of performance
+ * For regular operations, load blancing is not an issue.
+ * For less regular workloads, care needs to be taken in distributing the work over the threads.
+ * Examples of irregular workloads:
+   * Transposing a matrix
+   * Multiplication of triangular matrices
+   * Parallel searches in a linked list
+ * For these irregular situations, the schedule clause supports various iteration scheduling algorithms
+
+### The schedule clause
+ * schedule(static | dynamic | guided [, chunk])
+ * schedule(runtime)
+ * static[, chunk]:
+   * Distribute iterations in blocks of size chunk over the threads in a round-robin fashion
+   * In absence of chunk, each thread executes approx, N/P chunks for a loop for length N and P threads
+ * dynamic[, chunk]:
+   * Fixed portions of work; size is controlled by the value of chunk
+   * When a thread finishes, it starts on the next portion of work
+ * guided[, chunk]:
+   * Same dynamic behaviour as "dynamic", but size of the portion of work decreases exponentially
+ * runtime:
+   * Iteration scheduling scheme is set as runtime through environment variable OMP_SCHEDULE
+
+### The SECTIONS directive
+```
+#pragma omp sections [cluases(s)]
+{
+#pragma omp section
+  <code block1>
+#pragma omp section
+  <code block2>
+#pragma omp section
+...
+}
+```
+
+### Orphaning
+ * The OpenMP standard does not restrict worksharing and synchronization directives (omp for, omp single, critical, barrier, etc.) to be within the lexical extent of a parllel region. These directives can be orphaned
+ * That is, they can appear outside the lexical extent of a parallel region
+ * When an orphaned worksharing or synchronization directive is encountered within the dynamic extent of a parallel region, its behaviour will be similar to the non-orphaned case
+ * When an orphaned worksharing or synchronization directive is encoutnered in the sequential part of the program (outside the dynamic extent of any parallel region), it will be executed by the master thread only. In effect, the directive will be ignored.
+
+### Synchornization Controls
+### Barrier
+ * `#pragma omp barrier`
+ * When data is updated asynchronously and the data integrity is at risk
+ * Unfortunately, barriers tend to be expensive and also may not scale to a large number of processors.
+
+### Critical region
+ * Useful to avoid a race condition, or to perform I/O(but which still will have random order)
+ * Be aware that your parallel computation may be serialized and so this could introduce a scalability bottleneck
+
+```
+#pragma omp critical [(name)]
+{ <code-block> }
+```
+
+```
+#pragma omp atomic
+<statement>
+```
+
+### Single processor region
+ * Usually, there is a barrier needed after this region
+ * Migh therefore be a scalability bottleneck
+
+### SING and MASTER construct
+
+```
+#pragma omp single [clause[[,] clause] ...]
+{
+  <code-block>
+}
+```
+
+```
+#pragma omp master
+{ <code-block> }
+```
+
+### More synchronization directives
+ * ordered, flush
+
+### OpenMP Environment Variableso
+ * OMP_NUM_THREADS : default 1
+ * OMP_SCHEDULE : static, "N/P" (1)
+ * OMP_DYNAMIC : TRUE(2)
+ * OMP_NESTED : FALSE(3)
+
+### OpenMP and Global data
+ * Global data is shared and requires special care
+ * A problem may arise in case multiple threads access the same memory section simultaneously:
+   * Read-only data is no problem
+   * Updates have to be checked for race conditions
+ * It is your responsibility to deal with this situation
+ * In general one can do the following:
+   * Split the global data into a part that is accessed in serial parts only and a part that is accessed in parallel
+   * Manullay create thread private copies of the latter
+   * Use the thread ID to access these private copies
+
+### The threadprivate construct
+ * `#pragma omp threadprivate (list)`
+ * Thtread private copies of the designated global variables and common blocks will be made
+ * Several restriction and rules apply when doing this:
+   * The number of threas has to remain the same for all the parallel regions
+   * Initial data is undefined, unless copyin is used
+
+### The copyin caluse
+ * `copyin(list)`
+ * Applies to THREADPRIVATE common blocks only
+ * At the start of the parallel region, data of the master thread is copied to the thread private copies
+
+### OpenMP Runtime Functions
+ * OpenMP provides various user-callable functions:
+   * To control and query the parallel environment
+   * General puerpose semaphore/lock routines
+ * The runtime functions take precedence over the corresponding envrionment variables
+ * Recommended to use under control of an #ifdef for _OPENMP(C/C++)
+ * C/C++ programs need to include <omp.h>
+
+### OpenMP runtime library
+ * omp_set_num_threads
+ * omp_get_num_threads
+ * omp_get_max_threads
+ * omp_get_thread_num
+ * omp_get_num_procs
+ * omp_in_parallel
+ * omp_set_dynamic
+ * omp_get_dynamic
+ * omp_set_nested
+ * omp_get_nested
+ * omp_getwtime
+ * omp_get_wtick
+
+### OpenMP locking routines
+ * Locking provide greater flexibility over critical sections and atomic updates:
+   * C/C++ : type omp_lock_t and omp_nest_lock_t for nested locks
+ * Lock variables should be manipulated throught the API only
+ * It is illegal, and behaviour is undefined, in case a lock variable is used without the appropriate initialization
+
+## Nested locking
+ * Simple locks
+ * Nestable locks
+ * simple locks:
+   * omp_init_lock
+   * omp_destroy_lock
+   * omp_set_lock
+   * omp_unset_lock
+   * omp_test_lock
+ * nestable locks:
+   * omp_init_nest_lock
+   * omp_destroy_nest_lock
+   * omp_set_nest_lock
+   * omp_unset_nest_lock
+   * omp_test_nest_lock
+
+## Manycore GPU Programming with CUDA
+ * Moore's Law :  Transistor count of integrated circuits doubles every two years
+
+### The Need of Multicore Architecture
+ * Hard to design high clock speed(frequency):
+   * power consumption and heat generation : too high
+   * # of cores may still increase
+
+### Many-core GPUs
+ * Motivation:
+   * Originally driven by the insatiable marget demand for realtime, high-definition 3D graphics
+   * programmable GPU has evolved into a highly parallel, multithreaed, manycore processor with tremendous computational horsepower and very high memory bandwidth
+ * GPGPU:
+   * General Puerpose computing on GPU (Graphical Processing Unit)
+   * Utilization of GPU (typically handles computations for graphics) to perform general purpose computation(traditionally handled by CPU)
+
+### Processor:Multicore vs Many-core
+ * Multicore direction(CPU) : 2~8 cores:
+   * Typically handles general puerpose computation
+   * seeks to maintain/increase the execution speed of sequential programs
+   * Complex  : out-of-order, multiple instruction issue, branch predction, pipelining, large cahce ...
+   * while moving into multiple cores
+ * Many-core direction(GPU) : 100~3000 cores:
+   * Focuse on the execution throughput of parallel applications
+   * Simple : inorder ,single instruction issue
+   * Large number of smaller cores
+
+### GPU
+ * Specially designed for highly parallel applications:
+   * Programmable using high level languages (C/C++)
+   * Supports standard 32-bit floating point precision
+   * Lots of GFLOPS
+ * Fast processing must come with high bandwidth!
+ * Simpler memory models and fewer constraints allow high bandwidth
+ * Memory bandwidth
+ * GPU is specialized for:
+   * Compute-intensive
+   * Highly data parallel computation
+   * More transistors devoted to data processing rather than data caching and flow control
+ * What graphics rendering needs? : Geometry(vertex) + Pixel processing
+ * Motivates many application developers to move the computationally intensive parts of their software to GPUs for execution
+
+### Applications
+ * 3D rendering
+ * image and media processing applications such as post processing of rendered images, video encoding and decoding, image scaling, stereo vision, and pattern recognition
+ * many other kinds of algorithms are accelerated by data-parllel processing
+
+### CPU vs GPU
+ * CPU: Optimized for sequential code performance:
+   * sophisticated control logic:
+     * to allow instructions from single thread to execute in parallel or even out-of order
+     * branch prediction
+   * large cache memory:
+     * to reduce the instruction and data access latencies
+   * Powerful ALU:
+     * reduced operation latency
+ * GPU: Optimized for execution throughput of multiple threads:
+   * Originally for fast(3D) video game:
+     * Requires a massive number of floating-point calculations per frame
+   * Minimize control logic and cache memory:
+     * Much more chip area is dedicated to the floating-poitn calculations
+     * Boost memory throughput
+   * Energy Efficient ALU
+   * Designed as (data parllel) numeric computing engins
+
+ * GPU : Maximize throughput
+ * CPU : Minimize latency
+
+### GPU Architecture
+ * GPUs consist of many simple cores
+ * Array of highly threded streaming multicores(SMs)
+ * Two or more SMs form a building block.
+
+### GPU chip design
+ * GPU core is stream processor
+ * Steram processors are grouped in stream multiprocessors
+
+### Popularity of GPUs
+ * Performance
+ * Cost
+ * large marketplace &* customer population
+ * Practical factors and easy accessibility
+ * Support of IEEE floating-point standard
+ * CUDA:
+   * Programmer can use C/C++ programming tools
+   * No longer go through complex graphics interface
+
+### Why more parallelism?
+ * Applications will continue to demand increased speed
+ * A good implmentation on GPU can achieve more than 100 times speedup over sequential execution
+
+### CUDA(Computer Unified Device ARchitecture)
+ * Parallel Computing Framework Developed by NVIDIA
+ * Inttroduced in 2006
+ * General Purpose Programming Model:
+   * GPGPU (General Porpose GPU)
+   * Offers a computing API
+   * Explicit GPU memory management
+ * Goal:
+   * Develop application SW that transparently scales its parallelism to leverage the increasing number of processor cores
