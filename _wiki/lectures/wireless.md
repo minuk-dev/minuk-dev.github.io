@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-05-07 08:59:07 +0900
+lastmod : 2021-06-03 16:28:01 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -575,3 +575,219 @@ parent  : lectures
    * $$V_p^2 = \frac{L^2 q^2}{4}$$
  * Signal power to average quantization noise power:
    * $$(\frac{S}{N})_q = \frac{V_p^2}{\sigma^2} = 3 L^2$$
+
+### PCM
+  * A uniform linear quantizer is called Pualse Code Modulation (PCM) from the Pulse Modulated (PAM) Signal.
+  * Pulse code modulation (PCM) : Encoding the quantized signals into a digital word(PCM word or codeword)
+    * $$ k = log_2 L$$
+
+### Quantization error
+ * Quantizing error : The difference between the input and output of a qunatizer
+
+### Non-uniform quantization
+ * It is done by uniformly quantizing the "compressed" signal.
+ * At the receiver, an inverse compression characteristic, called "expansion" is employed to avoid signal distortion.
+ * compression + expansion -> companding
+
+### Baseband transmission
+ * To transmit information thru physical channels, PCM sequences (codewords) are transformed to pulses (waveforms).:
+   * Each waveform carries a symbol from a set of size M.
+   * Each transmit symbol represents $$m=log_2M$$ bits of the PCM words.
+   * PCM waveforms (line codes) are used for binary symbols (M=2).
+     * Here, consider PCM and PAM are interchangeable.
+ * M-ary pulse modulation are used for non-binary symbols(M > 2):
+   * For a given rate, M-ary PAM (M>2) requires less bandwidth than binary PCM.
+   * For a given average pulse power, binary PCM is easier to detect than M-ary PAM(M > 2).
+ * Assuming real time Tx and euqal energy per tx data bit for binary-PAM and 4-ary PAM:
+   * 4-ary: T=2T_b and Binary : T= T_b
+   * Energy per symbol in binary-PAM: A^2 = 10 B^2
+
+## Chapter 4, 7
+## Source and Channel Coding
+ Source - Info -> Transmitter (Formatter -> Source encoder -> Channel encoder -> modulator -> Multiplexer) - Transmitted signal -> Channel (With noise) - Received Signal -> Receiver(Demultiplexer -> Demodulator -> Channel decoder -> Source decoder -> Formmater) - Received Info -> Destination
+
+### Source Coding vs. Channel Coding
+ * Coding theory is the study of the properties of codes and their fitness for a specific application. Codes are used for data compression, cryptography, error-correction and more recently also for network coding.
+ * This typically involves the removal of redundancy or the correction (or detection) of errors in the transmitted data.
+ * There are essentially two aspects to coding theory:
+   * Data compression (or, source coding)
+   * Error correction (or channel coding)
+ * Source encoding attempts to compress the data from a source in order to ransmit it more efficiently. This practice is found every day on the Internet where the common Zip data compression is used to reduce the network load and make files smaller.
+ * Channel encoding, adds extra data bits to make the transmission of data more robust to disturbances present on the transmission channel. A typical music CD uses the Reed-Solomon code to correct for scratches and dust. Cell phones also use coding techniques to correct for the fading and noise of high frequency radio transmission. Data modems, telephone transmissions, and NASA all employ channel coding techniques to get the bits through, for example the turbo code and LDPC codes.
+
+### Source Coding
+#### Introduction
+ 1. Source symbols encoded in binary
+ 2. The average codelength must be reduced
+ 3. Remove redundancy -> reduces bit-rate
+ * Consider a discrete memoryless source on the alphabet
+ * $$S = \{s_0, s_1, ... s_k\}$$
+ * Let the corresponding probabilities be $$\{p_0, p_1, ... , p_k\}$$
+ * and codelengths be $$\{ l_0, l_1, ..., l_k \}$$
+ * Then, the average codelength (average number of bits per symbol) of the source is defined as
+ * $$ L = \sum_{k=0}^{K-1} p_k l_k$$
+ * If $$L_{min}$$ is the minimum possible value of $$\bar L$$, then the coding efficiency of the source is given by $$\eta$$
+ * $$\eta = \frac{L_{min}}{\bar L}$$
+ * Data Compaction:
+   1. Removal of redundant information prior to transmission.
+   2. Loseless data compaction - no information is lost.
+   3. A source code which represents the output of a discrete memoryless source should be uniquely decodable.
+
+#### Source Coding Schemes for Data Compaction
+ * Prefix Coding:
+   1. The Prefix Code is variable length source coding scheme where no code is the prefix of any other code.
+   2. The prefix code is a niquely decodable code.
+   3. But, the converse is not true
+
+ * Any symbol $$s_k$$ is emitted with probability $$p_k=2^{-l_k}$$
+ * $$ sum_{k=0}^{K-1} 2^{-l_k} = \sum_{k=0}^{K -1} p_k = 1$$
+ * Therefore, the average codeword length is given by
+ * $$\bar L = \sum_{k=0}^{K-1} \frac{l_k}{2^{l_k}}$$
+
+### Huffman Coding
+ * Step 1: arrange the symbol probabilities in a decreasing order and consider them as leaf nodes of a tree.
+ * Step 2: while there are more than one node:
+   * Find the two nodes with the smallest probability and assign the one with the lowest probability a "0", and the other one a "1"(or the other way, but be consistent)
+   * Merge the two nodes to form a new node whose proability is the sum of the two merged nodes.
+   * Go back to Step 1
+ * Step 3: For each symbol, determine its codeword by tracing the assigned bits from the corresponding leaf node to the top of the tree. The bit at the leaf node is the last bit of the codeword
+
+ * Huffman code is a prefix code
+ * The length of codeword for each symbol is roughly equal to the amount of information conveyed.
+ * If the probability distribution is known and accurate. In this sight, Huffman coding is very good.
+ * Variance is a measure of the variablitiy in codeword lengths of a source code and is defined as follows:
+   * $$ \sigma^2 = \sum_{k=0}^{K-1} p_k (l_k - \bar L)^2$$
+ * It is reasonable to choose the Huffman tree which gives greater variance (Provide diversity or disimilarity to avoid errors).
+
+### Channel Coding
+#### Forward Error Correction(FEC)
+ * The key idea of FEC is to transmit enough redundant data to allow receiver to recover from erros all by itself. No sender retransmission required.
+ * The major categories of FEC codes are:
+   * Block codes, Cyclic codes, Reed-Solomon codes, Convolutional codes, and Turbo codes
+
+#### Block Codes
+ * Information is divided into blocks of length k
+ * r parity bits or check bits are added to each block (total length n = k + r)
+ * Code rate R = k/n
+ * Decoder looks for codeword cloest to received vector (code vector + error vector)
+ * Tradeoffs between:
+   * Efficiency
+   * Reliability
+   * Encoding/Decoding complexity
+
+### Block Codes: Linear Block Codes
+ * C of the Linear Block Code is $$ C= mG$$
+ * where m is the uncoded message vector $$m = (m_1, m_2, ..., m_k)$$
+ * and $$G$$ is the generator matrix, $$G=[I|P]
+ * where $$p_i$$ = Remainder of [$$x^{n-k+i-1} / g(x)$$] for i = 1, 2,... k, and I is unit matrix.
+ * g(x) = generator polynomial
+
+ * The parity check matrix:
+   * $$H = [p^T | I]$$
+   * where $$p^T$$ is the transpose of the matrix p.
+
+ * Operations of the generator matrix and the parity check matrix
+ * The parity check matrix H is used to detect erros in the received code by using the fact that $$c*H^T = 0$$ (null vector)
+ * Let $$x \bigoplus e$$ be the received message where c is the correct code and e is the rror
+ * Compute $$S = x * H^T = (c \bigoplus e) * H^T = c H^T \bigoplus e H^T = e H^T$$
+ * If S is 0 then message is correct else there are erros in it, from common known error patterns the correct message can be decoded.
+
+### Convolutional Codes
+ * Encoding of information stream rather than information blocks
+ * Value of certain information symbol also affects the encoding of next M information symbols.
+ * Easy implementation using shift register
+ * Assuming k inputs and n outputs
+ * Decoding is mostly performed by the Viterbi Algorithm
+
+### Interleaving
+ * 인풋 데이터를 순서대로 하는 것이 아닌 2차원 형태로 바꾼 다음 열의 순서로 보내는 방식
+ * Error spreading -> Can be correct.
+
+### Information Capacity Theorem (Shannon Limit)
+ * The information capacity (or channel capacity) C of a continuous channel with bandwidth B hertz can be perturbed by additive Gaussian white noise of power spectral density N_0/2 provided bandwidth B satisfies
+ * $$ C = B log_2 (1 + \frac{P}{N_0 B})$$ bits/ second
+ * where P is the average transmitted power $$P = E_b R_b$$ (for an ideal system, $$R_b = C$$).
+ * $$E_b$$ is the transmitted energy per bit,
+ * $$R_b$$ is transmission rate.
+
+### Turbo Codes
+ * A brief historic of turbo codes:
+   * The turbo code concept was first introduced by C. Berrou in 1993. Today, Turbo Codes are considered as the most efficient coding schmes for FEC.
+   * Scheme with known components (simple convolutional or block codes, interleaver, soft-decision decoder, etc.)
+   * Performance close to the Shannon Limit at modest complexity!
+   * Turbo codes have been proposed for low-power applications such as deep-space and stellite communications, as well as for interference limited applications such as third generation cellular, personal communication services, ad hoc and sensor networks.
+
+### Modulation
+### Signal transmission through linear systems
+ * Input x(t) -> y(t) Output
+ * Y(f) = X(f)H(f)
+
+### Bandwidth of signal
+ * Baseband versus bandpass:
+   * x(t) (Baseband signal) - convolution $$ cos (2\pi f_ct)$$ (local socillator) -> x_c(t) (Bandpass signal)
+   * 기저 대역(baseband)에 있는 메시지를 통과대역(passband)로 변환하는 과정
+   * 수신자는 송신자와 같은 대역으로 대역으로 발진해야하지만, 실제로는 도플러효과나 오실레이터의 노화에 따라서 대역이 변화하게 된다. 따라서 이를 동기화(Synchronization)을 해줘야지만 이를 수신할 수 있게 된다.
+   * 물론 이를 동기화 하지 않고 수신하는 기법(DPSK)도 있지만 성능이 떨어진다.
+
+### Bandwidth of signal
+ * 신호에 절대값을 씌웠을 때,
+ * Half-power bandwidth : 3dB 가 되는 지역, 즉 Power 가 최대의 절반이 되는 지점까지
+ * Noise equivalent bandwidth : 노이즈와 파워가 동등해지는 대역
+ * Null-to-null bandwidth : 최대값을 기준으로 처음으로 0이되는 양쪽 지점 사이 대역폭
+ * Fractional power containment bandwidth
+ * Bounded power spectral density
+
+### Modulation
+ * Encoding information in a manner suitable for transmission.:
+   * Translate baseband source signal to bandpass signal
+   * Basdpass signal: "modulated signal"
+ * Why need modulation?:
+   * Small antenna size
+
+### Modulation and Demodulation
+ * Major sources of erros:
+   * Thermal noise (AWGN):
+     * distrubs the signal in an additive fashion (Additive)
+     * has flat spectral density for all frequencies of interest (White)
+     * is modeled by Gaussian random process (Gaussian Noise)
+   * Inter-Symbol Interference (ISI):
+     * Due to the filtering effect of transmitter, channel and receiver, symbols are "smeared".
+
+### Basic Modulation Techniques
+ * Amplitude Modulation (AM)
+ * Frequency Modulation (FM)
+ * Frequency Shift Keying (FSK)
+ * Phase Shift Keying (PSK)
+ * Quadrature Phase Shift Keying (QPSK)
+ * Quadrature Amplitude Modulation (QAM)
+
+#### Amplitude Modulation (AM)
+ * Amplitude of arrier signal is varied as the message signal to be transmitted.
+ * Frequency of carrier signal is kept constant.
+
+#### Frequency Modulation (FM)
+ * FM integrates message signal with carrier signal by varying the instantaneous frequency.
+ * Amplitude of carrier signal is kept constant.
+
+#### Frequency Shift Keying (FSK)
+ * 1/0 represented by two different frequencies slightly offset from carrier frequency
+
+#### Phase Shift Keying (PSK)
+ * Use alternative sine wave phase to encode bits
+
+### Receiver job for Demoulation
+ * Demodulation and sampling:
+   * Waveform recovery and preparing the received signal for detection:
+     * Improving the signal power to the noise power (SNR) using matched filter (project to signal space)
+     * Reducing ISI using equalizer (remove channel distortion)
+     * Samplign the recovered waveform
+ * Detection:
+   * Estimate the transmitted symbol based on the received sample
+
+### Receiver structure
+ * Step 1 - waveform to sample transofrmation: (demodulate & sample)
+   * Frequency down-conversion : For bandpass signals
+   * Receiving filter
+   * Equalizing filter : Compensation for channel induced ISI
+ * Step 2- decision making:(detect)
+   * Threshold comparison
