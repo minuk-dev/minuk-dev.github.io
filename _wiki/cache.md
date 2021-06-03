@@ -3,12 +3,33 @@ layout  : wiki
 title   : Cache
 summary : 
 date    : 2020-07-06 20:38:22 +0900
-lastmod : 2020-07-07 20:03:03 +0900
+lastmod : 2021-06-03 16:38:03 +0900
 tags    : [memory, cache]
 draft   : false
 parent  : 
 ---
 
+# 관련 스크립트
+## pagecache 해제
+```bash
+echo 1 > /proc/sys/vm/drop_caches
+```
+## dentries, inodes 해제
+```bash
+echo 2 > /proc/sys/vm/drop_caches
+```
+## pagecache, dentries, inodes 모두 해제
+```bash
+echo 3 > /proc/sys/vm/drop_caches
+```
+
+## 플러싱하기
+```bash
+sync
+```
+
+# 출처
+* https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EC%BA%90%EC%8B%9C_%EB%A9%94%EB%AA%A8%EB%A6%AC_%EB%B9%84%EC%9A%B0%EA%B8%B0
 ## 요약
  * Pinciple of Locality 에 따라 최근 접근한 데이터 또는 인접한 데이터를 빠르게 접근할수 있는 곳에 두고 접근하는 것.
 
