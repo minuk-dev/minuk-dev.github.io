@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-06-03 16:28:01 +0900
+lastmod : 2021-06-03 17:52:16 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -791,3 +791,128 @@ parent  : lectures
    * Equalizing filter : Compensation for channel induced ISI
  * Step 2- decision making:(detect)
    * Threshold comparison
+
+### Signal Space Concept
+ * What is a signal space?:
+   * Vector representations of signals in an N-dimensional orthogonal space
+ * Why do we need a signal space?:
+   * It is a menas to convert signals to vectors and vice versa.
+   * It is a means to calculate signals energy and Euclidean distances between signals.
+ * Why are we interested in Euclidean distances between signals?:
+   * For detection purposes: The received signal is transformed to a received vectors.
+   * The signal which has the miniumum distance to the received signal is estimated as the transmitted signal.
+
+### Signal space
+ * To form a signal space, first we need to know the inner product between two signals:
+   * Inner (scalar) product:
+     * $$<x(t),y(t)> = \int_{-\infty}^{\infty} x(t) y^{*}(t) dt$$
+     * = cross-correlation between x(t) and y(t)
+   * Properties of inner product:
+     * <ax(t), y(t)> = a <x(t), y(t)>
+     * <x(t), ay(t)> = a* <x(t), y(t)>
+     * <x(t) + y(t), z(t) > = <x(t), z(t)> + <y(t), z(t)>
+* The distance in singal space is measure by calculating the norm.
+* What is norm?:
+  * Norm of a signal:
+    * $$||x(t)|| = \sqrt{<x(t), x(t)>} = \sqrt{\int_{-\infty}^{\infty} |x(t)|^2 dt} = \sqrt{E_x}$$
+    * $$||ax(t)|| = |a| ||x(t)||$$
+  * Norm between two signals:
+    * $$d_{x,y} = || x(t) - y(t) ||$$
+* We refer to the norm between two signals as the Euclidean distance between two signals.
+
+
+### Orthogonal signal space
+ * N-dimensional orthogonal signal space is chracterized by N linearly independent functions $$\{\psi_j(t) \}_{j=1} ^N$$ called basis functions. The basis functions must satisfy the orthogonality condition
+ * $$<\psi_i(t), \psi_j(t)> = \int_0^T \psi_i(t) \psi_j^*(t)dt = K_i \delta_{ji}$$, $$0 \le t \le T$$, $$j,i = 1,...,N$$
+ * where $$\delta_{ij} = \begin{case} 1 -> i = j \\\ 0 -> i \not = j \end{case}$$
+ * If all $$K_i=1$$, the signal space is orthonormal.
+ * Constructing Orthonormal basis from non-orthnormal set of vectors:
+   * Gram-Schmidt precedure
+ * Example : BPSK
+
+### Signal space
+ * Any arbitrary finite set of waveforms $$\{s_i(t)\}_{i=1}^M$$ where each member of the set is of duration T, can be expressed as a linear combination of N orthogonal waveforms $$\{\psi_j (t)\}_{j=1}^N$$ where $$N \le M$$
+ * $$s_i(t) = sum_{j=1}^N a_{ij} \psi_j(t)$$
+ * where $$a_{ij} = \frac{1}{K_j}<s_i(t), \psi_j(t)> = \frac{1}{K_j} \int_{0}^T s_i(t) \psi_j(t) dt$$, $$j=1,...N$$, $$i=1,...,M$$, $$0 \le t \le T$$
+ * $$s_i = (a_{i1}, a_{i2}, ..., a_{iN})$$ : vector representation of waveform
+ * $$E_i = \sum_{j=1}^N K_j |a_{ij} | ^2$$ : Waveform energy
+
+### Quadrature Amplitude Modulation (QAM)
+* Combination of AM and PSK
+* Two carriers out of phase by 90 deg are amplitude modulated
+
+
+## Chapter 6.
+### Network Software
+ * Layered Architecture:
+   * To reduce their design complexity, most networks are organized as a stack of layers or levels.
+   * The purpose of each layer is to offer certain services to the higher layers, shielding those layers from the details of how the offered services are actually implemented
+   * Protocol: An agreement between communicating parties on how communication is to proceed.
+
+### Terminologies
+ * The entities comprising the corresponding layers on different machines are called peers.
+ * Interface: defines which primitive operations and services the lower layer makes available to upper one.
+ * A set of layers and protocols is called a network architecture.
+ * A list of protocols used by a certain system, once protocols per layer, is called a protocol stack
+
+### Service Primitives
+ * Tells the service to perform some action or report an action taken by a peer entity
+ * Sequence chart in a simple client-server interaction on a connection-oriented network
+
+### Reference Models
+ * Network Protocol Suites that are heavily referenceed:
+   * OSI refernce Model
+   * TCP/IP
+
+### Data Link Layer
+ * Provides for reliable transfer of information across the physical link
+ * Sends blocks (frames) with the necessary synchronization, error control and flow control
+ * Usually subdivided by Medium Access Control(MAC) and Logical Link Control (LLC)
+
+### Multiple Radio Access
+ * Multiple access networks:
+   * Each node is attached to a transmitter/receiver which communicates via a medium shared by other nodes
+   * Transmission from any node is received by other nodes
+
+### Multiple Access
+ * Multiple access issues:
+   * If more than one node transmit at a time on the broadcast channel, a collision occurs
+   * How to determin which node can transmit?
+ * Multiple access protocols:
+   * Solving multiple access issues
+
+ * Contention-free vs Contention-based(Conflict-baased)
+
+### Contention-free protocols
+#### FDMA (Frequency Division Multiple Access)
+ * Single channel per carrier
+ * All fist generation systems use FDMA
+
+#### TDMA (Time Division Multiple Access)
+ * Multiple channels per carrier
+ * Most of second generation systems use TDMA
+
+#### Combining TDMA and FDMA
+ * Each channel gets a certain frequency band for a certain amount of time. Example :GSM
+ * Advantages:
+   * More robust against frequency-selective interference
+   * Much greater capacity with time compression
+   * Inherent tapping protection
+ * Disadvantages:
+   * Frequency changes must be coordinated
+
+#### CDMA (Code Division Multiple Access)
+ * User share bandwidth by using code sequences that are orthogonal to each other
+ * Some second generation systems use CDMA
+ * Most of third generation systems use CDMA
+
+#### Types of Channels
+ * COntrol channel:
+   * Forward (Downlink) control channel
+   * Reverse (uplink) control channel
+ * Traffic channel:
+   * Forward traffic (information) channel
+   * Reverse traffic (information) channel
+
+PPT 28 쪽부터 정리하면 됨.
+ 
