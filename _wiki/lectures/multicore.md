@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multicore Computing
 summary :
 date    : 2021-06-02 17:11:08 +0900
-lastmod : 2021-06-03 08:37:27 +0900
+lastmod : 2021-06-03 09:21:24 +0900
 tags    :
 parent  : lectures
 ---
@@ -1171,3 +1171,198 @@ for (i = 0; i < m; i ++)
    * Explicit GPU memory management
  * Goal:
    * Develop application SW that transparently scales its parallelism to leverage the increasing number of processor cores
+
+### Compute Capability
+ * general speicifications and features of compute device
+ * Defined by major revision number of minor revision number
+
+### CUDA - Main Features
+ * C/C++ with extensions
+ * Heterogeneous programming model
+ * Operates in CPU(host) and GPU (device)
+
+### CUDA device and threads
+ * Device:
+   * Is a coprocessor to the CPU or host
+   * Has access to DRAM (device memory)
+   * Runs many threads in parallel
+   * Is typically a GPU but can also be another type of parallel processing device
+ * Data-parallel portions of an applications are expressed as device kernels which run on many threads
+ * Differences between GPU and CPU threads:
+   * GPU threads are extremely lightweight
+   * GPU needs 1000s of threads for full efficiency
+
+### CUDA Hello World
+```cpp
+#include <stdio.h>
+__glogal__void hello_world(void) {
+  pritnf("Hello World\n");
+}
+
+int main (void) {
+  hello_world<<<1, 5>>>();
+  cudaDeviceSynchronize();
+  return 0;
+}
+```
+
+### C Language Extension
+ * Function Type Qualifiers
+ * `__global__`:
+   * executed on the device (GPU)
+   * callable from the host (CPU) only
+   * functions should have voicd return type
+   * any call to a __global__ function must specify the execution configuration for that call
+ * <<<blocksPerGrid, threadsPerBlock>>>
+ * <<<1, 10>>>
+ * dim3 blocksPerGrid(65535, 65535, 1)
+ * dim3 threadsPerBlock(1024, 1, 1)
+
+ * Built-in Variables:
+   * blockIdx = (x, y, z) : three unsigned integers, uint3
+   * threadIdx = (x, y, z) : three unsigned integers, uint3
+ * Built-in Vector types:
+   * dim3:
+     * Integer vector type based on uint3
+     * used to specify dimensions
+
+### Simple Processing Flow
+ 1. Copy input data from CPU memory to GPU memory
+ 2. Load GPU program and execute, caching data on chip for performance
+ 3. Copy results from GPU memory to CPU memory
+
+### Hello World! with Device Code
+ * `nvcc` seperates source code into host and device components:
+   * Device function processed by NVIDIA compiler
+   * Host functions processed by standard host compiler
+ * Triple brackets mark a call from host code to device code:
+   * Also called a "kernel launch"
+
+### Memory Mangement
+ * Host and device memory are seperate entities:
+   * Device pointers point to GPU memory:
+     * May be passed to/from host code
+     * May not be dereferenced in host code
+   * Host pointers point to CPU memory:
+     * May be passed to/from device code
+     * May not be dereferenced in device code
+ * Simple CUDA API for handling device memory:
+   * `cudaMalloc()`, `cudaFree()`, `cudaMemcpy()`
+   * Similar to the C equivalents `malloc()`, `free()`, `memcpy()`
+
+```cpp
+__global__ void add(int *a, int *b, int *c) {
+  *c = *a + *b;
+}
+int main (void) {
+  int a, b, c;
+  int *d_a, *d_b, *d_c;
+  int size = sizeof(int);
+  
+  cudaMalloc((void **) &d_a, size);
+  cudaMalloc((void **) &d_b, size);
+  cudaMalloc((void **) &d_c, size);
+  
+  a = 2;
+  b = 7;
+  cudaMemcpy(d_a, &a, size, cudaMemcpyHostToDevice);
+  cudaMemcpy(d_b, &b, size, cudaMemcpyHostToDevice);
+  
+  add<<<1,1>>>(d_a, d_b, d_c);
+  
+  cudaMemcpy(&c, d_c, size, cudaMemcpyDeviceToHost);
+  
+  cudaFree(d_a);
+  cudaFree(d_b);
+  cudaFree(d_c);
+  return 0;
+}
+```
+
+### Running in Parallel
+### Moving to Parallel
+ * GPU computing is about massive parallelism
+ * Instaed of executing add() once, execute N times in parallel
+
+## Vector Addition on the Device
+```cpp
+__glogal__ void add(int *a, int *b, int *c) {
+  c[blockIdx.x] = a[blockIdx.x] + b[blockIdx.x];
+}
+// add<N, 1>> (...);
+```
+
+### CUDA Threads
+ * Terminology : a block can be split into parllel threads
+ * Let's change add() to use parallel threads instead of parllal blocks
+
+### Combining Blocks and Threads
+ * Handling Arbitrary Vector Sizes:
+```cpp
+__global__ void add(int *a, int *b, int *c, int n) {
+  int index = threadIdx.x + blockIdx.x * blockDim.x;
+  if (index < n)
+    c[index] = a[index] + b[index];
+}
+// add<<<(N + M - 1) / M, M >>>(d_a, d_b, d_c, N);
+```
+
+### 1D Stencil
+ * Consider applying a 1D stencil to a 1D array of elements:
+   * Each output element is the sum of input elements with a radius
+
+#### Implementing Within a block
+ * Each thread processes one output element:
+   * blockDim.x elements per block
+ * Input elements are read several times
+
+#### Sharing Data Between Threads
+ * Terminology: within a block, threads share data via shared memory
+ * Extremely fast on-chip memory, user-managed
+ * Declare using __shared__, allocated per block
+ * Data is not visible to threads in other blocks
+
+```cpp
+__global__ void stencil_ld(int *int, int *out) {
+  __shared__ int temp[BLOCK_SIZE + 2 * RADIUS];
+  int gindex = threadIdx.x + blockIdx.x * blockDim.x;
+  int lindex = threadIdx.x + radius;
+
+  temp[lindex] = in[gindex];
+  if (threadIdx.x < RADIUS) {
+    temp[lindex - RADIUS] = in[gindex - RADIUS];
+    temp[lindex + BLOCK_SIZE] = in[gindex + BLOCK_SIZE];
+  }
+
+  __syncthreads();
+  int result = 0;
+  for (int offset = -RADIUS; offset <= RADIUS ; offset ++)
+    result += temp[lindex + offset];
+  out[gindex] = result;
+}
+```
+
+
+### Coordinating Host & Device
+ * Kernel launches are asynchronous:
+   * Control returns to the CPU immediately
+ * CPU needs to synchronize before consuming the results
+
+### Reporting Erros
+ * All CUDA API calls return an error code (cudaError_t):
+   * Error in the API call itself
+   * Error in an earlier asynchronous operation
+ * Get the error code for the last error:
+   * `cudaError_t cudaGetLastError(void)`
+ * Get a string to describe the rror:
+   * `char *cudaGetErrorString(cudaError_t)`
+
+### Device Managment
+ * Application can query and select GPUs:
+   * `cudaGetDeviceCount(int *count)`
+   * `cudaSetDevice(int device)`
+   * `cudaGetDevice(int *device)`
+   * `cudatGetDeviceProperties(cudaDeviceProp *prop, int device)`
+ * Multiple CPU threads can share a device
+ * A single CPU thread can manage multiple devices
+
