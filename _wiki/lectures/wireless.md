@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-06-04 07:07:23 +0900
+lastmod : 2021-06-04 07:10:19 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -11,6 +11,8 @@ parent  : lectures
 ## NS3
  * [[ns3]]
 
+## 정보통신기술용어 해설 정리
+ * 정보통신기술용어
 ## Theory
 ## Chapter 2. Probability & Fourier Transform
 ### Introduction
