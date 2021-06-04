@@ -3,7 +3,7 @@ layout  : wiki
 title   : wireless 무선이동통신 수업
 summary : 무선이동통신 수업 정리
 date    : 2021-04-20 19:23:19 +0900
-lastmod : 2021-06-03 17:52:16 +0900
+lastmod : 2021-06-04 07:07:23 +0900
 tags    : [wireless, lectures]
 parent  : lectures
 ---
@@ -906,13 +906,423 @@ parent  : lectures
  * Some second generation systems use CDMA
  * Most of third generation systems use CDMA
 
-#### Types of Channels
- * COntrol channel:
+### Types of Channels
+ * Control channel:
    * Forward (Downlink) control channel
    * Reverse (uplink) control channel
  * Traffic channel:
    * Forward traffic (information) channel
    * Reverse traffic (information) channel
 
-PPT 28 쪽부터 정리하면 됨.
- 
+### Duplexing Methods for Radio Links
+#### Frequency Division Duplex(FDD)
+ * Forward link frequency and reverse link frequency is different.
+ * In each link, signals are continuously transmitted in parallel.
+
+#### Time Division Duplex (TDD)
+ * Forward link frequency and reverse link frequency is the same.
+ * In each link, signals take turns just like a ping-pong game.
+
+#### Frequency Hopping Spread Spectrum (FHSS)
+#### Direct Sequnce Spread Spectrum (DSSS)
+ * This sequnce can be mapped into bipolar notations
+ * $$S * T = \frac{1}{m} \sum_{i=1}^m S_i T_i = 0$$
+ * $$S * S = \frac{1}{m} \sum_{i=1}^m S_i S_i = \frac{1}{m} \sum_{i=1}^m S_i^2= \frac{1}{m} \sum_{i=1}^{m} (\pm 1)^2 = 1$$
+ * $$S * \bar S = -1$$
+ * During each bit time,:
+   * a station can transmit a 1 by sending its chip sequence,
+   * it can transmit a 0 by sending the negative of its chip sequence,
+   * Or it can be silent and transmit nothing
+ * At the receiving station, the transmitted bit is recovered by computing the inner producet of received signal and its chip sequence
+ * For example, if the received signal $$S = A + \bar B + C$$, the receiver computes
+ * $$S * C = (A + \bar B + C) * C = A*C + \bar B * C + C *C = 0 + 0 + 1 = 1$$
+ * and determines that bit 1 has been transmitted independent of what is the signal for A, B, and D is.
+
+### Contention-Based Protocols
+ * ALOHA:
+   * Developed in the 1970s for a packet radio network by Hawaii University.
+   * Whenever a station has a data, it transmits. Sender finds out whether transmission was successful or experienced a collision by listening to the broadcase from the destination station. Sender retransmits after some random time if there is a collision.
+ * Slotted ALOhA:
+   * Improvement: Time is slotted and a packet can only be transmitted at the beginning of one slot. Thus, it can reduce the collision duration.
+
+ * CSMA(Carrier Sense Multiple Access):
+   * Improvement: Start transmission only if no transmission is ongoing
+ * CSMA/CD (CSMA with Collision Detection):
+   * Improvement: Stop ongoing transmission if a collision is detected
+ * CSMA/CA (CSMA with Collision Avoidance):
+   * Improvement: Wait a random time and try agian when carrier is quite. If is still quit, then transmit
+ * CSMA/CA with ACK
+ * CSMA/CA with RTS/CTS
+
+### ALOHA analysis
+ * In poission process:
+   * $$P(k,t)= \frac{(\lambda t)^k e^{- \labmda t}}{k!}, k=0,1,2...$$
+   * E[Number of attempts in t seconds] = $$\lambda t$$
+ * Assumptions:
+   * Assume backlogged frames randomized sufficently, so that retransmissions can be recirculated and counted as new arrivals:
+     * New overall Poisson arrival rate G > $$\lambda$$
+     * G is therefore defined as the rate of attempted transmissions(including retransmissions and new arrivals)
+     * In reality, G is time varying, but assume constant for our analysis
+   * The probability that a transmitted frame is successful is defined as $$P_0$$
+   * The throughput S is defined as the departure rate of the system.
+   * Therefor, $$S = G P_0$$ in this notation.
+ * Unslotted analysis:
+   * $$P_0 = e^{-2G}$$
+   * $$S=GP_0=Ge^{-2G}$$
+   * To maximize throughput, maximize departure rate
+   * G=0.5 -> 18% maximum efficiency
+   * if G > 0.5, too many collisions
+   * if G < 0.5, too many idle slots
+ * Slotted analysis assumptions:
+   * Frames all have same length
+   * Time is slotted, and users synchronized
+   * Nodes listen to results (1s later) to determine what happend
+   * All frames either collide or perfectly received
+   * Now, vulnerable period is cut in half
+   * G=1, 36% maximum efficiency
+ * Tradeoff between ALOHA and round-robin(Time Division Multiplexing):
+   * TDM : avoid collisions, but longer average delays
+   * Aloha : small delay (immediately transmit), but collisions possible
+
+#### Summary of Aloha
+ * Some problems:
+   * Inefficient(good for infrequent transactions in a large user population)
+   * Not good for back-to-back data transmissions
+ * Some stabilization techniques have achieved throughputs on order of 50%
+ * Still, a good technique for many users
+
+### CMSA (Carrier Sense Multiple Access)
+ * CSMA gives imporved throughput compared to Aloha protocols.
+ * Listens to the channel befor transmitting a packet
+
+#### Non-persistent / x-persistent CSMA Protocols
+ * Nonpersistent CSMA Protocol:
+   * Step 1 : If the medium is idel, transmit immediately
+   * Step 2 : If the medium is busy, wait a random amount of time and repeat Step1
+   * Random backoff reduces probability of collisions
+   * Waste idel time if the backoff time is too long
+ * 1-persisten CSMA Protocol:
+   * Step 1 : If the medium is idel, transmit immediately
+   * Step 2 : If the medium is busy, continue to listen until medium becomes idel, and then transmit immediately
+   * There will always be a collision if two nodes want to retransmit
+ * p-persistent CSMA Protocol:
+   * Step 1 : If the medium is idel, transmit with probability p, and delay for one propagation delay with probability (1-p)
+   * Step 2 : If the medium is busy, continue to listen until medium becomes idle, then go to Step 1
+   * Step 3 : If transmission is delayed by one time slot, continue with Step 1
+ * A good tradeoff between nonpersistent and 1-persistent CSMA
+
+#### How to select probability p?
+ * Assume that N nodes have a packet to send and the medium is busy
+ * Np is the expected number of nodes that will attempt to transmit once the medium becomes idle
+ * If Np > 1, then a collision is expected to occur. Therefore, network must make sure that Np < 1, where N is the maximum number of nodes taht can be activate a time
+
+### CSMA/CD (CSMA with Collision Detection)
+ * In CSMA, if 2 terminals begin sending packet at the same time, each will transmit its complete packet(although collision is takign place).
+ * Wasting medium for an entire packet time.
+ * CSMA/CD:
+   * Step 1: If the medium is idel, transmit
+   * Step 2: If the medium is busy, continue to listen until the channel is idel then transmit
+   * Step 3: If a collision is detected during transmission, cease transmitting
+   * Step 4: Wait a random amount of time and repeats the same algorithm
+
+### CSMA/CA (CSMA with collision Avoidance)
+ * All terminals listen to the medium same as CSMA/CD.
+ * Terminal ready to transmit senses the medium.
+ * If medium is busy it waits until the end of current transmission.
+ * It again waits for an additional predetermined time period DIFS (Distributed inter frame Space)
+ * Then picks up a random number of slots (the initial value of backoff counter) within a contention window to wait before transmitting its frame.
+ * if there are transmissions by other terminals during this time period (backoff time), the terminal freezes its counter.
+ * It resumes count down after other terminals finish transmission + DIFS. The terminal can start its transmission when the counter reaches to zero.
+
+#### CSMA/CA with ACK
+ * Immediate Acknowlegements from receiver upon reception of data frame.
+ * ACK frame transmitted after time interval SIFS (Short Inter-Frame Space) (SIFS < DIFS)
+ * Receiver transmits ACK without sensing the medium.
+ * If ACK is lost, retransmission done.
+
+### Hidden node problem
+ * CSMA will be ineffective here
+
+### CSMA/CA with RTS/CTS
+ * Transmitter sends a RTS (request to send) after medium has been idle for time interval more than DIFS.
+ * Receiver responsds with CTS (clear to send) after medium has been idle for SIFS.
+ * Then data is exchnaged.
+ * RTS/CTS is used for reserving channel for data transmission so that the collision can only occur in control message.
+
+### Exponential Backoff
+ * When transmitting a packet, choose a backoff interval in the range[0, cw]:
+   * cw is contention window
+ * Count down the backoff interval when medium is idle:
+   * Count-down is suspended if medium becomes busy
+ * When backoff interval reaches 0, transmit RTS
+
+### Backoff Interval
+ * Choosing a large cw leads to large backoff intervals and can result in larger overhead
+ * Choosing a small cw leads to a larger number of collisions (when two nodes count down to 0 simultaneously)
+ * Since the number of nodes attempting to transmit simultaneously may change with time, some mechanism to manage contentions is needed.
+ * IEEE 802.11 DCF : contention window cw is chosen dynamically depending on collision occurrence.
+
+## Chapter 13, 5, 10
+### Network Layer Protocols
+### Why Wireless?
+ * Objective:
+   * anything, anytime, anywhere
+ * Advantages:
+   * Spatial flexibility in radio reception range
+   * Ad hoc networks without former planning
+   * No problems with wiring
+   * Robust against disasters like earthquake, fire
+ * Disadvantages:
+   * Generally very low transmission rates for higher numberfs of users
+   * Many national regulations, global regulations are evolving slowly
+   * Restricted frequency range, interferences of frequencies
+
+### Wireless vs. Mobile
+ * Two aspects of mobility:
+   * user mobility. user communicate (wireless), anytime, anywhere with anyone.
+   * device portability: devices can be connected any time, anywhere to the network
+
+### Wireless Routing
+ * So, the routing(network) still relies upon the existing wireline routing protocols with apperas in Chapter 9.
+ * Instead, we will discuss true wireless multi-hop networks called MANET (Mobile Ad hoc Network) which is an autonomous system of nodes(MSs) connected by wireless links.
+ * A MANET does not necessarily need support from any existing network infrastructure like an Internet gateway or other fixed stations.
+
+### Chracteristics of Ad Hoc Networks
+ * Dynamic topologies: Network topology may change dynamiccaly as the nodes are free to move or battery is off.
+ * No oracle for configuration : Distributed and Self-organizing.
+ * Bandwidth-constrained, variable capacity links: Realized throughput of wireless communication is less than the radio's maximum transmission rate. Collision occurs frequently (Low BW relative to wired).
+ * Energy-constrained operation: Some nodes in the ad hoc network may rely on batteries or other exhaustible means for their energy.
+ * Limited physical security: More prone to physical security threats than fixed cable networks.
+
+### Routing in MANETS - Goals
+ * Provide the maximum possible reliability - use alternative routes if an intermediate node fails.
+ * Choose a route with the least cost metric (memory, bandwidth, power, etc).
+ * Give the nodes the best possible response time and throughput.
+ * Route computation must be distributed. Centralized routing in a dynamic network is usually very expensive.
+ * Routing computation should not involve the maintenance of global state.
+ * Every node must have quick access to routes on demand.
+ * Each node must be only concerned about the routes to its destination.
+ * Broadcast should be avoided(highly unreliable)
+ * It is desirable to have a backup route when the primary route has become stale.
+
+### Routing Classification
+ * The existing routing protocols can be classified as:
+   * Proactive: when a packet neetds to be forwarded, the route is already known.
+   * Reactive: Determine a route only when there is data to send.
+ * Routing protocols may also be categorized as:
+   * Table Driven protocols
+   * Source Initiated (on demand) protocols
+
+### Table Driven Routing Protocols
+ * Each node maintains routing information independently of need for communication
+ * Update messages send throughout the network periodically or when network topology changes.
+ * Low latency, suitable for real-time traffic
+ * Bandwidth might get wasted due to periodic updates
+ * They maintain O(N) state per node, N = #nodes
+ * Examples are:
+   * Destination Sequenced Distance Vector routing (DSDV)
+   * Cluster-head Gateway Switch routing (CGSR)
+   * Wireless Routing Protocol (WRP)
+
+### Destination Sequenced Distance Vector Routing (DSDV)
+ * Based on the Bellman-Ford algorithm.
+ * Each mobile node maintains a routing table in terms of number of hops to each destination, i.e., every node knows "where" everybody else is.
+ * Routing table updates are periodically transmitted.
+ * Each entry in the table is marked by a sequence number which helps to distinguish stale routes from new ones, and thereby avoiding loops.
+ * To minimize the routing updates, variable sized update packets are used depending on the number of topological changes. (incremental dump of changes)
+
+### Cluster-head Gateway Switch Routing (CGSR)
+ * CGSR is a clustered multi-hop mobile wireless network with several heuristic routing schemes.
+ * A distributed cluster-head (CH) selection algorithm is used to select a node as the cluster head.
+ * It modified DSDV by using a hierarchical CH to route traffic.
+ * Gateway nodes serve as bridge nodes between two or more clusters.
+ * A packet sent by a node is first routed to its CH and then the packet is routed from the CH to a gateway of another cluster and then to the CH and so on, until the destination cluster head is reached.
+ * Frequent changes in the CH may affect the performance of the routing protocol.
+
+### Source-Initiated On-Demand Routing (Reactive)
+ * Each source discovers route(s) to its destination only when the source needs it.
+ * Save energy and bandwidth during inactivity
+ * Can be busrty -> congestion during high activity
+ * Significant delay might occur as a result of route discovery
+ * Good for light load, collapse in large loads
+ * Examples are:
+   * Dynamic Source Routing (DSR)
+   * Ad hoc On-Demand Distance Vector (AODV).
+
+### Dynamic Source Routing (DSR)
+ * Each packet header contains a route, which is represented as a complete sequence of nodes between a source-destination pair
+ * Protocol consists of two phases:
+   * route discovery
+   * route maintenance
+ * Optimizations for efficiency:
+   * Route cache
+   * Piggybacking
+   * Error handling
+
+ * The protocol consists of two major phases: Route Discovery, Route Maintenance.
+ * When a mobile node has a packet to send to some destination, it first consults its route cache to check whether it has a route to that destination.
+ * If it is an un-expired route, it will use this route.
+ * If the node doest not have a route, it initiates route discovery by broadcasting a Route Request packet.
+ * This Route Request contains the address of the destination, along with the source address.
+ * Each node receiving the packet checks to see whether it has a route to the destintaiton. If it does not, it adds its own address to the route record of the packet and forwards it.
+ * A route reply is generated when the request reaches either the destination itself or an intermediate node that contains in its route cache an un-expired route to that destination.
+ * If the node generating the route reply is the destination, it places the route record contained in the route request into the route reply.
+
+ ### Ad-hoc On Demand Distance Vector (AODV)
+  * On demand protocol that uses sequence numbers to build loop free routes
+  * Key difference from DSR si that source route is no longer required
+  * Path discovery:
+    * Reverse path setup
+    * Forward path setup
+  * Table management and path maintenance
+  * Local connectivity management
+  * AODV is an improvement over DSDV, which minimizes the number of required broadcasts by creating routes on demand.
+  * Nodes that are not in a selected path do not maintain routing information or participate in routing table exchanges.
+  * A source node initiates a path discvoery process to loacate the other intermediate nodes(and the destination), by boradcasting a Route Request (RREQ) packet to its neighbors.
+
+### The Cellular Concept
+ * Cell shape : Ideal(Circle), Actual(Not circle), 실제로는 빈틈 없이 모델링을 하기 위해서 육각형을 많이 사용한다.
+ * Signal Strength
+ * Handoff Region:
+   * By looking at the variation of signal strength from either base station it is possible to decide on the optimum area where handoff can take place.
+   * 한 기지국에서 이동하면서 더 좋은 기지국으로 접속해야한다. 이때 넘겨지는 영역을 Handoff Region이라고 한다. (Handover Region)
+
+### Cell Capacity
+ * Average number of MSs requesting service (Average arrival rate): $$\lambda$$
+ * Average length of time MS requires service (Average holding time): T
+ * Offered load: $$a = \labmda T$$
+ * e.g., in a cell with 100 MSs, on an average 30 requests are gnerated during an hour, with average holding time T = 360 secs.
+ * Then, arrivatl rate $$\lambda = 30 / 3600$$ requests/sec.
+ * A channel kept busy for one hour is defined as on Erlang
+ * e.g., $$a = 30/3600 \text{calls/sec} * 360 \text{sec / call} = 3 \text { Erlangs }$$
+ * Average arrival rate during a short interval t is given by $$\lambda t$$
+ * Assuming Poisson distribution of service requests, the probability P(n, t) for n calls to arrive in an interval of length t is given by:
+   * $$P(n, t) = \frac{(\lambda t)^n}{n!} e^{-\lambda t}$$
+ * Assumming $$\mu$$ to be the service rate, probability of each call to terminate during interval t is given by $$\mu t$$
+ * Thus, probability of a given call requires service for time t or less is given by:
+   * $$S(t) = 1 - e^{-\mu t}$$
+
+### Erlang B and Erlang C
+ * Probability of an arriving call being blocked is:
+   * $$B(C, a) = \frac{a^C}{C!} \frac{1}{\sum_{i=1}^C \frac{a^i}{i!}}$$ : Erlang B formula
+ * Probabilty of an arriving call beign delayed is:
+   * $$C(C, a) = \frac{\frac{a^C}{(C-1)! (C-a)}}{\frac{a^C}{(C-1)!(C-a)} + \sum_{i=0}^{C-1} \frac{a^i}{i!}}$$ : Erlang C formula
+ * where C(C,a) is the probability of an arriving call being delayed with a load and C Channels.
+
+### Efficiency (Utilization)
+  * Efficiency = Traffic non blocked / Capacity = Erlangs * portions of nonrouted traffic / Number of trucks(channels)
+
+### Cell Structure
+ * 육각형으로 모델링을 하는데, 인접한 Cell끼리는 서로 다른 주파수 영역을 써서, 간섭(interference)과 동시전송(cross talk)을 방지하고자 한다.
+
+### Frequency Reuse
+ * 인접한 영역끼리 같은 주파수를 못쓴다. 반대로 말하면, 인접하지 않으면 같은 주파수를 쓸수 있다는 뜻이다. 따라서 주파수를 다시 재활용 해야한다.
+ * 인접하지 않은(간섭을 주지 않는) 영역끼리는 같은 주파수를 사용할 수 있게 한다.
+
+### Reuse Distance
+ * For hexagonal cells, the reuse distance is given by:
+   * $$D = \sqrt(3N) R$$
+   * where R is cell radius and N is the reuse pattern (the cluster size of the number of cells per cluster).
+ * Reuse factor is:
+   * $$\frac{D}{R} = \sqrt{3N}$$
+ * The cluster size of the number of cells per cluster is given by:
+   * $$N = i^2 + ij + j^2$$
+   * where i and j are integers.
+ * N = 1,3,4, 7, 9 ...
+ * The popular value of N begin 4 and 7.
+
+### Cochannel Interference
+ * Cochannel interference ratio is given by:
+   * $$\frac{C}{I} = \frac{\text{Carrier}}{\text{Interference}} = \frac{C}{\sum_{k=1}^M I_k + N}$$ : SINR
+   * where I is co-channel interference and M is the maximum number of co-channel interfering cells.
+
+### Cell Splitting
+ * Large cell(low density)
+ * Small cell(high density) : low power consumption and powerful signal but frequent handover
+ * Depending on traffic patterns the smaller calls may be activated/deactivated in order to efficiently use cell resources.
+ * femto cell : 아파트 한 층
+ * picocell : 아파트 건물 하나
+ * microcell : 도시(urban)
+ * macrocell : 대도시(suburban)
+
+### Cell Sectoring by Antenna Design
+### Cellular SYstem
+ * MS : Mobile Station
+ * BTS: Base Transceiver System
+ * BSC: BS Controller
+ * MSC: Mobile Switching Center
+ * VLR: Visitor Location Register
+ * HLR: Home Location Register
+ * AUC: AUthentication Center
+ * EIR: Equipment Identify Register
+
+### Registration
+ * Wireless system needs to know whether MS is currently located in its home area or some other area (routing of incoming calls).
+ * This is done by periodically exchagning signals between BS and MS known as beacons.
+ * BS perioidically boradcasts beacon signal (e.g., 1 signal per second) to determine and test the MSs around.
+ * Each MS listens to the beacon, if it has not heard it previously then it adds it to the active beacon kernel table.
+ * This information is used by the MS to locate the nearest BS.
+ * Information carried by beacon signal: cellular network identifier, timestamp, gateway address ID of the paging area, etc.
+
+### Steps for Registration
+ * MS listens to a new beacon, if it's a new one, MS adds it to the active beacon kernel table.
+ * If MS decides that it has to communicate through a new BS, kernel modulation initiates handoff process.
+ * MS locates the nearest BS via user level processing.
+ * The visiting BS performs user level processing and decides:
+   * Who the user is?
+   * What are it access permissions?
+   * Keeping track of billing.
+ * Home site sends appropriate authentication response to the current serving BS.
+ * The BS approves/disapproves the user access.
+
+### Handoff
+ * Change of radio resoruces from one cell to adjacent one.
+ * Handoff depends on cell size, signal strength, fading, reflection, etc.
+ * Handoff can be initiated by MS or BS and could be due to:
+   * Radio link
+   * Network management
+   * Service issues
+ * Radio link handoff is due to mobility of MS.
+ * It depends on:
+   * Number of MSs in the cell
+   * Number of MSs that have left the cell
+   * Number of calls generated in the cell
+   * Number of calls transferred from the neighboring cells
+   * Number of calls terminated in the cell
+   * Number of calls that were handoff to neighboring cells
+   * Number of active calls in the cell
+   * Cell population
+   * Total time spent in the cell by a call
+   * Arrival time of a call in the cell
+   * etc.
+ * Network management may cause handoff if there is drastic imbalance of traffic in adjacent cells and optimal balance of resources is required.
+ * Serivce related handoff is due to the dagradation of Qos(Quality of service)
+
+### Time for Handoff
+ * Factors deciding right time for handoff:
+   * Signal strength
+   * Signal phase
+   * Combination of above two
+   * Bit error rate(BER)
+   * Distance
+ * Need for Handoff is determined by:
+   * Signal strength
+   * SINR(Signal to Interference and Noise Ratio)
+
+### Handoff initiation
+ * One option is to do handoff where the two signal strengths are equal.
+ * If MS moves back and forth around this point, it will result in too frequent handoffs(ping-pong effect).
+ * Therefore, MS is allowed to continue with the existing BS till the signal strength decreased by a threshold value E.
+ * Different cellular systems follow different handoff procedures.
+
+### Types of Handoff
+ * Hard Handoff (break before make):
+   * Releasing current resources from the prior BS before acquiring resources from the next BS.
+   * FDMA & TDMA follow this type of handoff.
+ * Soft Handoff (make before break):
+   * In CDMA, since the same channel is used, we have to change the code of the handoff, if the code is not orghogonal to the codes in the next BS.
+   * Therefore, it is possible for the MS to communicate simultaneously with the prior BS as well as the new BS.
+
+### Roaming
+ * To move from a cell controlled by one MSC area to a cell connected to another MSC.
+ * Beacon signals and the use of HLR-VLR allow the MS to roam anywhere provided we have the same service provider, using that particular frequency band.
