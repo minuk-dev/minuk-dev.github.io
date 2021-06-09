@@ -80,3 +80,10 @@ exclude:
   - Gemfile.lock
   - tags
   - README.md
+
+
+utterances:
+  repo: makerdark98/makerdark98.github.io
+  issue-term: pathname
+  label: Comment
+  branch: master
