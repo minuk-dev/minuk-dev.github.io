@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-04-20 11:44:39 +0900
+lastmod : 2021-06-12 18:34:35 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -836,3 +836,291 @@ public static void CSEE_Student_Name(String userid, String paswd) {
    * Stored Procedure 및 Oracle의 PL/SQL을 이용한 Web/DB 연동
    * ASP, JSP, PHP의 Web/DB 연동 기능
    * Example: ASP/ADO
+
+## Chapter 15. Query Processing
+### Basic Steps in Query Processing
+ 1. Parsing and translation:
+   * translate the query into its internal form. THis is then translated into relation algebra.
+   * Parser checks syntax, verifies relations
+ 2. Optimization
+ 3. Evaluation:
+   * The query-execution engine takes a query-evaluation plan, executes that plan, and returns the answers to the query.
+ * Evaluation-plan : Annotated expression specifying detailed evaluation strategy
+ * Query Optimization : Amongst all equivalent evalution plans choose the one with lowest cost.:
+   * Cost is estimated using statisitcal information from the database catalog
+
+### Measures of Query Cost
+ * Many factors contribute to time cost:
+   * disk access, CPU, and network communication
+ * Cost can be measured based on:
+   * reponse time
+   * total resource consumption
+ * We ignore CPU costs for simplicity:
+   * Real systems do take CPU cost into account
+   * Network costs must be considered for parallel systems
+ * We describe how estimate the cost of each operation:
+
+ * Disk cost can be stimated as:
+   * Number of seeks * average seek cost
+   * Number of blocks read * average block read cost
+   * Number of blocks written * average block write cost
+ * For simplicity we just use the number of block transfers from disk and the number of seeks as the cost measures:
+   * time to transfer one block : $$t_T$$
+   * time for one seek : $$t_s$$
+   * Cost for b block transfers plus S seeks:
+     * $$ b * t_T + S * t_S$$
+   * $$t_s$$ and $$t_T$$ depend on where data is stored; with 4KB blocks
+   * Required data may be buffer resident already, avoiding disk I/O:
+     * But hard to take into account for cost estimation
+   * Several algorithms can reduce disk IO by using extra buffer space:
+     * Amount of real memory available to buffer depends on other concurrent queries and OS processes, known only during execution
+   * Worst case estimates assume that no data is intially in buffer and only the minimum amount of memory needed for the operation is available:
+     * But more optimistic estimates are used in practice
+
+### Selection Operation
+ * File scan
+ * Algorithm A1(linear search). Scan each file block and test all records to see whether they satisfy the selection condition:
+   * Cost estimate = b_r block transfers + 1 seek:
+     * $$b_r$$ denotes number of blocks containing records from relation $$r$$
+   * If selection is on a key attribute, can stop on fiding record:
+     * $$cost = (b_r/2)$$ block transfers + 1 seek
+   * Linear search can be applied regardless of:
+     * seleciton condition
+     * ordering of records in the file
+     * availability of indices
+ * Note: binary search generally does not make sense since data is not stored consecutively:
+   * except when there is an index available
+   * binary search requires more seeks than index search
+ * Index scan - search algorithms that use an index:
+   * selection condition must be on search-key of index.
+ * A2(clustering index, equality on key):
+   * Retreive a single record that satisfies the coreesponding equality condition
+   * $$Cost = (h_i + 1) * (t_T + t_S)$$
+ * A3(clustring index, equality on nonkey):
+   * Retrieve multiple records.
+   * Records will be on consecutive blocks
+   * $$Cost = h_i * (t_T + t_S) + t_S + t_T * b$$
+ * A4(secondary index, equality on key/non-key):
+   * Retrieve a single record if the search-key is a candidate key:
+     * $$Cost=(h_i + 1) * (t_T + t_S)$$
+   * Retrieve multiple records if search-key is not a candidate key:
+     * each of n matching records may be on a different block
+     * $$Cost = (h_i + n) * (t_T + t_S)$$
+
+### Selections Involving Comparisions
+ * Can implement selection of the form $$\sigma_{A \le V}(r)$$ or $$\sigma_{A \ge V}(r)$$ by using:
+   * a linear file scan vs using indeces in the following ways
+ * A5(clustering index, comparision) (Relation is sorted on A):
+   * For $$\sigma_{A \ge V}(r)$$ use index to find first tuple >= v and scan relation sequentially from there
+   * For $$\sigma_{A \le V}(r)$$ just scan relation sequentially till first tuple > v; do not use index.
+ * A6(clustering index, comparision):
+   * For $$\sigma_{A \ge V}(r)$$ use index to find first index entry >= v and scan index sequentially from there, to find pointers to records.
+   * For $$\sigma_{A \le V}(r)$$ just scan leaf pages of index fiding pointers to records, till first entry > v
+   * In either case, retrieve records that are pointed to
+   * requires an I/O per record; Linear file scan may be cheaper!
+
+### Implementation of Comple Selections
+ * Conjunction : $$\sigma_{\theta1 \wedge \theta2 \wedge ... \wedge \theta_n} (r)$$
+ * A7 (conjunctive selection using one index):
+   * Select a combination of $$\theta_i$$ and algorithms A1 through A7 that results in the least cost for $$\sigma_{\theta i}(r)$$
+   * Test other conditions on tuple after fetching it into memory buffer.
+ * A8 (conjunctive selection using composite index):
+   * Use appropriate composite (multiple-key) index if available.
+ * A9 (conjunctive selection by intersection of identifiers):
+   * Requires indices with record pointers
+   * Use corresponding index for each condition, and take intersection of all the obtained sets of record pointers.
+   * Then fetch records from file
+   * If some conditions do not have appropriate indices, apply test in memory.
+ * Disjunction:$$\sigma_{\theta1 \vee \theta_2 \vee .. \vee \theta n}(r)$$
+ * A10 (disjunctive selection by union of identifiers):
+   * Applicable if all conditions have available indices:
+     * Otherwise use linear scan
+   * Use corresponding index for each condition, and take union of all the obtained sets of record pointers
+   * Then fetch records from file
+ * Negation:$$\sigma_{\neg \theta}(r)$$:
+   * Use linear scan on file
+   * If very few records satisfy $$\neg \theta$$ and an index is applicable to $$\theta$$:
+     * Find satisfying records using index and fetch from file
+
+### Bitmap Index Scan
+ * The bitmap index scan algorithm of PostgreSQL:
+   * Bridges gap between secondary index scan and linear file scan when number of matching records is not known befor execution
+   * Bitmap with 1 bit per page in relation
+   * Steps:
+     * Index scan used to find record ids, and set bit of corresponding page in bitmap
+     * Linear file scan fetching only pages with bit set to 1
+   * Performance:
+     * Simlar to index scan when only a few bits are set
+     * Similar to linear filescan when most bits are set
+     * Never behaves very badly compared to best alternative
+
+### Sorting
+ * We may build an index on the relation, and then use the index to read the relation in sorted order. May lead to one disk block access for each tuple.
+ * For relations that fit in memory, techniques like quicksort can be used.:
+   * For relations that don't fit in memory, external sort-merge is a good choice.
+
+### External Sort-Merge
+```
+Let M denote memory size
+1. Create sorted runs. Let i be 0 initially.:
+   Repeatedly do the following till the end of the relation:
+   (a) Read M blocks of relation into memory
+   (b) Sort the in-memory blocks
+   (c) Write sorted data to run R_i : increment i.
+Let the final value of i be N
+1. Merge the runs (N-way merge). We assume (for now) that N < M:
+  1. Use N blocks of memory to buffer input runs, and 1 block to buffer output. Read the ifrst block of each run into its buffer page
+  2. repeat:
+    1. Select the first record (in sort order) among all buffer pages
+    2. Write the record to the output buffer. If the output buffer is full write it to disk
+    3. Delete the record from tis input buffer page. If the buffer page becomes empty then read the next block (if any) of the run into the buffer.
+  3. until all input buffer pages are empty
+```
+ * If N >= M, several merge passes are required.:
+   * In each pass, contiguous groups of M - 1 runs are merged.
+   * A pass reduces the number of runs by a factor of M - 1, and creates runs longer by the same factor.:
+     * E.g If M= 11, and there are 90 runs, one pass reduces the number of runs to 9, each 10 timns the size of the initial runs
+   * Repeated passes are performed till all runs have been merged into one.
+ * Cost analysis:
+   * 1 block per run leads to too many seesk during merge:
+     * Instead use $$b_b$$ buffer blocks per run -> read/write $$b_b$$ blocks at a time
+     * Can Merge $$\lfloor M / b_b \rfloor - 1$$ runs in one pass
+     * Total number of merge passes required: $$\lceil log_{\lfloor M / b_b \rfloor - 1} (b_r / M) \rceil$$.
+     * Block transfers for initial run creation as well as in each pass is $$2b_r$$:
+       * for final pass, we don't count write cost:
+         * we ignore final write cost for all operations since the output of an operation may be sent to the parent operation without being written to disk
+         * Thus total number of block transfers for external sorting:
+           * $$b_r(2 \lceil log_{\lfloor M/ b_b \rfloor - 1}(b_r / M) \rceil + 1)$$
+
+### Join Operation
+ * Several different algorithms to implement joins:
+   * Nested-loop join
+   * Block nested-loop join
+   * Indexed nested-loop join
+   * Merge-join
+   * Hash-join
+ * Choice based on cost estimate
+
+### Nested-Loop Join
+ * To compute the theta join $$r \bowtie_{\theta} s$$
+```
+for each tutple t_r in r do begin
+  for each tuple t_s in s do begin
+    test pari(t_r, t_s) to see if they satisfy the join condition \theta
+    if they do, add t_r * t_s to the result
+  end
+end
+```
+ * r is called the outer relation and s the inner relation of the join.
+ * Requires no indices and canbe used with any kind of join condition.
+ * Expensive since it examines every pair of tuples in the two relations
+ * In the worst case, if there is enough memory only to hold one block of each relation, the stimated cost is:
+   * $$n_r * b_s + b_r$$ block transfers, plus $$n_r + b_r$$ seeks
+ * If the smaller relation fits entirely in memory, use that as the inner relation:
+   * Reduces cost to $$b_r + b_s$$ block transfers and 2 seeks
+ * Block nested-loops algorithm is preferable.
+
+### Block Nested-Loop Join
+ * Variant of nested-loop join in which every block of inner relation is paried with every block of outer relation.
+```
+for each block B_r of r do begin
+  for each block B_s of s do begin
+    for each tuple t_r in B_r do begin
+      for each tuple t_s in B_s do begin
+        Check if (t_n, t_s) satisfy the join condition
+        if they do, and t_r * t_s to the result
+      end
+    end
+  end
+end
+```
+
+### Indexed Nested-Loop Join
+ * Index lookups can replace file scans if:
+   * join is an equi-join or natural join and
+   * an index is available on the inner relation's join attribute:
+     * Can construct an index just to compute to join
+ * For each tuple t_r in the outer relation r, use the index to look up tuples in s that satisfy the join condition with tuple t_r
+ * Worst case: buffer has space for only one page of r, and , foreach tuple in r, we perform an index lookup on s.
+ * Cost of the join: $$b_r(t_T + t_S) + n_r * c$$:
+   * Where c is the cost of traversing index and fetching all matching s tuples for one tuple or r.
+   * c can be stimated as cost of a single selection on s using the join condition.
+ * If indices are available on join attributes of both r and s, use the relation with fewer tuples as the outer relation.
+
+### Merge-Join
+ 1. Sort both relations on their join attribute (if not already sorted on the join attributes).
+ 2. Merge the sorted relations to join them:
+   1. Join step is similar to the merge stage of the sort-merge algorithm.
+   2. Main difference is handling of duplicate values in join attribute - every pari with same value on join attribute must be matched
+
+```
+pr := address of first tuple of r
+ps := address of first tuple of s
+while (ps != null and pr != null) do
+  begin
+    t_s = tuple to which ps points;
+    S_s : = {t_s};
+    set ps to point to next tuple of s;
+    done := false;
+    while (not done and ps != null) do
+      begin
+        t_s' := tuple to which ps points;
+        if (t_s'[JoinAttrs] = t_s[JoinAttrs])
+          then begin
+              S_s := S_s \cup { t_s '}:
+              set ps to point to next tuple of s;
+          end
+        else done := true;
+      end
+     t_r := tuple to which pr points;
+     while (pr != null and t_r[JoinAttrs] < t_s[JoinAttrs]) do
+       begin
+         set pr to point to next tuple of r;
+         t_r := tuple to which pr points;
+       end
+     while (pr != null and t_r[JoinAttrs] = t_s[JoinAttrs]) do
+       begin
+         for each t_s in S_s do
+           begin
+             add t_s \bowtie t_r to result;
+           end
+         set pr to point to next tuple of r;
+         t_r := tuple to which pr points;
+       end
+    end
+```
+ * 뭔가 거창하게 적혀있는데 기본 Merge Sort 알고리즘과 거의 흡사한 구조다.
+ * Merge Sort는 숫자가 작은걸 골라서 넣는다면, Merge Join은 Join 조건이 맞으면 넣는거다.
+ * 그리고 조건이 맞지 않다면 둘중 하나는 더 작다는 뜻이므로 작은걸 넘겨주면 된다.
+ * Can be used only for equi-joins and natural joins : 왜 equi-join 과 natrual join 만 되는지는 알고리즘을 생각해보면 자명하다.
+ * Each block needs to be read only once (assuming all tuples for any given value of the join attributes fit in memory)
+ * Thus the cost of merge join is:
+   * $$b_r + b_s$$ block transfer + $$\lceil b_r / b_b \rceil + \lceil b_s / b_b \rceil$$ seeks + the cost of sorting if relations are unsorted.
+ * hybrid merge-join: if one relation is sorted, and the other has a secondary B+-tree index on the join attribute:
+   * Merge the sorted relation with the leaf entries of the B=-tree.
+   * Sort the result on the addresses of the unsorted relation's tuples
+   * Scan the unsorted relation in physical address order and merge with previous result, to replace addresses by the actual tuples:
+     * Sequential scan more efficient than random lookup
+
+### Hash-Join
+ * Applicable for equi-joins an natrual joins.
+ * A hash function h is used to partion tuples of both relations
+ * h maps JoinAttrs values to {0, 1, ..., n}, where JoinAttrs denoted the common attributes of r and s used in the natrual join.:
+   * r_0, r_1, ..., r_n denote partitions of r tuples:
+     * Each tuple $$t_r \in r $$ is put in partition $$r_i$$ where i = h(t_r[JoinAttrs]).
+   * s_0, s_1, ... s_n denotes partitions of s tuples:
+     * Each tuple $$t_s \in s$$ is put in partition s_i, where i = h(t_s[JoinAttrs]).
+ * The hash-join of r and s is computed as follows.:
+   1. Parittion the relation s using hashing function h. When partitioning a relation, one block of memory is reserved as the output buffer for each partition.
+   2. Partition r similarly.
+   3. For each i:
+     1. Load s_i into memory and build an in-memory hash-index on it using the join attribute. This hash index uses a different hash function than the earlier one h
+     2. Read the tuples in r_i from the disk one by one. For each tuple t_r locate each matching tuple t_s in s_i using the in-memory hash index. Output the concatenation of the attributes.
+ * Relation s is called the build input and r is called the probe input
+ * The value n and the hash function h is chosen such that each s_i should fit in memory:
+   * Typically n is chosen as $$\lceil b_s / M \rceil * f$$ where f is a fudge factor.
+   * The probe relation partitions s_i need not fit in memory.
+ * Recursive partitioning required if nubmer of partitions n is greater than number of pages M of memory:
+   * instead of paritioning n ways, use M - 1 partitions for s
+   * Further paritition the M- 1 paritions using a different hash function
+   * Use same partitioning method on r
