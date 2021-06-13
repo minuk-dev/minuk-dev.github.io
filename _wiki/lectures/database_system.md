@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-06-12 18:34:35 +0900
+lastmod : 2021-06-13 10:53:50 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -1124,3 +1124,185 @@ while (ps != null and pr != null) do
    * instead of paritioning n ways, use M - 1 partitions for s
    * Further paritition the M- 1 paritions using a different hash function
    * Use same partitioning method on r
+
+### Hadnling of Overflows
+ * Partitioning is said to be skewed if some paritions have significantly more tuples than some others
+ * Hash-table overflow occurs in partition s_i if s_i does not fit in memory.:
+   * Many tuples in s with same value for join attributes
+   * Badh hash function
+ * Overflow resolution can be deon in build pahse:
+   * Parition s_i is further paritioned using different hash funciton
+   * Parition r_i must be similarly partitioned
+ * Overflow avoidance performs paritioning carefully to avoid overflows during build phase
+ * Both approaches fail with large numbers of duplicates
+
+### Cost of Hash-Join
+ * If recursive paritioning is not required: cost of hash join is:
+   * $$3(b_r + b_s) + 4 * n_h + 2(\lceil b_r / b_b \rceil + \lceil b_s / b_b \rceil)$$
+ * If recursive paritioning required:
+   * number of passes required for paritioning build raltion s to less than M blocks per partition is $$\lceil log_{\lfllor M/b_b \r_ceil -1 (b_s / M) \rceil$$}
+   * best to choose the smaller relation as the build relation
+   * Total cost estimate is:
+     * $$2(b_r + b_s) \lceil log_{lfloor M / b_b \rfloor -1} (b_s / M) \rceil + b_r + b_s + 2(\lceil b_r / b_b \rceil + \lceil b_s / b_b \rceil) \lceil log_{\lceil M/ b_b \rceil - 1} (b_s / M) \rceil$$
+  * If the entire build input can be kept in main memory no partitioning is required:
+    * Cost estimate goest down to $$b_r + b_s$$
+
+### Complex Joins
+ * Join with a conjunctive condition:
+   * $$r \bowtie_{\theta_1 \wedge \theta_2 \wedge ... \wedge \theta_n} s$$
+   * Either use nested loops/block nested loops or
+   * Compute the result of one of the simpler joins $$r \bowtie_{\theta_i} s$$:
+     * final result comprieses those tuples in the intermediate results that satisfy the remaining condition
+ * Join with a disjunctive condition:
+   * $$r \bowtie_{\theta_1 \vee \theta_2 \vee ... \vee \theta_n} s$$
+   * Either use nested loops/block nested loops, or
+   * Compute as the union of the records in individual joins $$r \bowtie_{\theta_j} s$$
+
+### Joins over Spatial Data
+ * No simple sort order for spatial joins
+ * Indexed nested loops join with spatial indices:
+   * R-trees, quad-trees, k-d B-trees
+
+### Other Operations
+ * Duplicate elimination can be implemented via hashing or sorting.:
+   * On sorting duplicates will come adjacent to each other, and all but one set of duplicates can be deleted.
+   * Optimization: duplicates can be deleted during run generation as well as at intermediate merge steps in external sort-merge.
+   * Hashing is similar - duplicates will come into the same bucket.
+ * Projection:
+   * perform projection on each tuple
+   * followed by duplicate elimination
+
+ * Aggretion can be implemented in a manner similar to duplicate elimination:
+   * Sorting or hasing can be used to bring tuples in the same group together, and then the aggregate functions can be applied on each group
+   * Optimization: partial aggregation:
+     * combine tuples in the same group during run generation and intermediate merges, by computing partial aggregate values
+     * For count, min, max, sum: keep aggregate values on tuples found so far in the group:
+       * When combining partial aggregate for count, add up the partial aggregates
+
+  * Set operations ($$\cup, cap$$ and - ) : can either use variant of merge-join after sorting, or variant of hash-join.
+  * E.g., Set operations using hashing:
+    * Parition both relations using the sam hash function
+    * Process each partition as i as follows:
+      * Using a different hashing function, build an in-memory hash index on r_i.
+      * Process s_i as follows:
+        * $$r \cup s$$:
+          * Add tuples in s_i to the hash index if they are not already in it.
+          * At end of s_i add the tuples in the hash index to the result
+        * $$r - s$$:
+          * for each tuple in s_i, if it is there in the hash index, delete it from the index.
+          * At end of s_i add remaining tuples in the hash index to the result
+
+### Answering Keyword Queries
+ * Indices mapping keywords to documents:
+   * For each keyword, store sorted list of document IDs that contain the keyword:
+     * Commonly referred to as a inverted index
+   * To answer a query with several keywords, compute intersection of lists corresponding to those keywords
+ * To support ranking, inverted lists sotre extra information:
+   * Term frequency of the keyword in the document
+   * Inverse document frequency of the keyword
+   * Page rank of the document/web page
+
+### Outer Join
+ * Outer join can be computed either as:
+   * A join followed by addition of null-padded non-participating tuples
+   * by modifying the join algorithms
+ * Modifying merge joint to compute r ⟕ s:
+   * In r ⟕ s, none paritcipating tuples are those in $$r - \Pi_R (r \bowtie s)$$
+   * Modify merge-join to compute r ⟕ s:
+     * During merging, for every tuple t_r from r that do not match any tuple in s, output t_r padded with nulls.
+   * Right outer-join and full outer-join can be computed similarly.
+
+### Evalution of Expressions
+ * Alternatives for evaluting an entire expression tree:
+   * Matrialization: generate results of an expression whose inputs are relations or are already computed, materialize(store) it on disk. Repeat
+   * Pipelining: pass on tuples to parent operations even as an operation is beign executed
+
+### Materialization
+ * Materialized evaluation : evaluate one operation at a time, starting at the lowest-level. Use intermediate results materialized into temporary relations to evalue next-level operations.
+ * Materialized evaluation is alreays appilcable
+ * Cost of writing results to disk and reading them back can be quite high:
+   * Our cost formulas for operations ignore cost of writing results to disk, so:
+     * Overall cost = Sum of costs of individual operations + cost of writing intermediate results to disk.
+ * Double buffering : use two output buffers for each operation, when one is full write it to disk while the other is getting filled:
+   * Allows overlap of disk writes with computation and reduces execution time
+
+### Pipelining
+ * Pipelined evaluation: evaluate several operations simultaneously, passing the results of one operation on to the next.
+ * Much cheaper than materialization: no need to store a temporary relation to disk.
+ * Pepelining may not always be possible - e.g. sort, hash-join
+ * For pipelining to be effective, use evaluation algorithms that generate output tuples even as tuples are received for inputs to the operation.
+ * Pipelines can be executed in two ways: demand driven and producer driven
+ * In demand driven or lazy evalutaion:
+   * system repeatedly requests next tuple from top level operation
+   * Each operation requests next tuple from children operations as required, in order to output its next tuple
+   * In between calls, operation has to maintain "state" so it knows what to return next
+ * In producer-driven or eager pipelining:
+   * Operators produce tuples eagerly and pass them up to their parents:
+     * Buffer maintained between operators, child puts tuples in buffer, parent removes tuples from buffer.
+     * If buffer is full, child waits till their is space in the buffer, and then generates more tuples
+   * System schedules operations that have space in output buffer and can process more input tuples
+ * Implementation of demand-driven pipelining:
+   * Each operation is implemented as an iterator implementing the following operations:
+     * open(), next(), close()
+
+### Blocking Operations
+ * Blocking operations : cannot generate any output until all input is consumed:
+   * E.g. sorting, aggregation
+ * But can often consume inputs from a pipeline, or produce outputs to a pipeline
+ * Key idea: blocking operations often have two suboperations:
+   * E.g., for sort: run generation and merge
+   * For hash join: partitioning and build-probe
+ * Treat them as separate operations
+
+### Pipeline Stages
+ * Pipeline stages:
+   * All operations in a stage run concurrently
+   * A stage can start only after preceding stages have completed execution
+
+### Evaluation Algorithms for Pipelining
+ * Some algorithms are not able to output results even as they get input tuples:
+   * E.ge., merge join, or hash join
+   * intermediate results written to disk and then read back
+ * Algorithm variants to generate (at least some) results on the fly, as input tuples are read in:
+   * E.g. hybrid hash join generates output tuples even as probe relation tuples in the in-memory partition (partition 0) are read in
+   * Double-pipelined join technique : Hybrid hash join, modified to buffer parititon 0 tuples of both relations in-memory, reading them as they become avaialbe, and output results of any matches between parition 0 tuples:
+     * When a new r_0 tuple is found, match it with existing s_0 tuples, output matches,  and save it in r_0
+     * Symmetrically for s_0 tuples
+
+### Pipelining for Continuous-Stream Data
+ * Data  streames:
+   * Data entring database in a continuous manner
+ * Continuous queries:
+   * Results get updated as streaming data enters the database
+   * Aggregtation on windows if often used:
+     * E.g., tumbling windows divide time into units, e.g. hours, minutes
+ * Need to use pipelined processing algorithms:
+   * Punctuations used to infer when all data for a window has been received
+
+### Query Processing In memoery
+ * Query compilation to machine code:
+   * Overheads of interprelation:
+     * Overhead of expression evaluation
+   * Compilation can avoid many such overheads and speed up query processing
+   * Often via generation of JAva byte code /LLVM, with just-in-time(JIT) compilation
+ * Column-oriented storage:
+   * Allows vectoer operations (in conjunction with compilation)
+ * Cache conscious algorithms
+
+### Cache Conscious Algorithms
+ * Goal: minimize cache misses, make best use of data fetched into the cache as part of a ache line
+ * For sorting:
+   * Use runs that are as large as L3 cache (a few megabytes) to avoid cache misses during sorting of a run
+   * THen merge runs as usual in merge-sort
+ * For hash-join:
+   * First create parititions such that build+probe paritions fit in memory
+   * THen subpartition further s.t. build subparittion+index fits in L3 cache:
+     * Speeds up probe phase significantly by avoiding cache misses
+ * Lay out attributes of tuples to maximize cache usage:
+   * Attributes that are often accessed together should be stored adjacent to each other
+ * Use multiple threads for parallel query processing:
+   * Cache misses leads to stall of one thread, but others can proceed
+
+---
+ 생각보다 수업시간에 안다룬 내용이 많았는데 그냥 그런가보다 하고 정리했다.
+ 어짜피 도움되는 내용이기도 하고, PPT만 안했지 말로는 설명한 부분들도 있었기 때문이다.
