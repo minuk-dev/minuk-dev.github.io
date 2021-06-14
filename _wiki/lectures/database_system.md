@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-06-14 10:33:05 +0900
+lastmod : 2021-06-14 11:46:54 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -1680,4 +1680,175 @@ procdedure findbestplan(S)
 #### Query Optimization and Materialized Views
 
 양이 너무 많다 ㅠ 학교 시험 범위는 아니라 읽어만 보고 정리는 생략했다.
+수식을 입력하는데 시간이 너무 오래 걸린다. 사실 이렇게 오래동안 필기할 내용은 아니였는데 ㅠ
 ---
+
+## Chapter 17 Transaction
+### Transaction Concept
+ * A transaction is a unit of program execution that accesses and possibly updates various data items.
+ * Two main issues to deal with:
+   * Failures of various kinds, such as hardware failures and system crashes
+   * Concurrent execution of multiple transactions
+ * Atomicity requirement:
+   * The system should ensure that updates of a partially executed transaction are not reflected in the database
+ * Durability requirement : the updates to the database by the transaction must persist even if there are software or hardware failures.
+ * Consistency requirement:
+   * Explicitly specified integrity constraints such as primary keys and foreign keys
+   * Implicit integrity constraints
+   * A transaction must see a consistent database
+   * During transaction execution the database may be temporarily inconsistent
+   * When the transcation complete successfully the database must be consistent:
+     * Erroneous transaction logic can lead to inconsistency
+ * Isolation requirement:
+   * isolation can be ensured trivially by running transctions serially
+
+### ACID Properties
+ * A transcation is a unit of program execution that acesses and possibly updates various data itmes. To preserve the integrity of data the database system must ensure:
+   * Atomicity. Either all operations of the transcation are properly reflected in the database or none are.
+   * Consistency. Execution of a transcation in isolation preserves the consistency of the database
+   * Isolation. Although multiple transactions may exectue concurrently, each transaction must be unaware of other ocncurrently executing transactions. Intermediate transaction results must be hidden from other concurrently executed transactions
+   * Durability. After a transcation completes successfully, the changes it has made to the database persist, even if there are system failures.
+
+### Transaction State
+ * Active - the initial state; the transaction stays in this state while it is executing
+ * Partially committed - after the final statment has been executed.
+ * Failed - after the discovery that normal execution can no longer proceed.
+ * Aborted : after the transaction has been rolled back and the database restored to its state prior toe the start of the transaction. Two options after it has been aborted:
+   * Restart the transcation:
+     * Can be done only if not internal logical error
+   * Kill the transcation
+ * Committed - after successful completion
+
+### Concurrent Executions
+ * Multiple transcations are allowed to run concurrently in the system. Advantages are:
+   * Increased processor and disk utilization, leading to better transaction throughput
+   * Reduced average response time for transactions: short transactions need not wait behind long ones.
+ * Concurrency control schemes : mechanisms to achieve isolation:
+   * That is, to control the interaction among the ocncurrent transaction in order to prevent them from destroying the consistency of the database
+
+### Schedules
+ * Schedule - a sequences of instructions that specify the chronological order in which instructions of concurrent transcations are executed:
+   * A schedule for as set of transactions must consist of all instructions of those transactions
+   * Must preserve the order in which the instructions appear in each individual transaction
+ * A transaction that successfully completes its execution will have a commit instructions as the last statement
+ * A transaction that fials to successfully complete its execution will have an abort instruction as the last statement
+
+### Serializability
+ * Basic Assumption - Each transaction preserves database consistency
+ * Thus, serial execution of a set of transactions preserves database consistency
+ * A (possibly concurrent) schedule is serializable if it is equivalent to a seiral schedule. Different forms of schedule equivalence give rise to the notions of:
+   * Confilict serializability
+   * View serializability
+
+### Simplified view of transactions
+ * We ignore operations other than read and write instructions
+
+### Confliciting Instructions
+ * INstruction I_i and I_j of transactions T_i and T_j respectively, conflict if and only if there exists some item Q accessed by both I_i and I_j and at least one of these instructions wrote Q
+ * Intuitively, a conflict between I_i and I_j forces a (logical) temporarl order between them.
+ * If I_i and I_j are consecuvitve in a schedule and they do not conflict, their results would remain the same even if they had been interchanged in the schedule.
+
+### Conflict Serializability
+ * If a schedule S can be transformed into schedule S' by a series of swaps of non-conflicting instructions, we say that S and S' are conflict equivalent
+ * We say that a schedule S is conflict serialiable if it is conflict equivalent to a serial schedule
+
+### View Serializability
+ * Let S and S' be two schedules with the same set of transactions. S and S' are view equivalent if the following three conditions are met, for each data item Q:
+   * If in schedule S, transcation T_i reads the initial value of Q, then in schedule S' also transcation T_i must read the initial value of Q
+   * If in schedule S transaction T_i executes read(Q), and that value was produced by transaction T_j (if any), then in schedule S' also transaction T_i must read the value of Q that was produced by the same write(Q) operation of transaction T_j
+   * The transaction (if any) that performs the ifnal write(Q) operation in schedule S must also perform the final write(Q) operation in shceudle S
+ * As can be seen, view equivalence is also based purely on reads and writes alone
+ * A schedule S is view serializable if it is view equivalent to a seiral schedule.
+ * Every conflict serializable schedule is also view serializable
+ * Below is a schedule which is view-serializable but not conflict serializable
+ * Every view serializable schedule that is not conflict serializable has blind writes
+
+### Testing for Serializability
+ * Consider some schedule of a set of transcations T_1, T-2, ..., T_n
+ * Precedence graph - a direct graph where the vertices are the transactions(names)
+ * We draw an arc from T_i to T_j if the two transaction conflict, and T_i accessed the data item on which the conflict arose earlier.
+ * We may label the arc by the item that was accessed.
+ * A schedule is conflict serializable if and only if its precedence graph is acyclic.
+ * Cycle-detection algorithms exist which take order n^2 times, where n is the number of vertices in the graph.:
+   * Better algorithms take ordern + e where e is the nubmer of edges
+ * If precedence graph is acyclic, the serializability order can be obtained by a topological sorting of the graph:
+   * This is alinear order consistent with the partial order of the graph.
+
+### Test for View Serializability
+ * The precedence graph test for conflict serializability cannot be used directly to test for view serializabilty.:
+   * Extension to test for view serializability has cost exponential in the size of the precedence graph.
+ * The problem of checking if a schedule is veiw serializable falls in the clas of NP-complete problems.:
+   * Thus, existence of an efficient algorithms is extremely unlikely
+ * However practical algorithms that just check some sufficient conditions for view serializability can still be used.
+
+### Recoverable Schedules
+ * Need to address the effect of transaction failures on concurrently running transactions
+ * Recoverable schedule - if a transaction T_j reads a data item previously written by a transcation T_i, then the commit operation of T_i appears before the commit operation of T_j
+
+### Cascading Rollbacks
+ * Cascading rollback - a single transaction failure leads to a series of transaction rollbacks.
+ * Can lead to the undoing of a significant amount of work.
+
+### Cascadeless Schedules
+ * Cascadeless schedules - cascading rollbacks cannot occur:
+   * For each pair of transactions T_i and T_j such that T_j reads a data item previously written by T_i, the commit operation of T_i appears before the read operation of T_j
+ * Every Cascadeless schedule is also recoverable
+ * It is desirable to restrict the schedules to those that are cascadeless
+
+### Concurrency Control
+ * A database must provide a mechanism that will ensure that all possible schedules are:
+   * either conflict or view serializable
+   * recoverable and preferably cascadeless
+ * A policy in which only one transaction can execute at a time generates serial schedules, but provides a poor degree of concurrency
+ * Testing a schedule for serializability after it has executed is a little too late
+ * Goal - to develop concurrency control protocols that will assure serializability.
+
+ * Schedules must be conflict or view serializable, and recoverable, for the sake of database consistency, and preferably cascadeless.
+ * A policy in which only one transaction can execute at a time generates serial scheudles, but provides a poor degree of concurrency.
+ * Concurrency-control schemes tradeoff between the amount of concurrency they allow and the amount of overhead that they incur.
+ * Some schemes allow only conflict-serializable schedules to be nerated, while others allow view-serializable schedules that are non conflict-serializable.
+
+### Concurrency Control vs. Serializability Tests
+ * Concurrency-control protocols allow concurrent scheudles, but ensure that the schedules are conflict/view serializable, and are recoverable and cascadeless
+ * Concurrency control protocols (generally) do not examine the precedence graph as it is being created:
+   * Instead a protocol imposes a discipline that avoids non-serializable schedules
+ * Different concurrency control protocols provide different tradeoffs between the amount of concurrency they allow and the amount of overhead that they incur.
+ * Tests for serializability help us understand why a concurrency control protocol is correct.
+
+### Weak Levels of COnsistency
+ * Some applications are willing to live with weak levels of consistency, allowign schedules that are not serializable
+ * Tradeoff accuracy for performance
+
+### Levels of Consistency in SQL-92
+ * Serializable - default
+ * Repeatable read - only committed records to be read:
+   * Repeated reads of same record must return same vlaue.
+   * However, a transaction may not be serializable - it may find some records inserted by a transaction ubt not find others.
+ * Read committed - only committed records can be read:
+   * Successive reads of record may return different (but committed) values.
+ * Read uncommitted - even uncommitted records may be read.
+
+ * Lower degress of consistency useful for gathering approximate information about the database
+
+### Transaction Definition in SQL
+ * In SQL, a transaction begins implicitly
+ * A transaction is SQL ends by:
+   * Commit work commits current transaction and begins a new one.
+   * Rollback work causes current transaction to abort
+ * In almost all database systems, by default, every SQL statement also commits implicitly if it exectues successfully:
+   * Implicit commit can be turned of by a database directive
+ * Isolation level can be set at database level
+ * Isolation level can be changed at start of transcation
+
+### Implementation of Isolation Levels
+ * Locking:
+   * Lock on whole database vs lock on items
+   * How long to hold lock?
+   * Shared vs exclusive locks
+ * Timestamps:
+   * Transaction timestamp assigned e.g. when a transaction begins
+   * Data items store two timestamps:
+     * Read timestamp, Write timestamp
+   * Timestamps are used to detect out of order accesses
+ * Multiple versions of each data item:
+   * Allow transcations to read from a snapshot of the database
