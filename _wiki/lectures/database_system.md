@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-06-13 10:53:50 +0900
+lastmod : 2021-06-14 10:33:05 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -538,7 +538,7 @@ procedure insert_in_parent(node N, value K`, node N`)
       Insert (K`, N`) into T jsut after N
       Erase all entries from P; Create node P`
       Copy T.P_1 ... T.P_{\lceil (n+1)/2 \rceil} into P
-      Let `` = T.K_{\lceil(n+1) / 2 \rceil} 
+      Let `` = T.K_{\lceil(n+1) / 2 \rceil}
       Copy T.P_{\lceil (n+1)/2 \rceil + 1} ... T.P_{n + 1} into P`
       insert_in_parent(P, K``, P`)
     end
@@ -1306,3 +1306,378 @@ while (ps != null and pr != null) do
 ---
  생각보다 수업시간에 안다룬 내용이 많았는데 그냥 그런가보다 하고 정리했다.
  어짜피 도움되는 내용이기도 하고, PPT만 안했지 말로는 설명한 부분들도 있었기 때문이다.
+
+## Chapter 16. Query Optimization
+ * An evaluation plan defines exactly what algorithm is used for each operation, and how the execution of the operations is coordinated.
+ * Cost difference between evaluation plans for a query can be enormous
+ * Steps in cost-based query optimization:
+   * Generate logically equivalent expressions using equivalence rules
+   * Annotate resultant expressions to get alternative query plans
+   * Choose the cheapest plan based on estimated cost
+ * Estimation of plan cost based on:
+   * Statistical information about relations
+   * Statistics estimation for intermediate results
+   * Cost formulae for algorithms, computed using statistics
+
+### Viewing Query Evaluation Plans
+ * Most database support `explain <query>`:
+   * Displays paln chosen by query optimizer, along with cost estimates
+   * Some syntax variations between databases
+ * Some databases (e.g. PostgreSQL) support `explain analyse <query>`:
+   * Show actual runtime statistics found by running the query, in addition to showing theplan
+ * Some databases (e.g. PostgreSQL) show cost as f..l:
+   * f is the cost of delivering first tuple and l is cost of delivering all results
+
+### Generting Equivalent Expressions
+### Transofrmation of Relational Expressions
+ * Two relational algebra expressions are said to be equivalent if the two expressions generate the same set of tuples on every legal database instance:
+   * Note : order of tuples is irrelevant
+   * we don't care if they generate different results on databases that violate integrity constraints
+ * In SQL, inputs and outputs are multisets of tuples:
+   * Two expressions in the multiset version of the relational algebra are said to be equivalent if the two expressions generate the same multiset of tuples on every legal database instance.
+ * An equivalence rule says that expressions of two forms are equivalent:
+   * Can replace expression of first form by second, or vice versa
+
+### Equivalence Rules
+ 1. Conjunctive selection operations can be deconstructed into a sequence of individual selections.:
+   * $$\sigma_{\theta_1 \wedge \theta_2}(E) \equiv \sigma_{\theta_1}(\sigma_{\theta_2}(E))$$
+ 2. Selection operations are commutative.:
+   * $$\sigma_{\theta_1}(\sigma_{\theta_2}(E)) \equiv \sigma_{\theta_2}(\sigma_\theta_1(E))$$
+ 3. Only the last in a sequnce of projection operations is needed, theothers can be omitted.:
+   * $$\Pi_{L_1} (\Pi_{L_2}(... ( \Pi_{L_n}(E)) ... )) \equiv \Pi_{L_1}(E)$$
+   * where $$L_1 \subseteq L_2 \subseteq ... \subseteq L_n$$
+ 4. Selections can be combined with Cartesian products and theta joins.:
+   * $$\sigma_{\theta} ( E_1 \times E_2) \euiqv E_1 \bowtie_{\theta} E_2$$
+   * $$\sigma_{\theta_1}( E_1 \bowtie_{\theta_2} E_2) \equiv E_1 \bowtie_{\theta_1 \wedge \theat_2} E_2$$
+ 5. Theta-join operations (and natural joins) are commutative.:
+   * $$E_1 \bowtie E_2 \equiv E_2 \bowtie E_1$$
+ 6. :
+   * Natural join operations are associate:
+     * $$(E_1 \bowtie E_2) \bowtie E_3 \equiv E_1 \bowtie(E_2 \bowtie E_3)$$
+   * Theta jions are associative in the following manner:
+     * $$(E_1 \bowtie_{\theta_1} E_2) \bowtie_{\theta_2 \wedge \theata_3} E_3) \equiv E_1 \bowtie_{\theta_1 \wedge \theta_3} (E_2 \bowtie_{\theta_2} E_3)$$
+     * where $$\theta_2$$ involves attributes from only $$E_2$$ and $$E_3$$
+ 7. The selection operation distributes over the theta join operation under the following two conditions:
+   1. When all the attributes in $$\theta_0$$ involve only the attributes of one of the expressions ($$E_1$$) being joined.:
+     * $$\sigma_{\theta_0} (E_1 \bowtie_{\thtea} E_2) \equiv (\sigma_{\theta_0} (E_1)) \bowtie_{\theta} E_2$$
+   2. When $$\theta_1$$ involves only the attributes of $$E_1$$ and $$\theta_2$$ involves only the attributes of $$E_2$$:
+     * $$\sigma_{\theta_1 \wedge \theat_2}(E_1 \bowtie_{\theta} E_2) \equiv (\sigma_{\theta_1} (E_1)) $$
+ 8. The projection operation distributes over the theta join operation as follows:
+   1. if $$\theta$$ involves only attributes from $$L_1 \cup L_@$$:
+     * $$\Pi_{L_1 \cup L_2} (E_1 \bowtie_{\theta} E_2) \equiv \Pi_{L_1} (E_1) \bowtie_{\theta} \Pi_{L_2} (E_2)$$
+   2. In general, consider a join $$E_1 \bowtie_{\theta} E_2$$:
+     * Let $$L_1$$ and $$L_2$$ be sets of attributes from $$E_1$$ and $$E_2$$, respectively.
+     * Let $$L_3$$ be attributes of $$E_1$$ that are involved in join condition $$\theta$$, but are not in $$L_1 \cup L_2$$
+     * Let $$L_4$$ attributes of $$E_2$$ that are involved in join condition $$\theta$$, but are not in $$L_1 \cup L_2$$:
+       * $$\Pi_{L_1 \cup L_2} (E_1 \bowtie_{\theta} E_2) \equiv \Pi_{L_1 \cup L_2} (\Pi _{L_1 \cup L_3}(E_1) \bowtie_{\theta} \Pi_{\L_2 \cup L_4 } (E_2))$$
+       * Similar equivalences hold for outerjoin operations
+ 9. The set operations union and intersection are commutative:
+   * $$E_1 \cup E_2 \equiv E_2 \cup E_1$$
+   * $$E_1 \cap E_2 \equiv E_2 \cap E_1$$
+ 10. Set union and intersection are associative.:
+   * $$(E_1 \cup E_2) \cup E_3 \equiv E_1 \cup (E_2 \cup E_3)$$
+   * $$(E_1 \cap E_2) \cap E_3 \equiv E_1 \cap (E_2 \cap E_3)$$
+ 11. The selection operation distributes over $$\cup,\cap$$ and -:
+   * $$ \sigma_{\theta}(E_1 \cup E_2) \equiv \sigma_{\theta} (E_1) \cup \sigma_{\theta}(E_2)$$
+   * $$ \sigma_{\theta}(E_1 \cap E_2) \equiv \sigma_{\theta} (E_1) \cap \sigma_{\theta}(E_2)$$
+   * $$ \sigma_{\theta}(E_1 - E_2) \equiv \sigma_{\theta} (E_1) - \sigma_{\theta}(E_2)$$
+   * $$ \sigma_{\theta}(E_1 \cap E_2) \equiv \sigma_{\theta} (E_1) \cap E_2$$
+   * $$ \sigma_{\theta}(E_1 - E_2) \equiv \sigma_{\theta} (E_1) - E_2$$
+   * preceding equivalence does not hold for $$\cup$$
+ 12. The projection operation distributes over union:
+   * $$\Pi_L (E_1 \cup E_2) \equiv (\Pi_L(E_1)) \cup (\Pi_L(E_2))$$
+ 13. Selection distributes over aggregation as below:
+   * $$\sigma_\theta(_G \gamma _A (E)) \equiv _G \gamma _A (\sigma_\theta(E))$$
+   * provided $$\theta$$ only involves attributes in G
+ 14. Outerjoin is commutative?:
+   * Full outerjoin is commutative
+   * Lef and right outerjoin are not commutativeo
+ 15. Selection distributes over left and right outerjoins
+ 16. Outerjoins can be replaced by inner joins under some conditions
+
+### Enumeration of Equivalent Expressions
+ * Query optimizers use equivalence rules to systematically generate expressions equivalent to the given expression
+ * Can generate all equivalent expressions as follows:
+   * Repeat:
+     * apply applicable equivalence rules on every subexpression of every equivalent expression found so far
+     * add newly generated expressions to the set of equivalent expressions
+   * Until no new equivalent expressions are generated above
+ * The above approach is very epxrensive in space and time:
+   * Two approaches:
+     * Optimized plan generation based on transformation rules
+     * Special case approach for queries with only selections, projections and joins
+
+### Implementing Transformation Based Optimization
+ * Space requirements reduced by sharing common sub-expressions:
+   * when E1 is generated from E2 by an equivalence rule, usually only the top level ofthe two are different, subtrees below are the same and can be shared using pointers
+   * Sam sub-expression may get generated multiple times:
+     * Detect duplicate sub-expressions and share one copy
+ * Time requirements are reduced by not generating all expressions:
+   * Dynamic programming
+
+### Cost Estimation
+ * Cost of each operator computer as described in Chapter 15:
+   * Need statistics of input relations (E.g., number of tuples, size of tuples)
+ * Inputs can be results of sub-expressions:
+   * Need to estimate statistics of expression results
+   * To do so, we require additional statistics (e.g., number of distinct values for an attribute)
+ * More on cost estimation later
+
+### Choice of Evaluation Plans
+ * Must consider the interaction of evaluation techniques when choosing evaluation plans:
+   * choosing the cheapest algorithm for each operation independently may not yield best overall algorithm
+   * E.g:
+     * merge-join may be costlier than hash-join, but may provide a sorted output which reduces the cost for an outer elevel aggregation.
+     * nested-loop join may provide opportunity for pipelining
+   * practical query optimizers incorporate elements of the following two broad approaches:
+     * Search all the plans and choose the best plan in a cost-based function
+     * Uses heuristics to choose a plan.
+
+### Cost-Based Optimization
+ * Consider finding the best join-order for $$r_1 \bowtie r_2 \bowtie \cdots \bowtie r_n$$
+ * There are $$\frac{(2(n-1))!}{(n-1)!}$$ different join orders for above expression:
+   * Too large number
+ * No need to generate all the join orders. Using dynamic programming, the least-cost join order for any subset of $$\{r_1, r_2, ..., r_n\}$$ is computed only once and stored for future use.
+
+### Dynamic Programming in Optimization
+ * To find best join tree for a set of n relations:
+   * To find best plan for a set S of n relations, consider all possible plans of the form: $$S_1 \bowtie (S - s_1)$$ where $$S_1$$ is any non-empty subset of S.
+   * Recursively compute costs for joining subsets of S to find the cost of each plan. Choose the cheapest of the $$2^n - 2$$alternatives.
+   * Base case for crcursion: single relation access plan:
+     * Apply all selections on $$R_i$$ using best choice of indices on $$R_i$$
+     * When plan for nay subset is ocmputed, sotre it and reuse it when it is required again, instead of recomputing it
+
+### Join Order Optimization Algorithm
+```
+procdedure findbestplan(S)
+  if (bestplan[S].cost != \infty)
+    return bestplan[S]
+  // else bestplan[S] has not been computed earlier, compute it now
+  if (S contains only 1 relation)
+    set bestplan[S].plan and bestpaln[S].cost based on the best wy of accessing
+    S using selections on S and indices (if any) on S else for each non-empty
+    subset S1 of S such that S1 != S
+
+    P1 = findbestplan(S1)
+    P2 = findbestplan(S - S1)
+    for each algorithm A for joining results of P1 and P2
+      // For indexed-nested loops join, the outer could be P1 or P2
+      // Similarly for hash-join, the build relation could be P1 or P2
+      // We assume the alternatives are considered as separate algorithms
+      if algorithm A is indexed nested loops
+        Let P_i and P_0 denote inner and outer inputs
+        if P_i has a single relation r_i and r_i has an index on the join attribute
+          plan = "execute P_0 plan; join results of P_0 and r_i using A",
+                 with any selection conditions on P_i performed as part of the join condition
+          cost = P_0 cost + cost of A
+        else cost = \infty; /* cannot use indexed nested loops join */
+      else
+        plan = "execute P1.plan; execute P2.plan;
+                join results of P1 and P2 using A;"
+        cost = P1.cost + P2.cost + cost of A
+
+      if cost < bestplan[S].cost
+        bestplan[S].cost = cost
+        bestplan[S].plan = plan;
+  return bestplan[S]
+```
+
+### Left Deep Join Trees
+ * In left-deep join trees, the right-hand-side input for each join is a relation, not the result of an intermediate join.
+
+### Cost of Optimization
+ * With dynamic programming time complexity of optimization with bushy trees is O(3^n)
+ * Space complexity is O(2^n)
+ * To find best left-deep join tree for a set of n relations:
+   * Consider n alternatives with one relation as right-hand side input and the other relations as left-hand side input
+   * Modify optimization algorithm
+ * If ony left-deep trees are considered, time complexity of finding best join order is O(n 2^n)
+ * Cost-based optimization is expensive, but worthwhile for queries on large datasets
+
+### Interesting Sort orders
+ * Consider the expression $$(r_1 \bowtie r_2) \bowtie r_3$$ (with A as common attribute)
+ * An interesting sort order is a particular sort order of tuples that could make a later operation (join/group by/order by) cheaper:
+   * Using merge-join to compute $$r_1 \bowtie r_2$$ may be costlier than hash join but gnerates result sorted on A
+   * Which in turn may make merge-join with $$r_3$$ cheaper, which may reduce cost of join with $$r_3$$ minimizing overall cost
+ * Not sufficient to find the best join order for each subset of the set of n given relations:
+   * must find the best join order for each subset, for each interesting sort order
+   * Simple extension of earlier dynamic programming algorithms
+   * Usually, number of interesting orders is quite small and doesn't affect time/space complexity significantly
+
+### Cost Based Optimization with Equivalence Rules
+ * Physical equivalence rules allow logical query plan to be converted to physical query plan specifying what algorithms are used for each operation.
+ * Efficient optimizer based on equivalent rules depends on:
+   * A space efficient representation of expressions which avoids making multiple copies of subexpressions
+   * Efficient techniques for detecting duplicate derivations of expressions
+   * A form of dynamic programming based on memoization, which stores the best plan for a subexpression the first time it is optimized, and reuses in on repeated optimization calls on same subexpression
+   * Cost-based pruning techinques that avoid generating all plans
+ * Pioneered by athe Volcano project and implemented in the SQL Server optimizer
+
+### Heuristic Optmization
+ * Cost-based optimzation is expesnvie, even with dynamic programming.
+ * Systems may use heuristics to reduce the number of choices that must be made in a cost-based fashion.
+ * Heuristic optimization transforms the query-tree by usign a set of rules that typically (but not in all cases) improve execution performance:
+   * Perform selection early (reduces the nubmer of tuples)
+   * Perform projection early (reduces the number of attributes)
+   * Perform most restrictive selection and join operations(e.e., with smallest result size) before other similar operations.
+   * Some systems use only heuristics, others combine heuristics with partial cost-based optimization
+
+### Structure of Query Optimizers
+ * Many optimizers considers only left-deep join orders:
+   * Plus heuristics to push selections and projections down the query tree
+   * Reduces optimization complexity and generates plans amendable to pipelined evaluation.
+ * Heuristic optimization used in some versions of Oracle:
+   * Repeatedly pick "best" relation to join next:
+     * Starting from each of n starting points. Pick best among these
+ * Intricacies of SQL complicate query optimization
+ * Some query optimizers integrate heuristic selection and the generation of alternative access plans.:
+   * Frequently used approach:
+     * hueristic rewriting of nested block structure and aggregation
+     * followed by cost-based join-order optimization for each block
+   * Some optimizers apply transformations to entire query and do not depend on block structure
+   * Optimization cost budget to stop optimization early (if cost of plan is less than ocst of optimization)
+   * Plan caching to reuse previously computed plan if query is resubmitted:
+     * Even with different constants in query
+ * Even with the use of heuristics, cost-based query optimization imposes a substantial overhead.
+   * But is worth it for expesnive queries
+   * Optimizers often use simple heuristics for very cheap queries, and perform exhaustive enumeration for more expensive queries
+
+### Statistics for Cost Estimation
+### Statistical Information for Cost Estimation
+ * $$n_r$$ : number of tuples in a relation r.
+ * $$b_r$$ : number of blocks containing tuples of r
+ * $$l_r$$ : size of a tuple of r
+ * $$f_r$$ : blocking factor of r - i.e., the number of tuples of r that fit into one block.
+ * V(A, r) : nubmer of distinct values that appear in r for attribute A; same as the size of $$\Pi_A(r)$$
+ * If tuples of r are stored together physically in a file, then:
+   * $$b_r = \lceil \frac{n_r}{f_r} \rceil$$
+
+### Histograms
+ * Histogram on attribute age of relation person
+ * Equi-width histograms
+ * Equi-depth histograms break up range such that each range has (approximately) the same number of tuples
+ * Many databases also sotre n most-frequent values and their counts:
+   * Histogram is built on remaining values only
+ * Histograms and other statistics usually computed based on a random sample
+ * Statistics may be otu of date:
+   * Some database require a nalyze command to be executed to update statistics
+   * Others automatically recompute statistics
+
+### Selection Size Estimation
+ * $$\sigma_{A=v}(r)$$:
+   * $$n_r / V(A, r)$$ : number of records that will statisfy the selection
+   * Equality condition on a key attribute: size estimate = 1
+ * $$\sigma_{A \le V}(r)$$ (case of $$\sigma_{A \ge V}(r)$$ is symmetric):
+   * Let c denote the estimated number of tuples satisfying the condition.
+   * If min(A,r) and max(A, r) are available in catalog:
+     * c = 0 if v < min(A, r)
+     * $$c = n_r \frac{v - min(A,r)}{max(A,r) - min(A,r)}$$
+   * If histograms available, can refine above estimate
+   * In absence of statistical information c is assumed to be $$n_r / 2$$
+
+### Size Estimation of Complex Selections
+ * The selectivity of a condition $$\theta_i$$ is the probability that a tuple in the relation r satisfies $$\theta_i$$.:
+   * If $$s_i$$ is the number of satisfying tuples in r, the selctivity of $$\theta_i$$ is given by $$s_i / n_r$$.
+ * Conjunction : $$\sigma_{\theta_1 \wedge \theta_2 ... \wedge \theta_n}(r)$$. Assuming independence, estimate of tuples in the result is : $$n_r * \frac{s_1 * s_2 * ... * s_n}{n_r^n}$$
+ * Disjunction : $$\sigma_{\theta_1 \vee \theta_2 \vee ... \vee \theta_n}(r)$$ Estimated number of tuples:
+   * $$n_r * (1 - (1 - \frac{s_1}{n_r}) * (1 - \frac{s_2}{n_r}) * \cdots * (1 - \frac{s_n}{n_r}))$$
+ * Negation : $$\sigma_{\neg \theta}(r)$$. Estimated number of tuples:
+   * $$n_r - size(\sigma_{\theta}(r))$$
+
+### Estimation of the Size of Joins
+ * The Cartesian product $$r \times s$$ contains $$n_r n_s$$ tuples; each tuple occupies $$s_r + s_s$$ bytes.
+ * If $$R \cap S = \phi$$, then $$r \bowtie s$$ is the same as $$r \times s$$
+ * If $$R \cap S$$ is a key for R, then a tuple of s will join with at most one tuple from r:
+   * therefore, the number of tuples in $$r \bowtie s$$ is no greater than the number of tuples in s
+ * If $$R \cap S$$ in S is a foreign key in S referencing R, then the number of tuples in $$r \bowtie s$$ is exactly the same as the number of tuples in s.:
+   * The case for $$R \cap S$$ being a foreign key referencing S is symmetric.
+
+ * If $$R \cap S = \{ A \}$$ is not a key for R or S:
+   * If we assume that every tuple t in R produces tuples in $$R \bowtie S$$, the number of tuples in $$R \bowtie S$$ is estimated to be:
+     * $$\frac{n_r * n_s}{V(A, S)}$$
+   * If the reverse is true, the estimate obtained will be:
+     * $$\frac{n_r * n_s}{V(A, r)}$$
+   * The loer of these two estimates is probably the more accurate one.
+ * Can improve on above if histograms are available:
+   * Use formula similar to above, for each cell of histograms on the two relations
+
+### Size Estimation for Other Operations
+ * Projection : estimated size of $$\Pi_A (r) = V(A, r)$$
+ * Aggregation : estimated size of $$_G \gamma _A(r) = V(G, r)$$
+ * Set operations:
+   * For unions/intersections of selections on the same relation: rewrite and use size estimate for selections
+   * For operations on different relations:
+     * estimated size of $$r \cup s$$ = size of r + size of s.
+     * estimated size of $$r \cap s$$ = minimum size of r and size of s.
+     * estimated size of r - s = r.
+     * All the three estimates may be quite inaccurate, but provide upper bounds on the sizes
+ * Outer join:
+   * Estimated size of r ⟕ s = size of $$r \bowtie s$$ + size of r
+   * Estimated size of r ⟗ s = size of $$r \bowtie s$$ + size of r + size of s
+
+### Estimation of Number of Distinct Values
+ * Selections : $$\sigma_{\theta} (r)$$:
+   * If $$\theta$$ forces A to take a specified value : $$V(A, \sigma_{\theta} (r)) = 1$$
+   * If $$\theta$$ forces A to take on one of a specified set of values:
+     * $$V(A, \sigma_{\theta} (r))$$ = number of specified values
+   * If the selection condition $$\theta$$ is of the form A op r:
+     * estimated $$V(A, \sigma_{\theta} (r)) = V(A,r) *s$$
+     * where s is the selectivity of the selection.
+   * In all the other cases: use approximate estimate of:
+     * $$min(V(A,r), n_{\sigma_{\theta}(r)})$$
+     * More accurate estimate can be got using probability theory, but this one works fine generally
+ * Joins :$$r \bowtie s$$:
+   * If all ttributes in A are from r:
+     * estimated $$V(A, r \bowtie s) = min (V(A, r), n_{r \bowtie s})$$
+   * If A contains attributes A1 from r and A2 from s, then estimated:
+     * $$V(A, r \bowtie s) = min(V(A1, r) * V(A2 - A1, s), V(A1 - A2, r)* V(A2, s), n_{r \bowtie s})$$
+     * More accurate estimate can be got using probability theory, but this one workts fine generally
+ * Estimation of distnct values are straightforward for projections.:
+   * They are the same in $$\Pi_{A(r)}$$ as in r.
+ * The same holds for grouping attributes of aggregation
+ * For aggregated values:
+   * For min(A) and max(A), the number of distinct values can be estimated as min(V(A,r), V(G, r)) where G denotes grouping attributes
+   * For other aggregates, assume all values are distinct, and use V(G, r)
+
+### Additional Optimization techinques
+ * SQL conceptually treats nested subqueries in the where clause as functions that take parameters and return a single vlaue of set of vlaues:
+   * Parameters are variables from outer level query that are used inthe nested subquery; such variables are called correlation variables
+ * Conceptually, nested subquery is executed once for each tuple in the corss-product generated by the outer level from clause:
+   * Such evalution is called correlated evaluation
+   * Note: other conditions in where clause may be used to compute a join (instead of a corss-product) before executing the nested subquery
+ * Correlated evaluation may be quite inefficient since:
+   * a large number of calls may be made to the nested query
+   * there may be unnecessary random I/O as a result
+ * SQL optimizers attempt to transform nested subqueries to joins where possible, enabling use of efficient join techinuqes
+
+### Materialized Views
+ * A materialized view is a view whose contents are computed ans stored.
+
+#### Materialized View Maintenance
+ * The task of keeping a materialized view up-to-date with the underlying data is known as materialized view maintenance
+ * Materialized views can be maintained by recomputation on every update
+ * A better option is to use incremental view maintenance:
+   * Changes to database relatiosn are used to compute changes to the materialized view, which is then updated
+ * View maintenance can be done by:
+   * Manually defining triggers on insert, delete, and update of each relation in the view definition
+   * Manually writeen code to update the view whenever database relations are updated
+   * Periodic recomputation
+   * Incremental maintenance supported by many database systems:
+     * Avoids manual effort/correctness issues
+
+#### Incremental View Maintenance
+ * The changes (inserts and deletes) to a relation or expressions are reffered to as its differential:
+   * Set of tuples inserted to and deleted from r are denoted $$i_r$$ and $$d_r$$
+ * To simplify out description, we only consider inserts and deletes:
+   * We replace updates to a tuple by deletion of the tuple followed by insertion of the update tuple
+ * We describe how to compute the chnage to the result of each relational operation, given changes to its inputs
+ * We then outline how to handle relational algebra expressions
+
+#### Join Operations
+#### Aggregation Operations
+#### Other Operations
+#### Handling Expressions
+#### Query Optimization and Materialized Views
+
+양이 너무 많다 ㅠ 학교 시험 범위는 아니라 읽어만 보고 정리는 생략했다.
+---
