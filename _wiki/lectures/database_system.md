@@ -3,7 +3,7 @@ layout  : wiki
 title   : Database System
 summary : 학교 데이터베이스 시스템 수업 정리
 date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-06-14 15:55:27 +0900
+lastmod : 2021-06-15 04:20:11 +0900
 tags    : [lectures, database]
 parent  : lectures
 ---
@@ -2050,3 +2050,407 @@ procdedure findbestplan(S)
      1. Write the information onto the fisrt physical block
      2. When the first write successfully completes, write the same information onto the second physical block
      3. The output is completed only after the second write successfully completes
+
+### Protecting storage media from failure
+ * Copies of a block may differ due to failure during output operation.
+ * To recover from failure:
+   1. First find inconsistent blocks:
+     * Expesnive solution: Compare the two copies of every disk block
+     * Better solution:
+       * Record in-progress disk writes on non-volatile storage (Flush, Non-volatile RAM or special area of disk)
+       * Use this information during recovery to find blocks that may be inconsistent, and only compare coipes of these
+       * Used in hardware RAID systems
+   2. If either copy of an inconsistent block is detected to have an error (bad checksume), overwrite it by the other copy. If both have no error, but are different, overwrite the second block by the first block.
+
+### Data Access
+ * Physical blocks are those blocks residing on the disk
+ * Buffer blocks are the blocks residing temporarily in main memory.
+ * Block movements between disk and main memory are initiated through the following two operations:
+   * input (B) transfers the physical block B to main memory.
+   * output (B) transfers the buffer block B to the disk, and replaces the appropriate physical block there
+ * We assume, for simplicity, that each data item fits in, and is stored inside, a single block.
+ * Each transaction T_i has its private work-area in which local copies of all data items accessed and updated by it are kept:
+   * T_i's local copy of a data item X is called x_i
+ * Transferring data items between system buffer blocks and its private work area done by:
+   * read(X) assigns the value of data item X to the local vairable x_i
+   * write(X) assigns the value of local data x_i to data item {X} in the buffer block.
+   * Note: output(B_x) need not immediately follow write(X). System can perform the output operation when it deems fit.
+ * Transactions:
+   * Must perform read(X) before accessing X for the first time (subsequent reads can be from local copy)
+   * write(X) can be executed at any time before the transaction commits
+
+### Reacovery and Atomicity
+ * To ensure atomicity despite failures, we first output information describing the modifications to stable storage without modifying the database itself.
+ * Less used alternative : shadow-copy and shadow-paiging
+
+### Log-Based Recovery
+ * A log is a sequence of log records. The records keep information about update activities on the database.:
+   * The log is kept on stable storage
+ * When transaction T_i starts, it registers itself by writing a:
+   * <T_i, start> log record
+ * Before T_i exectues write(X), a log record:
+   * <T_i, X, V_1, V_2>
+   * is written, where V_1 is the value of X before the write (the old value), and V_2 is the value to be written to X (the new value)
+ * When T_i finishes it last statement, the log record<T_i commit> is written.
+ * Two approaches using logs:
+   * Immediate database modification
+   * Deferred database modification
+
+### Immediate Database Modification
+ * The immediate-modification scheme allows updates of an uncommitted transaction to be bade to the buffer, or the disk itself, before the transaction commits
+ * Update log record must be written before database item is written:
+   * We assume that the log record is output directly to stable storage
+ * Output of updated blocks to disk can take place at any time before or after transaction commit
+ * Order of updated blocks to disk can take place at any time before or after transaction commit
+ * Order in which blocks are output can be different from the order in which they are written
+ * The deferred-modification scheme performs updates to buffer/disk only at the time of transaction commit:
+   * Simplifies some aspects of recovery
+   * But has overhead of storing local copy
+
+### Transaction Commit
+ * A transaction is said to have committed when its commit log record is output to stable storage:
+   * All prvious log reocrds of the transaction must hav been output already
+ * Wirtes performed by a transaction may still be in the buffer when the transaction commits, and my be output later
+
+### Concurrency Control and Recovery
+ * With concurrent trnasactions, all transactions share a single disk buffer and a single log:
+   * A buffer block can have data items updated by one or more transactions
+ * We assume that if a transaction T_i has modified an item, no other transaction can modify the same item until T_i has committed or aborted:
+   * i.e., the updates of uncommitted transactions should not be visible to other transactions
+   * Can be ensured by obtaining exclusive locks on updated items and holding the locks till end of transaction (strict two-phase locking)
+ * Log records of different transactions may be interspersed in the log
+
+### Undo and Redo Operations
+ * Undo and Redo of Transactions:
+   * undo(T_i) -- restores the value of all data items updated by T_i to their old values, going backwards from the last log record for T_i:
+     * Each time a data item X is restored to its old value V a special log record <T_i, X, V> is written out
+     * When undo of a transaction is complete, a log record <T_i abort> is written out.
+   * redo(T_i) -- sets the value of all data items updated by T_i to the new values, going forward from the first log record for T_i:
+     * No logging is done in this case
+
+### Recovering from Failure
+ * When recovering after failure:
+   * Transaction T_i needs to be undone if the log:
+     * Contains the record <T_i start>
+     * But does not contain either the recrod <T_i commit> or <T_i abort>
+   * Transaction T_i needs to be redone if the log:
+     * Contains the records <T_i start>
+     * And contains the record <T_i commit> or <T_i abort>
+ * Suppose that transaction T_i was undone earlier and the <T_i abort> record was written to the log, and then a failure coccurs
+ * On recovery from failure transaction T_i is redone:
+   * Such a redo redoes all the original actions of transaction T_i including the stps that resotred old values:
+     * Known as repeating history
+     * Seems wasteful, but simplifies recovery greatly
+
+### Checkpoints
+ * Redoing/undoing all transactions recorded in the log can be very slow:
+   * Processing the entire log is time-consuming if the system has run for a long time
+   * We might unnecessarily redo transactions which have already output their updates to the database.
+ * Streamline recovery procedure by periodically perfoming checkpoint:
+   1. Output all log records currently residing in main memory onto stable stoarge
+   2. Ouptut all modified buffer blocks to the disk
+   3. Wirte a log record <checkpoint L> onto stable storage where L is a list of all transactions active at the time of checkpoint
+   4. All updates are stopped while doing checkpointing
+ * During recovery we need to consider only the most recent transaction T_i that started before the checkpoint, and transactions that started after T_i:
+   * Scan backwards from end of log to find the most recent <checkpoint L> record
+   * Only trnasactions that are in L or started after the checkpoint need to be redone or undone
+   * Transactions that committed or aborted before the checkpoint already have all their updates output to stable storage
+ * Some earlier part of the log may be needed for undo operations:
+   * Continue scanning backwards till a recrod <T_i start> is found for every transaction T_i in L
+   * Parts of log prior to earliest <T_i start> record above are not needed for recovery, and can be erased whenever desired
+
+### Recovery Algorithm
+ * Logging (during normal operation):
+   * <T_i start> at transaction start
+   * <T_i, X_j, V_1, V_2> for each update
+   * <T_i commit> at transcation end
+ * Transaction rollback (during normal operation):
+   * Let T_i be the transaction to be rolled bakc
+   * Scan log backwards from the end, and for each log record of T_i of the form <T_i, X_j, V_1, V_2>:
+     * Perform the undo by writing V_1 to X_j
+     * Write a log record <T_i, X_j, V_1>:
+       * such log records are called compensation log records
+     * Once the record <T_i start> is found stop the scan and write the log record <T_i abort>
+ * Recovery from failure: Two phases:
+   * Redo phase: replay updates of all transactions, whether they committed, aborted, or are incomplete
+   * Undo phase: undo all incomplete transactions
+ * Redo phase:
+   1. Find last <checkpoint L> record, and set undo-list to L
+   2. Scan forward from above <checkpoint L> record:
+     1. Whenever a record <T_i, X_j, V_1, V_2> or <T_i, X_j, V_2> is found, redo it by writing V_2 to X_j
+     2. Whenever a log record <T_i start> is found, add T_i to undo-list
+     3. Whenever a log record <T_i commit> or <T_i abort> is found, remove T_i from undo-list
+ * Undo phase:
+   1. Scan log backwards from end:
+     1. Whenever a log record <T_i, X_j, V_1, V_2> is found where T_i is in undo-list perform same actions as for transaction rollback:
+       1. perform undo by writing V_1 to X_j
+       2. write a log record <T_i, X_j, V_1>
+     2. Whenever a log record <T_i start> is found where T_i is in undo-list:
+       1. Write a log record <T_i abort>
+       2. Remove T_i from undo-list
+     3. Stop when undo-list is empty:
+       1. i.e., <T_i start> has been found for every transaction in undo-list
+ * After undo phase completes, normal trnasaction processing can commence
+
+### Log Record Buffering
+ * Log record buffering: log records are buffered in main memory, instead of being output directly to stable storage.:
+   * Log reocrds are output to stable storage when a block of log records in the buffer is full, or a log force operation is executed.
+ * Log force is performed to commit a trnasaction by forcing all its log records (including the commit record) to stable storage.
+ * Several log records can thus be output using a single output operations, reducing the I/O cost
+ * The rules below must be followed if log records are buffered:
+   * Log records are output to stable storage in the order in which they are created
+   * Transaction T_i enters the commit state only when the log record <T_i commit> has been output to stable storage
+   * Before a block of data in main memory is output to the database, all log records pertaining to data in the block must hav ebeen output to stable storage:
+     * This rule is called the write-head logging or WAL rule
+     * Strictly speacking, WAL only requires undo information to be output
+
+### Database Buffering
+ * Database maintains an in-memory buffer of data blocks:
+   * When a new block is needed, if buffer is full an existing block needs to be removed from buffer
+   * If the block chosen for removal has been updated, it must be output to disk
+ * The recovery algorithm supports the no-force policy: i.e., updated blocks need not be written to disk when transaction commits:
+   * force policy : requires updated blocks to be written at commit:
+     * More expensive commit
+ * The recovery algorithm supports the steal policy: e.e., blocks containing updates of uncommitted transactions can be written to disk, even before the trnasaction commits
+ * If a block with uncommitted updates is output to disk, log records with undo inofrmation for the updates are output to the log on stable storage first
+ * No updates should be in progress on a block when it is output to disk. Can be ensured as follows:
+   * Before writing a data item, transaction acquires exclusive lock on block containing the data item
+   * Lock can be released once the write is completed.:
+     * Such locks held for short duration are called latches
+ * To output a block to disk:
+   1. First acquire an exclusive latch on the block:
+     1. Ensures no update can be in progress on the block
+   2. Then perform a log flush
+   3. Then output the block to disk
+   4. Finally release the latch on the block
+
+### Buffer Management
+ * Database buffer can be implemented either:
+   * In an area of real main-memory reserved for the database
+   * In virtual memory
+ * Implementing buffer in reserved main-memory has drawbacks:
+   * Memory is partitioned before-hand between database buffer and applications, limiting flexibility.
+     * Needs may change, and although operating system knows best how memory should be divided up at any time, it cannot change the partitioning of memory.
+ * Database buffers are generally implemented in virtual memory in spite of some drawbacks:
+   * WHen operating system need to evict a page that has been modified, the page is written to swap space on disk
+   * WHen database decides to write buffer page to disk, buffer page may be in swap space, and ay have to be read from swap space on disk and output to the database on disk, resulting in extra I/O!:
+     * Known as dual paging problem
+   * Ideally when OS needs to evict a page from the buffer, it should pass control to databse, which in turn should:
+     1. Ouput the page to database instead of to swap space (making sure to output log records first), if it is modified
+     2. Release the page from the buffer, for the OS to use
+   * Dual paging can thus be avoided, but common operating systems do not support such funtionality.
+
+### Fuzzy Checkpointing
+ * To avoid long interruption of normal processing during checkpointing, allow updates to happen during checkpointing
+ * Fuzzy checkpointing is done as follows:
+   1. Temporarily stop all updates by transactions
+   2. Write a <checkpoint L> log record and force log to stable storage
+   3. Note list M of modified buffer blocks
+   4. Now permit transactions to proceed with thier actions
+   5. Ouput to disk all modified buffer blocks in list M:
+     * blocks should not be updated while being ouput
+     * Folow WAL: all log records pertaining to a block must be output before the block is output
+   6. Store a point to the checkpoint record in a fixed position last_checkpoint on disk
+ * When recovering using a fuzzy checkpoint, start scan form the checkpoint reocrd pointed to by last_checkpoint:
+   * Log records before last_checkpoint have their updates reflected in database on disk, and need not be redone.
+   * Incomplete checkpoints, where system had crashed while performing checkpoint, are handled safely
+
+### Failure with Loss of Nonvolatile Storage
+ * So far we assumed no loss of non-volatile storage
+ * Technique similar to checkpointing used to deal with loss of non-voilatile storage:
+   * Periodically dump the entire content of the database to stable stoarge
+   * No transaction may be active during the dump procedure; a proceduer similar to checkpointing must take place:
+     * Output all log records currently residing in main memory onto stable storage
+     * Output all buffer blocks onto the disk
+     * Copy the ocntents of the database to stable storage
+     * Output a record <dump> to log on stable storage
+
+### Recovering from Failure of Non-Volatile Sotrage
+ * To recover from disk failure:
+   * restore database from most recent dupm
+   * Conculst the log and redo all transactions that committed after the dump
+ * Can be extended to allow transactions to be active during dump; known as fuzzy dump or online dump
+
+---
+생략
+
+## Chapter 20. Database System Architectures
+### Centralized Database Systems
+ * Run on a single computer system
+ * Single-user system:
+   * Embedded databases
+ * Multi-user systems also known as server systems:
+   * Servifce requests received from clicent systems
+   * Multi-core systems with coarse-grained parallelism:
+
+### Server System Architeture
+ * Serve systems can be broadly categorized into two kinds:
+   * transaction servers:
+     * Widely used in relational database systems
+   * data servers:
+     * Parallel data servers used to implement high-performance transaction processing systems
+
+### Transaction Servers
+ * Also called query server systems or SQL server systems:
+   * Clients send requests to the server
+   * Transactions are executed at the server
+   * Results are shipped back to the client
+ * Requests are specified in SQL, and communicated to the server through a remote procedure call (RPC) mechanism
+ * Transactional RPC allows many RPC calls to form a transaction
+ * Applications typically use ODBC/JDBC APIs to communicate with transaction servers
+
+### Transaction Server Process Structure
+ * A ypcial transaction server consists of multiple processes accessing data in shared memory
+ * Shared memory contains shared data:
+   * Buffer pool
+   * Lock table
+   * Log buffer
+   * Cached query plans (reused if same query submitted again)
+ * All database processes can access shared memory
+ * Server processes:
+   * These receive user queries (transactions), execute them and send results back
+   * Processes may be multithreaded, allowing a single process to execute several user queries concurrently
+   * Typically multiple multithreaded server processes
+ * Database writer process:
+   * Output modified buffer blocks to disk continually
+ * Log write process:
+   * Server processes simply add log records to log record buffer
+   * Log writer process outputs log records to stable storage
+ * Checkpoint process:
+   * Performs periodic checkpoints
+ * Process monitor process:
+   * Monitors other processes, and takes recovery actions if any of the other processes fail
+ * Lock manager process:
+   * To avoid overhead of interprocess communication for lock request/grant, each database process operates directly on the lock table
+   * Lock manager process still used for deadlock detection
+ * To ensure that no two processes are accessing the same data structure at the same time, databases systems implement mutual exclusion using either:
+   * Atomic instructions:
+     * Test-And-Set
+     * Compare-And-Swap (CAS)
+   * Operating system semaphores:
+     * Higher overhead than atmoic instructions
+
+---
+## Chapter 10 Big Data
+### Motivation
+ * Very large volumes of data being collected:
+ * Big Data : differentiated from data handled by earlier generation databases:
+   * Volume : much larger amounts of data stored
+   * Velocity : much higher rates of insertions
+   * Variety : many types of data, beyond realtion data
+
+### Querying Bit Data
+ * Transaction processing systems that need very high scalability:
+   * Many applications willing to sacrifice ACID propertie sand other database features, if they can get very high scalability
+ * Query processing systems that:
+   * Need very high scalability
+   * Need to support non-relation data
+
+### Big Data Storage Systems
+ * Distributed file systems
+ * Sharding across multiple databases
+ * Key-value storage systems
+ * Parallel and sitributed databases
+
+### Distirbuted File Systems
+ * A distributed file system stores data across a large colleciton of machines, but provides single file-system view
+ * Highly scalable distirbuted file system for large data-intensive applications
+ * Provides redunant storage of massive amounts of data on cheap and unreliable computers:
+   * Files are replicated to handle hardware failure
+   * Detect failures and reocvers from them
+ * Examples:
+   * Google File System (GFS)
+   * Hadoop File System (HDFS)
+
+### Hadoop FIle System Architecture
+ * Single Namespace fore entire cluster
+ * Files are broken up into blocks:
+   * Typically 64 MB block size
+   * Each block replicated on multiple DataNodes
+ * Client:
+   * Filnds location of blocks from NameNode
+   * Accesses data directly from DataNode
+
+### Hadoop Distributed File System (HDFS)
+ * NameNode:
+   * Maps a filename to list of Block IDs
+   * Maps each Block ID to DataNodes containing a replica of the block
+ * DataNode: Maps a Block ID to a phyusical location on disk
+ * Data Coherency:
+   * Write-once-read-many access model
+   * Client can only append to existing files
+ * Distributed file systems good for millions of large files:
+   * But have very high overheads and poor performance with billions of smaller tuples
+
+### Sharding
+ * Sharding : partition data across multiple databases
+ * Partitioning usually done on some partioning attributes (also known as partitioning keys or shard keys)
+ * Application must track which records are on which database and send queries/updates/to that database
+ * Positives: scales well, easy to implement
+ * Drawbacks:
+   * Not transparent: application has to deal with routing of queries, queires that span multiple databases
+   * When a database is overloaded, moving part of its load out it not easy
+   * Chance of failure more with more databases:
+     * need to keep replicas to ensure availability, which is more work for application
+
+### Key Value Storage Systems
+ * Key-value storage systems store large numbers of small sized records
+ * Records are partitioned across multiple machines
+ * Queries are routed by the system to appropriate machine
+ * Records are also replicated acorss multiple machines, to ensure availability evn if a machine fails:
+   * Key-value stores ensure that updates are appliced to all replicas, to ensure that their values are consistent
+ * Key-value sotres may store:
+   * uninterpreted byets, with an associated key:
+     * E.g., Amazon S3, Amazon Dynamo
+   * Wide-table (can have arbitrarily many attribute names) with associated key:
+     * Google BitTable, Aphache Cassandra, Apache Hbase, Amazon DynamoDB
+     * Allows some opertaions to execute on storage node
+   * JSON:
+     * MongoDB, CouachDB (document model)
+ * Document stores store semi-structured data, typically JSON
+ * Some key-value stores support multiple versions of data, with timestamps/version numbers
+ * Key-value store support:
+   * put(key, value) : used to store values with an associated key
+   * get(key) : which retrieves the stored value associated with the specified key
+   * delete(key) : remove the key and its associated value
+ * Some systems also support range queries on key values
+ * Document stores also support queries on non-key attributes
+ * Key value stores are not full database systems:
+   * Have no/limited support for transactional updates
+   * Applications must manage query processing on their own
+ * Not supporting above features makes it easier to build scalable data storage sysetms:
+   * Also called NoSQL systems
+
+### Parallel and Distributed Databases
+ * Parallel databases run multiple machines (Cluster)
+ * Parallel databases were designed for smaller scale
+ * Replication used to ensure data avaiability despite machine failure:
+   * But typically restart query in event of failure:
+     * Restarts may be frequent at a very large scale
+     * Map-reduce systems can continue query execution working around failures
+ * Availability (system can run even if parts have failed) is essential for parallel/distributed databases
+ * Consistency is important for replicated data:
+   * All live replicas have same value, and each read sees latest version
+ * Network paritions (network can break into two or more parts, each with active systems that can't talk to other parts)
+ * In presence of paritions, cannot guaranttee both availability and consistency:
+   * Brewer's CAP "Theorem"
+ * Very large systems will partiiotn at some point:
+   * Choose one of consistncy or availability
+ * Traditional database choose consistency
+
+### The MapReduce Paradigm
+ * Paltform for reliable, scalable parallel computing
+ * Abstracts issues of distributed and parallel environment from programmer:
+   * Programmer provides core logicl
+   * System takes care of parallelization of computation, coordination, etc.
+ * Paradigm dates back many decades
+ * Data storage/access typically done using distributed file systems or key-value stores
+
+### MapReduce Programming Model
+ * Inspired from map and reduce operations commonly used in funcitonal programming langauges like Lisp
+ * Input : a set of key/value pairs
+ * User supplies two functions:
+   * map(k, v) -> list(k1, v1)
+   * reduce(k1, list(v1)) -> v2
+ * (k1,v1) is an intermediate key/value pair
+ * Output is the result of (k1, v2) pairs
