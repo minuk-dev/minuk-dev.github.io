@@ -3,7 +3,7 @@ layout  : wiki
 title   : 네트워크 응용 설계
 summary : 네설 정리
 date    : 2021-04-21 20:50:32 +0900
-lastmod : 2021-04-22 17:32:55 +0900
+lastmod : 2021-06-17 06:26:17 +0900
 tags    : [lectures]
 parent  : lectures
 draft   : true
@@ -100,7 +100,7 @@ draft   : true
    * RFC: Request for comments
    * IETF: Internet Engineering Task Force
 
-#### Waht's the Internet: a service view
+#### What's the Internet: a service view
  * infrastructure that provides services to applications:
    * Web, VoIP, email, games, e-commerce, social nets, ...
  * provides programming interface to applications:
@@ -401,6 +401,11 @@ draft   : true
  * Transport : TCP/UDP Header(src port number, dst port number and other info) + TCP or UDP payload = TCP or UDP segment
  * Network : IP Header(IP src address, IP dst address and other info) + IP payload = IP datagram
  * Link : Link Header(link src address, link dst address and other info) + Link payload = Link frame
+
+#### End-to-end principle
+ * End-to-end arguments in system design
+ * The End-to-end argument:
+   * The function in question can completely and correctly be implemented only with the knowledge and help of the application standing at the end points of the communication system. Therefore, providing that questioned function as a featrue of the communication system itself is not possible (sometimes an incomplete version may be useful as a performance enhancement)
 
 ## Chapter 2. Application Layer
 ### Chapter 2.1 Principles of network applications
@@ -847,3 +852,699 @@ draft   : true
  * Mechanisms needed in rdt2.0:
    * error detection
    * feedback: control messages (ACK, NACK) from receiver to sender
+
+#### rdt2.0 has a fatal flaw
+ * What happens if ACK/NAK corrupted?:
+   * sender doesn't know what happend at receiver
+   * retransmit -> possible duplicate packe:
+     * does not know whether this is retransmission or new packet
+ * Handling duplicates:
+   * sender retransmits current packet if ACK/NAK corrupted
+   * sender adds "sequence number" to each packet
+   * receiver discards (doesn't deliver up) duplicate packet
+ * rdt2.0 is a "Stop and wait" protocol:
+   * sender sends one packet, then waits for receiver response (ACK)
+
+#### rdt2.1: discussion
+ * sender:
+   * sequence number added to packet
+   * two sequnce numbers (0, 1) will surfice.
+   * must check if received ACK/NACK corrupted
+   * twice as many states:
+     * state must remember whether expected packet should have seq# of 0 or 1
+ * receiver:
+   * must check if recieved packet is duplicate:
+     * state indicates whether 0 or 1 is expected packet seq#
+   * note: receiver cnanot know if its last ACK/NAK received OK at sender
+
+#### rdt2.2 : a NAK-free protocol
+ * sam functionality as rdt2.1, using ACKs only
+ * instead of NAK, receiver sends ACK for last pkt received OK
+ * duplicate ACK at sender results in same action as NAK; retransmit current pkt
+
+#### rdt3.0 : channels with errors and loss
+ * New assumption: underlying channel can also lose packets:
+   * data packest or ACK packets
+ * Approach: sender waits "reasonable" amount of time for ACK:
+   * retransmits if no ACK received in this time (timeout)
+   * if packet (or ACK) just delayed (not lost):
+     * retransmission will be duplicate, but seq # is already handles this
+     * receiver must specify seq # of pakcet being ACK
+   * requires countdown timer
+
+#### How to decide the time for timeout?
+ * If too long, wate a lot of time -> slow:
+   * If a packet is lost, better to retransmit as quickly as possible
+ * If too short, many duplicates:
+   * waste of time, bandwidth, energy, etc.
+   * may add to packets to already congested network
+ * For a single link, not too diffiult. However a challening problem for end-to-end over a network
+
+#### Performance of rdt3.0
+ * rdt3.0 is correct, but performance stinks because it is a 'stop-and-wait' protocol:
+   * network protocol limits use of physical resources
+   * utilization = (l/r) / (rtt + l/r)
+
+#### Additional primitives
+ * CACK:
+   * cumulative acknowledgement
+ * Pipeline
+ * Window:
+   * a range of things that are in progress
+ * Sender/Receiver Buffer:
+   * memory for storing packets that are not finished
+ * SACK:
+   * selective acknowledgement
+
+#### Pipelined protocols
+ * pipelining: sender allows multiple, "in-flight", yet-to-be-acknowledged packets:
+   * range of sequnce numbers must be increased
+   * buffering at sender and/or/ receiver
+ * two generic forms of pipelined protocols:
+   * go-back-n, selective repeat
+
+#### Pipelined protocols: overview
+ * Go-back-N:
+   * sender can have up to N unakced pakcets in pipeline
+   * receiver only sends cumulative ack:
+     * does not ack packt if there is a gap
+   * sender has timer for oldest unacked packet:
+     * when timer expires, retransmit all unacked packets
+ * Selective Repeat:
+   * sender can have up to N unakced packets in pipeline
+   * receiver sends individual ack for each packet
+   * sender maintians timer for each unacked packet:
+     * when timer expires, retransmit only that unacked packet
+
+#### Go-Back-N:sender
+ * windows of up to N, consecutive unacked pakcets allowd:
+   * sliding window protocol
+ * need k-bit sequnce number in pakcet header where 2^k >> N
+ * timer for oldest in flight packet
+ * ACK(n):
+   * ACKs all packets up to, including seq # n - "cumulative ACK"
+   * may receive duplicate ACKs
+ * timeout(n):
+   * retransmit pakcet n and all higher seq # pakcets in window
+
+#### Go-Back-N-receiver
+ * ACK-only: always send ACK for correctly-received packet with highest in-order seq#:
+   * may generate duplicate ACKs
+   * need only remember expected seq #
+ * out-of-order packet:
+   * discard(don't buffer): no receiver buffering
+   * re-ACK packets with highest in-order seq#
+
+#### Selective repeat
+ * receiver individually acknowledges all correclty received packets:
+   * buffers packets, as needed, for eventual in-order delivery to upper layer
+ * sender only resends packets for which ACK not received:
+   * sender timer for each unACKed packet
+ * sender window:
+   * N consecutive seq #'s
+   * limits seq #'s of sent, unACKed packets
+
+ * sender:
+   * data from above:
+     * if next available seq # in window, send pkt
+   * timeout(n):
+     * resend pkt n, restart timer
+   * ACK(n) in [sendbase, sendbase +N]:
+     * mark pkt n as received
+     * if n smallest unACKed pkt, advance window base to next unACKed seq#
+ * receiver:
+   * pkt n in [rcvbase, rcvbase + N - 1]:
+     * send ACK(n)
+     * out-of-order: buffer
+     * in-order: deliver (also deliver buffered, in-order pkts), advance window to next not-yet-received pkt
+   * pkt n in [rcvbase-N, rcvbase - 1]:
+     * ACK(n)
+   * otherwise:
+     * ignore
+
+#### Selecitve repeat: dilemma
+ * Receiver sees no differnce in two scenarios:
+   * retransmission vs new 0 pakcet
+ * 2^k >= 2 * N
+
+#### Final note on reliable data transfer
+ * You send someting and want to receive everything correctly, without errors, in-order:
+   * Important in application, transport, link layers
+ * Upper layer uses lower layer channel:
+   * if the lower layer is reliable, nothing to do in the upper layer
+   * if the lower layer is unreliable, need to do some work:
+     * Characteristics of unreliable lower layer will determine complexity of reliable data transfer protocol
+ * What can go wrong in unreliable channel:
+   * may hav ebit erros in packet
+   * may not receive the packet at all (packet loss)
+ * How to recover from errors:
+   * Error detection, ACK, NACK, Loss detection, Retransmission, Timeout, Sequence number
+   * CACK, pipelining, Window, Sender/Receiver Buffer, SAK
+
+### Chapter 3.5 connection-oriented transport: TCPA
+ * Connection-oriented:
+   * handshaking (exchange of control messages) initializes sender, receiver state/parameters before data exchange
+   * logical end-to-end connection, not a real circuit like phone line
+ * Point-to-point
+ * Full duplex data:
+   * bi-directional data flow in same connection
+ * Flow controlled:
+   * sender will not overwhelm receiver
+ * Reliable, in-order byte stream:
+   * no message boundaries
+   * message broken down and sent using TCP segments
+ * Pipelined:
+   * TCP congestion and flow control set window size
+
+#### Many flavors of TCP
+ * TCP has many variants:
+   * TCP hahoe
+   * TCP (new) Reno
+   * TCP Vegas, TCP Westwood, TCP BIC
+   * TCP CUBIC
+
+#### TCP segment structure
+ * source port number (16 bits)
+ * destination port number (16 bits)
+ * sequence number (32 bits)
+ * acknowledgement number (32bits)
+ * header length (5 bits)
+ * not used (5 bits)
+ * URG: urgent data (1 bit)
+ * ACK: ACK number valid (1 bit)
+ * PSH : push data now, generally not used (1bit)
+ * RST, SYN, FIN: connection establish (setup, teardown commands)  (1, 1, 1-> 3 bits)
+ * receive window (16bits)
+ * checksum (16bits)
+ * Urg data pointer (16bits)
+ * options (variable length)
+ * application data(variable length)
+
+#### TCP sequence number, ACK numbers
+ * Example : send 500 KB message, MSS = 1000 bytes:
+   * total 500KB / 1 KB = 500 segments
+   * 1st segment data : 0 ~ 999 seq
+   * 2nd segment data : 1000 ~ 1999 seq
+   * 500th segment data : 499000 ~ 49999 seq
+ * seqence number:
+   * byte stream "number" of first byte in segment's data
+ * acknowledgement number:
+   * sequence number of next byte expected from other side
+   * cumulative ACK
+ * A packet has both sequence number and ack number:
+   * can use data packet for ACK
+   * full-duplex
+ * Actually, we don't start from 0, instead start from a random number
+
+#### TCP round trip time, timeout
+ * TCP retransmits after timout to recover from packet loss
+ * longer than RTT:
+   * but RTT varies
+ * too short: premature timeout, unncessary retransmissions
+ * too long : slow reaction to segment loss
+
+ * SampleRTT : mesuared time from segment transmission until ACK receipt:
+   * ignore retransmissions
+   * usually only one SampleRTT at a time
+ * Sample RTT will vary, want estimated RTT smoother
+
+ * Exponential Weighted Moving Average (EWMA):
+   * EstimatedRTT = (1-a)*EstimatedRTT + a * SampleRTT
+   * influence of past sample decreases exponentially fast
+   * typical value of a = 0.125
+
+ * Timeout interval : EstimatedRTT plus safety margin
+ * Estimated Sample deviation from EstimatedRTT:
+   * DevRTT = (1-b) * DevRTT + b * |SampleRTT - EstimatedRTT|
+   * typically b = 0.25
+ * Then, the TimeoutInterval of TCP:
+   * TimeoutInterval = EstimatedRTT + 4 * DevRTT
+
+### Chapter 3.5 - 2 TCP- reliable data transfer
+#### TCP reliable data transfer
+ * Recall the IP is unreliable:
+   * data can be corrupted, lost, dropped due to queue overflow, or out-of-order
+ * TCP creates reliable data transfer service on top of IP's unreliable service:
+   * Byte stream received is exactly what was sent:
+     * uncorrupted, without gaps, without duplication, in sequence
+   * Using:
+     * pipelined segments
+     * cumulative acks
+     * single retransmission timer
+   * Retransmissions are triggered by:
+     * timeout events
+     * duplicate acks
+   * For simplicity of undertanding, let's initially consider simplified TCP sender:
+     * ignore duplicate acks
+     * ignore flow control, congestion controler
+     * one sender -> one receiver
+
+#### TCP sender events
+ * Data received from app:
+   * create segment with sequence number:
+     * sequence number is byte-stream number of first data byte in segment
+   * start timer if not already running:
+     * think of timer as for oldest unacked segment
+     * expiration interval: TimeOutInterval
+ * Timeout:
+   * retransmit segment that caused timeout
+   * restart timer:
+     * with double the timeout interval
+ * ACK received:
+   * if ACK number received acknowledges previously unacked segments:
+     * update what is known to be ACKed
+     * start timer if there are still unacked segments
+   * If ACK number received acknowledges previously acked segments:
+     * duplicate ACK
+
+#### TCP ACK generation
+ * They are Event at receiver -> TCP receiver action form.
+ * arrival of in-order segment iwth expected seq #. All data up to expected seq# already ACKed -> delayed ACK. Wait up to 500ms for next segment. If no next segment, send ACK
+ * arrival of in-order segment with expected seq #. One other segment has ACK pending -> immediately send single cumulative ACK, ACKing both in-order segments
+ * arrival of out-of-order segment higher-than expect seq #. Gap detected -> immediately send duplciate ACK, indicating seq. # of next expected byte
+ * arrival of segment that partially or completely fills gap -> immediate send ACK, provided that segment starts at lower end of gap
+
+#### TCP fast retransmit
+ * Problem: Timeout period often relatively long:
+   * long delay before resending lost packet
+ * Idea: Detect lost segments via duplicate ACKs:
+   * sender often sends many segments back-to-back
+   * if segment is lost, there will likely be many duplciate ACKs
+ * TCP fast retransmit:
+   * if sender receives 3 ACKs for same data
+   * resend unacked segment with smallest sequence number
+   * likely that unacked segment lost, so don't wait for timeout
+
+### Chatper 3.5-3 TCP - flow control
+#### TCP flow control
+ * Sender should not send too fast
+ * Receivr controls sender, so sender won't overflow receiver's buffer by transmitting too much, too fast
+
+ * receiver advertises free buffer space by including rwnd value in TCP header of receiver-to-sender segments:
+   * RcvBuffer size set via socket options (typical default is 4096 bytes)
+   * many operating systems autoadjust RcvBuffer
+ * sender limits amount of unacked("in-flight") data to receiver's rwnd value
+ * gurantees receiver buffer will not overflow
+
+### Chapter 3.5 - 5 TCP -connection management
+#### Connection Management
+ * Before exchanging data, sender/receiver "handshake":
+   * agree to establish connection (each knowing the other willing to estabilish connection)
+   * agree on connection parameters
+
+#### TCP 3-way handshake
+ * The first packet SYNbit = 1, Seq =x
+ * The second packet (ACK about first) : SYNbit =1, Seq=y, ACKbit=1; ACKnum=x+1
+ * The third packet : ACKbit=1, ACKnum=y+1, optional data
+
+#### TCP closing a connection
+ * client, server each close thier side of connection:
+   * send TCP segment with FIN bit = 1
+ * respond to received FIN with ACK
+ * simulatneous FIN exchanges can be handled
+
+### Chatper 3.6 principles of congestion control
+#### Principles of congestion control
+ * Congestion:
+   * informally : "too many sources sending too much data too fast for network to handle"
+   * different from flow control
+   * manifestations:
+     * lost packest (buffer overflow at routers)
+     * long delays (queuign in router buffers)
+
+ * a router has finite buffers
+ * In real world, retransmissions make a router slow down
+
+### Chapter 3.7 TCP congestion control
+ * If there is congestion, reduce rate:
+   * to avoid/mitigate/eliminate congestion
+ * if there is no congestion, increase rate:
+   * to better utilize the bandwidth
+
+#### TCP's congestion control: keywords
+ * Key states & mechanisms:
+   * slow start - expoential increase of sending rate
+   * congestion avoidance - AIMD (Additive Increase Multiplicative Decrease)
+   * fast recovery
+ * Key parameters:
+   * congestion window: cwnd
+   * slow-start  threshhold:ssthresh
+   * MSS, RTT
+ * Key events:
+   * ACK received - which means things are good
+   * timeout - which means something is very bad
+   * 3 duplicate ACK received - bad
+
+#### TCP Congestion Window
+ * Sender limit transmissions:
+   * LastByteSent - LastByteAcked <= cwnd
+ * cwnd is dynamic, funciton of perceived network congestion
+ * TCP sending rate:
+   * roughly: send cwnd bytes, wait RTT for ACKS, then send more bytes:
+     * rate = cwnd/RTT (bytes/sec)
+
+#### TCP Slow Start
+ * When connection begins, increase rate exponentially until first loss event:
+   * initially cwnd = 1 MSS
+   * double cwnd every RTT
+ * initial rate is slow but ramps up exponentially fast
+ * Come back to slow start after every timeout event
+ * Goest into fast recovery after every 3 dup ACK event
+
+#### TCP: detecting conegestion, reacting to loss
+ * Detect congestion based on (inferred) packet loss:
+   * Loss inferred by 'timeout' or '3 duplicate ACKs'
+ * Loss indicated by timeout:
+   * similar to going back to slow start:
+     * cwnd set to 1 MSS:
+       * window then grows expoentially (as in slow start) to a threshold ssthresh
+   * then grows linearly (go to congestion avoidance state)
+ * Loss indicated by 3 duplicate ACKs:
+   * dup ACKs indicate network capable of delivering some segments
+   * cwnd is cut in half window,
+   * then grows linearly (go into congestion avoidance state)
+   * This is for TCP reno or TCP New Reno:
+     * TCP Tahoe always set cwnd to 1(timeout or 3 duplicate acks)
+
+#### TCP congestion avoidance:AIMD
+ * Approach: sender increases transmission rate (window size), probing for usable bandwidth, until loss occurs:
+   * additive increase: increase cwnd by 1 MSS every RTT until loss detected
+   * multiplicate decrease: cut cwnd in half after a loss
+
+ * Actually, when loss indicated by 3 duplicate ACKs:
+   * dup ACKs indicate network capable of delivering some segments:
+     * Receiver received 3 more packets after the loss
+   * cwnd is cut in half window plus 3
+   * then grows linearly
+   * This is for TCP Reno or TCP New Reno
+
+#### TCP throughput
+ * average TCP throughput as function of window size, RTT?:
+   * ignore slow start, assume always data to send
+ * average TCP throughput = 3/4 W/RTT
+
+#### TCP Futures: TCP over "long, fat pipes"
+ * throughput in terms of segment loss probiablity:
+   * TCP throughput = 1.22 MSS / (RTT \sqrt(L))
+
+#### TCP Fairness
+ * fairness goal: if K TCP sessions share same bottleneck link of bandwidth R, each should have average rate of R/K
+ * Fairness and UDP:
+   * multimedia apps often do not use TCP
+ * Fairness, parallel TCP connections:
+   * application can open multiple parallel connections between two hosts
+
+#### Explicit Congestion Notification (ECN)
+ * network-assited congestion control:
+   * two bits in IP header (ToS field) marked by network router to indicate congestion
+   * congestion indication carried to receiving host
+   * receiver (seeing congestion indication in IP datagram) sets ECE bit on receiver-to-sender ACK segment to notify sender of congestion
+
+
+## Chapter 4. Network Layer
+### Transport vs. Network layer
+ * Network layer : logical communication between hosts
+ * Transport layer : logical communication between processes
+
+### Chapter 4.1 Overview of Network  Layer
+#### Network layer
+ * Transport segment from sending host to receiving host
+ * Sending side encapsulates segments into datagrams
+ * Receiving side delivers segments to transport layer
+ * Network layer protocols in every host, router
+ * Router examines header fields in all IP datagrams passing through it
+
+#### Two key network-layer functions
+ * Network-layer functions:
+   * forwarding : move packets from router's input link interface to appropriate router output link interface:
+     * data plan, per router
+     * typically implemented in HW (timescale:nanosecond)
+     * use 'forwarding table'
+     * may drop or duplicate packets
+   * routing : determin route(thus path)taken by packets from osurce to destination:
+     * control plan, network-wide process
+     * routing algorithms:
+       * decides which way to forward -> determines forwarding table
+     * typically implemented in SW
+
+#### Network layer: dataplan, control plan
+ * Data plan:
+   * local, per-router function
+   * determines how datagram arriving on router input port is forwarded to router output port
+   * forwarding function
+   * uses forwarding table
+ * Control plan:
+   * network-wide logic
+   * determines how datagram is routed among routers along end-end path from source host to destination host
+   * sets the forwarding table
+ * two control-plan approaches:
+   * traditional routing algorithms: implemented in routers
+   * software-defined networking (SDN) : implemented in (remote) servers/controllers
+
+#### Per-router control plan
+ * Individual routing algorithm components in each an every router interact in the control plan
+
+#### Logically centralized control model
+ * A distinct (typically remote) controller interacts with logcal control agents (CAs)
+
+### Chapter 4.2 What's inside a router
+#### Router architecture overview
+ * routing, management control plan (software)
+ * forwarding data plan(hardware)
+ * forwording table is copied from the routing processor to the line cards over a separate bus(e.g. PCI)
+ * with shadow copy at each line card, forwarding decisions can be made locally at each input port without invoking the centralized routing processor on a per-packet basis
+
+#### Input port functions
+ * Physical layer:
+   * bit-level reception
+ * Data link layer:
+   * Ethernet
+ * Decentralized switching:
+   * using header field values, lookup output port using forwarding table in input port memory:
+     * destination-based forwarding: forawrd based only on destination IP address (traditional)
+     * generalized forwarding: forward based on any set of header field values
+   * goal: complete input port processing at line speed
+   * queuing : if datagrams arrive faster than forwarding rate into switch fabric
+
+#### Longest prefix mathcing
+ * Longest prefix matching :
+   * when looking for forwarding table entry for given destination address, use longest address prefix that matches destination address
+ * Must be performed in nanoseconds
+ * Often performed using ternary constant addressable memories (TCAMs):
+   * content addressable: present address to TCAM: retrieve address in one clock cycle, regardless of table size
+ * Once a packet's output port has been determined via the lookup, the packet can be sent into the switching fabric
+
+#### Other functions in input port
+ * other than output port lookup, queueing, and forwarding
+ * physical- and link- layer processing
+ * packet's version number, checksum, and TTL must be checked:
+   * TTL and checksum must be re-written
+ * coutners used for network management must be updated
+
+#### Switching fabrics
+ * Transfer packet from input buffer to appropriate output buffer
+ * Switching rate: rate at which packets can be transfer from inputs to outputs:
+   * often measured as multiple of input/output line rate
+   * N inputs: switching rate N tiems line rate desirable
+ * Three types of switching fabrics:
+   * memory, bus, crossbar
+
+#### Input port queuing
+ * Fabric slower than input ports combined -> queueing may occure at input queues:
+   * queuing delay and loss due to input buffer overflow
+ * Head-of-the-Line (HOL) blocking: queued datagram at front of queue prevents others in queue from moving forward:
+   * even if other packet's output port is idle
+
+#### Output Ports
+ * Output port takes packets that have been stored in the output port's memory and transmits them over the output link
+ * buffering required when datagrams arrive from fabric faster than the transmission rate:
+   * Datagram (packets) can be lost due to congestion, lack of buffers
+ * scheduling discipline chooses (selects) among queued pakcets and dequeue it for transmission:
+   * Priority shceduling
+
+#### Output port queueing/buffering
+ * Buffering when arrival rate via switch exceeds output line speed:
+   * Queueing delay and loss due to output port buffer overflow
+
+#### Scheduling mechanisms
+ * Scheduling : choose nextpacket to send on link
+ * FIFO(first in first out) scheduling:
+   * send in order of arrival to queue
+   * discard policy :
+     * tail drop: drop arriving packet
+     * prioirty: drop/remove on priority basis
+     * random: drop/remove randomly
+     * other: e.g. RED (Random Early Detect)
+
+#### Scheduling policies
+ * Priority scheduling:
+   * send higher priority queud packet first
+   * multiple classes, with different priorities:
+     * class may depend on marking or other header info
+
+ * Round Robin (RR) scheduling:
+   * multiple classes
+   * cyclically scan class queues, sending one ocmplete packet from each clas (if available)
+ * Weighted Fair queuing (WFQ):
+   * generalized Round Robin
+   * each class gets weighted amount of service in each cycle
+
+### Chapter 4.3 IP: Internet Protocol
+ * The Internet network layer:
+   * routing protocols:
+     * path selection
+     * RIP, OSPF, BGP
+   * IP protocol:
+     * addressing conventions
+     * datagram format
+     * packet handling conventions
+   * ICMP protocol:
+     * error reporting
+     * router "signaling"
+
+#### IP datagram format
+ * IP protocol version number (4bits)
+ * header length (4bits)
+ * type of service (8bits)
+ * total datagram length (16bits)
+ * 16-bit identifier (16bits)
+ * flags (3bits)
+ * fragment offset (13bits)
+ * TTL : max number remaining hops (decremented at each router) (8bits)
+ * protocol L upper layer protocol to deliver payload to (8bits)
+ * header checksum (16bits)
+ * 32 bit source IP address (32bits)
+ * 32 bit address IP address (32bits)
+ * options (if any)
+ * datagram (variable length typically a TCP or UDP segment)
+ * header size : 20 bytes of TCP, 20bytes of IP -> 40bytes
+
+#### A few notes
+ * TTL has many purposes, but the most important one is to ensure that datagrams do not circulate forever
+ * Protocol is what connects network layer to transport layer:
+   * e.g. ICMP = 1, TCP = 6, UDP = 17, IPv4 = 4, IPv6 = 41, etc.
+ * Length is 16 bits, includes header + payload:
+   * but IP pakcets are rarely over 1500 bytes because ethernet max size is 1518 bytes
+ * Fragmentation
+ * Internet checksum is for error checking in IP header:
+   * must be re-computed at every router because of TTL
+ * Options
+
+#### IP fragmentation, reassembly
+ * Network links has MTU:
+   * MTU : maximum transfer unit - largest possible link-level frame
+   * different link types, different MTUs
+ * Large IP datagram divided("fragmented") within net:
+   * one datagram becomes several datagrams
+   * reassembled only at final destination
+   * IP header bits used to identify, order related fragmentes
+
+ * example:
+   * 400 byte datagram
+   * MTU = 1500 bytes
+   * 1480 bytes per data (IP header)
+   * Total 3 fragmentsA (1500, 1500, 1040)
+
+#### IPv4 addressing
+ * IP address: 32-bit identifier for host, router interface:
+   * Must be globally unique
+   * Usually written in dotted-decimal form
+ * interface: connection between host/router and physical link:
+   * router's typically have multiple interfaces
+   * host typically has one or two interfaces
+ * IP addresses associated with each interface
+
+#### Subnet
+ * IP address:
+   * subnet part - high order bits
+   * host part -low order bits
+ * subnet:
+   * device interfaces with same subnet part of IP address
+   * can physically reach each other without intervening router
+   * to determine the subnets:
+     * detach each interface from its host or router, creating islands of isolated networks
+     * each isolated network is called a subnet
+   * For x.x.x.x/Y, /Y is the number of bits used for subnet address
+
+#### IP addressing : CIDER
+ * CIDR : Classless InterDomain Routing:
+   * subnet portion of address of arbitrary length
+   * address format:a.b.c.d/x, where x is # bits in subnet portion of address
+ * Classful addressing?
+ * Broken down CIDR
+
+#### DHCP
+ * Dynamic Host Configuration Protocol
+ * Goal : allow host to dynamically obtains its IP address from network server when it joins network:
+   * can renew its lease on address in use
+   * allows reuse of addresses (only hold address hwile connected/on)
+   * support for mobile users who want to join network
+ * DCHP overview:
+   * host broadcase DHCP discover msg (optional)
+   * DHCP server espons with DHCP offer msg (optional)
+   * host requests IP address : DHCP request msg
+   * DHCP server sends address DHCP ack msg
+ * DHCP can return more than just allocated IP address on subnet:
+   * address of first-hop router for client
+   * name and IP address of DNS server
+   * network mast (indicatin network versus host portion of address)
+ * DHCP request encapsulated in UDP
+
+#### Hierarchical adressing
+ * hierarchical addressing allows efficient advertisement of routing information
+
+#### NAT: network address translation
+ * Motivation:
+   * local network uses just one IP address as far as outside world is concerned:
+     * range of addresses not needed from ISP: just one IP address for all devices
+     * can change addresses of devices in local network without notifying outside world
+     * can change ISP without changing addresses of devices in local network
+     * devices inside local net not explicitly addressable/visible by outside world (security)
+ * Implementation: NAT router must:
+   * outgoing datagrams:
+     * replace (src IP addr, port #) of every outgoing datagram to (NAT IP addr, new port #)
+     * remote machine will respond using (NAT IP addr, net port #) as destination addr
+   * remember (in NAT translation table):
+     * every (src IP addr, port #) to (NAT IP addr, new port #) translation pair
+   * incoming datagrams:
+     * replace (NAT IP addr, new port #) in dest fields of every incoming datagram with corresponding (src IP addr, port #) stored in NAT table
+
+ * 16-bit port-number field:
+   * 60,000 simulatenous connections with a single LAN-side address
+ * NAT is controversial:
+   * routers should only process up to layer 3
+   * address shortable should be solved by IPv6
+   * violates end-to-end argument:
+     * NAT possibility must be taken into account by app designers
+   * NAT traversal
+
+#### IPv6
+ * Initial motivation: 32bit address space soon to be completely allocated
+ * Additional motivation:
+   * header format helps speed processing/forwarding
+   * header changes to facilitate QoS
+ * IPv6 datagram format:
+   * fixed-length 40 byte header
+   * no fragmentation allowed
+
+#### IPv6 datagram format
+ * version
+ * priority : identify priority among datagrams in flow
+ * flow label: identify datagrams in sam flow
+ * next header : identify upper layer protocol for data
+
+#### Other changes from IPv4
+ * checksum : remove entirely to reduce processing time at each op
+ * options: allowed, but outside of ehader ,indicated by "Next Header" field
+ * ICMPv6 : new version of ICMP:
+   * additional message types, e.g. "Packet TOo Big"
+   * multicast group management functions
+
+#### Transition from IPv4 to IPv6
+ * not all routers can be upgraded simultaneously:
+   * no flag days
+ * tunneling: IPv6 datagram carried as payload in IPv4 datagram among IPv4 routers
+
+### Chapter 4.4 Generalized Forward and SDN
+#### Generalized Forawrding and SDN
+ * Each router contains a flow table that is computed and distributed by a logically centralized routing controller
