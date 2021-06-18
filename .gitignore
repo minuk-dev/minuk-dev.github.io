@@ -8,3 +8,4 @@ tags.temp
 # jekyll
 _site
 .jekyll-cache/**
+.ruby-version
