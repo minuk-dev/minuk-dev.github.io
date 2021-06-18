@@ -3,7 +3,7 @@ layout  : wiki
 title   : 네트워크 응용 설계
 summary : 네설 정리
 date    : 2021-04-21 20:50:32 +0900
-lastmod : 2021-06-17 06:26:17 +0900
+lastmod : 2021-06-17 07:49:42 +0900
 tags    : [lectures]
 parent  : lectures
 draft   : true
@@ -1548,3 +1548,204 @@ draft   : true
 ### Chapter 4.4 Generalized Forward and SDN
 #### Generalized Forawrding and SDN
  * Each router contains a flow table that is computed and distributed by a logically centralized routing controller
+
+
+## Chapter 5. Network Layer - control Plane
+#### Network-layer functions
+ * forwarding: move packets from router's input to appropriate router output (dataplan)
+ * routing : determine route taken by packets from source to destination (control plane)
+ * Two approaches to structuring network controlpalne:
+   * per-router control (traditional, still popular)
+   * logically centralized control (software defined networking (SDN))
+
+#### Per-router control plan
+ * Individual routing algorithm components in each and every router interact with each other in control plane to compute forwarding tables
+
+#### Logically centralized control plane
+ * A distinct (typically remote) controller interacts with local control agents (CAs) in routers to compute forwarding tables
+
+### Chatper 5.2 routing protocols
+#### Routing protocols
+ * Routing protocol goal:
+   * determine good paths (equivalently, routes), from sending hosts to receiving host, through network of routers:
+     * path: sequence of routers that packets will traverse in going from given initial source host to given final destination host
+     * good: least cost, fastes (least latency, highest throughput), least congested, etc.
+
+#### Routing algorithm classification
+ * global vs decentrailized:
+   * global:
+     * all rotuers have complete topology, link cost info
+     * link state algorithms
+   * decentralized:
+     * router knows physically-connected neighbors, link costs to neighbors
+     * iterative process of computation, exchange of info with neighbors
+     * distance vector algorithms
+ * static vs dynamic:
+   * static:
+     * routes change slowly over time
+   * dynamic:
+     * routes change more quickly:
+       * periodic update
+       * in response to link cost changes
+
+### Chatper 5.2 Routing protocols-link state
+#### A link-state routing algorithm
+ * Dikstra's algorithm:
+   * net topology, link costs known to all nodes:
+     * accomplished via link state broadcast
+     * all nodes have same info
+   * computes least cost paths from one node(source) to all other nodes:
+     * give forwarding table for that node
+   * iterative: after k iterations, know least cost path to k destinations
+   * algorithm complexity: nnodes:
+     * each iteration: need to check all nodes, w, not in N
+     * n(n+1)/2 comparisions: O(n^2)
+     * more efficient implementations possible using heap : O(nlogn)
+   * oscillations possible
+
+### Chapter 5.2 Routing protocols-distance vector
+ * Bellman-Ford algorithm (dynamic programming)
+ * key idea:
+   * from time-to-time, each node sends its own distance vector estimate to neighbors
+   * when x receives new DV estimate from neighbor, it updates its own DV using B-F equation
+   * under minor, natrual conditions, the estimate Dx(y) converge to the actual least cost dx(y)
+ * iterative, asynchronous:
+   * each local iteration caused by:
+     * local link cost change
+     * DV update message from neighbor
+ * distributed:
+   * each node notifies neighbors only when its DV changes:
+     * neighbors then notify their neighbors if necessary
+ * link cost changes:
+   * node detects local link cost change
+   * updates routing info, recalculates distance vector
+   * if DV chagnes, nofiy neighbors:
+     * good news travels fast
+     * bad news travles slow
+ * poisoned reverse
+
+#### Comparision of LS and DV algorithms
+ * message complexity:
+   * LS: with n nodes, E links, O(nE) msg sent
+   * DV: exchange between neighbors only
+ * speed of convergence:
+   * LS: O(n^2) algorithm requires O(nE) msgs:
+     * may have oscillations
+   * DV: convergence time varies:
+     * may be routing loops
+     * count-to-infinity problem
+ * robustness: what happens if router malfunctions?:
+   * LS: node can advertise incorrect link cost:
+     * each node computes only its own table
+   * DV: node can advertise incorrect path cost:
+     * each node's table used by others:
+       * error propagate through network
+
+### Chapter 5.3 intra-AS routing in the Internet: OSPF
+#### Making routing scalable
+ * administrative autonomy:
+   * internet = network of networks
+   * each network admin may want to control routing in its own network
+
+#### Internet approach to scalable routing
+ * aggregate routers into regions known as AS
+ * intra-AS routing:
+   * routing among hosts, routers in same AS
+   * all router s in AS must run same intra-domain protocol
+   * routers in different AS can run different intra-domain routing protocol
+   * gateway router: at edge of its own AS, has link(s) to router(s) in other AS'es
+ * inter-AS routing:
+   * routing among AS'es
+   * gateways perform inter-domain routing (as well as intra-domain routing)
+
+#### Interconnected AS'es
+ * forwarding table configured by both intra- and inter-AS routing algorithm:
+   * intra-AS routing determine entries for destinations within AS
+   * inter-AS & intra-AS determine entries for external destinations
+
+#### Inter-AS tasks
+ * suppose router in AS1 receives datagram destined outside of AS1:
+   * router should forward packet to gateway router, but which one?
+ * AS1 must:
+   * learn which destinations are reachable through AS2, which through AS3
+   * propagate this reachability info to all routers in AS1
+
+#### Intra-AS routing
+ * also known as interior gateway protocols(IGP)
+ * most common intra-AS routing protocols:
+   * RIP: Routing Information Protocol:
+     * Variant of Bellman-Ford algorithm
+   * OSPF: Open Shortest Path First:
+     * IS-IS protocol essentially same as OSPF
+     * Variant of Dijkstra's algorithm
+   * IGRP: Interior Gateway Routing Protocol
+   * Cisco proprietary for decades, until 2016
+
+#### OSPF (Open Shortest Path First)
+ * open: publicly available
+ * uses link-state algorithm:
+   * link state packet dissemination
+   * topology map at each node
+   * route computation using Dijkstra's algorithm
+ * router floods OSPF link-state advertisements to all other routers in entire AS:
+   * carried in OSPF messages directly over IP (rather than TCP or UDP)
+   * link state: for each attached link
+ * IS-IS routing protocol: nearly identical to OSPF
+
+### Chapter 5.4 routing among the ISPs: BGP
+   * BGP (Border Gateway Protocol) : the de facto inter-domain routing protocol
+   * GBP provides each AS a means to:
+     * eBGP: obtain subnet reachability information from neighboring ASes
+     * iBGP : propagate reachability information to all AS-internal routers
+     * determine good routes to other networks based on reachability information and policy
+
+#### BGP basics
+ * BGP session: two BGP routers ("peers") exchange BGP messages over semi-permanent TCP connection:
+   * advertising paths to different destination network prefixes (BGP is a "path vector" protocol)
+
+ * router may learn about more than one route to destination AS, selects route based on:
+   * local prefernec value attribute:policy decision
+   * shortest AS-PATH
+   * closest NEXT-HOP router:hot potato routing
+   * additional criteria
+
+#### Hot Potato Routing
+ * hot potato routing: choose local gateway that has least intra-domain cost
+
+#### Why different Intra-,Inter-AS routing?
+ * policy:
+   * intra-AS: single admin, so no policy decisions needed
+   * inter-AS: admin wants control over how its traffic routed, who routes through its net.
+ * scale:
+   * hierarchical routing saves table size, reduced update traffic
+ * performance:
+   * intra-AS: can focus on performance
+   * inter-AS: policy may dominate over performance
+
+### Chatper 5.6 ICMP: The Internet Control Message Protocol
+#### ICMP : internet control message protocol
+ * used by hosts & routers to communicate network-level information:
+   * error reporting: unreachable host, network, port, protocol
+   * echo request/reply (used by ping)
+ * network-layer "above" IP:
+   * ICMP msgs carried in IP datagrams
+
+#### Traceroute and ICMP
+ * source sends series of UDP segments to destination
+ * when datagram in nth set arrives to nth router:
+   * router discard datagram and sends source ICMP message
+   * ICMP mesage include name of router & IP address
+ * stopping criteria:
+   * UDP segment eventually arrives at destination host
+   * destination returns ICMP "port unreacable" message
+   * source stops
+
+### Chatper 5.7 Network management and SNMP
+#### What is network management?
+ * autonomous systems : 1000s of interacting hardware/software components
+
+#### Infrastructure for network managment
+ * manged devices contain managed objects whos data is gathered into a Management Information Base (MIB)
+
+
+## Chapter 6.7 - "Life of a web request"
