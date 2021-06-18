@@ -3,7 +3,7 @@ layout  : wiki
 title   : Regression Analysis
 summary : 2021 Spring
 date    : 2021-06-06 14:56:14 +0900
-lastmod : 2021-06-06 15:31:59 +0900
+lastmod : 2021-06-19 02:04:20 +0900
 tags    : [statistics, lectures]
 draft   : false
 parent  : lectures
@@ -82,3 +82,22 @@ parent  : lectures
    * $$\hat \beta_0 = \bar y - \hat \beta_1 \bar x$$
  * Relation between the correlation coefficient and the regression coefficient:
    * $$\beta_1 = \gamma_{xy} \frac{s_y}{s_x}$$
+
+### 2.4 Properties of the LSE
+ * Assume $$E \epsilon_i = 0, Var(\epsilon_i) = \sigma^2$$, and they are independent.:
+   * $$E \hat \beta_0 = \beta_0$$
+   * $$E \hat \beta_1 = \btea_1$$
+   * $$Var(\hat \beta_0) = \sigma^2[\frac{1}{n} + \frac{\bar x ^2}{\sum_{i=1}^n (x_i - \bar x)^2}] = \sigma^2 [\frac{1}{n} + \frac{\bar x^2}{S_{xx}]$$
+   * $$Var(\hat \beta_1) = \frac{\sigma^2}{\sum_{i=1}^n (x_i - \bar x)^2 = \frac{\sigma^2}{S_{xx}}}$$
+   * $$Cov(\hat \beta_0, \hat \beta_1) = - \frac{\bar x}{S_xx} \sigma^2$$
+
+ * Assume $$\epsilon_i \sim^{i.i.d} N(0, \sigma^2)$$:
+   * $$\hat \beta_0 \sim N(\beta_0, \sigma^2 [\frac{1}{n} + \frac{\bar x^2}{\sum_{i=1}^n (x_i - \bar x)^2}])$$
+   * $$\hat \beta_1 \sim N(\beta_1, \frac{\sigma^2}{\sum_{i=1}^n (x_i - \bar x)^2})$$
+
+ * How to estimate (or get) $$\sigma$$?:
+   * If we have a priori knowledge about $$\sigma$$ from previous studies, then we may use the value of $$\sigma$$.
+   * Otherwise, estimate it:
+     * $$\hat \sigma^2 = \frac{sum_{i=1}^n e_i^2}{n-2} = \frac{\sum_{i=1}^n (y_i - \hat y_i)^2}{n-2} = \frac{SSE}{n-2} = MSE$$
+     * The estimator $$\hat \sigma^2$$ is unbiased for $$\sigma^2$$, that is, $$E \hat \sigma^2 = \sigma^2$$
+     * Without proof, $$\frac{SSE}{\sigma^2} \sim \chi_{n-2}^2$$ if $$\epsilon_i \sim^{i.i.d} N(0, \sigma^2)$$
