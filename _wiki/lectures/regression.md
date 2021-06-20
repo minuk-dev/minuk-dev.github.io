@@ -3,7 +3,7 @@ layout  : wiki
 title   : Regression Analysis
 summary : 2021 Spring
 date    : 2021-06-06 14:56:14 +0900
-lastmod : 2021-06-20 17:26:46 +0900
+lastmod : 2021-06-20 17:49:11 +0900
 tags    : [statistics, lectures]
 draft   : false
 parent  : lectures
@@ -499,3 +499,34 @@ parent  : lectures
 
 ### 5.5 Seasonality
 
+## Chapter 6. Transformations
+ * Use transformations to achieve linearity or/and homogeneity
+### 6.1 Transformations for lienarity
+ * Non-linearity between predictor(s) and response may be detected by a scatter plot (simple linear regression) or an added-variable plot or residual plus component plot (multiple linear regression)
+
+| Function                                                    | Transformation                       | Linear Form                 |
+|-------------------------------------------------------------|--------------------------------------|-----------------------------|
+| $Y=\alpha X^{\beta}$                                        | $Y' = logY, X' = logX$               | $Y'=\alpha ' + \beta X'$    |
+| $Y = \alpha e^{\beta X}$                                    | $Y' = logY$                          | $Y' = log \alpha + \beta X$ |
+| $Y = \alpha + \beta log X$                                  | $X' = logX$                          | $Y = \alpha + \beta X'$     |
+| $Y = \frac{X}{\alpha X - \beta}$                            | $Y' = \frac{1}{Y}, X' = \frac{1}{X}$ | $Y' = \alpha - \beta X'$    |
+| $Y = \frac{e^{\alpha + \beta X}}{1 + e^{\alpha + \beta X}}$ | $Y' = log \frac{Y}{1-Y}$             | $ Y' = \alpha + \beta X$    |
+
+### 6.2 Detection of heterogeneity
+ * Heterogeneity may be detected by the residual plots (residuals vs each predictors or residuals vs fitted values). A formal test can be performed by ncvTest (car) or bptest (lmtest)
+
+
+### 6.3 Variance stabilizing transformations
+ * Note that the variance stabilizing transform makes the rror distribution closer to a normal distribution as well
+
+| $\sigma$                            | Transformation     |
+|-------------------------------------|--------------------|
+| $\sigma = \mu^k$                    | $Y^{1 - k}$        |
+| $\sigma = \mu$                      | $log Y$            |
+| $\sigma = \sqrt{\mu}$               | $\sqrt{Y}$         |
+| $\sigma = \sqrt{\mu (1 - \mu) / n}$ | $arcsin(\sqrt{Y})$ |
+
+### 6.4 Weighted Least Squares (WLS)
+### 6.5 Box-Cox power transformations
+ * $f(Y;\lambda) = \begin{cases} \frac{Y^{\lambda} - 1}{\lambda} & \text{ for } \lambda \not = 0 \\\\ log Y & \text{ for } \lambda = 0 \end{cases}$
+ * is called the Box-Cox power transformation where $\lambda$ may be estimated from the data. Historically, the main purpose of the Box-Cox transform was to make a random variable closer to a normal distribution
