@@ -3,7 +3,7 @@ layout  : wiki
 title   : Regression Analysis
 summary : 2021 Spring
 date    : 2021-06-06 14:56:14 +0900
-lastmod : 2021-06-20 17:14:38 +0900
+lastmod : 2021-06-20 17:26:46 +0900
 tags    : [statistics, lectures]
 draft   : false
 parent  : lectures
@@ -472,3 +472,30 @@ parent  : lectures
 
 #### 4.5.2 Robust regression
  * Another approach, useful for the identification of outliers and influential observations, is robust regression, a method of fitting that gives less weight to points with high leverage.
+
+## Chapter 5. Regression analysis with qualitative explanatory variables
+### 5.1 Introduction
+ * Predictor(s) may be qualitative: Use dummy (indicator) variables
+ * Dummy variable takes only on 0 or 1.
+ * For a qualitative variable with k possible categories $(C_1, \cdots, C_k)$, we need k-1 dummy variables: $I(C_1), \cdots, I(C_{k-1})$ since $I(C_1) + \cdots + I(C_k) = 1$
+
+### 5.2 Interactions
+ * Interaction effects example
+
+### 5.3 Equal slopes and unequal intercepts
+ * Let D be a dummy variable.:
+   * $EY = \beta_0 + \beta_1 X + \beta_2 D$
+   * is a model equivalent to:
+     * $EY = \beta_0 + \beta_1 X \text{ for } D = 0$
+     * $EY = (\beta_0 + \beta_2) + \beta_1 \text{ for } D = 1$
+
+### 5.4 Unequal slopes and unequal intercepts
+ * There may exist an interaction effect between a qualitative predictor and a quantitative predictor to the response variable
+ * Let D be a dummy variable. The interaction effect of D (qualitative predictor) and X (quantitative predictor) to the response variable Y produces the model with unequal slopes of X (quantitative predictor) and uneuqla intercepts:
+   * $EY = \beta_0 + \beta_1 X + \beta_2 D + \beta_3 (X: D)$
+   * is a model equivalent to:
+     * $EY = \beta_0 + \beta_1 X \text{ for } D = 0$
+     * $EY = (\beta_0 + \beta_2) + (\beta_1 + \beta_3) X \text{ for } D = 1$
+
+### 5.5 Seasonality
+
