@@ -3,7 +3,7 @@ layout  : wiki
 title   : Regression Analysis
 summary : 2021 Spring
 date    : 2021-06-06 14:56:14 +0900
-lastmod : 2021-06-20 18:03:31 +0900
+lastmod : 2021-06-20 20:12:36 +0900
 tags    : [statistics, lectures]
 draft   : false
 parent  : lectures
@@ -534,10 +534,10 @@ parent  : lectures
 ## Chatper 7. Weighted Least Squares
  * Model: $y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip} + \epsilon_i$. In a matrix form, $Y = X \beta + \epsilon$
  * Suppose that $Var(\epsilon) = \sigma_i^2$
- * Then the transformed new model \frac{y_i}{\sigma_i} = \beta_0 \frac{1}{\beta_i} + \beta_1 \frac{x_{i1}}{\sigma_i} + \cdots + \beta_p \frac{x_{ip}}{\sigma_i} + \frac{\epsilon_i}{\sigma_i}$ would have a constant variance erros.
+ * Then the transformed new model $\frac{y_i}{\sigma_i} = \beta_0 \frac{1}{\beta_i} + \beta_1 \frac{x_{i1}}{\sigma_i} + \cdots + \beta_p \frac{x_{ip}}{\sigma_i} + \frac{\epsilon_i}{\sigma_i}$ would have a constant variance erros.
  * Let $w_i = \frac{1}{\sigma_i^2}$ be the weight on Observation i. Let $W = diag(w_1, \cdots, w_n)$
  * Minimize:
-   * $SSE^*(\beta) = \sum w_i(y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_p x_{ip})^2 \\\\ = \sum (\frac{y_i}{\sigma_i} - \beta_0 \frac{1}{\sigma_i - \beta_1 \frac{x_{i1}}{\sigma_i} - \cdots - \beta_p \frac{x_{ip}}{\sigma_i}})^2 \\\\ = \sum (y_i^* - \beta_0 x_{i0}^* - \beta_1 x_{i1}^* - \cdots - \beta_p x_{ip}^*)^2$
+   * $ SSE^*(\beta) = \sum w_i(y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_p x_{ip})^2 \\\\ = \sum (\frac{y_i}{\sigma_i} - \beta_0 \frac{1}{\sigma_i} - \beta_1 \frac{x_{i1}}{\sigma_i} - \cdots - \beta_p \frac{x_{ip}}{\sigma_i})^2 \\\\ = \sum (y_i ^ * - \beta_0 x_{i0} ^ * - \beta_1 x_{i1} ^ * - \cdots - \beta_p x_{ip} ^ *)^2 $
    * by defining new variables $y_i^* = y_i / \sigma_i$ and $x_{ij}^* = x_{ij} / \sigma_i$
 
  * In matrix form,:
@@ -546,5 +546,147 @@ parent  : lectures
    * We define $Y^* = W^{1/2} Y$ and $X^* = W^{1/2} X$, where $W^{1/2} = diag(1/\sigma_1, \cdots, 1/\sigma_n)$
 
  * The LSEs with the transformed data are given by:
-   * $\hat \beta^* = ((X^*)' X^*)^{-1} (X^*)'Y^* \\\\ = (X'WX)^{-1} X'WY$
+   * $\hat \beta^* = ((X ^ *)' X ^ *)^{-1} (X^*)' Y ^ * \\\\ = (X'WX)^{-1} X'WY$
    * that are teh WLS estimates of the regression coefficient vector $\beta$ with the untransformed data
+
+ * Statistics in terms of the transformed data and the untransformed data:
+   * Let $y_i ^ *$ be the ith transformed response value: $y_i ^ * = \sqrt{w_i} y_i$, that is, $Y ^ * = W^{1/2} Y$
+   * Let $x_{i0} ^ *, \cdots, x_{ip} ^ *$ be the ith transformed predictor values : $x_{i0} ^ * = \sqrt {w_i} x_{i0}, \cdots, x_{ip} ^ * = \sqrt{w_i} x_{ip} ^ *$, that is, $X^* = W^{1/2} X$
+   * The WLS method minimizes $\sum_{i=1}^n w_i (y_i - \beta_0, x_{i0} - \cdots - \beta_p x_{ip})^2 = \sum_{i = 1}^n(y_i ^ * - \beta_0 x_0 ^ * - \cdots - \beta_p x_{ip} ^ *)^2$:
+     * Let $\hat \beta_i ^ *$ be teh WLS estimate of $\beta_i$ and the residual sum of squares of the transformed data can be written as:
+       * $SSE ^ * = \sum_{i=1}^n w_i (y_i - \hat \beta_0 ^ * x_{i0} - \cdots - \hat \beta_p ^ * x_{ip})^2 = \sum_{i=1}^n (y_i ^ * - \hat \beta_0 ^ * x_{i0} ^ * - \cdots - \hat \beta_p ^ * x_{ip} ^ *)^2 \\\\ = (Y - X \hat \beta ^ *)' W (Y - X \hat \beta ^ *) = (Y ^ * - X ^ * \hat \beta ^ *) ' (Y ^ * - X ^ * \hat \beta ^ *)$
+       * $SST ^ * = \sum_{i=1}^n w_i (y_i - \bar y)^2 = \sum_{i=1}^n (y_i ^ * - \bar y ^ *)^2 \\\\ = (Y - \bar Y)' W (Y - \bar Y0) = (Y ^ * - \bar Y ^ *)' (Y ^ * - \bar Y ^ *)$
+       * $\hat \sigma ^ * = \sqrt{ \frac{ SSE ^ * }{n - p - 1}}$ => R shows this value
+       * $R^2 = 1 - \frac{SSE ^ * }{SST ^ *}$ => R shows this value
+     * Using the WLS estimates $\hat \beta_i ^ *$ and the untransformed data $y_i, x_{i0}, \cdots, x_{ip}$:
+       * $SSE(\hat \beta ^ *) = \sum_{i=1}^n(y_i - \hat \beta_0 ^ * x_{i0} - \cdots - \hat \beta_p ^ * x_{ip}) ^2 \\\\ = (Y - X \hat \beta ^ *) ' (Y - X \hat \beta ^ *)$
+       * $SST = \sum_{i=1}^n (y_i - \bar y)^2 \\\\ = (Y - \bar Y) ' (Y - \bar Y)$
+       * $\hat \sigma = \sqrt{\frac{SSE(\hat \beta ^ *)}{n-p-1}}$
+       * $Pseudo-R^2 = 1 - \frac{SSE(\hat \beta ^ *)}{SST}$
+   * Since the LSEs $\hat \beta_{LS}$ minimize SSE and the WLS estimates $\hat \beta ^ *$ do not minimize SSE, it is always tru that $SSE(\hat \beta ^ *) \ge SSE(\hat \beta_{LS})$. The pseudo $R^2$ is always smaller than $R^2$ calculated usign the LSE $\hat \beta_{LS}$
+
+
+ * How to know or find the weight $w_i$?:
+   * If known a priori, then use it.
+   * If unknown, then first fit the data using the OLS method and then figure out the weights $w_i$. At the second stage, fit the data using WLS with the esitmated weightts (Two-stage procedure)
+
+ * Adding the qualitative variable Region to the model may cure the heterogeneity problem
+ * We may try a variance stabilizing transform as well through Box-Cox transform.
+
+
+## Chapter 8. Correlated errors
+ * One of the standard regression assumptions: $\epsilon_i$ and $\epsilon_j$ for $i \not = j$ are independent.
+ * WHen the observations have a natural sequential order as in time series data or spatial data, the coreelation is referred to as autocorrelation (serial correlation, lagged correlation), that is the correlation between the current value and the past value for an example in time series data
+ * Why does the auto correlation occur?:
+   1. Successive observations that are positively correlated: adjacent random errors and residuals tend to be similar in both temporal and spatial dimensions due to similar external conditions
+   2. Omitted an important predictor of which adjacent values are correlated.
+ * Effects or consequences of ignoring the autocorrelation: What happens if we ignore the autocorrelation when it exists?:
+   1. LSEs are still unbiased but not minimum variance, ie.e., lose efficiency
+   2. $\hat \sigma^2$ may be an underestimate of $\sigma^2$, that is, $E(\hat \sigma^2) < \sigma^2$
+   3. CIs and hypothesis tests may be invalid
+
+### 8.1 Runs Test
+ * Definition 8.8.1 (Runs test):
+   * Suppose that we have $n_1$ "+"s and $n_2$ "-"s. Under assumption of randomness of "+" and "-", every sequence would have the same probabilty with $\frac{1}{\binom{n_1 + n_2}{n_1}}$. A run is defined as the number of groups in the sequence.
+   * For instance, ++---++ has three runs and +-+-++- has 6 runs. To test randomness of a sequence, we can calculate the p-value from all the permutations of the sequence of which the probability is equal.
+ * When $n_1$ = #+'s and $n_2$ = #-'s are large (>= 10), the expected value and the variance of the runs under the null hypothesis of randomness are:
+   * $\mu = \frac{2 n_1 n_2}{n_1 + n_2} + 1$
+   * $\sigma^2 = \frac{2 n_1 n_22 (2 n_1 n_2 - n_1 - n_2)}{(n_1 + n_2)^2 (n_1 + n_2 - 1)}$
+ * The large sample test statistic of randomness is:
+   * $ZZ = \frac{runs - \mu}{\sigma} \sim N(0, 1) \text{ under } H_0$
+
+### 8.2 Durbin-Watson test
+ * First order autocorrelation model:
+   * $\epsilon_t = p \epsilon_{t - 1} + w_t \text{ where } \| \rho \| < 1, w_t \sim^{iid} N(0, \sigma^2)$
+   * where $\rho$ is the correlation coefficient between $\epsilon_t$ and $\epsilon_{t-1}$
+ * Test $H_0: \rho = 0 \text{ against } H_1 : \rho > 0$
+ * Test statistic is:
+   * $d = \frac{\sum_{t=2}^n(e_t - e_{t-1})^2}{\sum_{t=1}^n e_t^2}$
+ * The estimate of $\rho$ is:
+   * $\hat \rho = \frac{\sum_{t=2}^n e_t e_{t-1}}{\sum_{t=1}^n e_t^2}$
+ * The Durbin-Watson statistic is approximately:
+   * $d = 2(1 - \hat \rho)$
+
+### 8.3 Transformation to remove autocorrelation (Cochrane and Orcutt, 1949)
+ * Cochrane and Orcutt's iterative procedure:
+   1. Estimate $\beta_0$ and $\beta_1$ of $y_t = \beta_0 + \beta_1 x_t + \epsilon_t$ using OLS method.
+   2. Obtain the residuals $e_t$ and estimate $\hat \rho = \frac{\sum_{2}^n e_t e_{t-1}}{\sum_{1}^n e_t^2}$
+   3. Calculate $y_t ^ * = y_t - \rho y_{t-1}$ and $x_t ^ * = x_t - \rho x_{t-1}$ and estimate $\beta_0 ^ *$ and $\beta_1 ^ *$. Obtain $\hat \beta_0 = \frac{\hat \beta_0 ^ *}{1 - \hat \rho}$ and $\hat \beta_1 = \hat \beta_1 ^ *$
+   4. Examine the autocorrelation by using the residuals obtained from 3: $\e_t = y_t - \hat \beta_0 - \hat \beta_1 x_t$
+   5. Repeat 2-4 until we remove the autocorrelation
+ * Note that Cochrane-Orcutt's procedure does not guarantee convergence
+
+
+ * Another approach, the textbook called it iterative method, is to minimize:
+   * $S(\rho, \beta_0, \beta_1) = \sum_{i = 2}^n(y_t - \rho y_{t-1} - \beta_0 (1- \rho) - \beta_1 (x_t - \rho x_{t-1}))^2$
+   * The results by this methoid usually do not significantly deviate from those by Cochrane-Orcutt procedure
+
+### 8.4 Autocorrelation and missing predictors
+ * Autocorrelation may appear when a model is missing a significant predictor
+
+### 8.5 Seasonality and dummy variables
+ * Durbin-Watson test and runs test may not detect a certian type of correlations. One of which is seasonality
+
+## Chatper 9 Multicollinearity
+ * One of the standard regression assumptions is that the predictors are linearly independent
+ * We call orthogonal predictors if there is completely no linear relationship between the predictors, that is, the predictors are uncorrelated.
+ * Interpretation does not work any longer if there is multicollinearily ($\beta_j$: The increment of the response by increasing one unit of $X_j$ when all other variables are held fixed??)
+ * Multicollinearity produces unstable estimates of the regression parameters, that is, the standard error of the regression parameter betcomes large.
+
+### 9.1
+#### 9.1.1 Multicollinearity may affect inferences in a regression model
+#### 9.1.2 Multicollinearity may affect forecasting
+
+ * Prediction may work with careful consideration of the predictors, that is , the values of the predictors are chosen by satisfying the correlation structures of  the predictors, but the prediction under change of a single predictor whil holding others fixed may not be reasonable.
+
+### 9.2 Detection of multicollinearity
+ * Definition 9.2.1 (Variance INflaction Factor (VIF)):
+   * Let $R_j^2$ be the coefficient of determination whe n$X_j$ is regressed on all other predictors. The variance inflation factor (VIF) for $X_j$ is defined by:
+     * $VIF_j = \frac{1}{1 - R_j^2}$
+ * Note that $ 1 \le VIF_j < \infty$. When all predictors are orthogonal, $VIF_j = 1$. If $VIF_j > 10$, then the estimate of $\beta_j$ may be unstable. The variance of the LS estimate of $\beta_j$ is proportional to $VIF_j$ when $X_j$ is centered and scaled.
+ * Note $R_j^2 = 1 - \frac{1}{VIF_j}$. Therefore, $VIF_j > 10$ is equivalent to $R_j^2 > 0.9$
+ * The average $VIF_j$ values, denoted by $\bar VIF$, is the ratio of the squared error of the LSEs to the squared errors the estimates when the predictors are orthogonal
+ * $Cov(\hat \beta) = \sigma^2 (X' X)^{-1}$. The kth diagonal term of $(X'X)^{-1}$ is:
+   * $((X'X)^{-1})_{kk} = [x'_k x_k - x'_k X_{(k)} (X'_{(k)} X_{(k)}) ^{-1} X'_{(k)} x_k]^{-1} \\\\ = [x'_k ( I - P_{X_{(k)}})]^{-1} \\\\ = [S_{kk}(1 - R_k^2)]^{-1} \\\\ = \frac{VIF_k}{S_{kk}} \\\\ = \frac{VIF_k}{(n-1)Var(x_k)}$
+
+ * Definition 9.2.2 (The condition indices and the condition number).:
+   * $Let \lambda_1 \ge \cdots \ge \lambda_p$ be the ordered eigenvalues of the correlation matrix of the predictors. THe jth condition index is defined by:
+     * $\kappa_j = \sqrt{\frac{\lambda_1}{\lambda_j}}$
+   * When it is large, there exists multicollinearity. The largest value $\kappa_p$ is called the condition number of the correlation matrix and there may be a strong multicollinearity if $\kappa_p \ge 15$
+
+### Summary of Chapter 9
+ * Consequences of multicollinearity:
+   * Interpretation of the fitted model may not be reaonsable
+   * Predcition may not work without careful handling of collinearity
+   * The variance(s) of the LSE(s) may be large.
+ * How to detect multicollinearity?:
+   * Look at the scatter plot matrix
+   * Calculate VIFs and see if any VIF > 10.
+   * Calculate the condition indicies $\kappa_j = \sqrt{\lambda_1 / \lambda_j}$ and see if any condition index > 15
+
+
+## Chatper 10. Methods for data with multicollinearity
+ * We may delete some variables causing multicollinearity. => It may not be clear which variable(s) should be removed.
+ * Principal components regression followed by deleting some components with small variances
+ * Ridge regression and LASSO
+
+### 10.1 Principal components
+ * Have X centered and scaled so that we assume $Var(X_j) = 1$ and $E(X_j) = 0$
+ * Transform $X_1, \cdots, X_p$ to p orthogonal predictors, $C_1, \cdots, C_p$:
+   * $C_j = v_{1j} X_1 + v_{2j} X_2 + \cdots + v_{pj} X_p$
+   * Let $V = (v_1; \cdots; v2) = \begin{matrix} v_{11} v_{12} \cdots v_{1p} \\\\ v_{21} v_{22} \cdots v_{2p} \\\\ \vdots \vdots \ddots \vdots \\\\ \v_{p1} v_{p2} \cdots v_{pp} \end{matrix}$
+   * be the matrix whos column vectors are orthonormal eigenvectors of $\frac{1}{n-1} X' X$, that is , $(\frac{1}{n-1} X' X) v_i = \lambda_i v_i$ and $v_j ' v_i = \delta_{ij}$
+   * New data set may be written as:
+     * $C_{n \times p} = X_{n \times p} V_{p times p}$
+     * $\frac{1}{n-1} C'C=V'(\frac{1}{n-1} X'X) V \\\\ = \Lambda = diag(\lambda_1, \cdots, \lambda_p)$
+     * that is, $C_j$ has the sample variance $\lambda_j$ and $C_i$ and $C_j$ for $i \not = j$ have zreo sample correlation coefficient.
+ * If some eigenvalues are quite smaller than others or near zero, then multicollinearity exists. The principal components (PCs) with samll eigenvalues may give use the relationship between the predictors
+
+
+ * Summary of principal components:
+   * Diagonalize the covariance or correlation matrix
+   * Eigenvector => Coefficients of the principal component
+   * Eigenvalue => Variance of the principal component
+
+### 10.2 Recovering the regression coefficients of the original variables
+
