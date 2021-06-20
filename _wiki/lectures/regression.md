@@ -3,7 +3,7 @@ layout  : wiki
 title   : Regression Analysis
 summary : 2021 Spring
 date    : 2021-06-06 14:56:14 +0900
-lastmod : 2021-06-20 17:49:11 +0900
+lastmod : 2021-06-20 18:03:31 +0900
 tags    : [statistics, lectures]
 draft   : false
 parent  : lectures
@@ -530,3 +530,21 @@ parent  : lectures
 ### 6.5 Box-Cox power transformations
  * $f(Y;\lambda) = \begin{cases} \frac{Y^{\lambda} - 1}{\lambda} & \text{ for } \lambda \not = 0 \\\\ log Y & \text{ for } \lambda = 0 \end{cases}$
  * is called the Box-Cox power transformation where $\lambda$ may be estimated from the data. Historically, the main purpose of the Box-Cox transform was to make a random variable closer to a normal distribution
+
+## Chatper 7. Weighted Least Squares
+ * Model: $y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_p x_{ip} + \epsilon_i$. In a matrix form, $Y = X \beta + \epsilon$
+ * Suppose that $Var(\epsilon) = \sigma_i^2$
+ * Then the transformed new model \frac{y_i}{\sigma_i} = \beta_0 \frac{1}{\beta_i} + \beta_1 \frac{x_{i1}}{\sigma_i} + \cdots + \beta_p \frac{x_{ip}}{\sigma_i} + \frac{\epsilon_i}{\sigma_i}$ would have a constant variance erros.
+ * Let $w_i = \frac{1}{\sigma_i^2}$ be the weight on Observation i. Let $W = diag(w_1, \cdots, w_n)$
+ * Minimize:
+   * $SSE^*(\beta) = \sum w_i(y_i - \beta_0 - \beta_1 x_{i1} - \cdots - \beta_p x_{ip})^2 \\\\ = \sum (\frac{y_i}{\sigma_i} - \beta_0 \frac{1}{\sigma_i - \beta_1 \frac{x_{i1}}{\sigma_i} - \cdots - \beta_p \frac{x_{ip}}{\sigma_i}})^2 \\\\ = \sum (y_i^* - \beta_0 x_{i0}^* - \beta_1 x_{i1}^* - \cdots - \beta_p x_{ip}^*)^2$
+   * by defining new variables $y_i^* = y_i / \sigma_i$ and $x_{ij}^* = x_{ij} / \sigma_i$
+
+ * In matrix form,:
+   * $\epsilon = Y - X \beta$
+   * $SSE^*(\beta) = \epsilon ' W \epsilon = (Y - X\beta)' W (Y - X \beta)$
+   * We define $Y^* = W^{1/2} Y$ and $X^* = W^{1/2} X$, where $W^{1/2} = diag(1/\sigma_1, \cdots, 1/\sigma_n)$
+
+ * The LSEs with the transformed data are given by:
+   * $\hat \beta^* = ((X^*)' X^*)^{-1} (X^*)'Y^* \\\\ = (X'WX)^{-1} X'WY$
+   * that are teh WLS estimates of the regression coefficient vector $\beta$ with the untransformed data
