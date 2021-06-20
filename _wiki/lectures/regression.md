@@ -3,7 +3,7 @@ layout  : wiki
 title   : Regression Analysis
 summary : 2021 Spring
 date    : 2021-06-06 14:56:14 +0900
-lastmod : 2021-06-20 20:12:36 +0900
+lastmod : 2021-06-20 23:05:24 +0900
 tags    : [statistics, lectures]
 draft   : false
 parent  : lectures
@@ -563,7 +563,7 @@ parent  : lectures
        * $SST = \sum_{i=1}^n (y_i - \bar y)^2 \\\\ = (Y - \bar Y) ' (Y - \bar Y)$
        * $\hat \sigma = \sqrt{\frac{SSE(\hat \beta ^ *)}{n-p-1}}$
        * $Pseudo-R^2 = 1 - \frac{SSE(\hat \beta ^ *)}{SST}$
-   * Since the LSEs $\hat \beta_{LS}$ minimize SSE and the WLS estimates $\hat \beta ^ *$ do not minimize SSE, it is always tru that $SSE(\hat \beta ^ *) \ge SSE(\hat \beta_{LS})$. The pseudo $R^2$ is always smaller than $R^2$ calculated usign the LSE $\hat \beta_{LS}$
+   * Since the LSEs $\hat \beta_{LS}$ minimize SSE and the WLS estimates $\hat \beta ^ *$ do not minimize SSE, it is always true that $SSE(\hat \beta ^ *) \ge SSE(\hat \beta_{LS})$. The pseudo $R^2$ is always smaller than $R^2$ calculated usign the LSE $\hat \beta_{LS}$
 
 
  * How to know or find the weight $w_i$?:
@@ -674,7 +674,7 @@ parent  : lectures
  * Have X centered and scaled so that we assume $Var(X_j) = 1$ and $E(X_j) = 0$
  * Transform $X_1, \cdots, X_p$ to p orthogonal predictors, $C_1, \cdots, C_p$:
    * $C_j = v_{1j} X_1 + v_{2j} X_2 + \cdots + v_{pj} X_p$
-   * Let $V = (v_1; \cdots; v2) = \begin{matrix} v_{11} v_{12} \cdots v_{1p} \\\\ v_{21} v_{22} \cdots v_{2p} \\\\ \vdots \vdots \ddots \vdots \\\\ \v_{p1} v_{p2} \cdots v_{pp} \end{matrix}$
+   * Let $V = (v_1; \cdots; v2) = \begin{pmatrix} v_{11}&v_{12}& \cdots& v_{1p} \\\\ v_{21}& v_{22} &\cdots& v_{2p} \\\\ \vdots &\vdots& \ddots& \vdots \\\\ v_{p1}& v_{p2}& \cdots& v_{pp} \end{pmatrix}$
    * be the matrix whos column vectors are orthonormal eigenvectors of $\frac{1}{n-1} X' X$, that is , $(\frac{1}{n-1} X' X) v_i = \lambda_i v_i$ and $v_j ' v_i = \delta_{ij}$
    * New data set may be written as:
      * $C_{n \times p} = X_{n \times p} V_{p times p}$
@@ -689,4 +689,212 @@ parent  : lectures
    * Eigenvalue => Variance of the principal component
 
 ### 10.2 Recovering the regression coefficients of the original variables
+#### 10.2.1 Recovering LSEs from the fit using the centered or/and scaled data
+ * Let $Y= \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + \epsilon '$, that is $Y = \beta_0 1 + X \beta + \epsilon'$.
+ * Assume that $W$ and $Z = (Z_1, \cdots, Z_p)$ are centered and scaled variables of $Y$ and $X = (X_1, \cdots, X_p)$, respectively.
+ * Note that the LSE of the intercept for the centered variables iz zero since:
+   * $W = \theta_0 1 + Z \theta + \epsilon$
+   * $\begin{pmatrix} \hat \theta_0 \\\\ \hat \theta \end{pmatrix} = [\begin{pmatrix} 1' \\\\ Z' \end{pmatrix} \begin{pmatrix} 1 : Z \end{pmatrix}]^{-1} \begin{pmatrix} 1' \\\\ Z' \end{pmatrix} W \\\\ = \begin{pmatrix} n &0 \\\\ 0 &Z'Z\end{pmatrix} ^{-1} \begin{pmatrix} 0 \\\\ Z'W \end{pmatrix} \\\\ = \begin{pmatrix} \frac{1}{n} &0 \\\\ 0& [Z'Z]^{-1} \end{pmatrix} \begin{pmatrix} 0 \\\\ Z'W \end{pmatrix} \\\\ = \begin{pmatrix} 0 \\\\ (Z'Z)^{-1}Z'W \end{pmatrix}$
+ * Hence we do not need $\theta_0$ for the centered data:
+   * $W=Z\theta + \epsilon$
+   * $\frac{Y - \bar y 1}{s_y} = \theta_1 \frac{X_1 - \bar x_1 1}{s_{x_1}} + \cdots + \theta_p \frac{X_1 - \bar x_p 1} {s_{x_p}} + \epsilon$
+   * $Y = (\bar y - \theta_1 \frac{s_y}{s_{x_1}} \bar x_1 - \cdots - \theta_p \frac{s_y}{s_{x_p}} \bar x_p) 1 + \theta_1 \frac{s_y}{s_{x_1}} X_1 + \cdots + \theta_p \frac{s_y}{s_{x_p}} X_p + s_y \epsilon$
+ * Compare the above to:
+   * $Y = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p + \epsilon'$
+ * We conclude that:
+   * $ \beta_i = \theta_i \frac{s_y}{s_{x_i}} \text{ for } i = 1, \cdots, p$
+   * $ \beta_0 = \bar y - \beta_1 \bar x_1, - \cdots - \beta_p \bar x_p$
 
+#### 10.2.2 Recovering the LSEs from the fit using the principal components
+ * Let $(Z'Z)V = (n-1)V \Lambda$, that is, $V'(Z'Z)V = (n-1)\Lambda = (n-1)diag(\lambda_1, \cdots, \lambda_p)$ where $\lambda_1 \ge \cdots \ge \lambda_p$ and $VV' = V'V =I$
+ * Define $C=ZV$ The jth vector $C_j = Z_1 v_{1j} + \cdots + Z_p v_{pj}$ that is called the jth principal component.
+   * $W = Z\theta \epsilon$
+   * $W = (ZV)(V' \theta) + \epsilon$
+   * $W = C \alpha + \epsilon$
+ * The LSE of $\alpha$ is:
+   * $\hat \alpha = (C'C)^{-1} C' W \\\\ = \frac{1}{n-1} \Lambda^{-1} C' W$
+   * $Cov(\hat \alpha) = \frac{1}{(n-1)^2} \Lambda ^{-1} C' Cov(W) C \Lambda^{-1} \\\\ = \frac{1}{(n-1)^2} \Lambda^{-1} C' \frac{\sigma^2}{s_y^2} IC\Lambda ^{-1} \\\ = \frac{\sigma^2}{(n-1)s_y^2} \Lambda ^{-1}$
+   * that means the variance of $\hat \alpha_i = \frac{\sigma^2}{(n-1)s_y^2} \lambda_i$ and $\hat \alpha_i$ and $\hat \alpha_j$ are note correlated for $i \not = j$. This implies that is $\lambda_i$ is small, then the LSE of $\alpha_i$ has high uncertainty. Since $V' \theta = \alpha$,:
+   * $\hat \theta = V \hat \alpha$
+   * $Cov(\hat \theta) = \frac{\sigma^2}{(n-1) s_y^2} V \Lambda^{-1} V'$
+
+#### Summary of recovering regression coefficients
+ * Let $\hat \alpha$ be the regression coefficients vector from the principal components.
+ * Let $\hat \theta$ be the regression coefficients vector from centered and/or scaled data
+ * Let $\hat \beta$ be the regression coefficients vector from the original data
+ * $\hat \theta = V \hat \alpha, \text{ that is }, \hat \theta_i = \sum_{j=1}^p v_{ij} \hat \alpha_j$
+ * $\hat \beta_i = \hat \theta_i \frac{s_y}{s_{x_i}} \text{ for } i = 1, \cdots, p$
+ * $\hat \beta_0 = \bar - \hat \beta_1 \bar x_1 - \cdots - \hat \beta_p \bar x_p$
+
+ * Standard errors of the estimates: The variance of the regression coefficients can be written as:
+   * $Cov(\hat \alpha) = \frac{\sigma^2}{(n-1) s_y^2} \Lambda^{-1} = \frac{\sigma^2}{(n-1) s_y^2} diag(\frac{1}{\lambda_1}, \cdots, \frac{1}{\lambda_p})$
+   * $Cov(\hat \theta) = V Cov(\hat \alpha) V' = \frac{\sigma^2}{(n-1) s_y^2} V \Lambda^{-1} V'$
+   * $Var(\hat \theta_i) = \frac{\sigma^2}{(n-1) s_y^2} \sum_{j=1}^p \frac{v_{ij}^2}{\lambda_j}$
+   * $\hat {Var} (\hat \beta_i) = \frac{\hat \sigma^2}{(n-1) s_{x_i}^2} \sum_{j=1}^p \frac{v_{ij}^2}{\lambda_j}$
+   * $s.e.(\hat \beta_i) = \frac{\hat \sigma}{\sqrt{n-1} s_{x_i}} \sqrt{\sum_{j=1}^p \frac{v_{ij}^2}{\lambda_j}}$
+
+
+### 10.3 Principal component regression (Dimension reduction)
+ 1. Center and/or scale the data
+ 2. Calculate the principal components of the sample variance-covariance matrix or the sample correlation matrix
+ 3. Select the number of principal components
+ 4. Fit the data using the selected principal components
+ 5. Recover the estimates of the regression coefficients
+
+ * Note that the number of principal components may be selected by the cross-validation (CV) method
+
+
+### 10.4 Ridge regression
+ * Suppose that the data set is centered and scaled.
+ * The LSE of the regression coefficients in matrix form can be written as:
+   * $\hat \theta = (X' X)^{-1} X' y$
+ * Multicollinearity makes $X'X$ (almost) singular => LSEs are unstable
+ * Hoerl and Kennard (1970) proposed the ridge regression:
+   * $\hat \theta ^ *(\lambda) = (X'X + \lambda I) ^{-1} X'y$
+ * The ridge estimator $\hat \theta^*(\lambda)$ is to minimize:
+   * $(y - X \theta)'(y - X \theta) + \lambda \sum_{j=1}^p \theta_j ^2$
+   * Equaivalently, minimize:
+     * $(y - X \theta)' (y - X \theta) \text{ given } \sum_{j=1}^p \theta_j^2 \le C$
+   * $\lambda$ = tuning parameter to be selected.
+   * $\lambda = 0$ => OLS
+   * $\lambda = \infty$ => All estimates = 0
+ * How to select the tuning parameter $\lambda$?:
+   * HKB method : Hoerl, Kennard, and Baldwin (1975):
+     * $\lambda = \frac{p \hat \sigma^2 (0)}{\sum_{j=1}^p \hat \theta_j (0)}$
+   * Iterative method: Let $\lambda_0$ be the estimate of HKB:
+     * $\lambda_i = \frac{p \hat \sigma^2(0)}{\sum_{j=1}^p \hat \theta_j (\lambda_{i-1})}$
+   * Ridge trace: Use the plot of the ridge estiamtes over $\lambda$. Select $\lambda$ such that the stimates are stable with small $SSE(\lambda)$ and $VIF(\lambda)$s:
+     * $SSE(\lambda) = (Y - X \hat \theta ^ * (\lambda))' (Y - X \hat \theta ^ * (\lambda))$
+     * $VIF_j(\lambda) = ((X'X + \lambda I)^{-1} X' X (X' X + \lambda I) ^{-1})_{jj}$
+   * Cross validation (CV) method: Find $\lambda$ minimizing the cross validation prediction error
+
+ * Properties of the ridge estimator:
+   * $E(\hat \theta ^ * (\lambda)) = (X' X + \lambda I)^{-1} X' X \theta$
+   * $Cov(\hat \theta ^ * (\lambda)) = (X' X + \lambda I) ^{-1} X' X( X' X + \lambda I) ^{-1} \sigma^2$
+   * $MSE(\lambda) = E[(\hat \theta ^ * (\lambda) - \theta) ' (\hat \theta ^ * (\lambda) - \theta)] \\\\ = \sigma^2 \sum_{j=1}^p \frac{\lambda_j}{(\lambda_j + \lambda)^2} + \lambda^2 \theta ' (X' X + \lambda I)^{-2} \theta \\\\ = Variance + (Bias)^2$
+
+### 10.5 Least Absolute Shrinkage and Selection Operator (LASSO)
+ * Tibshirani, R. (1996) Regression shrinkabge and selection via the lasso. Journal of the Royal Statistical Society Series B
+ * $L^1$ regularization:
+   * $(y - X \theta)' (y - X \theta) + \lambda \sum_{j=1}^p \| \theta_j \|$
+   * Equivalently, minimize:
+     * $(y - X \theta)'(y - X \theta) \text{ given } \sum_{j=1}^p \| \theta_j \| \le C$
+ * As $\lambda$ gets large (equivalently, C gets small), some of estimates shrink to zero. => It can be used for variable or model selection
+ * Easier interpretation than the ridge regression.
+ * The tuning parameter $\lambda$ or C can be estimated by CV method.
+
+## Chapter 11 Variable selections
+### 11.1 Why do we need variable selections?
+ * So far we assume that the predictors are predetermined to be included in our model.
+ * In practice, we do not know which predictors should be included in the model.
+ * We do not know the functional relationship as well
+ * Selecting variables and the functional relationship must be simultaneously considered.
+
+### 11.2 Effects of variable selections
+ * We have a resposne Y and q predictors $X_1, \cdots, X_q$
+ * The linear regression equation including all available predictors can be written as:
+   * $y_i = \beta_0 + \sum_{j=1}^q \beta_j x_{ij} + \epsilon_i$
+   * Let $\hat \beta_j ^ *$ be the LSE of the model including all available predictors.
+ * We need to statistically decide which predictors should be retained in the model and which predictors should be removed from the model.
+ * If we remove $X_{p+1}, \cdots , X_q$ from our model, then we have a smaller model:
+   * $y_i = \beta_0 + \sum_{j=1}^p \beta_j x_{ij} + \epsilon_i$
+   * Let $\hat \beta_j$ be the LSE of the model including p predictors by setting $\beta_{p+1} = \cdots = \beta_q = 0$
+ * What happens if the full model is correct and we removed some predictors?:
+   * $Var(\hat \beta_j ^ *) \ge Var(\hat \beta_j)$
+   * $0 = Bias^2(\hat \beta_j ^*) \le Bias ^2(\hat \beta_j)$
+   * $MSE(\hat \beta_j ^ *) = Var (\hat \beta_j ^ *) + bias ^2 (\hat \beta_j ^ *)$
+   * Variance dec, Bias inc
+   * This is called "Bias-Variance trade-off"
+ * Conclusions:
+   * Deleting variables may give us the smaller MSE esitmates than the unbiased LS estimates under the true model including all predictors.
+   * Including extraneous variables results in loss of precision of the estimates.
+
+### Appendix: Effects of Incorrect Model Specifications
+  * $\hat \beta_p$ is a biased estimate of $\beta_p$ unless $\beta_r = 0$ or $X_p'X_r = 0$
+  * $Cov(\hat \beta_p ^ *) - Cov(\hat \beta_p) \ge 0$, that is , variances of the least squares estimates of regression coefficients obtained from the full model are larger than the corresponding variances of the estimates obtained from the subset model. In other words, the deletion of variables always results in smaller variances for the estimates of the regression coefficients of the remaining variables.
+  * If $Cov(\hat \beta_r ^ *) - \beta_r \beta_r ' \ge 0$, then $MSE (\hat \beta_p ^*) - MSE(\hat \beta_p) \ge 0$. This means that the least squares estimates of regression coefficients obtained from the subset model have smaller mean square error than estimates obtained fro mthe full model when the variables deleted have regression coefficients that are smaller than the standard deviation of the esitmates of the coefficients.
+  * $\hat \sigma_p ^2$ is generally biased upward as an estimate of $\sigma^2$
+
+
+### 11.3 Practical issues in variable selections
+ * When a dataset with k predictors is collected, the number of all possible linear regression models equals $2^k$ => Exhaustive search may not be feasible in practice.
+ * When we compare two or more models with the same number of predictors, we may use $R^2$ to select better model. What if the models do not have the same number of predictors ? => We need the statistical criteria for variable selections.
+
+### 11.4 Forward, backward, stepwise selection
+ * Classical approach based on the p-values in variable selections or model selections: sequentially include or remove a variable based on the p-value of the F test discussed in earlier chapters.:
+   * What relationship between the probability that we select the true model and the level of significance? : No clear theoretical undertanding.
+   * However, this approach is still widely used in many areas and most of statistical software provide this.
+ * Suppose that we have k possible predictors: $X_1, \cdots, X_k$. Assume there is no serious multicollinearity between predictors.:
+
+#### FS (Forward Selection)
+ 1. Preselect level of significance $\alpha_{in}$
+ 2. Start with the samllest model $y_i = \beta_0 + \epsilon_i$, denoted by $M_0$
+ 3. Find the model having the smallest p-value among k models: $y_i = \beta_0 + \beta_j x_{ij} + \epsilon$. If the p-value of the model is less than or equal to $\alpha_{in}$, then include the variable and the model is denoted by $M_1$. Otherwise, stop the procedure.
+ 4. Continue this procedure until there is no variable has the smaller p-value than $\alpha_in$ or it reaches the model including all variables.
+
+#### BE (Backward Elimination)
+ 1. Predelect level of signifiance $\alpha_{out}$
+ 2. Start with the biggest model: $y_i = \beta_0 + \sum_{j=1}^k \beta_j x_{ij} + \epsilon_i$
+ 3. If the largest p-value of $X_j$ is greater than or equal to $\alpha_{out}$, then eliminate it.
+ 4. Refit the data with $k-1$ variables
+ 5. Continue the procedures until no predictor has larger p-value than $\alpha_{out}$ or it reaches $y_i = \beta_0 + \epsilon_i$
+
+#### Stepwise selection
+ 1. Preselect $\alpha_{in}$ and $\alpha_{out}$
+ 2. At each step of the FS method, check whether a variable has the p-value greater than or equal to $\alpha_{out}$, if so, eliminate the variable.
+ 3. Continue these procedure until no variable has smaller p-value less than or equal to $\alpha_{in}$ and greater than or equal to $\alpha_{out}$ or it reaches the full model.
+
+### 11.5 Best subset selection (regression)
+ * For each number of predictors, select the best model based on the coefficient of determination $R^2$
+ * We obtain k best models
+ * If necessary, we select the best model among the k models based on one or some criteria.
+ * It is an exhaustive search looking at all possible regression models
+ * It cannot be used if the number of predictors k is too large.
+
+
+### 11.6 Criteria
+ * MSE(=RMS) : Mean Square Errors or Residual Mean Squares of a model with p parameters is defined by:
+   * $MSE_p = \frac{SSE_p}{n-p}$
+   * We select a model with smallest $MSE_p$
+ * $R_{adj}^2$ = Adjusted $R^2$ is defined by:
+   * $R_{adj, p}^2 = 1 - \frac{SSE_p / (n-p)}{SST/(n-1)} = 1 - \frac{MSE_p}{SST/(n-1)}$
+   * Hence, maximizing $R_{adj,p}^2$ is equivalent to minimizing $MSE_p$
+ * Mallows $C_p$ : Try to minimize the standardized total MSE of the prediction, that is,:
+   * $\frac{\sum_{i=1}^n MSE_p(\hat y_i)}{\sigma^2} = \frac{\sum_{i=1}^n (\hat y - E y_i)^2}{\sigma^2}$
+   * Mallows (1973) estimated it as:
+     * $C_p = \frac{SSE_p}{\hat \sigma^2} + 2p - n$
+     * where $\hat \sigma^2$ is the MSE of the model including all possible predictors. If the model with p predictors is correct, then $E(C_p) = p$.
+   * In parctice,:
+     * Select a model of which $C_p$ is close to p.
+     * Usually, there are many models of which $C_p \approx p$, select the model with smallest $C_p$ as well.
+     * Disadvantage: The estimate $\hat \sigma ^2$ affects $C_p$ and the variable selection based on $C_p$ may not be reliable.
+ * PRESS: It is the predction sum of squares:
+   * $PRESS_p = \sum_{i=1}^n (y_i - \hat y_{(i)})^2 = \sum_{i=1}^n (\frac{e_i}{1 - h_{ii}})^2$
+   * where $\hat y_{(i)}$ is the predicted value of the ith observation based on the regression model with p variables excluding ith observation.
+   * It is called a leav-on-out cross-validation (LOOCV)
+   * For linear regression model, this statistic has a closed form, that is, it is very simple to calculate
+ * AIC: Akaike information criterion (AIC) derivated this to correct the bias term of the log-likelihood function in very general situation.:
+   * $AIC_p = -2 log (Likelihood) + 2p \\\\ = n log(\frac{SSE_p}{n}) + 2p$
+   * AIC tends to overfit <=> AIC commonly selects a bigger model than the true model.
+   * AIC or modified versions of AIC are widely used for the purpose of prediction <= Overfit is less problematic in prediction.
+   * AIC is not consistent, that is, $lim_{n->\infty} P(\text{select a true model}) \not = 1$
+ * BIC: Schwarz(1978) derived Bayesian information criterion (BIC) under Bayesian framework of the problem:
+   * $BIC_p = -2 log (Likelihood) + plog n \\\\ = n log (\frac{SSE_p}{n}) + p log n$
+   * BIC tends to select a smaller model than AIC <= BIC penalizes more than AIC for $log n \ge 2$
+   * BIC is consistent, that is , $lim_{n->\infty} P(\text{select the true model}) = 1$ if the model space includes the true model. => It provides very nice theoretical justification ubt in practice we do not know our modelspace includes the true model.
+   * BIC is commonly used when our model selection is the purpose of explanation and interpretation.
+ * Cross-validation(CV): Recently, as the computer technology has been rapidly developed, this method is widely applied once the sample size is not so small.:
+   * PRESS is a kind of the cross-validation methods.
+   * Randonly partition the dataset into (usually) 5 or 10 almost equal sizes subsets.
+   * For instance, suppose that we partition the dataset into 10 subsets. Use 9 subsets as the traning set to fit a model and estimate the prediction erros using the subset that is not used to fit the model.
+   * We will have 10 fitted models and 10 estimates of the prediction erros. => Take average of the prediction erros.
+   * For each model, we estimate the average of the prediction erros.
+   * Choose the model having the smallest average prediction errors.
+
+### 11.8 Variable selections with multicollinear data
+ * We may eliminate some predictors to remove th multicollinearity
+ * We may apply Ridge Regression:
+   * Eliminate variables whose coefficients are stable but small. Since ridge regression is applied to standardized data, the magnitude of the various coefficients are directly comparable.
+   * Eliminate variables with unstable coefficients that do not hold their predicting power, that is, untable coefficients that tend to zero.
+   * Eliminate one or more variables with unstable coefficients. The variables remaining from the original set, say p in number, are used to form the regression equation.
+ * We may apply LASSO with cross-validation (CV) method to determine the tuning parameter.
