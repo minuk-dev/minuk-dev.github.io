@@ -2,7 +2,7 @@
 layout  : wiki
 title   : linux-debug/scheduling
 date    : 2020-12-09 13:30:45 +0900
-lastmod : 2021-01-20 22:35:05 +0900
+lastmod : 2021-06-23 15:35:51 +0900
 tags    : [linux]
 parent  : linux-debug
 ---
@@ -762,5 +762,48 @@ TASK_DEAD --> [*]
  * 시스템 콜 핸들링 후 : 시스템 콜 함수를 처리한 후 유저 공간으로 복귀하기 직전
 
 #### 선점 스케줄링의 진입점:커널 모드 중 인터럽트 발생
- * 인터럽트가 발생하면 실해오디는 __irq_svc 레이블에서 선점 스케줄링을 시작한다.
- * 
+ * arm 기준
+   * 인터럽트가 발생하면 실행되는 __irq_svc 레이블에서 선점 스케줄링을 시작한다.:
+     1. 인터럽트 발생 후 인터럽트 핸들러 처리
+     2. 프로세스 선점 스케줄링 조건 점검
+     3. 프로세스 선점 스케줄링 실행
+
+   * `__irq_svc`:
+     ```
+     __irq_svc:
+       svc_entry
+       irq_handler
+
+     #ifdef CONFIG_PREEMPTION
+       ldr	r8, [tsk, #TI_PREEMPT]		@ get preempt count
+       ldr	r0, [tsk, #TI_FLAGS]		@ get flags
+       teq	r8, #0				@ if preempt count != 0
+       movne	r0, #0				@ force flags to 0
+       tst	r0, #_TIF_NEED_RESCHED
+       blne	svc_preempt
+     #endif
+
+     svc_exit r5, irq = 1			@ return from exception
+     UNWIND(.fnend		)
+     ENDPROC(__irq_svc)
+     ```
+   * 책은 라즈베리 파이를 기준으로 하는데, 책에서는 CONFIG_PREEMPT가 비활서오하 되어 있어서, 커널 코드가 실행되는 도중 인터럽트가 발생했을 때 선점 스케줄링을 시도하지 않는다.
+   * 하지만 대부분의 상용 리눅스 시스템에서는 CONFIG_PREEMPT가 활성화 되어 있다고 한다.
+   * 어셈블리를 해석해보면 r8 이 0이고 r0 & TIF_NEED_RESCHED 이 0이 아니라면 `svc_preempt()`를 호출하는 구조이다.
+   * `svc_preempt`:
+      ```
+      #ifdef CONFIG_PREEMPTION
+      svc_preempt:
+        mov	r8, lr
+      1:	bl	preempt_schedule_irq		@ irq en/disable is done inside
+        ldr	r0, [tsk, #TI_FLAGS]		@ get new tasks TI_FLAGS
+        tst	r0, #_TIF_NEED_RESCHED
+        reteq	r8				@ go again
+        b	1b
+      #endif
+      ```
+   * 그냥 preempt_schedule_irq 호출 하고 return하는 코드들이다.
+   * 여기까지가 architecture별로 다른 부분이고 preempt_schedule_irq() 부터는 다시 공통 c 코드로 돌아간다.
+ * x86 기준:
+   * 잡담 : 문서를 읽기 싫어서 사고 과정이 다음과 같았습니다. preempt_schedule_irq()는 공통 코드니까 이걸 호출하는 부분을 x86에서 찾으면 되겠다.
+   * 근데 common 을 사용하는 거 같기는 한데 정확히는 못찾았다. ㅠㅠ 일단 한시간 동안 이걸 찾는데 실패했으니 오늘은 여기까지
