@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-02-08 10:53:13 +0900
+lastmod : 2021-06-25 15:27:28 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -727,6 +727,7 @@ struct MCMF {
 using namespace std;
 using lld = long long;
 using ulld = unsigned long long;
+using llld = __int128_t;
 ulld fast_pow(ulld x, ulld y, ulld m){
   ulld r = 1;
   x %= m;
