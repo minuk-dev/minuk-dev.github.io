@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-06-25 15:27:28 +0900
+lastmod : 2021-07-01 01:22:56 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -269,6 +269,101 @@ int main () {
   }
   printf("%lld", result);
   return 0;
+}
+```
+
+## Merge-Sort Tree
+ * 백준 7469번 참고
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#define SIZE (1 << 17)
+using namespace std;
+using vi = vector<int>;
+
+struct merge_sort_tree {
+    vi node[SIZE * 2];
+    void add(int x, int v) {
+        x |= SIZE;
+        node[x].push_back(v);
+    }
+    void build() {
+        for (int i = SIZE - 1; i > 0; -- i) {
+            merge(node[i * 2], node[i * 2 + 1], node[i]);
+        }
+    }
+
+    void merge(vi& l, vi& r, vi& p) {
+        p.resize(l.size() + r.size());
+        int il = 0, ir = 0, ip = 0;
+        int ll = l.size(), lr = r.size();
+        while (il < ll && ir < lr) {
+            if (l[il] < r[ir]) {
+                p[ip] = l[il];
+                il ++;
+                ip ++;
+            } else {
+                p[ip] = r[ir];
+                ir ++;
+                ip ++;
+            }
+        }
+        while (il < ll) {
+            p[ip] = l[il];
+            il ++;
+            ip ++;
+        }
+        while (ir < lr) {
+            p[ip] = r[ir];
+            ir ++;
+            ip ++;
+        }
+    }
+
+    int query(int l, int r, int k) {
+        l |= SIZE;
+        r |= SIZE;
+        int ret = 0;
+        while (l <= r) {
+            if (l % 2 == 1) {
+                ret += distance(upper_bound(node[l].begin(), node[l].end(), k), node[l].end());
+                l ++;
+            }
+            if (r % 2 == 0) {
+                ret += distance(upper_bound(node[r].begin(), node[r].end(), k), node[r].end());
+                r --;
+            }
+            l /= 2;
+            r /= 2;
+        }
+
+        return ret;
+    }
+} mt;
+
+int main () {
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; ++ i) {
+        int a;
+        cin >> a;
+        mt.add(i, a);
+    }
+    mt.build();
+
+    for (int i = 0; i < m; ++ i) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        int x = -1e9, z= 1e9;
+        for (int t = z; t >= 1; t /= 2) {
+            while (mt.query(a, b, x + t) >  b - a + 1 - c) x += t;
+        }
+        int k = x + 1;
+        cout << k << "\n";
+    }
+    return 0;
 }
 ```
 
