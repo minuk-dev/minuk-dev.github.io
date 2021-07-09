@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-07-01 01:22:56 +0900
+lastmod : 2021-07-09 23:41:18 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -1232,6 +1232,132 @@ int main () {
     }
   } else {
     cout << "0";
+  }
+  return 0;
+}
+```
+
+## HLD
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+using lld = long long;
+#define SIZE (1 << 18)
+#define FASTIO() do{ cin.tie(0); cout.tie(0); ios_base::sync_with_stdio(false); } while(0)
+
+struct node_t {
+  lld value, lazy;
+};
+
+using vi = vector<int>;
+vi edges[SIZE];
+struct hld_tree {
+    int sz[SIZE] = {0}, top[SIZE] ={0}, s[SIZE]={0}, e[SIZE]={0}, se_cnt = 0, depth[SIZE]={0};
+    int parent[SIZE]={0};
+    void build(int root) {
+        depth[root] = 1;
+        top[root] = root;
+        parent[root] = 0;
+        sz[0] = 0;
+        dfs0(root);
+        dfs1(root);
+        dfs2(root);
+    }
+    vi g[SIZE];
+    void dfs0(int v) {
+        for (int& to: edges[v]) {
+            if (parent[v] == to) continue;
+            parent[to] = v;
+            g[v].push_back(to);
+            dfs0(to);
+        }
+    }
+    void dfs1(int v) {
+        sz[v] =1;
+        for (auto&i : g[v]) {
+            depth[i] = depth[v] + 1;
+            dfs1(i);
+            sz[v] += sz[i];
+            if (sz[i] > sz[g[v][0]]) swap(i, g[v][0]);
+        }
+    }
+    void dfs2(int v) {
+        s[v] = ++ se_cnt;
+        for(auto i : g[v]) {
+            top[i] = i == g[v][0] ? top[v] : i;
+            dfs2(i);
+        }
+        e[v] = se_cnt;
+    }
+} hld;
+
+/* sum tree */
+struct seg_tree {
+  node_t node[4 * SIZE];
+
+  lld build(lld* d, lld idx, lld s, lld e) {
+    if (s == e) return node[idx].value = d[s];
+    return node[idx].value = build(d, idx * 2, s, (s + e) / 2) + build(d, idx * 2 + 1, (s + e) / 2 + 1, e);
+  }
+
+  void update_lazy(lld idx, lld s, lld e) {
+    if (node[idx].lazy != 0) {
+      node[idx].value += (e - s + 1) * node[idx].lazy;
+      if (s != e) {
+        node[idx * 2].lazy += node[idx].lazy;
+        node[idx * 2 + 1].lazy += node[idx].lazy;
+      }
+      node[idx].lazy = 0;
+    }
+  }
+
+  lld update_range(lld idx, lld diff, lld s, lld e, lld l, lld r) {
+    update_lazy(idx, s, e);
+    if (r < s || l > e) return node[idx].value;
+    if (l <= s && e <= r) {
+      node[idx].lazy += diff;
+      update_lazy(idx, s, e);
+      return node[idx].value;
+    }
+    return node[idx].value =
+      update_range(idx * 2, diff ,s, (s + e) / 2, l, r) + update_range(idx * 2 + 1, diff, (s + e) / 2 + 1, e, l, r);
+  }
+
+  lld query(lld idx, lld s, lld e, lld l, lld r) {
+    update_lazy(idx, s, e);
+    if (r < s || l > e) return 0;
+    if (l <= s && e <= r) return node[idx].value;
+    return query(idx * 2, s, (s + e)/ 2, l, r) + query(idx * 2 + 1, (s + e) / 2 + 1, e, l, r);
+  }
+}seg;
+int main () {
+  lld N, C;
+  //FASTIO();
+  cin >> N >> C;
+  for (int i = 0; i < N - 1; ++ i) {
+      int x, y;
+      cin >> x >> y;
+      edges[x].push_back(y);
+      edges[y].push_back(x);
+  }
+  hld.build(C);
+  int Q;
+  cin >> Q;
+  for (int i = 0; i < Q; ++ i) {
+      int q, a;
+      cin >> q >> a;
+      if (q == 1) {
+          int cur = a;
+          while (cur != 0) {
+              seg.update_range(1, 1, 1, SIZE - 1, hld.s[hld.top[cur]], hld.s[cur]);
+              cur = hld.parent[hld.top[cur]];
+          }
+      } else if (q == 2){
+          cout << seg.query(1, 1, SIZE - 1, hld.s[a], hld.s[a]) * hld.depth[a] << "\n";
+      }
   }
   return 0;
 }
