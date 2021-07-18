@@ -2,13 +2,12 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-06-28 03:23:07 +0900
+lastmod: 2021-07-18 21:28:27 +0900
 ---
 ## 즐겨찾기
  * [[회고]]
  * [[latina]]
- * [[soma]]
- * [[피시실]]
+ * [[schedules]]
 
 ### Algorithm
  * [[teamnote]]
@@ -44,6 +43,7 @@ lastmod: 2021-06-28 03:23:07 +0900
 
 ### Tool
  * [[tool]]
+ * [[피시실]]
 
 ---
 
@@ -53,6 +53,7 @@ lastmod: 2021-06-28 03:23:07 +0900
 
 ---
 ## 잡스러운 것들 모음
+ * [[soma]]
  * [[schedules]]
  * [[vimwiki로 블로그 구축하기]]
  * [[3공노트]]
