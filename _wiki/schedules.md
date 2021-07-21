@@ -3,7 +3,7 @@ layout  : wiki
 title   : 하루하루 스케줄
 summary : TODO 가지고만 할일을 정리하기에는 모자라서, 만든 페이지
 date    : 2020-10-09 23:04:54 +0900
-lastmod : 2021-07-20 12:12:59 +0900
+lastmod : 2021-07-22 03:26:15 +0900
 tags    : [todo]
 parent  : todo
 ---
@@ -17,6 +17,7 @@ parent  : todo
  * [[schedules/2021-07-18]]
  * [[schedules/2021-07-19]]
  * [[schedules/2021-07-20]]
+ * [[schedules/2021-07-21]]
 
 ## 2020/10
  * [[schedules/2020-10-09]]
