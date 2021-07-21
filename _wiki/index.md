@@ -2,11 +2,12 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-07-18 21:28:27 +0900
+lastmod: 2021-07-22 03:24:45 +0900
 ---
 ## 즐겨찾기
  * [[회고]]
  * [[latina]]
+ * [[msa-from-ddd]]
  * [[schedules]]
 
 ### Algorithm
