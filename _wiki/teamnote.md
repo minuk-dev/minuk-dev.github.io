@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-07-09 23:41:18 +0900
+lastmod : 2021-08-08 07:30:55 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -814,44 +814,6 @@ struct MCMF {
 };
 ```
 
-## 소수 판별(Miller-Rabin)
- * unsigned long long 까지만 됨, 음수 안 넣게 조심!!
-```cpp
-#include <iostream>
-#define scl(N) scanf("%lld", &(N))
-using namespace std;
-using lld = long long;
-using ulld = unsigned long long;
-using llld = __int128_t;
-ulld fast_pow(ulld x, ulld y, ulld m){
-  ulld r = 1;
-  x %= m;
-  while (y != 0){
-    if(y % 2 == 1) r = (llld)r * x % m;
-    x = (llld)x * x % m;
-    y /= 2;
-  }
-  return r;
-}
-const ulld miller_rabin_prime[] = {
-  2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37
-};
-bool isPrime(const ulld p) {
-  ulld d = p - 1;
-  for (int i = 0; i < 12; ++ i) {
-    if (miller_rabin_prime[i] == p) return true;
-    if (miller_rabin_prime[i] > p) return true;
-    lld t = fast_pow(miller_rabin_prime[i], d, p);
-    while (t == p - 1 && d % 2 == 0) {
-      d /= 2;
-      t = fast_pow(miller_rabin_prime[i], d, p);
-    }
-    if (t != 1) return false;
-  }
-  return true;
-}
-```
-
 ## Aho-Corasick
  * boj 9250
 
@@ -1361,4 +1323,116 @@ int main () {
   }
   return 0;
 }
+```
+
+## 수학
+## 소수 판별(Miller-Rabin)
+ * unsigned long long 까지만 됨, 음수 안 넣게 조심!!
+```cpp
+#include <iostream>
+#define scl(N) scanf("%lld", &(N))
+using namespace std;
+using lld = long long;
+using ulld = unsigned long long;
+using llld = __int128_t;
+ulld fast_pow(ulld x, ulld y, ulld m){
+  ulld r = 1;
+  x %= m;
+  while (y != 0){
+    if(y % 2 == 1) r = (llld)r * x % m;
+    x = (llld)x * x % m;
+    y /= 2;
+  }
+  return r;
+}
+const ulld miller_rabin_prime[] = {
+  2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37
+};
+bool isPrime(const ulld p) {
+  ulld d = p - 1;
+  for (int i = 0; i < 12; ++ i) {
+    if (miller_rabin_prime[i] == p) return true;
+    if (miller_rabin_prime[i] > p) return true;
+    lld t = fast_pow(miller_rabin_prime[i], d, p);
+    while (t == p - 1 && d % 2 == 0) {
+      d /= 2;
+      t = fast_pow(miller_rabin_prime[i], d, p);
+    }
+    if (t != 1) return false;
+  }
+  return true;
+}
+```
+
+### 확장 유클리드 & 중국인의 나머지 정리
+ * 확장 유클리드 : 자주 안쓰는데 가끔 구현하려고 보면 머리가 하얗게 되서 따로 적어둠.
+ * 중국인의 나머지 정리: 나는 바보다 하는 마음가짐으로 다른 사람 구현체를 가져다 쓰기로 했다. 쓸수 있는 조건만 잘 기억해두자.
+```cpp
+lld ex_uc(lld a, lld b) {
+  lld r, t, s, q, p, s1, s2, t1, t2;
+  s1 = t2 = 1;
+  t1 = s2 = 0;
+  p = a;
+  while (b != 0) {
+    q = a / b;
+    r = a % b;
+
+    a = b;
+    b = r;
+
+    s = s1 - q * s2;
+    s1 = s2;
+    s2 = s;
+
+    t = t1 - q * t2;
+    t1 = t2;
+    t2 = t;
+  }
+
+  if (t1 < 0) t1 += p;
+  return t1;
+}
+
+lld china(lld a, lld b, lld ap, lld bp) {
+  lld retval = 0;
+  lld t1 = MOD / ap;
+  lld t2 = MOD / bp;
+  retval += (t1 * ex_uc(ap, t1 % ap)) % MOD * (a % MOD) % MOD;
+  retval %= MOD;
+  retval += (t2 * ex_uc(bp, t2 % bp)) % MOD * (b % MOD) % MOD;
+  retval %= MOD;
+  return retval;
+}
+```
+
+### 조합 (뤼카의 정리 활용)
+```cpp
+lld comb(lld n, lld k, lld p, vi& fac, vi& inv, vi& finv) {
+  if (fac.size() < p) {
+    fac.resize(p);
+    fac[0] = fac[1] = 1;
+    inv[1] = 1;
+    finv[0] = finv[1] = 1;
+    for (lld i = 2; i < p; ++ i) {
+      fac[i] = fac[i - 1] * i % p;
+      inv[i] = (p - (p / i) * inv[p % i] % p) % p;
+      finv[i] = finv[i - 1]  * inv[i] % p;
+    }
+  }
+  lld t1, t2, retval = 1;
+  while (n > 0 || k > 0) {
+    t1 = n % p;
+    t2 = k % p;
+    if (t1 < t2) return 0;
+    retval = retval * ((fac[t1] * finv[t2] % p) * finv[t1 - t2] % p) % p;
+    n /= p;
+    k /= p;
+  }
+  return retval;
+}
+
+/*
+  vi fac, inv, finv;
+  comb(n, k, p, fac, inv, finv);
+ */
 ```
