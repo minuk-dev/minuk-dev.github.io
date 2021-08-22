@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-07-26 10:58:04 +0900
+lastmod: 2021-08-22 16:04:31 +0900
 ---
 ## 즐겨찾기
  * [[회고]]
@@ -10,6 +10,7 @@ lastmod: 2021-07-26 10:58:04 +0900
  * [[msa-from-ddd]]
  * [[schedules]]
  * [[tikz]]
+ * [[keras-book]]
 
 ### Algorithm
  * [[teamnote]]
