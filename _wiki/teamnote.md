@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-08-08 07:30:55 +0900
+lastmod : 2021-08-27 15:26:55 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -1328,6 +1328,7 @@ int main () {
 ## 수학
 ## 소수 판별(Miller-Rabin)
  * unsigned long long 까지만 됨, 음수 안 넣게 조심!!
+
 ```cpp
 #include <iostream>
 #define scl(N) scanf("%lld", &(N))
@@ -1367,6 +1368,7 @@ bool isPrime(const ulld p) {
 ### 확장 유클리드 & 중국인의 나머지 정리
  * 확장 유클리드 : 자주 안쓰는데 가끔 구현하려고 보면 머리가 하얗게 되서 따로 적어둠.
  * 중국인의 나머지 정리: 나는 바보다 하는 마음가짐으로 다른 사람 구현체를 가져다 쓰기로 했다. 쓸수 있는 조건만 잘 기억해두자.
+
 ```cpp
 lld ex_uc(lld a, lld b) {
   lld r, t, s, q, p, s1, s2, t1, t2;
@@ -1406,6 +1408,7 @@ lld china(lld a, lld b, lld ap, lld bp) {
 ```
 
 ### 조합 (뤼카의 정리 활용)
+
 ```cpp
 lld comb(lld n, lld k, lld p, vi& fac, vi& inv, vi& finv) {
   if (fac.size() < p) {
