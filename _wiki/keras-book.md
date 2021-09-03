@@ -3,7 +3,7 @@ layout  : wiki
 title   : 케라스 창시자에게 배우는 딥러닝 책 공부
 summary : 어디까지 읽었는지, 추가적으로 기억할만한거 정리
 date    : 2021-08-22 16:04:33 +0900
-lastmod : 2021-08-22 17:28:09 +0900
+lastmod : 2021-08-22 23:23:45 +0900
 tags    : [keras]
 draft   : false
 parent  : "Book Review"
@@ -324,3 +324,5 @@ def build_model():
   model.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
   return model
 ```
+
+ * K-Fold 검증을 사용한 훈련 검증
