@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-08-30 17:02:24 +0900
+lastmod: 2021-09-05 19:11:08 +0900
 ---
 ## 즐겨찾기
  * [[회고]]
@@ -26,6 +26,7 @@ lastmod: 2021-08-30 17:02:24 +0900
  * [[Storage]]
  * [[english]]
  * [[others]]
+ * [[comment]]
 
 ### School
  * [[lectures]]
