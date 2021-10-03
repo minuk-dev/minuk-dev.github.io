@@ -3,7 +3,7 @@ layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
 summary : 
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-10-03 21:16:13 +0900
+lastmod : 2021-10-03 21:19:50 +0900
 tags    : 
 draft   : false
 parent  : lectures
@@ -14,7 +14,7 @@ parent  : lectures
  * Bayesian statistics came first.:
    * Reverend Thomas Bayes, Pierre Simon Laplace in the late 17th/early 18th centuries.
  * Limitations of Bayesian analyses:
-   * Difficulty in evaluating $p(\theta | y)$ in complex models analytically.
+   * Difficulty in evaluating $p(\theta \vert y)$ in complex models analytically.
    * Role of prior information - lack of objectivity.
  * Frequentist statistics was introduced as a way of overcoming these issues.:
    * Fisher in the 1920s, Neyman, Pearson in the mid-20th century.
@@ -34,9 +34,9 @@ parent  : lectures
  * Goal : Estimate $\theta$ based on all available information (data) and find its associated error under asymptotic theory.
  * Inference is based on examining how well a procedure would do if it is used many times.:
    * Point estimates and standard errors or 95% confidence intervals.
-   * Deduction from P(data|$H_0$), by setting $\alpha$ in advance.
-   * Accept $H_1$ if $P(data|H_0) < \alpha$
-   * Accept $H_0$ if $P(data|H_1) \ge \alpha$
+   * Deduction from $P(data \vert H_0)$, by setting $\alpha$ in advance.
+   * Accept $H_1$ if $P(data \vert H_0) < \alpha$
+   * Accept $H_0$ if $P(data \vert H_1) \ge \alpha$
 
 ### ko
  * 추정하고자 하는 파라메터(이걸 모수로 번역해도 되나?) $\theta$를 우리가 아직 알지는 못하지만 고정된 값이라고 생각한다.
@@ -51,7 +51,7 @@ parent  : lectures
  * Data are observed from the realized sample.
  * Goal: Estimate the distribution of $\theta$ conditional on the observed data, the posterior distribution of $\theta$.
  * Inference is based on summaries of the posterior distribution of $\theta$.:
-   * Induction from $P(\theta | data)$, starting with $P(\theta)$
+   * Induction from $P(\theta \vert data)$, starting with $P(\theta)$
    * Broad descriptions of the posterior distribution such as means and quantiles.
    * Highest posterior density intervals indicating region of highest posterior probability, regardless of contiguity.
 
@@ -70,12 +70,12 @@ parent  : lectures
    * Frequentist : Parameters are fixed!
    * Bayesian : Data are fixed!
  * General inference:
-   * Frequentist : $P(data | \theta)$ is the sampling distribution of the data given the parameter.
-   * Bayesian : $P(\theta)$ is the prior distribution of the parameter (before the data are seen) and $P(\theta | data)$ is the posterior distribution of the parameter.
+   * Frequentist : $P(data \vert \theta)$ is the sampling distribution of the data given the parameter.
+   * Bayesian : $P(\theta)$ is the prior distribution of the parameter (before the data are seen) and $P(\theta \vert data)$ is the posterior distribution of the parameter.
  * 95% Intervals:
    * Frequentist: In repeated sampling, 95% of realized intervals covers the true parameter.
    * Bayesian: For these data, with probability 95% the parameter is in the interval.
- * Bayesian inference proceeds vertically, with x fixed, according to the posterior distribution $g(\mu|x)$.
+ * Bayesian inference proceeds vertically, with x fixed, according to the posterior distribution $g(\mu \vert x)$.
  * Frequentists reason horizontally, with $\mu$ fixed and x varying.
 
 ### ko
@@ -110,35 +110,35 @@ parent  : lectures
 
 ## Bayes' Theorem
  * Bayes' Theorem:
-   * $p(\theta | y) = \frac{p(\theta, y)}{p(y)} = \frac{p(y | \theta) p (\theta)}{p(y)}$
-   * where $p(y)$ is marginal distribution of y and either $p(y) = \sum_{\theta} p(\theta)p(y|\theta)$ or $p(y) = \int p(\theta) p(y | \theta) d \theta$.
+   * $p(\theta vert y) = \frac{p(\theta, y)}{p(y)} = \frac{p(y vert \theta) p (\theta)}{p(y)}$
+   * where $p(y)$ is marginal distribution of y and either $p(y) = \sum_{\theta} p(\theta)p(yvert\theta)$ or $p(y) = \int p(\theta) p(y vert \theta) d \theta$.
  * In calcuating,:
-   * $p(\theta | y) \propto p(y | \theta) p(\theta)$
+   * $p(\theta vert y) \propto p(y vert \theta) p(\theta)$
 
 ## Bayesian Modeling
  1. Model specification:
-   * $p(y | \theta)$ : likelihood function of y
+   * $p(y vert \theta)$ : likelihood function of y
    * $p(\theta)$ : prior distribution of $\theta$
  2. Performing inference:
-   * $p(\theta | y)$ : posterior distribution of $\theta$ given y
-   * $p(\theta | y) \propto p(y | \theta) p(\theta)$
+   * $p(\theta vert y)$ : posterior distribution of $\theta$ given y
+   * $p(\theta vert y) \propto p(y vert \theta) p(\theta)$
    * How ?:
      * analystically-only possibile for certain models.
      * using simulation when we are not able to write down the exact form of the posterior density.
  3. Inference results:
-   * ex) posterior mean : $E[\theta | y] = \int _{\theta} \theta p(\theta | y) d \theta$
+   * ex) posterior mean : $E[\theta vert y] = \int _{\theta} \theta p(\theta vert y) d \theta$
 
 ## Binomial Model
  * Goal: estimate an unknown proportion from the results of a sequence of "Bernoulli trials" (data $y_1, ..., y_n$ that are either 1s or 0s)
  * Assume that the data arise from a sequence of n independent trials or draws from a large population where each trial is classified as a "success" ($y_i = 1$) or a "failure" ($y_i = 0$).
  * We can characterize the data by the total number of success, denoted by y, in n tirals.
  * Binomial sampling model:
-   * $p(y | \theta) = Bin(y | n, \theta) = \binom{n}{y} \theta^y (1 - \theta)^{n - y}$
+   * $p(y vert \theta) = Bin(y vert n, \theta) = \binom{n}{y} \theta^y (1 - \theta)^{n - y}$
    * where the parameter $\theta$ represents the proportion of successes in the population (equivalently, the probability of success in each trial).
  * Question: How can we get the posterior distribution of $\theta$?
  * First, we need to specify the prioir distribution for $\theta$:
    * One possibility: $p(\theta) = Unif(0, 1)$
  * Second, apply Bayes' Rule:
    * Posterior distribution:
-     * $p(\theta | y) \propto p(\theta) p(y | \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} \approx Beta(y + 1, n - y + 1)$
+     * $p(\theta vert y) \propto p(\theta) p(y vert \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} \approx Beta(y + 1, n - y + 1)$
      * It means the posterior distribution follows the Beta(y + 1, n - y + 1) distribution.
