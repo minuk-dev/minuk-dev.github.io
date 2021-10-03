@@ -3,7 +3,7 @@ layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
 summary : 
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-10-03 21:19:50 +0900
+lastmod : 2021-10-03 21:21:59 +0900
 tags    : 
 draft   : false
 parent  : lectures
@@ -110,35 +110,35 @@ parent  : lectures
 
 ## Bayes' Theorem
  * Bayes' Theorem:
-   * $p(\theta vert y) = \frac{p(\theta, y)}{p(y)} = \frac{p(y vert \theta) p (\theta)}{p(y)}$
-   * where $p(y)$ is marginal distribution of y and either $p(y) = \sum_{\theta} p(\theta)p(yvert\theta)$ or $p(y) = \int p(\theta) p(y vert \theta) d \theta$.
+   * $p(\theta \vert y) = \frac{p(\theta, y)}{p(y)} = \frac{p(y \vert \theta) p (\theta)}{p(y)}$
+   * where $p(y)$ is marginal distribution of y and either $p(y) = \sum_{\theta} p(\theta)p(y\vert\theta)$ or $p(y) = \int p(\theta) p(y \vert \theta) d \theta$.
  * In calcuating,:
-   * $p(\theta vert y) \propto p(y vert \theta) p(\theta)$
+   * $p(\theta \vert y) \propto p(y \vert \theta) p(\theta)$
 
 ## Bayesian Modeling
  1. Model specification:
-   * $p(y vert \theta)$ : likelihood function of y
+   * $p(y \vert \theta)$ : likelihood function of y
    * $p(\theta)$ : prior distribution of $\theta$
  2. Performing inference:
-   * $p(\theta vert y)$ : posterior distribution of $\theta$ given y
-   * $p(\theta vert y) \propto p(y vert \theta) p(\theta)$
+   * $p(\theta \vert y)$ : posterior distribution of $\theta$ given y
+   * $p(\theta \vert y) \propto p(y \vert \theta) p(\theta)$
    * How ?:
      * analystically-only possibile for certain models.
      * using simulation when we are not able to write down the exact form of the posterior density.
  3. Inference results:
-   * ex) posterior mean : $E[\theta vert y] = \int _{\theta} \theta p(\theta vert y) d \theta$
+   * ex) posterior mean : $E[\theta \vert y] = \int _{\theta} \theta p(\theta \vert y) d \theta$
 
 ## Binomial Model
  * Goal: estimate an unknown proportion from the results of a sequence of "Bernoulli trials" (data $y_1, ..., y_n$ that are either 1s or 0s)
  * Assume that the data arise from a sequence of n independent trials or draws from a large population where each trial is classified as a "success" ($y_i = 1$) or a "failure" ($y_i = 0$).
  * We can characterize the data by the total number of success, denoted by y, in n tirals.
  * Binomial sampling model:
-   * $p(y vert \theta) = Bin(y vert n, \theta) = \binom{n}{y} \theta^y (1 - \theta)^{n - y}$
+   * $p(y \vert \theta) = Bin(y \vert n, \theta) = \binom{n}{y} \theta^y (1 - \theta)^{n - y}$
    * where the parameter $\theta$ represents the proportion of successes in the population (equivalently, the probability of success in each trial).
  * Question: How can we get the posterior distribution of $\theta$?
  * First, we need to specify the prioir distribution for $\theta$:
    * One possibility: $p(\theta) = Unif(0, 1)$
  * Second, apply Bayes' Rule:
    * Posterior distribution:
-     * $p(\theta vert y) \propto p(\theta) p(y vert \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} \approx Beta(y + 1, n - y + 1)$
+     * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} \approx Beta(y + 1, n - y + 1)$
      * It means the posterior distribution follows the Beta(y + 1, n - y + 1) distribution.
