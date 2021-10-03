@@ -3,7 +3,7 @@ layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
 summary : 
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-10-03 21:21:59 +0900
+lastmod : 2021-10-03 21:38:11 +0900
 tags    : 
 draft   : false
 parent  : lectures
@@ -142,3 +142,17 @@ parent  : lectures
    * Posterior distribution:
      * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} \approx Beta(y + 1, n - y + 1)$
      * It means the posterior distribution follows the Beta(y + 1, n - y + 1) distribution.
+   * Posterior mean:
+     * $Beta(\alpha, \beta)$ distribution has $\mu = \frac{\alpha}{\alpha + \beta}$ as mean.
+     * So, Binimial model's posterior mean is $\frac{y + 1}{n + 2}$:
+       * $\frac{y + 1}{n + 2} = \frac{n}{n + 2} \frac{y}{n} + \frac{1}{n + 2} \\\\ = \text{weight} \times \text{MLE} + \text{weight} \times \text{ Prior information }$
+       * Weighted average of sample mean and prior mean
+
+## Binomial Model with Beta Prior
+ * Use the different prior distribution:
+   * $p(\theta) = Beta(\alpha, \beta)$
+ * Posterior distribution:
+   * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} \binom{n}{y} \theta ^ y (1 - \theta)^{n - y} \\\\ \propto \theta^{\alpha - 1 + y} (1 - \theta)^{\beta - 1 + n - y} \approx Beta(\alpha + y, \beta + n - y)$
+ * Posterior mean:
+   * $E[\theta \vert y] = \frac{\alpha + y}{\alpha + \beta + n} = \frac{n}{\alpha + \beta + n} \frac{y}{n} + \frac{\alpha + \beta}{\alpha + \beta + n} \frac{\alpha}{\alpha + \beta}$
+   * It is also weighted average of sample mean and prior mean
