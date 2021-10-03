@@ -3,7 +3,7 @@ layout  : wiki
 title   : 학교 수업
 summary :
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2021-09-24 12:38:16 +0900
+lastmod : 2021-10-03 19:46:55 +0900
 tags    : [lecture]
 parent  :
 ---
@@ -20,3 +20,4 @@ parent  :
 * [[lectures/multicore]]
 * [[lectures/regression]]
 * [[lectures/multi-variant-statistical-analysis]]
+* [[lectures/bayesian-statistics]]
