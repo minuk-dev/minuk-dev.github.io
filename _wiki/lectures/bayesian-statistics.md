@@ -3,7 +3,7 @@ layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
 summary : 
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-10-03 21:38:11 +0900
+lastmod : 2021-10-03 21:45:59 +0900
 tags    : 
 draft   : false
 parent  : lectures
@@ -140,7 +140,7 @@ parent  : lectures
    * One possibility: $p(\theta) = Unif(0, 1)$
  * Second, apply Bayes' Rule:
    * Posterior distribution:
-     * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} \approx Beta(y + 1, n - y + 1)$
+     * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = I(0 \le \theta \le 1) \binom{n}{y} \theta^y (1 - \theta)^{n - y} \\\\ \propto I(0 \le \theta \le 1) \theta^y (1 - \theta)^{n - y} ~ Beta(y + 1, n - y + 1)$
      * It means the posterior distribution follows the Beta(y + 1, n - y + 1) distribution.
    * Posterior mean:
      * $Beta(\alpha, \beta)$ distribution has $\mu = \frac{\alpha}{\alpha + \beta}$ as mean.
@@ -152,7 +152,13 @@ parent  : lectures
  * Use the different prior distribution:
    * $p(\theta) = Beta(\alpha, \beta)$
  * Posterior distribution:
-   * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} \binom{n}{y} \theta ^ y (1 - \theta)^{n - y} \\\\ \propto \theta^{\alpha - 1 + y} (1 - \theta)^{\beta - 1 + n - y} \approx Beta(\alpha + y, \beta + n - y)$
+   * $p(\theta \vert y) \propto p(\theta) p(y \vert \theta) \\\\ = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} \binom{n}{y} \theta ^ y (1 - \theta)^{n - y} \\\\ \propto \theta^{\alpha - 1 + y} (1 - \theta)^{\beta - 1 + n - y} ~ Beta(\alpha + y, \beta + n - y)$
  * Posterior mean:
    * $E[\theta \vert y] = \frac{\alpha + y}{\alpha + \beta + n} = \frac{n}{\alpha + \beta + n} \frac{y}{n} + \frac{\alpha + \beta}{\alpha + \beta + n} \frac{\alpha}{\alpha + \beta}$
    * It is also weighted average of sample mean and prior mean
+   * Actually, unif(0, 1) = Beta(1, 1)
+ * Observations:
+   * When n is greater, the expectation goes to sample mean.
+   * When n is smaller, the expectation goes to prior mean.
+   * We can interpret $\alpha + \beta$ is the amount of prior information:
+     * When $\alpha + \beta$  is greater (more information of prior), the expectation goes to prior mean.
