@@ -3,7 +3,7 @@ layout  : wiki
 title   : tool
 summary :
 date    : 2020-06-27 15:17:31 +0900
-lastmod : 2021-07-26 16:55:30 +0900
+lastmod : 2021-10-06 14:13:32 +0900
 tags    : [tool]
 draft   : false
 parent  :
