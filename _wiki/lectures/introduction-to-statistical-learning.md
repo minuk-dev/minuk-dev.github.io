@@ -3,7 +3,7 @@ layout  : wiki
 title   : 통계학습개론(Introduction to statistical learnning) 수업 정리
 summary : 2021 가을학기 수업 정리
 date    : 2021-10-08 04:46:27 +0900
-lastmod : 2021-10-08 05:54:31 +0900
+lastmod : 2021-10-13 04:02:57 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -97,3 +97,55 @@ parent  : lectures
      * 분산 : 대부분의 탄력 있는 통계적 방법들은 높은 분산을 지닌다.
      * 편향 : 현실 문제와 비슷하게 소개되는 오차 개념 대부분의 탄력적 통계 방법은 작은 편향을 가진다.
    * 가장 좋은 모델은 분산과 편향이 둘다 낮은 것이다. 하지만, 이 둘은 서로 상호보환적이며 한쪽이 작으면 한쪽이 커지는 현상이 생긴다.
+
+# 2. Linear regression
+## [en]
+ * A linear regresion model assumes that the regression function $E(Y \vert X)$ is linear in the inputs $X_1, ..., X_p$.
+
+### 2.1 Review - Linear regression
+ * Model:
+   * $f(X) = \beta_0 + \sum_{j = 1}^p X_j \beta_j$
+   * Typically we have a set of training data $(x_1, y_1), ..., (x_N, y_N)$ from which to estimate the parameters $\beta$. Each $x_i = x_{i1}, x_{i2}, ... x_{ip})'$ is a vector of feature measurements from the ith case.
+ * Estimation:
+   * The most popular estimation method is least squares,:
+     * $RSS(\beta) = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij} \beta_j)^2 = (y - X \beta)' (y - X \boldsymbol{\beta})$
+     * where $X$ is the $N \times (p + 1)$ matrix, $\boldsymbol{\beta} = (\beta_0, ..., \beta_p)'$, and $y$ is the N-vector of outputs in the training set.
+   * Then:
+     * $\hat \beta = (X'X)^{-1} X' y$
+     * $\hat y = X \hat \beta = X(X'X)^_{-1}X'y = Hy$
+   * It might happen that the columns of $X$ are not linearly independent, so that $X$ is not of full rank. Then $X'X$ is singular and the least squares coefficients $\hat \beta$ are not uniquely defined.
+ * Inference:
+   * Under $y_i = E(y_i \vert x_{i1}, ..., x_{ip}) + \epsilon_i = \beta_0 + \sum_{j=1}^p x_{ij} \beta_j + \epsilon_i$, where $\epsilon_i i.i.d ~ N(0, \sigma^2)$, we can show that:
+     * $\hat \beta ~ N(\beta, (X' X)^{-1} \sigma^2)$,
+     * $(N - p - 1) \hat \sigma^2 ~ \simga^2 \chi_{N-p-1}^2$,
+     * and $\hat \beta_j$ and $\hat \sigma^2$ are statistically independent.
+   * To test $H_0:\beta_j = 0(j = 0, ..., p)$,:
+     * use $z_j = \frac{\hat \beta_j}{\hat \sigma \sqrt{v_{j+1}}}$, where $v_j$ is the j th diagonal element of $(X'X)^{-1}$. Under $H_0, z_j ~ t_{N - p - 1}$.
+   * $(1 - \alpha) \times 100$ % CI of $\beta_j$:
+     * $\hat \beta_j \pm t_{\alpha / 2, N - P - 1} se(\hat \beta_j)$
+   * To test $H_0:\beta_{p_0 + 1} = ... = \beta_{p_1} = 0$:
+     * use $F = \frac{(RSS_0 - RSS_1)/(p_1 - p_0)}{RSS_1 / (N - p_1 - 1)}$, where $RSS_1$ is the residual sum of squares for the bigger model with $p_1 + 1$ parameters and $RSS_0$ is the same for the smaller model with $p_0 + 1$ parameters. Under $H_0, F~F_{p_1 - p_0, N - p_1 - 1}$.
+   * $R^2$ and $adj R^2$
+* The Gauss-Markov Theorem : The least squares estimates of the parameters $\beta$ have the smallest variance among all linear unbiased estimates.:
+  * $MSE(\tilde \theta) = E(\tilde \theta - \theta)^2 = Var(\tilde \theta) + [E(\tilde \theta) - \theta]^2$.
+  * Note that, there may well exist a biased estimator with smaller mean squared error. Such an estimator would trade a little bias for a larger reduction in variance. Any method that shrinks or sets to zero some of the least squares coefficients may result in a biased estimate (variable selection and ridge regression).
+* Some important questions.:
+  1. Is at least one of the predictors $X_1, X_2, ..., X_p$ useful in predicting the response?
+  2. Do all the predictors help to explain $Y$, or is only a subset o the predictors useful?
+  3. How well does the model fit the data?
+  4. How accurate is our prediction?
+* Potential Problems:
+  1. Non-linearity of the response-predictor relationships.
+  2. Correlction of error terms.
+  3. Non-constant variance of error terms.
+  4. Outliers.
+  5. Collinearity.
+
+### 2.2 Comparision of Linear regression with KNN
+ * KNN regression:
+   * $\hat f (x_0) = \frac{1}{K} \sum_{x_i \in N_0} y_i$
+   * where $N_0$ is the K training observations that are closest to $x_0$. In general, the optimal value for K will depend on the bias-variance tradeoff.
+ * The parametric approach will outperform the nonparametric approach if the parametric form that has been selected is close to the true form of f
+ * KNN perform much better than linear regression for non-linear situations.
+ * Curse of dimensionality in KNN:
+   * The increase in dimension has only caused a small deterioration in the linear regression test set MSE, but it has caused more than a tend-fold increase in the MSE for KNN. This decrease in performance as the dimension increases in a common problem for KNN, and results from the fact that in higher dimensions there is effectively a reduction in sample size.
