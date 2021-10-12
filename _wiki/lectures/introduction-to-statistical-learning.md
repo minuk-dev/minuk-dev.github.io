@@ -3,7 +3,7 @@ layout  : wiki
 title   : 통계학습개론(Introduction to statistical learnning) 수업 정리
 summary : 2021 가을학기 수업 정리
 date    : 2021-10-08 04:46:27 +0900
-lastmod : 2021-10-13 04:02:57 +0900
+lastmod : 2021-10-13 04:12:31 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -149,3 +149,14 @@ parent  : lectures
  * KNN perform much better than linear regression for non-linear situations.
  * Curse of dimensionality in KNN:
    * The increase in dimension has only caused a small deterioration in the linear regression test set MSE, but it has caused more than a tend-fold increase in the MSE for KNN. This decrease in performance as the dimension increases in a common problem for KNN, and results from the fact that in higher dimensions there is effectively a reduction in sample size.
+
+## [ko]
+### 선형 회귀
+ * 모델:
+   * $f(X) = \beta_0 + \sum_{j = 1}^p X_j \beta_j$
+   * 우리가 가지고 있는 학습용 데이터가 $(x_1, y_1), ..., (x_N, y_N)$의 형태일때, 이를 활용해서 $\beta$를 추정한다. 이때, $x_i$를 i번째의 특성 평가 벡터라고 한다.
+
+ * 추정:
+   * 가장 널리 알려진 추정 방법은 최소제곱법인데,:
+     * $RSS(\beta) = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij} \beta_j)^2 = (y - X \beta)' (y - X \boldsymbol{\beta})$
+     * 이때, $X$ 는 각각 학습 데이터인 $N \times (p + 1)$ 행렬, $\boldsymbol{\beta} = (\beta_0, ..., \beta_p)'$, $y$는 크기가 N인 벡터이다.
