@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multi Variant Statistical Analysis
 summary : 2021-fall lecture
 date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-10-14 03:42:51 +0900
+lastmod : 2021-10-14 03:52:13 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -66,14 +66,14 @@ p + geom_line() + facet_grid(. ~ Sex)
 ## Chapter 1. Linear algebra
 ### 1.1 Scalars, vectors, matrices
  * Matrix: A rectangular or square array of numbers of variables.
-   * $A = \begin{pmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\\\ a_{21} & a_{22} & \cdots a_{2n} \\ \vdots & \vdots & \ddots \vdots \\\\ a_{m1} & a_{m2} \cdots a_{mn} \end{pmatrix}$
+   * $A = \begin{pmatrix} a_{11} & a_{12} & \cdots & a_{1n} \\\\ a_{21} & a_{22} & \cdots & a_{2n} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ a_{m1} & a_{m2} & \cdots & a_{mn} \end{pmatrix}$
    * It is common to use a matrix to display a data set: a datset with n subjects and p variables can be written as a $n \times p$ matrix. It is called a data matrix or data array.
    * Note that the $i$th row is the list of the measurments obtained from Unit (Individual) $i$, and the $j$ the column is the list of measruements of Variable $j$.
  * Vector: A column or row matrix
    * $x = \begin{pmatrix} x_1 \\\\ \vdots \\\\ x_n \end{pmatrix}$
    * $x^T = x' = (x_1, \cdots, x_n)$
    * where the transpose of A is defined as:
-     * $A^T = A' = (a_{ji}$
+     * $A^T = A'$
    * Note that $(A^T)^T = A$
  * Scalar: A single number A 1x1 matrix is equivalent to a scalar.
  * Equality of two matrices: A= B if the sizes of two matrices are equal and thhe corresponding elements are equal.
@@ -99,7 +99,7 @@ p + geom_line() + facet_grid(. ~ Sex)
    * $IA = AI = A$
 
 ### 1.3 Trace and determinant for square matrcies
- * Trace : $tr(A) =^{\def} \sum_{i=1}^p a_{ii}$:
+ * Trace : $tr(A) \stackrel{\text{def}}{=} \sum_{i=1}^p a_{ii}$:
    * $tr(A + B) = tr(A) + tr(B)$
    * $tr(AB) = tr(BA)$
    * $tr(A'A) = tr(AA') = \sum_{i} \sum_{j} a_{ij}^2 \text{ for } n \times p \text{ matrix } A$
@@ -154,7 +154,7 @@ p + geom_line() + facet_grid(. ~ Sex)
    * 1. If $A$ is a symmetric positive definite matrix, then there exists $C$ such that $A=C'C$ where $C$ is an upper triangular matrix, that is called the Cholesky decomposition of A.
    * We may obtain $c_{ij}$, from the followings:
      * $c_{11} = \sqrt{a_{11}}$
-     * $c_{1j} = \frac{a_{1j}}{\c_{11}} \text{ for } 2 \le j \le p$
+     * $c_{1j} = \frac{a_{1j}}{c_{11}} \text{ for } 2 \le j \le p$
      * $c_{ii} = \sqrt{a_{ii} - \sum_{k=1}^{i -1} c^2_{ki}} \text{ for } 2 \le i \le p$
      * $c_{ij} = \frac{a_{ij} - \sum{k=1}^{i-1} c_{ki}c_{kj}}{c_{ii}} \text{ for } 2 \le i < j \le p$
      * $c_{ij} = 0 \text{ otherwise }$
@@ -167,7 +167,7 @@ p + geom_line() + facet_grid(. ~ Sex)
  * Remark 9.:
    * 1. If $A$ is a real symmetric positive definite matrix, then all $\lambda_i > 0$. Conversely, if a real symmetric matrix $A$ has all eigenvalues $\lambda_i > 0$, then A is positive definite.
    * 2. We may define $A^{1/2}$ for a real symmetric positive definite matrix $A$ by:
-     * $A^{1/2} = Q diag(\sqrt{\labmda_1}, ..., \sqrt{\lambda_p}) Q'$
+     * $A^{1/2} = Q diag(\sqrt{\lambda_1}, ..., \sqrt{\lambda_p}) Q'$
    * 3. The inverse of a symmetric matrix may be written as:
      * $A^{-1} = Q diag(\frac{1}{\lambda_1}, ..., \frac{1}{\lambda_p}) Q'$
 
@@ -205,8 +205,8 @@ p + geom_line() + facet_grid(. ~ Sex)
  * Definition 2.1.1. A univariate normal density is:
    * $f(x) = \frac{1}{\sqrt{2 \pi} \sigma} exp(- \frac{(x - \mu)^2}{2 \sigma^2})$
    * It is symmetric about the mean $\mu$ and mound (bell)-shaped curve, hence unimodel.
- * Definition 2.1.2. A bivariate normal random vector $X = (X_1, X_2)'$ has mean $\mu = (\mu_1, \mu_2)'$ and variance-covariance matrix $\Sigma = \begin{pmatrix} \sigma_1^2 & \sigma_1 \sigma_2 \rho \\\\ \sigma_1 \sigma_2 \rho \\\\ \sigma_2^2 \end{pmatrix}$ where $\sigma_i^2 = Var(X_i)$ and $\rho = Cor(X_1, X_2) = \frac{Cov(X_1, X_2)}{sigma_1 \sigma_2}$ so that $Cov(X_1, X_2) = \sigma_1 \sigma_2 \rho$. The density function of a bivariate normal $X = (X_1, X_2)'$ is defined by:
-   * $f(x_1, x_2) = \frac{1}{2 \pi \sigma_1 \sigma_2 \sqrt{1 - \rho^2}} exp(-\frac{1}{2(1 - \rho^2) (\frac{(x_1 - \mu_1)^2}{\sigma_1 ^2} - \frac{2 \rho (x_1 - \mu_1)(x_2 -\mu_2)}{\simga_1 \sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2})})$
+ * Definition 2.1.2. A bivariate normal random vector $X = (X_1, X_2)'$ has mean $\mu = (\mu_1, \mu_2)'$ and variance-covariance matrix $\Sigma = \begin{pmatrix} \sigma_1^2 & \sigma_1 \sigma_2 \rho \\\\ \sigma_1 \sigma_2 \rho & \sigma_2^2 \end{pmatrix}$ where $\sigma_i^2 = Var(X_i)$ and $\rho = Cor(X_1, X_2) = \frac{Cov(X_1, X_2)}{\sigma_1 \sigma_2}$ so that $Cov(X_1, X_2) = \sigma_1 \sigma_2 \rho$. The density function of a bivariate normal $X = (X_1, X_2)'$ is defined by:
+   * $f(x_1, x_2) = \frac{1}{2 \pi \sigma_1 \sigma_2 \sqrt{1 - \rho^2}} exp(-\frac{1}{2(1 - \rho^2)} (\frac{(x_1 - \mu_1)^2}{\sigma_1 ^2} - \frac{2 \rho (x_1 - \mu_1)(x_2 -\mu_2)}{\sigma_1 \sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2}))$
    * for $-infty < x_1, x_2 < \infty$
 
  * Remark 1.:
@@ -222,7 +222,7 @@ p + geom_line() + facet_grid(. ~ Sex)
      * Conversely, if the lienar combination $a^T X ~ N(a^T \mu, a^T \Sigma a)$ for every $a \in R^p$, then $X ~ N_p(\mu, \Sigma)$.
    * Remark 2. If every linear combination of $X_1, ..., X_p$ has a univariate normal distribution, then $X=(X_1, ..., X_p)'$ has a multivariate normal distribution. Note that the condition must hold for every linear combination.
 
- * 2. Let $A$ be a $q \time p$ matrix. Then $AX ~ N(A \mu, A\Sigma A^T)$. For any vector $b \in R^q, b^T (AX) = (b^T A)X$ is normally disributed from (Property 1) -> $AX$ is normally distributed. The mean vector is $E(AX) = A \mu$ and the covariance matrix is $E[(AX - A \mu)(AX - A\mu)^T] = A E[(X - \mu)(X - \mu)^T] A^T = A\SimgaA^T$.
+ * 2. Let $A$ be a $q \times p$ matrix. Then $AX ~ N(A \mu, A\Sigma A^T)$. For any vector $b \in R^q, b^T (AX) = (b^T A)X$ is normally disributed from (Property 1) -> $AX$ is normally distributed. The mean vector is $E(AX) = A \mu$ and the covariance matrix is $E[(AX - A \mu)(AX - A\mu)^T] = A E[(X - \mu)(X - \mu)^T] A^T = A \Sigma A^T$.
 
  * 3. All subsets of the components of $X$ have a (multivariate) normal distribution.:
    * Let $X = \begin{pmatrix} X_1 \\\\ X_2 \end{pmatrix}$ be a partition of $X$. Let $\mu = \begin{pmatrix} \mu_1 \\\\ \mu_2 \end{pmatrix}$ and $\Sigma = \begin{pmatrix} \Sigma_{11} & \Sigma_{12} \\\\ \Sigma_{21} & \Sigma_{22} \end{pmatrix}$. Then
