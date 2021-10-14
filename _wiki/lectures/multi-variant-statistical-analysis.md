@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multi Variant Statistical Analysis
 summary : 2021-fall lecture
 date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-10-15 00:39:12 +0900
+lastmod : 2021-10-15 03:37:48 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -312,6 +312,7 @@ p + geom_line() + facet_grid(. ~ Sex)
         * $MS = \frac{1}{6n} \sum_{i=1}^n \sum_{j=1}^n [(x_i - \bar x)^T \hat \Sigma ^{-1} (x_j - \bar x)]^3$
         * $MK = \sqrt{\frac{n}{8m(m+2)}}(\frac{1}{n} \sum_{i=1}^n [(x_i - \bar x)^T \hat \Sigma^{-1} (x_j - \bar x)]^2 - m(m+2))$
         * Under the null hypothesis of multivariate normality, the statistic MS will have approximately a chi-squared distribution with $\frac{1}{6} m (m + 1) (m + 2)$ degrees of freedom, and MK will be approximately standard normal $N(0, 1)$.
+
       * Henze-Zirkler's test based on the empirical characteristic function:
         * $HZ_{\beta} = \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n e^{- \frac{\beta^2}{2} (x_i - x_j)^T \hat \Sigma^{-1} (x_i - x_j)} - \frac{2}{n(1 + \beta^2)^{m/2}} \sum_{i=1}^n e^{- \frac{\beta ^ 2}{2(1 + \beta^2)} (x_i - \bar x)^T \hat \Sigma^{-1} (x_i - \bar x)} + \frac{1}{(1 + 2 \beta^2)^{m/2}}$
         * where $\beta = \frac{1}{\sqrt{2}} (\frac{(2m + 1)n}{4})^{1/(m+4)}$ is a common choice. The HZ test rejects normality if $HZ_{\beta}$ is too large.
@@ -336,3 +337,24 @@ p + geom_line() + facet_grid(. ~ Sex)
    * for $x > 0$. We choose $\lambda$ by maximizing the log-likelihood function:
      * $l(\lambda) = - \frac{n}{2} log [\frac{1}{n} \sum_{i = 1}^n (x_i^{(\lambda)} - \bar {x ^ {(\lambda)}})^2] + (\lambda - 1) \sum_{i=1}^{n} log x_I$
  4. Note that we should not expect some transformation can always make the data close to normality.
+
+---
+ * 내 나름대로 정리
+ * Wishart 분포:
+   * Chi-square(카이제곱) 분포의 다변량 버전
+   * 표본 추정치의 근사추정 분포로 사용
+   * 자유도는 표본의 크기와 동일하다.
+   * 분포를 결정하는 요소는 자유도, feature의 개수(p), 분산-공분산 행렬이기에 $W(p, m, \Sigma)$로 표현 가능하다.
+   * 독립이고 공분산이 같고 동일 feature의 확률 변수 $W_1$과 $W_2$를 더하면 표본의 개수가 늘어났다고 생각할 수 있다. $W_1 + W_2 ~ W(p, m_1 + m_2, \Sigma)$
+ * 공분산 행렬의 MLE는 $\hat \Sigma = S_n = \frac{1}{n} \sum_{i=1}^n (X_i - \bar X)(X_i - \bar X)^T$ 이다.
+ * 표본의 크기가 커진다면,:
+   * $\sqrt{n}(\bar X - \mu) ~ N_p(0, \Sigma)$
+   * $n(\bar X - \mu)^T S^{-1} (\bar X - \mu) ~ \chi_p^2$:
+     * univariate랑 비교해보면 $\sum_{i=1}^n (\frac{X_i - \mu}{\sigma})^2$에서 분자부는 $\bar X - \mu$가 구성하고, 분모부는 $S^{-1}$이 있다고 생각할 수 있다. (유도해보면 가운데에 분산이 들어가야 한다는 것을 알 수 있다.)
+
+ * 그래서 지금 구한걸로 어캐 쓰는데?:
+   * 각 변수들의 각자의 정규성(marginal normality)를 검증하는데 쓰임
+   * Chi-square plot을 그려서 직선을 그리는지 확인(??? 이건 뭘 확인하고자 하는거지?) : 일단 찾아보니까 이거 그렸을 때 동일 직선 위에 있는게 아니면 outlier랍니다.
+   * Mardia's test를 적용하면 다변량에서 정규성을 검증할수 있다. (2008년에 나왔네 신기)
+   * Henze-Zirkler's test도 다변량에서 정규성을 검증하는데 쓰인다는데, 잘 모르겠네
+   * 이외에도 다양한 테스트들이 있음.
