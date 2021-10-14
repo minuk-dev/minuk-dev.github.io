@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multi Variant Statistical Analysis
 summary : 2021-fall lecture
 date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-10-14 03:52:13 +0900
+lastmod : 2021-10-15 00:34:12 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -236,4 +236,101 @@ p + geom_line() + facet_grid(. ~ Sex)
 
  * 5. The conditional distributions of the components are (multivariate) normal, that is, let $X = \begin{pmatrix} X_1 \\\\ X_2 \end{pmatrix} ~ N(\begin{pmatrix} \mu_1 \\\\ \mu_2 \end{pmatrix}, \begin{pmatrix} \Sigma_{11} & \Sigma_{12} \\\\ \Sigma_{21} & \Sigma_{22} \end{pmatrix})$. Then $X_1 \vert _{X_2 = x_2}$ has a multivariate normal distribution.
  * Remark 4. Forsimplicity, let $\mu = 0$. Note that:
+   * $(X_1^T, X_2^T) \Sigma^{-1} \begin{pmatrix} X_1 \\\\ X_2 \end{pmatrix} = (X_1 - \Sigma_{12} \Sigma_{22}^{-1} X_2)^T \Sigma_{11.2}^{-1} (X_1 - \Sigma_{12} \Sigma_{22}^{-1}X_2) + X_2^T \Sigma_{22}^{-1} X_2$
+   * where $\Sigma_{11.2} = \Sigma_{11} - \Sigma_{12} \Sigma_{22}^{-1} \Sigma_{21}$
 
+ * 6. Suppose that $X ~ N_p(\mu, \Sigma)$. Then $(X - \mu)^T \Sigma^{-1} (X - \mu) ~ \chi_{p}^2$
+
+### 2.3 Estimation for sampling from a multivariate normal distributions
+ * There are many methods of the point estimations such as the method of moments (MM), the maximum likelihood estimation (MLE), the minimum variance unbiased estimation, etc. Under the multivariate normality assumption on the population, we may need to estimate the population mean vector $\mu$ and the population variance-covariance matrix $\Sigma$. The maximum likelihood estimatiors of $mu$ and $\Sigma$ are frequently used since they are asymptotically optimal in some sense.
+
+#### 2.3.1 Likelihood function of a sample from a multivariate normal distribution
+ * Let $X_i \stackrel{\text{iid}}{~} N_p(\mu, \Sigma)$ for $i = 1, ..., n$ be a random sample from a multivariate normal with mean $\mu$ and covariance $\Sigma$. The likelihood function and the log-likelihood funciton may be written as:
+   * $L(\mu, \Sigma; x_1, ..., x_n) = f(x_1, ..., x_n; \mu, \Sigma)$ <- joint pdf
+   * $= \prod_{i=1}^n f(x_i ; \mu, \Sigma)$ <- indpendent and identically distributed
+   * $= \prod_{i=1}^n (\frac{1}{(2 \pi)^{p/2} \vert \Sigma \vert ^ {1/2}} exp(-\frac{(x_i - \mu)^T \Sigma^{-1} (x_i - \mu)}{2}))$
+   * $= \frac{1}{(2 \pi)^{np/2} \vert \Sigma \vert ^{n/2}} exp (-\frac{1}{2} \sum_{i=1}^n (x_i - \mu)^T \Sigma^{-1} (x_i - \mu))$
+   * $l(\mu, \Sigma; x_1, ..., x_n) = log L(\mu, \Sigma; x_1, ..., x_n) \\\\ = - \frac{1}{2} \Sum_{i = 1}^n (x_i - \mu)^T \Sigma^{-1} (x_i - \mu) - \frac{n}{2} log \vert \Sigma \vert - \frac{np}{2} log(2 \pi)$
+
+#### 2.3.2 Maximum likelihood estimations (MLEs) from a multivariate normal distribution
+ * A typical way to find the MLEs is to maximize the log-likelihood function in the paraeters.
+ * The maximum likelihood estimator (MLE) of the mean vector is:
+   * $\hat \mu = \bar X = \frac{1}{n} \sum_{i=1}^n X_i$
+ * and the MLE of the covariance matrix is:
+   * $\hat \Sigma = S_n = \frac{1}{n} \sum_{i=1}^n (X_i - \bar X)(X_i - \bar X)^T$
+ * Remark 5 (Another proof for $\hat \Sigma = \frac{1}{n} \Sum_{i=1}^n (x_i \bar x)(x_i - \bar x)')$. It can be shown that $\frac{\partial}{\partial A} log \vert A \vert = (A^T)^{-1}$ and $\frac{\partial}{\partial A} tr(AB) = B'$:
+   * $l(\bar X, \Sigma) = - \frac{1}{2} np log(2 \pi) - \frac{1}{2} n log \vert \Sigma \vert -\frac{1}{2} \sum_{i=1}^n (X_i - \bar X)^T \Sigma^{-1} (X_i - \bar X) \\\\ = -frac{1}{2} np log(2 \pi) + \frac{1}{2} n log \vert \Sigma^{-1} \vert - \frac{1}{2} tr(\Sigma^{-1} \sum_{i=1}^n (X_i - \bar X)(X_i - \bar X)^t)$
+   * $\frac{\partial}{\partial \Sigma^{-1} l(\bar X, \Sigma)} = \frac{1}{n} \Sigma - \frac{1}{2} \Sum_{i=1}^n (X_i - \bar X)(X_i \bar X)^T = O$
+   * $\hat \Sigma = \frac{1}{n} \sum_{i=1}^n (X_i -  \bar X) (X_i - \bar X)^T$
+
+### 2.4 Sampling distributions of $\bar X$ and $S$
+ * Recall 3 (Sampling distributions from a univariate normal distribution (p = 1)). When $X_1, ..., X_n$ is a random sample from $N(\mu, \sigma^2)$:
+   * $\bar X = \frac{X_1 + ... + X_n}{n} ~ N(\mu, \frac{\sigma^2}{n})$
+   * $(n-1)\frac{S^2}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^n (X_i - \bar X)^2 ~ \chi_{n-1}^2$
+ * In addition, the sample mean $\bar X$ and the sample variance $S^2$ are independent.
+
+ * Summary of sampling distributions from a multivariate normal $N_p(\mu, \Sigma)$:
+   1. The MLE $\mu = \bar X$ of the mean vector $\mu$ is normally distributed as:
+     * $\hat \mu = \bar X ~ N_p(\mu, \frac{1}{n} \Sigma)$
+   2. The MLE $\hat \Sigma = S_n = \frac{1}{n} \sum_{i=1}^n (X_i - \bar X)(X_i - \bar X)^T$ of $\Sigma$ is distributed as:
+     * $n \hat \Sigma = (n -1)S \\\\ = \sum_{i=1}^n(X_i - \bar X)(X_i - \bar X)^T \\\\ = \sum_{j=1}^{n-1} Z_j Z_j^T$
+     * where $Z_i \stackrel{\text{iid}}{~} N_p(0, \Sigma)$
+   3. Additionally, $\bar X$ and $S$ are independent.
+
+### 2.5 Definition and Properties of the Wishart Distirubiton
+ * Definition 2.5.1 (Wishart distribution with m degrees of freedom). Let $Z_i ~ N_p(0, \Sigma)$ be and iid random sample. The distribution of $\sum_{i=1}^m Z_i Z_i^T$ is defined as the Wishart distribution of m degrees of freedom, denoted by $W_m(\Sigma)$ or $W(\bullet \vert \Sigma, m)$ or $W(p, m, \Sigma)$.
+
+ * Remark 6. Wishart distribution for a univariate random variable euqls a chi-square distribution up to a constant multiplication. When $p=1$ and $\Sigma = 1$, $W_m(\sigma^2) = \sigma^2 \chi_m^2$
+
+ * Remark 7. Suppose $W_1 ~ W(p, m_1, \Sigma)$ and they are independent. The sum of two random matrices $W_1 + W_2 ~ W(p, m_1 +m_2, \Sigma)$
+
+### 2.6 Large sample distributions for $\bar X$ and $S$
+ * Let $X_1, X_2, ..., X_n$ be independent observations from a population with mean $\mu$ and finite (nonsingular) covariance $\Sigma$. Then:
+   * $\sqrt{n}(\bar X - \mu) ~ N_p(0, \Sigma)$
+   * $n (\bar X - \mu)^T S^{-1} (\bar X - \mu) ~ \chi_p^2$
+
+### 2.7 Assessing the assumption of multivariate normality
+ * Recall 4 (Checking the assumption of univariate normality). Let $X_i \stackrel{\text{iid}}{~} \text{ a density } f$
+ * Graphical methods: a normal Q-Q plot:
+   * Rearrange the observation in ascending order: $x_{(1)} \le \cdots \le x_{(n)}$
+   * Find $q_j$ so that $P(Z \le q_j) = \frac{j - 1/2}{n}$ for $j = 1, ..., n$.
+   * Plot $(q_j, x_{(j)})$
+   * Check whether the points ar eapproximately on a straight line.
+ * Formal hypothesis tests: Correlation coefficent test, Shapiro-Wilk test, Kolmogorov test (Lilliefors test), etc. Note that we will mostly likely reject the normality when the sample size is large because the true density in reality is not normal.
+
+ ---
+  * For a multivariate dataset, we may use a chi-square plot as blow:
+    1. Marginal normality check for each variable (We use the univariate methods with each variable).
+    2. Chi-square plot: Use $(X - \mu)^T \Sigma^{-1}(X - \mu) ~ \chi_m^2$ if $X ~ N_m(\mu, \Sigma)$:
+      1. Calculate $d_j^2 = (X_j - \bar X)^T \Sigma^{-1} (X_j - \bar X)$
+      2. Rearrange $d_j^2$ in ascending order: $d_{(1)}^2 \le d_{(2)}^2 \le ... \le d_{(1)}^2$
+      3. Find $q_j$ such that $P(x_m^2 \le q_j) = \frac{j- 1/2}{n}$
+      4. Plot $(q_j, d_{(j)}^2)$
+      5. Check whether the points are approximately on a straight line.
+    3. Formal hypothesis test:
+      * Mardia's test based on multivariate extensions of skewness and kurtosis measures.:
+        * $MS = \frac{1}{6n} \sum_{i=1}^n \sum_{j=1}^n [(x_i - \bar x)^T \hat \Sigma ^{-1} (x_j - \bar x)]^3$
+        * $MK = \sqrt{\frac{n}{8m(m+2)}}(\frac{1}{n} \sum_{i=1}^n [(x_i - \bar x)^T \hat \Sigma^{-1} (x_j - \bar x)]^2 - m(m+2))$
+        * Under the null hypothesis of multivariate normality, the statistic MS will have approximately a chi-squared distribution with $\frac{1}{6} m (m + 1) (m + 2)$ degrees of freedom, and MK will be approximately standard normal $N(0, 1)$.
+      * Henze-Zirkler's test based on the empirical characteristic function:
+        * $HZ_{\beta} = \frac{1}{n^2} \sum_{i=1}^n \sum_{j=1}^n e^{- \frac{\beta^2}{2} (x_i - x_j)^T \hat \Sigma^{-1} (x_i - x_j)} - \frac{2}{n(1 + \beta^2)^{m/2}} \sum_{i=1}^n e^{- \frac{\beta ^ 2}{2(1 + \beta^2)} (x_i - \bar x)^T \hat \Sigma^{-1} (x_i - \bar x)} + \frac{1}{(1 + 2 \beta^2)^{m/2}}$
+        * where $\beta = \frac{1}{\sqrt{2}} (\frac{(2m + 1)n}{4})^{1/(m+4)}$ is a common choice. The HZ test rejects normality if $HZ_{\beta}$ is too large.
+      * There are many other tests ssuch as Royston's test ,Coornik-Hansen's test, and Energy test.
+      * An R package MVN includes the above tests.
+
+### 2.8 Transformations to near normality
+ * When the assumption of normality fails, we may try to transform the dataset so that the normality assumption is not significantly violated for the transformed data.
+
+---
+ * For univariate data, there are transformations that are commonly applied in order to make data close to a normal distribution.
+ 1. Theoreticall transformations:
+   * Count y : $\sqrt{y}$
+   * Proportion $\hat p$ : $logit(\hat p) = log \frac{\hat p }{1 - \hat p}$
+   * Correlation r : Fisher's z transform $z = log(\frac{1+r}{1-r})$
+ 2. Power transformations: When all observations are nonnegative, we may consider a family of power transformations. If some measurements are negative, then we first add a constant to all measurements and then apply a power transformation.:
+   * $x_i + c \rightarrow (x_i + c)^{\lambda}$
+ 3. Box-Cox transformations: The Box-Cox transformation family is similar to the power transformation. This family continuously connects the logarithmic transform as the power $\lambda$ approaches zero.:
+   * $x^{(\lambda)} = \begin{cases} \frac{x ^{\lambda} - 1}{\lambda} & for \lambda \not = 0 \\\\ log x & for \lambda = 0$
+   * for $x > 0$. We choose $\lambda$ by maximizing the log-likelihood function:
+     * $l(\lambda) = - \frac{n}{2} log [\frac{1}{n} \sum_{i = 1}^n (x_i^{(\labmda)} - \bar {x ^ {(\lambda)}})^2] + (\lambda - 1) \sum_{i=1}^{n} log x_I$
+ 4. Note that we should not expect some transformation can always make the data close to normality.
