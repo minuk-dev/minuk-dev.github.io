@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multi Variant Statistical Analysis
 summary : 2021-fall lecture
 date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-10-15 00:34:12 +0900
+lastmod : 2021-10-15 00:39:12 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -250,7 +250,7 @@ p + geom_line() + facet_grid(. ~ Sex)
    * $= \prod_{i=1}^n f(x_i ; \mu, \Sigma)$ <- indpendent and identically distributed
    * $= \prod_{i=1}^n (\frac{1}{(2 \pi)^{p/2} \vert \Sigma \vert ^ {1/2}} exp(-\frac{(x_i - \mu)^T \Sigma^{-1} (x_i - \mu)}{2}))$
    * $= \frac{1}{(2 \pi)^{np/2} \vert \Sigma \vert ^{n/2}} exp (-\frac{1}{2} \sum_{i=1}^n (x_i - \mu)^T \Sigma^{-1} (x_i - \mu))$
-   * $l(\mu, \Sigma; x_1, ..., x_n) = log L(\mu, \Sigma; x_1, ..., x_n) \\\\ = - \frac{1}{2} \Sum_{i = 1}^n (x_i - \mu)^T \Sigma^{-1} (x_i - \mu) - \frac{n}{2} log \vert \Sigma \vert - \frac{np}{2} log(2 \pi)$
+   * $l(\mu, \Sigma; x_1, ..., x_n) = log L(\mu, \Sigma; x_1, ..., x_n) \\\\ = - \frac{1}{2} \sum_{i = 1}^n (x_i - \mu)^T \Sigma^{-1} (x_i - \mu) - \frac{n}{2} log \vert \Sigma \vert - \frac{np}{2} log(2 \pi)$
 
 #### 2.3.2 Maximum likelihood estimations (MLEs) from a multivariate normal distribution
  * A typical way to find the MLEs is to maximize the log-likelihood function in the paraeters.
@@ -258,9 +258,9 @@ p + geom_line() + facet_grid(. ~ Sex)
    * $\hat \mu = \bar X = \frac{1}{n} \sum_{i=1}^n X_i$
  * and the MLE of the covariance matrix is:
    * $\hat \Sigma = S_n = \frac{1}{n} \sum_{i=1}^n (X_i - \bar X)(X_i - \bar X)^T$
- * Remark 5 (Another proof for $\hat \Sigma = \frac{1}{n} \Sum_{i=1}^n (x_i \bar x)(x_i - \bar x)')$. It can be shown that $\frac{\partial}{\partial A} log \vert A \vert = (A^T)^{-1}$ and $\frac{\partial}{\partial A} tr(AB) = B'$:
+ * Remark 5 (Another proof for $\hat \Sigma = \frac{1}{n} \sum_{i=1}^n (x_i \bar x)(x_i - \bar x)')$. It can be shown that $\frac{\partial}{\partial A} log \vert A \vert = (A^T)^{-1}$ and $\frac{\partial}{\partial A} tr(AB) = B'$:
    * $l(\bar X, \Sigma) = - \frac{1}{2} np log(2 \pi) - \frac{1}{2} n log \vert \Sigma \vert -\frac{1}{2} \sum_{i=1}^n (X_i - \bar X)^T \Sigma^{-1} (X_i - \bar X) \\\\ = -frac{1}{2} np log(2 \pi) + \frac{1}{2} n log \vert \Sigma^{-1} \vert - \frac{1}{2} tr(\Sigma^{-1} \sum_{i=1}^n (X_i - \bar X)(X_i - \bar X)^t)$
-   * $\frac{\partial}{\partial \Sigma^{-1} l(\bar X, \Sigma)} = \frac{1}{n} \Sigma - \frac{1}{2} \Sum_{i=1}^n (X_i - \bar X)(X_i \bar X)^T = O$
+   * $\frac{\partial}{\partial \Sigma^{-1} l(\bar X, \Sigma)} = \frac{1}{n} \Sigma - \frac{1}{2} \sum_{i=1}^n (X_i - \bar X)(X_i \bar X)^T = O$
    * $\hat \Sigma = \frac{1}{n} \sum_{i=1}^n (X_i -  \bar X) (X_i - \bar X)^T$
 
 ### 2.4 Sampling distributions of $\bar X$ and $S$
@@ -327,10 +327,12 @@ p + geom_line() + facet_grid(. ~ Sex)
    * Count y : $\sqrt{y}$
    * Proportion $\hat p$ : $logit(\hat p) = log \frac{\hat p }{1 - \hat p}$
    * Correlation r : Fisher's z transform $z = log(\frac{1+r}{1-r})$
+
  2. Power transformations: When all observations are nonnegative, we may consider a family of power transformations. If some measurements are negative, then we first add a constant to all measurements and then apply a power transformation.:
    * $x_i + c \rightarrow (x_i + c)^{\lambda}$
+
  3. Box-Cox transformations: The Box-Cox transformation family is similar to the power transformation. This family continuously connects the logarithmic transform as the power $\lambda$ approaches zero.:
-   * $x^{(\lambda)} = \begin{cases} \frac{x ^{\lambda} - 1}{\lambda} & for \lambda \not = 0 \\\\ log x & for \lambda = 0$
+   * $x^{(\lambda)} = \begin{cases} \frac{x ^{\lambda} - 1}{\lambda} & for \lambda \not = 0 \\\\ log x & for \lambda = 0 \end{cases}$
    * for $x > 0$. We choose $\lambda$ by maximizing the log-likelihood function:
-     * $l(\lambda) = - \frac{n}{2} log [\frac{1}{n} \sum_{i = 1}^n (x_i^{(\labmda)} - \bar {x ^ {(\lambda)}})^2] + (\lambda - 1) \sum_{i=1}^{n} log x_I$
+     * $l(\lambda) = - \frac{n}{2} log [\frac{1}{n} \sum_{i = 1}^n (x_i^{(\lambda)} - \bar {x ^ {(\lambda)}})^2] + (\lambda - 1) \sum_{i=1}^{n} log x_I$
  4. Note that we should not expect some transformation can always make the data close to normality.
