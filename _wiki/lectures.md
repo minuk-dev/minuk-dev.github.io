@@ -3,7 +3,7 @@ layout  : wiki
 title   : 학교 수업
 summary :
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2021-10-08 04:46:27 +0900
+lastmod : 2021-10-15 23:07:19 +0900
 tags    : [lecture]
 parent  :
 ---
@@ -22,3 +22,4 @@ parent  :
 * [[lectures/multi-variant-statistical-analysis]]
 * [[lectures/bayesian-statistics]]
 * [[lectures/introduction-to-statistical-learning]]
+* [[lectures/computer-communication]]

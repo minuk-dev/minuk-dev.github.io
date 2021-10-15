@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multi Variant Statistical Analysis
 summary : 2021-fall lecture
 date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-10-15 03:37:48 +0900
+lastmod : 2021-10-15 23:07:06 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -358,3 +358,42 @@ p + geom_line() + facet_grid(. ~ Sex)
    * Mardia's test를 적용하면 다변량에서 정규성을 검증할수 있다. (2008년에 나왔네 신기)
    * Henze-Zirkler's test도 다변량에서 정규성을 검증하는데 쓰인다는데, 잘 모르겠네
    * 이외에도 다양한 테스트들이 있음.
+
+## Chapter 3 Hypothesis tests
+ * In this chapter, we consider a hypothesis test of a normal mean vector $\mu = (\mu_1, ..., \mu_p)'$. For example, we want to test $H_0 : \mu = \mu_0$, that is , we are about to test $\mu_i = \mu_{0i}$ for all $i=1,...,p$ simultaneously. The separate univariate tests such as z-test or t-test do not properly work for testing a multivariate mean vector.
+ 1. The use of p univariate tests inflates the Type I erro rate, $\alpha$, whereas the multivariate test preserves the exact $\alpha$ level.:
+   * For example, if we do $p=10$ separate univariate tests at the .05 level, the probability of at least one false rejection is greater than .05 If the variables were independent (they rarely are), we would have (under $H_0$):
+     * Pr(at least one rejection) = 1 - Pr(all 10 tests accept $H_0$) = 1 - $(.95)^10$ = .40
+   * The resulting overall of .40 is not an acceptable error rate. Typically, the 10 variables are correlated, and the overall $\alpha$ would lie somewhere between .05 and .40.
+ 2. The univariate tests completely ignore the correlations among the variables, wehreas the multivariate tests make direct use of the correlations.
+ 3. The multivariate tests are more powerful than univariate tests in many cases.:
+   * The power of a test is the probability of rejecting $H_0$ when it is false. in some cases, all p of the univariate tests fail to reach significance, but the multivariate test is significant because small efects on some of the variables combine to jointly indicate significance. However, for a given sample size, there is a limit to the number of variables a multivariate test can handle without losing power.
+   * We shall use the concepts, definitions, and results from Chapter 1 through Chapter 3 to develop multivariate statistical methos for analyzing multivariate data reaching statistical conclusions concerning a population based on information from a random sample. We concentrate on formal inferences about a population mean vector $\mu = (\mu_1, ... \mu_p)'$ and its components. Hotelling's $T^2$ test is a popular procedure for testing a multivariate normal mean vector. It is a generalization of the Student's t test that is frequently used for testing a normal mean. An important concept of multivariate statistical analysis is that p correlated variables must be analyzed jointly rather than marginally. We also present a full statistical analysis of the component means based on simultaneous confidence statements.
+
+### 3.1 Review of hypothesis tests for a univariate normal mean
+#### 3.1.1 When $\sigma^2$ is known
+ * A random sample $X_1, ..., X_n$ of size n is chosen from $N_1(\mu, \sigma^2)$ with known population variance $\sigma^2$. A hypothesis test of $H_0$ : \mu = \mu_0$ is performed on a basiss of:
+   * $\sqrt{n} \frac{\bar X - \mu_0}{\sigma} ~ N(0, 1) \text{ under } H_0$
+   * $n(\bar X - \mu_0)(\sigma^2)^{-1} (\bar X - \mu_0) ~ \chi_1^2 \text{ under} H_0$
+   * that is called a z-test.
+
+#### 3.1.2 When $\sigma^2$ is unknown
+ * Consider a univariate hypothesis test $H_0 : \mu = \mu_0$ against $H_1 : \mu \not = \mu_0$ when a random sample $X_1, ..., X_n$ is selected from $N(\mu, \sigma^2)$. Asignificant test can be conducted based on the test statistic $t = \frac{\bar X - \mu_0}{s / \sqrt{n}}$ that is called a t test. The unull distirubtion of the statistic is a Student's t distribution
+
+### 3.2 Hypothesis test on one sample multivariate normal mean vector
+#### 3.2.1 When the covariance matrix $\Sigma$ is known
+ * $n(\bar X - \mu)' \Sigma^{-1} (\bar X - \mu) ~ \chi_p^2$
+ * Under $H_0 : \mu = \mu_0$, we perform a multivariate $z^2$ test based on $n (\bar X - \mu_0)' \Sigma^{-1} (\bar X - \mu_0) ~ \chi_p^2$.
+ * In practice, it is more common that we do not have information of the population covariance matrix $\Sigma$.
+
+#### 3.2.2 Hotelling's $T^2$ Statistic: when $\Sigma$ is unknown
+ * Univrariate: The Student's T statistic is:
+   * $t = \sqrt{n} \frac{\bar X - \mu_0}{s}$
+   * $t^2 = n (\bar X - \mu_0) s^{-2} (\bar X - \mu_0) ~ t_{n-1}^2 = F_{1, n-1}$ under $H_0 : \mu=\mu_0$
+   * Reject $H_0$ if $n(\bar X - \mu_0) s^{-2} (\bar X - \mu_0) \ge t_{n-1, \alpha / 2}^2$
+ * Multivariate: The multivariate analog of the square of Student's T statistic is:
+   * $T^2 = n (\bar X - \mu_0)^T S^{-1} (\bar X - \mu_0) ~ \frac{(n-1)p}{n - p} F_{p, n-p}$ under $H_0: \mu=\mu_0$
+   * where $X_i \stackrel{\text{iid}}{~} N_p(\mu, \Sigma)$. It is called a Hotelling's $T^2$ stastistic.
+ 1. Note $T^2 = Z'(\frac{W}{v})^{-1}Z ~ \frac{vp}{v + 1 - p}F_{p, v+ 1-p}$, where $Z ~ N_p(0, \Sigma)$ and $W ~ Wischart(p, v, \Sigma)$ are independent.
+ 2. Note that $pF_{p, n-p} \rightarrow \chi_p^2$ so that $T^2 ~ \chi_p^2$ for a large sample under $H_0$
+ 3. $T^2$ statistic is invariant under linear transformation, that is, Hotelling $T^2$ statistic does not depend on the measurement units.
