@@ -1,10 +1,8 @@
 ---
 layout  : wiki
 title   : 컴퓨터통신
-summary : 
 date    : 2021-10-15 23:07:20 +0900
-lastmod : 2021-10-16 01:37:58 +0900
-tags    : 
+lastmod : 2021-10-17 19:53:00 +0900
 draft   : false
 parent  : lectures
 ---
@@ -360,3 +358,309 @@ parent  : lectures
    * 점대점 연결 네트워크: 가장 간단한 네트워크
    * 일반적인 네트워크 구성의 기본 block
 
+## 하드웨어 구성요소: 노드(Nodes)
+ * 단말/호스트, 스위치/라우터
+ * 범용(프로그래밍할 수 있는) 컴퓨터로 구성된다고 가정:
+   * 예) PC
+ * 때때로 특수한 목적의 하드웨어로 대체되기도 한다.
+ * 유한 메모리(제한된 버퍼공간을 의미)
+ * 네트워크 어뎁터(or NIC:Network Interface Cache)fㅡㄹ 통해서 네트워크에 연결
+ * 프로세서는 빠르고, 메모리는 느림
+
+## 링크(Link)
+ * 데이터(신호) 전달을 위한 물리적 매체, 예) 케이블, 공기
+ * Wired vs Wireless
+ * 전송모드:
+   * Simplex, Half-duplex, Full-duplex
+ * 링크는 논리적 통로:
+   * 하나의 케이블에 여러링크. 예)ADSL
+
+## 모듈레이션: 데이터의 신호화
+ * 데이터를 링크, 즉, 물리적 매체를 통해서 전달하기 위해서
+ * 인코딩/모듈레이션(Modulation) : data -> signal
+ * 수신 쪽에서는 반대작업(Demodulation) : signal-> data
+ * 모뎀(Modem)
+ * 신호의종류 : 전자기파 스펙트럼:
+   * 주파수, 파장
+
+## 전자기 스펙트럼과 매체 특성
+  * 저주파일수록 전송 특성이 좋다. (장애물을 잘 통과한다)
+  * 저주파는 고속의 데이터 전송에 한계가 존재한다.:
+    * 통신속도(대역폭)과 비트폭(length)
+  * 통신의 발전: 저주파 -> 고주파
+
+
+## 사용가능한 유선 링크의 종류
+ * Category 5 twisted pair : 흔히 말하는 UTP 케이블, 10~100Mbps, 100m
+ * 50-ohm coax (ThinNet) : 10~100Mbps, 200m (동축케이블)
+ * 75-ohm coax (ThickNet) : 10~100Mbps, 500m (동축케이블)
+ * Multimode filter : 100Mbps, 2km (광케이블)
+ * Single-mode filter : 100~2400Mbps, 40km (광케이블)
+ * 전화회사로부터 선을 임대하는 경우:
+   * ISDN : 64kbps
+   * T1 : 1544 Mpbs
+   * T3 : 44736 Mbps
+   * STS-1 : 51840 Mbps
+   * STS-3 : 155250 Mbps
+   * STS-12 : 622080 Mbps
+   * STS-24 : 1.244160 Gpbs
+   * STS-48 : 2.488320 Gpbs
+
+## 광케이블 : Optical Fiber
+ * Index of reflection = Speed of vaccum/Speed in medium Modes
+
+## 가입자선로(Last-Mile Links)
+ * 집(사용자)와 인터넷공급자 사이를 마지막으로 연결하는 링크
+ * 사용자가 선택해서 사용하는 링크이므로 중요
+ * 과거 : 모뎀을 통한 음성전화 링크
+ * xDSL(Digital Subscriber Loop) : 음성과 data를 FDM 방식으로 동시에:
+   * ADSL
+   * VDSL
+ * Cable Modem: asymmetric, shared bandwidth
+
+## 무선링크(Wireless Links) : 일반
+ * 장점 : 고정된 링크가 없음:
+   * 이동성 지원
+   * 즉시 사용가능
+ * 단점 : 공중으로 퍼져나감:
+   * 고주파 vs 저주파
+   * 인접한 링크 사이에 간섭이 일어날 수 있음:
+     * 전화 사용에 규재가 필요 - 라이센스 제도
+   * Multipath problem
+
+### 이동 통신(Cellular Network)
+ * 기지국 <-> 단말기:
+   * 셀 : 하나의 기지국이 관할하는 지역
+   * 한드오프(hand-off) 문제
+ * 기술발전:
+   * AMPS => PCS(GSM/CDMA) => W-CDMA => 4세대 이동통신 => 5G
+   * Overlapping circular cells, Idealized hexagonal netowrk, Microcells within a network
+
+### 고정 무선 통신(Wireless Field linked)
+ * 무선 고속 전용링크
+ * 무선 가입자망:
+   * 소수의 이용자를 위해서, 선깔기는 아쉬울때 사용. 안태나에 지향성을 부과해서 공간을 분할한다.
+
+### 위성통신(Satellite system)
+ * 정지궤도 방송/전화 -> 대부분 고정식
+ * 정지궤도 데이터(VSAT)
+ * 저궤도 전화 : 양방향 원할, 이동가능 (셀이 작아지고, 많은 양의 위성이 필요하다.)
+ * 위성방송/DMB : 위성은 단순히 스위치, 중계만 하도록 사용했다. 지연시간 등의 속도적 문제점은 있을 수 있지만, 위성을 재활용해서 지상에서 업데이트가 가능하다는 장점이 있다.
+
+### 단거리 무선통신(Short Range)
+ * Public (licensefree) band 이용
+ * 적외선통신
+ * 무선 LAN - IEEE 802.11
+ * Bluethooth
+ * ZigBee/IEEE 802.15.4
+
+## 인코딩
+### 인코딩(Encoding)
+ * 신호(Signal)는 물리적 매체를 통해 전달된다.:
+   * 디지털 신호, 아날로그 신호
+ * 데이터는 디지털 데이터만 취급:
+   * 아날로그 데이터는 디지털 데이터를 변환
+ * 문제: 발신지에서 목적지로 보내려는 이전 데이터를 전달될 수 있는 신호로 인코딩 해야함.
+ * 보다 일반적인 용어로는 변조(Modulation)이라고 한다.
+
+### 디지털 전송(Transmission)
+ * 신호 중계방법:
+   * 아날로그 전송:
+     * 신호를 단순 증폭만 한다.
+     * 즉, 앰프(Amplifier)를 사용한다.
+   * 디지털 전송:
+     * 신호에서 데이터를 복원하여 다시 신호화:
+       * 디지털 데이터를 담은 신호만 사용가능
+     * 즉, 리피터(Repeater) 사용
+   * 거의 모든 전송 방법이 디지털 전송 사용:
+     * noise 제거
+     * 기기비용, 부가기능 추가기능 등을 고려하여 사용
+
+## 데이터 전송(Transmission)
+ * 전송할 때 Analog를 Digital로 변환하여 보낸다.
+
+## Pulse Code Modulation
+ * sampling의 주기를 줄이면, 손실을 줄일 수 있다. 즉, sampling 주기는 각 샘플을 얼마나 정확하게 저장할 것이냐를 의미한다.
+
+## PCM
+ * Sampling Theorem:
+   * Sampling rate = 2 * Highest Signal Frequency
+ * 4 kHz Voice = 8 kHz sampling rate
+ * Represent samples as pulses (PAM)
+ * Quantize the samples (PCM)
+ * 8 k samples/sec * 8 bits/ smaple = 64 kbps
+
+## 변조 : Amplitude Modulation
+ * 하나의 신호로 많은 비트를 보낼 수 없다.
+
+ * 주파수 변조(Frequency Modulation), 위상 변조(Phase Modulation)
+ * 이동통신의 속도가 2배 증가시킬려면?:
+   * Shannon의 법칙
+   * AM, FM, PSM을 동시에 적용한다.
+
+## 디지털 전송(Transmission)
+ * Analog Data, Digital Data
+ * Digital Transmission
+ * Modulation : Data -> A-Signal
+
+### Non-Return to Zero(NRZ)
+ * 노드 내부의 데이터 표현과 일치(즉, 별도의 인코딩 필요 없음)
+ * 문제점 : 1 또는 0이 연속되는 경우:
+   * Low Signal(0)인 경우 수신자는 신호가 없는 것으로 오해할 수 있음
+   * High Signal(1)인 경우 전류가 계속 흐르게되고, 기저 전압의 혼돈이 생김.
+   * Clock 복구가 불가능:
+     * 송신자와 수신자의 Clock이 맞지 않으면 잘못된 비트 인식
+     * 수신자가 송신자의 Clock의 자신의 Clock을 맞추는 작업
+
+### NRZI and Manchester
+ * Non-return to Zero Inverted(NRZI):
+   * 1을 인코딩할 경우 현재의 신호로부터 중앙지점에서 전이(mid transition)을 하고, 0을 인코딩할 경우 현재의 신호 상태를 유지함:
+     * 연속되는 1 문제를 해결하는 방법
+ * Manchester:
+   * 0 : uptransition, 1: down transition
+   * NRZ 방식으로 인코딩 데이터와 클럭을 베타적 논리합(XOR)을 시켜서 바꾼다.:
+     * 50% 효율 문제
+
+### 4B/5B
+ * 아이디어:
+   * 데이터를 매 4bits 마다 5-bit의 코드로 인코드한다. 이 5-bit 코드는 앞에 1개, 뒤에는 2개까지의 0이 나오도록 제한하여 선택된 코드이다. (따라서, 0이 4개 이상 연속되게 나올 수 없다.)
+   * 5-bit 코드는 NRZI 인코딩을 이용해서 전송된다.
+   * 효율을 80% 달성한다.
+
+### 프레이밍(Framing)
+ * 데이터를 끝없이 보낼수는 없음(특히, 패킷 네트워크에서는)
+ * 문제:
+   * 비트(bit)들의 연속을 하나의 묶음(frame)으로 자르는 것
+   * 수신 쪽이 프레임을 인식할 수 있도록 묶는 것
+   * 프레임의 처음과 끝 인식
+ * 전형적으로 네트워크 어뎁터에서 구현된다.
+ * 어뎁터는 호스트메모리로부터 프레임을 넣고 가져옴.
+
+### 바이트 중심 프로토콜(Byte-Oriented Protocol)
+ * 보초 방법(Sentinel Approach):
+   * BICYNC
+   * IMP-IMP, PPP
+   * 문제점 : 프레임의 데이터부에서 ETX 문자가 나올 경우
+   * 해결 : 확장문자(escaping character) 사용:
+     * BICSYNC의 경우 DLE 문자를 ETX문자를 앞에 부착
+     * IMP-IMP의 경우에는 DLE 문자 앞에 DLE문자를 부착
+ * 바이트 수 방법(Byte Counting Approach) - DDCMP:
+   * 문제: 개수(count) 합이 잘못된 경우(training error)
+   * 해결 : 순회 중복검사(CRC)가 실패하므로 오류 검출
+
+### 비트 중심 프로토콜 (Bit-Oriented Protocol)
+ * HDLC : High-level Data Link Control (also SDLC and PPP):
+   * 특별한 bit-sequence를 프레임의 앞과 뒤에 붙여서 프레임을 구현(01111110)
+ * 비트 삽입(bit stuffing):
+   * 송신자 : 메시지의 중간에 연속되는 5개의 1이 나오면 0을 생성함.
+   * 수신자 : 1을 연속해서 5개 받았을 때, 다음 비트를 본다.:
+     * 다음 비트가 0이라면 그 비트를 삭제한다.
+     * 다음 비트가 10이라면 프레임의 끝
+     * 다음 비트가 11이라면 오류
+
+### 오류 검출 코드(Error Detecting Code)
+ * 데이터 영역 안에 오류가 있는지 없는지를 알아내는 부가 데이터
+ * 예):
+   * 크기면에서 EDC << data : 오류가 없는 경우 단순 부하이므로
+   * 효율면에서, 오류 검출율이 높아야함
+   * 비용면에서, f() 연산에 시간이 적게 소모되어야함.
+
+### 오류 검출율
+ * EDC가 완벽하게 오류를 검출할 수 있을까?
+ * 검출 실패 : 시스템 integrity 상실
+ * 매우 높은 오류 검출율 + 중복 오류 검사
+
+#### 2차원 패리티(Two-Demsional Parity)
+#### 인터넷 체크섬 알고리즘(Internet Checksum Algorithm)
+ * 아이디어 : 메시지를 16-bit의 정수의 연속으로 간주하고, 각 정수들을 16-bit 1의 보수 연산을 사용하여 모두 더한다. 그리고 그 결과 값의 1의 보수를 얻는다.
+
+```c
+u_short cksum(u_short *buf, count)
+{
+  register u_long sum = 0;
+  while (count --) {
+    sum += *buf;
+    if (sum & 0xFFFF0000) {
+      /* carry occured, so wrap around */
+      sum &= 0xFFFF;
+      sum ++;
+    }
+  }
+  return ~(sum & 0xFFFF);
+}
+```
+
+
+#### 순회 중복 검사9Cyclic Redundancy Check: CRC)
+ * 더하기보다 복잡한 나누기 사용 : 나머지 오류 검출코드로 전송
+ * 갯수로 사용될 송수신 사이에 약속된 비트 패턴: C
+ * 보낼 메시지 : M
+ * 오류 검출을 위해 추가되는 정보 : F(즉, EDC)
+ * 송신쪽:
+   * (M || F) % C == 0 이 되도록 F를 설정, 즉 (F에 나머를 넣어서) 전체 프레임이 C로 나누어 떨어지도록 함.
+   * (M || F)를 전송
+   * 예) C=1101, M=10011010 이면, F=101 생성, 10011010101 전송
+ * 수신쪽:
+   * 수신된 메시지 전체를 C로 나누어서:
+     * 나누어 떨어지지 않으면 오류 발생
+     * 나누어 떨어지면 오류가 없는 것으로 간주
+
+ * 성능:
+   * 오류검출율:
+     * 비트 C의 선택이 좌우
+     * 수학적 분석에 의해 잘 잡으면 32bit 코드 사용하면, 1500bytes 이상의 데이터에 대해서도 99.99의 검출율
+   * 연산속도:
+     * 전송 속도보다 늦으면 곤란하기 때문에 네트워크 카드내에서 하드웨어적으로 처리
+   * 빠른 연산과 분석을 위해서 xor로 구현
+
+### Error Pattern: E(X)
+ * 전송하는 프레임 : P(X)
+ * 수신하는 프레임 : P'(X)
+ * 전송 중 발생한 오류를 프레임에 대응되는 형태로 나타내면 : E(X)
+ * 관계:
+   * P(X) xor P'X() = E(X)
+ * 주의:
+   * E(X) 값을 구하는 것이 목적이 아님
+   * 오류가 없었다면, E(X) = 0 이고, P(X)=P'(X)라는 사실
+
+### CRC에 대해 간단히 설명하시오
+ * 전송되는 데이터의 오류 여부확인을 위해 부가되어 보내지는 오류 검출 코드
+ * 송신자가 계산해서 추가, 수신자가 이를 확인
+ * 오류 검출율이 매우 높고, 하드웨어 구현이 가능해서 거의 모든 링크 전송에서 사용
+
+### 복구 : 개요
+ * 오류에 의해 변질된 프레임의 복구
+ * 오류 수정 코드(Error Correction Codes: ECC):
+   * 순방향 수정(Forward Error Correction :FEC)
+ * 자동반복 요청(Automatic Repeat reQuest: ARQ): 재전송:
+   * ACK와 타임아웃(Acknowledgements and Timeouts)
+   * 역방향 수정(Backward Error Correction)
+ * 참고 : 오류 중에는 프레임 자체가 성립하지 않는 framing error 도 있음:
+   * 이 경우 수신 쪽이 frame 수신 여부를 인식하지 못함.(frame loss)
+
+### 오류 수정 코드(Error Correcting Codes)
+ * Forward Error Correction(FEC)
+ * 재전송이 용이하지 않는 경우 유용:
+   * 전화 같은 실시간 통신, 재전송이 의미가 없는 경우
+
+### 재전송을 통한 오류 복구
+ * 타임아웃, 재전송용 버퍼처리 등 필요
+ * 어뎁터에서 단독으로 처리하는데 한계
+ * 2계측이 제공해야하는 기능이지만, 노느 내의 소프트웨어로 처리한다.
+
+### ARQ
+ * 응답(ACK) 및 타임아웃
+ * 순서번호(Seq):
+   * ACK의 분실 경우 중복 데이터 문제 발생:
+     * 순서번호 필요
+     * 수신된 중복 data는 무시한다.
+     * 반드시 ACK을 전송한다
+ * Automatic Repeat Request(ARQ):
+   * Error detection
+   * Acknowledgement
+   * Retransmission after timeout
+   * Negative acknowledgement (optional)
+
+### Stop and Wait : Tming 분석
+ * Utilization of Link = (frame size / bit rate) / (distance / speed of signal) = frame size / (distance x bit rate)
+ * 문제점 : 파이프를 꽉 채운채로 유지하지 못함.
