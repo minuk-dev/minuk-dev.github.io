@@ -3,7 +3,7 @@ layout  : wiki
 title   : 통계학습개론(Introduction to statistical learnning) 수업 정리
 summary : 2021 가을학기 수업 정리
 date    : 2021-10-08 04:46:27 +0900
-lastmod : 2021-10-13 04:12:31 +0900
+lastmod : 2021-10-20 18:58:02 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -160,3 +160,132 @@ parent  : lectures
    * 가장 널리 알려진 추정 방법은 최소제곱법인데,:
      * $RSS(\beta) = \sum_{i=1}^N (y_i - \beta_0 - \sum_{j=1}^p x_{ij} \beta_j)^2 = (y - X \beta)' (y - X \boldsymbol{\beta})$
      * 이때, $X$ 는 각각 학습 데이터인 $N \times (p + 1)$ 행렬, $\boldsymbol{\beta} = (\beta_0, ..., \beta_p)'$, $y$는 크기가 N인 벡터이다.
+
+
+---
+# 3. Resampling Method
+## 3.1 Cross-Validation
+ * Given a data set, the use of a particular statistical learning method is warranted if it results in a low test error. The test error can be easily calculated if a designated test set is available. Unfortunately, this is usually not the case. In the absence of a very large designated test set that can be used to directly estimate the test error rate, a number of techniques can be used to estimate this quantity using the available training data. In this section, we consider a class of methos that estimate the test error rate by holding out a subset of the training observations from the fitting process, and then applying the statistical learning method to those held out observations.
+
+### 3.1.1 The Validation Set approach
+ * Here we randomly divide the available the avialbe set of samples into two parts: a training set and a validation or hold-out set.
+ * The model is fit on the training set, and the fitted model is used to predict the responses for the observations in the validation set.
+ * The resulting validation-set error provides an estimate of the test error. This is typically assessed using MSE in the case of a quantitative response and misclassification rate in the case of a qualitative (discrete) response.
+ * Drawbacks:
+   * the validation estimate of the test error can be highly variable, depending on precisely which observations are included in the training set and which observations are included in the validation set.
+   * In the validation approach, only a subset of the observations are used to fit the model.
+
+### 3.1.2 K-fold Cross-validation
+ * Idea is to randomyl divide the data into K equal-size parts. We leave out part k, fit the model to the other K-1 parts (combined), and the nobtain predictions for the left-out k-th part. This is done in turn for each part k = 1, 2, ..., K, and then the results are combined.
+ * Let the K parts be $C_1, ..., C_K$, where $C_k$ denotes the indices of the observations in part k. There are $n_k$ observations in part k. Compute:
+   * $CV_{(K)} = \sum_{k=1}^K \frac{n_k}{n} MSE_k$
+   * where $MSE_k = \sum_{i \in C_k} (y_i - \hat y_i^{(k)})^2/n_k$, and $\hat y_i^(k)$ is the fit for observation i, obtained from the data with part k removed.
+
+ * When K=n, it is leav-one out CV : less bias, but expensive (time consuming) to implement. With least squares linear or polynomial regression, an amazing shortcut makes the cost of LOOCV the same as that of a single model fit. That is,:
+   * $CV_{(n)} = \frac{1}{n} \sum_{i=1}^n (y_i - \hat y_i^{(i)})^2 = \frac{1}{n} \sum_{i=1}^n (\frac{y_i - \hat y_i}{1 - h_{ii}})^2$
+   * where $\hat y_i$ is the ith fitted value from the OLS fit, and $h_i$ is the leverage value.
+ * K = 5 or 10 provides a good compromise for this bias-variance tradeoff.
+
+## 3.2 The Bootstrap
+ * The bootstrap is a general tool for assessing statistical accuracy.
+ * Suppose that we wish to invest a fixed sum of money in two financial assets that yield returns of X and Y, respectively, where X and Y are random quantities. We wish to choose $\alpha$ to minimize the total risk, or variance, of our investment. In other words, we want to minimize $Var(\alpha X + (1 - \alpha)Y)$.
+ * Then the minimum solution is:
+   * $\alpha = \frac{\sigma_Y^2 - \sigma_{XY}}{\sigma_X^2 + \sigma_Y^2 - 2\sigma_{XY}}$
+ * To quantify the accuracy of our estimate of this value, we repeated the process of simulating 100 paired observations of X and Y, and estimating $\alpha$ 1000 times, $\hat \alpha_r, r=1,...,10000$. Then:
+   * $\bar \alpha = \frac{1}{1000} \sum_{r=1}^1000 \hat \alpha_r$
+   * and the standard derivation of the estimates is:
+     * $\sqrt{\frac{1}{1000 - 1} \sum_{r=1}^1000 (\hat \alpha_r - \bar \alpha)^2}$
+ * The procedure outlined above cannot be applied, because for real data we cannot generate new samples from the original population. Rather than repeatedly obtaining independent data sets from the population, we instead obtain distinct data sets by repeatedly sampling observations from the original data set with replacemenet, called as "bootstrap data sets".
+ * The bootstrap method to estimate test MSE:
+   * $\frac{1}{B} \frac{1}{n} \sum_{b=1}^B \sum_{i=1}^n (y_i - \hat y_i^b)^2$
+   * where $\hat y_i^b = \hat f ^b (x_i)$ is the fitted value at $x_i$ from the b th bootstrap dataset.
+ * Bute each bootstrap sample has significant overlap with the original data. Consider one bootstrap sample in the above formula,:
+   * $\frac{1}{n} \sum_{i=1}^n (y_i - \hat y_i^b)^2$
+ * There are some data points $y_i$ that is also in b th bootstrap dataset and used for training. About two-thirds of the original data points appear in each bootstrap sample.:
+   * $P(\text{obs. } i \in \text{bootstrap sample b}) = 1 - (1 - \frac{1}{n})^n \\\\ \approx 1 - e^{-1} \\\\ = 0.632$
+ * This will cause the bootstrap to seriously underestimate the true test error. (In corss-validation, each of the K validation folds is distinct from the other K-1 folds used for training.) There are some modified bootstrap estimators, such as "leav-one-out bootstrap estimator" or ".632 estimator".
+
+
+# 4. Linear Model Selection and Regularization
+ * Why consider alternatives to least squares?:
+   * Prediction Accuracy: especially when p > n, the OLS $\hat \beta$ is not unique, and the variance is infinite so the OLS method cannot be used at all.
+   * Model Interpretability: By removing irrelevant features - that is, by setting the corresponding coefficient estimates to zeero - we can obtain a model that is more easily interpreted.
+
+## 4.1 Subset Selection
+### Best Subset Selection
+ 1. Let $M_0$ denote the null model, which contains no predictors. This model simply predicts the sample mean for each observation.
+ 2. For $k = 1, ..., p$:
+   1. Fit all $\binom{p}{k}$ models that contain exactly k predictors.
+   2. Pick the best among these $\binom{p}{k}$ models, and call it $M_k$. Here best is defined as having the smallest RSS, or equivalently largest $R^2$.
+ 3. Select a single best model from among $M_0, ..., M_p$ using cross-validated prediction error, $C_p$ (AIC), BIC, or adjusted $R^2$.
+
+### Forward Stepwise Selection
+ 1. Let $M_0$ denote the null model, which contains no predictors.
+ 2. For $k = 0, ..., p-1$:
+   1. Consider all $p-k$ models that augment the predictors in $M_k$ with one additional predictor.
+   2. Choose the best among these $p - k$ models, and call it $M_{k+1}$. Here best is defined as having smallest RSS or highest $R^2$.
+ 3. Select a single best model from among $M_0, ..., M_p$ using cross-validated prediction error, $C_p$ (AIC), BIC, or adjusted $R^2$.
+
+### Backward Stepwise Selection
+ 1. Let $M_p$ denote the full model, which contains all p predictors.
+ 2. For $k=p, p-1, ..., 1$:
+   1. Consider all k models the contains all but one of the predictors in $M_k$, for a total of k - 1 predictors.
+   2. Choose the best among htese k models, and call it $M_{k-1}$. Here best is defined as having smallest RSS or highest $R^2$.
+ 3. Select a single best model from among $M_0, ..., M_p$ using cross-validated prediction error, $C_p (AIC), BIC, or adjusted R^2$.
+
+---
+ * The model containing all of the predictors will always have the smallest RSS ( RSS = \sum_{i=1}^N (y_i - \hat y_i)^2 = n \times MSE_{training}$) and the largest $R^2$, since these quantities are related to the training data.
+ * We wish to choose a model with low test error, not a model with low training error.
+ * Below measures consider the gap between the RSS (training MSE) and the test MSE, and use the value as a penalty term.:
+   * Mallow's $C_p$:
+     * $C_p = \frac{1}{n} (RSS + 2 p \hat \sigma ^2)$,
+     * where p is the total number of parameters.
+   * AIC:
+     * $AIC = - 2 log L + 2p$
+     * where L is the maximized value of the likelihood function for the estimated model.
+   * BIC:
+     * $BIC = \frac{1}{n}(RSS + log(n) p \hat \sigma^2)$
+   * Adjusted $R^2$:
+     * $AdjR^2 = 1 - \frac{RSS/(n - p - 1)}{TSS / (n-1)}$
+     * where TSS is the total sum of squares.
+   * Validation and Cross-Validation: We compute the validation set error or the cross-validation error for each model $M_k$ under consideration, and then select the k for which the resulting estimated test error is samllest.
+
+## 4.2 Shrinkage
+### 4.2.1 Ridge regression
+ * Recall:
+   * $RSS = \sum_{i=1}^n (y_i - \beta_0 - \sum_{j-1}^p \beta_j x_{ij})^2$
+ * Ridge regression coefficients are the minimization solution of:
+   * $\sum_{i=1}^n (y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2$ subject to $\sum_{j=1}^p \beta_j^2 < t$,
+   * $\sum_{i=1}^n(y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2 + \lambda \sum_{j=1}^p \beta_j^2$
+   * where $t \ge 0$ and $\lambda \ge 0$ is a tuning parameter.
+ * The second term, called a shrinkage penalty, is small when $\beta_j$'s are close to zero, and so it has the effect of shrinking the estimates of $\beta_j$ towards zero. The tuning parameter $\lambda$ serves to control the relative impact of two terms on the regression coefficient estimates.:
+   * $\hat \beta_{\lambda}^r = (X'X + \lambda I)^{-1} X'Y \\\\ = (X'X + \lambda I)^{-1} X'X \hat \beta^{OLS}$
+   * For special case of $X'X = I, \hat \beta_{\lambda}^r = \frac{1}{1 + \lambda} \hat \beta ^{OLS}$
+ * The ridge regression coefficient estimates can change substantially when multiplying a given predictor by a constant, due to the sum of squared coefficients term in the penalty part of the ridge regression objective funciton. Therefore, it is best to apply ridge regression after standardizing the predictors.
+
+ * Bias-Variance tradeoff:
+   * $\sum_{i=1}^p var(\hat \bet_{i, \lambda}^r) = \sigma^2 \sum_{i=1}^{P} \frac{d_i^2}{(d_i^2 + \lambda)^2}$
+   * $E(\hat \beta_{\lambda}^r - \beta) = V[(D^2 + \lambda I)^{-1} D^2 - I] \alpha$
+   * where $\beta = V \alpha$. Then the $bias^2$ is:
+     * $E(\hat \beta_{\lambda}^r - \beta)'E(\hat \beta_{\lambda}^r - \beta) = \lambda^2 \sum_{i=1}^p \frac{\alpha_i^2}{(d_i^2 + \lambda)^2}$
+
+ * Remark:
+   * $\lambda = 0 \rightarrow = 0$
+   * The variance decreases monotonically as $\lambda$ increase, whereas the $bias^2$ increase.
+ * Estimation of $\lambda$ - Standard way is to use cross-validation:
+   1. Partition the training data n into K separate sets of equal size, $C_1, ..., C_K$
+   2. For each k, fit the model $\hat \beta_{\lambda}^{r(k)}$, which is the fitted value for the observations in $C_k$.
+   3. The overall CV error is:
+     * $CV_{(K)}^{\lambda} = \sum_{k=1}^K \frac{n_k}{n} MSE_k$
+     * where $MSE_k^{\lambda} = \sum_{i \in C_k} (y_i - \hat y_{i, \lambda}^(k))^2 / n_k$
+   4. Select $\lambda^*$ as the one with minimum $CV_{(K)}^{\lambda}$
+   5. Then fit the firdge regression with $\lambda^*$ to entire training set and estimate ridge regression coefficients.
+   6. If you have a separate test set, compute test error.
+
+### 4.2.2 The Lasso regression
+ * The lasso (Least Absolute Selection and Shrinkage Operator) coefficients, $\hat \beta_{\lambda}^L$, minimize the quantity,:
+   * $\sum_{i=1}^n(y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2$ subject to $\sum_{j=1}^p \vert \beta_j \vert < t$,
+   * which can be written as:
+     * $\sum_{i=1}^n (y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2 + \lambda \sum_{j=1}^p \vert \beta_j \vert$
+ * The $l_1$ penalty has the effect of forcing some of the coefficient estimates to be exactly equal to zero when the tuning parameter $\lambda$ is sufficiently large - variance selection, sparse model.
+
