@@ -3,7 +3,7 @@ layout  : wiki
 title   : 통계학습개론(Introduction to statistical learnning) 수업 정리
 summary : 2021 가을학기 수업 정리
 date    : 2021-10-08 04:46:27 +0900
-lastmod : 2021-10-20 18:58:02 +0900
+lastmod : 2021-10-20 19:15:13 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -289,3 +289,5 @@ parent  : lectures
      * $\sum_{i=1}^n (y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2 + \lambda \sum_{j=1}^p \vert \beta_j \vert$
  * The $l_1$ penalty has the effect of forcing some of the coefficient estimates to be exactly equal to zero when the tuning parameter $\lambda$ is sufficiently large - variance selection, sparse model.
 
+ * Unlike ridge regression, $\hat \beta_{\lambda}^L$ has no closed form.
+ * However, we can derive a closed form when $X'X=I$

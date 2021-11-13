@@ -3,11 +3,14 @@ layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
 summary : 
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-10-03 21:45:59 +0900
+lastmod : 2021-11-13 21:47:03 +0900
 tags    : 
 draft   : false
 parent  : lectures
 ---
+
+# Rmarkdown
+ * Bayesian/week1
 
 ## Historical Perspective (관점의 변화)
 ### en
@@ -162,3 +165,55 @@ parent  : lectures
    * When n is smaller, the expectation goes to prior mean.
    * We can interpret $\alpha + \beta$ is the amount of prior information:
      * When $\alpha + \beta$  is greater (more information of prior), the expectation goes to prior mean.
+
+
+### Example : Placenta Previa
+ * Placenta previa is an unusual pregnancy condition in hwich the placenta is implmented very low in the uterns, obstructing the fetus from a normal vaginal delivery.
+ * A study of the sex of placentas previa births in Germany found that there were 437 femals among 980 births.
+ * How much evidence does this data provide for the claim that the proportion of female births in the population is less than the proportion of female births in the general population, which is approximately 0.485?:
+   * Freq:
+     * $Y = # \text{females} ~ Bin(980, \theta)$
+     * $\hat \theta_{ML} = \frac{y}{n} = 0.446$
+     * $H_0 : \theta = 0.485$
+     * $H_1 : \theta < 0.485$
+     * $Z = \frac{0.446 - 0.485}{\sqrt{\frac{0.485(1 - 0.485)}{980}}} = -2.44 < -1.65$
+     * Reject $H_0$
+ * Let $\theta$ be the probability of a female births among placenta previa pregnancies. What do we need to calculate?:
+   * Assumming a uniform prior what is $p(\theta \vert y)$?:
+     * $\theta ~ Unif(0, 1)$
+     * $y = 437, n = 980$
+     * $\theta \vert y ~ Beta(y + 1, n - y + 1) = Beta(438, 544)$
+ * What is the posterior mean of $\theta$?:
+   * $\hat \theta_{Bayes} = E[\theta \vert y] = \frac{438}{438 + 544} = 0.446$
+   * Whey they are similar? n is large!
+ * What is the posterior standard deviation of $\theta$?:
+   * $\sqrt{Var(\theta \vert y)} = \sqrt{\frac{\alpha \beta}{(\alpha + \beta)^2 (\alpha + \beta + 1)}} = 0.016$
+ * What is the 95% posterior interval?:
+   * integration:
+     * $\int_{a}^{b} p(\theta \vert y) d \theta = 0.95$
+     * find a, b
+   * normal approximation:
+     * $0.446 \pm 1.96 * 0.016 \sim [0.415, 0.477]$ not include 0.485
+   * numerical method (quantile - base C.I):
+     * draw 1000 samples from $p(\theta \vert y)$
+     * find 25th, 975th values => $[0.415, 0.476]$
+   * HPD(Highest Posterior Density) Interval
+
+ * Use different prior distributions:
+   * $\theta ~ Beta(\alpha, \beta)$
+   * => $\theta \vert y ~ Beta(437 + \alpha, 543 + \beta)$
+ * The sensitivity of posterior inference about $\theta$ to the proposed prior distrubiotn is show blow:
+   * prior information is not sensitive since n is large.
+
+## Posterior Predictive Distribution
+ * After the data y have been observed, we can predict an unknown observable $\tilde y$
+ * The posterior predictive distribution of a future observation, $\tilde y$ is:
+   * $p(\tilde y \vert y) = \int p(\tilde y, \theta \vert y) d \theta \\\\ = \int p(\tilde y \vert \theta, y) p (\theta \vert y) d \theta \\\\ = \int p(\tilde y \vert \theta) p (\theta \vert y) d \theta$
+ * Assumed $y$ and $\tilde y$ are conditional independent given $\theta$.
+ * prior predictive distribution before y observed => $p(\tilde y) = \int p(\tilde y, \theta) d \theta \\\\ = \int p(\tilde y \vert \theta) p(\theta) d \theta$
+
+### Example
+ * Binomial model:
+   * $y_i ~^{iid} Bern(\theta)$
+   * $Y ~ Bin(n, \theta), 0 \le \theta \le 1$
+   * $\theta ~ Unif(0, 1)$

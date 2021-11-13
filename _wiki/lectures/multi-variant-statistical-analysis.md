@@ -3,7 +3,7 @@ layout  : wiki
 title   : Multi Variant Statistical Analysis
 summary : 2021-fall lecture
 date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-10-15 23:07:06 +0900
+lastmod : 2021-10-25 01:36:24 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -397,3 +397,42 @@ p + geom_line() + facet_grid(. ~ Sex)
  1. Note $T^2 = Z'(\frac{W}{v})^{-1}Z ~ \frac{vp}{v + 1 - p}F_{p, v+ 1-p}$, where $Z ~ N_p(0, \Sigma)$ and $W ~ Wischart(p, v, \Sigma)$ are independent.
  2. Note that $pF_{p, n-p} \rightarrow \chi_p^2$ so that $T^2 ~ \chi_p^2$ for a large sample under $H_0$
  3. $T^2$ statistic is invariant under linear transformation, that is, Hotelling $T^2$ statistic does not depend on the measurement units.
+
+### 3.3 Hotelling's $T^2$ and likelihodd ratio tests
+ * One of general procedure to construct a hypothesis test is the likelihood ratio test(LRT). We may apply the LRT to test multivariate normal mean. Suppose a random sample $x_1, ... x_n$ is drawn from a multivariate normal distribution $N_p(\mu, \Sigma)$. Under$H_0: \mu = \mu_0$, the maximum likelihood estimate (MLE) for $\Sigma$ can be obtained as $\hat \Sigma_0 = \frac{1}{n} \sum_{i=1}^n (x_i - \mu_0)(x_i - \mu_0)'$. The MLEs under no restriction are derived in previous chapter: $\hat \mu = \bar x$ and $\hat \Sigma = \frac{1}{n} \sum_{i=1}^n (x_i - \bar x)(x_i - \bar x)'$. We write the LRT:
+   * $LRT = \Lambda = \frac{max_{H_0} L(\mu, \Simga: x_1, ..., x_n)}{max_{H_0 \cup H_1} L(\mu, \Sigma: x_1, ... x_n)} = \frac{\vert \hat \Sigma \vert}{\vert \hat \Sigma_0 \vert}^{n/2}$
+ * The test statistic $\Lambda^{2/n}$ is called Wilks' lambda and we can show with some algebra that:
+   * $\Lambda^{2/n} = (\frac{\vert \hat \Sigma \vert}{\vert \hat \Sigma_0 \vert}) = \frac{1}{\frac{1 + \frac{T^2}{n - 1}}}$
+ * Therefore, the LRT is equivalent to Hotelling's $T^2$ test.
+ * We rejct $H_0$ when LRT is small that equivalent to we rejct $H_0$ when $T^2$ is large.
+
+### 3.4 Confidence regions and multiple testing
+ * We can extend the concept of a univariate confidence interval to a multivariate confidence region. A univariate onfidence interval is commonly constructed by a pivotal quantity. For example, suppose $Y_1, ..., Y_n$ be a random sample from $N(\mu, \sigma^2)$. The quantity:
+   * $\sqrt{n} \frac{\bar Y - \mu}{S} ~ t_{n-1}$
+   * consists of the measurements of the sample and the parameter of interest $\mu$ with known distribution that does not depend on the parameter $\mu$. We call it a pivotal quantity for $\mu$. Since:
+     * $Pr(-t_{n-1, \alpha / 2} \le \sqrt{n} \frac{\bar Y - \mu}{S} \le t_{n-1, \alpha / 2}) = 1 - \alpha$
+     * $Pr(\bar Y - t_{n=1, \alpha / 2} \frac{S}{\sqrt{n}} \le \mu \le \bar Y + t_{n-1, \alpha/2 \frac{S}{\sqrt{n}}) = 1 - \alpha$
+     * $Pr(\bar y - t_{n-1, \alpha / 2} \frac{s}{\sqrt{n}} \le \mu \le \bar y + t_{n-1, \alpha / 2} \frac{S}{\sqrt{n}}) = 1 - \alpha$
+ * The upper limit of the $100 ( 1- \alpha) %$ two-sided confidence interval is $\bar y + t_{n-1, \alpha/2} \frac{s}{\sqrt{n}$ and the lower limit is $\bar y - t_{n-1, \alpha/2} \frac{s}{\sqrt{n}}}$. We call $1-\alpha$ the confidence coefficient or confidence level. Similarly, we apply the pivotal quantity approach to construct a confidence region for a multivariate normal eman vector. Assume that a random sample $X_1, ..., X_n$ is chosen from $N_p(\mu, \Sigma)$:
+   * $n(\bar X - \mu)' S^{-1} (\bar X - \mu) ~ \frac{(n-1)p}{n-p} F_{p, n - p}$
+   * is a pivotal quantity for the normal mean vector $\mu$.
+ * $Pr(n(\bar X - \mu)' S^{-1} (\bar X - mu) \le \frac{(n-1)p}{n - p}F_{p,n-p, \alpha}) = 1 - \alpha$
+ * A $100(1-\alpha)%$ confidence region ofr the mean vector of a p-dimensional multivariate normal distribution is the ellipsoid determined by all vectors $\mu$ satisfying:
+   * $n(\bar x -\mu)' S^{-1} (\bar x - \mu) \le \frac{(n-1)p}{n-p} F_{p, n-p, \alpha}$
+   * where $\bar x = \frac{1}{n} \sum_{i=1}^n x_i$ and $S = \frac{1}{n-1} \sum_{i=1}^n (x_i - \bar x)(x_i - \bar x)'$ given a random sample $x_1, ..., x_n$
+
+#### 3.4.1 Simultaneous confidence intervals
+ * Scheffe's method:
+   * For a given p-dimensional vector a, a random variable $a'X ~ N_1(a'\mu, a'\Sigma a)$. A confidence interval for $a'\mu$ is obtained based on:
+     * $t^2 = n \frac{(a'\bar x - \a' \mu)^2}{a'Sa} \le t_{n-1, \alpha/2}^2$
+   * A simultaneous confidence interval for all $a$ can be constructed by finding $c^2$ such that:
+     * $t^2 = n \frac{(a' \bar x - a' \mu)^2}{a'Sa} \le c^2$
+     * for all $a$ and we obtain $c^2$ by maximizing $t^2$ over all possible $a \not = 0$:
+       * $max_a t^2 = n [ max_a \frac{(a' \bar x - a' \mu)^2}{a'Sa} ] = n(\bar x - \mu)' S^{-1} (\bar x - \mu)$ = Hotelling's $T^2$
+       * since it is maximized when $a$ is proportional to $S^{-1} (\bar x - \mu)$ from Cauchy-Schwarz inequality
+       * $Pr(a' \bar X - \sqrt{\frac{(n - 1)p}{n - p} F_{p, n-p, \alpha} \frac{a'Sa}{n} \le a' \mu \le a' \bar X + \sqrt{\frac{(n-1)p}{n-p} F_{p, n-p, \alpha} \frac{a'Sa}{n}} \text{ for all a })$
+ * Remark. Scheffe's simultaneous confidence interval for $a' \mu$ may be obtained by a projection of Hotelling's $T^2$ contour $n(x - \mu)'S^{-1}(x - \mu) = \frac{(n-1)p}{n-p}F_{p, n-p, \alpha}$ onto the vector a. The gradient vector must be proportional to a, that is, $S^{-1}(\bar x - \mu) = ka$. By substition of this into the equation of the ellipsoid, we have $k = \pm \sqrt{\frac{(n-1)p}{n-p} F_{p, n-p, \alpha} \frac{n a' S a}}$. Therefore, $a'(\bar x - \mu) = ka'Sa = \pm \sqrt{\frac{(n-1)p}{n-p} F_{p, n-p, \alpha} \frac{n a' S a}}$
+ * Bonferroni's method:
+   * Another popular but conservative simultaneous confidence intervals are called Bonferroni method. This approach is derived from the following Bonferroni inequality. Let $C_i$ be a confidence statement for $\mu_i$ with confidence coefficient $\alpha_i$. We want to make sure the probability that all $C_i$ for i = 1, ..., p are true with $1 - \alpha$:
+     * $Pr(\text {All } C_i \text{ true}) = 1 - Pr(\text{At least one C_i false}) \\\\ \ge 1 - \sum_{i=1}^p Pr(C_i false) \\\\ = 1 - (\alpha_1 + ... + \alpha_p) = 1 - p \alpha'$
+   * Therefore, we choose $\alpha' = \alpha_1 = ... = \alpha_p = \frac{a}{p}$ for each confidence coefficient. 
