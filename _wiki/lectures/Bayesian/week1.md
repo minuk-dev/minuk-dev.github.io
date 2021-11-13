@@ -3,10 +3,10 @@ layout  : pdf
 title   : bayesian/week1
 summary :
 date    : 2021-11-12 19:43:30 +0900
-lastmod : 2021-11-13 21:47:23 +0900
-tags    :
+lastmod : 2021-11-14 04:35:01 +0900
+tags    : [lectures, statistics]
 draft   : false
-parent  :
+parent  : lectures/bayesian-statistics
 pdf     : /resources/bayesian/week1.pdf
 ---
 
