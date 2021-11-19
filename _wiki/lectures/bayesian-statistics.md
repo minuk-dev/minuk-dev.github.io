@@ -3,7 +3,7 @@ layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
 summary : 
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-11-14 04:32:43 +0900
+lastmod : 2021-11-20 02:39:13 +0900
 tags    : 
 draft   : false
 parent  : lectures
@@ -12,6 +12,7 @@ parent  : lectures
 # Rmarkdown
  * [[Bayesian/week1]]
  * [[Bayesian/week2]]
+ * [[Bayesian/week3]]
 
 ## Historical Perspective (관점의 변화)
 ### en
