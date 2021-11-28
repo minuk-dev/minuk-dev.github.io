@@ -1,9 +1,9 @@
 ---
 layout  : pdf
-title   : bayesian/week2
+title   : bayesian/week3
 summary : 베이지안통계학 3주
 date    : 2021-11-20 02:32:45 +0900
-lastmod : 2021-11-20 02:40:03 +0900
+lastmod : 2021-11-20 02:41:39 +0900
 tags    : [lectures, statistics]
 draft   : false
 parent  : lectures/bayesian-statistics
