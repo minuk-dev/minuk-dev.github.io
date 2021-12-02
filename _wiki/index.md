@@ -2,16 +2,11 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-10-14 00:58:17 +0900
+lastmod: 2021-11-30 15:57:27 +0900
 ---
 ## 즐겨찾기
- * [[회고]]
- * [[latina]]
  * [[msa-from-ddd]]
- * [[schedules]]
- * [[tikz]]
  * [[keras-book]]
- * [[msk]]
 
 ### Algorithm
  * [[teamnote]]
@@ -26,6 +21,8 @@ lastmod: 2021-10-14 00:58:17 +0900
  * [[english]]
  * [[others]]
  * [[comment]]
+ * [[msk]]
+ * [[tikz]]
 
 ### School
  * [[lectures]]
@@ -59,6 +56,7 @@ lastmod: 2021-10-14 00:58:17 +0900
 ---
 ## 잡스러운 것들 모음
  * [[soma]]
+ * [[latina]]
  * [[schedules]]
  * [[vimwiki로 블로그 구축하기]]
  * [[3공노트]]

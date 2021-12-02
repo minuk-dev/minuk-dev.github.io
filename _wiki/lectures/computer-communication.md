@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 컴퓨터통신
 date    : 2021-10-15 23:07:20 +0900
-lastmod : 2021-10-17 19:53:00 +0900
+lastmod : 2021-11-30 16:22:26 +0900
 draft   : false
 parent  : lectures
 ---
@@ -664,3 +664,75 @@ u_short cksum(u_short *buf, count)
 ### Stop and Wait : Tming 분석
  * Utilization of Link = (frame size / bit rate) / (distance / speed of signal) = frame size / (distance x bit rate)
  * 문제점 : 파이프를 꽉 채운채로 유지하지 못함.
+
+### 슬라이딩 윈도우
+ * 아이디어 : 송신자가 ACK를 받기 전에 여러 프레임을 전송할 수 있도록 한다.
+ * ACK를 받지 않은 상태에서 보내지는 프레임(outstanding frame)이 복수로 늘어난다. 그 수는 제한된다.(window size):
+   * 모두 오류 제어 대상, 순서 번호 필요
+   * stop & wait는 sliding window의 window size가 1인 경우
+ * 각각의 프레임에 대해서는 ARQ, 즉 ACK/timeout & retransmission
+   * ACK #n의 의미를 일관성 있도록 정의해서 사용
+ * 즉, 효율 높은 오류제어: 버퍼링보다는 오류제어가 핵심이다.
+
+### Sliding Window Protocol의 성능
+  * $U(Utilization) \propto N, 1/t_{prop}, t_{frame}$
+  * 윈도우 크기(N)이 충분히 크면, 효율이 증가한다.
+  * 즉, ACK가 돌아올 때까지 윈도우가 모두 소진되지 않으면 기다리는 시간 없이 100% 통신이 가능하다.
+
+### 슬라이딩 윈도우의 오류 복구
+ * 복수의 outstanding frame 중 어느 프레임에서도 오류 발생 가능:
+   * 따라서 모든 프레임은 개별적으로 재전송준비가 되어야한다.
+ * 오류 처리 정책:
+   * Go-Back-N : 오류가 발생한 지점부터 새출발
+   * Selective - Repeat : 오류가 발생한 프레임만 재전송
+
+### Go-Back-N (구현) 옵션
+ * Go-Back-N에는 여러가지 옵션이 가능하다.
+ * 수신 쪽에서 out-of-order 프레임을 어떻게 처리하는가에 따라서:
+   * ACK를 보낼 것인가?
+   * 저장을 할 것인가?
+ * 저장 안하고 ACK도 보내지 않는다. -> stop & wait
+ * 저장하고 ACK는 안보낸다. -> 이를 가정하고 설명한다.
+ * 저장 안하고 ACK를 보낸다. -> 중복 ACK
+ * 저장하고 ACK도 보낸다. -> 중복 ACK
+ * 송신 쪽은 동일하게 동작:
+   * 각 outstanding 프레임에 대해:
+     * 재전송 버퍼에 저장 : 타임아웃 설정
+   * 오류 발생 인지 이후 : 모든 outstanding frame을 동시 전송? 각 frame의 timeout에 전송
+ * 어떤 옵션으로 구현되어도 연동가능, 즉 오류 복구 가능
+
+### 오류처리 정책 : Go-Back-N 재검토
+ * 오류가 발생한 N부터 다시 출발(N이하를 무조건 다시 보낸다는 의미가 아님)
+ * 핵심 : ACK는 "~까지 잘받았다"는 의미의 누적(cumulative) ACK 사용
+ * 수신쪽에서의 버퍼링은 수신자가 독립적으로 결정:
+   * 버퍼링 안해도 된다.
+
+### 오류처리 정책 : Selective Repeat
+ * 필요조건:
+   * 수신쪽은 out-of-order 프레임 수신. 버퍼링 필수
+   * 수신쪽이 정확한 수신 상황ㅈ 정보를 송신 쪽에 알려주어야 함.
+   * ~는 잘 받았다는 개별(individual)/선택(selective) ACK 필수
+
+### Sliding Window 세부사항
+ * Sliding Window는 오류 제어 프로토콜:
+   * 각각의 outstanding frame에 대해 기본적으로 ARQ수행
+   * 복수 개의 outstanding frame 처리를 위해 buffering 추가
+ * (Go-Back-N, Selective-Repeat) 선택은 송신자의 결정:
+   * 송신자의 재전송 방법 : 수신자의 buffering은 별도문제
+   * Sending Buffer : 필수 (재전송)
+   * Receiving Buffer:
+     * Selective-Repeat : 필수 (out-of-order 프레임 반드시 저장)
+     * Go-Back-N : 성능 향상을 위한 option
+   * 수신자가 out-of-order를 저장한다고 Selective Repeat은 아님
+ * 송신자가 Selective-Repeat을 하기 위해서는 수신 상황 정보가 필요:
+   * 수신 쪽에서 송신 쪽으로 selective/individual ACK를 보내야한다. 송신쪽에서 Selective Repeat 가능
+
+### 프로토콜의 구현
+ * 오류제어 이전까지는 Adaptor(NIC)에서 하드웨어로 구현
+ * 오류제어는 소프트웨어로 구현되는 첫 프로토콜
+ * 송수신 양쪽에서 보는 것은 이론적 설명에서만 실제론:
+   * 송수신이 각각 독립적으로 동작
+   * 프로토콜의 동작에 대해서 확실한 이해 필요
+   * 특히, 비정상 상황에 대해서
+ * 난이도:
+   * Concurrent and distributed program
