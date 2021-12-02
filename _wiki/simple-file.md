@@ -3,7 +3,7 @@ layout  : wiki
 title   : Simple한 File Server
 summary :
 date    : 2021-12-03 04:07:49 +0900
-lastmod : 2021-12-03 04:17:12 +0900
+lastmod : 2021-12-03 04:18:58 +0900
 tags    :
 draft   : false
 parent  :
@@ -34,7 +34,7 @@ python3 -m http.server 8000
         }
 ```
  * 스크린샷
- ![simple-file-1](/wiki/images/simple-file.png)
+ ![simple-file-1](/wiki/images/simple-file-1.png)
 
 ## 이유
  * 이야기하다가 파일 공유해야할 일이 있는데 카카오톡은 300M, 디스코드는 100M인데 파일 보내주기 불편해서 사용한다.
