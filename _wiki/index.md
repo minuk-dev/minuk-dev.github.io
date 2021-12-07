@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-11-30 15:57:27 +0900
+lastmod: 2021-12-07 20:32:42 +0900
 ---
 ## 즐겨찾기
  * [[msa-from-ddd]]
@@ -23,6 +23,7 @@ lastmod: 2021-11-30 15:57:27 +0900
  * [[comment]]
  * [[msk]]
  * [[tikz]]
+ * [[면접준비]]
 
 ### School
  * [[lectures]]

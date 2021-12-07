@@ -3,7 +3,7 @@ layout  : wiki
 title   : 통계학습개론(Introduction to statistical learnning) 수업 정리
 summary : 2021 가을학기 수업 정리
 date    : 2021-10-08 04:46:27 +0900
-lastmod : 2021-10-20 19:15:13 +0900
+lastmod : 2021-12-07 18:22:58 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -291,3 +291,166 @@ parent  : lectures
 
  * Unlike ridge regression, $\hat \beta_{\lambda}^L$ has no closed form.
  * However, we can derive a closed form when $X'X=I$
+   $ L(\beta) & = \sum_{i=1}^n (y_i - \beta_0 - \sum_{j=1}^p \beta_j x_{ij})^2 + \lambda \sum_{j=1}^p \vert \beta_j \vert \\ & = \sum_{j=1}^p (\beta_j - \hat \beta_j^{OLS})^2 - \sum_{j=1}^p (\hat \beta_j^{OLS})^2 + \sum_{i=1}^n y_i^2 + \lambda \sum_{j=1}^p \vert \beta_j \vert \\ & = \sum_{j=1}^p (\beta_j)^2 - 2 \sum_{j=1}^p \hat \beta_j^{OLS} \beta_j + \sum_{i=1}^n y_i ^2 + \labmda \sum_{j=1}^p\vert \beta_j \vert$
+ * Note that if $\hat \beta_j^{OLS} > 0$, then $\beta_j \ge 0$, and if $\hat \beta_j^{OLS} <0$, then $\beta_j \le 0$.
+ * Then, when $\hat \beta_j^{OLS} > 0, L(\beta) = \sum_{j=1}^p (\beta_j)^2 - 2 \sum_{j=1}^p \hat \beta_j^{OLS} \beta_j + \sum_{i=1}^n y_i^2 + \lambda \sum_{j=1}^p \beta_j,$
+   $ \frac{\partial L}{\partial \beta_k} = 2 \beta_k - 2 \hat \beta_k^{OLS} + \lambda = 0$
+   $ \hat \beta_k^L = (\hat \beta_k^{OLS} - \lambda)^+$.
+ * When, $\hat \beta_j^{OLS} < 0, L(\beta) = \sum_{j=1}^p (\beta_j)^2 - 2 \sum_{j=1}^p \hat \beta_j^{OLS}\beta_j + \sum_{i=1}^n y_i^2 - \lambda \sum_{j=1}^p \beta_j$,
+   $ \frac{\partial L}{\partial \beta_k} = 2 \beta_k - 2 \hat \beta_k^{OLS} - \lambda = 0$
+   $ \hat \beta_k^l = (\hat \beta_k^{OLS} + \lambda)^- = - (- \hat \beta_k^{OLS} - \lambda)^+ = sgn(\hat \beta_k^{OLS})(\vert \hat \beta_k^{OLS} \vert - \labmda)^+$
+ * i.e. for both cases, $\hat \beta_k^L = sgn(\hat \beta_k^{OLS})(\vert \hat \beta_k ^{OLS} \vert - \lambda)^+$.
+ * `lars` package in R impelments the Lasso.
+ * We need to standardizing $X$.
+ * Although we can't write down explicit formulas for the bias and variance of the lasso estimate, we know the general trend.:
+   * The biase increased as $\lambda$ increase.
+   * The variance decreased as $\lambda$ increase.
+ * When not only continuous but also categorical predictors (factors) are present, the lasso solution is not satisfactory as it only selects individual dummy variables instead of whole factors -> group lasso.
+
+# 5 Moving Beyond Linearity
+ * The linearity assumption is almost always an approximation, and sometimes a pooer one. In this chapter we relax the linearity assumption while still attempting to maintian as much interpreability as possible.
+
+## 5.1 Polynomial Regression
+ $ y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + ... + \beta_d x_i^d + \epsilon_i$.
+ * A polynomial regression allows us to produce an extremely non-linear curve. The regression coefficients can be easily estimated using least squares linear regression useing $x_i, x_i^2, ...$ as $X$ variables.
+
+## 5.2 Step functions
+ * Here we break the range of $X$ into bias, and fit a different constant in each bin.
+ * In greater detail, we create cutpoints $c_1, c_2, ... c_K$ in the range of $X$, and then construct $K$ new variables
+   $C_1(X) = I(c_1 \le X < c_2). \\ C_2(X) = I(c_2 \le X < c_3), \\ \vdots \\ C_{K-1}(X) = I(C_{K-1} \le X < c_K), \\ C_K(X) = I(c_K \le X)$
+ * Then fit a linear model
+   $y_i = \beta_0 + \beta_1 C_1(x_i) + \beta_2 C_2(x_i) + ... + \beta_K C_K(x_i) + \epsilon_i$
+
+## 5.3 Regression Splines
+ * Piecewise Polynomials:
+   * Instead of fitting a high-dgree polynomial over the entire range of $X$, piecewise polynomial regression involves fittign separate low-degree polynomials over different regions of $X$.
+   * For example:
+     * $y_i = \begin{cases} \beta_{01} + \beta_{11} + \beta_{21} x_i^2 + \beta{31} x_i^3 + \epsilon_i, & \text{ if } x_i < c \\ \beta_{02} + \beta_{12} x_i + \beta_{22} x_i^2 + \beta_{32} x_i^3 + \epsilon_i, & \text{ if } x_i \ge c\end{cases}$
+   * The points where the coefficients change are called knots.
+ * Regression Splines:
+   * A function $g(x)$ is a spline of degree $d$ on $[ a, b]$ if:
+     * $g(x) = \begin{cases} S_0(x), t_0 \le x \le t_1, \\ S_1(x), t_1 \le x \le t_2 \\ \vdots \\ S_{n-1}(x), t_{K-1} \le x \le t_K\end{cases}$
+     * where $S_i(x)$ is a degree-d polynomial, $g(x)$ is continuity in derivateives up to degree $d-1$, and $a = t_0 < ... < t_K = b$ are knots.
+ * The Spline Basis Representation:
+   * In order to fit a cubic spline to a data set with $K$ knots, we perform least squares regression with an intercept and $3 + K$ predictors, of the form $X, X^2, X^2, h(X, \ksi_1), ..., h(X, \ksi_K)$, where $\ksi_is$ are the knots, and $h(x, \ksi) = (x - \ksi)^3_+$ (total of $K + 4$ regression coefficients).
+   * i.e. truncated basis functions can represent the spline regression model.
+   * Unfortunately, splines can have high variance at the outer range of the predictors.
+   * A natural spline is a regression spline with additional boundary constraints: the function is required to be linear at the boundary. This additional constraint means that natural splines generally produce more stable estiamtes at the boundaries.
+ * Choosing the Number and Locations of the Knots:
+   * One option is to place more knots in places where we feel the function might very most rapidly, and to place fewer knots where it seems more stable. Perform CV for choosing the number of the knots.
+
+## 5.4 Smoothing Splines
+ * Note that $RSS = \sum_i (y_i - g(x_i))^2$ is zero by choosing $g$ such that it interpolates all of the $y_i$. What we really want is a function $g$ that makes RSS small, but that is also smooth.
+ * $\sum_{i=1}^n (y_i - g(x_i))^2 + \lambda \int g''(t)^2 dt$,
+ * where $\labmda \ge 0$ is a tuning parameter. The function $g$ that minimizes is known as a smoothing spline.:
+   * The second derivate of a function is a measure of its roughness: it is large in absolute value if $g(t)$ is very wiggly near $t$, and it is close to zero otherwise.
+   * The larger the value of $\labmda$, the smoother $g$ will be. $\lambda$ controls the bais-variance trade-off of the smoothing spline.
+   * The minimization solution: It is a natural cubic spline with knots at $x_1, ..., x_n$.
+   * We may write the estimation as:
+     * $\hat g_{\lambda} = S_{\lambda} y$,
+     * for a particular choice of $\labmda$, and the effective degrees of freedom is defined as
+     * $df_{\lambda} = \sum_{i=1}^n \{ S\}_{ii}$
+   * $\lambda$ is chosen by LOOCV (or GCV).:
+     * $\underset{\lambda}{argmin} RSS_{cv}(\lambda) = \frac{1}{2} \sum_i (y_i - \hat g_{\lambda}^{(-i)} (x_i))^2 = \frac{1}{n} \sum_i [\frac{y_i - \hat g_\lambda(x_i)}{1 - \{ S_{\lambda}_{ii}\}}]^2$
+     * $GCV(\lambda) = \frac{1}{n} \sum_{i} [\frac{y_i - \hat g_{\lambda} (x_i)}{1 - \frac{1}{n} tr(S_\lambda)}]^2$ : GCV is an approximation of the LOOCV.
+
+## 5.5 Local regression
+### Alogirhtm
+ 1. Gather the fraction $s= k/n$ of training points whose $x_i$ are closest to $x_0$.
+ 2. Assign a weight $K_{i0} = K(x_i, x_0)$ to each point in this neighborhood, so that the point furthest from $x_0$ has weight zero, and the closest has the highest weight. All but theses $k$ nearest neighbors get weight zero.
+ 3. Fit a weighted least squares regression of the $y_i$ on the $x_i$ using the aformentioned weightes, by finding $\hat \beta_0$ and $\hat \beta_1$ that minimize:
+   * $\sum_{i=1}^n K_{i0}(y_i - \beta_0 - \beta_1 x_i)^2$.
+ 4. The fitted value at $x_0$ is given by $\hat f(x_0) = \hat \beta_0 + \hat \beta_1 x_0$
+
+### 5.5.1
+ * How to define the weighting function $K$?
+ * Fit linear, quadratic model for Step 3 above?:
+   * Local regression is based on the ideas that any function can be well approximated in a small neighborhood by a low-order polynomial and that simple models can be fit to data easily. High-degree polynomials would tend to overfit the data.
+ * Choose $s$, span (Similar to $\lambda$ is smoothing spline - control the flexibility of the fit (wiggly vs smooth))).
+ * Advantage - does not require the specification of a function to fit a model to all of the data in the sample.
+ * Disadvantage - local regression requires fairly large, densely sampled data sets in order to produce good models.
+
+## 5.6 Generalized Additive Models
+ * Generalized additive models (GAMs) provide a general framework for extending a standard linear model by allowign non-linear functions of each of the variables, while maintaining additivity.
+   $g(E(y)) = \beta_0 + f_1(x_1) + f_2(x_2) + ... + f_p(x_p)$,
+   where $g(\dot)$ is link function. Compare the above model with $y = \beta_0 + f(x_1, ..., x_p) + \epsilon$. GAM avoid `the curese of dimensionality` by additivity property.
+   * The functions $f_i$ may be functions with a specified parametric form (for example a polynomial, or spline regression) or may be specified non-parametrically, simply as 'smooth functions', to be estimated.
+   * For example, a locally weighted mean, for $f_1(x_1)$, and then use a spline model for $f_2(x_2).$
+   * We assume that $f_i$'s are smooth function and $E(f_i(x_i)) = 0$.
+   * Note that GAM can be applied to exponential family distribution (ex. binomial, poisson, etc) using link function.
+
+### 5.6.1 Backfitting Algorithm
+ * A popular method to estimate GAM.
+ * Algorithm:
+   1. Initialize: $\hat \alpha = \frac{1}{n} \sum_{i=1}^n y_i, \hat f_j = 0 \text{ for all } j$
+   2. Cycle over j until the functions $\hat f_j$ changes less than a pre-specified threshold.:
+     1. Compute partial residuals $\tilde y_i = y_i - \hat \alpha - \sum_{k \not = j} f_k(x_{ik})$ for all i
+     2. Apply the 1-dimensional smoother to $\{ x_{ij}, \tilde y_i \}_{i=1}^n$ to obtain $\hat f_j$.
+     3. Set $\hat f_j$ equal to $\hat f_j - \frac{1}{n} \sum_{i=1}^n \hat f_j(x_{ij})$
+
+# 6. Support Vector Machines
+ * Support vector machines (SVMs) proposed by Vapnik (1996, 1998), are supervised learning models with associated learning algorithms that analyze data used for classification.
+
+## 6.1 Separating Hyperplane
+ * Our first objective wil lbe to contruct functions that optimally separate two classes of training data.
+ * Suppose that we have $n$ observed training data $x_1, ..., x_n$, which each $x_i = (x_1, ..., x_p)^T$. Here, let us assume that we already know the membership of the training data in the two classes $G_1$ and $G_2$. Our objective is to find a hyperplane.
+ * $ \omega_1 x_1 + ... + \omega_p x_p + b = \omega^T x + b = 0$,
+ * which seperates two classes.
+ * $G_1$: the data set such that $\omega^T x_i + b > 0$,
+ * $G_2$ : the data set such tat $\omega^T x_i + b < 0$.
+ * Let's introduce the class label $y$. Then we can represent the n training data as follows:
+   $(x_1, y_1), ...,(x_n, y_n); y_1 = \begin{cases} 1 & \text{ if } x_i \in G_1 \\ -1 & \text{ if } x_i \in G_2 \end{cases}$
+ * Then the following inequality holds for all of those data:
+   * $y_i(\omega ^T x_i + b) > 0 & i=1, ..., n$
+ * The question we must now consider is how to find the optimum separation hyperplane for linearly separable training data. i.e. what criterion to use as a basis for estimation of the coefficient vector $\omega$ (weight vector) and the intercept $b$ -> We will use the distance between the data and the hyperplane and maximize it. (Review - The distance from $x_0 = (x_1, ..., x_p)^T$ to the hyperplane $\omega^T + b = 0$ is $d=\frac{\omega^T x_0 + b}{\vert \vert \omega \vert \vert}$).
+ * If the data are linearly separable, then a hyperplane (H) exits that separates the two classes, together with two equidistant parallel hyperplanes(H+ and H-) on opposite sides, and any number of such hyperplans can be constructed.
+ * The distance from $x_+$ on hyperplane $H_+$ and $x_-$ on hyperplane $H_-$ to hyperplane $H$ defined the margin,
+   * $d = \frac{\omega^T x_+ + b}{\vert \vert \omega \vert \vert} = \frac{-(\omega^T x_- + b)}{\vert \vert \omega \vert \vert}$
+ * Then find the separating hyperplane that maximizes this margin.
+   $\underset{\omega, b}{max} d subject to \frac{y_i(\omega^T x_i + b)}{\vert \vert \omega \vert \vert} \ge d, & i=1,...,n$
+
+## 6.2 Quadratic Programming and Dual Problem
+ * $\frac{y_i(\omega^T x_i + b)}{\vert \vert w \vert \vert} \ge d$
+ * $y_i(\frac{1}{d \vert \vert \omega \vert \vert} \omega^Tx_i + \frac{1}{d \vert \vert \omega \vert \vert} b) \ge 1$,
+ * and taking $r = \frac{1}{d\vert \vert \omega \vert \vert}$, and set $r \omega = \omega^*$ and $rb = b^*$.
+   * $y_i(\omega^{* T} x_i + b^*) \ge 1$,
+   * where $\omega^* = \frac{1}{d \vert \vert \omega \vert \vert} \omega$ and $b^* = \frac{1}{d \vert \vert \omega \vert \vert} b$.
+ * The euqality holds for the data on hyper planes $H_+$ and $H_-$. Then, the margin is defined as
+   * $ d^* = \frac{y_i (\omega^{* T} x_i + b^*)}{\vert \vert \omega^* \vert \vert} = \frac{1}{\vert \vert \omega^* \vert \vert}$.
+ * Based on this contraint, the problem now becomes one of finding $\omega^*$ and $b^*$ that maximize the margin $d^* = \frac{1}{\vert \vert \omega^* \vert \vert}$.
+   $\underset{\omega}{min} \frac{1}{2} \vert \vert \omega \vert \vert ^2$ subject to $y_i (\omega ^T x_i + b) \ge 1, & i = 1,...,n$.
+ * This problem is known as the quadratic programming, and several mathematical programming procedures have been proposed for this purpose. Let's use the Lagrangian function to transform it to an optimization problem known as the dual problem.
+   * $L(\omega, b, \alpha_1, ..., \alpha_n) = \frac{1}{2} \vert \vert \omega \vert \vert ^2 - \sum_{i=1}^n \alpha_i \{y_i (w^T x_i + b) - 1\}$
+   * By differentiating the Lagrangian function with respect to the wiehgt vector $\omega$ and the bias $b$ and setting the results to zero, we have
+     $\frac{\partial L(\omega, b, \alpha_1, \alpha_2, ..., \alpha_n)}{\partial \omega} = \omega - \sum_{i=1}^n \alpha_i y_i x_i = 0$
+     $\frac{\partial L(\omega, b, \alpha_1, \alpha_2, ..., \alpha_n)}{\partial b} = - \sum_{i=1}^n \alpha_i y_i = 0$.
+   * Here we used $\partial \partial \partial \omega \vert \vert ^2 / \partial \omega = \partial \omega ^T \omega / \partial \omega = 2 \omega$ and $\partial \omega^T x_i / \partial \omega = x_i$. We thus obtain:
+     * $\omega = \sum_{i=1}^n \alpha_i y_i x_i, & \sum_{i=1}^n \alpha_iy_i = 0$.
+   * Substituting these equations back into the Lagrangian function in $L(\omega, b, \alpha_1, ..., \alpha_n) = \frac{1}{2} \vert \vert \omega \vert \vert ^2 - \sum_{i=1}^n \alpha_i \{y_i (w^T x_i + b) - 1\}$ gives the Lagrangian dual objective function
+     * $L_D(\alpha_1, \alpha_2, ..., \alpha_n) = \sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j x_i^T x_j$.
+   * In this way, we transform the quadratic programming problem of $\underset{\omega}{min} \frac{1}{2} \vert \vert \omega \vert \vert ^2$ subject to $y_i (\omega ^T x_i + b) \ge 1, & i = 1,...,n$ which is a primal problem, to the following dual problem.
+
+### Dual problem
+ * $\underset{\alpha_1, ..., \alpha_n}{max} L_D(\alpha_1, \alpha_2, ..., \alpha_n) = \underset{\alpha_1, ..., \alpha_n}{max} (\sum_{i=1}^n \alpha_i - \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j x_i^T x_j)$
+ * Then the optimal solution is:
+   * $\hat \omega = \sum_{i=1}^n \hat \alpha_i y_i x_i$
+   * $\hat b = - \frac{1}{2} (\hat \omega^T x_+ + \hat \omega^T x_-)$.
+ * The data that satisfies the equation $y_i(\hat \omega^T x_i + \hat \beta) = 1$ are called as support vectors.
+ * From Karush-Kuhn-Tucker conditions, we can prove that the optimum separating hyperlplane as the discriminant function is:
+   * $\hat \omega^T x + \hat b = \sum_{i \in S} \hat \alpha_i y_i x_i^T x + \hat b = \begin{cases}\ge 0 \rightarrow G_1 \\ < 0 \rightarrow G_2 \end{cases}$
+   * where $S$ is the index set of the support vectors.
+
+## 6.3 Linearly Nonseparable Case
+ * The standard SVM classifier works only if you have a well separated categories. It means there exist a line (or hyperplane) such that all points belonging to a single category are either below or above it. In many cases that condition is not satisified, but still the two classes are pretty much separated except some small training data where the two categories overlap. It wouldn't be a huge error if we would draw a line (somewhere in between) and accept some level of error - hagving training data on the wrong side of the marginal hyperplanes. How do we measure the error? slack variables.
+ * For, the linearly separable case, we have $y_i(\omega^T x_i + b) \ge 1$ and the equality holds for the data on marginal hyperplane, $H_+$ and $H_-$.
+ * For the point is on the wrong side of the marginal hyperplane, $y_i(\omega^T x_i + b) < 1$.
+ * Then if we set $\ksi_i := 1 - y_i(w^T x_i + b)$, for the point is on the wrong side of the marginal hyperplane, $\ksi_i >0$, and for the point is on the right side of the marginal hyperplane, set $\ksi_i = 0$.
+ * $\ksi_i = \begin{cases} 0, & y_i(\omega^T x_i + b) \ge 1 \\ 1 - y_i(\omega^T x_i + b), & y_i(\omega^T x_i + b) < 1\end{cases}$
+ * (Geometrical interpretation) For the wrong side located data point, the distance of the point to its corresponding marginal hyperplane is equal to $\ksi_i$.
+ * Therefore, we ant to minimize $\sum \ksi_i$
+ * Goal : maximize margin $\frac{1}{\vert \vert \omega \vert \vert}$, minimize slack margin sum $\sum_i \ksi_i$ under $y_i (\omega^T x_i + b) \ge 1 - \ksi_i$ and $\ksi_i \ge 0$ (soft margin SVM).
+
+### Primal problem for the soft margin SVM
+ * $\underset{\omega, \ksi}{min} (\frac{1}{2} \vert \vert \omega \vert \vert ^2 + \lambda \sum_{i=1}^n \ksi_i)$, subejct to $y_i(\omega^T x_i + b) \ge 1 - \ksi_i$, $\ksi_i \ge 0$, $i=1,...,n$
+ * where $\lambda (> 0)$ controls the trade-off between margin maximization and constraints.
+
