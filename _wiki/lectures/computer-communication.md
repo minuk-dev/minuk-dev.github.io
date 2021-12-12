@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 컴퓨터통신
 date    : 2021-10-15 23:07:20 +0900
-lastmod : 2021-11-30 16:22:26 +0900
+lastmod : 2021-12-12 19:40:50 +0900
 draft   : false
 parent  : lectures
 ---
@@ -736,3 +736,833 @@ u_short cksum(u_short *buf, count)
    * 특히, 비정상 상황에 대해서
  * 난이도:
    * Concurrent and distributed program
+
+### 슬라이딩윈도우(GoBackN) 세부알고리즘
+ * 송신자:
+   * 각 프레임에서 순서번호를 할당(SeqNum) : 각 outstanding frame의 ID
+   * 세 개의 상태 변수를 유지:
+     * 송신창 - send window size(SWS)
+     * 마지막으로 받은 ACK 의 프레임 번호 - last acknowledgement received (LAR)
+     * 마지막으로 보낸 프레임 - last frame sent (LFS)
+   * 다음 항등식(invariant)을 유지 : LFS - LAR + 1 <= SWS
+   * 상위 계층에서 전송 요청을 받으면, 1) LFS를 증가시키고 (LFS 증가가 불가능하면 wait), 2) 타임아웃을 설정한 뒤, 3) 프레임을 전송
+   * ACK를 받으면 1) 타임아웃을 해지하고, 2) LAR을 증가시키며, 3) 이에 따라 새로 창이 열리며 전송이 가능
+   * 타임아웃이 걸리면 1) 타임아웃을 설정한 뒤, 2) 프레임을 재전송
+   * SWS만큼의 프레임은 버퍼에 유지 -- 재전송에 필요
+ * 수신자:
+   * Out-of-order 프레임을 저장하는 GoBackN 알고리즘
+   * 세 개의 상태 변수를 유지:
+     * 수신창 - receive window size(RWS)
+     * 받아들일 수 있는 마지막 프레임 - last frame acceptable (LFA)
+     * 수신 예상 프레임 - next frame expected (NFE)
+   * 항등식(invariant)을 유지: LFA - NFE + 1 <= RWS
+   * SeqNum의 프레임이 도착하면:
+     * If NFE <= SeqNum <= NFA -> 받아들임(accept):
+       * 중간에 빈 곳 없는 연속되는 데이터는 상위 계층으로 deliver
+     * If (SeqNum < NF) or (SeqNum > NFA) -> 버림 (discard):
+       * SeqNum < NFE 는 ACK 전송 필요
+     * 누적 ACK(cumulative ACK)를 보낸다. (NFE 값으로)
+
+### 순서 번호 공간 (Sequence Number Space)
+ * 순서번호는 오류제어에서 필수
+ * 프레임 헤더의 필드는 한정된 공간 (많이 사용할 수록 overhead 증가): 결국 일정한 숫자에서 순서번호는 순환되며 사용
+ * 순서번호공간 : 가능한 순서번호 구간:
+   * 예 : 4-bit 필드 => [0..15]
+ * 문제 : 순서번호 필드를 얼마로 잡아야 안전하겠는가?:
+   * 반대로, 주어진 순서번호 공간에서 최대 outstanding 프레임, 즉, 송신자 기준 WindowSize는 얼마까지 늘릴 수 있나?
+ * 순서 번호 공간은 현재 전송 중인 프레임의 수보다 커야한다.:
+   * 어떤 프레임이 오류 및 재전송의 대상이 될지 모르므로, outstanding Frame 각각은 서로 다른 SeqNum를 갖고 있어야한다.
+ * outstanding 프레임의 최대 수 = SendingWindowSize(SWS)
+ * 따라서, 순서번호공간 크기 > SWS
+ * 하지만 단순히, SWS <= 순서번호공간에서는 다른 문제가 생긴다.:
+   * 순서가 순환되었음에도 수신자가 이를 인지하지 못하고 새로운 데이터를 재전송된 데이터라고 판단하는 문제
+ * 결론 : SWS < 순서번호 공간 / 2:
+   * 즉, WindowSize는 최대로 보낼 수 있는 outstanding 프레임의 수이고 이는 순서번호공간의 반보다 작아야한다.
+   * 정확하게는 SWS < (MaxSeqNum + 1) / 2
+ * 직관적으로 설명하면, SeqNum는 순서 번호 공간의 1/2 사이를 오고간다.
+
+### 동시 논리 채널(Concurrent Logical Channels)
+ * 하나의 점대점(point-to-point) 링크를 통해 여러 개의 논리적 채널을 동시/다중 송신함.
+ * 각각의 논리적 채널은 정지 대기(stop-and-wait)방식으로 운영된다.
+ * 각 지상 링크에 대해서 8개의 논리적 채널을 유지한다.
+ * 각 프레임의 헤더에는 3-bit 채널 번호와 1-bit 순서 번호, 총 4비트가 포함되어 있으며, 이는 슬라이딩 윈도우 프로토콜가 8개의 송신창을 유지하는데 필요한 것과 같다.
+ * 신뢰성 문제를 흐름제어(flow control)와 프레임 순서(frame order) 문제와 분리:
+   * Sliding Window Protocol은 all-in-one approach이기에, 오류 문제, 버퍼링 문제, 순서 문제를 한번에 처리하여 복잡하다.
+
+### Sliding Window 구현
+ * 목적:
+   * 통신 알고리즘이 어떻게 구현되는가에 대한 궁금증 해결 (계층 구조는 어떻게 구현되는가?)
+   * 슬라이딩 윈도우 알고리즘 구현을 통한 확실한 이해
+ * 어디서, 즉, 시스템의 어느 단계에서, 동작하는 프로그램인가?:
+   * 프레임 하나 하나의 송수신은 NIC(Network Interface Card)이 담당
+   * 슬라이딩 윈도우는 바로 그 위에서 동작 -> 디바이스 드라이버
+ * 프로토콜 내부동작의 실체는?:
+   * 계층구조에 따라, 헤더 정보를 써넣고, 읽고 처리하는 것이 기본
+   * 담당 기능에 따라 세부 동작이 정해짐 (슬라이딩 윈도우 - 오류 제어)
+
+```c
+typedef u_char SwpSeqno;
+typedef struct {
+  SwpSeqno SeqNum; /* sequence number of this packet */
+  SwpSeqno AckNum; /* allows window sizes of up to 128 */
+  u_char   flags;  /* up to 16 bits worth of flags */
+} SWPHdr;
+
+typedef struct {
+  /* sender side state; */
+  SwpSeqno    LAR;      /* seqno of last ACK received */
+  SwpSeqno    LFS;      /* last frame sent */
+  Semaphore   sendWindowNotFull;
+  SWPHdr      hdr;      /* pre-initialized header */
+  struct txq_slot {
+    Event   timeout;    /* event associated with send-timeout */
+    Msg     msg;
+  } sendQ[SWS];
+
+  /* receiver side state: */
+  SWPSeqno    NFE;      /* seqno of next frame expected */
+  struct rxq_slot {
+    int     recieved; /* is msg valid? */
+    Msg     msg;
+  } recvQ[RWS];
+} SwpState;
+
+static XkHandle
+sendSWP(SwpState *state, Msg *frame)
+{
+  struct sendQ_slot *slot;
+  hbuf[HLEN];
+  /* wait for send window to open */
+  semWait(&state->sendWindowNotFull);
+  state->hdr.SeqNum = ++state->LFS;
+  slot = &state->sendQ[state->hdr.SeqNum % SWS];
+  store_swp_hdr(state->hdr, hbuf);
+  msgAddHdr(frame, hbuf, HLEN);
+  msgSaveCopy(&slot->msg, frame);
+  slot->timeout = evSchedule(swpTimeout, slot, SWP_SEND_TIMEOUT);
+  return send(LINK, frame);
+}
+
+static int
+deliverSWP(SwpState *state, Msg *frame)
+{
+  hbuf = msgStripHdr(frame, HLEN);
+  load_swp_hdr(&hdr, hbuf);
+  if (hdr.Flags & FLAG_ACK_VALID)
+  {
+    /* received an acknowledgment --- do SENDER-side */
+    if (swpInWindow (hdr.AckNum, state->LAR+1, state->LFS))
+    {
+      do
+      {
+        struct sendQ_slot *slot;
+        slot = &state->sendQ[++state->LAR % SWS];
+        evCancel(slot->timeout);
+        msgDestroy(&slot->msg);
+        semSignal(&state->sendWindowNotFull);
+      } while (state->stateLAR != hdr.AckNum);
+    }
+  }
+  // 송신 쪽, timeout 처리는 생략
+  if (hdr->Flags & FLAG_HAS_DATA)
+  {
+    struct recvQ_slot *slot;
+    /* received data packet -- do RECEIVER-side */
+    slot = &state->recvQ[hdr.SeqNum & RWS];
+    if (!swpInWindow(hdr.SeqNum, state->NFE, state->NFE + RWS - 1))
+    {
+      /* drop the message */
+      return SUCCESS;
+    }
+    msgSaveCopy(&slot->msg, frame);
+    slot->received = TRUE;
+    if (hdr.SeqNum == state->NFE)
+    {
+       Msg m;
+       while (slot->received)
+       {
+         deliver(HLP, &slot->msg);
+         msgDestroy(&slot->msg);
+         slot->received = FALSE;
+         slot = &state->recvQ[++state->NFE % RWS];
+       }
+       /* send ACK; */
+       prepare_ack(&m, state->NFE);
+       send(LINK, &m);
+       msgDestroy(&m);
+    }
+    return SUCCESS;
+  }
+}
+```
+
+## 이더넷 (Ethernet) 개요
+ * LAN(Local Area Networks)의 대명사
+ * 역사:
+   * skip
+ * CSMA/CD:
+   * Carrier Sense : 반송 신호 감지
+   * Multiple access : 다중 접근
+   * Collision detection : 충돌 검출
+ * 버스 토폴로지: 다중 접근 연결
+ * 문제 : 공유 매체에 공평하게 접근할 수 있는 분산(distributed) 알고리즘:
+   * 즉, 매체접근 (MAC: Medium Access Contorol) 필요
+
+### 물리적 특성 (버스 토폴로지)
+ * 고전적 이더넷 (Classicial Ethernet) : Thick-net:
+   * 현재는 거의 사용하지 않지만, 이더넷 동작을 이해하기 위해서 알 필요가 있다.
+   * 최대 세그먼트 500m
+   * transceiver taps은 적어도 2.5m 떨어져야함.
+   * 중계기(repeaters)로 여러 개의 세그먼트를 연결
+   * 두 노드 사이에서 중계기가 4개를 초과하여 있을 수 없다.:
+     * 총 길이 : 2500m
+   * 호스트의 최대 개수는 1024개
+   * 10Base5라고도 불림(10 Mbps, 500m)
+
+### 10BaseT Network
+ * 대안 기술:
+   * 10Base2 (thin-net) : 200m : 데이지 체인(daisy-chain) 형태
+   * 10BaseT (twisted-pair): 100m : 성형(star configuration)
+
+### 프레임 형식(Frame Format)
+ * 주소 (Addresses) : MAC 주소:
+   * 각각의 어댑터에 유일한 48-bit 유니캐스트 주소가 할당됨
+   * 브로드캐스트(Broadcast) : 모든 비트가 1
+   * 멀티캐스트(Multicast) : 첫 비트가 1
+ * 어댑터는 모든 프레임을 수신: 다음 경우에 받아들임 (즉, 호스트로 보냄):
+   * 주소항이 자신의 유니캐스트 주소인 프레임
+   * 브로드캐스트 주소로 지정된 프레임
+   * 수신하도록 프로그램된 멀티캐스트 주소로 지정된 프레임
+   * 무차별 모드(promiscuous mode)일 때는 모든 프레임
+
+### 전송 알고리즘(Transmitter Algorithm)
+ * 다중 매체접근제어(MAC) : 기본적으로, 경쟁 방식:
+   * 즉, 제어방식, 예약방식이 아님
+ * CS: carrier sense:
+   * 전송 전에 회선의 상태를 확인
+ * 회선이 유휴(idle) 상태이면:
+   * 즉시 전송
+   * 메시지 사이즈의 상한선은 1500 바이트
+   * 연속해서 프레임을 보낼 때는 $9.6 \mu s$를 기다려야함.
+ * 회선이 사용중이라면:
+   * 유휴 상태가 될 때까지 대기하였다가 즉시 전송
+   * 1-persistent라 불림 (p-persistent의 특정 형태)
+
+### 전송 알고리즘 : 충돌(Collision)
+ * CD(Collision Detection) : 전송 중에도 회선 점검:
+   * 최소 얼마 동안 감지해야 확실한 충돌감지:
+     * 최악의 충돌 시나리오 - 51.2 $\mu s$
+   * 51.2 $\mu s$ 전에 전송이 끝나면?:
+     * 수신자 위치에 따라 충돌 없는 수신도 발생 가능. 즉, 충돌 여부가 확실하지 않음.
+     * 따라서, 10Mbps 기준, 전송 최소 프레임의 길이는 512bit, 즉, 64 바이트
+ * 충돌(collision)이 생긴다면:
+   * 잼(jam) 신호를 발송하고, 프레임 전송을 멈춤
+   * 지연시간(delay)을 가진 후 재시도:
+     * 첫번째: (0, 51.2) 중 택일
+     * 두번째 : (0, 1 * 51.2, 2 * 51.2, 3 * 51.2) 중에서 택일
+     * N번째 : rnadomly select k * 51.2, k=0..2^n -1
+     * 여러번 시도 후에 포기(일반적으로 16번)
+   * 지수 백오프(exponential backoff)
+
+### CDMA/CD 평가
+ * 여러 MAC 정책을 평가하는데에 있어서, 적절한 지표:
+   * 확장성 등
+ * 충돌에 소모되는 총 비용은 무엇의 함수:
+ * 1-persistent 정책 : Detecting 계속해서 하다가 아무도 안보낸다 싶으면 바로 전송
+ * CD를 하지 않는다면? CD로 얻게되는 이익은 어디서 나오는 것인가: 충돌을 감지해서 충돌 발생시 소모되는 비용을 감소시킨다.
+ * 충돌이 감지된 후 1-persistent인가? : 지수적 백오프(exponential backoff)로 전송하기 때문에 1-persistent가 아니다.
+ * CDMA/CD가 유요한 환경은? : Bursty Traffic이 발생하는 곳. (평소에는 충돌 가능성이 낮은)
+
+### 이론과 실제
+ * 10-200 개의 호스트
+ * 길이는 1500m보다 짧다. (RTT의 경우 51$\mu$ 보다는 5$\mu$에 가깝다)
+ * 패킷의 길이는 bimodal distribution을 따른다. (최대 크기인 1500에 가깝거나, 아주 짧은 80에 가까운 값들이 많은 분포)
+ * 상위 수준의 흐름제어(flow control)와 호스트 성닝이 부하를 제한한다.
+ * 권장사항:
+   * 과부화를 피할 것(최대 30%의 효율)
+   * 컨트롤러(controller)를 정확하게 구현
+   * 큰 패킷을 사용
+
+### 이더넷 확장
+ * 속도:
+   * FastEthernet, Gigabit Ethernet 등
+ * 스위칭 기능:
+   * Repeater 대신 Bridge:
+     * 각 세그먼트가 독립적으로 사용가능하도록
+   * Multiport Bridge(= LAN Switch)
+   * Switched Ethernet:
+     * HUB에 Switch로 동작
+     * 각 호스트는 대역폭을 점유해서 사용가능
+
+## 토큰링
+ * 토큰링 네트워크(Token Ring Networks):
+   * PRONET: 10Mbps와 80Mbps 링
+   * IBM: 4Mbps 토큰링
+   * 16Mbps IEEE 802.5/토큰링
+   * 100Mbps Fiber Distributed Data Interface(FDDI)
+   * 현재는 많이 사용되지 않지만, 이더넷의 반대 정책으로 유명
+
+### 토큰링의 연결
+ * relay를 이용한 bypass
+ * 다중 접속 장치:
+   * 외부에서 보면 HUB와 유사
+
+### 토큰링 MAC 기본 개념
+ * 프레임은 한 방향으로 돈다.:
+   * upstream to downstream
+ * 특별한 비트 패턴(token)이 링을 회전한다.
+ * 전송하기 전에 토큰을 획득해야 함
+ * 전송을 마치면 토큰 방출(release)
+ * 프레임이 되돌아 오면 프레임을 제거
+ * 지국들은 라운드 로빈(round-robin) 서비스를 받게 됨
+
+### 매체 접근 제어 세부사항
+ * 1 비트 버퍼 + 모니터(monitor) 지국
+ * 토큰 보유 시간 제한
+ * 전송 우선순위 지원:
+   * 예약 비트
+   * 우선순위 복구
+ * 토큰 방출:
+   * 즉시 방출
+   * 지연 방출
+
+### 토큰링 관리
+ * 모니터 지국 : 링의 정상적 동작을 감시/유지:
+   * 토큰의 회전을 감시; 문제 발생시 재생성
+   * 변질/orphan 프레임의 제거
+   * Dead station의 검출
+ * 모니터 지국의 선출:
+   * 모너티로부터 announce가 없을 경우
+   * 감지한 노드가 claim frame 발송
+   * 자신이 보낸 claim frame을 받으면 => 링의 모든 노드 인정 => 모니터 지국으로 동작
+   * 동률 규정 : high address wins
+
+### 프레임 형식
+ * 식별자 (delimiter):
+   * illegal Manchester Coding
+ * 접근 제어(Access Control):
+   * 프레임 우선순위, 예약 우선순위
+ * 프레임 제어(Frame Control):
+   * 상위 계층 프로토콜에 대한 역다중화 키
+ * 프레임 상태(Frame status):
+   * A bit: 수신자가 송신자에게로 ACK
+   * C bit: 수신자가 프레임을 copy했음
+
+## 무선(Wireless) LANs
+ * IEEE 802.11
+ * 대역폭:
+   * 1 or 2 Mbps: 11M(802.11b), 54M(802.11g/a), 300M(802.11n), 1G+(802.11ac)
+ * 물리적 매체:
+   * 확산 스펙트럼(spread spectrum) radio : 2.4GHz, 5GHz
+   * 발산 적외선 (diffused infrared) : 10m
+ * infrastructure mode:
+   * wireless host communicates with base station
+   * base station = access point(AP)
+   * Basic Service Set(BSS):
+     * wireless hosts
+     * access point (AP)
+   * Ad hoc mode:
+     * host only
+
+### 확산 스펙트럼 (Spread Spectrum)
+ * 개념:
+   * 공용대역(public band) 사용을 위한 기술적 요구사항:
+     * 다른 사용자를 지속적으로 방해하면 안된다.
+     * 특정 주파수 대역만을 사용하면, 간섭/충돌이 지속되어서 다른 사용자와 동시 사용 불가능
+  * 넓은 주파수 대역으로 확산해서 신호를 전송:
+    * 간섭/충돌은 일시적, 동시 사용을 해도 통신 가능
+    * 확산 사용 방식은 사용자별로 다르게
+  * 원래, 신호 방해를 무산시키기 위한 군사용으로 설계
+  * Code Division Multiplexing도 포함
+
+#### 확산 스펙트럼 예 : 블루투스
+ * 주파수 호핑(Frequency Hopping):
+   * 임의의 주파수 시퀀스로 전송
+   * 송신자와 수신자는 다음을 공유:
+     * Psudo random number generator
+     * 초기값 (seed)
+   * Bluetooth 사용
+   * 초기 802.11은 79 x 1MHz-wide 주파수 대역을 사용
+
+#### 확산 스펙트럼 예 : 무선 LAN
+ * 직접 시퀀스(Direct Sequence):
+   * 각 비트에 대해, 해당 비트를 n개의 임의 비트와 XOR한 비트열을 전송
+   * 송/수신자는 임의의 n비트 시퀀스를 알고 있음.:
+     * n-bit chipping code
+   * 802.11은 11-bit chipping code 사용
+
+### 매체 접근
+ * 다른 무선기기와의 주파수 공유 문제는 Spread Spectrum으로 해결
+ * 같은 BSS, 또는 주변의 같은 802.11 기기 사이에서의 채널 사용문제는 여전히 해결 필요 => 접근 제어, 즉, MAC 필요
+ * 기본적으로 이더넷과 유사
+ * 단, 매체 특성 때문에:
+   * 충돌 인식(Collision Detection)에 hidden node, exposed node라는 새로운 문제가 발생
+
+### IEEE 802.11: multiple access
+ * avoid collisions : 2* nodes transmitting at same time
+ * 802.11 : CSMA - sense before transmitting:
+   * don't collide with ongoing transmission by other node
+ * 802.11 : no collision detection:
+   * difficult to receive (sense collisions) when transmitting due to weak received signals(fading)
+   * can't sense all collisions in any case : hidden terminal, fading
+   * goal : avoid collisions : CMSA/CA
+
+### 충돌 회피(Collisions Avoidance)
+ * MACAW (Multiple Access with Collision Avoidance for Wireless)
+ * 송신자는 RequestToSend(RTS) frame을 전송
+ * 수신자는 ClearToSend(CTS) frame을 전송
+ * 다른 노드:
+   * CTS를 들으면 : keep quite
+   * RTS는 들리지만, CTS는 들리지 않는다면 : ok to transmit
+ * 수신자는 프레임을 받은 후, ACK를 전송 (MAC 수준의 ACK):
+   * 다른 노드들은 ACK가 전송될 때까지 기다린다.
+ * 충돌 문제:
+   * 두 개 이상의 노드가 RTS를 동시에 보낼 때
+   * 충돌 인식 방법 없음 : 일정 시간 안에 CTS를 받지 못하면 충돌
+   * exponential backoff
+ * 충돌 비용 개선
+ * RTS/CTS threashold:
+   * 작은 프레임은 RTS/CTS 교환 없이 보내는 것이 유리
+
+### 이동성(Mobility) 지원
+ * Case 1 : ad hoc networking
+ * Case 2 : access poitns (AP):
+   * 고정 위치
+   * 각 이동 노드는 하나의 AP와 연계
+
+### BSS 접속/가입 (이동 감지)
+ * 스캐닝 (Scanning) : AP 선정 작업:
+   * 이동 노드가 Probe frame 전송
+   * Probe를 받은 모든 AP는 ProbeResponse frame 응답
+   * 노드가 AP를 선택: AssociateRequest frame 전송
+   * AP는 AssociationResponse frame을 응답
+   * 새 AP가 이전 AP에게 유선 네트워크를 통해 이를 통보
+ * 스캐닝 시점:
+   * 능동적 : when join or move
+   * 수동적 : AP가 주기적으로 Beacon frame을 전송
+ * 이동 경우, 프레임 포워딩(forwarding) 문제는 별도
+
+### 매체접근제어(MAC) 비교
+ * 이더넷 : CSMA/CD
+ * 토큰링 : Token Passing
+ * 무선LAN : CSMA/CA
+ * 충돌에 대비하는 방법 :
+   * 이더넷 : 소모 비용 감소
+   * 토큰링 : 충돌 감소
+   * 무선 LAN : 소모 비용 감소
+ * MAC Overhead : 토큰 방식은 오버헤드가 크다.
+
+## 네트워크 어댑터
+ * 데이터 링크 기능이 구현되는 곳:
+   * 프레이밍(Framing)
+   * 오류 검출(Error Detection)
+   * 매체 접근 제어(Media Access Control)
+
+### 호스트의 관점(제어)
+ * 상태 제어 레지스터 (Control Status Register) (CSR):
+   * 특정 메모리 주소로 사용가능
+   * CPU는 읽고 쓸 수 있음
+   * CPU는 어댑터에게 명령
+   * 어댑터는 CPU에게 정보를 알려줌
+
+### 호스트와 어댑터 사이에서의 프레임(데이터) 이동
+ * 직접 메모리 접근(DMA)
+ * 프로그램 I/O (PIO)
+
+# 3장 패킷스위칭(Packet Switching)
+## 확장성 있는 네트워크(Scalable Networks)
+ * 교환기: 입력 포트에서 출력 포트로 패킷을 보냄. 출력 포트는 패킷 헤더의 목적지 주소에 기초해서 선택됨
+ * 지리적으로 광범위한 네트워크 구성 가능
+ * 많은 수의 호스트를 지원하는 네트워크 구성 가능
+ * 기존 호스트들의 성능에 영향을 주지 않고새로운 호스트를 추가 가능(스위치 용량의 한도내에서)
+
+## 데이터그램 (Datagrams)
+ * 연결 설정 단계가 없음
+ * 각각의 패킷은 독립적으로 포워드
+ * 우편 시스템과 유사한 형태
+ * 비연결성(connectionless) 모델
+ * 각 스위치는 포워딩(라우팅) 테이블을 유지
+
+## 가상회선 스위칭(Virtual Circuit Switching)
+ * 명시적인 연결 설정 및 해지 과정
+ * 이어지는 패킷 역시 같은 경로를 따라 전달
+ * 전화와 유사한 형태
+ * 연결성(connection-oriented)모델이라고도 불림
+ * 각 스위치는 가상회선 테이블을 유지
+
+## 가상회선 대 데이터그램
+|                  | VC(가상회선)                                                                                                                            | DG(데이터그램)                                                                                           |
+| -                | -                                                                                                                                       | -                                                                                                        |
+| 연결설정시간     | 일반적으로 첫번째 데이터를 보내기 전에 연결 설정을 위한 왕복 지연시간(RTT)을 기다려야함. (해당 가상 회선에 대한 테이블 entry) 생성      | 연결 설정을 위한 왕복 지연시간을 기다릴 필요가 없음; 호스트는 데이터가 준비가 되자마자 바로 보낼 수 있음 |
+| 주소 오버헤드    | 연결 요청에는 목적지의 완전한 주소를 포함하지만, 데이터 패킷에는 작은 식별자(identifier)만 포함하면 되므로 패킷 헤더의 오버헤드가 작다. | 매 패킷은 목적지의 완전한 주소를 가져야 하기 때문에, 패킷당 오버헤드가 연결성 모델보다 크다              |
+| 패킷 포워딩 시간 | 간단한 VC-ID 테이블 검색 => 빠른 시간에 가능(HW 처리도 가능)                                                                            | 모든 주소에 대한 포워딩 테이블 검색 -> 늦어질 가능성 높음                                                |
+| 장애극복         | 스위치/링크가 고장나거나 비정상적으로 연결이 끊어지면, 새로운 연결을 설정해야 함 -> stateful                                            | 패킷이 독립적으로 다루어지기 때문에 고장난 링크나 노드를 우회하여 라우팅 가능 -> stateless of soft state |
+| 자원 예약        | 연결 설정시 자원 예약이 가능                                                                                                            | 발신지 호스트는 네트워크가 패킷을 전달할 수 있는지, 또는 목적지 호스트가 동작 중인지도 알 수 없음        |
+
+## 소스 라우팅(Source Routing)
+ * 주소는 발신지로부터 목적지까지 경로의 포트번호를 포함하고 있음
+
+## 스위치 성능
+ * 스위치는 범용 워크스테이션으로 만들 수 있다
+ * 총 대역폭(Aggregate bandwidth):
+   * I/O 버스 대역폭의 1/2
+   * 용량은 스위치에 연결된 모든 호스트에서 공유됨
+   * 예: 800Mbps 버스는 100Mbps 포트 4개를 지원할 수 있음
+ * 초당 처리할 수 있는 패킷 수:
+   * 스위치의 패킷 처리 능력:
+     * pps(packet per second)
+   * 초당 15,000 - 100,000 패킷 정도
+   * 예: 64-byte 패킷이라면:
+     * 7.69-51.2Mbps을 의미함
+   * 작은 패킷을 스위치하는 경우 성능 결정 요소
+
+## 브리지 및 확장 LAN (Bridges and Extended LANs)
+ * LAN의 물리적인 제한 + 트래픽 분리
+ * 두개 또는 그 이상의 LAN들을 repeater/bridge를 이용하여 연결
+ * 브리지에 의해서 연결된 LAN의 집합을 extended LAN(확장 LAN0이라고 함)
+ * 확장 LAN이 보편화:
+   * (LAN, extended LAN) => (LAN segment, LAN)
+
+### 브리지(Bridge)의 동작
+ * 동작: 수신(Accept) 및 포워딩(forward) : 스위치 => 필터링(filtering); 리피터와 차이
+ * 여러 개의 포트를 가지는 브리지 => LAN 스위치
+ * Level-2 (패킷 헤더를 붙이지 않음); (라우터와의 큰 차이점)
+
+### 계층-2(Level-2) 연결
+ * 브리지는 네트워크 주소를 갖지 않음:
+   * 또, 별도의 헤더도 붙이지 않음
+   * 네트워크 계층에서 보면, 브리지는 invisible; 즉, link component
+   * 따라서, 브리지로 연결된 (확장)LAN 은 하나의 네트워크
+
+### 학습 브리지(Learning Bridges)
+ * 불필요할 때는 포워드를 하지 않음
+ * 포워딩 테이블의 유지
+ * 발신지 주소에 기초해서 테이블의 엔트리를 작성
+ * 표는 성능 개선이 목적이므로 완벽할 필요 없다.
+ * 브로드캐스트 프레임은 항상 포워드
+ * Soft-state table
+
+### Switching Hub: traffic isolation
+ * switch installation breaks subnet into LAN segments
+ * switch filter packets:
+   * same-LAN-segment frames not usually forwarded onto other LAN segments
+   * segments become separate collision domains
+
+### 브리지/LAN 스위치의 한계
+ * 확장성이 없음:
+   * 스패닝 트리 알고리즘은 확장성이 부족함
+   * 브로드캐스팅도 확장성에 제약
+   * => VLAN (Virtual LAN)
+ * 이질성(heterogenity)을 허용하지 않음
+ * 투명성에 주의; 즉, 노드에서 브리지는 보이지 않음
+
+## 셀스위칭 (Cell Switching): ATM
+### 개요
+ * ATM(비동기 전송 모드)
+ * 전화회사가 만든 패킷스위칭 네트워크 (극단적인 연결성 패킷 스위치)
+ * 작은 고정길이 패킷:
+   * cell이라고도 함 : 5-byte 헤더 + 48-byte 페이로드
+ * Signalling(연결 설정) 프로토콜 : Q.2931
+ * 한때, WAN과 LAN 환경에서 모두 사용 : 인터넷 대체 추진
+ * 현재 LAN에서는 Switching Ethernet에 의해 퇴출
+ * 보통 광케이블을 사용하는 장거리 연결에 사용:
+   * SONET interface 카드를 이용
+ * 현재는 인터넷의 아래 계층, 즉 이더넷 수준의 역할을 수행
+
+### Cells
+ * 가변길이 대 고정 길이:
+   * 최적의 고정길이는 없음:
+     * 작다면 데이터에 비해 헤더가 차지하는 오버헤드가 크다
+     * 크다면 작은 메시지에 대해서 효율이 낮다.
+   * 고정 길이는 하드웨어로 스위치하는 것이 쉽다:
+     * 보다 간단함
+     * 병렬 처리가 가능
+ * 작은 길이가 큐잉을 개선:
+   * 링크를 스케쥴링하는데 보다 세밀한 선점(preemption)이 가능
+ * 즉시 전달과 유사하게 동작
+
+### ATM 셀
+ * 패킷화에 소요되는 시간(packetizing delay) : 가장 중요한 cell size 선택 이유
+ * 셀로 음성을 전송하는 경우:
+   * 전화는 delay에 민감: 음성 전송에 소요되는 총 지연시간은 500ms 이하이어야 함
+   * 음성은 64Kbps로 디지탈 인코드를 함(8KHz를 8-bit로 샘플)
+   * 셀을 전송하기 전에 셀을 채울 만큼의 샘플이 필요
+
+### 셀 형식(Cell Format)
+ * 호스트와 스위치 사이의 형식(host-to-swtich format)
+ * GFC : Generic Flow Control
+ * VCI : Virtual Circuit Identifier
+ * VPI : Virtual Path Identifier
+ * Type
+ * CLP : Cell Loss Priority
+ * HEC : Header Error Check
+
+# 4장 인터네트워킹(Internetworking)
+## 인터넷 서비스 모델
+ * 인터네트워크:
+   * 네트워크의 연속
+   * Concatenation of Networks
+ * 네트워크 계층 위에서 표준화:
+   * 다양한 네트워크들을 링크로 간주해서 그대로 사용
+   * 전역 주소 체계(Global Addressing Cheme) 필요
+ * 프로토콜 스택
+
+## 패킷 전달 서비스 모델
+ * 전역 주소 체계 (Global Addressing Scheme)
+ * 비연결성 (데이터그램-기반)
+ * 최선 노력 전달 (신뢰성 없는 서비스):
+   * 패킷이 상실될 수 있음
+   * 패킷이 순서가 뒤바뀌어 올 수 있음
+   * 중복된 패킷이 올 수 있음
+   * 패킷이 오랜 시간 동안 지연될 수 있음
+ * 단편화 및 재조립
+
+## IP 패킷 헤더 형식
+ * 버전 Version : 4bit
+ * Hlen(4) : Header Length
+ * TOS(8) : 서비스의 종류, 일반적으로 사용되지 않음
+ * Length(16) : 데이터그램 전체의 바이트 단위 길이
+ * Ident(16) : 단편화(fragmentation)에 사용됨
+ * Flags/Offset(16) : 단편화에 사용됨
+ * TTL(8) : 데이터그램이 최대로 방문할 수 있는 홉의 수
+ * Protocol(8) : 역다중화키
+ * Checksum(16) : 헤더의 체크섬
+ * DestAddr & SrcAddr(32) : 발신지 및 목적지 주소
+
+## 단편화와 재조립(Fragmenation and Reassembly)
+ * 각 네트워크는 나름대로의 MTU(Maximum Transmission Unit)을 가진다.
+ * 방법:
+   * 필요할 때만 분할(MTU < Datagram)
+   * 발신지에서의 단편화는 지양 (cf. IPv6에서는 발신지에서 PathMTU)
+   * 재단편화(refragmentation) 가능
+   * 분할된 단편은 독립적인(self-contained) 데이터그램
+   * 목적지까지 재조립을 미룸
+   * 상실된 단편이 있으면 재조립 불가능
+
+## 전역 주소(Global Addresses)
+ * 특성:
+   * 전역적으로 유일하다
+   * 계층적(hierarchical): 네트워크 + 호스트:
+     * 같은 네트워크에 있는 노드들의 네트워크 주소부분은 같아야한다.
+ * Class:
+   * A class : 0으로 시작, 초기 0을 제외 7비트가 네트워크 주소 (나머지 24 비트가 호스트부)
+   * B class : 10으로 시작, 초기 10을 제외한 14비트가 네트워크 주소 (나머지 16비트가 호스트부)
+   * C class : 110으로 시작, 초기 110을 제외한 21비트가 네트워크 주소(나머지 8비트가 호스트부)
+
+## 데이터그램 포워딩 : IP의 실제 동작
+ * 방법:
+   * 모든 데이터그램은 목적지의 주소를 포함한다.
+   * 데이터그램을 받은 IP는:
+     * 목적지 네트워크가 직접 연결되어 있다면, 호스트로 직접 포워드 함.
+     * 목적지 네트워크가 직접 연결되어 있지 않다면, 다른 라우터에게 포워드함
+   * 포워딩 테이블은 네트워크 번호에 대한 다음 홉을 가리키고 있다.
+   * 각 호스트는 디폴트 라우터를 가지고 있다.
+   * 각 라우터는 포워딩 테이블을 유지
+
+## 주소 번역(Address Translation)
+ * 인터네트는 논리적(가상) 네트워크:
+   * 계층 하위에 있는 물리적 네트워크/링크에게 전달을 위임
+ * 위임할 때, IP 주소를 해당 물리적(physical) 주소로 변환해야 함.
+ * 필요한 주소를 어떻게 알아내는가?:
+   * 테이블 기반(IPv4)
+   * IP 주소의 호스트 부분에 물리적 주소를 인코드 시켜서 넣어줌(IPv6)
+ * ARP(Address Resolution Protocol):
+   * IP주소와 물리적 주소가 바인딩되어 있는 테이블 구축 담당
+   * IP주소가 테이블에 없다면 요청을 브로드캐스트
+   * 해당 호스트는 자신의 물리적 주소를 보내줌
+   * 오랫동안 사용되지 않은 엔트리는 없애준다.
+   * 프로토콜 계층에서 2계층과 3계층 사이에 존재한다.
+
+### ARP 프로토콜
+ * Request format:
+   * HardwareType, ProtocolType, HLEN & PLEN, Operation, Source/Target Physcial/Protocol Addresses
+ * 특징:
+   * 테이블의 엔트리는 약 10분의 타임아웃
+   * 요청에 대한 목적지에서는 발신지 주소로 테이블을 갱신
+   * 엔트리가 이미 있다면 테이블을 갱신(+ 타임아웃 연장)
+
+## 호스트 구성(Configuration) : DHCP
+ * IP 주소 배정의 문제:
+   * IP 주소는 네트워크의 구조를 반영하여야함
+   * 즉, 같은 네트워크에 있는 다른 호스트들의 주소와 앞 부분이 같아야한다.
+ * IP주소 이외에도 구성 정보가 필요하다(default router, name server)
+ * 자동 구성 기능 필요 : DHCP(Dynamic Host Configuration Protocol)
+
+### DHCP 동작
+ * DHCP 서버:
+   * a pool of available address를 관리
+   * 클라이언트의 요청에 대해 구성 정보를 제공
+   * address lease도 가능
+ * DHCP relay:
+   * 구성 정보 요청을 서버로 relay
+ * Server discovery:
+   * DHCPDISCOVER 메시지를 브로드케스트
+
+## 공유기
+ * 하나의 인터넷 주소를 여러 호스트가 공유해서 사용한다는 말에서 유래
+ * 대부분 wireless router 기능을 포함한다.
+ * 인터넷 서비스 업체(ISP)는 인터넷 링크 연결을 제공하면서, 하나의 IP주소를 DHCP로 할당
+ * 공유기는 내부 LAN의 여러 호스트들에게 인터넷 접근을 제공:
+   * IP 패킷을 내외부로 전달: IP라우터
+   * LAN 내부에서 사설 IP 주소 사용 지원 : DHCP 서버
+   * 하나의 IP주소를 여러 호스트가 사용: NAT(Network Address Translation)
+   * 유선 LAN 지원 : switch
+   * 무선 LAN 지원 : AP(Access Point)
+   * 보안 지원 : firewall(방화벽)
+
+## ICMP(Internet Control Message Protocol)
+ * IP 동작을 보조하기 위한 제어 프로토콜:
+   * IP 자체에 포함시키지 않고, 별도의 프로토콜 (out-of-band 기법)
+ * 기능 면에서 보며,ㄴ IP의 동료(companion protocol)
+ * 힌트 수준: 반드시 필요하지는 않음 => IP로 전송
+ * 제어 작업 내용:
+   * 응답(echo) - ping
+   * 라우터의 변경(라우터에서 발신지로)
+   * 목적지에 도착하는 것이 불가능:
+     * 프로토콜, 포트, 호스트 등의 이유
+   * TTL을 초과한 경우:
+     * 데이터그램이 계속 네트워크 배회하는 일이 없음
+   * 체크섬이 실패한 경우
+   * 재조립을 실패한 경우
+   * 단편화를 할 수 없는 경우
+
+## 가상 네트워크(Virtual Networks)
+ * 실제의 물리적 연결과 독립적으로 연결/구축되는 네트워크:
+   * 물리적 네트워크 위에 떠있는 가상의 네트워크
+ * VPN(Virtual Pivate Networks):
+   * 전용선 대신 공용 네트워크를 이용하여 사설망 구축
+   * IP 망을 통한 사설망 구축:
+     * IP는 모든 노드가 서로 통신; connectivity 제어가 안됨
+     * IP 터널링 기법
+
+## IP 터널링(IP Tunneling)
+ * 임의의 네트워크 사이에 두고 있는 한쌍의 노드 사이를 연결하는 점대점 링크
+ * 즉, 라우터 간의 가상 링크(virtual link)
+ * 구현:
+   * 링크 양 끝 노드를 발신지/목적지로 하여 IP encapsulation
+
+## 터널링/가상 네트워크 사용이유
+ * 보안:
+   * 공용 네트워크 안에서 사설 링크 구현
+   * 암호화와 함께 사용 가능
+ * 특수 기능 구현:
+   * 특수 기능을 가지는 가상 네트워크 구현
+   * ex) 멀티캐스트 라우팅 기능을 가지는 라우터들의 네트워크 구축
+ * 비 IP 패킷의 IP망을 통한 전달:
+   * ex) IPv6 패킷의 전달
+
+## 확장성 문제(Scalability Issues)
+ * Flat vs hierarchical address
+ * IP는 주소를 계층화하여 중간 라우터에서는 호스트 주소를 알 필요 없이 설계 되었으나 다음과 같은 문제가 발생한다:
+   * 주소 공간의 비효율성:
+     * 예 : 두 개의 호스트만을 가진 C클래스 네트워크
+   * 너무 많은 수의 네트워크 개수:
+     * 오늘날 인터넷은 수만개의 네트워크를 가지고 있다.
+     * 라우팅 테이블의 크기에 확장성 문제가 발생하며, 이는 라우트 전달 프로토콜에서도 발생한다.
+
+### 서브네팅(Subnetting)
+ * 주소/라우팅 계층 구조에 따른 다른 단계를 추가시키는 기능
+ * 서브넷 마스크(subnet mask)는 클래스의 가변적인 분할을 정의한다.
+ * IP 주소에서 네트워크 주소를 떼어내는 방법이 변경되었다.:
+   * 과거에는 IP의 초기 비트를 기준으로 네트워크 주소를 분리하였지만, 이제는 비트마스킹을 통해 처리한다.
+ * 서브넷은 외부네트워크에서 보이지 않는다.
+
+### 포워딩 알고리즘
+ * 특징:
+   * 대응되는 것을 찾을 수 없다면 디폴트 라우터를 사용
+   * 서브넷 마스크에서 모든 1이 연속적일 필요는 없음
+   * 하나의 물리적인 네트워크에 여러 개의 서브넷이 존재할 수 있음
+   * 서브넷은 인터넷의 나머지 부분에서 보이지 않음
+
+## Classless 라우팅(CIDR)
+ * 수퍼넷팅(Supernetting), CIDR(Classless Inter-Domain Routing)
+ * 기본적으로, 기존 A,B,C class와 무관하게 필요한 만큼 할당
+ * 단, 지역적으로 가까운 네트워크에 대해서 연속적이 네트워크 번호 묶음을 할당
+ * 각 묶음(block)은 다음과 같은 쌍으로 표현 (first_network_address, count)
+ * 현실적으로, 묶음(블록) 크기는 2의 제곱 형태로 제한:
+   * 블록 사이즈를 알아내기 위해서 비트마스크를 사용(CIDR mask) => prefix 길이로 표현 가능
+ * 결론: prefix 길이로 어느 자리에서나 네트워크 주소 경계를 정의
+
+ * Classless 라우팅 : Aggregation (병합)
+
+## 차세대 IP (Next Generation IP(IPv6))
+ * 주요 기능:
+   * 128-bit 주소
+   * 멀티캐스트
+   * 실시간 서비스(Real-time service) 대비
+   * 인증 및 보안 (Authentication and security)
+   * 자동 구성 (Autoconfiguration)
+   * 종단간 단편화(End-to-end fragmentation)
+   * 프로토콜 확장
+
+### IPv6 주소
+ * Classless 주소/라우팅(CIDR과 유사)
+ * 표기법:
+   * 연속적인 0은 압축됨
+   * IPv6은 IPv4 주소와 호환 가능
+ * 주소 할당(네트워크 제공자 기반):
+   * Aggregatable Global Unicast Addressing
+   * Subnet / Classless 개념 모두 도입
+
+### IPv6 헤더
+ * 40-바이트 기본 헤더
+ * 확장 헤더:
+   * 고정된 순서, 대부분 고정 길이
+   * 단편화(fragmenation)
+   * 소스 라우팅
+   * 인증 및 보안
+ * flow:
+   * 같은 수준의 서비스로 처리되어야하는 패킷의 연속(sequence of packets)
+ * FlowLabel: 단순 식별자
+
+### IP NextHeader
+ * 상위 프로토콜 DemuxKey
+ * optional header 유무/종료 표시 및 payload 시작점 표시
+
+## 이통 호스트에 대한 라우팅
+ * 문제:
+   * IP 주소는 계층적; 주소에 네트워크 주소 부분 포함
+   * 호스트가 이동하여 다른 네트워크에 접속되면, 패킷 전달 불가능
+ * 접근 방법:
+   * 새 IP 주소 할당 => 통신 중단; 서비스 중단
+   * Mobile IP:
+     * 호스트의 이동이 투명하도록
+     * 기존 통신 소프트웨어 및 라우터에 변경 없이 이동 호스트 지원
+
+## Mobile IP
+ * 구성 요소:
+   * home address : 이동 호스트의 영구적인 IP 주소
+   * Home Agent(HA) : 이동 호스트의 홈 네트워크에 있는 라우터
+   * Foreign Agent(FA) : 이동 호스트가 접속되어 있는 외부 네트워크의 라우터
+   * care-of-address(COA) : 이동 호스트에 대한 패킷을 보낼 주소; 대개 FA 주소
+ * 구성 설정:
+   1. HA와 FA는 주기적으로 자신의 존재를 홍보
+   2. 이동 호스트는 HA의 주소 인식
+   3. 이동 호스트가 어떤 외부 네트워크에 접속하면 => FA 인식; HA의 주소를 알림
+   4. FA는 HA에게 care-of-address 통보
+
+### Mobile IP의 패킷 전달
+ * 이동 호스트에서 송신하는 패킷의 전달:
+   * IP 패킷 포워딩 과정에서 source address는 참조되는 않음.
+   * 따라서, 기존과 동일(보안, 멀티캐스트 제외)
+ * 이동 호스트로의 패킷 전달
+
+### 세부 문제/기술
+ * HA가 이동호스트로 향하는 패킷을 가로채는 방법: Proxy ARP
+ * HA가 이동호스트로의 패킷을 FA에게 보내는 방법: 터널링
+ * FA가 수신된 패킷을 이동호스트로 전달하는 방법 : IP 포워딩을 사용하지 않고, Hardware 주소로 직접
+ * FA와 이동호스트가 동일한 경우 (Collocated COA):
+   * FA가 없는 네트워크로 이동 등
+   * 처리 간단; 단, 동적으로 IP 주소를 배정 받을 수 있어야 함.
+ * 보안 문제:
+   * 제3자가 FA를 자처하며, 이동호스트로의 패킷을 interception
+
+### 경로 최적화
+ * triangle routing problem
+ * HA가 송신자에게:
+   * binding update 메시지를 보내서
+   * 이동호스트의 care-of-address를 알려줌
+ * 송신자는:
+   * Binding cache를 유지하면서
+   * FA로 직접 터널링
+

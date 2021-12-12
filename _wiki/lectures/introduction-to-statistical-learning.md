@@ -3,7 +3,7 @@ layout  : wiki
 title   : 통계학습개론(Introduction to statistical learnning) 수업 정리
 summary : 2021 가을학기 수업 정리
 date    : 2021-10-08 04:46:27 +0900
-lastmod : 2021-12-07 18:22:58 +0900
+lastmod : 2021-12-08 03:16:51 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -112,12 +112,12 @@ parent  : lectures
      * where $X$ is the $N \times (p + 1)$ matrix, $\boldsymbol{\beta} = (\beta_0, ..., \beta_p)'$, and $y$ is the N-vector of outputs in the training set.
    * Then:
      * $\hat \beta = (X'X)^{-1} X' y$
-     * $\hat y = X \hat \beta = X(X'X)^_{-1}X'y = Hy$
+     * $\hat y = X \hat \beta = X(X'X)^{-1}X'y = Hy$
    * It might happen that the columns of $X$ are not linearly independent, so that $X$ is not of full rank. Then $X'X$ is singular and the least squares coefficients $\hat \beta$ are not uniquely defined.
  * Inference:
    * Under $y_i = E(y_i \vert x_{i1}, ..., x_{ip}) + \epsilon_i = \beta_0 + \sum_{j=1}^p x_{ij} \beta_j + \epsilon_i$, where $\epsilon_i i.i.d ~ N(0, \sigma^2)$, we can show that:
      * $\hat \beta ~ N(\beta, (X' X)^{-1} \sigma^2)$,
-     * $(N - p - 1) \hat \sigma^2 ~ \simga^2 \chi_{N-p-1}^2$,
+     * $(N - p - 1) \hat \sigma^2 ~ \sigma^2 \chi_{N-p-1}^2$,
      * and $\hat \beta_j$ and $\hat \sigma^2$ are statistically independent.
    * To test $H_0:\beta_j = 0(j = 0, ..., p)$,:
      * use $z_j = \frac{\hat \beta_j}{\hat \sigma \sqrt{v_{j+1}}}$, where $v_j$ is the j th diagonal element of $(X'X)^{-1}$. Under $H_0, z_j ~ t_{N - p - 1}$.
@@ -264,7 +264,7 @@ parent  : lectures
  * The ridge regression coefficient estimates can change substantially when multiplying a given predictor by a constant, due to the sum of squared coefficients term in the penalty part of the ridge regression objective funciton. Therefore, it is best to apply ridge regression after standardizing the predictors.
 
  * Bias-Variance tradeoff:
-   * $\sum_{i=1}^p var(\hat \bet_{i, \lambda}^r) = \sigma^2 \sum_{i=1}^{P} \frac{d_i^2}{(d_i^2 + \lambda)^2}$
+   * $\sum_{i=1}^p var(\hat \beta_{i, \lambda}^r) = \sigma^2 \sum_{i=1}^{P} \frac{d_i^2}{(d_i^2 + \lambda)^2}$
    * $E(\hat \beta_{\lambda}^r - \beta) = V[(D^2 + \lambda I)^{-1} D^2 - I] \alpha$
    * where $\beta = V \alpha$. Then the $bias^2$ is:
      * $E(\hat \beta_{\lambda}^r - \beta)'E(\hat \beta_{\lambda}^r - \beta) = \lambda^2 \sum_{i=1}^p \frac{\alpha_i^2}{(d_i^2 + \lambda)^2}$
@@ -453,4 +453,254 @@ parent  : lectures
 ### Primal problem for the soft margin SVM
  * $\underset{\omega, \ksi}{min} (\frac{1}{2} \vert \vert \omega \vert \vert ^2 + \lambda \sum_{i=1}^n \ksi_i)$, subejct to $y_i(\omega^T x_i + b) \ge 1 - \ksi_i$, $\ksi_i \ge 0$, $i=1,...,n$
  * where $\lambda (> 0)$ controls the trade-off between margin maximization and constraints.
+ * Soft-margin SVMs minimize training error traded off against margin. The parameter $\lambda$ is a regularization term, which provides a way to control overfitting:
+   * as $\lambda$ becomes large, we are more focus on minimize $\sum \ksi_i$ rather than maximizing margin.
+   * when $\lambda$ is small, we are focus on maximizing margin and $\sum \ksi_i$ got less restiction.
 
+# 7. Principal component analysis
+ * Unsupervised learning:
+   * Unsupervised learning is often much more challenging than supervised learning . The exercise tends to be more subjective, and there is no simple goal for the analysis, such as prediction of a reponse. Unsupervised learning if often performed as part of an exploratory data analysis.
+   * Techniques for unsupervised learning are of growing importance in a number of fields and PCA is one of a popular method.
+   * Principal component analysis (PCA) (Hotelling, 1993) was introduced as a techinuqe for deriving a reduced set of orthogonal linear projections of a single collection of correlated varibles.
+
+## 7.1 Principal Components Analysis
+ * The goal of PCA - A method is required to visualize the $n$ observations when $p$ is large. In particular, we would like to find a low-dimensional representation of the data that captures as much of the information as possible. PCA finds a low-dimensional representation of a data set that contains as much as possible of the variation (dimension reduction).
+ * PCA definition:
+   * Assume that the random p-vector:
+     * $X = (X_1, ..., X_p)^T$
+   * has mean $\mu_X$ and covariance $\Sigma_{XX}$. Without loss of generality, assume $X$ has zero mean. PCA seeks to replace the set of $p$ (unordered and correlated) input variables by a (potentially smaller) set of $t$ (ordered and uncorrelated) linear projections, $\ksi_1, ..., \ksi_t (t \le p)$ of the input variables,
+     * $\ksi_j = b_j^T X = b_{j1} X_1 + ... + b_{jp}Xp, & j=1,2,...,t$
+     * where we minimize the loss of information. Here, $b$ are called as loadings of the PC and we constrain the length of loadings is equal to 1, $\sum_{k=1}^p b_{jk}^2 = 1$
+ * In PCA, information is interpreted as the total variation of the original input variables,
+   * $\sum_{j=1}^p var(X_j) = tr(\Sigma_{XX})$
+ * From the spectral decomposition theorem, we can write
+   * $\Sigma_{XX} = U \Lambda U^T, U^T U=I_p$,
+   * where the diagnoal matrix $\Lambda$ has diagonal elements the eigenvalues, $\labmda_j$, and the columns of $U$ are the eigenvectors. Thus, tr($\Sigma_{XX}) = tr(\Lambda) = \sum \lambda_j$.
+   * The first $t$ linear projections $\ksi_j$ of $X$ are ranked in order to $var(\ksi_j)$.
+ * Derivation:
+   * The first PC(scores), $\ksi_1$ is obtained by choosing the $b_1$ so that the variance of $\ksi_1$ is a maximum. That is,
+     * $\underset{b_1}{argmax} var(b_1^T X)$ subject to $b_1^T b_1 = 1$.
+   * Then the optimization problem can be rewritten as:
+   * $f(b_1) = b_1^T \Sigma_{XX} b_1 - \lambda_1(b_1^T b_1 -1)$
+   * where $\lambda_1$ is a Lagrangian multiplier.
+   * $\frac{\partial f(b_1)}{\partial b_1} = 2(\Sigma_{XX} - \lambda_1 I_p) b_1 = 0$
+   * If $b_1 \not = 0$, then $\lambda_1$ should satisfy the
+   * $\vert \Sigma_{XX} - \lambda_1 I_p \vert = 0$,
+   * That is $\lambda_1$ is the largest eigenvalue of $\Sigma_{XX}$, and $b_1$ is the eigenvector $\Sigma_{XX}$.
+   * The second PC, $\ksi_2$ is computed from
+   * $\underset{b_2}{argmax} var(b_2^T X)$ subject to $b_2^T b_2 = 1, b_1^T b_2 = 0$
+   * Note that a second constraint is comes from the uncorrelation between $\ksi_1$ and $\ksi_2$. Then
+   * $f(b_2) = b_2^T \Sigma_{XX} b_2 - \lambda_2 (b_2^T b_2 -1) - \mu b_1^T b_2$,
+   * where $\lambda_2$ and $\mu$ are the Lagrangian multiplier and the maximum yields from:
+     * $\frac{\partial f(b_2)}{\partial b_2} = 2(\Sigma_{XX} - \lambda_2 I_r) b_2 - \mu b_1 =0$.
+   * Then we can see that $\lambda_2$ is the second largest eigenvalues of $\Sigma_{XX}$ and the $b_2$ is the corresponding eigenvector.
+   * In this sequential manner, we obtain the remaining sets of coefficients for the principal components.
+
+ * Remarks:
+   * We have already mentioned that before PCA is performed, the variables should be centered to have mean zero. Furthermore, the results obtained when we perform PCA will also depend on whether the variables have been individually scaled.
+   * Each principal component loading vector is unique, up to a sign flip.
+   * We are interested in knowing the proportion of variance explained (PVE) by each principal component. i.e. the variance explained by the $m$ th PC is:
+     * $\frac{var(\ksi_m)}{\sum_{i=1}^p var(\ksi_i)} = \frac{var(\ksi_m)}{\sum_{i=1}^p var(X_i)} = \frac{\lambda_m}{\sum_{i=1}^p \lambda_i}$
+
+## 7.2 Principal Components Regression
+ * The principal components regression (PCR) approach involves constructing the first $q$ principal components and then using these components as the predictors in a linear regression model that is fit using least squares.
+ * Procedure:
+   1. Let $Y_{n \times 1}$ denote the observed outcomes and $X_{n \times p}$ denotes data matrix of observed covariates.
+   2. Assume that $Y$ and each of the $p$ columns of $X$ have already been centered so that all of them have zero emprical means.
+   3. Perform PCA on the observed data matrix for the explanatory variables to obtain the principal components, and then (usually) select a subset, based on some appropriate criteria, of the principal components so obtained for further use.
+     * Principal components $Z_{n \times q} = XB = [X b_1, ..., Xb_q]$.
+   4. Now regress the observed vector of outcomes on the selected principal components as covariates, using ordinary least squares regression (linear regression) to get a vector of estimated regression coefficients (with dimension equal to the number of selected principal components).
+     * $\beta_{PCR} = (Z^TZ)^{-1} Z^T Y, & \hat \beta = B \beta_{PCR}$
+ * As more principal components are used in the regression model, the bias decreases, but the variance increases.
+ * This results in a typical U-shape for the mean squared error.
+ * We note that even though PCR prodives a simple way to perform regression using $q < p$ predictors, it is not a feature selection method. It is more similar to the ridge regression.
+
+# 8. Classification
+ * Predicting a qualitative response for an observation can be referred to as classifying that observation, since it involves assigning the observation to a category, or class.
+   * Given a feature vector $X$ and a qualitative response Y taking values in the set $C$, the classification task is to build a funciton $C(X)$ that takes as input the feature vector $X$ and predicts its value for $Y$
+   * Often we are more interested in estimating the probabilities that $X$ belongs to each category in $C$.
+
+## 8.1. Logistic Regression
+ * Let $p(X) = Pr(Y = 1 \vert X)$ for binary $Y$.
+ * If we use a linear regresion model, the model is:
+   * $E(Y \vert X) = p(X) = \beta_0 + \beta_1, X$
+ * and we might produce probabilities less than zero or bigger than one.
+ * The logistic regression uses the form:
+   * $p(X) = \frac{e^{\beta_0 + \beta_1 X}}{1 + e^{\beta_0 + \beta_1 X}}$,
+ * which can be rearranged as:
+   * $log(\frac{p(X)}{1 - p(X)}) = \beta_0 + \beta_1 X$
+ * This monotone transformation is called log odds or logit transformation of $p(X)$.
+
+### Interpretation of $\beta$
+ * Probability $p(X) = P(Y = 1 \vert X) = \frac{exp(\beta_0 + \beta_1 X)}{1 + exp(\beta_0 + \beta_1 X)}$
+ * Odds $\Delta = \frac{p(X)}{1 - p(X)} = exp(\beta_0 + \beta_1 X)$ : The ratio of the probability that the event will happen to the probability that the event will not happen
+ * Log odds $log(\frac{p(X)}{1 - p(X)}) = \beta_0 + \beta_1 X$
+ * Odds ratio $OR(X) = \frac{\Delta(X=1)}{\Delta(X=0)} = exp(\beta_1)$
+ * Sign of $\beta_1$:
+   * $\beta_1 \approx 0 \leftrightarrow \Delta(X=1) \approx \Delta (X = 0)$
+   * $\beta_1 > 0 \leftrightarrow \Delta(X=1) > \Delta (X = 0)$
+   * $\beta_1 <  0 \leftrightarrow \Delta(X=1) < \Delta (X = 0)$
+
+### Estimation
+ * We use maximum likelihood to estimate the parameters.
+ * $l(\beta_0, \beta_1) = \prod_{i:y_i=1} p(x_i) \prod_{i:y_i = 0} (1 - p(x_i))$
+ * We pick $\beta_0$ and $\beta_1$ to maximize the likelihood of the observed data.
+ * (We may use non-linear least square fit, but MLE is preferred.)
+
+### Logistic regression with several variables
+ * $log (\frac{p(X)}{1 - p(X)}) = \beta_0 + \beta_1 X_1 + ... + \beta_p X_p$
+ * $p(X) = \frac{exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}{1 + exp(\beta_0 + \beta_1 X_1 + ... + \beta_p X_p)}$
+
+## 8.2 KNN classifier
+ * KNN classifier: $Pr(Y = j \vert X =x_0) = \frac{1}{K} \sum_{i \in N_0} I(y_i = j)$, where $N_0$ is the $K$ points in the training data that are closes to $x_)$.
+
+## 8.3 Comparison methods
+ * KNN:
+   * Advantages : It is automatically non-linear, it can detect linear or non-linear distributed data, it tends to perform very well with a lot of data points.
+   * Disadvantages : It needs to be carefully tuned, the choice of $K$ and the metric (dstinace) to be used are critical. KNN is also sensitive to outliers and removing them before using KNN tends to improve results.
+ * SVM:
+   * Advantages : SVM can be used in linear or non-linear ways with the use of a Kernel. When you have alimited set of points in many dimensions SVM tends to be very good. SVM is good with outliers as it will only use the most relevant points to find a linear separation (SVs).
+   * Disadvantages : SVM needs to be tuned, the cost $C$ and the use of a kernel and its parameters.
+ * Logostoc regression:
+   * Advantages : It tells important predictors; It also give a probability not the label. We may add interaction between the variables.
+   * Disadvnatges : It is a linear classifier. Doesn't perform well when the dimension is too large.
+
+# 9. Clustering
+ * Clustering consists of partioning a large number of objects characterized by multiple variables into groups (clusters) based on some indicator of mutual similarity between the objects.
+ * Difference between classification and clustering:
+   * (Classification) known number of groups:
+     * The objective is to assign new observations to one of these known groups.
+   * (Clustring) Unknown number of groups, unknown group structure:
+     * The goal is to find an optimal grouping for which the observations or object within each cluster are similar but the clusters are dissimilar to each other.
+ * Clustering depends on how to define "similarity" between objects(items or variables).
+ * Data can be written as a $n \times p$ matrix:
+   * $Y = (y_1^T, ..., y_n^T)^T$
+   * where $y_i \sim R^p$. We gernerally wish to group the n $y_j$ s( rows) into $g$ clusters.
+ * Clustering methods:
+   * Hierarchical methods: It proceeds in successive stps from smaller to larger clusters, which can be directly observed visually by humans.
+   * Nonhierarchical methods: It consists of progressively refining the data partitions to obtain a given number of clusters. (e.g. k-means, self-organizing map, and mixture-model clustering)
+
+## 9.1. Hierarchical Clustering
+ * Hierarchical clustering essentially consists of progressively organizing all of the candidate objects into clusters comprising mutually similar objects as determined by some measure of interobject and intercluster similarity.
+ * The clusters formed in each step can be graphically displayed in tree diagrams referred to as dendrigrams.
+ * Interobject Similarity:
+   1. Euclidean distance:
+     * $d(x, y) = \sqrt{(x -y)'(x - y)} = \sqrt{\sum_{i=1}^p (x_i - y_i)^2}$
+   2. $L_1$ distance:
+     * $d(x, y) = \sum_{i=1}^p \vert x_i - y_i \vert$
+   3. Minkowski distance:
+     * $d(x, y) = (\sum_{i=1}^ p \vert x_i - y_i \vert ^m)^{1/m}$
+   4. Mahalanobis distance:
+     * $d(x, y) = \sqrt{(x - y)' S^{-1} (x-y)}$
+ * Euclidean distance usuqlly serves as the measure of similarity. Note that Minkowski distance reduces to the $L_1$ distance when $m=1$ and to the Euclidean distance whe n$m=2$.
+ * Intercluster Distance, linkage methods:
+   * Based on the distances found between the data in the dataset, we begin to form a single cluster containing the objects separated by the shortest interobject distance. It is then necessary to determine the distance from that cluster to other objects in the set.
+   * Let $C_{\alpha}$ and $C_{\beta}$ be two clusters formed on the basis of distnace between object.
+   * Single linkage: minimum distance or nearest neighbor:
+     * $d(C_\alpha, C_\beta) = \underset{i,j}{min} \{ d(x_i^\alpha, x_j^\alpha), x_i^\alpha \in C_\alpha, x_j^\beta \in C_\beta \}$
+   * Complete linkage: maximum distance or farthest neighbor:
+     * $d(C_\alpha, C_\beta) = \underset{i,j}{max} \{ d(x_i^\alpha, x_j^\alpha), x_i^\alpha \in C_\alpha, x_j^\beta \in C_\beta \}$
+   * Avergage linkage: average distnace:
+     * $d(C_\alpha, C_\beta) = \frac{1}{n_\alpha n_\beta} \sum_{i}^{n_\alpha} \sum_{j}^{n_\beta} \{ d(x_i^\alpha, x_j^\alpha), x_i^\alpha \in C_\alpha, x_j^\beta \in C_\beta \}$
+   * Centroid linkage: distance between the cluster centroids:
+     * $d(C_\alpha, C_\beta) = d(\bar x_\alpha, \bar x_\beta), \bar x_\alpha = \frac{1}{n_\alpha} \sum_{i}^{n_\alpha} x_i^{\alpha}, \bar x_\beta = \frac{1}{n_\beta} \sum_{i}^{n_\beta} x_i^{\beta}$
+ * Dendrogram - The results of both agglomerative and divisive methods may be displayed in the form of a two-dimensional diagram.
+### Compare the linkages
+ * Single linkage suffers from chaining.
+ * Complete linkage avoids chaining, but suffers from crowding. Because its score is based on the worst-case dissimilarity between pairs, a point can be closer to points in other clusters than to points in its own cluster.
+ * Average linkage tries to strike a balance. But, results of average linkage clustering can change with a monotone increasing transformation of the dissimilarities.
+
+## 9.2 Nonhierarchical Clustering
+ * In nonhierarchical clustering, a predetermined number of clusters are formed.
+
+### 9.2.1 K-means clustering
+ * MacQueen (1967) suggests the term K-means for describing an algorithm that assigns each item to the cluster having the nearest centroid (mean).
+ * (Procedure) In its simplest version, the process is composed of these three steps:
+   1. From among the $n$ objects, take $k$ objects at random as seeds that will form the nuclei of $k=3$ clusters.
+   2. Assign each of the remaining objects to the nearest nucleus using an appropriate measure of similarity (usually squared Euclidean distance), thus partitioning the entire set into $k$(three) clusters.
+   3. Compute the centroid, $\Delta$, of each of the $k$ clusters formed in step (2), and reassign each of the objects to the nearest resulting centroid, thus forming three new clusters with these computed centroids replacing the original nuclei set with the initial values.
+   4. Compute a new centroid for each of the new $k$ clusters and then reassign the objects to these new centroids, thus updating their membership in these $k$ clusters, in the same manner as in step (3). Repeat this step until no further intercluster movement occurs for any of the objects.
+ * It is generally recognized that the clusters ultimately formed in k-means clustering may differ with the seed selection in step (1); that is, the clusters are dependent on the initial values.
+
+### 9.2.2 K-medoids - Partitioning Around Medoids (PAM) clustering
+ * Both the k-menas and k-medoids algorithms are partitional (breaking the dataset up into groups) and both attempt to minimize the distance between points labeled to be in a cluster and a point designated as the center of that cluster.
+ * In contrast to the k-means algorithm, k-medoids chooses datapoints as centers (medoids or exemplars) and works with a generalization of the Manhattan Norm ($l_1$) define distance between datapoints instead of Euclidean ($l_2$) distance.
+ * Medoids are more robust to outliers than centroids, but they need more computation for high dimensional data.
+ * The most common realisation of k-medoid clustering is the Partitioning Around Medoids (PAM) algorithm.
+
+# 10. Quantile regression
+ * What the regression curve does is give a grand summary for the averages of the distributions corresponding to set of x's. We could go further and compute several different regression curves corresponding to the various percentage points of the distributions and thus get a more complete picture of the set.
+
+## 10.1 Motivation
+ * Measuring heterogenous effects:
+   * The effect of a variable may not be the same for all individuals. Ignored in standard linear regressions, which focus on average effects.
+   * But this heterogeneity may be important for public policy.
+   * Least squares(LS) : Legendre (1805)
+     * $\hat \beta_{LS} = \underset{\beta \in R^p}{argmin} E(Y - X\beta)^2$
+     * $X \hat \beta_{LS}$ approximate the conditional mean of $Y$ given $X$.
+     * $\Rightarrow$ LS methods provides only partial description of the conditional distribution of $Y$.
+ * Robustness to outliers and to heavy tails
+   * In a linear model : $Y = X \beta + \epsilon$
+   * If $\epsilon$ is symmetric around zero, we can estimate $\beta$ with OLS or median regression but we may prefer to estimate it with median regression if $\epsilon$ has heavy tails.:
+     $ \hat \beta_{LAD} = \underset{\beta \in R^p}{argmin} \vert Y - X \beta \vert$
+   * Indeed, if $E(\vert \epsilon \vert) = \infty$, OLS are inconsistent, whereas the median is always defined.
+
+## 10.2 Quantile
+ * Given a real-valued random variable, $X$ with distribution function $F_X$, we define the $\tau$ th quantile of $X$ as
+ * $Q_X(\tau) = F_X^{-1} (\tau) = inf\{x \vert F(X) \ge \tau\}$
+ * Viewed from the perspective of densities, the $\tau$ th quantile splits the area under the density into two parts: one with area $\tau$ below the $\tau$ th quantile and the other with area $1 - \tau$ above it.
+ * Define the loss function $\rho_\tau (x) = x(\tau - I_{(x < 0)})$, then the quantile can be found by:
+   * $Q_X(\tau) = \underset{\alpha}{min} E(\rho_{\tau} (X - \alpha))$
+ * A convex loss function $\rho_\tau$ and its derivative function $\psi_\tau$.
+
+## 10.3 Conditional quantile and quantile regression
+ * The $\tau$ th conditional quantile function is $Q_{Y \vert X} (\tau)$ is computed as
+   * $Q_{Y \vert X}(\tau) = X \beta_\tau$, where $\beta_\tau = \underset{\beta \in R^p}{argmin} E(\rho_\tau(Y - X \beta))$
+ * Solving the sample analog gives the estimator of $\beta$.
+    $\beta_\tau = \underset{\beta \in R^p}{argmin} \sum_{i=1}^n(\rho_\tau(Y_i - X_i \beta))$
+ * $X \hat \beta_\tau$ approximates the $\tau$ the conditional quantile function.
+
+## 10.4 Real data analysis
+ * The QR estimator does not have a closed form.
+ * The minimization criteria is not everywhere differentiable, so that standard numerical algorithms do not work. - It can be solved using linear programming methods.
+ * Beyond simple linear regression, there are several machine learning methods that can be extended to quantile regression. We can apply all neural network and deep learning algorithms to quantile regression. Tree-based learning algorithms are also available for quantile regression(e.g., Quantile Regression Forests, as a simple generalization of Random Forests).
+
+# 11. Tree-based methods
+ * Here we descirbe tree-based methods for regression and classification.
+ * Since the set of splitting rules used to segment the predictor space can be summarized in a tree, these types of approaches are known as decision-tree methods.
+ * Tree-based methods are simple and useful for interpretation.
+ * However they typically are not competitive with the best supervised learning approaches in terms of prediction accuracy. -> ensemble methods.
+
+## 11.1 Regression Trees
+### How do we build the regression tree
+ 1. We divide the predictor space - that is, the set of possible values for $X_1, ..., X_p$ - into $J$ distinct and non-overlapping regions, $R_1,...,R_J$.:
+   * Find $R_1, ..., R_J$ that minimize the RSS given by:
+     * $RSS = \sum_{j=1}^J \sum_{i \in R_j} (y_i - \hat y R_j)^2$,
+   * where $\hat y R_j$ is the mean response for the training observations within the $R_j$.
+ 2. For every observation that falls into the region $R_j$, we make the same prediction, which is simply the mean of the reponse values for the training observations in $R_j$.
+ * Computationally infeasible to consider every possible partition of the feature space into $J$ boxes. Thus, we take a top-down, greedy approach called recursive binary splitting.
+ 1. We first select the predictor $X_j$ and the cutpoint $s$ such that splitting the predictor space into the regions $R_1 = \{ X\vert X_j < s \}$ and $R_2 = \{ X \vert X_j \ge s \}$ leads to the greatest possible reduction in RSS.:
+   * $RSS = \sum_{i:x_i \in R_1} (y_i - \hat y_{R_1})^2 + \sum_{i: x_i \in R_2} (y_i - \hat y_{R_2})^2$
+ 2. Next, we repeat the process, looking for the best predictor and best cutpoint in order to split the data further so as to minimize the RSS within each of the resulting regions. However, this time, instead of splitting the entire predictor space, we split one of the two previously identified regions.
+
+### Pruning a tree
+ * The process described above may produce good predictions on the training set, but is likely to overfit the data, leading to poor test set performance.
+ * A smaller tree with fewer splits might lead to lower variance and better interpretation at the cost of a little bias.
+ * A strategy is to grow a very large tree $T_0$, and then prune it back in order to obtain a subtree. (Cost complexity pruning) For each value of $\alpha$, find a subtree $T$ that:
+   * $\sum_{m=1}^{\vert T \vert} \sum_{i \in R_m} (y_i - \hat y_{R_m})^2 + \alpha \vert T \vert$
+   * is as small as possible.
+   * The tuning parameter $\alpha$ controls a trade-off between the subtree's complexity and its fit to the training data.
+   * We select an optimal value $\hat \alpha$ using cross-validation.
+   * We then return to the full data set and obtain the subtree corresponding to $\hat \alpha$.
+
+## 11.2 Classification Trees
+ * Very similar to a regression tree, except that it is used to predict a qualitative response rather than a quantitative one.
+ * Just as in the regression setting, we use recursive binary splitting to grow a classification tree.
+ * A natrual alternative to RSS is the classification error rate. Let $\hat p_{mk}$ represents the proportion of training observations in the mth region that are from the kth class.
+ * $\hat pm_{mk} = \frac{1}{N_m} \sum_{x_i \in R_m} I(y_i = k)$.
+ * Misclassification error : $1 - \underset{k}{max} \hat p_{mk}$
+ * Gini index : $G = \sum_{k=1}^K \hat p_{mk} (1 - \hat p_{mk})$, a measure of total variance across the K classes. A small value indicates that a node contains predominantly observations from a single class.
+ * Cross-entropy:
+   * $ D = - \sum_{k=1}^K \hat p_{mk} log \hat p_{mk}$
+   * The entropy will take on a value near zero if the $\hat p_{mk}$'s are all near zero or near one.
+ * When building a classification tree, either the Gini index or the entropy are typically used to evaluate the quality of a particular split, since these two approaches are more sentivie to node purity than is the classification error rate.
