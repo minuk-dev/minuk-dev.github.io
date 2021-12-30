@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-12-13 16:07:49 +0900
+lastmod: 2021-12-30 23:08:47 +0900
 ---
 ## 즐겨찾기
  * [[msa-from-ddd]]
@@ -12,7 +12,6 @@ lastmod: 2021-12-13 16:07:49 +0900
  * [[teamnote]]
  * [[boj]]
  * [[UCPC_2018_예선]]
- * [[정우 대회]]
 
 ### Study
  * [[soma]]

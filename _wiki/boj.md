@@ -3,11 +3,13 @@ layout  : wiki
 title   : boj
 summary :
 date    : 2020-04-27 21:37:43 +0900
-lastmod : 2020-10-11 16:30:42 +0900
+lastmod : 2021-12-30 23:09:01 +0900
 tags    :
 draft   : false
 parent  :
 ---
+
+ * [[정우 대회]]
 
 ## 리스트
  * [X] 10830 제출 (MOD 주의하자)
