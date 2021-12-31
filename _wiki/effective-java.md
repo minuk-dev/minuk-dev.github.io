@@ -3,7 +3,7 @@ layout  : wiki
 title   : Effective Java
 summary : Effective Java 책 정리
 date    : 2021-12-26 17:48:34 +0900
-lastmod : 2021-12-31 01:55:08 +0900
+lastmod : 2022-01-01 00:51:52 +0900
 tags    : [book, java]
 draft   : false
 parent  : Book reviews
@@ -259,4 +259,45 @@ public class PhysicalConstatnts {
 - 맴버클래스에서 바깥 인스턴스에 접근할 일이 없다면 무조건 static을 붙여서 정적 맴버 클래스로 만들자
 
 ## Item 25. 톱레벨 클래스는 한 파일에 하나만 담으라
+
+# 5. 제네릭
+## Item 26. 로 타입은 사용하지 말라
+```java
+static int numElementsInCommon(Set s1, Set s2) {} // 피해라
+static int numElementsInCommon(Set<?> s1, Set<?> s2) {} // 차라리 비한정적 와일드카드 타입을 사용해라
+```
+- 위와같이 사용하게 된다면, 컬렉션의 타입 불변식을 훼손하지 못한다.
+- 로 타입을 사용하면 런타임에 예외가 일어날 수 있으니 사용하면 안된다. 로 타입은 제네릭이 도입되기 이전 코드와의 호환성을 위해서 제공되는 것이다.
+
+## Item 27. 비검사 경고를 제거하라
+- `@SuppressWarnings("unchecked")` 와 같은 어노테이션을 달아서 경고를 숨겨라.
+  - 실제로 필요한 경고를 묻히게 하면 안된다.
+- `@SuppressWarnings`은 항상 가능한 좁은 범위에 적용하자.
+- 만약 경고를 어노테이션으로 숨겼다면, 안전한 이유를 항상 주석으로 남겨야 한다.
+
+## Item 28. 배열보다는 리스트를 사용하라
+- 배열은 공변이며, 리스트는 불공변이다.
+- 물론 전부 치환해야하는 것은 아니지만, 두개를 동시에 쓰다가 오류나 경고를 만나면 리스트로 대쳏는 것을 먼저 고려해볼만하다
+
+## Item 29. 이왕이면 제네릭 타입으로 만들라
+## Item 30. 이왕이면 제네릭 메서드로 만들라
+## Item 31. 한정적 와일드카드를 사용해 API 유연성을 높이라
+- 클래스 사용자가 와일드카드 타입을 신경 써야 한다면, 그 API에 문제가 있을 가능성이 크다.
+- 일반적으로 `Comparable<E>`보다는 `Comparable<? super E>` 가 낫다.
+- 조금 복잡하더라도 와일드카드 타입을 적용하면 API가 훨씬 유연해진다. PECS 공식을 기억하자
+  - producer는 extends를 consumer는 super을 사용한다.
+## Item 32. 제네릭과 가변인수를 함께 쓸 때는 신중하라
+```java
+static void dangerous(List<String>... stringLists) {
+  List<Integer> intList = List.of(42);
+  Object[] objects = stringLists;
+  objects[0] = intList; // 힙 오염 발생
+  String s = stringList[0].get(0); // ClassCastException
+}
+```
+- `@SafeVarargs` 어노테이션은 메서드 작성자가 그 메서드가 타입 안전함을 보장하는 장치다.
+- `@SafeVarargs` 어노테이션은 재정의할 수 없는 메서드에만 달아야한다.
+- 가변인수와 제네릭은 궁합이 좋지 않다. 가변인수 기능은 배열을 노출하여 추상화가 완벽하지 못하고, 배열과 제네릭의 타입 규칙이 서로 다르기 때문이다.
+
+## Item 32. 타입 안전 이종 컨테이너를 고려하라
 
