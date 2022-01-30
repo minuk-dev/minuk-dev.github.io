@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2021-12-26 17:49:18 +0900
+lastmod : 2022-01-31 04:38:11 +0900
 tags    : [book]
 parent  :
 ---
@@ -17,6 +17,7 @@ parent  :
  * [[msa-from-ddd]]
  * [[keras-book]]
  * [[effective-java]]
+ * [[kubernetes-in-action]]
 
 ### 정리 보류한거
  * [[Mathematical Statistics]]
