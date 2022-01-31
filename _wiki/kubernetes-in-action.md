@@ -1,22 +1,22 @@
 ---
 layout  : wiki
 title   : Kubernetes in action
-summary : 
+summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-01-31 04:38:27 +0900
-tags    : 
+lastmod : 2022-02-01 02:33:39 +0900
+tags    : [k8s]
 draft   : false
-parent  : 
+parent  : Book reviews
 ---
 
 # Part 1. Overview
 ## Chapter 1. Introducing Kubernetes
 ### Changes of software development and deployments.
 - Years ago, most software applications were big monoliths
-	- Slow release cycles
-	- Relatively infrequent updates
+  - Slow release cycles
+  - Relatively infrequent updates
 - Today, these applications are broken down into smaller. : microservices
-	- Microservies are decoupled from each other -> Easily developed, deployed, updated, and scaled individually
+  - Microservies are decoupled from each other -> Easily developed, deployed, updated, and scaled individually
 - Kubernetes helps the ops team by automaticaly monitoring and rescheduling those apps in the event of a hardware failure.
 
 ### 1.1. Understanding the need for a system like Kubernetes
@@ -41,9 +41,9 @@ parent  :
 
 #### 1.2.2. Intoducing the Docker container platform
 - Understanding Docker concepts
-	- Images
-	- Regieries
-	- Containers
+  - Images
+  - Regieries
+  - Containers
 - Building, distributing, and running a Docker image
 - Comparing virtual machines and Docker containers
 - Understanding image layers
@@ -52,9 +52,9 @@ parent  :
 #### 1.2.3. Introducing rkt - an alternative to Docker
 - rkt (pronounced "rock-it")
 - benefits:
-	- security
-	- composability
-	- conforming to open standards
+  - security
+  - composability
+  - conforming to open standards
 
 ### 1.3. Introducing Kubernetes
 #### 1.3.1. Understanding its origins
@@ -67,19 +67,19 @@ parent  :
 
 #### 1.3.3. Understanding the architecture of a Kubernetes cluster
 - The components that make up a Kubernetes cluster
-	- The master node, which hosts the Kubernetes Control Plane that controls and manages the whole Kubernetes system
-	- Worker nodes that run the actual applications you deploy
+  - The master node, which hosts the Kubernetes Control Plane that controls and manages the whole Kubernetes system
+  - Worker nodes that run the actual applications you deploy
 
 - The Control Plane
-   - The Kubernetes API Server, which you and the other Control Plan components communicate with
-   - The Schduler, which schedules your apps (assigns a worker node to each deployable component of your application)
-   - The Controller Manager, which performs cluster-level functions, such as replicating components, keeping track of worker nodes, handlign node failures, and so on
-   - etcd, a reliable distributed data store that persistently stores the cluster configuration.
+  - The Kubernetes API Server, which you and the other Control Plan components communicate with
+  - The Schduler, which schedules your apps (assigns a worker node to each deployable component of your application)
+  - The Controller Manager, which performs cluster-level functions, such as replicating components, keeping track of worker nodes, handlign node failures, and so on
+  - etcd, a reliable distributed data store that persistently stores the cluster configuration.
 
 - The nodes
-	- Docker, rkt, or another container runtime, which runs your containers
-	- The Kubelet, which talks to the API server and manages containers on its node.
-	- The Kubernets Service Proxy (kube-proxy), which load-balances network traffic between application components
+  - Docker, rkt, or another container runtime, which runs your containers
+  - The Kubelet, which talks to the API server and manages containers on its node.
+  - The Kubernets Service Proxy (kube-proxy), which load-balances network traffic between application components
 
 #### 1.3.4. Running an application in Kubernetes
 - Understanding how the description results in a running container
@@ -129,15 +129,15 @@ docker exec -it <container-name> <command>
 ```
   - `-i`, which makes sure STDIN is kept open. You need this for entering commands into the shell.
   - `-t`, which allocates a pseudo terminal (TTY).
- 
+
 - Getting additional information about a container
 ```bash
 docker inspect <container-name>
 ```
 
 - The container's filesystem is also isolated
-	- Tip: Entering a running container like this is useful when debugging an app running in acontainer. When something's wrong, the first thing you'll want to explore is the actual state of the system your application sees. Keep in mind that an application will not only see its own unique filesystem, but also processes, users, hostname, and network interfaces.
-	
+  - Tip: Entering a running container like this is useful when debugging an app running in acontainer. When something's wrong, the first thing you'll want to explore is the actual state of the system your application sees. Keep in mind that an application will not only see its own unique filesystem, but also processes, users, hostname, and network interfaces.
+
 #### 2.1.7. Stopping and removing a container
 
 ```bash
@@ -164,4 +164,168 @@ docker push <docker-hub-id>/<name>
 ### 2.2. Setting up a Kubernetes cluster
 #### 2.2.1. Running a local single-node Kubernetes cluster with Minikube
 ### 2.3. Running your first app on Kubernetes
+#### 2.3.1 Deploying your app
+```bash
+kubectl run kubia --image=<image-name> --port=<port>
+```
+
+- Listing pods
+```bash
+kubectl get pods
+```
+
+#### 2.3.2. Accessing your web application
+```bash
+kubectl expose rc <pod-name> --type=LoadBalancer --name <service-name>
+```
+
+- Listing service
+```bash
+kubectl get services
+```
+
+```bash
+kubectl get svc
+```
+
+#### 2.3.3. The logical parts of your system
+- Understanding how the ReplicationController, the Pod, and the Service fit together
+- Understanding the pod and its container
+- Understanding the role of the ReplicationController
+- Understanding why you need a service
+
+#### 2.3.4. Horizontally scaling the application
+- Increasing the desired replica count
+```bash
+kubectl scale rc <pod-name> --replicas=<number>
+```
+
+- Seeing the results of the scale-out
+```bash
+kubectl get rc
+```
+
+#### 2.3.5. Examining what nodes your app is running on
+#### 2.3.6. Introducing the Kubernetes dashboard
+### 2.4. Summary
+
+# Part 2. Core concepts
+## Chapter 3. Pods: running containers in Kubernetes
+### 3.1. Intorducing pods
+#### 3.1.1. Understanding why we need pods
+- Understanding why multiple containers are better than one container running multiple processes
+
+#### 3.1.2. Understanding pods
+- Understanding the partial ioslation between containers of the same pod
+- Understanding how containers share the same IP and port space
+- Introducing the flat inter-pod network
+
+#### 3.1.3. Organization containers across pods properly
+- Splitting multi-tier apps into multiple pods
+- Splitting into multiple pods to enable individual scaling
+- Understanding when to use multiple containers in a pod
+- Deciding when to use multiple containers in a pod
+
+### 3.2. Creating pods from YAML or JSON descriptors
+```bash
+kubectl get po <podname> -o yaml
+```
+
+1. Kubernetes API version used in this YAML descriptor
+2. Type of Kubernetes object/resource
+3. Pod metadata(name, labels, annotations, and so on)
+4. Pod specification/contents(list of pod's containers, volumes, and so on)
+5. Detailed status of the pod and its containers
+- Inducing the main parts of a pod definition:
+  - Metadata includes the name, namespace, labels, and other information about the pod.
+  - Spec contains the actual description of the pod's contents, such as the pod's containers, volumes, and other data.
+  - Status contains the current information about the runnign pod, such as what condition the pod is in, the description and status of each container, and the pod's internal IP and other basic info.
+
+#### 3.2.2. Creating a  simple YAML descriptor for a pod
+- Specifying container ports
+- Using kubectl explain to discover possible API object fields
+```bash
+kubectl explain pods
+```
+
+#### 3.2.3. Using kubectl create to create the pod
+#### 3.2.4. Viewing application logs
+
+```bash
+kubectl logs <container id>
+```
+
+- Retrieving a pod's log with kubectl logs
+- Specifying the container name when getting logs of a multi-container pod
+```bash
+kubectl logs <container id> -c <container-name>
+```
+
+#### 3.2.5. Sending requests to the pod
+- Forwarding a local network port to a port in the pod
+```bash
+kubectl port-forward <container-id> 8888:8080
+```
+
+- Connecting to the pod through the port forwarder
+
+### 3.3. Organizing pods with labels
+#### 3.3.1. Introducing labels
+- Each pod is labeled with two labels:
+  - app, which specifies which app, component, or microservice the pod belongs to.
+  - rel, which shows whether the application running in the pod is a stable, beta, or a canary release
+
+- Definition : A canary relase is when you deploy a new version of an application next to the stable version, and only let a small fraction of users hit the new version to see how it behaves before rolling it out to all users. This prevents bad releases from being exposed to too many users.
+
+#### 3.3.2. Specifying labels when creating a pod
+#### 3.3.3. Modifying labels of existing pods
+- Show labels pod
+```bash
+kubectl get po --show-labels
+kubectl get po -L creation_method,env
+```
+
+```bash
+kubectl label po <pod-name> creation_method=manual
+```
+
+### 3.4. Listing subsets of pods through label selectors
+- A label selector can select resources based on whether the resource:
+  - Contains (or doesn't contain) a label with a certain key
+  - Contains a label with a certain key and value
+  - Contains a label with a certain key, but with a value not equal to the one you specify
+
+#### 3.4.1. Listing pods using a label selector
+#### 3.4.2. Using multiple conditions in a label selector
+
+### 3.5. Using labels and selectors to constrain pod scheduling
+#### 3.5.1. Using labels for categorizing worker nodes
+
+#### 3.5.2. Scheduling pods to specific nodes
+#### 3.5.3. Scheduling to one specific node
+
+### 3.6. Annotating pods
+#### 3.6.1. Looking up an object's annotations
+#### 3.6.2. Adding and modifying annotations
+
+### 3.7. Using namespaces to group resources
+#### 3.7.1. Understanding the need for namespaces
+#### 3.7.2. Discovering other namespaces and their pods
+#### 3.7.3. Creating a namespace
+#### 3.7.4. Managing objects in other namespaces
+#### 3.7.5. Understanding the isolation provided by namespaces
+### 3.8. Stopping and removing pods
+#### 3.8.1. Deleting a pod by name
+#### 3.8.2. Deleting pods using label selectors
+
+## Chapter 4. Replication and other controllers: deploying managed pods
+### 4.1. Keeping pods healthy
+#### 4.1.1. Introducing liveness probes
+- Kubernetes can probe a container using one of the three mechanisms:
+	- An HTTP GET probe performs an HTTP GET request on the container's IP address, a port and path you specify. If the probe receives a response, and the response code doesn't represent an error(in other words, if the HTTP response code is 2xx or 3xx), the probe is considered successful. If the server returns an error response code or if it doesn't respond at all, the probe is considered a failure and the container will be restarted as a result.
+	- A TCP Socket probe tries to open a TCP connection to the specified port of the container. If the connection is established successfully, the probe is successful. Otherwise, the container is restarted.
+	- An Exec probe excutes an arbitrary command inside the container and checks the command's exit status code. If the status code is o, the probe is successful. All other codes are considered failures.
+
+#### 4.1.2. Creating an HTTP-based liveness probe
+#### 4.1.3. Seeing a liveness probe in action
 

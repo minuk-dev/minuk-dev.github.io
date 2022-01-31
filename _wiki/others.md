@@ -3,7 +3,7 @@ layout  : wiki
 title   : others
 summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
 date    : 2020-10-01 23:55:41 +0900
-lastmod : 2020-12-11 15:52:28 +0900
+lastmod : 2022-01-31 22:56:00 +0900
 tags    :
 draft   : false
 parent  :
@@ -92,3 +92,12 @@ asmlinkage void __sched schedule(void);
  * 현재 프로세스가 실행하는 메모리 공간을 확인하는 함수가 스케쥴링 중일 때에도 올바른 주소를 반환하는 건, 이 함수를 사용해서이며, 이 함수에서 스케쥴링 상태인지를 확인하는 건 실행 주소가 sched 섹션인지를 확인하는 것이다.
  * 이렇게 하면 스케쥴링 함수들을 모두 한 메모리 영역에 몰아넣고 PC가 그 안에 있는지 체크하면 된다.
  * __sched 키워드만 이런식으로 메모리 공간을 활용하는 것이 아닌데, 이는 여기에 있는 참고 1을 확인하면 된다.
+
+## CRDT
+ * CRDT : Conflict-free replicated data type (CRDT)
+ * CRDT vs OT(Operational Transform)
+ * https://news.hada.io/topic?id=2962
+
+## CQRS
+ * CQRS : Command and Query Responsibility Segregation
+ * https://bluayer.com/37
