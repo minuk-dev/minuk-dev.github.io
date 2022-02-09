@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2021-08-27 15:26:55 +0900
+lastmod : 2022-02-09 21:59:48 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -273,7 +273,8 @@ int main () {
 ```
 
 ## Merge-Sort Tree
- * 백준 7469번 참고
+- 백준 7469번 참고
+- 큰거 개수 쿼리
 
 ```cpp
 #include <iostream>
@@ -368,6 +369,8 @@ int main () {
 ```
 
 ## KMP
+- 문자열을 이루고 있는 최소 주기 : 문자열 길이가 N 일 때, N - pi[N - 1]
+
 ```cpp
 #include <iostream>
 #include <string.h>
