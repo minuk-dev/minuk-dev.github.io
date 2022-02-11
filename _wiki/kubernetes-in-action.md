@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-01 02:33:39 +0900
+lastmod : 2022-02-12 03:24:57 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -328,4 +328,145 @@ kubectl label po <pod-name> creation_method=manual
 
 #### 4.1.2. Creating an HTTP-based liveness probe
 #### 4.1.3. Seeing a liveness probe in action
+#### 4.1.4. Configuring addiontal properties of the liveness probe
+#### 4.1.5. Creating effective liveness probes
+- What a liveness probe should check:
+  - Make sure the `/health` HTTP endpoint doesn't require authentication
+- Keeping probes light
+- Don't Border implementing retry loops in your probes
+- Liveness probe wrap-up
 
+### 4.2. Introducing ReplicationControllers
+#### 4.2.1. The operation of a ReplicationController
+- A ReplicationController has three essential parts:
+  - A label selector, which determines what pods are in the ReplicationController's scope
+  - A replica count, which specifies the desired number of pods that should be running
+  - A pod template, which is used when creating new pod replicas
+- Understanding the benefits of using a ReplicationController:
+  - It makes sure a pod (or multiple pod replicas) is always running by starting a new pod when an existing one goes missing.
+  - When a cluster node fails, it creates replacement replicas for all the pods that were running on the failed node (those that were under the Replication-Controller's control).
+  - It enables easy horizontal scaling of pods - both manual and automatic
+- A pod instance is nver relocated to another node. Instead, the ReplicationController creates a completely new pod instance that has no relation to the instance it's replacing.
+
+#### 4.2.2. Creating a ReplicationController
+- Don't specify a pod selector when defining a ReplicationController.
+
+#### 4.2.3. Seeing the ReplicationController in action
+- `rc` : replicationcontroller
+
+```bash
+kubectl get rc
+```
+
+#### 4.2.4. Moving pods in and out of the scope of a ReplicationController
+- Although a pod isn't tied to a ReplicationController, the pod does reference it in the metadata.ownerReferences field, which you can use to easily find which ReplicationController a pod belongs to.
+
+#### 4.2.5. Changing the pod template
+```bash
+kubectl edit rc <rc-name>
+```
+
+#### 4.2.6. Horizontally scaling pods
+```bash
+kubectl scale rc <rc-name> --replicas=<num>
+```
+#### 4.2.7. Deleting a ReplicationController
+```bash
+kubectl delete rc <rc-name>
+```
+
+### 4.3. Using ReplicaSets instead of ReplicationControllers
+#### 4.3.1. Comparing a ReplicaSet to a ReplicationController
+#### 4.3.2. Defining a ReplicaSet
+#### 4.3.3. Creating and examing a ReplicaSet
+```bash
+kubectl get rs
+```
+
+#### 4.3.4. Using the ReplicaSet's more expressive label selectors
+- Selector key matchExpressions' operators:
+  - `In`-Label's value must match one of the specified values.
+  - `NotIn`-Label's value must not match any of the specified values.
+  - `Exists`-Pod must include a label with the specified key (the value isn't important). When using this operator, you shouldn't specify the values field.
+  - `DoesNotExist`-Pod must not include a label with the spcified key.
+
+#### 4.3.5. Wrapping up ReplicaSets
+```bash
+kubectl delete rs <rs-name>
+```
+
+### 4.4. Running exactly one pod on each node with DaemonSets
+#### 4.4.1. Using a DaemonSet to run a pod one every node
+#### 4.4.2. Using a DaemonSet to run pods only on certain nodes
+- Creating the DaemonSet
+- Adding the required label to your node(s)
+
+### 4.5. Running pods that perform a single completable task
+#### 4.5.1. Introducing the Job resource
+#### 4.5.2. Defining a Job resource
+#### 4.5.3. Seeing a Job run a pod
+```bash
+kubectl get jobs
+```
+
+#### 4.5.4. Running multiple pod instances in a Job
+#### 4.5.5. Limiting the time allowed for a Job pod to complete
+
+### 4.6. Scheduling Jobs to run periodically or once in the future
+#### 4.6.1. Creating a CronJob
+#### 4.6.2. Understanding how scheduled jobs are run
+### 4.7. Summary
+- You can specify a liveness probe to have Kubernetes restart your containre as soon as it's no longer healthy
+- Pods shouldn't be created directly, because they will not be re-created if they're deleted by mistake, if the node they're running on fails, or if they're evicted from the node.
+- ReplicationControllers always keep the desired number of pod replicas running
+- Scaling pods horizontally is as easy as changing the desired replica count on a ReplicationController
+- Pods aren't owned by the ReplicationControllers and can be moved between them if necessary.
+- A ReplicationController creates new pods from a pod template. Chaning the template has no effect on existing pods.
+- ReplicationControllers should be replaced with ReplicaSets and Deployments, which provide the same functionality, but with additional powerful features.
+- ReplicationControllers and ReplicaSets schedule pods to random cluster nodes, whereas DaemonSets make sure every node runs a single instance of a pod defined in the DaemonSet.
+- Pods that perform a batach task should be created through a Kubernetes Job resource, not directly or through a ReplicationController or similar object.
+- Jobs that need to run sometime in the future can be created through CronJob resources.
+
+## Chapter 5. Services: enabling clients to discover and talk to pods
+### 5.1. Intoducing services
+- When creating a service with multiple ports, you must speicify a name for each port.
+- FQDN : fully qualified domain name
+
+### 5.2. Connecting to services living outside the cluster
+
+### 5.3. Expsing services to external clients
+- Ways to make a service accisible externally:
+  - Setting the service type to NodePort
+  - Setting the service type to LoadBalancer
+  - Creating an Ingress resource
+
+### 5.4. Exposing services externally through an Ingress resource
+### 5.5. Signaling when a pod is ready to accept connections
+- three types of readiness probes:
+  - An Exec probe, where a process is executed.
+  - An HTTP GET probe
+  - A TCP Socket probe
+- If you want to add or remove a pod from a service manually, add enabled=true as a label to your pod and to the label selector of your service.
+- You should always define a readiness probe, even if it's as simple as sending an HTTP requeset to the base URL.
+- Don't include pod shutdown logic into your readiness probes
+
+### 5.6. Using a headless service for discovering individual pods
+### 5.7. Troubleshooting services
+- Make sure you're connecting to the service's cluster IP from within the cluster, not from the outside.
+- Don't bother pining the service IP to figure out if the service is accessible (remember, the service's cluster IP is a virtual IP and pining it will never work).
+- If you've defined a readiness probe, make sure it's succeeding; otherwise the pod won't be part of the service.
+- To confirm that a pod is part of the service, examine the corresponding Endpoints object with `kubectl get endpoints`.
+- If you're trying to access the service through its FQDN or a part of it and it doesn't work, see if you can access it using its cluster IP instead of the FQDN.
+- Check whether you're connecting to the port exposed by the service and not the targtet port.
+- Try connecting to the pod IP directly to confirm your pod is accepting connections on the correct port.
+- If you can't even access your app through the pod's IP, make sure your app isn't only binding to localhost.
+
+### 5.8. Summary
+- Expose multiple pods that match a certain label selector under a single, stable IP address and port.
+- Make services accessible from inside the cluster by default, but allows your to make the service accessible from outside the cluster by setting its type to either `NodePort` or `LoadBalancer`
+- Enables pods to discover services together with their IP addresses and ports by looking up environment variables
+- Allows discovery of and communication with services residing outside the cluster by creating a Service resource without specifying a selector, by creating an associated Endpoints resource instead
+- Provides a DNS CNAME alias for external services with the ExternalName service type
+- Expose multiple HTTP services through a single Ingress (consuming a single IP)
+- Uses a pod container's readiness probe to determine whether a pod should or shouldn't be included as a service endpoint
+- Enables discovery of pod IPs through DNS when you create a headless service
