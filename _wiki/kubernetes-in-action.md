@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-13 02:09:11 +0900
+lastmod : 2022-02-15 00:54:26 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -507,3 +507,37 @@ kubectl get jobs
 - Decouple the pod from the storage infrastructure by using PersistentVolumes and PersistentVolumeClaims
 - Have PersistentVolumes of the desire (or the default) storage class dynamically provisioned for each PersistentVolumeClaim
 - Prevent the dyanic provisioner from interfering when you want the PersistentVolumeClaim te be bound to a pre-provisioned PersistentVolume
+
+## Chapter 7. ConfigMaps and Secrets: configuringg applications
+### 7.1. Configuring containerized applications
+### 7.2. Passing command-line arguments to containers
+#### 7.2.1. Defining the command and arguments in Docker
+- ENTRYPOINT defines the executable invoked when the container is started
+- CMD specifies the arguments that get passed to the ENTRYPOINT
+
+### 7.3. Setting environment variables for a container
+### 7.4. Decoupling configuration with a ConfigMap
+- ConfigMap keys must be a valid DNS subdomain (they may only contain alphanumeric characters, dashes, underscores, and dots). They may optionally include a leading dot.
+
+### 7.5. Using Secrets to pass sensitive data to containers
+### 7.6. Summary
+- Override the default command defined in a container image in the pod definition
+- Pass command-line arguments to the main container process
+- Set environment variables for a container
+- Decouple configuration from a pod specification and put it into a ConfigMap
+- Store sensitive data in a Secret and deliver it securely to containers
+- Create a docker-registry Scret and use it to pull images from a private image registry
+
+## Chapter 8. Accessing pod metadata and other resources from applications
+### 8.1. Passing metadata through the Downward API
+### 8.2. Talking to the Kubernetes API server
+```bash
+kubectl cluster-info
+```
+
+- Accessing the API server through kubectl proxy
+```bash
+kubectl proxy
+```
+
+
