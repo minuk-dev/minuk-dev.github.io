@@ -3,7 +3,7 @@ layout  : wiki
 title   : teamnote
 summary : 알고리즘 문풀용 팀노트
 date    : 2020-08-08 00:10:21 +0900
-lastmod : 2022-02-09 21:59:48 +0900
+lastmod : 2022-02-14 22:32:04 +0900
 tags    : [algorithm, teamnote]
 draft   : false
 parent  : algorithm
@@ -978,7 +978,7 @@ int main () {
   }
   sn = sqrt(N);
   sort(query, query + M, [](const query_t& a, const query_t& b) -> bool {
-    return a.s / sn == b.s / sn ? a.e  < b.e : a.s / sn < b.s / sn;
+    return a.s / sn == b.s / sn ? a.e  < b.e : a.s / sn > b.s / sn;
   });
 
   int scur = 1, ecur = 0;
