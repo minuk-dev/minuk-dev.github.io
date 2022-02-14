@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-12 03:24:57 +0900
+lastmod : 2022-02-13 02:09:11 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -470,3 +470,40 @@ kubectl get jobs
 - Expose multiple HTTP services through a single Ingress (consuming a single IP)
 - Uses a pod container's readiness probe to determine whether a pod should or shouldn't be included as a service endpoint
 - Enables discovery of pod IPs through DNS when you create a headless service
+
+## Chapter6. Volumes: attaching disk storage to containers
+### 6.1. Introducing volumes
+- volume types:
+  - emptyDir : A simple empty directory used for storing transient data.
+  - hostPath : Used for mounting directories from the worker node's filesystem into the pod
+  - gitRepo : A volume initialized by checking out the contents of a Git repository
+  - nfs : An NFS share mounted into the pod
+  - gcePersistentDisk : Google Compute Engine Persistent Disk
+  - cinder, cephfs, iscsi, flocker, glusterfs, guobyte, rdb, flexVolume, vsphere-Volume, photonPersistentDisk, scaleIO : Used for mounting other types of network storage
+  - configMap, secret, downwardAPI : Special types of volumes used to expose certain Kubernetes resources and cluster information to the pod
+  - persistentVolumeClaim : A way to use a pre- or dynamically provisioned persistent storage.
+
+### 6.2. Using volumes to share data between containers
+#### 6.2.1. Using an emptyDir volume
+#### 6.2.2. Using a Git repository as the starting point for a volume
+
+### 6.3. Accessing files on the worker node's filesystem
+### 6.4. Using persistent storage
+### 6.5. Decoupling pods from the underlying storage technology
+#### 6.5.1. Introducing PersistentVolumes and PersistentVolumeClaims
+#### 6.5.2. Creating a PersistentVolume
+- pv : persistent volume
+- pvc : persistent volume claim
+
+### 6.6. Dynamic provisioning of PersistentVolumes
+- Similar to PersistentVolumes, StorageClass resources aren't namespaced.
+
+### 6.7. Summary
+- Create a multi-container pod and have the pod's containers operate on the same files by adding a volume to the pod and mounting it in each container
+- Use the emptyDir volume to store temporary, non-persistent data
+- Use the gitRepo volume to easily populate a directory with the contents of a Git repository at pod startup
+- Use the hostPath volume to access files from the host node
+- Mount external storage in a volume to persist pod data across pod restarts
+- Decouple the pod from the storage infrastructure by using PersistentVolumes and PersistentVolumeClaims
+- Have PersistentVolumes of the desire (or the default) storage class dynamically provisioned for each PersistentVolumeClaim
+- Prevent the dyanic provisioner from interfering when you want the PersistentVolumeClaim te be bound to a pre-provisioned PersistentVolume
