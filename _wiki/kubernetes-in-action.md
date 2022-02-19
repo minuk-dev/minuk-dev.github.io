@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-15 00:54:26 +0900
+lastmod : 2022-02-19 19:29:34 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -322,9 +322,9 @@ kubectl label po <pod-name> creation_method=manual
 ### 4.1. Keeping pods healthy
 #### 4.1.1. Introducing liveness probes
 - Kubernetes can probe a container using one of the three mechanisms:
-	- An HTTP GET probe performs an HTTP GET request on the container's IP address, a port and path you specify. If the probe receives a response, and the response code doesn't represent an error(in other words, if the HTTP response code is 2xx or 3xx), the probe is considered successful. If the server returns an error response code or if it doesn't respond at all, the probe is considered a failure and the container will be restarted as a result.
-	- A TCP Socket probe tries to open a TCP connection to the specified port of the container. If the connection is established successfully, the probe is successful. Otherwise, the container is restarted.
-	- An Exec probe excutes an arbitrary command inside the container and checks the command's exit status code. If the status code is o, the probe is successful. All other codes are considered failures.
+  - An HTTP GET probe performs an HTTP GET request on the container's IP address, a port and path you specify. If the probe receives a response, and the response code doesn't represent an error(in other words, if the HTTP response code is 2xx or 3xx), the probe is considered successful. If the server returns an error response code or if it doesn't respond at all, the probe is considered a failure and the container will be restarted as a result.
+  - A TCP Socket probe tries to open a TCP connection to the specified port of the container. If the connection is established successfully, the probe is successful. Otherwise, the container is restarted.
+  - An Exec probe excutes an arbitrary command inside the container and checks the command's exit status code. If the status code is o, the probe is successful. All other codes are considered failures.
 
 #### 4.1.2. Creating an HTTP-based liveness probe
 #### 4.1.3. Seeing a liveness probe in action
@@ -540,4 +540,92 @@ kubectl cluster-info
 kubectl proxy
 ```
 
+- How a pod's name, namespace, and other metadata can be exposed to the process either through enviroment variables or files in a downwardAPI volume
+- How CPU and memory requests and limits are passed to your app in any unit the app requies
+- How a pod can use downwardAPI volumes to get up-to-date metadata, which may change during the lifetime of the pod (such as labels and annotations)
+- How you can brwose the Kubernetes REST API through kubectl proxy
+- How pods can find the API server's location through environment variables or DNS, similar to any other Service defined in Kubernetes
+- How an application running in a pod can verify that it's talking to the API server and how it can authenticate itself
+- How using an ambassador container can make talking to the API server from within an app much simpler
+- How client libraries can get you interacting with Kubernetes in minutes
 
+## Chapter 9. Deployments: updating applications declaratively
+### 9.1. Updating applications running in pods
+### 9.2. Performing an automatic rolling update with a ReplicationController
+### 9.3. Using Deployments for updating apps declaratively
+- Deployment -> ReplicaSet -> Pods
+- `kubectl edit`
+- `kubectl patch`
+- `kubectl apply`
+- `kubectl replace`
+- `kubectl set image`
+
+### 9.4. Summary
+- Perform a rolling update of pods managed by a ReplicationController
+- Create Deployments instead of lower-level ReplicationControllers or ReplicaSets
+- Update your pods by editing the pod template in the Deployment specification
+- Roll back a Deployment either to the previous revision or to any earlier revision still listed in the revision history
+- Abort a Deployment mid-way
+- Pause a Deployment to inspect how a single instnace of the new version behaves in production before allowing additional pod instances to replace the old ones
+- Control the rate of the rolling update through maxSurege and maxUnavailable properties
+- Use minReadySeconds and readiness probes to have the rollout of a faulty version blocked automatically
+
+- Use three dashes as a separator to define multiple resources in a single YAML file
+- Turn on kubectl's verbose loggin to se exacyl what it's doing behind the curtains
+
+## Chatper 10. StatefulSets: deploying replicated statful applications
+- StatefulSets were initially called PetSets. That name comes from the pets vs. cattle analogy explained here
+- SRV record
+  ```bash
+  kubectl run -it srvlookup --image/tutum/dnsutils --rm
+  ```
+
+### 10.6. Summary
+- Give replicated pods individual storage
+- Provide a stable identity to a pod
+- Create a StatefulSet and a corresponding headless governing Service
+- Scale and update a StatefulSet
+- Discorver other members of the StatefulSet through DNS
+- Connect to other members through their host names
+- Forcibly delete stateful pods
+
+# Part 3. Beyond the basics
+## Chapter 11. Understanding Kubernetes internals
+### 11.1 Understanding the architecture
+- Kubernetes cluster is split into two parts:
+  - The Kubernetes Control Plane
+  - The (worker) nodes
+- Components of the Control Plane:
+  - The etcd distributed persistent storage
+  - The API server
+  - The Scheduler
+  - The Controller Manager
+- Components running on the worker nodes:
+  - The Kubelet
+  - The Kubernetes Service Proxy (kube-proxy)
+  - The Container Runtime (Docker, rtc, or others)
+- Add-on components:
+  - The Kubernetes DNS server
+  - The Dashboard
+  - An Ingress controller
+  - Heapster
+  - The Container Network Interface newtork plugin
+
+#### 11.1.1. The distribued natrue of Kubernetes components
+```mermaid
+graph LR;
+  subgraph Control Plane;
+    direction LR;
+    apiserver[API server];
+    apiserver --> etcd[(etcd)];
+    scheduler[Scheduler]-->apiserver;
+    ctrlmgr[Controller Manager]--> apiserver;
+  end;
+
+  subgraph "Worker node(s)";
+    kubeproxy[kube-proxy];
+    kubelet[Kubelet] --> container[Container Runtime];
+    kubelet ---> apiserver;
+    kubeproxy  ---> apiserver;
+  end;
+```
