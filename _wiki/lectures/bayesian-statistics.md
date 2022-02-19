@@ -1,10 +1,10 @@
 ---
 layout  : wiki
 title   : 베이지안 통계학(Bayesian Statistics)
-summary : 
+summary :
 date    : 2021-10-03 19:46:55 +0900
-lastmod : 2021-12-17 20:21:22 +0900
-tags    : 
+lastmod : 2022-02-19 17:40:46 +0900
+tags    :
 draft   : false
 parent  : lectures
 ---
@@ -225,22 +225,22 @@ parent  : lectures
 # Bayesian Statistics
 ---
 - Course Description:
-	- Main goal : understand the basic ideas of Bayesian theory and methods, and the essential distinctions between Frequentiest and Bayesian methods.
-	- Key topics: Bayesian inference, conjugate prior distribution, informative prior, Bayesian hypothesis testing, Markov chain Monte Carlo, Gibbs sampler, Metropolis-Hastings algorithm, and applications in the real world.
-	- Students are expected to understand Bayesian statistical methods, compare with Frequentist methods, apply them to real data and interpret the results.
+  - Main goal : understand the basic ideas of Bayesian theory and methods, and the essential distinctions between Frequentiest and Bayesian methods.
+  - Key topics: Bayesian inference, conjugate prior distribution, informative prior, Bayesian hypothesis testing, Markov chain Monte Carlo, Gibbs sampler, Metropolis-Hastings algorithm, and applications in the real world.
+  - Students are expected to understand Bayesian statistical methods, compare with Frequentist methods, apply them to real data and interpret the results.
 ---
 
 # Bayesian Paradigm
 ## Historical Perspective
 - Bayesian statistics came first:
-	- Reverend Thomas Bayes, Pierre Simon Laplace in the late 17th/early 18th centuries.
+  - Reverend Thomas Bayes, Pierre Simon Laplace in the late 17th/early 18th centuries.
 - Limitations of Bayesian analyses:
-	- Difficulty in evaluationg $p(\theta \vert y)$ in complex models analytically.
-	- Role of prior information - lack of objectivity.
+  - Difficulty in evaluationg $p(\theta \vert y)$ in complex models analytically.
+  - Role of prior information - lack of objectivity.
 - Frequentist statistics was introduced as a way of overcoming these issues.:
-	- Fisher in the 1920s, Neyman, Pearson in the mid-20th century.
+  - Fisher in the 1920s, Neyman, Pearson in the mid-20th century.
 - Reemergence of Bayesian statistics:
-	- Computational advancements have made complex Bayesian analyses feasible.
+  - Computational advancements have made complex Bayesian analyses feasible.
 
 # Frequentist vs. Bayesian
 ## Frequentist/Classical Paradigm
@@ -248,39 +248,39 @@ parent  : lectures
 - Data are a repeatable random sample
 - Gogal : Estimate $\theta$ based on all avaiable information (data) and find its associated error under asymptotic theory.
 - Inference is based on examining how well a procedure would do if it is used many times:
-	- Point estimates and standard errors or 95% confidence intervals.
-	- Deduction from $P(data \vert H_0)$, by setting $\alpha$ in advance.
-	- Accept $H_1$ if $P(data \vert H_0) < \alpha$.
-	- Accept $H_0$ if $P(data \vert H_0) \ge \alpha$.
+  - Point estimates and standard errors or 95% confidence intervals.
+  - Deduction from $P(data \vert H_0)$, by setting $\alpha$ in advance.
+  - Accept $H_1$ if $P(data \vert H_0) < \alpha$.
+  - Accept $H_0$ if $P(data \vert H_0) \ge \alpha$.
 
 ## Bayesian Paradigm
 - A parameter $\theta$ is viewed as a random variable whose distribution is unknown, and described probabilistically.
 - Data are observed from the realized sample.
 - Goal: Estimate the distribution of $\theta$ conditional on the observed data, the posterior distirbution of $\theta$.
 - Inference is based on summaries of the posterior distribution of $\theta$.:
-	- Induction from $P(\theta \vert data)$, starting with $P(\theta)$
-	- Broad descriptions of the posterior distribution such as means and quantiles.
-	- Highest posterior density intervals indicating region of highest posterior probability, regardless of contiguity.
+  - Induction from $P(\theta \vert data)$, starting with $P(\theta)$
+  - Broad descriptions of the posterior distribution such as means and quantiles.
+  - Highest posterior density intervals indicating region of highest posterior probability, regardless of contiguity.
 
 ## Differences Between Frequentist and Bayesian
 - What is fixed?:
-	- Frequentist: Parameters are fixed
-	- Bayesian : Data are fixed
+  - Frequentist: Parameters are fixed
+  - Bayesian : Data are fixed
 - General inference:
-	- Frequentist : $P(data \vert \theta)$ is the sampling distribution of the data given the parameter.
-	- Bayesian : $P(\theta)$ is the prior distribution of the parameter (before the data are seen) and $P(\theta \vert data)$ is the posterior distribution of the parameter.
+  - Frequentist : $P(data \vert \theta)$ is the sampling distribution of the data given the parameter.
+  - Bayesian : $P(\theta)$ is the prior distribution of the parameter (before the data are seen) and $P(\theta \vert data)$ is the posterior distribution of the parameter.
 - 95% Intervals:
-	- Frequentist : In repeated sampling, 95% of realized intervals covers the true parameter.
-	- Bayesian : For these data, with probability 95% the parameter is in the interval.
+  - Frequentist : In repeated sampling, 95% of realized intervals covers the true parameter.
+  - Bayesian : For these data, with probability 95% the parameter is in the interval.
 
 - Bayesian inference proceeds vertically, with $x$ fixed, according to the posterior distribution $g(\mu \vert x)$.
 - Frequentists reason horizontally, with $\mu$ fixed and $x$ varying.
 
 ## Overall Recommendation
 - Be pragmatic, not dogmatic:
-	- Use what has been shown to work.
-	- As a default approach, the followign will serve you well:
-		- Design as a Bayesian, and evaluate as a frequentist
+  - Use what has been shown to work.
+  - As a default approach, the followign will serve you well:
+    - Design as a Bayesian, and evaluate as a frequentist
 - Construct models and procedures from a Bayesian perspective, and use frequentist tools to evaluate their empirical and theoretical performance.
 - In the spirit of being pragmatic, it might seem unnecessarily restrictive to limit oneself to Bayesian procedures, and indeed, there are times when a non-Bayesian Procedure may be preferable to a Bayesian one.
 - However, typically, in turns out that there is no disadvantage in cnosidering only Bayesian procedures.
@@ -288,39 +288,39 @@ parent  : lectures
 # Probability Review
 ## Probabilities Defined on Events
 - Consider an experiment whose sample space is $S$. For each event $A$ of the sample space $S$, we assume that a number $P(A)$ is defined and satisfies the following three conditions:
-	1. $0 \le P(A) \le 1$
-	2. $P(S) = 1$
-	3. For any sequence of events $A_1, A_2, ...$ that are pariwise mutually exclusive, that is, events for which $A_n \cap A_m = \phi$ when $n \not = m$, then:
-		$$ P(\Cup_{n=1}^\infty A_n) = \sum_{n=1}^\infty P(A_n)$$
-	We refere to $P(A)$ as the proability of the event A.
+  1. $0 \le P(A) \le 1$
+  2. $P(S) = 1$
+  3. For any sequence of events $A_1, A_2, ...$ that are pariwise mutually exclusive, that is, events for which $A_n \cap A_m = \phi$ when $n \not = m$, then:
+    $$ P(\Cup_{n=1}^\infty A_n) = \sum_{n=1}^\infty P(A_n)$$
+  We refere to $P(A)$ as the proability of the event A.
 
 ## Conditional Proabilities
 - If the event $B$ occurs, thenm in order for $A$ to occur it is necessary for the actual occurrence to be apoint in both $A$ and in $B$, that is, it must be in $A \cap B$. Now, because we know that $B$ has occurred, it follows that $B$ becomes our new sample space and hence the probability that the event $A \cap B$ occurs will equal the probability of $A \cap B$ relative to the probability of $B$. That is,
-	$$ P(A \vert B) = \frac{P(A \cap B)}{P(B)}$$
-	
-	
+  $$ P(A \vert B) = \frac{P(A \cap B)}{P(B)}$$
+
+
 ## Independent Events
 - Two events $A$ and $B$ are said to be independent if
-	$$ P(A \cap B) = P(A) P(B) $$
-	which implies 
-	$$ P(A\vert B) = P(A)$$
-	$$ P(B \vert A) = P(B)$$
+  $$ P(A \cap B) = P(A) P(B) $$
+  which implies
+  $$ P(A\vert B) = P(A)$$
+  $$ P(B \vert A) = P(B)$$
 - More generally, the events $A_1, A_2, ..., A_n$ are said to be independent if for every subset $A_{1'}, A_{2'}, ..., A_{r'}$, $r \le n$, of these events
-	$$ P(A_{1'}, A_{2'}, ... , A_{r'}) = P(A_{1'}) P(A_{2'}) \cdots P(A_{r'})$$
-	
+  $$ P(A_{1'}, A_{2'}, ... , A_{r'}) = P(A_{1'}) P(A_{2'}) \cdots P(A_{r'})$$
+
 ## Law of Total Probability
 - If events $A_1, ..., A_k$ partition a sample space $S$ into mutually exclusive and exhaustive nonempty events, then the Law of Total Probabiilty states that the total probability of an event B is given by
-	$$
-	\begin{aligned}
-	P(B) &= P(A_1 \cap B) + P(A_2 \cap B) + \cdots + P(A_k \cap B) \\
-	&= P(B \vert A_1) P(A_1) + P(B \vert A_2) P(A_2) + \cdots + P(B \vert A_k)P(A_k) \\
-	&= \sum_{j=1}^k P(B \vert A_j) P(A_j)
-	\end{aligned}
   $$
- 
+  \begin{aligned}
+  P(B) &= P(A_1 \cap B) + P(A_2 \cap B) + \cdots + P(A_k \cap B) \\
+  &= P(B \vert A_1) P(A_1) + P(B \vert A_2) P(A_2) + \cdots + P(B \vert A_k)P(A_k) \\
+  &= \sum_{j=1}^k P(B \vert A_j) P(A_j)
+  \end{aligned}
+  $$
+
  ## Bayes' Theorem
  - Bayes' Theorem provides a method for invertin conditional probabilities. In its simplest form, if $A$ and $B$ are events and $P(B) > 0$, then
-	$$P(A\vert B) = \frac{P(B \vert A) P(A)}{P(B)}$$
+  $$P(A\vert B) = \frac{P(B \vert A) P(A)}{P(B)}$$
 
 #  Discrete Distributions
 ## Bernoulli Trials
@@ -338,8 +338,8 @@ parent  : lectures
    \end{aligned}
   $$
 - Then mean and variance are
-	- $E[X] = np$ and $Var(X) = np(1 - p)$
-	
+  - $E[X] = np$ and $Var(X) = np(1 - p)$
+
 ## Multinomial Distribution
 - A multinomial distribution is a generalization of the binomial distribution
 - Suppose one does an experiment of extracting n balls of k different colors from a bag, replacing the extracted ball after each draw. Balls from the same color are equivalent. Denote the variable which is the number of extracted balls of color $i(i=1,...k)$ as $X_i$, and denotes as $p_i$, the probability that a given extraction will be in color $i$. THen $X_1, ..., X_k$ has the multinomial distribution with joint pmf
@@ -354,7 +354,7 @@ parent  : lectures
 ## Geometric Distribution
 - Suppose that independent Bernoulli trials, each having probability $p$ of being a success, are performed until a scucess occurs. If we let $X$ be the number of trials required until the first success, then $X$ has the geometric distribution with pmf
    $$ \begin{aligned}P(X = x) &= (1-p)^{x-1}p,& x = 1,2, ...\end{aligned}$$
-   
+
 - The cdf of $X$ is
    $$ F(x) = P(X \le x) = 1 - (1 - p)^x$$
 - It follows that $E[X] = \frac{1}{p}$ and $Var(X) = \frac{1-p}{p^2}$
@@ -386,7 +386,7 @@ parent  : lectures
 - Linear combinations of normal variables are normal; if $X_1, ..., X_k$ are independent, $X_i \sim N(\mu_i, \sigma_i^2)$, and $a_1, ..., a_k$ are constants, then
    $$Y = a_1 X_1 + \cdots + a_k X_k$$
    is normally distributed with mena $\mu = \sum_{i=1}^k a_i \mu_i$ and variance $\sigma^2 = \sum_{i=1}^k a_i^2 \sigma_i^2$
-   
+
 ## Gamma Distribution
 - A random variable $X$ is said to have a gamma distribution with parameters $\alpha > 0$ and $\beta > 0$ with pdf
   $$ f(x) = \begin{cases} \frac{1}{\Gamma(\alpha) \beta^{\alpha}} x^{\alpha - 1} e^{- x / \beta}, & 0 \le x < \infty \\ 0, & \text{elsewhere}\end{cases}$$
@@ -402,7 +402,7 @@ parent  : lectures
 - It follows that $E[X] = v$ and $Var(X) = 2v$
 - It $Z_1, ..., Z_v$ are iid standard normal then:
    $$ Z_1^2 + \cdots + Z_v^2 \sim \chi^2(v)$$
-   
+
 ## Beta Distribution
 - A random variable $X$ is said to have a beta distribution with parameters $\alpha > 0$ and $\beta > 0$ with pdf
   $$ f(x) = \begin{cases} \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1-x)^{\beta - 1}, & 0 \le x \le 1 \\ 0, & \text{elsewhere} \end{cases}$$
@@ -418,9 +418,9 @@ parent  : lectures
 - Data are observed from the realized sample
 - Goal: Estimate the distribution of $\theta$ conditional on the observed data, the posterior distribution of $\theta$.
 - Inference is based on summaries of the posterior distribution of $\theta$:
-	- Induction from $P(\theta \vert data)$, starting with $P(\theta)$
-	- $P(\theta)$ is the prior distribution of the parameter (before the data are observed) and $P(\theta \vert data)$ is the posterior distribution of the parameter (after the data are observed).
-	- Broad descriptions of the posterior distribution such as means and quantiles.
+  - Induction from $P(\theta \vert data)$, starting with $P(\theta)$
+  - $P(\theta)$ is the prior distribution of the parameter (before the data are observed) and $P(\theta \vert data)$ is the posterior distribution of the parameter (after the data are observed).
+  - Broad descriptions of the posterior distribution such as means and quantiles.
 
 - The ida is is to assume a prior probability distribution for $\theta$; that is, a distribution representing the plausibility of each possible value of $\theta$ before the data are observed.
 - To make inferences about $\theta$, one simply considers the conditional distribution of $\theta$ given the observed data, referred to as the posterior distribution, representing the plausibility of each possible value of $\theta$ after seeing the data.
@@ -437,23 +437,23 @@ parent  : lectures
 - Bayes' Theorem
   $$p(\theta \vert y) = \frac{p(\theta, y)}{p(y)} = \frac{p(y \vert \theta) p(\theta)}{p(y)}$$
   where $p(y)$ is marginal distribution of y and either $p(y) = \sum_\theta p(\theta) p(y \vert \theta)$ or $p(y) = \int p(\theta) p(y \vert \theta) d \theta$.
-  
+
 - In calculating,
   $$ p(\theta \vert y) \propto p(y \vert \theta) p(\theta)$$
-  
-  
+
+
 ## Baeysian Modeling
 1. Model specification:
-   - $p(y \vert \theta)$ : likelihood function of y
-   - $p(\theta)$ : prior distribution of $\theta$
+  - $p(y \vert \theta)$ : likelihood function of y
+  - $p(\theta)$ : prior distribution of $\theta$
 2. Performing inference
-	- $p(\theta \vert y)$ : posterior distribution of $\theta$ given y
-	- $p(\theta \vert y) \propto p(y \vert \theta) p(\theta)$
-	- How?
-		- analytically-only possible for certain models.
-		- using simulation when we are not able to write down the exact form of the posterior density.
+  - $p(\theta \vert y)$ : posterior distribution of $\theta$ given y
+  - $p(\theta \vert y) \propto p(y \vert \theta) p(\theta)$
+  - How?
+    - analytically-only possible for certain models.
+    - using simulation when we are not able to write down the exact form of the posterior density.
 3. Inference results
-	- ex) posetrior mean : $E[\theta \vert y] = \int_\theta \theta p(\theta \vert y) d \theta$
+  - ex) posetrior mean : $E[\theta \vert y] = \int_\theta \theta p(\theta \vert y) d \theta$
 
 # Binomial Model
 ## Binomial Model
@@ -461,14 +461,14 @@ parent  : lectures
 - Assume that the data arise from a sequence of n independent trials or draws from a large population where each trial is classified as a "success" ($y_i = 1$) or a "failure" ($y_i = 0$).
 - We can characterize the data by the total number of success, denoted by $y$, in $n$ trials.
 - Binomial sampling model
-	$$ p(y \vert \theta) = Bin(y \vert n, \theta) = \binom{n}{y} \theta^y (1 - \theta)^{n - y}$$
-	where the parameter $\theta$ represents the proportion of successes in the population (equivalently, the probability of success in each trial).
+  $$ p(y \vert \theta) = Bin(y \vert n, \theta) = \binom{n}{y} \theta^y (1 - \theta)^{n - y}$$
+  where the parameter $\theta$ represents the proportion of successes in the population (equivalently, the probability of success in each trial).
 
 - cf. Frequentist:
-	$$L\theta \vert y) = \binom{n}{y} \theta^y (1- \theta)^{n-y}$$
-	$$\frac{\partial log L}{\partial \theta} = \frac{y}{\theta} - \frac{n - y}{1 - \theta} = 0$$
-	$$ \Rightarrow \hat \theta_{ML} = \frac{y}{n} = \bar y$$
-	- $$\hat \theta_{ML} \overset{app}{\sim} N(\theta, \frac{\theta(1 - \theta)}{n})$$
+  $$L\theta \vert y) = \binom{n}{y} \theta^y (1- \theta)^{n-y}$$
+  $$\frac{\partial log L}{\partial \theta} = \frac{y}{\theta} - \frac{n - y}{1 - \theta} = 0$$
+  $$ \Rightarrow \hat \theta_{ML} = \frac{y}{n} = \bar y$$
+  - $$\hat \theta_{ML} \overset{app}{\sim} N(\theta, \frac{\theta(1 - \theta)}{n})$$
 - Question : How can we get the posteriro distribution of $\theta$?
 - First, we need to specify the prior distribution for $\theta$. One possibility : $p(\theta) = Unif(0, 1)$
 - Second, apply Bayes' Rule:
@@ -481,18 +481,18 @@ parent  : lectures
    $$
    1. Find $c$ using definition
       $$\int_0^1 c \theta^y (1 - \theta)^{n-y} d \theta = 1$$
-	  $$\Rightarrow c = \frac{1}{\int_0^1 \theta^y (1-\theta)^{n-y} d \theta} = \frac{1}{p(y)}$$
+    $$\Rightarrow c = \frac{1}{\int_0^1 \theta^y (1-\theta)^{n-y} d \theta} = \frac{1}{p(y)}$$
    2. Find $c$ using known distribution
       $$\theta^{(y + 1) - 1} (1- \theta)^{(n - y + 1) - 1} \sim Beta(y + 1, n - y + 1)$$
-	- So, the posterior distribution $Beta(y + 1, n - y + 1)$
+  - So, the posterior distribution $Beta(y + 1, n - y + 1)$
 
 - Posterior mean
   $$
   \begin{aligned}
     E[\theta \vert y] &= \int_0^1 \theta p(\theta \vert y) d \theta \\
-	& = \frac{n}{n+2} (\frac{y}{n}) + \frac{2}{n+2} (\frac{1}{2}) \\
-	& = \frac{n}{n+2} (\text{sample mean from data}) + \frac{2}{n+2} (\text{prior mean})
-  \end{aligned}
+  & = \frac{n}{n+2} (\frac{y}{n}) + \frac{2}{n+2} (\frac{1}{2}) \\
+  & = \frac{n}{n+2} (\text{sample mean from data}) + \frac{2}{n+2} (\text{prior mean})
+   \end{aligned}
 $$
 $\Rightarrow$ Posterior mean is the weighted average of MLE & prior
 $n \uparrow \Rightarrow E[\theta \vert y] \rightarrow MLE$
@@ -500,14 +500,14 @@ $n \downarrow \Rightarrow E[\theta \vert y] \rightarrow \text{prior mean}$
 
 ## Binomial Model with Beta Prior
 - Use the different prior distribution:
-	$$p(\theta) = Beta(\alpha, \beta)$$
+  $$p(\theta) = Beta(\alpha, \beta)$$
 - Posetrior distribution:
     $$\begin{aligned}
-	p(\theta \vert y) &\propto p(y \vert \theta) p(\theta) \\
-	& \propto \theta^{y + \alpha - 1} (1- \theta)^{n-y + \beta +1} \\
-	& \sim Beta(y + \alpha, n - y + \beta)
-	\end{aligned}$$
-	$$\Rightarrow p(\theta \vert y) = \frac{\Gamma(n + \alpha + \beta)}{\Gamma(y + \alpha) \Gamma(n - y + \beta)} \theta^{y + \alpha - 1} (1- \theta)^{n - y + \beta + 1}$$
+  p(\theta \vert y) &\propto p(y \vert \theta) p(\theta) \\
+  & \propto \theta^{y + \alpha - 1} (1- \theta)^{n-y + \beta +1} \\
+  & \sim Beta(y + \alpha, n - y + \beta)
+  \end{aligned}$$
+  $$\Rightarrow p(\theta \vert y) = \frac{\Gamma(n + \alpha + \beta)}{\Gamma(y + \alpha) \Gamma(n - y + \beta)} \theta^{y + \alpha - 1} (1- \theta)^{n - y + \beta + 1}$$
 - Posterior Mean:
   $$ \begin{aligned} E[\theta \vert y] & = \frac{y + \alpha}{n + \alpha + \beta} \\ &= \frac{n}{n+\alpha + \beta} (\frac{y}{\alpha}) + \frac{\alpha + \beta}{n + \alpha + \beta}(\frac{\alpha}{\alpha + \beta}) \\
   &  = \frac{n}{n+\alpha+\beta} (\hat \theta_{MLE}) + \frac{\alpha + \beta}{n + \alpha + \beta} E[\theta] \end{aligned}$$
@@ -515,14 +515,14 @@ $n \downarrow \Rightarrow E[\theta \vert y] \rightarrow \text{prior mean}$
 - $$n \uparrow \Rightarrow E[\theta \vert y] \rightarrow \bar y$$
 - $$n \downarrow \Rightarrow E[\theta \vert y] \rightarrow \text{ prior mean }$$
 - $(\alpha + \beta)$ : amount of prior information
-	- $$(\alpha + \beta) \uparrow \Rightarrow E[\theta \vert y] \rightarrow \text{ prior mean } E[\theta]$$
+  - $$(\alpha + \beta) \uparrow \Rightarrow E[\theta \vert y] \rightarrow \text{ prior mean } E[\theta]$$
 
 
 - What is the 95% posterior interval?
-	1. Find $a$, $b$ satisfying $\int_a^b p(\theta \vert y) d \theta = 0.95$
-	2. Normal aaproximation
-	3. Numerical method(quantile-based C.I)
-	4. HPD(Highetst Posterior Density) Interval
+  1. Find $a$, $b$ satisfying $\int_a^b p(\theta \vert y) d \theta = 0.95$
+  2. Normal aaproximation
+  3. Numerical method(quantile-based C.I)
+  4. HPD(Highetst Posterior Density) Interval
 
 # Posterior Predictive Distribution
 ## Posterior Predictive Distribution
@@ -535,10 +535,10 @@ $n \downarrow \Rightarrow E[\theta \vert y] \rightarrow \text{prior mean}$
    \end{aligned}$$
 - Assumed $y$ and $\tilde y$ are conditional independent given $\theta$
 - prior predictive distribution function before $y$ observed
-	$$\begin{aligned}
-	p(\tilde y) &= \int p(\tilde, \theta) d \theta \\
-	&= \int p(\tilde y \vert \theta) p(\theta) d \theta
-	\end{aligned}$$
+  $$\begin{aligned}
+  p(\tilde y) &= \int p(\tilde, \theta) d \theta \\
+  &= \int p(\tilde y \vert \theta) p(\theta) d \theta
+  \end{aligned}$$
 
 # Poisson Model
 ## Poisson Model
@@ -547,8 +547,8 @@ $n \downarrow \Rightarrow E[\theta \vert y] \rightarrow \text{prior mean}$
 - Posterior distribution of $\theta$ given $y$
 - $L(\theta) = \prod_{i=1}^n \frac{1}{y_i!}\theta^{y_i} e^{-\theta} = (\prod_{i=1}^n \frac{1}{y_i!}) \theta^{\sum y_i} e^{-n\theta}$
 - MLE for $\theta$:
-	$$\frac{\partial log L}{\partial \theta} = \frac{\sum y_i}{\theta} - n = 0$$
-	$$\Rightarrow \hat \theta_{ML} = \frac{1}{n} \sum y_i = \bar y$$
+  $$\frac{\partial log L}{\partial \theta} = \frac{\sum y_i}{\theta} - n = 0$$
+  $$\Rightarrow \hat \theta_{ML} = \frac{1}{n} \sum y_i = \bar y$$
 
 $$
 \begin{aligned}
@@ -596,13 +596,13 @@ $$
    \end{aligned}
    $$
    - $\tau^2$ : prior variance
-	   - $$\tau^2 \uparrow \Rightarrow \text{ Little Information } \Rightarrow E[\theta \vert y] \rightarrow y (\text{sample mean})$$
-	   - $$\tau^2 \downarrow \Rightarrow \text{ Much information } \Rightarrow E[\theta \vert y] \rightarrow \mu$$
+     - $$\tau^2 \uparrow \Rightarrow \text{ Little Information } \Rightarrow E[\theta \vert y] \rightarrow y (\text{sample mean})$$
+     - $$\tau^2 \downarrow \Rightarrow \text{ Much information } \Rightarrow E[\theta \vert y] \rightarrow \mu$$
 - Posterior Varaince : $[\frac{1}{\sigma^2} + \frac{1}{\tau^2}]^{-1}$
-	- $\text{precision} = \frac{1}{\text{variance}}$
-	- $\frac{1}{\sigma^2}$ : precision of data model
-	- $\frac{1}{\tau^2}$ : precision of prior
-	- posterior precision = prior precision + data precision
+  - $\text{precision} = \frac{1}{\text{variance}}$
+  - $\frac{1}{\sigma^2}$ : precision of data model
+  - $\frac{1}{\tau^2}$ : precision of prior
+  - posterior precision = prior precision + data precision
 
 ## Normal Model with Multiple Observations
 - Normal model with unknown mean $\theta$ and known variance $\sigma^2$
@@ -624,13 +624,13 @@ $$
    $$
 
    - $\tau^2$ : prior variance
-	   - $$\tau^2 \uparrow \Rightarrow \text{ Little Information } \Rightarrow E[\theta \vert y] \rightarrow \bar y (\text{sample mean})$$
-	   - $$\tau^2 \downarrow \Rightarrow \text{ Much information } \Rightarrow E[\theta \vert y] \rightarrow \mu$$
+     - $$\tau^2 \uparrow \Rightarrow \text{ Little Information } \Rightarrow E[\theta \vert y] \rightarrow \bar y (\text{sample mean})$$
+     - $$\tau^2 \downarrow \Rightarrow \text{ Much information } \Rightarrow E[\theta \vert y] \rightarrow \mu$$
 - Posterior Varaince : $[\frac{n}{\sigma^2} + \frac{1}{\tau^2}]^{-1}$
-	- $\text{precision} = \frac{1}{\text{variance}}$
-	- $\frac{n}{\sigma^2}$ : precision of data model
-	- $\frac{1}{\tau^2}$ : precision of prior
-	- posterior precision = prior precision + data precision
+  - $\text{precision} = \frac{1}{\text{variance}}$
+  - $\frac{n}{\sigma^2}$ : precision of data model
+  - $\frac{1}{\tau^2}$ : precision of prior
+  - posterior precision = prior precision + data precision
 
 ## Posterior Predictive Distribution
 - Normal model with unknown mean $\theta$ and known variance $\sigma^2$
@@ -651,17 +651,17 @@ $$
   $$\begin{aligned} y_i &\sim N(\theta, \sigma^2),& i = 1, ..., n \end{aligned}$$
 - Prior distribution : $\sigma^2 \sim Inverse-Gamma(\alpha, \beta)$
 - cf. Inverse-Gamma distribution
-	$$ x \sim Inverse-Gamma(\alpha, \beta)$$
-	where $\alpha > 0$ (shape), $\beta > 0$(shape), and $x \in (0, \infty)$
-	- Density function
-		$$ p(x) = \frac{1}{\Gamma(\alpha) \beta^{-\alpha}} x^{-(\alpha + 1)} e^{- \frac{\beta}{x}}$$
+  $$ x \sim Inverse-Gamma(\alpha, \beta)$$
+  where $\alpha > 0$ (shape), $\beta > 0$(shape), and $x \in (0, \infty)$
+  - Density function
+    $$ p(x) = \frac{1}{\Gamma(\alpha) \beta^{-\alpha}} x^{-(\alpha + 1)} e^{- \frac{\beta}{x}}$$
 - Posterior distribution of $\sigma^2$ given $y_1, ..., y_n$
-	$$
-	\begin{aligned}
-	p(\sigma^2 \vert y) & \propto p(y \vert \sigma^2) p(\sigma^2) \\
-	& \propto (\sigma^2)^{- (\frac{n}{2} + \alpha + 1)} e^{- \frac{1}{\sigma^2} (\frac{1}{2} \sum(y_i - \theta)^2 + \beta)} \\
-	& \sim Inverse-Gamma(\frac{n}{2} + \alpha, \frac{1}{2} \sum (y_i - \theta)^2 + \beta)
-	\end{aligned}
+  $$
+  \begin{aligned}
+  p(\sigma^2 \vert y) & \propto p(y \vert \sigma^2) p(\sigma^2) \\
+  & \propto (\sigma^2)^{- (\frac{n}{2} + \alpha + 1)} e^{- \frac{1}{\sigma^2} (\frac{1}{2} \sum(y_i - \theta)^2 + \beta)} \\
+  & \sim Inverse-Gamma(\frac{n}{2} + \alpha, \frac{1}{2} \sum (y_i - \theta)^2 + \beta)
+  \end{aligned}
 $$
 
 # Conjugate Families
@@ -676,8 +676,8 @@ $$
    | Normal (unknown mean) | Normal |
    | Normal (unknown variance) | Inverse Gamma |
    | Gamma | Gamma |
-   
- 
+
+
 # Prior Distributions
 ## Noninformative Prior Distributions
 - When a prior does not depend on the data and does not affect the posterior distribution, the prior density is described as vague, flat, diffuse or noninformative.
@@ -693,25 +693,25 @@ $$
    - Ex) $x_1, ..., x_n \sim N(\theta, 1)$ and $p(\theta) = c (constant)$
    - $\rightarrow \int_{-\infty}^{\infty} p(\theta) d \theta = \infty$
 - Can we use improper prior distributions in Bayesian modeling?
-	- Yes, because improper prior distributions can lead to proper posterior distributions.
+  - Yes, because improper prior distributions can lead to proper posterior distributions.
 - If we specify a noninformative prior using an improper distribution, then we must show analytically that our posterior distribution is proper.
 
 # Jeffreys' Prior
 ## Lack of Invariance
 - Consider a normal model with known mean $\mu$ and unknown variance $\theta$:
-	$$\begin{aligned} y_i & \sim N(\mu, \theta), & i = 1,..., n \end{aligned}$$
+  $$\begin{aligned} y_i & \sim N(\mu, \theta), & i = 1,..., n \end{aligned}$$
 - Because $\theta \in (0, \infty)$, let $\phi = log \theta$ and then $\phi \in (-\infty, \infty)$
 - A noninformative prior implies that
-	$$ p(\phi) \propto 1 \Rightarrow p(\theta) = p(\phi) \vert \frac{d \phi}{d \theta} \vert \propto \frac{1}{\theta}$$
-	which is no longer flat.
+  $$ p(\phi) \propto 1 \Rightarrow p(\theta) = p(\phi) \vert \frac{d \phi}{d \theta} \vert \propto \frac{1}{\theta}$$
+  which is no longer flat.
 - Criticized for the lack of invarinace under one-to-one transformations.
 
 ## Jeffreys' Noninformative Prior
 - Jeffreys' general principle : any rule for determining the prior density $p(\theta)$ should yield an equivalent result if applied to the transformed parameter: $\phi = h(\theta)$
 - Jeffreys' prior is given by
-	- $$ p(\theta) \propto \sqrt{I(\theta)}$$
-	- where $I(\theta)$ is the Fisher Information for $\theta$:
-	   $$ I(\theta) = - E[\frac{\partial^2 log p(y \vert \theta)}{\partial \theta^2} \vert \theta]$$
+  - $$ p(\theta) \propto \sqrt{I(\theta)}$$
+  - where $I(\theta)$ is the Fisher Information for $\theta$:
+     $$ I(\theta) = - E[\frac{\partial^2 log p(y \vert \theta)}{\partial \theta^2} \vert \theta]$$
 - To see that Jeffreys' prior model is invariant to parameterization, we derive a prior for $\phi = h(\theta)$
   $$\begin{aligned} p(\phi) &= p(\theta) \vert \frac{d \theta}{d \phi} \vert \\
   &\propto \sqrt{I(\theta)} \sqrt{(\frac{d\theta}{d\phi})^2} \\
@@ -723,12 +723,12 @@ $$
 ## Point Estimation
 - From a Bayesian perspective, point estimation means that we would use a single statistic to summarize the posterior distribution, $p(\theta \vert y)$. The most important number summarizing a distribution would be its location.
 - Posterior Mean
-	- $\hat \theta = E[\theta \vert y] = \int \theta p(\theta \vert y) d \theta$
+  - $\hat \theta = E[\theta \vert y] = \int \theta p(\theta \vert y) d \theta$
 - Posterior Median
-	- $\hat \theta: \int_{-\infty}^{\hat \theta} p(\theta \vert y) d \theta = 0.5$
+  - $\hat \theta: \int_{-\infty}^{\hat \theta} p(\theta \vert y) d \theta = 0.5$
 - Posterior Mode (= Maximum a Posteriori (MAP) estimate)
-	- $\hat \theta = \underset{\theta}{argmax} p(\theta \vert y)$
-	- Under $p(\theta) \propto 1$, the posterior mode is the MLE.
+  - $\hat \theta = \underset{\theta}{argmax} p(\theta \vert y)$
+  - Under $p(\theta) \propto 1$, the posterior mode is the MLE.
 - The most common classical technique to estimate $\theta$ is maximum likelihood estimation(MLE), which can be applied to the osterior distribution.
 - Definition : The generalized maximum likelihood estimate of $\theta$ is the largest mode of $p(\theta \vert y)$, i.e., the value $\hat \theta$ which maximizes $p(\theta \vert y)$.
 - Obviously, $\hat \theta$ has the interpretation of being the "most likely" value of $\theta$, given the prior and the sample $y$.
@@ -742,32 +742,32 @@ $$
 - Mean Squared Error of an Estimator : The MSE is the average squared distance the estimator is away from the true value.
    $$ \begin{aligned} MSE[\hat \theta] &= E[\hat \theta - \theta]^2 = \in (\hat \theta - \theta)^2 f(\hat \theta \vert \theta) d \hat \theta \\
    &= Bias[\hat \theta, \theta]^2 + Var[\hat \theta]\end{aligned}$$
-  
+
   ## Comparing Estimators for Proportion
   - When judged by the frequentist criterion of mean squared error.
-  - Example 
-	  - $Y \sim Bin(n, \theta)$
-	  - $\hat \theta_{ML} = \frac{y}{n}$
-		  - $E[\hat \theta_{ML}] = \theta$ : Unbiased
-		  - $Var(\hat \theta_{ML}) = \frac{\theta (1 - \theta)}{n}$
-	      - $\Rightarrow MSE[\hat \theta_{ML}] = \frac{\theta (1-\theta)}{n}$
-	  - $\hat \theta_B = \frac{y+1}{n+2}$
-		  - $E[\hat \theta_B] = \frac{n\theta +1}{n+2} \Rightarrow Bias = \frac{n \theta + 1}{n + 2} - \theta$
-		  - $Var(\hat \theta_B) = \frac{n \theta(1 - \theta)}{(n + 2)^2}$
-		  - $MSE[\hat \theta_B] = \frac{(4 - n) \theta^2 - (4 - n)\theta + 1}{(n + 2)^2}$
-	  - Sample Size가 작을때는 $\theta$가 0또는 1에 아주 가까운 값이 아니라면 Bayesian이 우세하다.
-	  - Sample Size가 커져도 $\theta$가 0.5에 가까우면 베이지안 추정이 우세하게 되고, 그렇지 않더라도 거의 비슷하다.
-		  
+  - Example
+    - $Y \sim Bin(n, \theta)$
+    - $\hat \theta_{ML} = \frac{y}{n}$
+      - $E[\hat \theta_{ML}] = \theta$ : Unbiased
+      - $Var(\hat \theta_{ML}) = \frac{\theta (1 - \theta)}{n}$
+         - $\Rightarrow MSE[\hat \theta_{ML}] = \frac{\theta (1-\theta)}{n}$
+    - $\hat \theta_B = \frac{y+1}{n+2}$
+      - $E[\hat \theta_B] = \frac{n\theta +1}{n+2} \Rightarrow Bias = \frac{n \theta + 1}{n + 2} - \theta$
+      - $Var(\hat \theta_B) = \frac{n \theta(1 - \theta)}{(n + 2)^2}$
+      - $MSE[\hat \theta_B] = \frac{(4 - n) \theta^2 - (4 - n)\theta + 1}{(n + 2)^2}$
+    - Sample Size가 작을때는 $\theta$가 0또는 1에 아주 가까운 값이 아니라면 Bayesian이 우세하다.
+    - Sample Size가 커져도 $\theta$가 0.5에 가까우면 베이지안 추정이 우세하게 되고, 그렇지 않더라도 거의 비슷하다.
+
 ## Posterior MSE
 - WHen presenting a statistical estimate, it is usually necessary to indicate the accuracy of the estimate
 - $\delta(y)$ : an estimate of parameter $\theta$
 - Posterior Mean Squared Error (MSE) of $\delta(y)$:
-	$$\begin{aligned} V_\delta (y) &= E \{ [\theta - \delta(y)]^2 \vert y\} \\ &= Var(\theta \vert y) + [E(\theta \vert y) - \delta(y)]^2 \end{aligned}$$
+  $$\begin{aligned} V_\delta (y) &= E \{ [\theta - \delta(y)]^2 \vert y\} \\ &= Var(\theta \vert y) + [E(\theta \vert y) - \delta(y)]^2 \end{aligned}$$
 $$\begin{aligned}
-	pMSE &= (\delta(y) - \theta)^2 \vert y] \\
-	&= E[\delta(y - E[\theta \vert y] + E[\theta \vert y] - \theta)^2 \vert y] \\
-	& = E[(\delta(y) - E[\theta \vert y])^2 \vert y] + E[(\theta - E[\theta \vert y])^2 \vert y] + \underset{=0}{E[2(\delta(y) - E[\theta \vert y])(E[\theta \vert y] - \theta) \vert y]}\\
-	& = (\delta(y) - E[\theta \vert y])^2 + Var(\theta \vert y) \ge Var(\theta \vert y)
+  pMSE &= (\delta(y) - \theta)^2 \vert y] \\
+  &= E[\delta(y - E[\theta \vert y] + E[\theta \vert y] - \theta)^2 \vert y] \\
+  & = E[(\delta(y) - E[\theta \vert y])^2 \vert y] + E[(\theta - E[\theta \vert y])^2 \vert y] + \underset{=0}{E[2(\delta(y) - E[\theta \vert y])(E[\theta \vert y] - \theta) \vert y]}\\
+  & = (\delta(y) - E[\theta \vert y])^2 + Var(\theta \vert y) \ge Var(\theta \vert y)
 \end{aligned}$$
 - If $\delta(y) = E[\theta \vert y]$, then posterior MSE = posterior Variance. So p mean smallest pMSE!
 
@@ -780,37 +780,37 @@ $$\begin{aligned}
 - Often, the sampling distribution of the estimator used is approximately normal. For example, if $n$ is large in the binomial model, the sample proportion $\hat \theta_f = \frac{y}{n}$ is approximately normal with $\theta$ and standard deviation $\sqrt \frac{\theta(1 - \theta)}{n}$
 - This gives an approximate $(1 - \alpha) \times 100$% equal tail area confidence interval for $\theta$:
    $$ \hat \theta_f \pm z_{\alpha /2} \times \sqrt {\frac{\hat \theta_f (1 -\hat \theta_f)}{n}}$$
-   
+
 ## Bayesian Credible Interval
 -  A $(1 - \alpha) \times 100$ % Bayesian credible interval is an interval that has a posterior probability of $1 - \alpha$ of containing the parameter:
-	$$ P(l \le \theta \le u \vert y) = \int_l^u p(\theta \vert y) d \theta = 1 - \alpha$$
+  $$ P(l \le \theta \le u \vert y) = \int_l^u p(\theta \vert y) d \theta = 1 - \alpha$$
 - Equal tail area Bayesian credible intervals are often used, since they are easy to find.
 - Quantile-based interval : to make a $(1 - \alpha) \times 100$% quantile-based confidence interval, find numbers $\theta_{\alpha/2} < \theta_{1 - \alpha /2}$ such that:
-	1. $P(\theta < \theta_{\alpha / 2} \vert Y = y) = \alpha / 2$
-	2. $P(\theta > \theta_{1 - \alpha /2} \vert Y = y) = \alpha /2$
-	- So, 
-	  $$P(\theta_{\alpha / 2} \le \theta \le \theta_{1 - \alpha / 2} \vert Y = y) = 1 - \alpha$$
-	  
+  1. $P(\theta < \theta_{\alpha / 2} \vert Y = y) = \alpha / 2$
+  2. $P(\theta > \theta_{1 - \alpha /2} \vert Y = y) = \alpha /2$
+  - So,
+    $$P(\theta_{\alpha / 2} \le \theta \le \theta_{1 - \alpha / 2} \vert Y = y) = 1 - \alpha$$
+
 - Approximation Method
-	1. Simulation method:
-		- draw 1000 samples from $p(\theta \vert y)$
-		- find 25th, 975th values $\Rightarrow$ lower bound, upper bound
-	2. Normal approximation:
-		- using $E[\theta \vert y]$ & $SD[\theta \vert y]$ $\rightarrow$ useful for symmetric distribution
-	  
+  1. Simulation method:
+    - draw 1000 samples from $p(\theta \vert y)$
+    - find 25th, 975th values $\Rightarrow$ lower bound, upper bound
+  2. Normal approximation:
+    - using $E[\theta \vert y]$ & $SD[\theta \vert y]$ $\rightarrow$ useful for symmetric distribution
+
 ## Highest Posterior Density (HPD) Credible Set
 - The $100(1 - \alpha)$ % Highest Posterior Density (HPD) credible set for $\theta$ is the subset $C$ of $\Theta$ of the form
    $$ C = \{\theta \in \Theta : p(\theta \vert y) \ge k(\alpha) \}$$
    - where $k(\alpha)$ is a constant such that
-	   $$P(\theta \in C \vert y) = 1 - \alpha$$
+     $$P(\theta \in C \vert y) = 1 - \alpha$$
 - All points in an HPD region have a higer posterior density than points outside the region.
 
 # Hypothesis Testing
 ## Classical P-values
 - Let $y$ be the observed data and $\theta$ be the vector of parameters, and $y^{rep}$ be the replicated data that could have been observed under the same model and the same value of $\theta$ that produced the observed data.
 - The classical p-value for the test statistic $T(y)$ is
-	$$p_c = P\{ T(y^{rep}) \text{ more "extreme" than } T(y) \vert \theta, H_0 \}$$
-	where the probability is taken over the distribution of $y$ with $\theta$ fixed, and "extremeness" is in the direction of the alternative hypothesis.
+  $$p_c = P\{ T(y^{rep}) \text{ more "extreme" than } T(y) \vert \theta, H_0 \}$$
+  where the probability is taken over the distribution of $y$ with $\theta$ fixed, and "extremeness" is in the direction of the alternative hypothesis.
 - If the p-value is less than some prespecified Type I error rate, $H_0$ is rejected; otherwise, it is not.
 
 ## Posterior Predictive P-values
@@ -821,13 +821,13 @@ $$\begin{aligned}
     $$p(y^{rep} \vert y) = \int p(y^{rep} \vert \theta) p(\theta \vert y) d\theta$$
 - It follows that
    $$ p_B = \int \int I_{T(y^{rep}, \theta) \ge T(y, \theta)} p(y^{rep} \vert \theta)p(\theta \vert y) d y^{rep} d \theta$$
-   
+
 -  In practice, we compute the posterior predictive distribution using simulation.
 -  If we already have $S$ simulations from the posterior density of $\theta$, we just draw one $y^{rep}$ from the predictive distribution for each simulated $\theta$. We now have $S$ draws from the joint posterior distribution, $p(y^{rep}, \theta \vert y)$
 -  THe posterior predictive check is the comparision between the realized test quantities, $T(y, \theta^s)$, and the predictive test quantities, $T(y^{rep, s}, \theta^s)$
 -  The estimated p-value is just the proportion of these $S$ simulations for which the test quantity equals or exceeds it realized value; that is, for which
    $$T(y^{rep, s}, \theta^s) \ge T(y, \theta^s), s= 1, ..., S$$
- 
+
 # Bayes Factor
 ## Bayesian Hypothesis Testing
 - To evaluate the relative plausibility of a hypothesis (model), we use the posterior model probability:
@@ -837,12 +837,12 @@ $$\begin{aligned}
    is the marginal likelihood under model $H_j$ and $p(\theta \vert H_j)$ is the prior for parameter $\theta$ when model $H_j$ is true.
 - Note that the marginal likelihood for simple hypotheses, e.g. if $H_0: \theta = \theta_0$ then $\theta \vert H_0 \sim \delta_{\theta_0}$, is
    $$ p(y \vert H_0) = \int p(y \vert \theta) p(\theta \vert H_0) d \theta = p(y \vert \theta_0)$$
-   
+
  ## Bayes Factor
  - If we only have two models: $H_0$ and $H_1$, then the Bayes Factor is defined as the ratio of the posterior odds of $H_1$ to the prior odss of $H_1$:
     $$ \begin{aligned}
-	BF(H_1 : H_0) & = \frac{p(H_1\vert y) / p(H_0 \vert y)}{p(H_1) / p(H_0)} \\
-	&= \frac{p(y \vert H_1)}{p(y \vert H_0)}
+  BF(H_1 : H_0) & = \frac{p(H_1\vert y) / p(H_0 \vert y)}{p(H_1) / p(H_0)} \\
+  &= \frac{p(y \vert H_1)}{p(y \vert H_0)}
 \end{aligned} $$
    which is the ratio of the observed marginal densities for the two models.
 - Assuming the two models are a prior equally probable (i.e., $p(H_1) = p(H_0) = 0.5$), we have that
@@ -852,10 +852,10 @@ $$\begin{aligned}
 
 ## Probabilities of bayes Factor
 - Bayes factors
-	- need proper priors.
-	- reduce to likelihood ratio for simple hypotheses.
-	- work also for non-nested models.
-	- are symmetric measures of evidence.
+  - need proper priors.
+  - reduce to likelihood ratio for simple hypotheses.
+  - work also for non-nested models.
+  - are symmetric measures of evidence.
 - Clearly a Bayes factor much greater than 1 supports Model 1 over Model 0.
 - Kass and Raftery (1995) proposed the following rules:
 
@@ -873,10 +873,10 @@ $$\begin{aligned}
 - Assume that we have a model with two parameters $\theta_1$ and $\theta_2$. We are interested in the posterior distribution $\theta_1$ given y
 - $\theta_2$ may be considered a "nuisance" parameter
 - Joint posterior distribution:
-	$$ p(\theta_1, \theta_2 \vert y) \propto p(y \vert \theta_1, \theta_2) p(\theta_1, \theta_2)$$
+  $$ p(\theta_1, \theta_2 \vert y) \propto p(y \vert \theta_1, \theta_2) p(\theta_1, \theta_2)$$
 - Marginal posterior distribution:
-    $$ \begin{aligned} p(\theta_1 \vert y) &= \int p(\theta_1, \theta_2 \vert y) d \theta_2 \\ &= \int p(\theta_1 \vert \theta_2, y) p(\theta_2 \vert y) d \theta_2\end{aligned}$$
-	
+  $$ \begin{aligned} p(\theta_1 \vert y) &= \int p(\theta_1, \theta_2 \vert y) d \theta_2 \\ &= \int p(\theta_1 \vert \theta_2, y) p(\theta_2 \vert y) d \theta_2\end{aligned}$$
+
 # Normal with Noninformative Prior
 ## Normal Model with a Noninformative Prior Distribution
 - Data model: $\begin{aligned}y_i &\sim N(\mu, \sigma^2), & i=1, ..., n \end{aligned}$
@@ -888,13 +888,13 @@ $$\begin{aligned}
   \end{aligned}$$
   where $S^2 = \frac{1}{n-1} \sum (y_i - \bar y)^2$ : sample variance
 - Marginal posterior distribution of $\mu$
-	$$
-	\begin{aligned}
-	p(\mu \vert y) &= \int_0^\infty p(\mu, \sigma^2 \vert y) d \sigma^2 \\
-	& \propto [(n-1)S^2 + n(\bar y - \mu)^2]^{-\frac{n}{2}} \\
-	& \propto [1 + \frac{n (\mu - \bar y)^2}{(n-1)S^2}]^{-\frac{n}{2}} \\
-	& \sim t_{n-1} (\bar y, \frac{\sigma^2}{n}) : \text{ non-standardized t- distribution}
-	\end{aligned}
+  $$
+  \begin{aligned}
+  p(\mu \vert y) &= \int_0^\infty p(\mu, \sigma^2 \vert y) d \sigma^2 \\
+  & \propto [(n-1)S^2 + n(\bar y - \mu)^2]^{-\frac{n}{2}} \\
+  & \propto [1 + \frac{n (\mu - \bar y)^2}{(n-1)S^2}]^{-\frac{n}{2}} \\
+  & \sim t_{n-1} (\bar y, \frac{\sigma^2}{n}) : \text{ non-standardized t- distribution}
+  \end{aligned}
   $$
 - Marginal posterior distribution of $\sigma^2$
    $$\begin{aligned}
@@ -903,42 +903,42 @@ $$\begin{aligned}
    & \sim IG(\frac{n-1}{2}, \frac{(n-1)s^2}{2}) = \text{ (scaled) Inverse } \chi^2(n-1, s^2)
  \end{aligned}$$
  - Conditional posterior distribution of $\mu$
-	 $$\begin{aligned}
-	 p(\mu \vert \sigma^2, y) & \propto p(y \vert \mu, \sigma^2) p(\mu \vert \sigma^2) \\
-	 & \propto \prod_{i=1}^n e^{-\frac{1}{2\sigma^2} (y_i - \mu)^2} \\
-	 & \sim N(\bar y, \frac{\sigma^2}{n})
-	 \end{aligned}$$
+   $$\begin{aligned}
+   p(\mu \vert \sigma^2, y) & \propto p(y \vert \mu, \sigma^2) p(\mu \vert \sigma^2) \\
+   & \propto \prod_{i=1}^n e^{-\frac{1}{2\sigma^2} (y_i - \mu)^2} \\
+   & \sim N(\bar y, \frac{\sigma^2}{n})
+   \end{aligned}$$
 - Conditional posterior distribution of $\sigma^2$
-	$$\begin{aligned}
-	p(\sigma^2 \vert \mu, y) & \propto p(y \vert \mu, \sigma^2) p(\sigma^2 \vert \mu) \\
-	& \propto (\sigma^2)^{-\frac{n}{2} - 1} e^{-\frac{1}{2\sigma^2} \sum(y_i - \mu)^2} \\
-	& \sim IG(\frac{n}{2}, \frac{1}{2} \sum_{i=1}^n (y_i - \mu)^2)
-	\end{aligned}$$
-	
+  $$\begin{aligned}
+  p(\sigma^2 \vert \mu, y) & \propto p(y \vert \mu, \sigma^2) p(\sigma^2 \vert \mu) \\
+  & \propto (\sigma^2)^{-\frac{n}{2} - 1} e^{-\frac{1}{2\sigma^2} \sum(y_i - \mu)^2} \\
+  & \sim IG(\frac{n}{2}, \frac{1}{2} \sum_{i=1}^n (y_i - \mu)^2)
+  \end{aligned}$$
+
 - Simulating from the joint posterior distribution
-	1. Independent Simulation
-		```
-		for (j in 1 :J) {
-			- draw \sigma_j^2 from p(\sigma^2 \vert y)
-			- draw \mu_j from p(\mu \vert y)
-		}
-		```
+  1. Independent Simulation
+    ```
+    for (j in 1 :J) {
+      - draw \sigma_j^2 from p(\sigma^2 \vert y)
+      - draw \mu_j from p(\mu \vert y)
+   }
+   ```
    2. Conditional simulation
-		```
-		for (j in 1 :J) {
-			- draw \sigma_j^2 from p(\sigma^2 \vert y)
-			- draw \mu_j from p(\mu \vert \sigma_j^2, y)
-		}
-		```
-		
+    ```
+   for (j in 1 :J) {
+      - draw \sigma_j^2 from p(\sigma^2 \vert y)
+      - draw \mu_j from p(\mu \vert \sigma_j^2, y)
+   }
+   ```
+
 - Posterior predictive distribution for a future observation
    $$ \begin{aligned}
    p(\tilde y \vert y) & = \int \int p(\tilde \vert \mu, \sigma^2, y) p(\mu, \sigma^2 \vert y) d \mu d \sigma^2 \\
    & \sim t_{n-1}(\bar y, (1 + \frac{1}{n})^{\frac{1}{2}} s)
    \end{aligned}$$
-   
-   
-   
+
+
+
 # Multinomial Model
 ## Multinomial Model for Categorical Data
 - Binomial distribution can be generalized to allow more than two possible outcomes.
@@ -954,35 +954,35 @@ $$\begin{aligned}
   where $\alpha_j > 0$ and $\alpha_0 \equiv \sum_{j=1}^k \alpha_j$
   - Density function
      $$ p(\theta) = \frac{\Gamma(\alpha_1 + \cdots + \alpha_k)}{\Gamma(\alpha_1) \cdots \Gamma(\alpha_k)} \theta_1^{\alpha_1 - 1} \cdots \theta_k ^{\alpha_k - 1}$$
-	 where $\theta_j \in [0,1]$ and $\sum_{j=1}^k \theta_j = 1$
+    where $\theta_j \in [0,1]$ and $\sum_{j=1}^k \theta_j = 1$
   - Mean and Variance
-	  $$E(\theta_j) = \frac{\alpha_j}{\alpha_0}$$
-	  $$Var(\theta_j) = \frac{\alpha_j(\alpha_0 - \alpha_j)}{\alpha_0^2 (\alpha + 1)}$$
-	  $$Cov(\theta_i, \theta_j) = - \frac{\alpha_i \alpha_j}{\alpha_0^2 (\alpha_0 + 1)}$$
+    $$E(\theta_j) = \frac{\alpha_j}{\alpha_0}$$
+    $$Var(\theta_j) = \frac{\alpha_j(\alpha_0 - \alpha_j)}{\alpha_0^2 (\alpha + 1)}$$
+    $$Cov(\theta_i, \theta_j) = - \frac{\alpha_i \alpha_j}{\alpha_0^2 (\alpha_0 + 1)}$$
 - Posterior distribution
   $$p(\theta \vert y) \sim Dirichlet (y_1 + \alpha_1, y_2 + \alpha_2, \cdots, y_k + \alpha_k)$$
-  
-  
+
+
 # Multivariate Normal Models
 ## Multivariate Normal Model with Known Variance
 - The baisc model considers an observable vector $y$ of $d$ components, with the multivariate normal distribution,
   $$y \vert \mu, \Sigma \sim N(\mu, \Sigma)$$
   where $\mu$ is a vector of length $d$ and $\Sigma$ is a $d \times d$ variance matrix, which is symmetric and positive definite.
 - The likelihood function for a sample of n iid observations, $y_1, ..., y_n$ is
-	$$\begin{aligned}
-	p(y_1, ..., y_n \vert \mu, \Sigma) & \propto \vert \Sigma \vert ^{-n /2} exp(-\frac{1}{2} \sum_{i=1}^n(y_i - \mu)^T \Sigma^{-1} (y_i - \mu)) \\
-	& = \vert \Sigma \vert ^{-n /2} exp(-\frac{1}{2} tr(\Sigma^{-1} S_0))
-	\end{aligned}$$
-	where $S_0$ is the matrix of 'sums of squares' relative to $\mu$,
-	$$S_0 = \sum_{i=1}^n(y_i - \mu)(y_i - \mu)^T$$
-	
+  $$\begin{aligned}
+  p(y_1, ..., y_n \vert \mu, \Sigma) & \propto \vert \Sigma \vert ^{-n /2} exp(-\frac{1}{2} \sum_{i=1}^n(y_i - \mu)^T \Sigma^{-1} (y_i - \mu)) \\
+  & = \vert \Sigma \vert ^{-n /2} exp(-\frac{1}{2} tr(\Sigma^{-1} S_0))
+  \end{aligned}$$
+  where $S_0$ is the matrix of 'sums of squares' relative to $\mu$,
+  $$S_0 = \sum_{i=1}^n(y_i - \mu)(y_i - \mu)^T$$
+
 ## Conjugate Analysis
 - The log-likelihood is a quadratic form in $\mu$, and therefore the conjugate prior distribution for $\mu$ is the multivariate normal distribution, $\mu \sim N(\mu_0, \Lambda_0)$.
 - Posterior distribution for $\mu$ is
    $$ \mu \vert y, \Sigma \sim N(\mu_n, \Lambda_n)$$
    where
-   		$$\mu_n = (\Lambda_0^{-1} + n \Sigma^{-1})^{-1} (\Lambda_0^{-1} \mu_0 + n \Sigma^{-1} \bar y)$$
-		$$\Lambda_n = (\Lambda_0^{-1} + n \Sigma^{-1})^{-1}$$
+    $$\mu_n = (\Lambda_0^{-1} + n \Sigma^{-1})^{-1} (\Lambda_0^{-1} \mu_0 + n \Sigma^{-1} \bar y)$$
+    $$\Lambda_n = (\Lambda_0^{-1} + n \Sigma^{-1})^{-1}$$
 - $$\Rightarrow \mu \vert MVN(\mu_n, \Lambda_n)$$
 
 ## Posterior Marginal and Conditional Distribution of Subvectors of $\mu$
@@ -999,129 +999,129 @@ $$\begin{aligned}
    $$p(\tilde y, \mu \vert y) = p(\tilde y \vert \mu) p(\mu \vert y)$$
    $$E[\tilde y \vert y] = E[E[\tilde y \vert \mu, y] \vert \mu] = E[\mu \vert y] = \mu_n$$
    $$Var(\tilde y \vert y) = E[Var(\tilde y \vert \mu, y) \vert y] + Var[E[\tilde y \vert \mu, y] \vert y] = E[\Sigma \vert y] + Var(\mu \vert y) = \Sigma + \Lambda_n$$
-   
+
  ## Noninformative Prior Density for $\mu$
  - A noninformative uniform prior density for $\mu$ is
     $$ p(\mu) \propto constant$$
-	
+
 - The posterior density is then proportional to the likelihood. THis is a proper posterior distribution only if $n \ge d$; otherwise the matrix $S_0$ is not full rank.
 - If $n \ge d$, the posterior distribution for $\mu$, given the uniform prior density, is
-	$$\mu \vert \Sigma, y \sim N(\bar y, \Sigma / n)$$
+  $$\mu \vert \Sigma, y \sim N(\bar y, \Sigma / n)$$
 
 $$p(\mu \vert y) \propto exp[-\frac{1}{2} (\mu - \bar y)^T n \Sigma^{-1} (\mu - \bar y)]$$
 
 # Hierarchical Models
 ## Hierarchical Models
 - For instance, in a study of the effectiveness of cardiac treatments, with the patients in hospital j having survival probability $\theta_j$, it might be reasonable to expect that estimates of the $\theta_j$'s, which represent a sample of hosipitals, should be related to each other.
-	- Use a prior distribution in which the $\theta_j$'s  are viewed as a sample from a common population distribution.
+  - Use a prior distribution in which the $\theta_j$'s  are viewed as a sample from a common population distribution.
 - The observed data, $y_{ij}$, with units indexed by $i$ within groups indexed by $j$, can be used to estimate aspectes of the population distribution of the $\theta_j$'s even though the values of $\theta_j$ are not themselves observed.
 - Model hierarchically with observable outcomes modeled conditionally on certain parameters, which themselves are given a probabilistic specification in terms of further parameters, known as hyperparameters.
 
 ## General Framework
 1. Likelihood function:
-	$$ y_1, ..., y_n \vert \theta_1, ..., \theta_n, \phi \sim p(y_i \vert \theta_i)$$
+  $$ y_1, ..., y_n \vert \theta_1, ..., \theta_n, \phi \sim p(y_i \vert \theta_i)$$
 2. Prior distribution:
-	$$ \theta_1, ..., \theta_n \vert \phi \sim p(\theta_i \vert \phi)$$
+  $$ \theta_1, ..., \theta_n \vert \phi \sim p(\theta_i \vert \phi)$$
 3. Hyperprior distribution:
-	$$ \phi \sim p(\phi)$$
-	
+  $$ \phi \sim p(\phi)$$
+
 ## Conditional and Marginal Distributions
 - Analytic derivation of condtional and marginal distributions
    1. Write the joint posterior density:
-	   $$p(\theta, \phi \vert y) \propto p(y \vert \theta) p(\theta \vert \phi)p(\phi)$$
+     $$p(\theta, \phi \vert y) \propto p(y \vert \theta) p(\theta \vert \phi)p(\phi)$$
    2. Determine analytically the conditional posterior density of $\theta$ given the hyperparameters $\phi$, $p(\theta \vert \phi, y)$.
    3. Obtain the marginal posterior distribution of $\phi$, $p(\phi \vert y)$.
-	   $$p(\phi \vert y) = \int p(\theta, \phi \vert y) d \theta$$
-	   
+     $$p(\phi \vert y) = \int p(\theta, \phi \vert y) d \theta$$
+
 ## Posterior Summaries
 - Obtaining posterior summaries via conditional simulation
- 	1. Draw the vector of the hyperparameters, $\phi$, from the mgarginal posterior distribution of $\phi$, $p(\phi \vert y)$.
- 	2. Draw the parameter vector $\theta$ from its condtional posterior distribution, $p(\theta \vert \phi, y)$, given the drawn value of $\phi$.
- 	3. Draw predictive values of $y$ and $\theta$, if desired.
- 
+  1. Draw the vector of the hyperparameters, $\phi$, from the mgarginal posterior distribution of $\phi$, $p(\phi \vert y)$.
+  2. Draw the parameter vector $\theta$ from its condtional posterior distribution, $p(\theta \vert \phi, y)$, given the drawn value of $\phi$.
+  3. Draw predictive values of $y$ and $\theta$, if desired.
+
  # Hierarchical Binomial Model
  ## Hierarchical Binomial Model
  - Hierarchical Bayeisan Binomial Model:
     $$y_1, ..., y_n \vert \theta_1, ..., \theta_n, \alpha, \beta \overset{ind}{\sim} Binomial(n_i, \theta_i)$$
-	$$\theta_1, ..., \theta_n \vert \alpha, \beta \overset{iid}{\sim} Beta(\alpha, \beta)$$
-	$$p(\alpha, \beta) \propto 1$$
-	where $n_i$ are assumed to be known.
+  $$\theta_1, ..., \theta_n \vert \alpha, \beta \overset{iid}{\sim} Beta(\alpha, \beta)$$
+  $$p(\alpha, \beta) \propto 1$$
+  where $n_i$ are assumed to be known.
 - Joint posterior density
    $$p(\theta, \alpha, \beta \vert y) \propto [\prod_{i=1}^n \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \theta_i^{y_i + \alpha - 1} (1 - \theta_i)^{n_i - y_i + \beta +1}]$$
  - Conditonal posterior density of $\theta$
     $$\begin{aligned}
-	p(\theta_i \vert \alpha, \beta, \theta_{(-i)}, y) & \propto \theta_i^{y_i + \alpha - 1} (1 - \theta_i)^{n_i - y_i + \beta -1} \\
-	& \sim Beta(y_i + 2, n_i - y_i + \beta)
-	\end{aligned}$$
-	$$\begin{aligned}
-	p(\theta_1, ..., \theta_n \vert \alpha, \beta, y) & \propto \prod_{i=1}^n Beta(y_i + \alpha, n_i - y_i + \beta)
-	\end{aligned}$$
+  p(\theta_i \vert \alpha, \beta, \theta_{(-i)}, y) & \propto \theta_i^{y_i + \alpha - 1} (1 - \theta_i)^{n_i - y_i + \beta -1} \\
+  & \sim Beta(y_i + 2, n_i - y_i + \beta)
+  \end{aligned}$$
+  $$\begin{aligned}
+  p(\theta_1, ..., \theta_n \vert \alpha, \beta, y) & \propto \prod_{i=1}^n Beta(y_i + \alpha, n_i - y_i + \beta)
+  \end{aligned}$$
 - Marginal posterior density of $(\alpha, \beta)$
   $$p(\alpha, \beta \vert y) \propto \prod_{i=1}^n \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \times \frac{\Gamma(\alpha + y_i) \Gamma(\beta + n_i - y_i)}{\Gamma(\alpha + \beta + n_i)}$$
 - Conditional posterior density of $(\alpha, \beta)$
-	$$p(\alpha, \beta \vert \theta_1, ..., \theta_n, y) \propto \prod_{i=1}^n [\frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \theta_i ^{\alpha - 1}(1 - \theta_i)^{\beta - 1}]$$
+  $$p(\alpha, \beta \vert \theta_1, ..., \theta_n, y) \propto \prod_{i=1}^n [\frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha) \Gamma(\beta)} \theta_i ^{\alpha - 1}(1 - \theta_i)^{\beta - 1}]$$
 
 # Hierarchical Poisson Model
 ## Hierarchical Poisson Model
  - Hierarchical Bayeisan Binomial Model:
     $$y_1, ..., y_n \vert \theta_1, ..., \theta_n, \alpha, \beta \overset{ind}{\sim} Poisson(\lambda_i)$$
-	$$\lambda_1, ..., \lambda_n \vert \beta \overset{iid}{\sim} Gamma(\alpha, \beta)$$
-	$$\beta \sim Gamma(c, d)$$
-	where $\alpha$, $c$, $d$ are assumed to be known.
+  $$\lambda_1, ..., \lambda_n \vert \beta \overset{iid}{\sim} Gamma(\alpha, \beta)$$
+  $$\beta \sim Gamma(c, d)$$
+  where $\alpha$, $c$, $d$ are assumed to be known.
 - Joint posterior density
-	$$p(\lambda, \beta \vert y) \propto [ \prod_{i=1}^n (\lambda_i)^{y_i + \alpha - 1} e^{- (1 + \frac{1}{\beta} \lambda_i)}]\beta^{c - 1 - n\alpha} e^{-\frac{\beta}{\alpha}}$$
-	where $n_i$ are assumed to be known.
+  $$p(\lambda, \beta \vert y) \propto [ \prod_{i=1}^n (\lambda_i)^{y_i + \alpha - 1} e^{- (1 + \frac{1}{\beta} \lambda_i)}]\beta^{c - 1 - n\alpha} e^{-\frac{\beta}{\alpha}}$$
+  where $n_i$ are assumed to be known.
 - Conditional posterior density of $\lambda$
-	$$ p(\lambda_i \vert \beta, \lambda_{(-i)}, y) \sim Gamma(y_i + \alpha, [1 + \frac{1}{\beta}]^{-1})$$
-	$$ p(\lambda_1, ..., \lambda_n \vert \beta, y) \propto \prod_{i=1}^n \frac{(1 + \frac{1}{\beta})^{y_i + \alpha}}{\Gamma (y_i + \alpha)} \lambda_i^{y_i + \alpha - 1} e^{-(1 +\frac{1}{\beta})}$$
-	
+  $$ p(\lambda_i \vert \beta, \lambda_{(-i)}, y) \sim Gamma(y_i + \alpha, [1 + \frac{1}{\beta}]^{-1})$$
+  $$ p(\lambda_1, ..., \lambda_n \vert \beta, y) \propto \prod_{i=1}^n \frac{(1 + \frac{1}{\beta})^{y_i + \alpha}}{\Gamma (y_i + \alpha)} \lambda_i^{y_i + \alpha - 1} e^{-(1 +\frac{1}{\beta})}$$
+
 - Marginal posterior density of $\beta$
-	$$ \begin{aligned}
-	p(\beta \vert y) &= \int \cdots \int p(\lambda_1, ..., \lambda_n, \beta \vert y) d \lambda_1 \cdots d \lambda_n \\
-	& = \frac{p(\lambda, \beta \vert y)}{p(\lambda \vert \beta, y)}
-	\end{aligned}$$
+  $$ \begin{aligned}
+  p(\beta \vert y) &= \int \cdots \int p(\lambda_1, ..., \lambda_n, \beta \vert y) d \lambda_1 \cdots d \lambda_n \\
+  & = \frac{p(\lambda, \beta \vert y)}{p(\lambda \vert \beta, y)}
+  \end{aligned}$$
 - Conditional posterior density of $\beta$
-	$$ \begin{aligned}
-	p(\beta \vert \lambda, y) & \propto [\prod_{i=1}^n e^{-\frac{1}{\beta} \lambda_i}] \beta^{c - 1 -n\alpha} e^{-\frac{\beta}{\alpha}} \\
-	& = e^{- \frac{1}{\beta} \sum \lambda_i } e^{-\frac{\beta}{\alpha}} \beta^{c - 1 - n \alpha}
-	\end{aligned}$$
-	
+  $$ \begin{aligned}
+  p(\beta \vert \lambda, y) & \propto [\prod_{i=1}^n e^{-\frac{1}{\beta} \lambda_i}] \beta^{c - 1 -n\alpha} e^{-\frac{\beta}{\alpha}} \\
+  & = e^{- \frac{1}{\beta} \sum \lambda_i } e^{-\frac{\beta}{\alpha}} \beta^{c - 1 - n \alpha}
+  \end{aligned}$$
+
 ## Hierarchinal Normal Model
 - Hierarchical Bayesian Normal Model:
-	$$ y_1, ..., y_n \vert \theta_1, ..., \theta_n, \mu \overset{ind}{\sim} N(\theta_i, \sigma^2)$$
-	$$ \theta_1, ..., \theta_n \vert \mu \overset{iid}{\sim} N(\mu, \tau^2)$$
-	$$ p(\mu) \propto 1$$
-	where $\sigma^2$ and $\tau^2$ are assumed to be known.
+  $$ y_1, ..., y_n \vert \theta_1, ..., \theta_n, \mu \overset{ind}{\sim} N(\theta_i, \sigma^2)$$
+  $$ \theta_1, ..., \theta_n \vert \mu \overset{iid}{\sim} N(\mu, \tau^2)$$
+  $$ p(\mu) \propto 1$$
+  where $\sigma^2$ and $\tau^2$ are assumed to be known.
 - Joint posterior density
-	$$ \begin{aligned}
-	p(\theta, \mu \vert y) &\propto e^{-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i -\theta_i)^2} e^{-\frac{1}{2 \tau^2} \sum_{i=1}^n (\theta_i -\mu)^2} \\
-	&\sim N (\frac{\frac{1}{\sigma^2} y_i + \frac{1}{\tau^2} \mu}{\frac{1}{\sigma^2} + \frac{1}{\tau^2}}, [\frac{1}{\sigma^2} +\frac{1}{\tau^2}]^{-1})
-	\end{aligned}$$
+  $$ \begin{aligned}
+  p(\theta, \mu \vert y) &\propto e^{-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i -\theta_i)^2} e^{-\frac{1}{2 \tau^2} \sum_{i=1}^n (\theta_i -\mu)^2} \\
+  &\sim N (\frac{\frac{1}{\sigma^2} y_i + \frac{1}{\tau^2} \mu}{\frac{1}{\sigma^2} + \frac{1}{\tau^2}}, [\frac{1}{\sigma^2} +\frac{1}{\tau^2}]^{-1})
+  \end{aligned}$$
 - Marginal posterior density of $\mu$
-	$$ p(\mu \vert y) = \int \cdots \int p(\theta_1, ..., \theta_n, \mu \vert y) d \theta_1 ... d \theta_n$$
+  $$ p(\mu \vert y) = \int \cdots \int p(\theta_1, ..., \theta_n, \mu \vert y) d \theta_1 ... d \theta_n$$
 - Conditional posterior density of $\mu$
-	$$ p(\mu \vert \theta, y) \sim (\bar \theta, \frac{\tau^2}{n})$$
-	
+  $$ p(\mu \vert \theta, y) \sim (\bar \theta, \frac{\tau^2}{n})$$
+
 # Monte Carlo Integration
 ## Numerical Integration
 - Bayesian computation
-	- Posterior distribution, $p(\theta \vert y)$
-	- Posterior preedictive distribution, $p(\tilde y \vert y)$
+  - Posterior distribution, $p(\theta \vert y)$
+  - Posterior preedictive distribution, $p(\tilde y \vert y)$
 - For complicated or unusual models or in high dimensions, more elaborate algorithms are required to approximate the posterior distruution.
 - Numberical integration methods
-	- Deterministic methos: Newton-Cotes quadrature, Romberg integration, Gaussian quadrature, etc.
-	- Not appropriate for high-dimensional Bayesian problems.
-	- Simulation methods : Monte Carlo integration
+  - Deterministic methos: Newton-Cotes quadrature, Romberg integration, Gaussian quadrature, etc.
+  - Not appropriate for high-dimensional Bayesian problems.
+  - Simulation methods : Monte Carlo integration
 
 ## Monte Carlo Integration
 - Monte Carlo integration is a simple and powerful method for computing the value of complex integrals using probabilistic thecniques.
 - Suppose that $\theta$ has a posterior density $p(\theta \vert y)$ and we are interested in learning about a particular function of the parameters $h(\theta)$. THe posterior mean of $h(\theta)$ is given by:
-	$$ E[h(\theta) \vert y] = \int h(\theta) p(\theta \vert y) d \theta$$
+  $$ E[h(\theta) \vert y] = \int h(\theta) p(\theta \vert y) d \theta$$
 - Suppose we are able to simulate an independent sample $\theta_1, ..., \theta_n$ from the posterior density. The Monte Carlo estimate at the posterior mean is given by the sample mean:
    $$ \bar h_{MC} = \frac{1}{n} \sum_{i=1}^n h(\theta_i)$$
  - The associated simulation standard error of this estimate is estimated by
     $$ SE(\bar h_{MC}) = \sqrt{\frac{\sum_{i=1}^n (h(\theta_i) - \bar h_{MC})^2}{n(n-1)}}$$
-	
+
 - We consider the problem of approximating the value of integrals such as $\int_a^b g(x) dx$
 - Suppose that $X_i \overset{iid}{\sim} Unif[a, b]$. Then the density of $X_i$ is $f(x) = \frac{1}{b - a} I_{[a, b]} (x)$.
    $$\begin{aligned}
@@ -1130,7 +1130,7 @@ $$p(\mu \vert y) \propto exp[-\frac{1}{2} (\mu - \bar y)^T n \Sigma^{-1} (\mu - 
    \approx \frac{b -a}{n} \sum_{i=1}^n g(X_i)
    \end{aligned}$$
    for sufficiently large n.
-   
+
 # Rejection Sampling
 ## Rejection Sampling
 - Rejection sampling is one of the most useful methods for simulating draws from a variety of distributions.
@@ -1165,12 +1165,12 @@ $$p(\mu \vert y) \propto exp[-\frac{1}{2} (\mu - \bar y)^T n \Sigma^{-1} (\mu - 
    E[h(\theta) \vert y] = \frac{\int h(\theta) w(\theta) g(\theta) d\theta}{\int w(\theta) g(\theta) d \theta}
    \end{aligned}$$
    where $w(\theta) = p(\theta) p(y \vert \theta ) /g(\theta)$ is the weight function.
-   
+
  - If $\theta_1, ..., \theta_n$ are a simulated sample from the approximation density $g$, then the importance sampling estimate of the posterior mean is
     $$ \bar h_{IS} = \frac{\sum_{i=1}^n h(\theta_i) w(\theta_i)}{\sum_{i=1}^n w(\theta_i)}$$
-	This is called an importance sampling estimate because we are sampling values of $\theta$ that are important in computing the integrals in the numerator and denominator.
+  This is called an importance sampling estimate because we are sampling values of $\theta$ that are important in computing the integrals in the numerator and denominator.
 - The simulation standard error of an importance sampling estimate is estimated by
-	$$ SE(\hat h_{IS}) = \frac{\sqrt{\sum_{i=1}^n ((h(\theta_i) - \bar h_{IS}) w(\theta_i))^2}}{\sum_{i=1}^n w(\theta_i)}$$
+  $$ SE(\hat h_{IS}) = \frac{\sqrt{\sum_{i=1}^n ((h(\theta_i) - \bar h_{IS}) w(\theta_i))^2}}{\sum_{i=1}^n w(\theta_i)}$$
 
 ## Remarks
 - The main issue in designing a good importance sampling estimate is finding a suitable sampling density $g$.
