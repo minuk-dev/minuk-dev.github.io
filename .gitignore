@@ -9,3 +9,4 @@ tags.temp
 _site
 .jekyll-cache/**
 .ruby-version
+**/.obsidian
