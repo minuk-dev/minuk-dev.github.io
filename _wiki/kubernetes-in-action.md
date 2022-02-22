@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-19 19:29:34 +0900
+lastmod : 2022-02-23 00:55:33 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -628,4 +628,12 @@ graph LR;
     kubelet ---> apiserver;
     kubeproxy  ---> apiserver;
   end;
+```
+
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      B-->D;
+      C-->D;
 ```
