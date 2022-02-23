@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-23 00:55:33 +0900
+lastmod : 2022-02-24 01:12:00 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -612,28 +612,42 @@ kubectl proxy
   - The Container Network Interface newtork plugin
 
 #### 11.1.1. The distribued natrue of Kubernetes components
-```mermaid
-graph LR;
-  subgraph Control Plane;
-    direction LR;
-    apiserver[API server];
-    apiserver --> etcd[(etcd)];
-    scheduler[Scheduler]-->apiserver;
-    ctrlmgr[Controller Manager]--> apiserver;
-  end;
+- Kubernetes system components communicate only with the API server.
+- The API server is the only component that communicates with etcd.
+- The Control Plane components, as well as kube-proxy, can either be deployed on the system directly or they can run as pods.
+- The Kubelet is the only component that always runs as a regular system component.
 
-  subgraph "Worker node(s)";
-    kubeproxy[kube-proxy];
-    kubelet[Kubelet] --> container[Container Runtime];
-    kubelet ---> apiserver;
-    kubeproxy  ---> apiserver;
-  end;
-```
+#### 11.1.2. How kubernetes uses etcd
+- Optimistic concurrency control.
+- Ensuring consistency when etcd is clustered
 
-```mermaid
-  graph TD;
-      A-->B;
-      A-->C;
-      B-->D;
-      C-->D;
-```
+#### 11.1.3. What the API server does
+1. Authenticating the client with authentication plugins
+2. Authorizing the client with authorization plugins
+3. Validating and/or Modifying the resource in the request with admission control plugins
+4. Validating the resource and storing it persistently
+
+#### 11.1.4. Understanding how the API server notifies clients of resource changes
+- Clients watch for changes by opening an HTTP connection to the API server
+
+#### 11.1.5. Understanding the Scheduler
+- Understanding the default scheduling algorithm:
+  - Filtering the list of all nodes to obtain a list of acceptable nodes the pod can be scheduled to.
+  - Prioritizing the acceptable nodes and choosing the best one. If multiple nodes have the highest score, round-robin is used to ensure pods are deployed across all of them evenly.
+
+#### 11.1.6. Introducing the controllers running in the COntroller Manager
+- The single Controller Manager process currently combines a multitude of controllers performing various reconciliation tasks:
+  - Replication Manager (a controller for ReplicationController resources)
+  - ReplicaSet, DaemonSet, and Job controllers
+  - Deployment controller
+  - StatefulSet controller
+  - Node controller
+  - Service controller
+  - Endpoints controller
+  - Namespace controller
+  - PersistentVolume controller
+  - Others
+- Controllers never talk to each other directly.
+
+#### 11.1.7. What the Kubelet does
+
