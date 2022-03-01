@@ -10,3 +10,6 @@ _site
 .jekyll-cache/**
 .ruby-version
 **/.obsidian
+# Macos
+**/.DS_Store
+
