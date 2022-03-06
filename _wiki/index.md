@@ -2,9 +2,10 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2021-12-30 23:08:47 +0900
+lastmod: 2022-03-07 00:53:49 +0900
 ---
 ## 즐겨찾기
+ * [[kubernetes-in-action]]
  * [[msa-from-ddd]]
  * [[keras-book]]
 

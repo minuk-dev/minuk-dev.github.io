@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-02-24 01:12:00 +0900
+lastmod : 2022-03-07 01:24:18 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -635,7 +635,7 @@ kubectl proxy
   - Filtering the list of all nodes to obtain a list of acceptable nodes the pod can be scheduled to.
   - Prioritizing the acceptable nodes and choosing the best one. If multiple nodes have the highest score, round-robin is used to ensure pods are deployed across all of them evenly.
 
-#### 11.1.6. Introducing the controllers running in the COntroller Manager
+#### 11.1.6. Introducing the controllers running in the Controller Manager
 - The single Controller Manager process currently combines a multitude of controllers performing various reconciliation tasks:
   - Replication Manager (a controller for ReplicationController resources)
   - ReplicaSet, DaemonSet, and Job controllers
@@ -651,3 +651,60 @@ kubectl proxy
 
 #### 11.1.7. What the Kubelet does
 
+#### 11.1.8. The role of the Kubernetes Service Proxy
+- The userspace proxy mode
+- The iptables proxy mode
+
+#### 11.1.9. Introducing Kubernetes add-ons
+- How add-ons are deployed
+- How the DNS server works
+- How (most) ingress controllers work
+
+#### 11.1.10. Bringing it all together
+
+### 11.2. How controllers cooperate
+#### 11.2.1. Understanding which components are involved
+
+```bash
+kubectl get events --watch
+```
+
+### 11.3. Understanding what a running pod is
+- The pause container is an infrastructure container whose sole purpose is to hold all these namespaces.
+
+### 11.4. Inter-pod networking
+- Pods on a node are connected to the same bridge through virtual Ethernet interface paris.
+- For pods on different nodes to communicate, the bridges need to be connected somehow.
+
+#### 11.4.3. Introducing the Container Network Interface
+- CNI : Container Network Interface:
+  - Calico, Fannel, Romana, Weave Net...
+
+### 11.5. How services are implemented
+#### 11.5.1. Introducing the kube-proxy
+- userspace proxy mode : the kube-proxy was an actual proxy waiting for connections and for each incoming connection, opening a new connection to one of the pods.
+
+#### 11.5.2. How kube-proxy uses iptables
+1. When a service is created in the API server, the virtual IP address is assigned to it immediately.
+2. The API server notifies all kube-proxy agents running on the worker nodes that a new Service has been created.
+3. Each kube-proxy makes that service addressable on the node it's running on.
+
+- An Endpoints object holds the IP/port paris of all the pods that back the service (an IP/port pair can also point to something other than a pod).:
+  - So, all endpoints are watched by kube-proxy.
+
+- The trip of packet from a pod to another pod of service:
+  1. The packet's destination is initially set to the IP and port of the Service
+  2. The kernel checks if the packet matches any of iptables rule. When matched, the packet's destination IP and port should be replaced with the IP and port of a randomly selected pod.
+
+### 11.6. Running highly avaiable clusters
+- Running multiple instances to reduce the likelihood of downtime
+- Using leader-election for non-horizontally scalable apps
+
+#### 11.6.2. Making Kubernetes Control Plane components highly available
+- To make Kubernetes highly available, you ndeed to run multiple master nodes:
+  - etcd, which is the distributed data store where all the API objects are kept
+  - API server
+  - Controller Manager, which is the process in which all the controllers run
+  - Scheduler
+- With Load balancer
+- 머지... 슬슬 어렵네
