@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-03-07 01:24:18 +0900
+lastmod : 2022-03-08 02:49:16 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -706,5 +706,41 @@ kubectl get events --watch
   - API server
   - Controller Manager, which is the process in which all the controllers run
   - Scheduler
-- With Load balancer
-- 머지... 슬슬 어렵네
+- Behind LoadBalancer, all etcd on master nodes (including stand-by) are connected each other:
+  - Because etcd was designed as a distributed system, one of its key features is the ability to run multiple etcd instances, so making it highly available is no big deal.
+  - API server is (almost completely) stateless (all the data is stored in etcd)
+
+- Ensuring high avilability of the controllers and the Scheduler:
+  - leader election
+
+## Chapter 12. Securing the Kubernetes API server
+### 12.1. Understanding authentication
+- Several authentication plugins:
+  - From the client certificate, From an authentication token passed in an HTTP header, Basic HTTP authentication
+
+#### 11.1.1. Users and groups
+- Kubernetes distinguises between two kinds of clients connecting to the API server:
+  - users, pods
+- pods use ServiceAccount
+- built-in groups:
+  - `system:unauthenticated`, `system:authenticated`, `system:serviceaccounts`, `system:serviceaccounts:<namespace>`
+
+```bash
+kubectl get sa
+```
+
+#### 11.1.4. Assigning a ServiceAccount to a pod
+
+### 12.2. Securing the cluster with role-based access control
+#### 12.2.1. Introducing the RBAC authorization plugin
+
+| HTTP method | Verb for single resource    | Verb for collection |
+| GET, HEAD   | get(and watch for watching) | list (and watch)    |
+| POST        | create                      | n/a                 |
+| PUT         | update                      | n/a                 |
+| PATCH       | patch                       | n/a                 |
+| DELETE      | delete                      | deletecollection    |
+
+#### 12.2.2. Introducing RBAC resources
+- Roles and ClusterRoles
+- RoleBindings and ClusterRoleBindings
