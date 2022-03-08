@@ -37,7 +37,7 @@ params:
   highlight : true
   highlightStyle : "default"
   favicon : "images/Rb.png"
-  copyright: "&copy; All rights reserved. Powered by [Minimal](https://github.com/calintat/minimal)."
+  copyright: "&copy; All rights reserved. Powered by [Celeste](https://github.com/nicoelayda/celeste)."
 
 kramdown:
   parse_block_html: true
