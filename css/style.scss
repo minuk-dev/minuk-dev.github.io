@@ -25,3 +25,9 @@
 // Pages
 @import "pages/landing";
 @import "pages/posts";
+
+// Button
+@import "buttons/iota";
+.btn-primary {
+  @include btn-iota($color-primary);
+}

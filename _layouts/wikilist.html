@@ -3,7 +3,7 @@
 <main class="container content">
     <div class="navigator" style="display:flex;">
       <div style="display:flex;">
-        <a href="/wiki"><button class="btn btn-link">Front Page</button></a>
+        <a href="/wiki"><button class="btn btn-primary">Front Page</button></a>
       </div>
       <div style="margin-left:auto;">
         {% include wikihistory.html %}
@@ -26,10 +26,10 @@
       <nav style="font-size: 2rem;">
         <ul class="pagination justify-content-center">
           <li class="page-item">
-            <a class="page-link" id="prev-item">
+            <button class="page-link btn btn-primary" id="prev-item">
               <i class="fa fa-arrow-left"></i>
               Prev
-            </a>
+            </button>
           </li>
           <li class="page-item">
             <a class="page-link" id="pageNumber">
@@ -37,10 +37,10 @@
             </a>
           </li>
           <li class="page-item">
-            <a class="page-link" id="next-item">
+            <button class="page-link btn btn-primary" id="next-item">
               Next
               <i class="fa fa-arrow-right"> </i>
-            </a>
+            </button>
           </li>
         </ul>
       </nav>
