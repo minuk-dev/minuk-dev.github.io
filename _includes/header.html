@@ -17,33 +17,11 @@
     </head>
 
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="/">{{ site.title }}</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                  <ul class="nav navbar-nav">
-                    {% for item in site.menu %}
-                      <li><a href="{{ item.url }}">{{ item.name }}</a></li>
-                    {% endfor %}
-                  </ul>
-
-                  <ul class="nav navbar-nav navbar-right">
-                    {% for item in site.icon %}
-                      <li class="navbar-icon"><a href="{{ item.url }}"><i class="fa fa-{{ item.name }}"></i></a></li>
-                    {% endfor %}
-                    <li>
-                      <div style="max-width:250px;display:inline-block;max-height:40px;">
-                        {% include search.html %}
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-            </div>
-        </nav>
+      <nav class="nav-main">
+        <ul>
+          {% for item in site.menu %}
+            <li><a href="{{ item.url }}">{{ item.name }}</a></li>
+          {% endfor %}
+            <li>{% include search.html %}</li>
+        </ul>
+      </nav>
