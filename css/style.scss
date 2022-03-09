@@ -26,8 +26,30 @@
 @import "pages/landing";
 @import "pages/posts";
 
+// refer : https://github.com/loup-brun/buttons/blob/5b44621dcd82dbff924398f4fd12a780a8012112/scss/_variables.scss
+$color-primary:                   #0A3b76;
+$color-secondary:                 #588FE5;;
+$color-tertiary:                  #FF006A;
+$color-tetrary:                   #991BE2;
 // Button
 @import "buttons/iota";
 .btn-primary {
   @include btn-iota($color-primary);
+}
+
+// Custom
+.page-item {
+  display: inline-block;
+}
+
+.item-tag {
+  background-color: $color-primary;
+  border: 1px solid $color-primary;
+  border-radius: 3px;
+  box-sizing: border-box;
+  padding: 0em 0.5em;
+  flex-wrap: wrap;
+  font-size: 14px;
+  display: inline-block;
+  color: white;
 }
