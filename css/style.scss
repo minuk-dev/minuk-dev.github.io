@@ -82,6 +82,42 @@ $color-tetrary:                   #991BE2;
       background-color: #D9D9D9;
     }
 }
+
+.wiki-log {
+  display: flex;
+  justify-content: center;
+}
+
+.wiki-history {
+  display: flex;
+}
+
+.wiki-history-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  .wiki-history-item {
+    list-style-type:none;
+    padding: 1px;
+    &::before{
+      content: "> ";
+    }
+  }
+}
+.wiki-history-all-list {
+  margin: 0;
+  padding: 0;
+
+  .wiki-history-item {
+    list-style-type:none;
+    padding: 1px;
+    &::before{
+      content: "> ";
+    }
+  }
+}
+
 .highlight pre {
     /* Avoid pushing up the copy buttons. */
     margin: 0;
