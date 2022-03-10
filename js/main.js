@@ -224,7 +224,7 @@ const activateWikiHistory = () => {
 }
 
 const getParam = (sname) => {
-    let params = location.search.substring(0, location.search.indexOf("?") + 1)
+    let params = location.search.substring(location.search.indexOf("?") + 1)
     let sval = ""
     params = params.split("&")
     for (let i = 0; i < params.length; i++) {
@@ -240,7 +240,7 @@ const moveToTag = (tagName) => {
     let yOffset = -100
     const y = tagElem.getBoundingClientRect().top + window.pageYOffset + yOffset
     window.scrollTo({top: y, behavior: 'smooth'})
-    tagElem.style.border = "thick solid var(--accent)"
+    tagElem.style.border = "thick solid #0A3b76"
 }
 
 document.addEventListener('DOMContentLoaded', activateWikiLink)
