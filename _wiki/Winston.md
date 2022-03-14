@@ -1,27 +1,24 @@
 ---
 layout  : wiki
 title   : winston
-summary : 
 date    : 2020-04-07 20:32:24 +0900
-lastmod : 2020-04-08 12:51:39 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2022-03-15 02:34:17 +0900
+tags    : [js, winston, log]
+parent  : Javascript
 ---
 
-# import * as config from "config";
+```js
+import * as config from "config";
     import { Logger, LoggerInstance, LoggerOptions, transports } from "winston";
     require("winston-daily-rotate-file");
-    
+
     const defaultLevel = process.env.LOG_LEVEL;
-    
+
     // We might want to do something on rotation?
     // rotateTransport.on("rotate", (oldFailename, newFilename) => {
     //     // do something fun
     // });
-    
+
     const options: LoggerOptions = {
         exitOnError: false,
         level: defaultLevel,
@@ -61,9 +58,9 @@ latex   : false
             }),
         ],
     };
-    
+
     const logger: LoggerInstance = new Logger(options);
-    
+
     if (process.env.NODE_ENV === "develop") {
         logger.add(transports.Console, {
             colorize: true,
@@ -72,5 +69,6 @@ latex   : false
             level: "debug", // debug and below to console
         });
     }
-    
+
     export { logger };
+```

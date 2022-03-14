@@ -2,12 +2,13 @@
 layout  : wiki
 title   : Promise 정리
 date    : 2020-04-07 20:22:09 +0900
-lastmod : 2022-03-15 02:30:12 +0900
+lastmod : 2022-03-15 02:33:02 +0900
 tags    : [js, promise]
 draft   : false
+parent  : Javascript
 ---
 
-# ## Synchronous vs Asynchronous
+# Synchronous vs Asynchronous
 
 ## Callback hell
 
