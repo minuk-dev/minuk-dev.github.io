@@ -1,20 +1,17 @@
 ---
 layout  : wiki
 title   : Promise 정리
-summary : 
 date    : 2020-04-07 20:22:09 +0900
-lastmod : 2020-04-08 12:48:44 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2022-03-15 02:30:12 +0900
+tags    : [js, promise]
+draft   : false
 ---
 
 # ## Synchronous vs Asynchronous
 
 ## Callback hell
 
+```js
     CallEndpoint("api/getidbyusername/hotcakes", function(result) {
     	CallEndpoint("api/getfollowersbyid/" + result.userID, function(result) {
     		CallEndpoint("api/someothercall/" + result.followers, function(result) {
@@ -24,6 +21,7 @@ latex   : false
     		});
     	});
     });
+```
 
 ## Promise
 
