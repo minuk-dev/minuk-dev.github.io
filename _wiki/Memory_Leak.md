@@ -1,14 +1,10 @@
 ---
 layout  : wiki
 title   : Javascript Memory Leak
-summary : 
 date    : 2020-04-07 20:16:46 +0900
-lastmod : 2020-04-08 12:43:07 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2022-03-15 02:23:25 +0900
+tags    : [계개모, 계룡전산한마당, gc]
+parent  : 계룡 개발 모임
 ---
 
 # 주제 후보
@@ -27,17 +23,19 @@ latex   : false
 - Garbage Collection 의 필요성
     - C언어에서 메모리를 직접 할당하고 해제하는 malloc, free 라는 방식을 사용하였다.
 
-        #include <stdio.h>
-        #include <stdlib.h>
-        
-        int main(int argc, char** argv) {
-        	int n;
-        	scanf("%d",&n);
-        	int* arr = (int*)malloc(sizeof(int) * n);
-          // do something
-        	free(arr);
-        	return 0;
-        }
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char** argv) {
+    int n;
+    scanf("%d",&n);
+    int* arr = (int*)malloc(sizeof(int) * n);
+    // do something
+    free(arr);
+    return 0;
+}
+```
 
     - → 소프트웨어의 규모가 커지고 협업이 증가하면서 메모리를 책임지지 못하게 되었다.
     - →Garbage Collection의 필요성 (cf. rust 의 memory ownership)
@@ -46,21 +44,22 @@ latex   : false
 ## Garbage Collection
 
 ### 초기 아이디어 - 참조 카운트(Reference Counting)
+```cpp
+A a = new A();
+a.b = new B();
+a.b.c = new C();
 
-    A a = new A();
-    a.b = new B();
-    a.b.c = new C();
-    
-    
-    a.b.c = null;
 
-    f();
-    
-    
-    void f() {
-      A a = new A();
-     // do something
-    }
+a.b.c = null;
+
+f();
+
+
+void f() {
+  A a = new A();
+ // do something
+}
+```
 
 이 때 f 메서드 바깥에서는 a가 사용되지 않는다.
 
@@ -68,12 +67,14 @@ a가 가르키던 메모리 공간에 대해서 f가 끝나면 reference count�
 
 - 문제점 - 순환 참조 (Circular Referencing)
 
-    A a = new A();
-    B b = new B();
-    a.refB = b;
-    b.refA = a;
-    a = null;
-    b = null;
+```cpp
+A a = new A();
+B b = new B();
+a.refB = b;
+b.refA = a;
+a = null;
+b = null;
+```
 
 a와 b의 공간에 더이상 접근가능한 객체가 없음에도 불구하고 a와 b의 reference count 는 각각 1이기 때문에 gc가 메모리 해제를 하지 않는다.
 
@@ -81,9 +82,9 @@ a와 b의 공간에 더이상 접근가능한 객체가 없음에도 불구하�
 
 ### 도달 가능한 (reachable) 객체만 남기자 - Mark and Sweep
 
-  
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/aa41f1a8-0115-4e9f-9995-a0b1f1dc210a/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/aa41f1a8-0115-4e9f-9995-a0b1f1dc210a/Untitled.png)
+
+![gc.png](gc.png)
 
 출처 : [https://en.wikipedia.org/wiki/Tracing_garbage_collection#Naïve_mark-and-sweep](https://en.wikipedia.org/wiki/Tracing_garbage_collection#Na%C3%AFve_mark-and-sweep)
 
@@ -119,24 +120,25 @@ a와 b의 공간에 더이상 접근가능한 객체가 없음에도 불구하�
 
 [https://www.ps.uni-saarland.de/courses/gc-ws01/slides/generational_gc.pd](https://www.ps.uni-saarland.de/courses/gc-ws01/slides/generational_gc.pdf)[https://www.ibm.com/developerworks/web/library/wa-memleak/wa-memleak-pdf.pdf](https://www.ibm.com/developerworks/web/library/wa-memleak/wa-memleak-pdf.pdf)
 
-    function foo(arg) {
-      bar = "global variable";
-    }
-    
-    
-    function foo(arg) {
-      window.bar = "global variable";
-    }
+```javascript
+function foo(arg) {
+  bar = "global variable";
+}
 
-    var someResource =getData();
-    setInterval(function() {
-      var node = document.getElementById('Node');
-      if (node) {
-        // something
-        node.innerHTML = JSON.stringify(someResource);
-      }
-    }, 1000);
-    
+
+function foo(arg) {
+  window.bar = "global variable";
+}
+
+var someResource =getData();
+setInterval(function() {
+  var node = document.getElementById('Node');
+  if (node) {
+    // something
+    node.innerHTML = JSON.stringify(someResource);
+  }
+}, 1000);
+```
 
 [Garbage collection](https://javascript.info/garbage-collection)
 
