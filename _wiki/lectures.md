@@ -3,7 +3,7 @@ layout  : wiki
 title   : 학교 수업
 summary :
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2022-03-15 14:58:51 +0900
+lastmod : 2022-03-25 22:26:52 +0900
 tags    : [lecture]
 parent  :
 ---
@@ -27,3 +27,4 @@ parent  :
 * [[pdf-test]]
 * [[lectures/machine-learning]]
 * [[lectures/signal_and_system]]
+* [[lectures/compiler]]
