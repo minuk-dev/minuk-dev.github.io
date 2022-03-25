@@ -363,3 +363,122 @@ parent  : lectures
 		- interval 상의 average power는 $$\sum_{n=n_1}^{n_2} \vert x[n] \vert ^2 / (n_2 - n_1)$$
 	- 무한대의 time interval 상에서
 		- total energy 는 위 식의 극한으로 정의
+			$$E_{\infty} \triangleq {lim}_{\tau \rightarrow \infty} \int_{-\infty}^{\infty} \vert x(t) \vert ^2 dt = \int _{- \infty}^{\infty} \vert x(t) \vert ^2 dt $$
+			$$E_\infty \triangleq {lim}_{N \rightarrow \infty} \sum_{n = - N}^{N} \vert x[n] \vert ^2 = \sum_{N = -\infty}^{\infty} \vert x[n] \vert ^2$$
+			- $x(t), x[n]$이 모든 시간에서 0이 아닌 값ㅡㄹ 갖는 경우
+			- $E_\infty$는 합이 수렴하지 않는다. : 무한한 에너지
+	- 무한 구간에서 시간 평균 power (time-averaged power over on infinite interval)
+	  $$ P_\infty \triangleq {lim}_{T \rightarrow \infty} \frac{1}{2T} \int_{-T}^T \vert x(t) \vert ^2 dt$$
+	  $$ P_\infty \triangleq {lim}_{N \rightarrow \infty} \frac{1}{2 N + 1} \sum_{n = -N}^{N} \vert x[n] \vert ^2$$
+	  - ex : $cos 2 pi t$ : 주기 1
+	    $$P_{\infty} = {lim}_{T \rightarrow \infty} \int_{-T}^{T} cos^2 (2 \pi t) dt = {lim}_{T \rightarrow \infty} \frac{1}{4 T} \int_{- \infty}^{\infty} \{ cos(4 \pi t) + 1 \}dt$$
+		$$\frac{1}{4 \pi} \int cos u du = \frac{1}{4 \pi} sin u$$
+		$$P_{\infty} = {lim}_{T \rightarrow \infty} \frac{1}{4 T} = \frac{1}{2}$$
+	 - 주기 신호는 power 신호
+	 - ex : 신호 $A e^{- t} (t \ge 0)$ 의 에너지의 전력?
+		 $$E_{\infty} = \int_{0}^\infty \vert A e^{-1} \vert ^2 dt = \int_{0}^{\infty} A^2 e^{-2t} dt = - \frac{A^2}{2} e^{-2t} \vert _0 ^{\infty} = \frac{A^2}{2}$$
+		 $$P_{\infty} = {lim}_{T \rightarrow \infty} \frac{E_{\infty}}{T} = 0$$
+    - 유한한 total energy 가지는 신호는 average power = 0
+		$$P_{\infty} = {lim}_{T \rightarrow \infty} \frac{E_\infty}{2T} = 0$$
+		- ex) $0 \le t \le 1$ 구간에서는 1. 나머지에서는 0인 신호
+			$E_{\infty} = 1$ 이고 $P_{\infty} = 0$
+	- 유한한 average power 가지는 신호 ($P_\infty > 0$)는 total energy = $\infty$
+		ex) constant signal $x(t) = 4$
+			$$P_\infty = {lim}_{T \rightarrow \infty} \frac{1}{2 T} \vert x(t) \vert ^2 dt = {lim}_{T \rightarrow \infty} \frac{1}{2 T} \int_{- T}^{T} 16 dt = 16$$
+			$$E_\infty = \infty$$
+	- $P_\infty$와 $E_\infty$ 모두 무한대값을 갖는 신호
+	- 정리하면,
+		- 에너지 신호 : 유한한 total energy 가지는 신호
+			$$E_{|infty} < \infty, P_\infty = {lim}_{T \rightarrow \infty} \frac{E_\infty}{2 T} = 0$$
+		- power 신호 : 유한한 평균 power 가지는 신호
+			$$P_\infty < \infty, P_{\infty} > 0 \rightarrow E_\infty = \infty$$
+			- $\exists$ signals for which $P_\infty = \infty$ and $E_\infty = \infty$
+			
+ - 에제 : D-T 신호와 에너지와 전력
+    $$x[n] = \begin{cases} (0.5)^n & n \ge 0 \\ 2^n & n < 0\end{cases}$$ 
+	- 신호의 에너지 $E_\infty \triangleq \sum_{n = -\infty}^{\infty} \vert x[n] \vert ^2$ 이용하면,
+		$$E_\infty = \sum_{n = -\infty}^{-1} (2)^{2n} + \sum_{n = 0} ^ \infty (0.5)^{2n} = \sum_{n = 1}^\infty (0.25)^n + \sum_{n=0}^\infty (0.25)^n = \frac{5}{3}$$
+		- 이 신호의 에너지는 유한, 전력은 0
+
+### 1.2. Transformations of the Independent Variable
+#### 1.2.1. Examples of transformations of the indepdnent variable
+- time shift
+	- $x[n]$과 $x[n - n_0]$는 동일한 shape & displaced (shifted)
+	- $x(t - t_0)$:
+		- delayed if $t_0$ is positive
+		- advanced if $t_0$ is negative
+		- ex) $cos2t$를 $t_0$만큼 delay : $t$ 대신 $t-t_0$ 대입
+- time reversed : $t$ 대신 $-t$ 대입
+- time scaling:
+	- 독립변수의 scaling: $x(t), x(2t)$ : 2배속, $x(t/2)$ : 1/2 배속
+- affine 변환으로 설명
+	- $x(t) \rightarrow y(t) = x(\alpha t + \beta)$
+		- $x(t + \beta)$ : $x(t)$ shifted by $- \beta$
+		- scaling by $\alpha$
+	- $\vert \alpha \vert < 1$ 이면 stretched, $\vert \alpha \vert > 1$이면 선형적 압축
+	- $\alpha < 0$ 이면 시간 상에서 reversed, $\beta$ 가 non-zero 면 shift
+
+#### 1.2.2. Periodic signals
+- periodic C-T signal $x(t)$는 모든 $t$에 대해 $x(t) = x(t + T)$
+	$$\exists T \text{s.t. } x(t) = x(t + T) \forall t \overset{def}{\Leftrightarrow} x(t) \text{ is a periodic signal with period }T$$
+	- 주기신호는 time shift T에 의해 변화하지 않는다.
+	- $x(t)$가 주기 $T$를 가지고 주기적이라면, 모든 $t$와 어떤 정수 $m$에도 $x(t) = x(t + m T)$ : $x($)$ 는 주기 $2T, 3T, \cdots$에 대해서도 주기적
+	- $x(t)$의 기본 주기 $T_0$ : 주기가 될수 있는 가장 작은 $T$ 값
+	- D-T 신호 $x[n] = x[n + N]$ : $N_0$: 기본 주기
+
+#### 1.2.3. Even and odd signals
+- even signal
+	- C-T : $x(-t) = x(t)$
+	- D-T : $x[-n] = x[n]$
+- odd signal
+	- $x(-t) = -x(t), x[-n] = -x[n]$
+- 임의 신호를 기함수와 우함수 신호로 분리 가능
+	- $Ev\{ x(t)\} = \frac{1}{2} [ x(t) + x(-t)] = x_e(t)$
+	- $Od\{ x(t) \} = \frac{1}{2} [ x(t) - x(-t)] = x_o(t)$
+
+
+
+- Signal Properties:
+	- Periodic signals: it repeats itself after a fixed period T
+	- Even signals: $x(-t) = x(t)$
+	- Odd signals: $x(-t) = -x(t)$
+	- A signal is (real) exponential if it can be represented as $x(t) = C e^{at}$. A signal is (complex) expoential if it can be represented in the smae form but $C$ and $a$ are complex numbers.
+	- A pulse signal is one which is nearly completely zero, apart from a short spike, $\delta(t)$. A step signal is zero up to a certain time, and them a constant value after that time, $u(t)$.
+	
+	
+### 1.3. Exponential Signal & Sinusoidal Signals
+#### 1.3.1. C-T- complex exponential & sinusoidal signals
+- expoential signal:
+	- $x(t) = Ce^{at}$
+	- $C$와 $a$가 실수라면, $x(t)$ 는 real exponential signal
+		- $a >0$ 이면, $x(t)$ 는 $t$가 증가할수록 증가
+		- $a <0$이면, $x(t)$ 는 $t$가 증가할수록 감소
+		
+- periodic complex exponential
+	- $x(t) = Ce^{at}$ 에서 $a$를 허수로 놓으면
+		- $x(t) = C e^{j w_0 t}$
+		- 주기적이라면, $e^{j w_0 t} = e^{j w_0(t + T)} = e^{jw_0 t} e^{j w_0 T}$
+		- $w_0 = 0$이면, $x(t) = 1$, 어떤 $T$에 대해서도 성립
+		- $w_0 \not = 0$이면, $x(t)$의 기본주기 : $T_0 = \frac{2\pi}{\vert w_0 \vert}$ (신호 $e^{j w_0 t}$ 와 $e^{-jw_0t}$는 같은 기본 주기 가정)
+		  - $x(t)$는 복소 평면에서 크기 $C$인 원주상을 등속도 $w_0$로 회전하는 신호
+  - $e^{(a + j w)t} = e^{at} e^{jwt}$
+  - $e^{st}$에서
+	  - $s$ 가 실수이고 양수이면 증가하는 신호
+	  - $s$ 가 실수이고 음수이면 감소하는 신호
+	  - $s$ 가 허수이면 진동하는 신호
+	  - $s$ 가 복소수이면 증가/감소하며 진동하는 신호
+
+  - 주기적 복소지수 신호 -> 정현파 신호
+	  $x(t) = A cos(w_0 t + \phi)$
+	  
+- 오일러 관계 ($e^{jw_0t} = cos w_0 t + j sin w_0 t$)로부터
+	- $A cos(w_0t +\phi) = \frac{A}{2} e^{j \phi} e^{j w_0 t} + \frac{A}{2} e^{- j \phi} e^{-j w_0 t}$ : 정현파 신호는 주기적인 복소지수항으로 표현 가능
+	- $A cos(w_0 + \phi) = A Re(e^{j(w_0 t + \phi)})$
+	- $A sin(w_0 + \phi) = A Im(e^{j(w_0 t + \phi)})$
+- $x(t) = e^{jw_0 t}$ (복 소 주기 지수 신호)에 대해
+	$$E_{period} = \int_0^{T_0} \vert e^{j w_0 t} \vert ^2 = \int_0 ^{T_0} 1 dt = T_0$$
+	$$P_{period} = \frac{1}{T_0} E_{period} = 1$$
+	$$P_{\infty} = {lim}_{T \rightarrow \infty} \frac{1}{2T} \int_{-T}^{T} \vert e^{jw_0t} \vert ^2 dt = 1$$
+- 복소 지수 $e^{jwt}$가 주기 $T_0$를 가지며 주기적이기 위해 필요조건은
+	$e^{jwT_0} = 1$ -> $wt_0$가 $2\pi$의 곱 : $wT_0 = 2 \pi k$, $k= -, \pm 1, \pm 2, \cdots$
+	
