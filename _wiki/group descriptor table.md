@@ -1,12 +1,11 @@
 ---
 layout  : wiki
 title   : group descriptor table
-summary : 
 date    : 2020-04-30 20:17:00 +0900
-lastmod : 2020-04-30 20:19:53 +0900
+lastmod : 2022-03-26 03:40:03 +0900
 tags    : [linux, filesystem]
 draft   : false
-parent  : 
+parent  : ext4
 ---
 
 ## 설명

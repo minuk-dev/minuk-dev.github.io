@@ -1,10 +1,9 @@
 ---
 layout  : wiki
 title   : B+ Tree
-summary : 
 date    : 2020-06-05 19:24:15 +0900
-lastmod : 2020-06-27 15:10:23 +0900
-tags    : 
+lastmod : 2022-03-26 03:41:39 +0900
+tags    : [database]
 draft   : false
 parent  : database
 ---

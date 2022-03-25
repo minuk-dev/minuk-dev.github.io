@@ -1,12 +1,11 @@
 ---
 layout  : wiki
 title   : gem5
-summary : 
 date    : 2020-06-10 20:12:01 +0900
-lastmod : 2020-06-10 20:15:51 +0900
-tags    : 
+lastmod : 2022-03-26 03:44:40 +0900
+tags    : [simplessd]
 draft   : false
-parent  : 
+parent  : simplessd
 ---
 
 ## 짤막한 소개 (공식홈페이지)

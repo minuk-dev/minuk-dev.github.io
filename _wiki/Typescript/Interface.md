@@ -2,10 +2,10 @@
 layout  : wiki
 title   : Typescript/Interface
 date    : 2020-04-07 20:33:43 +0900
-lastmod : 2022-03-15 02:48:53 +0900
+lastmod : 2022-03-26 03:27:41 +0900
 tags    : [typescript]
 parent  : Typescript
---
+---
 
 # duck typing
 - structural subtyping

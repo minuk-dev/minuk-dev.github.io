@@ -1,39 +1,47 @@
 ---
 layout  : wiki
 title   : SQL
-summary : 
+summary : 가끔 써서 잘 기억 안나는 sql
 date    : 2020-04-07 20:34:32 +0900
-lastmod : 2020-04-08 12:56:35 +0900
-tags    : 
-toc     : true
+lastmod : 2022-03-26 03:28:59 +0900
+tags    : [sql]
 public  : true
-parent  : 
+parent  :
 latex   : false
 ---
 
 ## Mysql User Create
-
-    create user 'username'@'localhost' identified by 'password'
+```sql
+create user 'username'@'localhost' identified by 'password'
+```
 
 ## Grant privileges
 
-    grant all privileges on *.* to 'username'@'localhost';
-    grant all privileges on 'DBname'.* to 'username'@'localhost';
+```sql
+grant all privileges on *.* to 'username'@'localhost';
+grant all privileges on 'DBname'.* to 'username'@'localhost';
+```
 
 ## Drop User
 
-    drop user 'username'@'localhost';
+```sql
+drop user 'username'@'localhost';
+```
 
 ## Create Database
 
-    CREATE DATABASE 'DBname';
+```sql
+CREATE DATABASE 'DBname';
+```
 
 ## Create Table
 
-    CREATE TABLE table_name
-    (
-    column1 data_type(size),
-    column2 data_type(size),
-    column3 data_type(size),
-    ...
-    )
+```sql
+CREATE TABLE table_name
+(
+column1 data_type(size),
+column2 data_type(size),
+column3 data_type(size),
+...
+)
+```

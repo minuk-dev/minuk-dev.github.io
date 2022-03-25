@@ -1,15 +1,14 @@
---- 
+---
 layout  : wiki
 title   : mysql (storage engine)
-summary : 
 date    : 2020-05-28 07:48:47 +0900
-lastmod : 2020-06-27 15:10:10 +0900
+lastmod : 2022-03-26 03:44:02 +0900
 tags    : [mysql, storage engine, database]
 draft   : false
 parent  : database
 ---
 
-# 참고용 홈페이지 
+# 참고용 홈페이지
  1. https://dev.mysql.com/doc/internals/en/custom-engine.html
  2. mysql architecture
    * ![mysql architecture](/wiki/images/mysql_architecture.png)
@@ -27,7 +26,7 @@ $ git clone https://github.com/mysql/mysql-server
 ## 겪었던 문제들
  * git push 를 할때 너무 많아서 그런지 안올라가진다. -> 브랜치를 나눠서 올리면 된다. mysql 8.0.0 까진 수월하게 올라간다. mysql-8.0.0 브랜치까지 올리고 나머지 올리면 올라가진다. 용량이 커서 안올라가지는 것 같다.
 
- 
+
 ## 코딩할 때 알아야할 내용
 ### mysys.h 관련
  1. `include/mysys.h` 에 사용할만한 함수들이 많이 정리되어 있다.
@@ -37,12 +36,12 @@ $ git clone https://github.com/mysql/mysql-server
 ### THD (mysql thread 객체) 관련
  1. mysql thread 객체 (`THD`) 에 변수로 넣으면 (`THDVAR_SET`) 복사가 일어난다. (추측) -> 따라서 넣어야할 값이 있으면 my_malloc 하고 넣은다음에 my_free 해줘야한다. (Memory Leak 나지 않게 조심하자!)
  2. Mysql Thread 객체 (THD)에 값 확인, 넣기 : `THDVAR(대상 Thread, 원하는 변수명)`, `THDVAR_SET(대상 Thread, 원하는 변수명, 값의 주소)`
- 
- 
+
+
 ### Debug
  1. Debug를 위해서 return 같은거 할때 `DBUG_RETURN` 을 적극적으로 활용하자
 
- 
+
 # 참고용 홈페이지 읽고 정리하기
 ### 23.2 Overview
  * `handler`라는 interface를 구현하도록 되어 있는데, 각 connection 마다 thread가 생성되고 각 thread마다 handler instance를 생성하고 가지고 있도록 한다.
@@ -91,7 +90,7 @@ typedef struct
   } handlerton;
 ```
  * 적다보니 아래 부분은 transcation 을 구현할때나 필요한 부분이라 나중에 생각하기로 했다. 대충 공식 메뉴얼정도만 읽었고 굳이 번역해놓을 필요는 없을듯?
- 
+
 ### 23.6 Handling Handler Instantiation
 
 ```cpp
@@ -100,7 +99,7 @@ static handler* example_create_handler (TABLE* table);
 
  * handler 생성 함수를 만들어야된다.
  * handler constructor를 단순히 호출하는 형식으로 구현할 수도 있다. (아래 예시는 myisam 의 구현)
-  
+
 ```cpp
 static handler *myisam_create_handler(TABLE *table)
   {
@@ -109,7 +108,7 @@ static handler *myisam_create_handler(TABLE *table)
 ```
 
  * constructor 의 구현 예시
- 
+
 ```cpp
 ha_federated::ha_federated(TABLE *table_arg)
   :handler(&federated_hton, table_arg),
@@ -122,7 +121,7 @@ ha_federated::ha_federated(TABLE *table_arg)
  * 지원하는 확장자를 `const char* []` 로 넘기면 처리해준다
  * 단 array 의 마지막 은 `NullS` 로 끝나야함.
  * 아래 코드는 csv 예시
-  
+
 ```cpp
 static const char *ha_tina_exts[] = {
   ".CSV",
@@ -131,7 +130,7 @@ static const char *ha_tina_exts[] = {
 ```
 
  * 이렇게 정의된 array를 다음과 같이 설정해주면 됨.
-  
+
 ```cpp
 const char **ha_tina::bas_ext() const
 {
@@ -152,7 +151,7 @@ virtual int create(const char *name, TABLE *form, HA_CREATE_INFO *info)=0;
  * `name` 은 `table`의 이름
  * `form` 은 `tablename` 이랑 매칭되는 `TABLE` structure : `tablename.frm` 이라는 파일에 이미 다 만들어 놨으니, Storage Engine은 이를 변경하면 안됨.
  * `info` 는 `CREATE TABLE`을 했을 때 생기는 정보. `handler.h`에 정의 되어 있으니 참조.
-  
+
 ```cpp
 typedef struct st_ha_create_information
 {
@@ -182,7 +181,7 @@ typedef struct st_ha_create_information
 ```
  * storage engine 이 파일 기반이라는 가정하에 `form`, `info`는 신경 쓰지 않아도 됨.
  * csv engine 같은 경우 아래와 같이 구현되어 있음
-  
+
 ```cpp
 int ha_tina::create(const char *name, TABLE *table_arg,
   HA_CREATE_INFO *create_info)
@@ -208,7 +207,7 @@ int ha_tina::create(const char *name, TABLE *table_arg,
 
 ### 23.9 Opening a Table
  * read나 write 연산 전에 반드시 table data와 index file(있다면)을 열도록 되어있다.
-  
+
 ```cpp
 int open(const char *name, int mode, int test_if_locked);
 ```
@@ -216,7 +215,7 @@ int open(const char *name, int mode, int test_if_locked);
  * `name`은 table 의 이름
  * `mode`는 `O_RDONLY`(Open read only) 또는 `O_RDWR`(Open read/write)
  * `test_if_locked`는 파일을 열 때 확인해야할 내용에 대한 값이고,
-  
+
 ```cpp
 #define HA_OPEN_ABORT_IF_LOCKED   0   /* default */
 #define HA_OPEN_WAIT_IF_LOCKED    1
@@ -225,7 +224,7 @@ int open(const char *name, int mode, int test_if_locked);
 #define HA_OPEN_DELAY_KEY_WRITE   8   /* Don't update index */
 #define HA_OPEN_ABORT_IF_CRASHED  16
 #define HA_OPEN_FOR_REPAIR        32  /* open even if crashed */
-``` 
+```
  * 이 값들중 하나이다.
  * lock을 어떻게 다루는지 같은건 `get_share()`와 `free_share()`를 참조하라고 한다.
 
@@ -243,7 +242,7 @@ int open(const char *name, int mode, int test_if_locked);
  * reading이나 writing 이 발생하기 전에 언제나 불림
  * table에 lock을 추가하기 전에 `mysqld`라는 lock handler가 요청된 locks을 store_lock을 호출한다. 이때 store lock은 lock 의 수준을 변경할수 있고(blocking을 non-blocking을 만들다던가, 아예 무시하도록 만들다던가) 아니면 다른 테이블들에 락을 추가할수도 있다.
  * lock을 풀어줄때 store_lock이 다시 불리게 되는데, 이런 경우에는 일반적으로는 아무것도 할 필요가 없다.
- 
+
  * 만약 store_lock에 TL_IGNORE가 파라메터로 들어온다면, mysql에 handler에게 마지막에 요청했던 락을 다시 요청하는 것과 같다.
  * lock의 종류는 `includes/thr_lock.h`에 기재되어 있고 밑에 나와있는 것과 동일하다.
 
@@ -265,17 +264,17 @@ int open(const char *name, int mode, int test_if_locked);
   TL_WRITE_ONLY               /* Abort new lock request with an error */
 };
  ```
- 
+
  * `ha_myisammrg::store_lock()`을 참조
 
 #### 23.10.2 Implementing the external_lock() Method
  * statement 의 시작이나, `LOCK TABLES` 라는 게 들어오면 `external_lock()`이 호출된다.
  * `external_lock()`은 ha_innodb.cc에서 찾아보면 된다. 대부분의 storage engine이 간단하게 return 0 하는 식으로 구현한다.
- 
+
 #### 23.10.3 Implementing the rnd_init() Method
  * `rnd_init()`은 table scan 을 준비하는 단계에서 호출되고, counters를 초기화 시키거나, pointers를 table의 시작지점에 만든다.
  * 간단한 CSV storage engine의 구현 예시이다.
-  
+
 ```cpp
 int ha_tina::rnd_init(bool scan)
 {
@@ -289,7 +288,7 @@ int ha_tina::rnd_init(bool scan)
 }
 ```
  * 만약 sequential read면 `scan`은 `true`, random read 면 `false`이다.
-  
+
 #### 23.10.4 Implementing the info(uinf flag) Method
  * table scan을 하기 전에 optimizer에게 추가적인 테이블 정보를 넘겨주기 위해서 불린다.
  * return 값으로 정보를 전달하는 식이아니라 handler class의 몇몇 맴버 변수를 통해서 가져간다.
@@ -327,9 +326,9 @@ int ha_tina::info(uint flag)
  {
    DBUG_ENTER("ha_tina::info");
    /* This is a lie, but you don't want the optimizer to see zero or 1 */
-   if (!records_is_known && stats.records < 2) 
+   if (!records_is_known && stats.records < 2)
      stats.records= 2;
-   DBUG_RETURN(0); 
+   DBUG_RETURN(0);
  }
 ```
 
@@ -337,7 +336,7 @@ int ha_tina::info(uint flag)
  * 추가적인 hint 를 주기 위해서 호출되는 method
  * extra call 을 구현하는건 의무가 아니여서 대부분 0을 리턴함
    * 너무 설명이 없다. 어떤 상황에서 추가적인 hint가 필요한지, parameter 가 왜 `int ha_tina::extra(enum ha_extra_function operation)` 이런식으로 구성되어 있는지에 대한 설명이 부족한듯.
-    
+
 #### 23.10.6 Implementing the rnd_next() method
  * 각 row를 가져올때마다 호출되며, server의 search condition 이 만족되었거나 파일의 끝에 도달하면 `HA_ERR_END_OF_FILE` 을 리턴해야한다.
  * `rnd_next()` 는 byte array 인 `buf`를 인자로 받는다. 이때 buf 는 반드시 mysql 의 table row 의 포멧을 따라야한다.
@@ -429,7 +428,7 @@ int ha_tina::info(uint flag)
 ### 23.12 Adding Support for INSERT to a Storage Engine
  * read를 다 구현하면 write를 구현해야하고, WORM(Write Once, Read Many) application을 다뤄야한다.
  * 모든 INSERT 구문은 `write_row()` 로 다룬다.
-  
+
 ```cpp
 int ha_foo::write_row(byte *buf)
 ```
@@ -462,7 +461,7 @@ int ha_myisam::write_row(byte * buf)
  ```cpp
  int ha_foo::update_row(const byte *old_data, byte *new_data)
  ```
- 
+
  * `old_data` 는 update 되어야 되는 data를 가르키고 있고, `new_data`는 새롭게 들어갈 내용을 가지고 있다.
  * row format 에 따라 성능이 갈리며, 어떤 경우에는 기존 데이터를 지우고 맨 뒤에 새롭게 추가하는 식으로 구현한다.
  * 아래는 csv 의 예시이다.
@@ -489,8 +488,8 @@ int ha_myisam::write_row(byte * buf)
    DBUG_RETURN(0);
 }
  ```
- 
- 
+
+
 ### 23.14 Adding Support for DELETE to a Storage Engine
  * DELETE 도 UPDATE와 비슷하게 처리하며, `rnd_next()`를 호출하다가 `delete_row()`를 호출한다.
  * `buf`는 삭제될 내용을 가리킨다. Non-indexed storage engine 은 무시할수도 있지만, transaction을 지원하는 storage engine 은 rollback 작업을 위해 삭제할 내용을 저장할 필요가 있다.
@@ -511,7 +510,7 @@ int ha_myisam::write_row(byte * buf)
    DBUG_RETURN(0);
 }
  ```
- 
+
 ### 23.15 Supporting Non-Sequential Reads
 
 #### 23.15.1 Implementing the position() Method
@@ -523,10 +522,10 @@ void ha_foo::position(const byte *record)
 
  * `this->ref` 안에 record의 **position** 이 저장된다. 이때 position에 저장된 contents는 맘대로 해도 된다.
  * position 에 나중에 검색하기 위한 정보만 들어있으면 된다. 대부분의 Storage Engine은 primary key 의 offset을 가지고 있다.
- 
+
 #### 23.15.2 Implementing the rns_pos() Method
  * `rnd_next()` 와 비슷하게 구현하면 된다.
-  
+
 ```cpp
 int ha_foo::rnd_pos(byte * buf, byte *pos)
 ```
@@ -548,7 +547,7 @@ int ha_foo::rnd_pos(byte * buf, byte *pos)
    * index로부터 직접적으로 정보(information) 을 읽는 것.
  * 중 하나이다.
  * `UPDATE foo SET ts = now() WHERE id = 1:`같은 Update query가 실행될때 다음과 같은 순서로 실행된다.
- 
+
  ```cpp
 ha_foo::index_init
 ha_foo::index_read
@@ -556,7 +555,7 @@ ha_foo::index_read_idx
 ha_foo::rnd_next
 ha_foo::update_row
  ```
- 
+
  * 추가적으로 index read를 지원한다면, storage engine 은 row가 추가, 제거, 수정 될 때에도 table index를 유지하기 위해서 새로운 index를 만드는 것을 지원해야 한다.
 
 #### 23.16.2 Getting Index Information During CREATE TABLE Operations
@@ -574,7 +573,7 @@ ha_foo::update_row
  #define HA_NULL_ARE_EQUAL   2048 /* NULL in key are cmp as equal    */
  #define HA_GENERATED_KEY    8192 /* Automatically generated key     */
  ```
- 
+
  * `flag`외에도 `algorithm`는 index type에 관련된 알고리즘 정보를 제공한다.
  ```cpp
  enum ha_key_alg {
@@ -585,7 +584,7 @@ ha_foo::update_row
   HA_KEY_ALG_FULLTEXT=  4   /* FULLTEXT (MyISAM tables)     */
 };
  ```
- 
+
  * `flag`와 `algorithm` 에외에도 `key_part` 라고 복합 키(composite key)의 개별적인 부분을 설명하는 array 가 있다.
  * `key_part` 는 key part와 연관된 field(압축되어야 하는지, index part 의 data type과 길이) 를 제공하고 자세한건 `ha_myisam.cc`를 참조하면 어떻게 파싱해야할지 알 수 있다.
  * 추가적으로, storage engine 은 각 연산마다 `handler`의 `TABLE` 구조에서 index 를 읽을 수 있다.
@@ -608,7 +607,7 @@ ha_foo::update_row
  * Indexing 을 효과적으로 하기 위해서는 Optimizer(질의 최적화기?)에게 Index에 대한 정보를 제공해야한다. 이렇게 제공받은 정보로 Index를 사용할지, 쓴다면 어떤 Index를 사용할것인지를 결정한다.
 
 ##### 23.16.5.1 Implementing the info() Method
- * `handler:info()` 를 호출하면서 Optimizer는 정보를 얻는다. 이때 `info()` 는 return value로 정보를 제공하는게 아닌 handler의 public variable 을 설정하여서 필요할때 읽도록 한다. 
+ * `handler:info()` 를 호출하면서 Optimizer는 정보를 얻는다. 이때 `info()` 는 return value로 정보를 제공하는게 아닌 handler의 public variable 을 설정하여서 필요할때 읽도록 한다.
  * 이런 값들은 `INFORMATION SCHEMA` 에게 `SHOW TABLE STATUS` 같은 질의를 할때도 사용된다.
  * 가능하다면 모든 variable를 채우는게 좋지만, 만약 안된다고 해도 아래 서술하는 변수들은 반드시 채워야한다.
    * `records` - Table에 있는 row의 수, 만약 정확하게 산출하기 어렵다면, 1보다 큰 아무 값이라도 넣어놔야지 optimizer가 0개와 1개일때 최적화 하는 것을 방지할수 있다.
@@ -624,7 +623,7 @@ ha_foo::update_row
 
 ##### 23.16.6.2 Implementing the records_in_range Method
  * table 에 query 하거나 join할 때 `records_in_range`가 호출된다.
- * 
+
 ```cpp
 ha_rows ha_foo::records_in_range(uint inx, key_range *min_key, key_range *max_key)
 ```
@@ -639,17 +638,17 @@ typedef struct st_key_range
   uint length;
   key_part_map keypart_map;
   enum ha_rkey_function flag;
-} key_range; 
+} key_range;
  ```
- 
+
  * `key` - key buffer의 pointer
  * `length` - key의 길이
  * `keypart_map` - 전달된 `key`에서 key 부분이 어디인지를 가리키는 변수 : 자세한건 Parsing Key Information 참조
  * `flag` - key가 범위에 포함되는지를 나타내는 변수
-   * `min_key.flag` 는 
+   * `min_key.flag` 는
      * `HA_READ_KEY_EXACT` - 범위에 key가 포함됨
      * `HA_READ_AFTER_KEY` - 범위에 key가 포함되지 않음
-   * `max_key.flag` 는 
+   * `max_key.flag` 는
      * `HA_READ_BEFORE_KEY` - 범위에 key가 포함되지 않음
      * `HA_READ_AFTER_KEY` - `end_key`의 모든 값들이 범위에 포함됨.
  * return value는 다음과 같다.
@@ -660,13 +659,13 @@ typedef struct st_key_range
 
 #### 23.16.6 Preparing for Index Use with index_init()
  * index를 사용하기 전 storage engine 이 사전작업이나 최적화를 할 수 있도록 `index_init()`을 호출해준다.
-  
+
 ```cpp
 int ha_foo::index_init(uint keynr, bool sorted)
 ```
 
  * 대부분의 storage engine 의 경우 딱히 사전작업을 할필요는 없다. 만약 명시적으로 따로 구현하지 않으면 아래의 함수를 사용하게 된다.
-  
+
 ```cpp
 int handler::index_init(uint idx) { active_index=idx; return 0; }
 ```
@@ -719,7 +718,7 @@ HA_READ_PREFIX_LAST_OR_PREV
  * `index_read_last()` 도 `index_read()`와 비슷하게 동작한다.
  * 하지만 주어진 `key`에 해당하는 맨마지막 값을 반환한다.
  * 보통 다음과 같은 query를 최적화 할때 호출된다.
-  
+
 ```sql
 SELECT * FROM t1 WHERE a=1 ORDER BY a DESC,b DESC;
 ```
@@ -728,9 +727,9 @@ SELECT * FROM t1 WHERE a=1 ORDER BY a DESC,b DESC;
  * index scanning 을 할 때 호출된다.
 
  ```cpp
-  int ha_foo::index_next(byte * buf) 
+  int ha_foo::index_next(byte * buf)
  ```
- 
+
  * `buf` 는 `index_read()` 나 `index_first()` 같은 해당하는 다음 key에 매칭되는 row로 이동된 cursor에 의해 값을 채운다.
 
 #### 23.16.12 Implementing the index_prev() Method
@@ -739,7 +738,7 @@ SELECT * FROM t1 WHERE a=1 ORDER BY a DESC,b DESC;
 
 #### 23.16.13 Implementing the index_next() Method
  * index scanning 할때 호출되며, `buf`는 index의 첫번째 값에 해당하는 row로 값을 채워진다.
-  
+
 ```cpp
  int ha_foo::index_first(byte * buf)
 ```
@@ -750,8 +749,8 @@ SELECT * FROM t1 WHERE a=1 ORDER BY a DESC,b DESC;
  ```cpp
   int ha_foo::index_last(byte * buf)
  ```
- 
- 
+
+
 ### 23.17 Supporting Transactions
  * Transaction을 지원하는 Storage Engine을 만들때 참조해야하는 내용
  * transaction은 매우 복잡할수 있고, row versioning과 redo logs 같이 이 문서를 뛰어넘는 범위의 method를 포함한다.

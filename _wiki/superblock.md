@@ -1,12 +1,11 @@
 ---
 layout  : wiki
 title   : Superblock
-summary : 
 date    : 2020-04-30 20:07:08 +0900
-lastmod : 2020-04-30 20:16:06 +0900
-tags    : 
+lastmod : 2022-03-26 03:39:59 +0900
+tags    : [filesystem, linux]
 draft   : false
-parent  : 
+parent  : ext4
 ---
 
 ## 설명
