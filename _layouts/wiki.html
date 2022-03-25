@@ -1,12 +1,12 @@
 {% include header.html %}
 
 {% if page.draft %}
-<main>
+<main class="container content">
   <h1>¯\_(ツ)_/¯</h1>
   <h2>Nothing here</h2>
 </main>
 {% else %}
-<main>
+<main class="container content">
     {% include wikinavigator.html %}
     <div>
         <h2>{{ page.title }}</h2>
@@ -19,7 +19,6 @@
       {{ content }}
     </div>
 
-  {% include wikilink.html %}
   {% include comment.html %}
 </main>
 {% endif %}

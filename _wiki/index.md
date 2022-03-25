@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2022-03-07 00:53:49 +0900
+lastmod: 2022-03-26 03:38:20 +0900
 ---
 ## 즐겨찾기
  * [[kubernetes-in-action]]
@@ -59,7 +59,6 @@ lastmod: 2022-03-07 00:53:49 +0900
 ## 잡스러운 것들 모음
  * [[soma]]
  * [[latina]]
- * [[schedules]]
  * [[vimwiki로 블로그 구축하기]]
  * [[3공노트]]
  * [[버스 시간 메모]]

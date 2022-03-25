@@ -1,12 +1,11 @@
 ---
 layout  : wiki
 title   : inode
-summary : 
 date    : 2020-04-30 20:08:55 +0900
-lastmod : 2020-04-30 20:15:55 +0900
+lastmod : 2022-03-26 03:40:18 +0900
 tags    : [linux, filesystem]
 draft   : false
-parent  : 
+parent  : superblock
 ---
 
 ## 설명

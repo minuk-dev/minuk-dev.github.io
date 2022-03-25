@@ -1,14 +1,10 @@
 ---
 layout  : wiki
 title   : 썩어버린 Query Language
-summary : 
 date    : 2020-04-07 20:18:38 +0900
-lastmod : 2020-04-08 12:44:29 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2022-03-15 02:27:10 +0900
+tags    : [계개모, 계룡전산한마당, sql]
+parent  : 계룡 개발 모임
 ---
 
 #  # 1. SQL (Structured Query Language)?
@@ -60,32 +56,37 @@ latex   : false
 
 ## 쿼리 최적화의 좋은 예시
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9371e4ab-2f42-4c84-b00c-d55cb91399c4/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9371e4ab-2f42-4c84-b00c-d55cb91399c4/Untitled.png)
+![sql.png](sql.png)
+- 출처 : [NAVER D2](https://d2.naver.com/helloworld/1155)
 
 ## Pagination 이야기 (Row lookup)
 
 - 다들 게시판 또는 일부 데이터만을 구현할 떄 뒷 페이지로 갈수록 느려지는 느낌을 못받으시나요?
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/07984ce2-565f-42a0-ac02-77bda9c5ab00/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/07984ce2-565f-42a0-ac02-77bda9c5ab00/Untitled.png)
+![sql-index.png](sql-index.png)
 
-    SELECT id, xValue, yValue, zValue, createdAt
+```sql
+SELECT id, xValue, yValue, zValue, createdAt
+FROM Position
+LIMIT 2000000, 1000
+```
+
+```sql
+SELECT id, xValue, yValue, zValue, createdAt
+FROM (
+    SELECT id
     FROM Position
     LIMIT 2000000, 1000
-
-    SELECT id, xValue, yValue, zValue, createdAt
-    FROM (
-        SELECT id
-        FROM Position
-        LIMIT 2000000, 1000
-    ) q
-    JOIN Position p
-    ON p.id = q.id
+) q
+JOIN Position p
+ON p.id = q.id
+```
 
 # 4. SQL이 항상 DB에서 무언가를 조회할 최선은 아니다. (NoSQL - Not only SQL)
 
 - 임피던스 불일치(Impedance Mismatch)에 지친 개발자들...
 
-    ![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/632fa9df-3893-4a59-92e4-068f80f6d0a9/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/632fa9df-3893-4a59-92e4-068f80f6d0a9/Untitled.png)
+![sql_wiki.png](sql_wiki.png)
 
 - 위와 같이 다른것들도 고려는 해보자(?)
 

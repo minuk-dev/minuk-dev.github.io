@@ -1,14 +1,11 @@
 ---
 layout  : wiki
-title   : Understandign Linux Kernel
-summary : 
+title   : Understanding Linux Kernel
 date    : 2020-04-07 20:48:28 +0900
-lastmod : 2020-04-08 13:10:47 +0900
-tags    : 
-toc     : true
+lastmod : 2022-03-26 03:29:57 +0900
+tags    : [linux]
 public  : true
-parent  : 
-latex   : false
+parent  : Book Review
 ---
 
 # 1. Introduction

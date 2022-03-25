@@ -1,14 +1,10 @@
 ---
 layout  : wiki
 title   : JavaScript
-summary : 
 date    : 2020-04-07 20:22:03 +0900
-lastmod : 2020-04-08 12:48:20 +0900
-tags    : 
-toc     : true
-public  : true
-parent  : 
-latex   : false
+lastmod : 2022-03-15 02:28:26 +0900
+tags    : [js]
+draft   : false
 ---
 
 # Syntax

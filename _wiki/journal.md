@@ -1,12 +1,10 @@
 ---
 layout  : wiki
 title   : journal(journaling)
-summary : 
 date    : 2020-04-30 20:21:25 +0900
-lastmod : 2020-04-30 20:27:02 +0900
+lastmod : 2022-03-26 03:39:48 +0900
 tags    : [linux, filesystem, ext3, ext4]
-draft   : true
-parent  : 
+parent  : ext4
 ---
 
 ## 설명
