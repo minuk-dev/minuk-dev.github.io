@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: "MD98 page"
+title: "LMU page"
 email: makerdark98@gmail.com
 baseurl: "/" # the subpath of your site, e.g. /blog
 url: "https://makerdark98.dev" # the base hostname & protocol for your site, e.g. http://example.com
@@ -30,14 +30,7 @@ params:
   author: "Min-Uk.Lee"
   description: "개발 위키와 기타 모음"
   githubUsername: "makerdark98"
-  accent: "#00a3d2"
-  showBorder:  true
-  backgroundColor: "white"
-  font:  "Raleway" # should match the name on Google Fonts!
-  highlight : true
-  highlightStyle : "default"
   favicon : "images/Rb.png"
-  copyright: "&copy; All rights reserved. Powered by [Celeste](https://github.com/nicoelayda/celeste)."
 
 kramdown:
   parse_block_html: true

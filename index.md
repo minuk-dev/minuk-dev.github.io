@@ -1,5 +1,5 @@
 ---
 layout: intro
 title: LMU Page
-summary: 개발 위키와 기타 모음
+summary: 정리노트 겸 일기
 ---
