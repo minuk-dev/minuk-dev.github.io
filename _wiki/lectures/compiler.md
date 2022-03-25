@@ -101,7 +101,8 @@ parent  : lectures
 
 
 # Lexical Analysis
-## Overview
+## Part1. Specification of Tokens
+### Overview
 - What does a lexical analzyer do?
 	- Reading the input characters of a source program
 	- Grouping the characters into meaningful sequences, called lexemes
@@ -109,7 +110,7 @@ parent  : lectures
 	- Storing the token information into a symbol table
 	- Sending the tokens to a syntax analzyer
 
-## Definition: Tokens
+### Definition: Tokens
 - A token is a syntactic category
 	- Examples:
 		- In English: noun, verb, adjective, ...
@@ -118,7 +119,7 @@ parent  : lectures
 		- Example: an identifier A
 			- Its token name is "identifier" and its token value is "A"
 			
-## Definition: Lexemes
+### Definition: Lexemes
 - A lexeme is a sequence of characters that mathces the patterns ofr a token
 	- Pattern: a set of rules that defines a token
 	- Examples
@@ -133,7 +134,7 @@ parent  : lectures
 		| LITERAL | "Hello World" |
 		| COMPARISION | <, >, <=, ==, ... |
 		
-## Class of Tokens
+### Class of Tokens
 - Keyword:
 	- e.g., IF for if, ELSE for ele, FLOAT for float, CHAR for char
 - Operators:
@@ -148,17 +149,17 @@ parent  : lectures
 	- e.g., a non-empty sequence of blanks, newlines, and tabs
 		- Lexical analzyers usually discard uninteresting tokens that don't contribute to parsing (e.g., whitespace, comment)
 		
-## Lexical Anlysis does
+### Lexical Anlysis does
 1. Partitioning input strings into sub-strings (lexemes)
 2. Identifying the token of each lexeme
 
-## For the specifcation of tokens
+### For the specifcation of tokens
 - Why do we use "reuglar languages"?
 	- Simple, but powerful enough to describe the pattern of tokens
 - The coverage of formal languages
 	- Reuglar Lnague < Context-Free Language < Context-Sensitive Language < Recursively Enumerable Language
 	
-## Definition: Alphabet, String, and Language
+### Definition: Alphabet, String, and Language
 - An alphabet $\Sigma$ is nay finite set of symbols
 	- Letter = $\Sigma^L$ = {a, b, c, ..., z, A, B, C, ... , Z}
 	- Digit = $\Sigma^D$ = {0, 1, ..., 9}
@@ -171,14 +172,14 @@ parent  : lectures
 		-  $L_1$ is a finite language (the number of strings in the language is finite)
 		-  $L_2$ is an infinite language (the number of strings in the language is infinite)
 		
-## Operations on Strings
+### Operations on Strings
 - $s$: A string (A finite sequence of symbols over alphabet $\Sigma$)
 - $\vert s \vert$ : The length of s (the number of occurences of symbols in $s$)
 - $s_1 s_2$ : Concatenation of $s_1$ and $s_2$
 - $\epsilon$ : An empty string
 - $s^i$ : Exponentiation of $s$ (concatenation of $s$ i-times)
 
-## Operations on Languages
+### Operations on Languages
 - $L$ : A language (A set of strings over alphabet $\Sigma$)
 - $L_1 \cup L_2$: Union of $L_1$ and $L_2$ {s $\vert$ s in $L_1$ or s is in $L_2$}
 - $L_1L_2$ : Concatenation of $L_1$ and $L_2$ {$s_1s_2$ $\vert$ $s_1$ is in $L_1$ and $s_2$ is in $L_2$}
@@ -186,7 +187,7 @@ parent  : lectures
 - $L^*$ : Kleene closure of $L$ (Concatenation of $L$ zero or more times)
 - $L^+$ : Positive closure of $L$ (Concatenation of $L$ one or more times)
 
-## Regurlar Expressions
+### Regurlar Expressions
 - A notation of describing regular languages
 	- Each regular expression $r$ describes a regular language $L(r)$
 - Basic regular expressions
@@ -202,7 +203,7 @@ parent  : lectures
 - A An expression is a regular expression
 	- If and only if it can be described by using the basic reuglar expressions only
 	
-## Rules for Regular Expressions
+### Rules for Regular Expressions
 - Precedence : exponentiation (*, +) > concatenation > union ($\vert$)
 	- $(r_1) \vert (r_2)^* (r_3)) = r_1 \vert r_2^* r_3$
 - Equivalence:
@@ -217,7 +218,7 @@ parent  : lectures
 	| $a^*$ | - Idempotent: $a^{**} = a^{*}$ |
 
 
-### Exmpales of Specifying Tokens
+#### Examples of Specifying Tokens
 - $Keyword = if \vert else \vert for \vert \cdots$
 - $Comparision = < \vert > \vert <= \vert >= \vert \cdots$
 - $Whitespace = \text{ } \vert \text{\\t} \vert \text{\\n} \vert \cdots$
@@ -229,7 +230,7 @@ parent  : lectures
 - $Float = \text{Integer optionalFraction optionalExponent}$
 
 
-## To Recognize Tokens
+### To Recognize Tokens
 1. Merge the regular expression of tokens
   $Merged = Keyword \vert Identifier \vert Comparison \vert Float \vert Whitespace \vert \cdots$
 2. When an input stream $a_1 a_2 a_3 \cdots a_n$ is given,
@@ -243,9 +244,97 @@ parent  : lectures
 3. Do the step 2 for the remaning input stream
 
 
-## Summary
+### Summary
 - What does a lexical analyzer do?
 	- token
 	- getNextToken
 - How to specify the pattern for tokens? Regular Languages
 - How to recognize the tokens from input streams? Finite Automata
+
+## Part 2. Recognition of Tokens
+### Finite Automata
+- The implementation ofr recognizing tokens
+	- It accepts or rejects inputs based on the patterns specified in the form of regular expressions
+- A finite automata $M = \{Q, \Sigma, \delta, q_0, F\}$
+	- A finite set of sets $Q= \{q_0, q_1, ..., q_i\}$
+	- An input alphabet $\Sigma$: a finite set of input symbols
+	- A start state $q_0$
+	- A set of accepting (or final) states $F$ which is a subset of $Q$
+	- A set of state transition functions $\delta$
+- A finite automata can be expressed in the form of graphs, a transition graph
+- A finite automata can be also expressed in the form of table, a transition table
+
+### Deterministic vs. Non-deterministic
+- Deterministic Finite Automata (DFA):
+	- (Exactly or at most) one transition for each state and for each input symbol
+	- No $\epsilon$-moves
+- Non-deterministic Finite Automata (NFA):
+	- Multiple transitions for each state and for each input symbol are allowed
+	- $\epsilon$-moves are allowed
+- DFAs and NFAs can recognize the same set of regular languages
+- DFA:
+	- One deterministic path for a single input
+	- Accepted if and only if the path is from the start state one of the final states
+- NFA:
+	- Multiple possible paths for a single input
+	- Accepted if and only if any path among hte possible paths is from the start state to one of the final states
+	
+| | DFA | NFA |
+|-|-|-|
+| transitions | All transitions are deterministic | Some transitions could be non-deterministic |
+| $\epsilon$-move | x | o |
+| # paths for a given input | Only one | One or more |
+| Accepting condition | For a given input, its path must end in one of accepting states | For a given input, there must be at least one path ending in one of accepting states |
+| Pros | Fast to execute | Simple to represent (easy to make/understand) |
+| Cons | Complex ->space problem (exponentially larger than NFA) | Slow -> performance problem (several paths) |
+
+
+### Procedures for Implementing Lexical Analyzers
+- Lexical Specifications -> Regular Expressions -> NFA -> DFA(in the form of a transition table)
+
+### Regular Expressions to NFAs
+- McNaughton-Yamada-Thompson algorithm
+	- This works recursively by splitting an expression into its constituent subexpressions
+	
+### NFAs to DFAs
+- Subset (powerset) construction algorithm:
+	- Basic idea: Grouping a set of NFA states reachable after seeing some input strings
+- Definitions:
+	- $\epsilon$-closure($q^N$) : A set of NFA states reachable from NFA state $q^N$ with only $\epsilon$-moves ($q^N$ is also included)
+	- $\epsilon$-closure(T) : A set of NFA states reachable from some NFA state in a set $T = \{ q_i, ... \}$ with only $\epsilon$ - moves
+	
+	
+### Summary
+- What does a lexical analyzer do?
+	- Reading the input characters of a source program
+	- Grouping the characters into meaningful sequences, called lexemes
+	- Producing a sequence of tokens
+	- Storing the token information into a symbol table
+	- Sending the tokens to a syntax analzyer
+	
+	
+# Syntax Analysis (Parser)
+## Part 1. Context-Free Grammars (CFG)
+### Syntax Analyzer
+1. Decides whether a given set of tokens is valid or not
+	- Parse tree:
+		- It shows how the start symbol of a grammar derives a string in the language
+		- Given a context-free grammar, a parse tree is a tree is a tree with the following properties:
+			- The root is labeled by the start symbol
+			- Each leaf is labeled by a terminal or by $\epsilon$
+			- Each interior node is labeled by a non-terminal
+			- If $A$ is the non-terminal labeling some interior node and $X_1,  ..., X_n$ are the labels of the children of that node from left to right, then there must be a production $A \rightarrow X_1 X_2 \cdots X_n$
+2. Creates a tree-like intermediate representation (e.g., parse tree) that depicts the grammatical structure of the token stream
+
+### Why don't we use regular expressions?
+- It is not sufficient to depict the syntax of programming languages
+
+### Context-Free Grammars (CFG)
+- A notation for describing context free languages
+- A CFG consists of:
+	- Terminals: the basic symbols (usually, token name = terminal)
+		- Terminals can not be replaced
+	- Non-terminals: syntactic variables:
+		- Non-terminals can be replaced by other non-terminals or terminals
+	- A start symbol: one non-terminal (usually, the non-terminals of the first rule)
+	- Productions(->) : a rule for replacement

@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-03-08 02:49:16 +0900
+lastmod : 2022-03-18 23:14:55 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -744,3 +744,21 @@ kubectl get sa
 #### 12.2.2. Introducing RBAC resources
 - Roles and ClusterRoles
 - RoleBindings and ClusterRoleBindings
+
+---
+### 12.3. Summary
+- Clients of the API server include both human users and applications running in pods.
+- Application in pods are associated with a ServiceAccount.
+- Both users and ServiceAccounts are associated with groups.
+- By default, pods run under the default ServiceAccount, which is created for each namespace automatically.
+- Addiontional ServiceAccounts can be created manually and associated with a pod.
+- ServiceAccounts can be configured to allow mouting only a constrained list of Secrets in a given pod.
+- A serviceAccount can also be used to attach image pull Secrets to pods, so you don't need to specify the Secrets in every pod.
+- Roles and ClusterRoles define what actions can be performed on which resources.
+- RoleBindings and ClusterRoleBindings bind Roles and ClusterRoles to users, groups, and ServiceAccounts.
+- Each cluster comes with default ClusterRolese and ClusterRoleBindings.
+
+## Chatper 13. Securing cluster nodes and the network
+### 13.1. Using the host node's namespaces in a pod
+#### 13.1.1. Using the node's network namespace in a pod
+#### 13.1.2. Binding to a host port without using the host's network namespace
