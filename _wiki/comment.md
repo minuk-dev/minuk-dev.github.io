@@ -3,10 +3,10 @@ layout  : wiki
 title   : 주석 관련 좋은 글
 summary : 주석다는건 언제나 힘들다 한번 읽어보자
 date    : 2021-09-05 19:11:08 +0900
-lastmod : 2021-09-05 19:16:30 +0900
+lastmod : 2022-03-31 11:15:17 +0900
 tags    : [comment, 주석]
 draft   : false
-parent  : 
+parent  : software-engineering
 ---
 
 ## 이유

@@ -28,3 +28,4 @@ parent  :
 * [[lectures/machine-learning]]
 * [[lectures/signal_and_system]]
 * [[lectures/compiler]]
+* [[lectures/the-people-of-chung-ang-university-and-korean-society]]

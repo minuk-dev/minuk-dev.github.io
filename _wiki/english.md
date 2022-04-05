@@ -1,9 +1,8 @@
 ---
 layout  : wiki
 title   : english
-summary : 
 date    : 2020-06-28 23:28:18 +0900
-lastmod : 2020-08-02 20:33:20 +0900
+lastmod : 2022-03-31 13:26:32 +0900
 tags    : [english]
 draft   : false
 parent  : 
@@ -14,6 +13,10 @@ parent  :
  * 대체어 찾기 : http://visualthesaurus.com
  * 영어 문법 검사 : http://grammarly.com
  * 영어 글 난이도 검사 : http://hemingwayapp.com
- 
-## Proverb 
+
+## Proverb
  * [[english/proverb]]
+
+## 링글
+- [[링글/Metaverse]]
+- [[링글/Autonomous]]

@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2022-03-26 03:38:20 +0900
+lastmod: 2022-03-31 11:17:50 +0900
 ---
 ## 즐겨찾기
  * [[kubernetes-in-action]]
@@ -10,33 +10,13 @@ lastmod: 2022-03-26 03:38:20 +0900
  * [[keras-book]]
 
 ### Algorithm
- * [[teamnote]]
- * [[boj]]
- * [[UCPC_2018_예선]]
+ * [[algorithm]]
 
 ### Study
- * [[soma]]
- * [[linux]]
- * [[Storage]]
- * [[english]]
- * [[others]]
- * [[comment]]
- * [[msk]]
- * [[kafka]]
- * [[tikz]]
- * [[면접준비]]
+ * [[study-note]]
 
 ### School
  * [[lectures]]
-
-### Language
- * [[assembly]]
- * [[C++]]
- * [[Javascript]]
- * [[Typescript]]
- * [[SQL]]
- * [[verilog]]
- * [[regex]]
 
 ### Book Review
  * [[Book reviews]]
@@ -57,11 +37,8 @@ lastmod: 2022-03-26 03:38:20 +0900
 
 ---
 ## 잡스러운 것들 모음
- * [[soma]]
+ * [[memo]]
  * [[latina]]
- * [[vimwiki로 블로그 구축하기]]
- * [[3공노트]]
- * [[버스 시간 메모]]
  * [[독성말투]]
 
 ## 개인 생각
