@@ -2,49 +2,25 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2022-03-31 11:17:50 +0900
+lastmod: 2022-04-09 04:26:59 +0900
 ---
-## 즐겨찾기
- * [[kubernetes-in-action]]
- * [[msa-from-ddd]]
- * [[keras-book]]
 
-### Algorithm
- * [[algorithm]]
+## 즐겨찾기
+ - [[임시 메모]]
+ * [[kubernetes-in-action]]
+ * [[lectures]]
 
 ### Study
  * [[study-note]]
 
-### School
- * [[lectures]]
-
-### Book Review
- * [[Book reviews]]
-
-### Mathematics
- * [[statistics]]
-
 ### Tool
  * [[tool]]
- * [[nginx]]
  * [[피시실]]
-
----
 
 ## 군대
  * [[계룡 개발 모임]]
  * [[사지방]]
 
----
-## 잡스러운 것들 모음
- * [[memo]]
- * [[latina]]
- * [[독성말투]]
-
 ## 개인 생각
-### 회고
+ - [[제텔카스텐]]
  * [[회고]]
-
-### 잡생각
- * [[생각쓰레기통]]
- * [[완벽한삶]]

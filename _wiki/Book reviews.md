@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2022-01-31 04:38:11 +0900
+lastmod : 2022-04-09 03:14:50 +0900
 tags    : [book]
 parent  :
 ---
@@ -11,10 +11,10 @@ parent  :
 ### 정리 끝난거
  * [[Effective Debugging]]
  * [[Modern C++ Design Pattern]]
+ * [[msa-from-ddd]]
 
 ### 정리 하는 중
  * [[debug-linux]]
- * [[msa-from-ddd]]
  * [[keras-book]]
  * [[effective-java]]
  * [[kubernetes-in-action]]
@@ -30,4 +30,4 @@ parent  :
  * Pragmatic Programmer
  * Algorithm
  * Coding Interview
- * Data Application
+ * Data Intensive Application Design

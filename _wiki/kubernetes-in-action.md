@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-03-18 23:14:55 +0900
+lastmod : 2022-04-05 23:32:00 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -762,3 +762,44 @@ kubectl get sa
 ### 13.1. Using the host node's namespaces in a pod
 #### 13.1.1. Using the node's network namespace in a pod
 #### 13.1.2. Binding to a host port without using the host's network namespace
+### 13.2. Configuring the container's security context
+#### 13.2.1. Running a container as a specific user
+#### 13.2.2. Preventing a container from running as root
+#### 13.2.3. Running pods in privileged mode
+#### 13.2.4. Adding individual kernel capabilities to a container
+### 13.3. Restricting the use of security-related features in pods
+#### 13.3.1. Introducing the PodSecurityPolicy resource
+- Understanding what a Pod SecurityPolicy can do:
+  - Whether a pod can use the host's IPC, PID, or Network namespaces
+  - Which host ports a pod can bind to
+  - What user IDs a container can run as
+  - Whether a pod with privileged containers can be created
+  - Which kernel capabilities are allowed, which are added by default and which are always dropped
+  - What SELinux labels a container can use
+  - Whether a container can use a writable root filesytem or not
+  - Which filesystem groups the container can run as
+  - Which volume types a pod can use
+
+#### 13.3.2. Understanding runAsUser, fsGroup, and supplementalGroups policies
+- Changing the policy has no effect on exising pods, because Pod-Security-Policies are enforced only when creating or updating pods.
+
+#### 13.3.3. Configuring allowed, default, and disallowed capabilities
+#### 13.3.4. Constraining the types of volumes pods can use
+#### 13.3.5. Assigning different PodSecurityPolicies to different users and groups
+- psps : PodSecurityPolicy
+
+### 13.4. Isolation the pod network
+- ingress(out->in), egress(in->out)
+
+#### 13.4.2. Allowing only some pods in the namespace to connect to a server pod
+#### 13.4.3. Isolating the network between Kubernetes namespaces
+#### 13.4.4. Isolating using CIDR notation
+
+### 13.5. Summary
+- Pods can use the node's Linux namespaces instead of using their own.
+- Containers can be configured to run as a different user and/or group than the one defined in the container image.
+- Containers can also run in priviledged mode, allowing them to access the node's devices that are otherwise not exposed to pods.
+- Containers can be run as read-only, preventing processes from writing to the container's filesystem (and only allowing them to write to mounted volumes).
+- Cluster-level PodSecurityPolicy resources can be created to prevent users from creating pods that could compromise a node.
+- PodSecurityPolicy resources can be associated with specific user using RBAC's ClusterRoles and ClusterRoleBindings.
+- NetworkPolicy resources are used to limit a pod's inbound and/or outbound traffic.
