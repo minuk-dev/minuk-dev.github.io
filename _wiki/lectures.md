@@ -3,7 +3,7 @@ layout  : wiki
 title   : 학교 수업
 summary :
 date    : 2020-04-07 20:37:08 +0900
-lastmod : 2022-03-25 22:26:52 +0900
+lastmod : 2022-04-18 08:59:34 +0900
 tags    : [lecture]
 parent  :
 ---
@@ -29,3 +29,4 @@ parent  :
 * [[lectures/signal_and_system]]
 * [[lectures/compiler]]
 * [[lectures/the-people-of-chung-ang-university-and-korean-society]]
+* [[lectures/information_security_theory]]

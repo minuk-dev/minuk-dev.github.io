@@ -338,3 +338,30 @@ parent  : lectures
 		- Non-terminals can be replaced by other non-terminals or terminals
 	- A start symbol: one non-terminal (usually, the non-terminals of the first rule)
 	- Productions(->) : a rule for replacement
+- It is good at expressing the recursive structure of a program
+- In our programming languages, recursive structures are very frequently observed.
+
+### Derivations
+- A derivation ($\Rightarrow$) is a sequence of replacements.
+	- $\Rightarrow^*$ : Do derivations zero or more times
+- A rule for derivations:
+	- Leftmost($\Rightarrow_{lm}$) : replace the left-most non-terminal first
+	- Rightmost($\Rightarrow_{rm}$) : replace the right-most non-terminal first
+
+### Token Validation Test
+- Definition : A sentinel form of a CFG G
+	- $\alpha$ is a sentinel form of G, if $A \Rightarrow^* \alpha$, where A is the start symbol of G
+		- If $A \Rightarrow_{lm}^* \alpha$ or $A \Rightarrow_{rm}^* \alpha$, $\alpha$ is a (left or right) sentinel form of G
+- Definition: A sentence of a CFG G:
+	- $\alpha$ is a sentence form of G,
+	- If $\alpha$ is a sentinel form of a CFG G which consists of terminals only
+- Definition: A language of a CFG G:
+	- $L(G)$ is a language of a CFG G
+	- $L(G) = \{ \alpha \vert \alpha \text{ is a sentence of G}\}$
+- If an input string (e.g., a token set) is in $L(G)$, we can say that it is valid in G
+
+1. Decides whether a given set of tokens is valid or not
+	- Q. How to specify the rule for deciding valid token set?
+	- A. Make a context free grammar G based on the rule of a programming language
+	- Q. How to distinguish between valid and invalid token sets?
+	- A. Check whether the given token set can be derived from the context free grammar G
