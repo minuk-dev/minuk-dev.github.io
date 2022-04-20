@@ -21,7 +21,7 @@ Honestly, I choose this topic more - this topic is more technical, and after I c
 
 - 내가 말한 문장
 ```
-When I sawed question - questino 6, it's comparing the value of human life and the life on, and animla. When I saw it, I am so surpised, because I haven't - don't think about it. Did I make a mistake?
+When I sawed question - question 6, it's comparing the value of human life and the life on, and animla. When I saw it, I am so surpised, because I haven't - don't think about it. Did I make a mistake?
 ```
 
 - 첨삭 받은 문장
@@ -48,7 +48,7 @@ AI is popular understood as a learning machine. I am skeptical: I don't think ma
 ---
 - 내가 말한 문장
 ```
-I learned that. I'm participated in Google AI contest in maybe 2018 or 19, in SUmmer, they - the contest aksed to us just categorizing cat and dog. And second problem is predicting other surface of the car - they just - this [] has just one side of car, and predicting the other side. I'm not - I didn't win a prize but the experience is surely valuable.
+I learned that. I'm participated in Google AI contest in maybe 2018 or 19, in Summer, they - the contest aksed to us just categorizing cat and dog. And second problem is predicting other surface of the car - they just - this [] has just one side of car, and predicting the other side. I'm not - I didn't win a prize but the experience is surely valuable.
 ```
 
 - 첨삭받은 문장

@@ -2,10 +2,10 @@
 layout  : wiki
 title   : english
 date    : 2020-06-28 23:28:18 +0900
-lastmod : 2022-03-31 13:26:32 +0900
+lastmod : 2022-04-19 02:41:35 +0900
 tags    : [english]
 draft   : false
-parent  : 
+parent  : study-note
 ---
 
 ## 참조 사이트
