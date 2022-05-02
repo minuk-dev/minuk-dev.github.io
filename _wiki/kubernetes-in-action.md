@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-04-05 23:32:00 +0900
+lastmod : 2022-05-03 02:04:46 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -803,3 +803,46 @@ kubectl get sa
 - Cluster-level PodSecurityPolicy resources can be created to prevent users from creating pods that could compromise a node.
 - PodSecurityPolicy resources can be associated with specific user using RBAC's ClusterRoles and ClusterRoleBindings.
 - NetworkPolicy resources are used to limit a pod's inbound and/or outbound traffic.
+
+## Chapter 14. Managing pods' computational resources
+### 14.1. Requesting resources for a pod's containers
+- Understanding how resource requests affect scheduling:
+  - Understanding how the Scheduler determines if a pod can fit on a node:
+    - Scheduler doesn't look at how much of each individual resource is begin used at the exact time of scheduling
+    - Scheduleer guarantee given to the already deployed pods
+    - `LeastRequestedPriory`, `MostRequestedPriority`
+    - By keeping pods tightly packed, certain nodes are left vacant and can be removed.
+  - Inspecting a node's capacity:
+    ```bash
+    kubectl describe nodes
+    ```
+
+### 14.2. Limiting resources available to a container
+- The sum of all resource limits of all the pods on a node is allowed to exceed 100% of the node's capacity.
+- Understanding that containers always see the node's memory, not the container's
+- Understanding that containers also see all the node's CPU cores
+
+### 14.3. Understanding pod QoS classes
+- Three Quality of Service (QoS) classes:
+  - `BestEffort` : the lowest priority
+  - `Burstable`
+  - `Guarantted` : the highest
+    - When use Guarantted, the three things need to be true:
+      - Requests and limits need to be set for both CPU and memory.
+      - They need to be set for each container.
+      - They need to be equal (the limit needs to match the request for each resource in each container)
+
+- Understanding which process gets killed when memory is low:
+  - Basically, depending on priority : Kill order (BestEffort -> Burstable -> Guarantted)
+  - Understnading how containers with the same Qos class are handled:
+    - OOM(OutOfMemory) scores
+
+### 14.4. Setting default requests and limits for pods per namespace
+### 14.5. Limiting the total resources available in a namespace
+#### 14.5.1. Introducing the Resource Quota object
+
+### 14.6. Monitoring pod resource usage
+- cAdvisor
+- Heapster
+- Storing and analyzing historical resource consumption statistics:
+  - InfluxDB, Grafana
