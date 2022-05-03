@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-03 04:02:05 +0900
+lastmod : 2022-05-04 03:26:17 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -125,3 +125,119 @@ parent  : kubernetes
     }
   }
   ```
+- 이렇게 `helloworld` 바이너리를 만들었다.
+- 이제 dockerimage를 만들어보자.
+  ```dockerfile
+  FROM alpine:3.15.4
+  COPY bin/helloword /
+  ENTRYPOINT ["/helloword"]
+  ```
+
+  ```bash
+  docker build -t hello/alpine .
+  ```
+
+- 매번 위 과정을 하긴 귀찮으니, Makefile로 만들자.
+  ```makefile
+  all: helloworld docker
+
+  docker: helloworld
+    docker build -t hello/alpine .
+
+  helloworld:
+    CGO_ENABLED=0 go build -o bin/helloworld cmd/helloworld.go
+
+  clean:
+    rm -f bin/**
+  ```
+
+- 위 과정을 github에 업로드해두자
+  - [repo](https://github.com/makerdark98/k8s-in-action-practice)
+  - [지금까지 한거 commit](https://github.com/makerdark98/k8s-in-action-practice/tree/40da96f70e0f6dff362dd832bbaa55b2722bbd0e)
+
+## docker 이미지로 pod 만들기
+- 일단 node부터 확인하자
+
+  ```bash
+  kubectl get nodes
+  # NAME                          STATUS   ROLES                  AGE   VERSION
+  # k8s-in-action-control-plane   Ready    control-plane,master   22h   v1.23.4
+  ```
+
+- pod를 만들어보자
+
+  ```bash
+  kubectl run helloworld --image=hello/alpine --port=5000
+  kubectl get pods
+  # NAME         READY   STATUS         RESTARTS   AGE
+  # helloworld   0/1     ErrImagePull   0          8s
+  ```
+  - 이미지를 가져오는데 에러가 난다.
+  - 확인해보니 registry에 올려둬야한다고 한다. dockerhub에는 올리기 싫어서, 지난번에 해봤던 docker registry를 먼저 띄워보기로 했다.
+
+## docker registry 서비스를 로컬에 띄우고 모니터링하기
+- pod를 만들어보자
+  ```bash
+  kubectl run registry --image=registry --port=5000
+  kubectl get pods
+  # NAME       READY   STATUS              RESTARTS   AGE
+  # registry   0/1     ContainerCreating   0          7s
+  ```
+- pod로는 아무것도 할 수 없다. 서비스나 만들자
+
+  ```yaml
+  # registry.yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: registry-svc
+    labels:
+      app: registry-app
+  spec:
+    type: NodePort
+    ports:
+    - port: 5000
+      protocol: TCP
+      name: http
+    selector:
+      app: registry-app
+  ---
+  apiVersion: v1
+  kind: ReplicationController
+  metadata:
+    name: registry-app
+  spec:
+    replicas: 1
+    template:
+      metadata:
+        labels:
+          app: registry-app
+      spec:
+        containers:
+        - name: registry-app
+          image: registry
+          ports:
+          - containerPort: 5000
+  ```
+
+- 적용하자 (밑에는 확인 내용)
+
+  ```bash
+  kubectl apply -f registry.yaml
+  kubectl get pods
+  # NAME                 READY   STATUS    RESTARTS   AGE
+  # registry-app-pbsgj   1/1     Running   0          2m38s
+
+  kubectl get rc # replicationcontroller
+  # NAME           DESIRED   CURRENT   READY   AGE
+  # registry-app   1         1         1       3m29s
+
+  kubectl get service
+  # NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+  # kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP          23h
+  # registry-svc   NodePort    10.96.19.170   <none>        5000:31758/TCP   3m50s
+  ```
+
+  - 왠지 안된다... 일단 시각이 늦었으니 여기까지하고 내일하자.
+
+
