@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-05 06:50:33 +0900
+lastmod : 2022-05-05 07:47:30 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -260,6 +260,17 @@ parent  : kubernetes
 
 - 찾아보니 docker-registry-web 이라는게 있어서, 이걸로 gui를 사용할수 있다고 한다. 이것도 설정해보자.
   - 에러 찍어보니 image 자체가 실행이 안되는것 같다. 아키텍쳐 문제일수도 있으니 kube에 올리기전에 단독으로 실행해보자.
+
+  ```bash
+  docker run -it -p 8080:8080 --name registry-web \
+  -e REGISTRY_URL=http://localhost:5000/v2 \
+  -e REGISTRY_NAME=localhost:5000 \
+  # WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+  # standard_init_linux.go:228: exec user process caused: exec format error
+  ```
+
+- 다른게 더 좋은듯? 빌드를 직접하려고 [repo](https://github.com/mkuchin/docker-registry-web/tree/v0.1.2) 가보니 6년전 commit 이다. [docker-registry-ui](https://github.com/Joxit/docker-registry-ui) 가 더 자주 쓰이는것 같아서 이걸 띄워보려고 시도하는 중이다.
+- [k8s에 private registry 띄우는 블로그글](https://faun.pub/install-a-private-docker-container-registry-in-kubernetes-7fb25820fc61) 을 찾았다. 여기서는 helm 으로 뚝딱뚝딱하는데 좀 읽어봐야겠다.
 
 ---
 
