@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-04 03:26:17 +0900
+lastmod : 2022-05-05 06:50:33 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -134,7 +134,7 @@ parent  : kubernetes
   ```
 
   ```bash
-  docker build -t hello/alpine .
+  docker build -t localhost:5000/hello:0.0.1 .
   ```
 
 - 매번 위 과정을 하긴 귀찮으니, Makefile로 만들자.
@@ -142,7 +142,7 @@ parent  : kubernetes
   all: helloworld docker
 
   docker: helloworld
-    docker build -t hello/alpine .
+    docker build -t localhost:5000/hello:0.0.1 .
 
   helloworld:
     CGO_ENABLED=0 go build -o bin/helloworld cmd/helloworld.go
@@ -238,6 +238,97 @@ parent  : kubernetes
   # registry-svc   NodePort    10.96.19.170   <none>        5000:31758/TCP   3m50s
   ```
 
-  - 왠지 안된다... 일단 시각이 늦었으니 여기까지하고 내일하자.
+- Forwarding 해보자
+  - port-forward, lb, ingress를 사용해야한다.
+  - 일단 테스트용으로 port-foward로 하자, 어짜피 지금 registry에 storage 설정도 해줘야하니.. 다른거 설정 먼저 하고, ingress로 해보자.
 
+  ```bash
+  kubectl port-forward service/registry-svc 5000:5000
+  # Forwarding from 127.0.0.1:5000 -> 5000
+  # Forwarding from [::1]:5000 -> 5000
+  ```
 
+- docker image를 올려보자
+
+  ```bash
+  docker push localhost:5000/hello:0.0.1
+  # The push refers to repository [localhost:5000/hello]
+  # a22eeeafaac3: Layer already exists
+  # 4f4ce317c6bb: Layer already exists
+  # 0.0.1: digest: sha256:024c6fc4f5e35d336f9c7409454b5adbae9604e75f94d8b240319309a2e9224d size: 739
+  ```
+
+- 찾아보니 docker-registry-web 이라는게 있어서, 이걸로 gui를 사용할수 있다고 한다. 이것도 설정해보자.
+  - 에러 찍어보니 image 자체가 실행이 안되는것 같다. 아키텍쳐 문제일수도 있으니 kube에 올리기전에 단독으로 실행해보자.
+
+---
+
+- 뭔가 걍 감으로 때려맞추니까 안된다. 아래는 지금 registry.yaml 이다.
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: registry-svc
+  labels:
+    app: registry-app
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 5000
+    protocol: TCP
+  selector:
+    app: registry-app
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: registry-app
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: registry-app
+    spec:
+      containers:
+      - name: registry-app
+        image: registry
+        ports:
+        - containerPort: 5000
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: registry-web
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: registry-web
+        image: hyper/docker-registry-web
+        ports:
+        - containerPort: 4000
+        env:
+        - name: REGISTRY_NAME
+          value: localhost:5000
+        - name: REGISTRY_URL
+          value: http://localhost:5000/v2
+```
+
+- 일단 해야할것 기억나는대로 아래 적어두기:
+  - [ ] replicationcontroller 에서 replicaset으로 바꾸기
+  - [ ] service 로 hyper/docker-registry-web 이랑 registry 랑 엮기
+  - [ ] persistent volume
+  - [ ] ingress
