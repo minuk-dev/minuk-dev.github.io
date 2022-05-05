@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-05 07:47:30 +0900
+lastmod : 2022-05-06 07:32:29 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -272,6 +272,108 @@ parent  : kubernetes
 - 다른게 더 좋은듯? 빌드를 직접하려고 [repo](https://github.com/mkuchin/docker-registry-web/tree/v0.1.2) 가보니 6년전 commit 이다. [docker-registry-ui](https://github.com/Joxit/docker-registry-ui) 가 더 자주 쓰이는것 같아서 이걸 띄워보려고 시도하는 중이다.
 - [k8s에 private registry 띄우는 블로그글](https://faun.pub/install-a-private-docker-container-registry-in-kubernetes-7fb25820fc61) 을 찾았다. 여기서는 helm 으로 뚝딱뚝딱하는데 좀 읽어봐야겠다.
 
+  - 먼저 namespace 를 만들어준다.
+
+    ```bash
+    kubectl create namespace container-registry
+    ```
+
+  - 블로그 내용을 registry.yaml로 만들어 적용한다.
+
+    ```yaml
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: docker-registry-pv
+    spec:
+      capacity:
+        storage: 10Gi
+      volumeMode: Filesystem
+      accessModes:
+      - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Delete
+      storageClassName: docker-registry-local-storage
+      local:
+        path: /home/lmu/tools/kube/container-registry
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - kmaster
+    ---
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: docker-registry-pv-claim
+      namespace: container-registry
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      volumeMode: Filesystem
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: docker-registry-local-storage
+    ```
+
+    ```bash
+    kubectl apply -f registry.yaml
+    ```
+
+    ```bash
+    helm upgrade --install docker-registry \
+    --namespace container-registry \
+    --set replicaCount=1 \
+    --set persistence.enabled=true \
+    --set persistence.size=10Gi \
+    --set persistence.deleteEnabled=true \
+    --set persistence.storageClass=docker-registry-local-storage \
+    --set persistence.existingClaim=docker-registry-pv-claim \
+    --set secrets.htpasswd=$(cat $HOME/temp/registry-creds/htpasswd) \
+    --set nodeSelector.node-type=master \
+    twuni/docker-registry \
+    --version 1.10.1
+    ```
+
+    - 이건 진행중
+
+---
+## Prometheus와 Grafana 설치
+- 참고자료
+  - https://k21academy.com/docker-kubernetes/prometheus-grafana-monitoring/
+
+- 설치했는데 외부 접속이 잘 안된다. ConfigMap을 수정해보자.
+
+```bash
+kubectl edit configmap prometheus-grafana
+```
+
+```yaml
+# 생략
+apiVersion: v1
+data:
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    provisioning = /etc/grafana/provisioning
+    [server]
+    domain = lmu.makerdark98.dev
+    root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+    serve_from_sub_path = true
+# 생략
+```
+  
 ---
 
 - 뭔가 걍 감으로 때려맞추니까 안된다. 아래는 지금 registry.yaml 이다.
