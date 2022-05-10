@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-06 07:32:29 +0900
+lastmod : 2022-05-11 06:05:49 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -373,7 +373,26 @@ data:
     serve_from_sub_path = true
 # 생략
 ```
-  
+- 바꾸자마자 시도하니 잘 안됬는데 하루 자고 일어나니까 된다. 왜 되는지 모르겠다.
+- 지금 나는 이미 kube 바깥에 nginx 가 있는 상황이다. 여기서 9000 번으로 reverse proxy 해준뒤 port-forward 한다.
+```
+kubectl port-forward deployment/prometheus-grafana 9000:3000
+```
+
+- 근데 패스워드를 모르겠다. 인터넷 찾아보니 admin/admin 이라는데 아니더라.
+```
+kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```
+- 위 명령어를 실행해서 password를 알아내자.
+
+- 마지막으로 dashboard 만 만들어주면 되는데, 솔직히 뭐가 뭔지 잘 모르겠다. 남이 만들어둔거 카피하자:
+  - [Create]-[Import] 한뒤 아래 주소를 넣어주자.
+    - https://grafana.com/grafana/dashboards/11074
+  - 참고자료 : https://hkjeon2.tistory.com/83
+
+- 일단 뭔가 있어보인다. 이제 nginx를 kubernetes 안쪽으로 넣어주자.
+- 그리고 지금 실수로 default namespace에다가 생성했는데 monitoring 으로 namespace 만들고 다시 실행해주자.
+
 ---
 
 - 뭔가 걍 감으로 때려맞추니까 안된다. 아래는 지금 registry.yaml 이다.
