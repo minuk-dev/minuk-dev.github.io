@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-11 06:05:49 +0900
+lastmod : 2022-05-12 05:06:59 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -340,60 +340,6 @@ parent  : kubernetes
 
     - 이건 진행중
 
----
-## Prometheus와 Grafana 설치
-- 참고자료
-  - https://k21academy.com/docker-kubernetes/prometheus-grafana-monitoring/
-
-- 설치했는데 외부 접속이 잘 안된다. ConfigMap을 수정해보자.
-
-```bash
-kubectl edit configmap prometheus-grafana
-```
-
-```yaml
-# 생략
-apiVersion: v1
-data:
-  grafana.ini: |
-    [analytics]
-    check_for_updates = true
-    [grafana_net]
-    url = https://grafana.net
-    [log]
-    mode = console
-    [paths]
-    data = /var/lib/grafana/
-    logs = /var/log/grafana
-    plugins = /var/lib/grafana/plugins
-    provisioning = /etc/grafana/provisioning
-    [server]
-    domain = lmu.makerdark98.dev
-    root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
-    serve_from_sub_path = true
-# 생략
-```
-- 바꾸자마자 시도하니 잘 안됬는데 하루 자고 일어나니까 된다. 왜 되는지 모르겠다.
-- 지금 나는 이미 kube 바깥에 nginx 가 있는 상황이다. 여기서 9000 번으로 reverse proxy 해준뒤 port-forward 한다.
-```
-kubectl port-forward deployment/prometheus-grafana 9000:3000
-```
-
-- 근데 패스워드를 모르겠다. 인터넷 찾아보니 admin/admin 이라는데 아니더라.
-```
-kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
-```
-- 위 명령어를 실행해서 password를 알아내자.
-
-- 마지막으로 dashboard 만 만들어주면 되는데, 솔직히 뭐가 뭔지 잘 모르겠다. 남이 만들어둔거 카피하자:
-  - [Create]-[Import] 한뒤 아래 주소를 넣어주자.
-    - https://grafana.com/grafana/dashboards/11074
-  - 참고자료 : https://hkjeon2.tistory.com/83
-
-- 일단 뭔가 있어보인다. 이제 nginx를 kubernetes 안쪽으로 넣어주자.
-- 그리고 지금 실수로 default namespace에다가 생성했는데 monitoring 으로 namespace 만들고 다시 실행해주자.
-
----
 
 - 뭔가 걍 감으로 때려맞추니까 안된다. 아래는 지금 registry.yaml 이다.
 
@@ -458,6 +404,65 @@ spec:
         - name: REGISTRY_URL
           value: http://localhost:5000/v2
 ```
+
+---
+## Jupyter Notebook 설치
+- jupyter notebook server도 k8s 안으로 넣으려고 한다.
+- 지금 PV 관련 삽질중이라서, 삽질 다 끝내면 정리를 추가로 해야겠다.
+- 이것만 넣으면, nginx도 안쪽으로 넣어야겠다.
+
+---
+## Prometheus와 Grafana 설치
+- 참고자료
+  - https://k21academy.com/docker-kubernetes/prometheus-grafana-monitoring/
+
+- 설치했는데 외부 접속이 잘 안된다. ConfigMap을 수정해보자.
+
+```bash
+kubectl edit configmap prometheus-grafana
+```
+
+```yaml
+# 생략
+apiVersion: v1
+data:
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    provisioning = /etc/grafana/provisioning
+    [server]
+    domain = lmu.makerdark98.dev
+    root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+    serve_from_sub_path = true
+# 생략
+```
+- 바꾸자마자 시도하니 잘 안됬는데 하루 자고 일어나니까 된다. 왜 되는지 모르겠다.
+- 지금 나는 이미 kube 바깥에 nginx 가 있는 상황이다. 여기서 9000 번으로 reverse proxy 해준뒤 port-forward 한다.
+```
+kubectl port-forward deployment/prometheus-grafana 9000:3000
+```
+
+- 근데 패스워드를 모르겠다. 인터넷 찾아보니 admin/admin 이라는데 아니더라.
+```
+kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```
+- 위 명령어를 실행해서 password를 알아내자.
+
+- 마지막으로 dashboard 만 만들어주면 되는데, 솔직히 뭐가 뭔지 잘 모르겠다. 남이 만들어둔거 카피하자:
+  - [Create]-[Import] 한뒤 아래 주소를 넣어주자.
+    - https://grafana.com/grafana/dashboards/11074
+  - 참고자료 : https://hkjeon2.tistory.com/83
+
+- 일단 뭔가 있어보인다. 이제 nginx를 kubernetes 안쪽으로 넣어주자.
+- 그리고 지금 실수로 default namespace에다가 생성했는데 monitoring 으로 namespace 만들고 다시 실행해주자.
 
 - 일단 해야할것 기억나는대로 아래 적어두기:
   - [ ] replicationcontroller 에서 replicaset으로 바꾸기
