@@ -3,16 +3,22 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-13 03:55:58 +0900
+lastmod : 2022-05-13 04:28:22 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
 ---
 
 ## TODO (우선순위 순으로)
-- docker registry 띄우기 - 초기화해서 처음부터 해야함
+- nginx ingress 설정:
+  - nginx ingress 생성
+  - ssl 인증서 등록 (docker.makerdark98.dev)
+  - docker registry 연결
+- docker registry 띄우기:
+  - ui dashboard 띄우기
+  - k8s 에서 image pull 하는 주소 추가
+
 - Jupyter notebook 위에 latex 관련 파일 설정한 이미지 만들어 service 재구성
-- nginx ingress 설정 (우선순위 낮은 이유: 나머지가 다 동작해야지, 로컬 nginx 를 넘길 수 있음)
 
 ## 배경
 - 쿠버네티스 이론 공부를 적당히 하고([[kubernetes-in-action]]), 이제 실습을 좀 해보려고 하는데 주어진 장비가 [rpi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) 밖에 없다.
@@ -182,7 +188,6 @@ kubectl port-forward deployment/prometheus-grafana 9000:3000
   kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" -n monitoring | base64 --decode
   ```
 
-
 ## Docker registry, Web UI 띄우기
 - 참고 :
   - [k8s에 private registry 띄우는 블로그글](https://faun.pub/install-a-private-docker-container-registry-in-kubernetes-7fb25820fc61) 을 찾았다.
@@ -190,60 +195,60 @@ kubectl port-forward deployment/prometheus-grafana 9000:3000
 - 먼저 namespace 를 만들어준다.
 
   ```bash
-  kubectl create namespace container-registry
+  kubectl create namespace registry
   ```
 
-  - 블로그 내용을 registry.yaml로 만들어 적용한다. (진행중)
-
-    ```yaml
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-      name: docker-registry-pv
-    spec:
-      capacity:
-        storage: 10Gi
-      volumeMode: Filesystem
-      accessModes:
+- PV와 PVC를 만들어 준다.
+  ```yaml
+  # registry.yaml
+  apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: docker-registry-pv
+  spec:
+    capacity:
+      storage: 20Gi
+    volumeMode: Filesystem
+    accessModes:
+    - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: docker-registry-local-storage
+    local:
+      path: /tmp/data/registry
+    nodeAffinity:
+      required:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - k8s-in-action-control-plane
+  ---
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: docker-registry-pv-claim
+  spec:
+    accessModes:
       - ReadWriteOnce
-      persistentVolumeReclaimPolicy: Delete
-      storageClassName: docker-registry-local-storage
-      local:
-        path: /home/lmu/tools/kube/container-registry
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-              - kmaster
-    ---
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: docker-registry-pv-claim
-      namespace: container-registry
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      volumeMode: Filesystem
-      resources:
-        requests:
-          storage: 10Gi
-      storageClassName: docker-registry-local-storage
-    ```
+    volumeMode: Filesystem
+    resources:
+      requests:
+        storage: 20Gi
+    storageClassName: docker-registry-local-storage
+  ```
 
-    ```bash
-    kubectl apply -f registry.yaml
-    ```
+  ```bash
+  kubectl apply -f registry.yaml -n registry
+  ```
 
+- registry를 설치한다.
     ```bash
     helm upgrade --install docker-registry \
-    --namespace container-registry \
+    --namespace registry \
     --set replicaCount=1 \
     --set persistence.enabled=true \
-    --set persistence.size=10Gi \
+    --set persistence.size=20Gi \
     --set persistence.deleteEnabled=true \
     --set persistence.storageClass=docker-registry-local-storage \
     --set persistence.existingClaim=docker-registry-pv-claim \
