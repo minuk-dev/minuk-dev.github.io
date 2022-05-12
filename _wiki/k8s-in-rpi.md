@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-13 04:28:22 +0900
+lastmod : 2022-05-13 04:30:46 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -187,6 +187,9 @@ kubectl port-forward deployment/prometheus-grafana 9000:3000
   ```
   kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" -n monitoring | base64 --decode
   ```
+
+- ConfigMap 설정해도 접속 안될때
+  - pod를 재시작 시켜줘야하는 거 같은데 나같은 경우에는 그냥 rpi를 껏다 켰다.
 
 ## Docker registry, Web UI 띄우기
 - 참고 :
