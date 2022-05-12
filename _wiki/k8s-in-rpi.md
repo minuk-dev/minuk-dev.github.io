@@ -3,11 +3,17 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-12 05:06:59 +0900
+lastmod : 2022-05-13 03:30:57 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
 ---
+
+## TODO (우선순위 순으로)
+- docker registry 띄우기 - 초기화해서 처음부터 해야함
+- prometheus와 grafana 설치 - 초기화해서 다시 해야함
+- Jupyter notebook 위에 latex 관련 파일 설정한 이미지 만들어 service 재구성
+- nginx ingress 설정 (우선순위 낮은 이유: 나머지가 다 동작해야지, 로컬 nginx 를 넘길 수 있음)
 
 ## 배경
 - 쿠버네티스 이론 공부를 적당히 하고([[kubernetes-in-action]]), 이제 실습을 좀 해보려고 하는데 주어진 장비가 [rpi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) 밖에 없다.
@@ -37,20 +43,21 @@ parent  : kubernetes
   ```
 
 - cluster 만들기
+  - 사용하다 보니, PersistentVolume 을 사용할때 hostPath를 사용할 일이 있었다. 아래와 같이 설정해주자.
+  ```config
+  # kind.yaml
+  kind: Cluster
+  apiVersion: kind.x-k8s.io/v1alpha4
+  nodes:
+  - role: control-plane
+    extraMounts:
+    - hostPath: /home/lmu/tools/kind/data
+      containerPath: /tmp/data
+  ```
 
   ```bash
-  kind create cluster --name k8s-in-action
+  kind create cluster --name k8s-in-action --config kind.yaml
   ```
-  - 처음부터 심상치 않다. kubeadm이 정상실행되지 않는 것처럼 보인다.
-
-    ```
-    Error: failed to create cluster: failed to init node with kubeadm: command "docker exec --privileged <cluster name>-control-plane kubeadm init --skip-phases=pre flight --config=/kind/kubeadm.conf --skip-token-print --v=6
-    ```
-
-  - 커널 설정이 잘못되어있어인가 싶어서 https://lance.tistory.com/5 내용을 일부(2-4) 적용해본다.
-    - 3번 과정에서 `/boot/firmware/cmdline.txt` 로 바꾸었다.
-    - 바로 안되길레 실망했지만, reboot 하니까 kind가 정상 작동한다.
-    - 아마도 추정은 iptables 문제이지 않을까? 싶다. 에러메시지들을 읽어보니 정상 실행은 됬는데 kubelet에서 api point를 못찾는 메시지가 출력됬었던걸로 기억
 
 - kubectl 설치
   - 완벽히 정상작동하는지 테스트 해볼려고 kubectl을 실행시키니 명령어를 안깔았었다. 깔아주자
@@ -86,9 +93,147 @@ parent  : kubernetes
     #    client-key-data: REDACTED
     ```
 
-  - 잘 실행되는것 같다.
+### Troubleshooting
+  ```
+  Error: failed to create cluster: failed to init node with kubeadm: command "docker exec --privileged <cluster name>-control-plane kubeadm init --skip-phases=pre flight --config=/kind/kubeadm.conf --skip-token-print --v=6
+  ```
 
-## 실습하기
+  - 커널 설정이 잘못되어있어인가 싶어서 https://lance.tistory.com/5 내용을 일부(2-4) 적용해본다.
+    - 3번 과정에서 `/boot/firmware/cmdline.txt` 로 바꾸었다.
+    - 바로 안되길레 실망했지만, reboot 하니까 kind가 정상 작동한다.
+    - 아마도 추정은 iptables 문제이지 않을까? 싶다. 에러메시지들을 읽어보니 정상 실행은 됬는데 kubelet에서 api point를 못찾는 메시지가 출력됬었던걸로 기억
+
+## Docker registry, Web UI 띄우기
+- 참고 :
+  - [k8s에 private registry 띄우는 블로그글](https://faun.pub/install-a-private-docker-container-registry-in-kubernetes-7fb25820fc61) 을 찾았다.
+
+- 먼저 namespace 를 만들어준다.
+
+  ```bash
+  kubectl create namespace container-registry
+  ```
+
+  - 블로그 내용을 registry.yaml로 만들어 적용한다. (진행중)
+
+    ```yaml
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: docker-registry-pv
+    spec:
+      capacity:
+        storage: 10Gi
+      volumeMode: Filesystem
+      accessModes:
+      - ReadWriteOnce
+      persistentVolumeReclaimPolicy: Delete
+      storageClassName: docker-registry-local-storage
+      local:
+        path: /home/lmu/tools/kube/container-registry
+      nodeAffinity:
+        required:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+              - kmaster
+    ---
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: docker-registry-pv-claim
+      namespace: container-registry
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      volumeMode: Filesystem
+      resources:
+        requests:
+          storage: 10Gi
+      storageClassName: docker-registry-local-storage
+    ```
+
+    ```bash
+    kubectl apply -f registry.yaml
+    ```
+
+    ```bash
+    helm upgrade --install docker-registry \
+    --namespace container-registry \
+    --set replicaCount=1 \
+    --set persistence.enabled=true \
+    --set persistence.size=10Gi \
+    --set persistence.deleteEnabled=true \
+    --set persistence.storageClass=docker-registry-local-storage \
+    --set persistence.existingClaim=docker-registry-pv-claim \
+    --set secrets.htpasswd=$(cat $HOME/temp/registry-creds/htpasswd) \
+    --set nodeSelector.node-type=master \
+    twuni/docker-registry \
+    --version 1.10.1
+    ```
+
+
+### Troubleshooting
+
+## Node monitoring tool 설치
+- 참고자료
+  - https://k21academy.com/docker-kubernetes/prometheus-grafana-monitoring/
+
+- 설치했는데 외부 접속이 잘 안된다. ConfigMap을 수정해보자.
+
+```bash
+kubectl edit configmap prometheus-grafana
+```
+
+```yaml
+# 생략
+apiVersion: v1
+data:
+  grafana.ini: |
+    [analytics]
+    check_for_updates = true
+    [grafana_net]
+    url = https://grafana.net
+    [log]
+    mode = console
+    [paths]
+    data = /var/lib/grafana/
+    logs = /var/log/grafana
+    plugins = /var/lib/grafana/plugins
+    provisioning = /etc/grafana/provisioning
+    [server]
+    domain = lmu.makerdark98.dev
+    root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
+    serve_from_sub_path = true
+# 생략
+```
+- 바꾸자마자 시도하니 잘 안됬는데 하루 자고 일어나니까 된다. 왜 되는지 모르겠다.
+- 지금 나는 이미 kube 바깥에 nginx 가 있는 상황이다. 여기서 9000 번으로 reverse proxy 해준뒤 port-forward 한다.
+```
+kubectl port-forward deployment/prometheus-grafana 9000:3000
+```
+
+- 근데 패스워드를 모르겠다. 인터넷 찾아보니 admin/admin 이라는데 아니더라.
+- 아래 명령어를 실행해서 password를 알아내자.
+
+```
+kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
+```
+
+- 마지막으로 dashboard 만 만들어주면 되는데, 솔직히 뭐가 뭔지 잘 모르겠다. 남이 만들어둔거 카피하자:
+  - [Create]-[Import] 한뒤 아래 주소를 넣어주자.
+    - https://grafana.com/grafana/dashboards/11074
+  - 참고자료 : https://hkjeon2.tistory.com/83
+
+## Jupyter Notebook 설치
+- jupyter notebook server도 k8s 안으로 넣으려고 한다.
+- 지금 PV 관련 삽질중이라서, 삽질 다 끝내면 정리를 추가로 해야겠다.
+- 이것만 넣으면, nginx도 안쪽으로 넣어야겠다.
+
+---
+
+## TODO: 실습하기
 ### 간단한 Hello World 프로그램 작성하기
 - Kubernetes를 사용하기에 앞서 당연하게도 안에 들어갈 프로그램과 docker image가 필요하다.
 - 필요할때 만들어본 경험은 있지만 메모해본적은 없다. 한번 처음부터 해보자.
@@ -174,298 +319,3 @@ parent  : kubernetes
   ```
   - 이미지를 가져오는데 에러가 난다.
   - 확인해보니 registry에 올려둬야한다고 한다. dockerhub에는 올리기 싫어서, 지난번에 해봤던 docker registry를 먼저 띄워보기로 했다.
-
-## docker registry 서비스를 로컬에 띄우고 모니터링하기
-- pod를 만들어보자
-  ```bash
-  kubectl run registry --image=registry --port=5000
-  kubectl get pods
-  # NAME       READY   STATUS              RESTARTS   AGE
-  # registry   0/1     ContainerCreating   0          7s
-  ```
-- pod로는 아무것도 할 수 없다. 서비스나 만들자
-
-  ```yaml
-  # registry.yaml
-  apiVersion: v1
-  kind: Service
-  metadata:
-    name: registry-svc
-    labels:
-      app: registry-app
-  spec:
-    type: NodePort
-    ports:
-    - port: 5000
-      protocol: TCP
-      name: http
-    selector:
-      app: registry-app
-  ---
-  apiVersion: v1
-  kind: ReplicationController
-  metadata:
-    name: registry-app
-  spec:
-    replicas: 1
-    template:
-      metadata:
-        labels:
-          app: registry-app
-      spec:
-        containers:
-        - name: registry-app
-          image: registry
-          ports:
-          - containerPort: 5000
-  ```
-
-- 적용하자 (밑에는 확인 내용)
-
-  ```bash
-  kubectl apply -f registry.yaml
-  kubectl get pods
-  # NAME                 READY   STATUS    RESTARTS   AGE
-  # registry-app-pbsgj   1/1     Running   0          2m38s
-
-  kubectl get rc # replicationcontroller
-  # NAME           DESIRED   CURRENT   READY   AGE
-  # registry-app   1         1         1       3m29s
-
-  kubectl get service
-  # NAME           TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
-  # kubernetes     ClusterIP   10.96.0.1      <none>        443/TCP          23h
-  # registry-svc   NodePort    10.96.19.170   <none>        5000:31758/TCP   3m50s
-  ```
-
-- Forwarding 해보자
-  - port-forward, lb, ingress를 사용해야한다.
-  - 일단 테스트용으로 port-foward로 하자, 어짜피 지금 registry에 storage 설정도 해줘야하니.. 다른거 설정 먼저 하고, ingress로 해보자.
-
-  ```bash
-  kubectl port-forward service/registry-svc 5000:5000
-  # Forwarding from 127.0.0.1:5000 -> 5000
-  # Forwarding from [::1]:5000 -> 5000
-  ```
-
-- docker image를 올려보자
-
-  ```bash
-  docker push localhost:5000/hello:0.0.1
-  # The push refers to repository [localhost:5000/hello]
-  # a22eeeafaac3: Layer already exists
-  # 4f4ce317c6bb: Layer already exists
-  # 0.0.1: digest: sha256:024c6fc4f5e35d336f9c7409454b5adbae9604e75f94d8b240319309a2e9224d size: 739
-  ```
-
-- 찾아보니 docker-registry-web 이라는게 있어서, 이걸로 gui를 사용할수 있다고 한다. 이것도 설정해보자.
-  - 에러 찍어보니 image 자체가 실행이 안되는것 같다. 아키텍쳐 문제일수도 있으니 kube에 올리기전에 단독으로 실행해보자.
-
-  ```bash
-  docker run -it -p 8080:8080 --name registry-web \
-  -e REGISTRY_URL=http://localhost:5000/v2 \
-  -e REGISTRY_NAME=localhost:5000 \
-  # WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
-  # standard_init_linux.go:228: exec user process caused: exec format error
-  ```
-
-- 다른게 더 좋은듯? 빌드를 직접하려고 [repo](https://github.com/mkuchin/docker-registry-web/tree/v0.1.2) 가보니 6년전 commit 이다. [docker-registry-ui](https://github.com/Joxit/docker-registry-ui) 가 더 자주 쓰이는것 같아서 이걸 띄워보려고 시도하는 중이다.
-- [k8s에 private registry 띄우는 블로그글](https://faun.pub/install-a-private-docker-container-registry-in-kubernetes-7fb25820fc61) 을 찾았다. 여기서는 helm 으로 뚝딱뚝딱하는데 좀 읽어봐야겠다.
-
-  - 먼저 namespace 를 만들어준다.
-
-    ```bash
-    kubectl create namespace container-registry
-    ```
-
-  - 블로그 내용을 registry.yaml로 만들어 적용한다.
-
-    ```yaml
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-      name: docker-registry-pv
-    spec:
-      capacity:
-        storage: 10Gi
-      volumeMode: Filesystem
-      accessModes:
-      - ReadWriteOnce
-      persistentVolumeReclaimPolicy: Delete
-      storageClassName: docker-registry-local-storage
-      local:
-        path: /home/lmu/tools/kube/container-registry
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-              - kmaster
-    ---
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: docker-registry-pv-claim
-      namespace: container-registry
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      volumeMode: Filesystem
-      resources:
-        requests:
-          storage: 10Gi
-      storageClassName: docker-registry-local-storage
-    ```
-
-    ```bash
-    kubectl apply -f registry.yaml
-    ```
-
-    ```bash
-    helm upgrade --install docker-registry \
-    --namespace container-registry \
-    --set replicaCount=1 \
-    --set persistence.enabled=true \
-    --set persistence.size=10Gi \
-    --set persistence.deleteEnabled=true \
-    --set persistence.storageClass=docker-registry-local-storage \
-    --set persistence.existingClaim=docker-registry-pv-claim \
-    --set secrets.htpasswd=$(cat $HOME/temp/registry-creds/htpasswd) \
-    --set nodeSelector.node-type=master \
-    twuni/docker-registry \
-    --version 1.10.1
-    ```
-
-    - 이건 진행중
-
-
-- 뭔가 걍 감으로 때려맞추니까 안된다. 아래는 지금 registry.yaml 이다.
-
-```yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: registry-svc
-  labels:
-    app: registry-app
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    port: 5000
-    protocol: TCP
-  selector:
-    app: registry-app
----
-apiVersion: v1
-kind: ReplicationController
-metadata:
-  name: registry-app
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: registry-app
-    spec:
-      containers:
-      - name: registry-app
-        image: registry
-        ports:
-        - containerPort: 5000
----
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: frontend
-  labels:
-    app: registry-web
-    tier: frontend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      tier: frontend
-  template:
-    metadata:
-      labels:
-        tier: frontend
-    spec:
-      containers:
-      - name: registry-web
-        image: hyper/docker-registry-web
-        ports:
-        - containerPort: 4000
-        env:
-        - name: REGISTRY_NAME
-          value: localhost:5000
-        - name: REGISTRY_URL
-          value: http://localhost:5000/v2
-```
-
----
-## Jupyter Notebook 설치
-- jupyter notebook server도 k8s 안으로 넣으려고 한다.
-- 지금 PV 관련 삽질중이라서, 삽질 다 끝내면 정리를 추가로 해야겠다.
-- 이것만 넣으면, nginx도 안쪽으로 넣어야겠다.
-
----
-## Prometheus와 Grafana 설치
-- 참고자료
-  - https://k21academy.com/docker-kubernetes/prometheus-grafana-monitoring/
-
-- 설치했는데 외부 접속이 잘 안된다. ConfigMap을 수정해보자.
-
-```bash
-kubectl edit configmap prometheus-grafana
-```
-
-```yaml
-# 생략
-apiVersion: v1
-data:
-  grafana.ini: |
-    [analytics]
-    check_for_updates = true
-    [grafana_net]
-    url = https://grafana.net
-    [log]
-    mode = console
-    [paths]
-    data = /var/lib/grafana/
-    logs = /var/log/grafana
-    plugins = /var/lib/grafana/plugins
-    provisioning = /etc/grafana/provisioning
-    [server]
-    domain = lmu.makerdark98.dev
-    root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
-    serve_from_sub_path = true
-# 생략
-```
-- 바꾸자마자 시도하니 잘 안됬는데 하루 자고 일어나니까 된다. 왜 되는지 모르겠다.
-- 지금 나는 이미 kube 바깥에 nginx 가 있는 상황이다. 여기서 9000 번으로 reverse proxy 해준뒤 port-forward 한다.
-```
-kubectl port-forward deployment/prometheus-grafana 9000:3000
-```
-
-- 근데 패스워드를 모르겠다. 인터넷 찾아보니 admin/admin 이라는데 아니더라.
-```
-kubectl get secrets prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode
-```
-- 위 명령어를 실행해서 password를 알아내자.
-
-- 마지막으로 dashboard 만 만들어주면 되는데, 솔직히 뭐가 뭔지 잘 모르겠다. 남이 만들어둔거 카피하자:
-  - [Create]-[Import] 한뒤 아래 주소를 넣어주자.
-    - https://grafana.com/grafana/dashboards/11074
-  - 참고자료 : https://hkjeon2.tistory.com/83
-
-- 일단 뭔가 있어보인다. 이제 nginx를 kubernetes 안쪽으로 넣어주자.
-- 그리고 지금 실수로 default namespace에다가 생성했는데 monitoring 으로 namespace 만들고 다시 실행해주자.
-
-- 일단 해야할것 기억나는대로 아래 적어두기:
-  - [ ] replicationcontroller 에서 replicaset으로 바꾸기
-  - [ ] service 로 hyper/docker-registry-web 이랑 registry 랑 엮기
-  - [ ] persistent volume
-  - [ ] ingress
