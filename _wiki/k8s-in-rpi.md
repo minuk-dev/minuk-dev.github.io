@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-13 04:30:46 +0900
+lastmod : 2022-05-13 04:32:08 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -49,7 +49,8 @@ parent  : kubernetes
 
 - cluster 만들기
   - 사용하다 보니, PersistentVolume 을 사용할때 hostPath를 사용할 일이 있었다. 아래와 같이 설정해주자.
-  ```config
+
+  ```yaml
   # kind.yaml
   kind: Cluster
   apiVersion: kind.x-k8s.io/v1alpha4
