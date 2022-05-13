@@ -3,17 +3,13 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-13 04:32:08 +0900
+lastmod : 2022-05-14 07:36:26 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
 ---
 
 ## TODO (우선순위 순으로)
-- nginx ingress 설정:
-  - nginx ingress 생성
-  - ssl 인증서 등록 (docker.makerdark98.dev)
-  - docker registry 연결
 - docker registry 띄우기:
   - ui dashboard 띄우기
   - k8s 에서 image pull 하는 주소 추가
@@ -35,6 +31,12 @@ parent  : kubernetes
     Linux <computer name> 5.4.0-1055-raspi #62-Ubuntu SMP PREEMPT Wed Mar 2 14:43:34 UTC 2022 aarch64 aarch64 aarch64 GNU/Linux
     ```
   - zsh
+
+## 기본 설명
+- 아래 서술하는 모든 내용은 [github repo](https://github.com/makerdark98/k8s-in-action-practice) 에 기록하고 있다.
+- 언제나 repo가 더 최신이며, 이 이유는 하루 작업, 삽질한 내용을 이 문서에 다시 정리하는 식으로 공부하고 있기 때문이다.
+- 따라서 repo 내용을 바로 읽을 수 있는 수준이라면 repo를 먼저 흝고 내용을 보는것이 더 효율적이다.
+- 아래 내용은 시간 순서가 아니며, 여러 내용이 동시에 진행되고 있다. 하지만 나중에 작업한다면 반드시 선행되어야 하는 순서로 배치하고 있으니 참고하면 된다.
 
 ## Kubernetes 설치 -> Kind 설치
 - 좀 찾아봤는데, kind 가 그나마 쓸만할 것 같다. 인턴때 잠깐 써봐서 다행이다.
@@ -59,6 +61,19 @@ parent  : kubernetes
     extraMounts:
     - hostPath: /home/lmu/tools/kind/data
       containerPath: /tmp/data
+    kubeadmConfigPatches:
+    - |
+      kind: InitConfiguration
+      nodeRegistration:
+        kubeletExtraArgs:
+          node-labels: "ingress-ready=true"
+    extraPortMappings:
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
   ```
 
   ```bash
@@ -109,6 +124,145 @@ parent  : kubernetes
     - 바로 안되길레 실망했지만, reboot 하니까 kind가 정상 작동한다.
     - 아마도 추정은 iptables 문제이지 않을까? 싶다. 에러메시지들을 읽어보니 정상 실행은 됬는데 kubelet에서 api point를 못찾는 메시지가 출력됬었던걸로 기억
 
+## Nginx Ingress 설정
+- 참고자료:
+  - [kind - nginx ingress 공식 문서](https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx)
+  - [cert-manager 설치 공식문서](https://cert-manager.io/docs/installation/#default-static-install)
+
+- nginx ingress 설치
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+```
+
+- cert-manager 설치
+
+```bash
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.0/cert-manager.yaml
+```
+
+- letsencrypt 관련된 clusterissuer 설정
+
+```bash
+# cluster-issuer.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: makerdark98@gmail.com
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    # Enable the HTTP-01 challenge provider
+    solvers:
+    # An empty 'selector' means that this solver matches all domains
+    - selector: {}
+      http01:
+        ingress:
+          class: nginx
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: <mail address>
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    # Enable the HTTP-01 challenge provider
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+```
+
+```bash
+kubectl apply -f cluster-issuer.yaml
+```
+
+- ingress 설정
+  - ingress namespace 생성
+
+    ```bash
+    kubectl create namespace ingress
+    ```
+
+  - ingress 설정 (참고로 이 문서 하단의 jupyter notebook과 grafana 가 포함되어 있다.)
+
+    ```bash
+    # ingress.yaml
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+    name: root-ingress
+    namespace: ingress
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: "letsencrypt-prod"
+      kubernetes.io/tls-acme: "true"
+    spec:
+    tls:
+    - hosts:
+      - kube.makerdark98.dev
+      secretName: letsencrypt-prod
+    rules:
+    - host: kube.makerdark98.dev
+      http:
+        paths:
+        - path: /jupyter
+          pathType: Prefix
+          backend:
+            service:
+              name: headless-svc-base-notebook
+              port:
+                number: 80
+        - path: /grafana
+          pathType: Prefix
+          backend:
+            service:
+              name: headless-svc-grafana
+              port:
+                number: 80
+    ```
+
+    ```bash
+    kubectl apply -f ingress.yaml
+    ```
+
+### Troubleshooting
+- 블로그 글마다 사용하고 있는 apiVersion이 제각각이다. 위 내용은 생각보다 엄청난 삽질을 통해서 얻어진 내용이고, 현재 기준(2022/05/14)으로 공식문서를 따른다.
+- `networking.k8s.io/v1` 을 사용해야한다. 많은 블로그들이 `extensions/v1` 이런 류를 사용하고 있는데 점차 바꾸고 있는것 같다.
+- certificate 또한 마찬가지이다. 블로그마다 내용이 다른데, 반드시 공식 문서를 읽어보자. 블로그는 대부분 과거 표준을 사용하고 있다.
+- ingress 라는 이름의 namespace를 생성하여 사용하고 있는데, 이는 나중에 ExternalName 을 사용하는 서비스를 통해서 보내줘야한다.
+- nginx ingress는 잘 동작하는 것같은데 내부 서비스로 연결이 안되는 거 같다면 다음 방법을 사용해보자:
+  - k8s 내부에서 curl 을 사용하는 방법:
+
+    ```bash
+    kubectl run mycurlpod --image=curlimages/curl -i --tty -- sh
+    ```
+
+    - 위 명령어를 사용하면 k8s 내부에서 domain들이 잘 동작하고 있는지 확인할 수 있다 curl 명령어를 직접 날려보자.
+    - 주의 : 반드시 다 사용했다면 pod 를 지워주자.
+
+  - nginx ingress log 보는 방법:
+
+    ```bash
+    # kubectl get pod -n ingress-nginx 를 하였을 때 controller 이름을 확인한다.
+    kubectl logs -n ingress-nginx ingress-nginx-controller-55c69f5f55-txnhj
+    ```
+
+
 ## Node monitoring tool 설치
 - 참고자료
   - [helm을 통한 prometheus, grafana 설치](https://k21academy.com/docker-kubernetes/prometheus-grafana-monitoring/)
@@ -122,7 +276,7 @@ helm install --namespace monitoring prometheus prometheus-community/kube-prometh
 
 - 외부접속 가능하도록 ConfigMap 수정
 ```bash
-kubectl edit configmap prometheus-grafana
+kubectl edit configmap prometheus-grafana -n monitoring
 ```
 
 ```yaml
@@ -142,39 +296,29 @@ data:
     plugins = /var/lib/grafana/plugins
     provisioning = /etc/grafana/provisioning
     [server]
-    domain = lmu.makerdark98.dev
+    domain = kube.makerdark98.dev
     root_url = %(protocol)s://%(domain)s:%(http_port)s/grafana/
     serve_from_sub_path = true
 # 생략
 ```
 
-- 지금 나는 이미 kube 바깥에 nginx 가 있는 상황이다. 여기서 9000 번으로 reverse proxy 해준뒤 port-forward 한다.
-```
-server {
-        charset        utf-8;
-        server_name lmu.makerdark98.dev;
+- 외부 namespace ingress 에서 사용 가능하도록 하자.
 
-        location /grafana/ {
-          proxy_set_header Host $http_host;
-          proxy_pass http://localhost:9000/;
-        }
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: headless-svc-grafana
+    namespace: ingress
+  spec:
+    type: ExternalName
+    externalName: prometheus-grafana.monitoring.svc.cluster.local
+  ```
 
-        # Proxy Grafana Live WebSocket connections.
-        location /grafana/api/live {
-          rewrite  ^/grafana/(.*)  /$1 break;
-          proxy_http_version 1.1;
-          proxy_set_header Upgrade $http_upgrade;
-          proxy_set_header Connection $connection_upgrade;
-          proxy_set_header Host $http_host;
-          proxy_pass http://localhost:9000/;
-        }
-        # 후략
-}
-```
-
-```
-kubectl port-forward deployment/prometheus-grafana 9000:3000
-```
+  - 이 서비스를 ingress가 바라보도록 하면 된다:
+    - 사실 효율적인지에 대한 고찰은 아직 끝내지 못했다. 그리고 비효율적일 것이라고 추정한다.
+    - 하지만, 이 문서가 kind 위에서 rpi를 kube로 세팅하면서 devops를 공부하는데에 목표가 있으므로 아직 효율성은 논하지 않기로 하자.
+    - 또한, 지금은 전부 하나의 local cluster 이므로 network를 실제로 타지 않고 memory에서만 동작하고 있으므로 이정도 비효율은 잠시 덮어두자.
 
 - Dashboard 구성
   - [Create]-[Import] 한뒤 아래 주소를 넣어주자.
@@ -191,6 +335,131 @@ kubectl port-forward deployment/prometheus-grafana 9000:3000
 
 - ConfigMap 설정해도 접속 안될때
   - pod를 재시작 시켜줘야하는 거 같은데 나같은 경우에는 그냥 rpi를 껏다 켰다.
+  - Deployment를 건들여주면 될거 같긴 하다.
+
+## Jupyter Notebook 설치
+- 아래 설정을 읽어보자, 전부다 해놨다. k8s 에 대한 지식이 있다면 이해 가능
+
+```yaml
+# jupyter.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jupyter-fileshare-pv
+spec:
+  storageClassName: manual
+  volumeMode: Filesystem
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /tmp/data/jupyter
+    type: Directory
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fileshare-pvc
+  labels:
+    component: jupyter
+spec:
+  volumeMode: Filesystem
+  storageClassName: manual
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  volumeName: jupyter-fileshare-pv
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: base-notebook
+  labels:
+    app: base-notebook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: base-notebook
+  template:
+    metadata:
+      labels:
+        app: base-notebook
+    spec:
+      containers:
+      - name: base-notebook
+        image: jupyter/base-notebook:notebook-6.4.11
+        # TODO: 이미지에 latex 관련된 파일 깔 수 있도록 custom docker image 사용하도록 변경하기
+        ports:
+        - containerPort: 8888
+        command: ["start-notebook.sh"]
+        args: ["--NotebookApp.password='<secret>'", "--NotebookApp.
+ip='*'", "--NotebookApp.base_url='/jupyter'"]
+        env:
+          - name: DOCKER_STACKS_JUPYTER_CMD
+            value: nbclassic
+          - name: GRANT_SUDO
+            value: "yes"
+        volumeMounts:
+        - name: storage
+          mountPath: "/home/jovyan/work"
+        securityContext:
+          runAsUser: 0
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: fileshare-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: base-notebook-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: base-notebook
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8888
+```
+
+```bash
+kubectl apply -f jupyter.yaml
+```
+
+- monitoring tool 과 마찬가지로 ingress namespace 에서도 접근가능하도록 service를 만들어주자.
+
+```yaml
+# headless-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: headless-svc-base-notebook
+  namespace: ingress
+spec:
+  type: ExternalName
+  externalName: base-notebook-svc.jupyter.svc.cluster.local
+```
+
+```bash
+kubectl apply -f headless-svc.yaml
+```
+
+### Troubleshooting
+- 위와 같이 persistentvolume을 사용하면, 처음에 마운트된 폴더에 쓰기 권한이 없다는 것을 알 수 있다.
+  - 이를 해결하기 위해서 SUDO 권한 옵션을 넣어서 Docker를 실행하고 있다.
+
+    ```bash
+    sudo chown -R jovyan:users work
+    ```
+
+- arm64용 jupyter notebook docker image는 아직 base 밖에 없는것 같다. 실제로 니즈가 없는 이미지이기도 하니 직접 빌드해서 사용한다고 생각하자.
+
 
 ## Docker registry, Web UI 띄우기
 - 참고 :
@@ -264,11 +533,6 @@ kubectl port-forward deployment/prometheus-grafana 9000:3000
 
 
 ### Troubleshooting
-
-## Jupyter Notebook 설치
-- jupyter notebook server도 k8s 안으로 넣으려고 한다.
-- 지금 PV 관련 삽질중이라서, 삽질 다 끝내면 정리를 추가로 해야겠다.
-- 이것만 넣으면, nginx도 안쪽으로 넣어야겠다.
 
 ---
 
@@ -358,3 +622,4 @@ kubectl port-forward deployment/prometheus-grafana 9000:3000
   ```
   - 이미지를 가져오는데 에러가 난다.
   - 확인해보니 registry에 올려둬야한다고 한다. dockerhub에는 올리기 싫어서, 지난번에 해봤던 docker registry를 먼저 띄워보기로 했다.
+
