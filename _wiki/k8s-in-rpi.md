@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-14 07:36:26 +0900
+lastmod : 2022-05-14 07:41:36 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -13,8 +13,16 @@ parent  : kubernetes
 - docker registry 띄우기:
   - ui dashboard 띄우기
   - k8s 에서 image pull 하는 주소 추가
-
-- Jupyter notebook 위에 latex 관련 파일 설정한 이미지 만들어 service 재구성
+- grafana 관련:
+  - alert용 email 설정하기
+  - grafana dashboard를 통해 jupyter notebook 관련하여 모니터링할 수 있는지 확인하기
+- jupyter notebook docker image custom build하기:
+  - latex 관련 라이브러리 설치, git, tig 설치
+  - pip, matplotlib 설치
+- wiki 서비스 설치
+- rstudio docker image 빌드후 업로드
+- github 로 ci/cd pipeline 만들수 있는지 공부
+- gitlab 올려서 private repo service 만들기
 
 ## 배경
 - 쿠버네티스 이론 공부를 적당히 하고([[kubernetes-in-action]]), 이제 실습을 좀 해보려고 하는데 주어진 장비가 [rpi 4](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/) 밖에 없다.
