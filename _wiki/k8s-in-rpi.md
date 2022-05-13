@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-14 07:41:36 +0900
+lastmod : 2022-05-14 07:42:56 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -480,6 +480,7 @@ kubectl apply -f headless-svc.yaml
   ```
 
 - PV와 PVC를 만들어 준다.
+
   ```yaml
   # registry.yaml
   apiVersion: v1
