@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-14 07:42:56 +0900
+lastmod : 2022-05-16 07:15:08 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -14,6 +14,7 @@ parent  : kubernetes
   - ui dashboard 띄우기
   - k8s 에서 image pull 하는 주소 추가
 - grafana 관련:
+  - nginx log 확인하기
   - alert용 email 설정하기
   - grafana dashboard를 통해 jupyter notebook 관련하여 모니터링할 수 있는지 확인하기
 - jupyter notebook docker image custom build하기:
@@ -247,6 +248,61 @@ kubectl apply -f cluster-issuer.yaml
     ```bash
     kubectl apply -f ingress.yaml
     ```
+
+- nginx ingress controller를 prometheus 에 수동 등록하기
+  - nginx deployment 설정을 고친다.
+  - 참고자료 : [nginx 공식 문서](https://docs.nginx.com/nginx-ingress-controller/logging-and-monitoring/prometheus/)
+
+    ```bash
+    kubectl edit deployement ingress-nginx-controller -n ingress-nginx
+    ```
+
+    ```yaml
+    template:
+      containers:
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "9113"
+          prometheus.io/scheme: http
+        spec:
+          ports:
+          - name: prometheus
+          containerPort: 9113
+    ```
+
+  - servicemonitor 등록
+  - 참고자료 : [prometheus github issue](https://github.com/prometheus-operator/prometheus-operator/issues/2119#issuecomment-437851211)
+
+    ```yaml
+    # nginx-service-monitor.yaml
+    apiVersion: monitoring.coreos.com/v1
+    kind: ServiceMonitor
+    metadata:
+      namespace: monitoring
+      name: nginx-ingress-controller-metrics
+      labels:
+        app: nginx-ingress
+        release: prometheus
+    spec:
+      endpoints:
+      - interval: 30s
+        path: /metrics
+        port: "9113"
+      selector:
+        matchLabels:
+          app.kubernetes.io/name: ingress-nginx
+          app.kubernetes.io/instance: ingress-nginx
+      namespaceSelector:
+        matchNames:
+        - ingress-nginx
+    ```
+
+    ```bash
+    kubectl apply -f nginx-service-monitor.yaml
+    ```
+
+  - grafana 설정
+    - Import [NGINX Ingress controller dashboard](https://grafana.com/grafana/dashboards/9614)
 
 ### Troubleshooting
 - 블로그 글마다 사용하고 있는 apiVersion이 제각각이다. 위 내용은 생각보다 엄청난 삽질을 통해서 얻어진 내용이고, 현재 기준(2022/05/14)으로 공식문서를 따른다.
