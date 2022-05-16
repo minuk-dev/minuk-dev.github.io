@@ -3,7 +3,7 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-16 07:15:08 +0900
+lastmod : 2022-05-17 03:29:34 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
@@ -163,7 +163,7 @@ spec:
     # The ACME server URL
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: makerdark98@gmail.com
+    email: <이메일>
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: letsencrypt-staging
@@ -581,6 +581,7 @@ kubectl apply -f headless-svc.yaml
   ```
 
 - registry를 설치한다.
+
     ```bash
     helm upgrade --install docker-registry \
     --namespace registry \
@@ -596,9 +597,124 @@ kubectl apply -f headless-svc.yaml
     --version 1.10.1
     ```
 
+- headless service를 만들어준다. for ingress
+
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: headless-svc-registry
+    namespace: ingress
+  spec:
+    type: ExternalName
+    externalName: docker-registry.registry.svc.cluster.local
+  ```
+
+- registry ingress를 만들어준다.
+
+  ```yaml
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: registry-ingress
+    namespace: ingress
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: "cluster issuer 이름"
+      kubernetes.io/tls-acme: "true"
+      nginx.ingress.kubernetes.io/enable-cors: "true"
+      nginx.ingress.kubernetes.io/cors-allow-origin: "registry dashboard url"
+      nginx.ingress.kubernetes.io/proxy-body-size: "1024m"
+  spec:
+    tls:
+    - hosts:
+      - <registry url>
+      secretName: "secret 이름"
+    rules:
+    - host: <registry url>
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: headless-svc-registry
+              port:
+                number: 5000
+  ```
+
+- registry ui 를 설치한다.
+
+  ```bash
+  #!/bin/bash
+  helm upgrade --install docker-registry-ui \
+      --namespace registry-dashboard \
+      --set registry.external=true \
+      --set registry.url=https://registry.makerdark98.dev \
+      --set ui.title="Docker Registry UI" \
+      --set ui.replicaCount=1 \
+      --set ui.nodeSelector.node-type=master \
+      --set ui.image.tag=main \
+      --set ui.delete_images=true \
+      --set ui.ingress.enabled=false \
+      --set ui.proxy=false \
+      ./docker-registry-ui
+  ```
+
+- headless service를 만들어준다.
+
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: headless-svc-registry-dashboard
+    namespace: ingress
+  spec:
+    type: ExternalName
+    externalName: docker-registry-ui-ui.registry-dashboard.svc.cluster.local
+  ```
+
+- ingress로 연결해준다.
+
+  ```yaml
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: registry-dashboard-ingress
+    namespace: ingress
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      kubernetes.io/ingress.class: nginx
+      cert-manager.io/cluster-issuer: "issuer 이름"
+      kubernetes.io/tls-acme: "true"
+  spec:
+    tls:
+    - hosts:
+      - <dashboard url>
+      secretName: <인증서시크릿 이름>
+    rules:
+    - host: <dashboard url>
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: headless-svc-registry-dashboard
+              port:
+                number: 80
+  ```
 
 ### Troubleshooting
+- docker registry 에 이미지 푸쉬할때 인증에러
 
+  ```bash
+  docker login
+  ```
+
+- k8s에서 private registry 인증가능하게 하기
+  - 진행중(secret 만들어줘서 주입, 모든 namespace에서 사용할 방법 고민중)
 ---
 
 ## TODO: 실습하기
