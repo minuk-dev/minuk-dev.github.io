@@ -1,9 +1,9 @@
----
+# ---
 layout  : wiki
 title   : 신호 및 시스템
 summary : 2022-1학기 신호 및 시스템 공부
 date    : 2022-03-15 14:58:52 +0900
-lastmod : 2022-03-15 14:59:28 +0900
+lastmod : 2022-05-23 00:19:29 +0900
 tags    : [lecture]
 draft   : false
 parent  : lectures
@@ -37,7 +37,7 @@ parent  : lectures
 		3. 복소수 표현 : $(X, Y) = X + iY = A cos \phi + i A sin \phi$
 		4. 극좌표계 표현 : $A \angle \phi$
 	- 오일러 공식을 이용한다면 $A e^{i \phi}$ 또는  $A \angle \phi$
-	
+
 ---
 ### 복소수 표현
 - 직각 좌표형 : $x + iy$ -> 직각 좌표계를 이용
@@ -70,7 +70,7 @@ parent  : lectures
 		&= i^2 sin \theta + i cos \theta \\
 		&= i (cos \theta + i sin \theta)
 	\end{aligned}$$
-	
+
 - $$\int \frac{1}{z} dz = \int i d \theta \Rightarrow z = i \theta + C$$
 - $\theta= 0$인 경우, $$ln(z) = 0 + C = C$$
 - $z = cos \theta + i sin \theta$ 에 $\theta = 0$ 을 대입하면 $z = 1$ 이므로 $C = 1$이다.
@@ -154,7 +154,7 @@ parent  : lectures
 			e^x y &= x^2 e^x - 2 x e^x + 2 e^x + c \\
 			y &= x^2 - 2x + 2 + c e^{-x}
 			\end{aligned}$$
-	
+
 - two-degree ordinary DE
 	- $ay'' + b y' + cy = 0$ 형식에 $y=e^{\lambda x}$를 대입
 	- $e^{\lambda x} (a \lambda^2 + b \lambda + c) = 0$
@@ -172,7 +172,7 @@ parent  : lectures
 		$$y'' - y' - 6 y = 0$$
 		- $y = e^{\lambda x}$를 대입하면, $e^{\lambda x}(\lambda^2 - \lambda - 6) = e^{\lambda x}(\lambda - 3)(\lambda + 2) = 0$
 		- $y = c_1 e^{-2x} + c_2 e^{-3x}$
-		
+
 	- ex2
 		$$ y'' + 11 y' + 24 y = 0, y(0) = 0, y'(0) = -7$$
 		$$ e^{\lambda x} (\lambda ^2 + 11 \lambda + 24) = 0$$
@@ -182,11 +182,11 @@ parent  : lectures
 		$$y'(0) = -8c_1 + (-3 C_2) = -7$$
 		$$\rightarrow c_1 = 1.4, c_2 = - 1.4$$
 		$$ y(x) = 1.4e^{-8x} -1.4 e^{-3x}$$
-		
+
 	- ex3
 		$$ y'' + 2y' + 3 y = 0 \rightarrow \lambda = - 1 \pm i \sqrt{2}$$
 		$$y = e^{-x}(c_1 cos \sqrt{2} x + c_2 sin \sqrt 2 x)$$
-		
+
 	- ex4
 		$$y'' - 4 y' + 9y = 0, y(0) = 0, y'(0) = -8$$
 		$$\rightarrow \lambda ^2 - 4 \lambda + 9 = 0, \lambda = \frac{4 \pm i \sqrt{20}}{2} = 2 \pm i\sqrt 5$$
@@ -194,7 +194,7 @@ parent  : lectures
 		$$y(x) = exp(2x)[c_1 cos (\sqrt 5 x) + c_2 sin(\sqrt 5 x)]$$
 		- 초기 조건 대입
 		$$y(x) = \frac{-8\sqrt 5}{5} exp(2x) sin(\sqrt 5 x)$$
-		
+
 - 미정 계수법(method of undetermined coefficients)
 	1. 상수 계수의 non-homogeneous linear DE -> 특수해를 가짐
 	2. 얻어진 특수해를 DE에 대입하여 계수를 결정
@@ -209,8 +209,7 @@ parent  : lectures
 				- 특수해를 원래 식에 대입하여도 성립하므로, $y_p'=A, Y_p '' =0$
 				- 이를 다시 원래식에 대입하면 $A = \frac{1}{3}, B = \frac{4}{9}$
 				- 일반해 : $y(x) = c_1 e^x + c_2 e^{3x} + \frac{1}{3} x + \frac{4}{9}$
-				
-				
+
 ---
 ### 고유값과 고유벡터 (eigenvalues and eigenvectors)
 - 행렬 $A$가 $n\times n$의 정방 행렬이고, $x \not = 0$인 벡터 $x \in \mathbb{R}^n$ 존재할때
@@ -285,7 +284,7 @@ parent  : lectures
 	
 ---
 - Signal may describe a variety of physical phenomena
-- Signal is a pattern of variation of some form
+# - Signal is a pattern of variation of some form
 - Signals are variables that carry information
 - Examples of signal
 	- Electrical signals : voltages and currents in a circuit
@@ -393,9 +392,9 @@ parent  : lectures
 		- power 신호 : 유한한 평균 power 가지는 신호
 			$$P_\infty < \infty, P_{\infty} > 0 \rightarrow E_\infty = \infty$$
 			- $\exists$ signals for which $P_\infty = \infty$ and $E_\infty = \infty$
-			
+
  - 에제 : D-T 신호와 에너지와 전력
-    $$x[n] = \begin{cases} (0.5)^n & n \ge 0 \\ 2^n & n < 0\end{cases}$$ 
+    $$x[n] = \begin{cases} (0.5)^n & n \ge 0 \\ 2^n & n < 0\end{cases}$$
 	- 신호의 에너지 $E_\infty \triangleq \sum_{n = -\infty}^{\infty} \vert x[n] \vert ^2$ 이용하면,
 		$$E_\infty = \sum_{n = -\infty}^{-1} (2)^{2n} + \sum_{n = 0} ^ \infty (0.5)^{2n} = \sum_{n = 1}^\infty (0.25)^n + \sum_{n=0}^\infty (0.25)^n = \frac{5}{3}$$
 		- 이 신호의 에너지는 유한, 전력은 0
@@ -444,8 +443,8 @@ parent  : lectures
 	- Odd signals: $x(-t) = -x(t)$
 	- A signal is (real) exponential if it can be represented as $x(t) = C e^{at}$. A signal is (complex) expoential if it can be represented in the smae form but $C$ and $a$ are complex numbers.
 	- A pulse signal is one which is nearly completely zero, apart from a short spike, $\delta(t)$. A step signal is zero up to a certain time, and them a constant value after that time, $u(t)$.
-	
-	
+
+
 ### 1.3. Exponential Signal & Sinusoidal Signals
 #### 1.3.1. C-T- complex exponential & sinusoidal signals
 - expoential signal:
@@ -453,7 +452,7 @@ parent  : lectures
 	- $C$와 $a$가 실수라면, $x(t)$ 는 real exponential signal
 		- $a >0$ 이면, $x(t)$ 는 $t$가 증가할수록 증가
 		- $a <0$이면, $x(t)$ 는 $t$가 증가할수록 감소
-		
+
 - periodic complex exponential
 	- $x(t) = Ce^{at}$ 에서 $a$를 허수로 놓으면
 		- $x(t) = C e^{j w_0 t}$
@@ -470,7 +469,7 @@ parent  : lectures
 
   - 주기적 복소지수 신호 -> 정현파 신호
 	  $x(t) = A cos(w_0 t + \phi)$
-	  
+
 - 오일러 관계 ($e^{jw_0t} = cos w_0 t + j sin w_0 t$)로부터
 	- $A cos(w_0t +\phi) = \frac{A}{2} e^{j \phi} e^{j w_0 t} + \frac{A}{2} e^{- j \phi} e^{-j w_0 t}$ : 정현파 신호는 주기적인 복소지수항으로 표현 가능
 	- $A cos(w_0 + \phi) = A Re(e^{j(w_0 t + \phi)})$
@@ -481,4 +480,133 @@ parent  : lectures
 	$$P_{\infty} = {lim}_{T \rightarrow \infty} \frac{1}{2T} \int_{-T}^{T} \vert e^{jw_0t} \vert ^2 dt = 1$$
 - 복소 지수 $e^{jwt}$가 주기 $T_0$를 가지며 주기적이기 위해 필요조건은
 	$e^{jwT_0} = 1$ -> $wt_0$가 $2\pi$의 곱 : $wT_0 = 2 \pi k$, $k= -, \pm 1, \pm 2, \cdots$
-	
+
+	$w_0 = \frac{2 \pi}{T_0}$ 로 정의하면, 위 식을 만족시키기 위해서 $w$는 $w_0$의 정수배 -> 고조파(주기를 공유하는 정현파들의 모음)의 복소지수 집합
+	$\phi_k(t) = e^{jkw_0t}, k=0, \pm 1, \cdots$ : $w_0$의 모든 배수인 기본 주파수를 가지는 주기적인 지수 집합
+
+- $k=0$이면 $\phi_k(t)$는 상수:
+	- $k \not = 0$ 인 k에 대해 $\phi_k(t)$는 기본주파수 $\vert k \vert w=_0$, 기본주기 $\frac{2 \pi}{\vert k \vert w_0} = \frac{T_0}{\vert k \vert}$ 를 갖는 주기 신호
+
+- 예제 1.5 : 두 개의 복소지수의 합을 하나의 복소지수와 하나의 정현파 신호의 곱으로 표현:
+	- $$\begin{aligned} x(t) &= e^{j2t} + e^{j3t} \\ &= e^{j2.5t} (e^{e^{-j0.5t} + e^{j0.5t}}) = 2e^{j2.5t} cos(0.5t) \\ \vert x(t) \vert &= 2 \vert cos(0.5t) \vert \end{aligned}$$
+	- 전파 정류 정현파 신호
+
+- 일반적인 복수 지수 신호:
+	- 실수지수와 주기적 복소지수를 이용해 해석/표현
+	- $Ce^{\alpha t}$ -> $C$는 극좌표 형식($C = \vert C \vert e^{j\theta}$), $\alpha$ 는 직교좌표 형식($a=r + j w_0$) 표현
+	- $$\begin{aligned} Ce^{e \alpha t} &= \vert C \vert e^{j\theta} e^{r + j w_0)t} = \vert C \vert e^{rt} e^{j(w_0 t + \theta)} \\ &= \vert C \vert e^{rt} cos(w_0 t + \theta) + j \vert C \vert e^{rt} sin(w_0 t + \theta)\end{aligned}$$
+	- $r = 0$이면, 복소지수의 실수와 허수 부분은 정현파
+	- $r > 0$이면, 증가하는 지수가 곱해진 정현파
+	- $r < 0$이면, 감소하는 지수가 곱해진 정현파
+
+### 1.3.3. Periodicity properties of D-T complex exponentials
+- $w_0 + 2 \pi$ 주파수를 가지는 D-T 복소지수:
+	- $$e^{j(w_0 + 2 \pi)n} = e^{j 2 \pi n} e^{j w_0 n} = e^{jw_0 n}$$
+	- 위 특성으로 $e^{j w_0 n}$ 은 $w_0 = \pi$ 될 때까지 진동 증가하다가 $w_0 = 2\pi$ 될때까지 감소
+	- $w_0 + 2 \pi$인 지수는 주파수 $w_0$와 같다. -> $2 \pi$의 주파수 구간만 고려
+	- $e^{jw_0 n}$ 에 대해 $w_0 = \pi$와 홀수배의 경우:
+		- $e^{j\pi n} = (e^{j \pi})^n = (-1)^n$ -> 시간의 각 지점에서 부호 바뀌며 진동
+	- $e^{j w_0 n}$의 주기가 $N(N>0)$ 이기 위해서는
+	- $$e^{jw_0 (n + N)} = e^{j w_0 n} \rightarrow e^{j w_0 N} = 1$$
+	- 위 식이 성립하려면, $w_0 N = 2 \pi m$ (m은 정수)
+	  - $x[n]$이 기본 주기 $N$을 갖고 주기적이라면, 기본 주파수는 $\frac{2 \pi}{N}$
+		- 즉, 주기신호 $e^{j w_0 n}$ 의 기본 주파수 : $\frac{2 \pi}{N} = \frac{w_0 }{m}$
+
+- 예제 1.6 : 다음 D-T 신호의 기본 주기는?
+  - $$x[n] = e^{j(2 \pi / 3) n} + e^{j(3 \pi/4)n}$$
+	- 각각의 기본주기는 3과 8이므로 24가 기본주기이다.
+- 고조파와 관련된 (공통 주기 N을 갖는) 주기적인 D-T 지수 신호
+  - $$\phi_k[n] = e^{j k(2 \pi/N) n}, k = 0, \pm 1, \cdots$$
+	- $$\phi_{k + N}[n] = e^{j (k + N) (2 \pi / N) n} = \phi_k[n]$$
+	- 구별되는 주기 지수들은 N개 존재
+
+## 1.4. Unit impluse and unit step function
+### 1.4.1. D-T unit impulse & unit setp sequences
+- 단위 임펄스(단위 샘플) 신호:
+	- $$\delta[n] = \begin{cases} 0, & n \not = 0 \\ 1, & n = 0 \end{cases}$$
+- 단위 계단 신호:
+	- $$u[n] = \begin{cases} 0, & n < 0 \\ 1, & n \ge 0 \end{cases}$$
+- $$\delta[n] = u[n] - u[n-1]$$
+- $$u[n] = \sum_{m = - \infty}^{n} \delta[m]$$
+- 단위 임펄스 순차열은 $n = 0$에서 신호를 샘플링하기 위해 사용:
+	- $$x[n]\delta[n] = x[0]\delta[n]$$
+	- 일반적으로, $n=n_0$에서 단위 임펄스 $\delta[n - n_0]$의 경우:
+		- $$x[n]\delta[n - n_0] = x[n_0] \delta[n - n_0]$$
+
+### 1.4.2. C-T unit setp & unit impluse functions
+- C-T 단위 계단 함수:
+	- $$u(t) = \begin{cases} 0, & t < 0 \\ 1, & t > 0\end{cases}$$
+	- $u(t)$ 의 total energy : $\infty$, power : ${lim}_{T \rightarrow 2T} \frac{1}{2T} \int_{-T}^T u(t)dt = {lim}_{T \rightarrow \infty} \frac{1}{2T} \int_{0}^T 1 dt = \frac{1}{2}$$
+	- $u(t) = \int_{-\infty}^t \delta(\tau) d \tau$ : 단위 임펄스 함수의 연속 적분
+	- $\delta(t) =  \frac{d u(t)}{dt}$ : C-T 단위 계단함수의 일차 도함수
+- $u(t)$는 $t=0$에서 불연속 -> 미분 불가능 문제:
+	- 단위 계단 $u_\Delta(t)$로 근사 : 짧은 시간 구간 동안에 그 값이 0에서 1로 증가:
+		- $u(t)$는 $\Delta \rightarrow 0$과 같이 $u_\Delta (t)$의 극한을 취합
+		- $u_\Delta(t)$의 미분 $\delta_\Delta(t) = \frac{d u_\Delta(t)}{dt}$를 고려하면, $\delta_\Delta(t)$ 는 구간 $\Delta$ 에서 단위 면적을 갖는 짧은 펄스
+		- $\Delta \rightarrow 0$ 일 때, 면적은 일정하게 유지(폭은 좁아지고 길이는 길어짐) -> 면적만 가지고 두께는 없음
+		- $$\delta_\Delta(t) = {lim}_{\Delta \rightarrow 0}\delta_\Delta(t)$$
+  - 임펄스 $u \delta(t)$는 면적이 $u$
+	- D-T에서와 마찬가지로 적분변수 $\tau$ 를 $\sigma = t - \tau$로 바꾸면:
+		- $$u(t) = \int_{-\infty}^t \delta(\tau) d\tau = \int_{0}^\infty \delta(t - \sigma) d \sigma$$
+
+- 샘플링 특성:
+	- 임펄스와 C-T 신호 $x(t)$의 곱 : $x_\cdot (t) = x(t) \delta_\Delta(t)$:
+		- $\Delta$가 충분히 작기 때문에 $x(t)$는 거의 일정한 값이고, 극한 값이므로 : $x(t) \delta(t) = x(0) \delta(t)$
+	- $t_0$의 임펄스인 경우 : $x(t) \delta(t - t_0) = x(t_0) \delta(t - t_0$)$
+	- sampling property:
+		- $$\int_{-\infty}^{\infty} x(t) \delta(t - \sigma) d t = x(\sigma) \int_{-\infty}^{\infty} \delta(t - \sigma) dt = x(\sigma)$$
+
+## 1.5. C-T and D-T system
+- 시스템 : 입력 신호가 시스템에 의해 변환 또는 입력 시스템에 대해 시스템의 응답을 출력:
+	- 예시 : 음성 녹음에서의 톤 변화, 전기 회로, 자동차
+	- C-T system : $x(t) \rightarrow y(t)$
+	- D-T system : $x[n] \rightarrow y[n]$
+
+### 1.5.1. Simple examples of systems
+- RC 전기회로의 예 (저항, 전류, 전압)
+- 자동차의 속력의 예 (가속도, 속도, 위치)
+
+### 1.5.2. Interconnections of systems
+- 두 시스템의 직렬 or casecade 상호 연결:
+	- 전파 -> 라디오 수신 -> 증폭
+- 병렬 상호 연결:
+	- 여러 마이크가 연결된 하나의 증폭기와 스피커
+- 직렬-병렬 상호 연결
+- 피드백 상호 연결
+
+## 1.6
+### 1.6.1 Systems with & without memory
+- memoryless 시스템:
+	- 주어진 시간에서 독립 변수 각각의 값에 대한 출력이 같은 시간의 입력에만 의존
+- 항등(identity) 시스템 : $y(t) = x(t)$, $y[n] = x[n]$
+- 시스템에서 memory : 현재 이외의 시간 입력을 저장/유지:
+	- memory D-T 시스템
+	- memory C-T 시스템
+
+### 1.6.2. Invertiblity & inverse systems
+- invertibility -> 인코딩/디코딩:
+	- $$x \rightarrow y \text{ is invertible } \overset{def}{\Leftrightarrow} \exists \text{ an inverse system } : y \rightarrow w \text{ s.t. } w= x$$
+- non-invertible system
+
+### 1.6.3. Casuality
+- casuality : 어떤 시간에서의 출력이 현재와 과거의 입력값들에만 의존:
+	- 두 개의 입력이 어떤 시간($t_0$ or $t_n$)까지만 주어지면, 출력도 같은 시간까지 동일
+	- 독립 변수가 시간이 아닌 경우(영상처리), 인과성은 필수 조건이 아님
+	- 높은 변동성 데이터 처리 -> 변동을 부드럽게 + 추이를 유지하기 위해 구간내 평균계산
+
+- 예제 1.12 : 시스템의 인과성 검사:
+	- $y[n] = x[-n]$:
+		- 양의 시간 $n_0$에서 출력 $y[n_0]$은 입력신호 $x[-n_0]$에 의해 결정
+		- 여기서 시간 $-n_0$은 음의시간 -> 인과적
+		- $n < 0$ 인 경우, 미래의 입력에 의해 출력 결정
+	- $y(t) = x(t) cos(t + 1)$:
+		- 시간 t에서 출력은 같은 시간의 입력에 따라 변화하는 수를 곱한 결과와 같음
+
+### 1.6.4. Stability
+- Stable system : 작은 입력에 대해 출력이 발산하지 않음. 제한된 입력에  제한된 출력
+
+### 1.6.5. Time invariance
+- time invariance : 시스템 특성이 시간에 대해 고정
+
+---
+4주차 18페이지
