@@ -3,23 +3,18 @@ layout  : wiki
 title   : k8s-in-rpi
 summary : 라즈베리파이에서 k8s 자습하기
 date    : 2022-05-03 02:11:00 +0900
-lastmod : 2022-05-17 03:29:34 +0900
+lastmod : 2022-05-24 18:03:00 +0900
 tags    : [k8s]
 draft   : false
 parent  : kubernetes
 ---
 
 ## TODO (우선순위 순으로)
-- docker registry 띄우기:
-  - ui dashboard 띄우기
-  - k8s 에서 image pull 하는 주소 추가
+- ui dashboard 에러 처리하기
 - grafana 관련:
   - nginx log 확인하기
   - alert용 email 설정하기
   - grafana dashboard를 통해 jupyter notebook 관련하여 모니터링할 수 있는지 확인하기
-- jupyter notebook docker image custom build하기:
-  - latex 관련 라이브러리 설치, git, tig 설치
-  - pip, matplotlib 설치
 - wiki 서비스 설치
 - rstudio docker image 빌드후 업로드
 - github 로 ci/cd pipeline 만들수 있는지 공부
@@ -402,6 +397,51 @@ data:
   - Deployment를 건들여주면 될거 같긴 하다.
 
 ## Jupyter Notebook 설치
+- Jupyter Notebook Image 만들기:
+  - Jupyter notebook 기본이미지에는 git, numpy, matplotlib, latex 이 없다.
+  - 깔아주자.
+
+  ```Dockerfile
+  FROM jupyter/base-notebook:notebook-6.4.11
+  USER root
+  ARG DEBIAN_FRONTEND=noninteractive
+  RUN apt update
+  RUN apt install -y texlive-xetex git tig
+  USER 1000
+  RUN pip install matplotlib numpy
+  ```
+
+  - Makefile 로 업로드 설정 해주자.
+
+  ```Makefile
+  REPO=registry.makerdark98.dev
+  IMAGE_NAME=jupyter/notebook
+  VERSION=0.0.1
+
+  release: build publish publish-latest
+
+  build:
+          @echo 'build docker image'
+          docker build -t $(IMAGE_NAME) .
+
+  publish:
+          @echo 'create tag $(VERSION)'
+          docker tag $(IMAGE_NAME) $(REPO)/$(IMAGE_NAME):$(VERSION)
+          docker push $(REPO)/$(IMAGE_NAME):$(VERSION)
+
+  publish-latest:
+          @echo 'create tag latest'
+          docker tag $(IMAGE_NAME) $(REPO)/$(IMAGE_NAME):latest
+          docker push $(REPO)/$(IMAGE_NAME):latest
+  ```
+
+  - 실제로 업로드 해주자
+
+  ```bash
+  make build
+  make publish
+  ```
+
 - 아래 설정을 읽어보자, 전부다 해놨다. k8s 에 대한 지식이 있다면 이해 가능
 
 ```yaml
@@ -456,8 +496,7 @@ spec:
     spec:
       containers:
       - name: base-notebook
-        image: jupyter/base-notebook:notebook-6.4.11
-        # TODO: 이미지에 latex 관련된 파일 깔 수 있도록 custom docker image 사용하도록 변경하기
+        image: registry.makerdark98.dev/jupyter/notebook:0.0.1
         ports:
         - containerPort: 8888
         command: ["start-notebook.sh"]
@@ -714,7 +753,21 @@ kubectl apply -f headless-svc.yaml
   ```
 
 - k8s에서 private registry 인증가능하게 하기
-  - 진행중(secret 만들어줘서 주입, 모든 namespace에서 사용할 방법 고민중)
+
+  ```bash
+  #!/bin/bash
+  REPO=registry.makerdark98.dev
+  USER=<user>
+  PASS=<password>
+  NAMESPACE=jupyter
+  kubectl create secret docker-registry regcred \
+      --docker-server=$REPO \
+      --docker-username=$USER \
+      --docker-password=$PASS \
+      --docker-email=makerdark98@gmail.com \
+      -n=$NAMESPACE
+  ```
+
 ---
 
 ## TODO: 실습하기
