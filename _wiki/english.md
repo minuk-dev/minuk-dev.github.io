@@ -2,7 +2,7 @@
 layout  : wiki
 title   : english
 date    : 2020-06-28 23:28:18 +0900
-lastmod : 2022-04-19 02:41:35 +0900
+lastmod : 2022-06-01 17:21:36 +0900
 tags    : [english]
 draft   : false
 parent  : study-note
@@ -20,3 +20,7 @@ parent  : study-note
 ## 링글
 - [[링글/Metaverse]]
 - [[링글/Autonomous]]
+- [[ringle/Microsoft-x-Activision-Blizzard]]
+- [[ringle/The-Metaverse]]
+- [[ringle/Supply-and-Demand]]
+- [[ringle/Netflix's-historic-loss]]
