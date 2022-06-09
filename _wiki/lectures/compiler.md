@@ -3,7 +3,7 @@ layout  : wiki
 title   : 컴파일러 수업 정리
 summary : 2022-1 컴파일러 수업 정리
 date    : 2022-03-25 22:26:53 +0900
-lastmod : 2022-03-25 22:27:33 +0900
+lastmod : 2022-06-09 18:16:04 +0900
 tags    : [lecture]
 draft   : false
 parent  : lectures
@@ -295,15 +295,15 @@ parent  : lectures
 ### Regular Expressions to NFAs
 - McNaughton-Yamada-Thompson algorithm
 	- This works recursively by splitting an expression into its constituent subexpressions
-	
+
 ### NFAs to DFAs
 - Subset (powerset) construction algorithm:
 	- Basic idea: Grouping a set of NFA states reachable after seeing some input strings
 - Definitions:
 	- $\epsilon$-closure($q^N$) : A set of NFA states reachable from NFA state $q^N$ with only $\epsilon$-moves ($q^N$ is also included)
 	- $\epsilon$-closure(T) : A set of NFA states reachable from some NFA state in a set $T = \{ q_i, ... \}$ with only $\epsilon$ - moves
-	
-	
+
+
 ### Summary
 - What does a lexical analyzer do?
 	- Reading the input characters of a source program
@@ -365,3 +365,282 @@ parent  : lectures
 	- A. Make a context free grammar G based on the rule of a programming language
 	- Q. How to distinguish between valid and invalid token sets?
 	- A. Check whether the given token set can be derived from the context free grammar G
+
+2. Creates a tree-like intermediate representation (e.g., parse tree) that depicts the grammatical structure of the token stream
+
+# Semantic Analyzer
+- Check many kinds of semantic grammars:
+	- Semantic grammars can be different depending on the programming language
+- Common semantic grammars:
+  - Scope checking:
+		- All variables must be declared before their use (globally or locally)
+		- All variables must be declared only once (locally)
+		- All functions must be declared only once (globally)
+	- Type checking:
+		- All variables must be used with the right type of constant or variables
+		- All functions must be used with the right number and type of arguments
+
+## Part 1: Scope Checking
+- The scope of an identifier is the portion of a program in which the identifier can be accessed:
+	- Scope matches identifier declarations with uses
+	- The same identifier may refer to different things in different scopes
+- Two type of scope:
+	- Static scope (used in most programming languages):
+		- Scope depends on the physical structure of program text:
+			- e.g., {}, ()
+	- Dynamic scope (use in LISP, SNOBOL):
+		- Scope depends on execution of the program:
+			- e.g., the most currently declared identifier is used
+- In most programming langues, the scope of identifiers are determined with:
+	- Function declarations
+	- Class declarations
+	- Variable declarations
+	- Formal parameters
+
+### The Most-Closely Nested Scope Rule
+- An identifier is matched with the identifier declared in the most-closely nested scope:
+	- The identifier should be declared before it is used
+
+### Implementation of Scope Checking
+- While travelling AST:
+	- Update the symbol table with the scope information
+	- But such simple solution can occur problems:
+		- Problem 1: Ambiguity
+		- Problem 2: Inefficiency
+	- Construct a symbol table for each scope, describing a nesting structure
+	- Update the symbol table with information about what identifiers are in the scope
+	- When an identifier is used, find the identifier in the current symbol table:
+		- If not exist, moves to its parent table and find the identifier in the table
+		- Repeat this process until the identifier is detected or their is no more parent table
+- How to support function call/class name used before declarations?:
+	- Solution: Multi-pass scope checking:
+		- Pass 1: Gather information about all function/class names
+		- Pass 2: Do scope checking
+
+---
+### Summary: Scope Checking
+- The scope of an identifier is the portion of a program in which the identifier can be accessed:
+	- Scope mathces identifier declarations with uses
+	- The same identifier may refer to different things in different scopes
+- For scope check, we use the most-closely nested scope rule:
+	- Construct a symbol table for each scope, describing a nesting structure
+	- Udpate the symbol table with information about what identifiers are in the scope
+	- When an identifier is used, find the identifier in the current symbol table
+- Semantic analysis usually requires multiple (probably more than two) passes:
+	- To allow to use function calls/ class names before declaration
+
+## Part 2: Type Checking
+### Type, Type System, and Type Checking
+- What is a type (data type)?:
+	- An attribute of data which teslls compilers how programmers intend to use the data
+- What is a type system?:
+	- A set of rules that assign specific types to the various constructs of a computer program
+- What is a type checking?:
+	- Ensuring that the types of the operands match the type expected by the operator
+- Why do we need type checking?:
+	- We cannot distinguish expressions without type in the assembly languagee level
+	- We should do the type checking with higher-level representations
+
+### Two Kinds of Languages
+- Statically-typed languages:
+	- The type of a variable is determined/known at compile time
+	- Type checking is performed during compile-time (before run-time)
+	- Advantage: better run-time performance + easy-to-understand/easy-to-find type-related bugs(due to strict rules)
+- Dynamically-typed languages:
+	- The type of a variable is assocatied with run-time values
+	- Type checking is performed on the fly, during execution
+	- Advnatage: higher flexibility + rapid prototyping support
+
+### How Types are Used/Checked in Practice?
+- In statically-typed lanagues:
+	- Programmers declare types for all identifiers statically:
+		- Types are ssociated with specific keywords
+- Compilers:
+	- Infer the type of each expression from the types of its components
+	- Confirm that the types of expressions matches what is expected
+
+### Rules of Inference
+- Inference rules usually have the form of "if-then' statements:
+	- If hypothesis is true, then conclusion is true
+- Type checking computes via reasoning
+- Notations for rules of inferences:
+	- x: T = x has type T
+	- $\frac{Hypothesises}{Conclusions}$ = if-then statement, "if Hypothesises are true, Conclustions are true"
+	- $\vdash$ = "we can infer"
+	- Examples:
+		- For an expression A && B:
+			- If we can infer that A has type bool and B has type bool, then we can infer that A && B has type bool:
+				- $$\frac{\text{We can infer that A has type bool and B has type bool}}{\text{We can infer that A && B has type bool}} \\ \frac{\vdash \text{A has type bool } \vdash \text{B has type bool}}{\vdash \text{A && has type bool}} \\ \frac{\vdash A:bool \vdash B:bool}{\vdash \text{A && B}: bool}$$
+
+### Problem #1: Free Variables
+- Free variables?:
+	- A variable is free in an expression if its type if not defined/declared within the expression
+
+#### Solution: Adding Scope Information
+- Scoping information can give types for free variables
+- $$S \vdash e:T$$
+- We can infer that an exression e has type T in scope S:
+	- Types are now proven relative to the scope the expression are in
+- So far, we've defined inference rules for expressions
+- Q. How to check whether statements are semantically well-formed or not?
+
+#### Solution: Defining Well-Formedness Rules
+- Extend our proof system (rules of inferences) to statements
+- $$S \vdash WF(stmt)$$
+- We can infer that a statement stmt is semantically well-formed in scope S
+
+### How Types are Used/Checked in Practice?
+- In statically-typed language, programmers declare types for all identifiers:
+	- Types are associated with specific keywords
+- Compilers:
+	- Infer the type of each expression from the types of its components
+	- Confirm that the types of expressions matches what is expected
+	- Especially, by using the rules of inference + scope information + well-formedness rules
+- How to use the inference rules for type checking?:
+	- First, before doing type-checking
+	- For each statement:
+		- Do type checking for any subexpressions it contains
+		- Do type checking for child statements
+		- Check the overall well-formedness
+---
+### Summary: Type checking
+- Ensuring that the types of the operands match the type expected by the operator
+- In statically-typed lanauges:
+	- Programmers declare tyeps for all identifiers statically:
+		- Types are associated with specific keywords
+- Compilers:
+	- Infer the type of each expression from the types of its components
+	- Confirm that the types of expressions matches what is expected
+	- Especially, by using the rules of inference + scope information + well-formedness rules
+- How to use the inference rules for type checking?:
+	- Before doing type checking, do scope-checking, first
+- For each statement:
+	- Do type-checking for any sub-expressions it contains
+	- Do type-checking for child statements
+	- Check the overall well-formedness
+
+# Compilers: Intermediate Code Generator
+## Tree Address Code (TAC)
+### Intermediate Code Generator
+- Translates a high-level intermediate representation (e.g., parse trees or AST) into a low-level intermediate representation (e.g., three address code)
+- Why do we use an intermediate representation?:
+	- Easy-to-understand/optimize:
+		- Doing optimizations on an intermediate representation is much easier and clearer than that on a machine-level code
+		- A machine code has many constraints that inhabit optimizations
+	- Easy-to-be-translated:
+		- Compared to a high-level code, it looks much more like a machine-level code
+		- Therefore, we can translate an intermediate representation to a machine-level code with low cost
+- How to design a good intermediate representation?:
+	- "Often a single compiler has multiple intermediate representations"
+	- Different intermediate representations have different information/characteristics which can be used for optimizations
+	- In GCC,:
+		- Source Code -> AST -> Generic -> High GIMPLE -> SSA -> Low GIMPLE -> RTL -> Machine Code
+
+### AST: Abstract Syntax Tree
+- Abstract syntax trees look like parse trees, but without some parsing details
+- We can eliminate the following nodes in parse trees:
+	- Single-successor nodes
+	- Symbols for describing syntactic details
+	- Non-terminals with an operator and arguments as their child nodes
+- AST can be constructed by using semantic actions
+
+### TAC:Tree Address Code
+- A high-level assembly where each operation has at most three operands:
+	- A linearized representation of AST
+- Components of TAC:
+	- Operands (= addresses)
+	- Operators (= instructions)
+
+### Types of TAC:Variable Assignment
+- Copy operation:
+	- Explicit or temporary variable = any kind of operand
+- Binary operation:
+	- Explicit or temporary variable = any kind of operand binary operator any kind of operand:
+		- Binary operators:
+			- Arithmetic operatiors: +, -, *, /, ...
+			- Boolean operators: &&, ||, ...
+			- Comparision operators: ==, != ...
+- Unary operation:
+	- Explicit or temporary variable = unary operator any kind of operand:
+		- Unary operators: -, !
+- Unconditional jump with label
+- Conditional branch
+- Call procedures
+- Array operations
+- Return statements
+
+### How to Represent TAC: Quadruples
+- Quadruples have four fields (op, arg1, arg2, results) and they are stored in a linked list
+
+### AST to TAC
+- When constructing AST, we define TAC construction rules for each node:
+	- TAC construction rules:
+	- Operation Node
+		- Create a new quadruple with op
+		- arg1 = the computation resul of its left child
+		- arg2 = the computation result of its right child
+		- result = a new temporary variable t_i
+		- Store the qudruple to the end of the linked list
+		- Return its value
+- While traveling AST, construct TAC based on the rules
+- TAC construction rules for whlie:
+	- Create and store a neq quadruple with op = label, arg1 = a new label L_i
+	- Create a new quadruple with op = if not
+	- arg1 = the computation result of tis left child (compute condition)
+	- arg2 = another new lavel L_j
+	- Store the quadruple
+	- Compute the right child (compute the while statements'block)
+	- Create and store a new quadruple with op = goto, arg1 = L_i
+	- Create and store a new quadruple with op = label, arg1 = L_j
+
+---
+### Summary: Intermediate Code Generator
+- Translates a high-level intermediate representation (e.g., parse tree or AST into a low-level intermediate representation (e.g., three address code))
+
+# Code Optimization
+## Local Optimization
+### Intermediate Code Optimizer
+- Improves the code generated by the intermeidate code generator:
+	- For optimizing the run-time performance, memory usage, and power consumption of the program, the preserving the semantics of the original program
+- Why do we need optimization?:
+	- Intermediate code is generated without considering optimization
+	- Programmers write a poor code frequently
+- Optimizations can be also performed with machine-level code:
+	- To improve performance based on the characteristics of specific machines
+- Intermediate code optimizations try to improve performance more generally (independently of machines)
+
+### Basic Blocks
+- A basic block is a maximal sequence of consecutive three adderes instructions:
+	- A program can only enter the basic block through the first instruction in the block
+	- The program leves the block without halting or branching at the last instruction in the block
+
+### Control Flow Graphs
+- A control flow graph is a graph of the basic blocks:
+	- Edges indicates which blocks can fllow which other blocks
+
+### Types of Intermediate Code Optimizations
+- An optimization is "local":
+	- If it works on just a single basic block
+- An optimization in "global":
+	- If it works on an entire control-flow graph
+
+### Local Optimizations
+- Typical local optimization techniques:
+	- Common sub-expressions elimination
+	- Copy propagation
+	- Dead code elimination
+	- Arithmetic simplification
+	- Constant folding
+
+### Implementation of Local Optimizations
+- Available expression analysis:
+	- For common sub-expressions elimination & copy propagation:
+		- An expression is called avilable if variabels in the expression hold an up-to-date value
+  - Determine for each point in a program the set of available expressions:
+		- Initially, no expressions are available
+		- Whenever we check a statement a = opeartaion:
+			- Any expression holding a is invalidated!
+			- The new expression a = operation becomes avaiable
+
+- Common sub-expressions elimination with available expressions:
+	- Let's

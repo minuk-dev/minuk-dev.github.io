@@ -3,7 +3,7 @@ layout  : wiki
 title   : 신호 및 시스템
 summary : 2022-1학기 신호 및 시스템 공부
 date    : 2022-03-15 14:58:52 +0900
-lastmod : 2022-06-03 21:31:27 +0900
+lastmod : 2022-06-05 19:08:16 +0900
 tags    : [lecture]
 draft   : false
 parent  : lectures
@@ -697,6 +697,115 @@ $$x[n] = \sum_{k=-\infty}^\infty x[k] \delta[n - k]$$
 ### 2.3.6. Causality of LTI systems
 - 인과적 시스템의 출력은 연재와 과거의 입력에 대해서만 영향받음.
 - 인과적 D-T LTI 시스템 : $y[n]$은 $k > n$에서의 $x[k]$에 영향 받지 않음.
+- 인과적 LTI 시스템에서 convolutional sum은 다음과 같이 표시됨
+  $$y[n] = \sum_{k = 0}^\infty h[k] x[n - k]$$
+- C-T LTI 시스템의 경우, $h(t) = 0$
 
----
-6주차 12페이지
+### 2.3.7 Stability for LTI systems
+- 제한된 모든 입력에 대해 제한된 출력
+- 이 입력을 단위 임펄스 응답이 $h[n]$인 LTI 시스템에 가하면,
+  - $$\vert y[n] \vert = \vert \sum_{k = -\infty}^\infty h[k] x[n - k] \vert$$
+  - $$\vert y[n] \vert \le \Beta \sum_{k=- \infty}^\infty \vert h[k] \vert$$
+
+## 2.4. Causal LTI systems described by differential & difference equations
+- C-T(D-T) 에서 입력-출력 관계가 선형 상미분(차분) 방정식으로 표현됨
+
+### 2.4.1. Linear constant-coefficient differential equations
+- 입력 $x(t)$, 출력 $y(t)$의 일차 미분방정식을 고려
+- 입력 $x(t)$에 대한 응답은 DE의 특수해와 고유해의 합으로 구성:
+  - 고유해 : 입력이 0일때의 DE의 해 = natural response(자연 응답)으로도 불림
+  - 시스템의 입력-출력의 완전환 관계를 결정하기 위해 부가조건(초기 조건) 필요
+- N차 선형 계수 DE로 확장
+  $$\sum_{k=0}^N a_k \frac{d^k y(t)}{d t^k} = \sum_{k=0}^M b_k \frac{d^k x(t)}{d t^k}$$
+  - 차수 : 출력 $y(t)$의 가장 많이 미분된 항의 미분 횟수
+
+### 2.4.2. Lienar constant-coefficient difference equations
+- D-T 에서 N차 선형 상계수 차분 방정식으로 표현
+  $$\sum_{k=0}^N a_k y[n - k] = \sum_{k=0}^M b_k x[n - k]$$
+
+## 2.5. Singularity functions
+### 2.5.1. Unit impulse as idealized short pulse
+- 단위 임펄스 $\delta(t)$ : 항등 시스템의 임펄스 반응
+  $$x(t) = x(t) * \delta(t)$$
+  $$r_\Delta(t) = \delta_\Delta(t) * \delta_\Delta (t)$$
+- 단위 임펄스를 $\Delta \rightarrow 0$인 $\delta_\Delta(t)$의 극한 형태로 정의하면, 많은 신호들이 극한에서 단위 임펄스처럼 행동
+  $${lim}_{\Delta \rightarrow 0} x(t) * p_\Delta(t) = x(t) \\ \rightarrow {lim}_{\Delta \rightarrow 0} p_\Delta (t) = \delta(t)$$
+  $$x(t) * \delta(t) * \delta(t) = x(t) * \delta(t) = x(t)$$
+
+### 2.5.2. Defining the unit impulse through convolution
+- 충분히 작은 $\Delta$에 대해 신호 $\delta_\Delta (t), r(t), r_\Delta(t) * \delta_\Delta(t), r_\Delta (t) * r_\Delta (t)$ 등은 모두 LTI 시스템에 적용될 때 임펄스처럼 동작
+- $\Delta \rightarrow 0$에 따라 $\delta_\Delta(t), r_\Delta(t)$ 등의 신호가 모두 극한 조건에서 단위 임펄스 신호와 같이 행동, 이 신호들이 $\delta(t)$를 대신하면, $x(t) = x(t) * \delta(t)$는 극한조건에서 만족
+- 단위 임펄스 신호의 특성을 확인:
+  - $$1 = x(t) = x(t) * \delta(t) = \delta(t) * x(t) = \int_{-\infty}^{\infty} \delta(\tau)x(t - \tau) d \tau = \int_{- \infty}^\infty \delta(\tau) d \tau$$
+  - 즉, 단위 임펄스 신호는 단위 면적을 가진다.
+
+# 3.
+## 3.0 Introduction
+- 컨벌루션 합에 LTI 시스템 표현/분석은 시간 변위된 임펄스의 선형결합으로 표현된 신호를 바탕으로 함:
+  - 신호와 LTI 시스템의 표현 방법을 임의 신호를 일련의 기본신호의 선형결합으로 발전
+  - 복소 지수 함수의 사용
+  - 중첩의 정리 : 기본 신호의 선형 결합으로 구성된 임의 입력에 대한 LTI 시스템의 응답은 각각의 기본 신호의 응답의 선형결합과 같음 : 이동된 단위 임펄스 응답.
+
+## 3.1. Histroical perspective
+- 진동하는 실선(현)의 기본 형태(normal modes):
+  - 시간 t, 현에서의 거리 x -> 수직편향 $f(t, x)$
+  - 임의 시간 t에서 기본형태는 조화적으로 관련된 (hormonically relacted) x의 정현(sinusoidal) 함수
+  - 임의 시점에서 진동하는 현의 형태가 기본형태의 선형결합이라면, 이후의 시간에서도 마찬가지다 : 미래 한시점의 선형 결합의 계수를 과거 시점의 계수로 계산 가능
+- LTI 시스템의 입력이 주기적인 지수함수나 정현파의 선형결합으로 표현된다면, 이들 입력의 계수를 가지는 형태로 출력을 표현
+- 교류 전원과 전압/전류, 이에 따른 회로의 LTI 시스템의 응답 등
+
+## 3.2. Response of LTI systems to complex exponentials
+- 임의 신호를 다음 성질을 가지는 기본(basic) 신호의 선형결합으로 표현:
+  1. 기본 신호들은 광범위하고 유용한 신호를 생성하는데 사용될 수 있어야함.
+  2. 각 기본 신호에 대한 LTI 시스템의 응답은 이 신호들의 선형결합으로 구성된 임의신호에 대한 시스템 응답이 편리하게 표현되도록 구조상 간단
+- 복소지수 신호가 위 성질을 만족:
+  - in C-T, $e^{st}$
+  - in D-T, $z^n$
+- LTI 시스템에서 복소지수의 중요성:
+  - 복소지수 입력에 대한 LTI 시스템의 응답은 단지 진폭만 변화할 뿐 같은 복소지수를 가짐
+  - in C-T : $e^{st} \rightarrow H(s) e^{st}$
+  - in D-T : $z^n \rightarrow H(z) z^n$
+  - eigenfunction(고유함수) : 시스템의 출력이 상수배(복소 상수도 가능)가 되는 신호
+  - eigenvalue(고유치) : 진폭항
+- 복소지수가 LTI 시스템의 고유함수임을 보이기 위해, 임펄스 응답 $h(t)$ 인 LTI 시스템을 고려:
+  - 입력 : $x(t) = e^{st}$
+  - 출력 : $y(t) = \int_{- \infty}^{\infty} h(\tau) x(t - \tau) d \tau = \int_{-\infty}^\infty h(\tau) e^{s(t - \tau)} d \tau$
+    - $y(t) = e^{st} \int_{-\infty}^\infty h(\tau) e^{- s \tau} d \tau$
+  - 출력식의 우변 적분이 수렴하면, $y(t) = H(s) e^{st}$
+  - $H(s)$ 는 복소 상수이며, 시스템의 임펄스 응답과의 관계는:
+    - $H(s) = \int_{-\infty}^\infty h(\tau) e^{- s \tau} d \tau$
+    - 복소지수가 LTI 시스템의 고유함수, H(s)는 고유함수 $e^{st}$의 고유값
+- 임펄스 응답이 $h[n]$인 LTI 시스템:
+  - 입력 : $x[n] = z^n$ : eigenfunction
+  - 출력 : $y[n] = \sum_{k=-\infty}^\infty h[k] x[n - k] = z^n \sum_{k = -\infty}^\infty h[k] z^{-k}$
+    - $y[n] = H(z) z^n$
+    - $H(z) = \sum_{k = -\infty}^\infty h[k] z^{-k}$ : eigenvalue
+    - 복소지수 D-T LTI 시스템의 고유함수, $H(z)$는 고유함수 $z^n$의 고유값
+- LTI 시스템에서 임의 신호를 고유함수로 표현된 일반적인 신호로 분해하여 해석하는 것이 편리:
+  - D-T LTI 시스템의 입력을 복소지수의 선형결합으로 표현 : $x[n] = \sum_k a_k z_k^n$
+    - 출력 : $y[n] = \sum_k a_k H(Z_k)Z_k^n$
+  - C-T/D-T LTI 시스템의 입력이 복소지수의 선형결합으로 표현된다면, 출력도 같은 복소 지수 신호의 선형결합으로 표현된다.
+    - 고유 함수 $e^{st}$ 또는 $Z_k^n$ 과 관련있는 시스템의 고유값 $H(S_k)$ 또는 $H(Z_k)$와 입력 계수 $a_k$와의 곱으로 계산됨.
+  - 위에서 $S$와 $Z$가 임의의 복소수가 가능하지만, 푸리에 해석은 특정한 형태로 제한:
+    - C-T에서 $S= jw \rightarrow e^{jwt}$
+    - D-T에서 $Z= e^{jw} \rightarrow e^{jwn}$
+
+## 3.3. Fourier series representation of C-T periodic signals
+### 3.3.1. Linear combinations of harmonically related complex exponentials
+- 주기 신호 : 양의 값 $T$에 대해 $x(t) = x(t + T) \forall t$:
+  - $x(t)$의 기본주기는 위 식을 만족시키는 0이 아닌 양의 최소값
+  - 기본 주파수 : $w_0 = 2 \pi / T$
+  - 정현파 $x(t) = cos w_0 t$, 주기 복소 지수 $x(t) = e^{j w_0 t}$는 기본 주파수 $w_0$, 기본 주기 $T= 2 \pi /w_0$ 가지는 주기적인 신호
+  - 복소지수 신호 $x(t) = e^{jw_0t}$ 와 조화적으로 관련된 복소지수:
+    - $\phi_k(t) = e^{jkw_0t} = e^{jk(2 \pi / T) t}$
+    - $\phi_k$ : harmonically related signals of common period T
+    - 각 신호는 $w_0$의 곱인 기본 주파수를 가지므로 각각은 주기 T인 주기적 신호
+  - 다음의 조화적으로 관련된 복소지수의 선형결합을 얻을 수 있음:
+    - $x(t) = \sum_{k=-\infty}^\infty a_ke^{jkw_0t} = \sum_{k=-\infty}^\infty a_k e^{jk(2 \pi / T) t}$
+    - 주기신호를 $\phi_k(t)$의 선형도합으로 표현 : 푸리에 급수 표현법(주기신호를 푸리에 급수로 표현)
+    - 주기 $T$로 주기적이며, 여기서 $k=0$인 항은 상수항
+    - $k= \pm 1$일 때, 두항의 기본주파수는 $w_0$ : 기본파항, 제1고조파항
+    - $k= \pm 2$일 때, 주기가 기본파항의 1/2(주파수는 2배) : 제2 고조파항
+    - $k= \pm N$일 때, N 고조파항
+- $x(t)$가 실수이고, 푸리에 급수 형태로 표시될 수 있다고 가정하면,:
+  - $x(t) = \sum_{k=-\infty}^\infty a_k^* e^{-jkw_0t}$를 얻으며, 이를 푸리에 급수 표현으로 비교하면 $a^* = a_{-k}$ 이다.
