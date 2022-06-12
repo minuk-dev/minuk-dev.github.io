@@ -3,7 +3,7 @@ layout  : wiki
 title   : 2022-1 정보보호이론
 summary : 2022-1 정보보호이론 정리노트
 date    : 2022-04-18 08:59:34 +0900
-lastmod : 2022-04-19 01:27:32 +0900
+lastmod : 2022-06-12 23:46:56 +0900
 tags    : [lectures]
 draft   : false
 parent  : lectures
@@ -562,3 +562,126 @@ Cipher (InBlock[16], OutBlock[16], w[0...43])
   StateToBlock(S, OutBlock);
 }
 ```
+
+## Chapter 9. Mathematics of Cryptography
+### 9.1. Primes
+- Asymmetric-key cryptography uses primes extensively. The topic of primes is a large part of any book on number theory.
+
+#### 9.1.1. Definition
+- Positive integers:
+  - Number 1, Primes, Composites
+  - A prime is divisible only by itself and 1.
+
+#### 9.1.2. Cardinality of Primes
+- Infinite Number of Primes
+- Number of Primes:
+  - $$\frac{n}{ln(n)} < \pi(n) < \frac{n}{ln(n) - 1.08366}$$
+    - for large n
+  - $$\pi(n) \approx \frac{n}{ln(n)}$$
+    - for large n
+
+#### 9.1.3. Checking for Primeness
+- Given a number n, how can we determine if n is a prime?
+- We need to see if the number is divisible by all primes less than $\sqrt n$
+- We know that this method is inefficient, but it is a godo start.
+- Any composite integer can be expressed as a product of prime numbers.
+
+#### 9.1.4. Euler's Phi-Function
+- $\phi(n)$ : Euler's phi-function:
+  - number of positive integers that are both smaller than n and relatively prime to n.
+
+- Properties:
+  - $\phi(1) = 0$
+  - $\phi(p) = p - 1$, if p is a prime.
+  - $\phi(m \times n) = \phi(m) \times \phi(n)$, if m and n are relatively prime. $m \ge 2, n \ge 2$
+  - $phi(p^e) = p^e - p^{e - 1}$, if p is a prime
+
+#### 9.1.5. Fermat's Little Theorem
+- First Version:
+  - If $p$ is a prime and $a$ is an integer such that $p$ does not divide $a$, then:
+  - $$a^{p-1} \text{ mod } p = 1$$
+
+- Second Version:
+  - if $p$ is a prime and $a$ is an integer, then:
+    - $$a^p \text{ mod } p = a \text{ mod } p$$
+
+- Multiplicative Inverse:
+  - If $p$ is a prime and $0 < a < p$, then:
+    - $$a^{-1} \text{ mod } p = a^{p - 2} \text{ mod } p$$
+
+#### 9.1.6. Euler's THeorem
+- If $a$ and $n$ are relatively prime, then:
+  - $$a^{\phi(n)} \text{ mod } n = 1$$
+  - n이 소수이면, Fermat's Little Theorem이 됨.
+
+#### 9.1.7. Generatign Primes
+- Mersenne Primes:
+  - A number in the form $M_p = 2^p - 1$, $p$ prime, is called a Mersenne number and may or may not be a prime.
+
+### 9.2. Primality Testing
+- Finding an algorithm to correctly and efficiently test a very large integer and output a prime or a composite has always been a challenge in number theory, and consequently in cryptography. However, recent developments look very promising.
+
+#### 9.2.1. Deterministic Algorithms
+
+```
+Divisibility_Test(n)
+{
+  r <- 2
+  while (r < sqrt (n))
+  {
+    if (r | n) return "a composite"
+    r <- r + 1
+  }
+  return "a prime"
+}
+```
+- 수행시간 : $n_b$ = no. of bits of n
+
+#### 9.2.2. Probabilistic Algorithms
+- Fermat test
+
+  ```
+  repeat k times:
+    pick a randomly from [2, n-2]
+    if a^{n-1} mod n != 1, then return "composite"
+  return "prime"
+  ```
+
+- Square Root Test:
+  - If n is a prime, then $sqrt 1$ mod n = {1, n-1}
+
+- Miller-Rabin Test: Fermat test + Square Root test:
+
+  ```
+  Miller-Rabin(n, a)
+
+  find m and k such that n - 1 = m * 2^k
+  T <- a^m mod n
+  if (T = 1 or n - 1) return "prime"
+
+  for (i=1 to k-1)
+    T <- T^2 mod n
+    if (T=1) return "composite"
+    if (T=n-1) return "prime"
+
+  return "composite"
+  ```
+
+#### 9.2.3. Recommended Primality Test
+- Today, one of the most popular primality test is combination of the divisibility test and the Miller-Rabin test.
+  1. Choose an odd integer, n.
+  2. Do the divisibility tests on primes 3,5,7,11,13,17,19,23.
+  3. Choose a set of bases, say 10 bases.
+  4. Do the Miller-Rabin test on each of these bases.:
+    - If any of them failes, then go to step 1.
+    - If the test passes for all 10 bases, then declare n as a prime.
+
+### 9.3. Factorization
+- Factorization has been the subject of continuous research in the past; such research is likely to continue in the future. Factorization plays a very important role in the security of several public-key cryptosystems.
+
+#### 9.3.1. Fundamental Theorem of Arithmetic
+- Any positive integer n can be written uniquely in a prime factorization form. $p_1, p_2, ... p_k$ are primes, and $e_1, e_2, ..., e_k$ are positive integers.:
+  - $$n = p_1^{e_1} \times p_2^{e_2} \times \cdots \times p_k^{e_k}$$
+
+### 9.6. Exponentiation and Logarithm
+- Fast Exponentiation
