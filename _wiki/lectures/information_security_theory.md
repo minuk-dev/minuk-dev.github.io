@@ -3,7 +3,7 @@ layout  : wiki
 title   : 2022-1 정보보호이론
 summary : 2022-1 정보보호이론 정리노트
 date    : 2022-04-18 08:59:34 +0900
-lastmod : 2022-06-12 23:46:56 +0900
+lastmod : 2022-06-13 18:55:53 +0900
 tags    : [lectures]
 draft   : false
 parent  : lectures
@@ -685,3 +685,227 @@ Divisibility_Test(n)
 
 ### 9.6. Exponentiation and Logarithm
 - Fast Exponentiation
+
+## Chapter 10. Asymmetric-Key (Public-Key) Cryptography
+### 10.1 Introduction
+- Symmetric and public-key cryptography will exist in parallel and continue to serve the community. We actually belive that they are complements of each other; the advantages of one can compensate for the disadvantages of the other.
+
+- Symmetric-key cryptography : sharing secrecy
+- public-key cryptography : personal secrecy
+
+#### 10.1.1. Keys
+- PUblic key cryptography uses two separate keys:
+  - one private key and one public key
+
+#### 10.1.2. General Idea
+- Plaintext/Ciphertext:
+  - Plaintext and ciphertext are treated as integers in public-key cryptography.
+- Encryption/Decryption:
+  - $C=f(K_{pulibc}, P), P = g(K_{private}, C)$
+
+#### 10.1.3. Need for Both
+- There is a very important fact that is cometimes misunderstood: The advent of public-key cryptogrpahy does not eliminate the need for symmetric-key cryptography.
+- Symmetric-key: faster. Good for encryption of large messages
+- Public-key: slow, but needed for authentication, digital signature, and key exchange.
+
+#### 10.1.4. Trapdoor One-Way Function
+- The main idea behind public-key cryptogaphy is the concept of the trapdoor one-way function
+- One-Way Function: $y=f(x)$
+  - $f$ is easy to compute. Given $x,y=f(x)$ can be easily computed.
+  - $f^{-1}$ is difficult to compute. Given $y$, it is computationally infeasible to compute $x=f^{-1}(y)$
+
+- Trapdoor One-way Function:
+  - Given $y$ and $a$ trapdoor (secret), $x$ can be computed easily $x=f^{-1}(y)$.
+
+- Every public-key cryptography depends on a trapdoor one-way function.
+
+### 10.2. RSA Cryptosystem
+- The most common public-key algorithm is the RSA cryptosystem, named for its inventors (Rivest, Shamir, and Adleman, 1977).
+
+#### 10.2.1. Introduction
+- Plaintext : $P$, $P$ is an integer and $P < n$
+  - Encryption: $C=P^e \text{ mod } n$
+- Ciphertext : $C$, $C$ is an integer and $C < n$:
+  - Decryption: $P=C^d \text{ mod } n$
+- $e,n$ : public key
+- $d$ : private key
+
+#### 10.2.2. Procedure
+- RSA key generation 키 생성:
+  1. 두 소수 p,q, 생성, p != q
+  2. n = p * q 계산
+  3. $\phi(n) = (p - 1)(q - 1)$ 계산
+  4. $e$ 선택: $1 < e < \phi(n)$ 이고, $e$와 $\phi(n)$ 은 서로소
+  5. $d = e^{-1} \text{ mod } \phi(n)$ 계산
+
+- $p, q, \phi(n)$ 모두 폐기
+- In RSA, $p$ and $q$ must be at least 512 bits; $n$ must be at least 1024 bits.
+
+#### 10.2.4. Attacks on RSA
+- Potential attacks on RSA:
+  - Factorization:
+  - Chosen-ciphertext:
+  - Encryption exponent: Coppersmith, broasdcast, related messages, and short pad
+  - Decryption exponent: Revealed and low exponent
+  - Plaintext: SHort message ,cyclic, and unconcealed
+  - Modulus: Common modulus
+  - Implementation: Timing and power
+
+- Factorization attack:
+  - $n$ is so large that it is infeasible to factor it in a reasonable time.
+  - If Eve can factor $n$ and obtaion $p$ and $q$, she can calculate $\phi(n) = (p - 1)(q - 1)$. She then calculates $d=e^{-1} \text{ mod } \phi(n)$ because $e$ is public.
+  - There are many factorization algorithms, but none of them can factor a large integer with polynomial time complexity. $n$ must be at least 1024 bits.
+  - RSA is secure as long as an efficient algorithm for factorization has not been found.
+- RSA reommendations based on theoretical and experimental results:
+  1. The number of bits for $n$ should be at least 1024.
+  2. $p$ and $q$ must each be at least 512 bits
+  6. n must not be shared.
+  7. $e$ should be $2^{16} + 1$ or an integer close to this.
+  8. If $d$ is leaked, we must change $n$ as well as both $e$ and $d$.
+
+#### 10.2.6. OAEP
+- Optimal asymmetric encryption padding
+- Encryption:
+  1. m-bit message M이 mbit가 안되면 padding하여 m bit로 만든다.
+  2. random number r of k bits 생성
+  3. G(r) 계산. G는 public one-way 함수(k bit를 m bit로 확대, k < m)
+  4. $P_1 = M \bigoplus$ G(r)$ 계산. $P_1$ : masked message (m bit)
+  5. $P_2 = H(P_1) \bigoplus r$. H는 another public one-way 함수(m bit를 k bit로 축소)
+  6. $C=(P_1 \vert \vert P_2)^e \text{ mod } n$으로 암호
+
+- Decryption:
+  1. 복호 $P = C^d \text{ mod } n = P_1 \vert \vert P_2$. $P_1$와 $P_2$를 얻음.
+  2. $r$ 얻음. $H(P_1) \bigoplus H(P_1) \bigoplus r = r$
+  3. 마스크 없앰. $G(r) \bigoplus P_1 = G(r) \bigoplus M \bigoplus G(r) = M$
+  4. M에서 padding을 없애면 원래 메시지 얻음
+
+- Applications:
+  - RSA is slow if the message is long.
+  - RSA is useful for short messages.
+  - RSA is used in digital signatures and others that often need to encrypt a small message without having access to a symmetric key.
+
+### 10.4. ElGamal Cryptosystem
+- Besides RSA and Rabin, another public-key cryptosystem is ElGamal. ElGamel is based on the discrete logarithm problem
+- Discrete Logarithm (이산 대수):
+  - $y= g^x \text{ mod } p$:
+    - Given $p,g$ and $x$, it is easy to compute y.
+    - Given $p, g$ and $y$, however, it is computationally infeasible to compute $x$.
+- discrete logarithm problem $\approx$ factorization
+- Key Geneartion:
+  1. $p$ : 소수 생성
+  2. $e_1$ 선택, $e_1$ 은 $<Z_p^*, \times>$의 primitive root
+  3. $d$ 선택, $1 \le d \le p-2$
+  4. $e_2=e_1^d \text{ mod } p$ 계산
+- 공개키 : $e_1, e_2, p$
+- 개인키 : $d$
+- $e_1, e_2, p$를 알아도 $d$를 계산하는 것은 어려움
+- Encryption:
+  1. $r$ 랜덤 선택, $1 \le r \le p-1$, $r$ 비밀
+  2. $C_1 = e_1^r \text{ mod } p$ 계산
+  3. $C_2 = M e_2^r \text{ mod } p$ 계산
+- $(C_1, C_2)$가 $M$의 암호문
+- Decryption:
+  1. $M = C_2 / C_1^d \text{ mod } p$ 계산
+- RSA와 달리 특별한 정리 필요 없음.
+
+### 10.5. Elliptic Curve Cryptosystems
+- Although RSA and ElGamal are secure asymmetric-key cryptosystems, their security comes with a price, their large keys. Researchers have looked for alternatives that give the same level of security with smaller key sizes. One of these promising alternatives is the elliptic curve cryptosystem (ECC).
+
+#### 10.5.1. Elliptic Curves over Real Numbers
+- The general equiation for an elliptic curve is:
+  - $$y^2 + b_1 xy + b_2 y = x^3 + a_1 x^2 + a-2 x + a_3$$
+- Elliptic curves over real numbers use a special class of elliptic curves of the form:
+  - $$y^2 = x^3 + ax + b$$:
+    - where $4a^3 + 27b^2 \not = 0$
+  - In this case, the curves have three distinct (real or complex) roots.
+
+##### Point addition
+- Case 1: 두개의 다른점
+  - $$\labmda = (y_2 - y_1) / (x_2 - x_1)$$
+  - $$x_3 = \lambda^2 - x_1 - x_2, y_3 = \lambda(x_1 - x_3) - y_1$$
+- Case 2: 접선:
+  - $$\lambda = (3x_1^2 + a) / (2 y_1)$$
+  - $$x_3 = \lambda^2 - 2 x_1, y_3 = \lambda(x_1 - x_3) - y_1$$
+- Case 3: 점과 자기역:
+  - $P + (-P) = O$
+
+#### 10.5.2. Elliptic Curves over GF(p)
+- The coordinates of the points are over the GF(p) field with prime p.
+  - $$y^2 \text{ mod } p = (x^3 + ax + b) \text{ mod } p$$
+    - where $x,y,a$, and $b$ are in $Z_p$, and $(4a^3+27b^2) \text{ mod } p \not = 0$
+- $E_p(a, b)$ consists of all points of $(x, y)$ that satisfies the equation, and $O$, the zero point.
+
+- Finding an Inverse:
+  - The inverse of a point $(x, y)$ is $(x, -y)$, where $-y$ is the additive inverse of $y \text{ mod } p$.
+
+- Adding two points:
+  - We use the elliptic group defined over real numbers, but calculations are done in GF(p).
+  - Instead of subtraction and division, we use additive and multiplicative inverses.
+
+#### 10.5.4. ECC Simulating ElGamal
+- Generating Public and Private Keys:
+  1. Choose $E_p(a, b)$ over $GF(p)$.
+  2. Choose a point $e_1 = (x_1, y_1)$ in $E_p(a, b)$.
+  3. Choose an integer $d$.
+  4. Calculate $e_2 = (x_2, y_2) = d \times e_1$
+  5. Announce $p,a,b,e_1$ and $e_2$ as public key, keep $d$ as private key.
+
+- Encryption:
+  - Select $P$, a point in $E_p(a, b)$, as plaintext.
+  - Choose a random positive integer $r$.
+  - Calculate a pair of points:
+    - $$C_1 = r \times e_1, C_2 = P + r \times e_2$$
+
+- Decryption:
+  - $$P = C_2 - (d \times C_1)$$
+
+- Easy to calculate $e_2$ from $d$ and $e_1$. $e_1$ and $e_2$ are public, but computationally difficult to calculate $d$ from $e_1$ and $e_2$.
+- elliptic curve discrete logarithmic problem(ECDLP)
+
+## Chapter 11. Message Integrity and Message Authentication
+### 11.1 Message Integrity
+- The cryptography systems that we have studied so far provide secrecy, or confidentiality, but not integrity. However, there are occasions where we may not even need secrecy but instead msut have integrity.
+#### 11.1.1. Document and Fingerprint
+- 문서(document)의 무결성(integrity) 보장
+- 도장, 사인, 지장(finger print)
+
+#### 11.1.2. Message and Message Digest
+- Message : Digital Document
+- Message Digest : finger print
+
+#### 11.1.3. Difference
+- Two pairs (document/fingerprint) and (message/message digest) are similar, with some differences.:
+  - document and fingerprint: physically linked together.
+  - message and message digest : can be unlinked separately.
+- message digest needs to be safe from change.
+
+#### 11.1.4. Checking Integrity
+
+#### 11.1.5. Cryptographic Hash Function Criteria
+- Cryptographic hash function h: for a message M, $y=h(M)$:
+  1. $h$ can be applied to a message of any size
+  2. $h$ produces a fixed-length output.
+  3. Given $M$, it is easy to compute $y$.
+  4. Given $y$, it is computationally difficult to find any message $M$ such that $h(M) = y$. : Primage resistance
+  5. Given $M$ and $y=h(M)$, it is computationally difficult to find another message $M'(\not = M)$ such that $h(M') = y$. : Second preimage resistance
+  6. It is computationally difficult to find a pair of messages $M$ and $M'(M \not = M')$ such that $h(M) = h(M')$ : Collision resistance
+
+### 11.2. Random Oracle Model
+- The Random Oracle Model, which was introduced in 1993 by Bellare and Rogaway, is an ideal mathmatical model for a cryptographic hash function.
+
+#### 11.2.1. Pigeonhole Principle
+- If $n$ pigeonholes are occupied by $n+1$ pigeons, then at least one pigeonhole is occupied by two pigeons. The generalized version of the pigeonhole principle is that if $n$ pigeonholes are occupied by $kn +1$ pigeons, then at least one pigeonhole is occupied by $k+1$ pigeons.
+
+#### 11.2.2. Birthday Problems
+- "likely" menas "with probability $\ge$ 1/2"
+- Problem 1:
+  - What is the minimum number of students, $k$, in a classroom such that it is likely that at least one student has a predefined birthday?
+- Problem 2:
+  - What is the minimum number of students, $k$, in a classroom such that it is likely that at least one student has the same birthday as the student selected by the professor?
+- Problem 3:
+  - What is the minmum number of students, $k$, in a classroom such that it is likely that at least two students have the same birthday?
+- Problem 4:
+  - Two classes, each with $k$ students. what is the minimum value of $k$ such that it is likely that at least one student from the first classroom has the same birthday as a student from the second classroom?
+
+---
+13주 강의록 17페이지
