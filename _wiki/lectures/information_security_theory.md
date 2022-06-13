@@ -3,7 +3,7 @@ layout  : wiki
 title   : 2022-1 정보보호이론
 summary : 2022-1 정보보호이론 정리노트
 date    : 2022-04-18 08:59:34 +0900
-lastmod : 2022-06-13 18:55:53 +0900
+lastmod : 2022-06-14 02:49:32 +0900
 tags    : [lectures]
 draft   : false
 parent  : lectures
@@ -900,12 +900,197 @@ Divisibility_Test(n)
 - "likely" menas "with probability $\ge$ 1/2"
 - Problem 1:
   - What is the minimum number of students, $k$, in a classroom such that it is likely that at least one student has a predefined birthday?
+  - $$1 - \frac{1}{N} \approx e^{- \frac{1}{N}}$$
+  - $$e^{-\frac{k}{N}} \le \frac{1}{2}$$
+  - $$-\frac{k}{N} \le ln \frac{1}{2} = - ln 2$$
+  - $$k \le ln 2 \times N \approx 0.69 \times N$$
+  - $$ N = 365, k \ge 253$$
 - Problem 2:
   - What is the minimum number of students, $k$, in a classroom such that it is likely that at least one student has the same birthday as the student selected by the professor?
 - Problem 3:
   - What is the minmum number of students, $k$, in a classroom such that it is likely that at least two students have the same birthday?
+  - $$1 - e^{-\frac{k^2}{2N}} \ge \frac{1}{2}$$
+  - $$k \ge \sqrt{2 N \times ln 2} \approx 1.18 \times \sqrt N$$
+  - $$N = 365, k = 23$$
 - Problem 4:
   - Two classes, each with $k$ students. what is the minimum value of $k$ such that it is likely that at least one student from the first classroom has the same birthday as a student from the second classroom?
 
----
-13주 강의록 17페이지
+- Preimage Attack:
+
+  ```
+  for i = 1 ~ k:
+    create M_i
+    compute t = h(M_i)
+    if (t == y) return M_i
+  return failure
+  ```
+
+  - $$k \ge 0.69 \times N = 0.69 \times 2 ^n$$
+
+- Collision Attack
+
+  ```
+  for i = 1 ~ k:
+    create M_i
+    compute y_i = h(M_i)
+    for j = 1 ~ i - 1:
+      if (y_i == y_j) return M_i and M_j
+  return failure
+  ```
+
+  - $k \ge 1.189 \times N^{-1/2} = 1.18 \times 2^{n / 2}$
+
+### 11.3 Message Authentication
+- A message digest does not authenticate the sender of the message. To provide message authentication, Alice needs to provide proof that it is Alice sending the message and not an impostor. The digest created by a cryptographic hash function is normally called a modification detection code (MDC). What we need for message authetnication is a message authentication code (MAC)
+
+#### 11.3.1. Modification Detection Code (MDC)
+- MDC: 메시지의 integrity 보장
+- Alice에게 Bob에게 메시지를 보내려할 때 메시지가 전송 중에 변하지 않았음 을 보장하려면 MDC를 만드록, 메시지와 MDC를 상대에게 보냄.
+
+#### 11.3.2. Message Authentication Code (MAC)
+- 메시지의 integirty 와 data origin authentication을 동시에 보장하려면 MDC-> MAC(message authentication code)으로 바꿈
+- 둘의 차이점: MAC은 Alice와 Bob 사이에 비밀 사전 공유
+
+- MAC 의 종류
+  - HMAC : hash함수를 이용
+  - CMAC : CBCMAC (대칭키 암호를 이용)
+  - 전용 MAC함수를 따로 개발
+
+## Chapter 12. Cryptographic Hash Functions
+### 12.1 Introduction
+- A cryptographic hash function takes a message of arbitrary length and creates a message digest of fixed length.
+
+#### 11.1.1. Iterated Hash Function
+- Merkle-Damagard Scheme:
+  - $H_0$: 초기값(미리 정해진 값)
+  - $H_i = f(H_{i-1}, M_i), 1 \le i \le t$
+  - $H_t = h(M)$
+  - $f$ : compression function
+  - $n$ : block 크기
+  - $m$ : message digest 길이
+
+#### 12.1.2. Two Groups of Compression Functions
+1. $f$ 함수 : made from scratch(새로 개발):
+  - Message Digest(MD) : MD2, MD4, MD5 - Rivest 개발
+  - Secure Hash Algorithm (SHA) : SHA-2, SHA-512 미국 표준
+2. $f$ 함수 : based on block ciphers:
+  - Whirlpool
+
+### 12.2 SHA-512
+- SHA-512 is the version of SHA with a 512-bit message digest. This version, like the others in the SHA family of algorithms ,is based on the merkle-Damgard scheme.(by NSA and NIST)
+
+- With a message digest of 512 bits, SHA-512 expected to be resistant to all attacks, including collision attacks.
+
+## Chapter 13. Digital Signature
+- Conventional Signatures:
+  - A person signs a document to show that it originated from her or was approved by her.
+  - The signature is a proof to the recipient that the document comes from the correct entity.
+- Digital Signatures:
+  - When Alice sends a message to Bob, Bob needs to check the authenticity of the sender; he needs to be sure that the message comes from Alice and not Eve.
+  - Bob can ask Alice to sign the mssage electronically. The electornic signature can prove the authenticity of Alice as the sender.
+
+### 13.1. Comparision
+- Let us begin by looking at the differences between conventional signatures and digital signatures.
+
+#### 13.1.1 Inclusion
+- A conventional signature is included in the document; it is part of the document.
+- But when we sign a document digitally, we send th signature as a separate document.
+
+#### 13.1.2. Verification Method
+- For a conventional signature, wehn the recipient receives a document, she compares the signature on the document with the signature on file.
+- For a digital signature, the recipient receives the message and the signature. The recipient needs to apply a verification techinique to the combination of the message and the signature to verify the authenticity.
+
+#### 13.1.3. Relationship
+- For a conventional signature, there is normally a one-to-many relationship between a signature and documents.
+- For a digital signature, there is a one-to-one relationship between a signature and a message.
+
+#### 13.1.4. Duplicity
+- In conventional signature, a copy of the signed document can be distinguished from the original one on file.
+- In digital signature, there is no such distinction unless there is a factor of time one the document.
+
+### 13.2. Process
+- The sender uses a signing algorithm to sign the message. The message and teh signature are sent to the receiver. The receiver receives the message and the signature and applies the verifying algorithm to the combination. If the result is true, the message is accepted; otherwise, it is rejected.
+
+#### 13.2.1. Need for Keys
+- A digital signature needs a public-key system.
+- The signer signs with her private key;
+- the verifier verifies with the signer's public key.
+- 공개 키 암호의 두가지 용도:
+  - 암호복호(기밀성 유지): the private and public keys of the receiver 사용
+  - 디지털서명(저자 확인) : the private and public keys of the sender 사용
+
+#### 13.2.2. Signing the Digest
+- 공개키 암호시스템: 긴 메시지에서 속도 느림.
+- 메시지 대신 메시지 다이제스트에 서명
+
+### 13.3 Services
+- message confidentiality, message authentication, message integrity, and nonrepudiation.
+- A digital signature can directly provide the last tree; for message confidentiality we still need encryption/decryption.
+
+#### 13.3.1. Message Authentication
+- message authentication (or data-origin authentication)
+- 메시지 인증: 메시지의 저자(보낸 사람) 확인
+
+#### 13.3.2. Message Integrity
+- 메시지와 디지털 서명은 1대1 관계
+- 미시지가 바뀌면 그에 따라 디지털서명도 바뀌어야 함
+- 디지털 서명을 새로 만드려면 개인 키 필요
+
+#### 13.3.3. Nonrepudiation
+- 디지털 서명을 서명자가 부인할 수 없음
+
+#### 13.3.4. Confidentiality
+- 디지털 서명은 기밀성을 제공하지 못한다.
+- 기밀성 보장은 반드시 암복호화가 적용된 다른 레이어를 통해서 제공되야한다.
+
+### 13.5. Digitial Signature Schemes
+- Several digital signature schemes have evolved during the last few decades. Some of them have been implemented.
+
+### 13.6. Variations and Application
+#### 13.6.1. Variations
+- Time Stamped Signatures:
+  - 시간 정보를 포함한 서명(replay attack 방지)
+- Blind Signatures:
+  - 문서 내용을 보여주지 않고 서명하기
+
+## Chapter 14. Entity Authentication
+### 14.1. Introduction
+- Entity authentication is a technique designed to let one party prove the identity of another party. AN entity can be a person, a process, a client, or a server. The entity whose identity needs to be proved is called the claimant; the party that tries to prove the identity of the claimant is called the verifier.
+
+#### 14.1.1. Message Versus Entity Authentication
+- Two differences between message authentication (data-origin authentication), and entity authentication:
+  1. Message authentication might not happen in real time; entity authentication does. When Bob authenticates the message, Alice may or may not be present in the communication process. MAC, 디지털 서명의 경우
+    In Entity authentication, Alice needs to be online and to take part in the process. Only after she is authenticated message can be communicated between them.
+  2. Message authentication simply authenticates one message; the process needs to be repeated for each new message.
+    Entity authentication authenticates the claimant for the entire duration of a session.
+
+#### 14.1.2. Verification Categories
+- Something known:
+  - Password, PIN, secret key, private key
+- Something possessed:
+  - ID card, Passport
+- Something inherent:
+  - Fingerprint, voice, handwriting
+
+### 14.2. Passwords
+- The simplest and old method of entity authentication is the password-based authentication, where the password is something that the claimant knows.
+
+- Hashing the password
+- Dictionary Attack:
+  - Salting the password
+
+### 14.3. Challenge-Response
+- In password authentication, the claimant proves her identity by demonstrating that she knows a secret, the password. In challenge-reponse authentication, the claimant proves that she knows a secret without sending it.
+
+#### 14.3.1. Using a Symmetric-Key Cipher
+- 일방향 인증:
+  - verifier가 평문을 보냄, claimant는 이를 암호화 해서 보내고 verifier는 대칭키로 이를 해제함으로써 claimant가 key를 알고있다고 판단.
+- 양방향 인증:
+  - verifier가 평문을 보냄, claimant가 생성한 평문과 받은 평문을 붙여서 암호화 해서 보냄. 이를 verifier가 복호화후 평문의 순서를 바꿔 암호화하여 전송
+  - 상호 인증
+
+#### 14.3.3. Using a Public-Key Cipher
+
+### 14.4. Zero-Knowledge
+- In zero-knowledge authentication, the claimant does not reveal anything that might endanger the confidentiality of the secret. The claimant proves to the verifier that she knows a secret, without revealing it. The interactions are so designed that they cannot lead to revealing or guessing the secret.
+- Cave Example, Two balls and the color-blind friend
