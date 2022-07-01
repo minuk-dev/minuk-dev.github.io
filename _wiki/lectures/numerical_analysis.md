@@ -3,7 +3,7 @@ layout  : wiki
 title   : 수치해석
 summary : 2022-1학기 수치해석을 가장한 그래픽스
 date    : 2022-04-21 00:32:34 +0900
-lastmod : 2022-06-12 21:46:35 +0900
+lastmod : 2022-06-16 10:30:04 +0900
 tags    :
 draft   : false
 parent  : lectures
@@ -306,3 +306,92 @@ parent  : lectures
   - Time consuming
   - Requires good starting values for $A$ and $C$
 - Minimize $E(A, C)$ directly using optimization methods
+
+## Optimization
+- Methods for locating extrema(maxima or minima) of functions
+
+### Functions of One Variable
+- The function $f$ has a local minimum value at $x=p$, if there exists an open interval $i$ containing $p$ s.t. $f(p) \le f(x)$ for all $ x \in I$
+- $f$ has a local maximum value at $x = p$, if there exists an open interval $i$ containing $p$ s.t. $f(x) \le f(p)$ for all $ x \in I$
+- $f$ has a local extremum value at $x=p$, if it has local minimum or maximum value at $x=p$.
+
+- Theorem 1:
+  - Suppose that $f(x)$ is continuous on $i= [a,b]$ and is differentiable on $(a, b)$:
+    - If $f'(x) > 0$ for all $x \in 9a, b)$, then $f(x)$ is increasing on $I$.
+    - If $f'(x) < 0$ for all $x \in (a, b)$, then $f(x)$ is decreasing on $I$.
+- Theorem 3:
+  - Suppose that $f(x)$ is continuous on $i= [a,b]$ and $f'(x)$ is defined for all $x \in (a, b)$, except possibly at $x=p$:
+    - If $f'(x) < 0$ on $(a, p)$ and $f'(x) > 0$ on $(p, b)$, then $f(p)$ is a local minimum.
+    - If $f'(x) > 0$ on $(a, p)$ and $f'(x) < 0$ on $(p, b)$, then $f(p)$ is a local maximum.
+- Theorem 4:
+  - Suppose that $f(x)$ is continuous on $i= [a,b]$ and $f',f''$ is defined for all $x \in (a, b)$, Also, $p \in (a, b)$ is a critical point where $f'(p) = 0$:
+    - If $f''(p) > 0$, then $f(p)$ is a local minimum of $f$.
+    - If $f''(p) < 0$, then $f(p)$ is a local maximum of $f$.
+    - If $f''(p) = 0$, then this test is inconclusive.
+
+### Bracketing Search Methos
+- Evaluate the function many times and search for a local minimum/maximum
+- To reduce the number of function evaluations, a good strategy is needed for determining where the function is to be evaluated
+- Definition:
+  - The function $f(x)$ is unimodal on $I = [a, b]$, if there exists a unique number $p \in I$ such that:
+    - $f(x)$ is decreasing on $[a, p]$
+    - $f(x)$ is increasing on $[p, b]$
+
+### Golden Ratio Search
+- If $f(x)$ is unimodal on $[a,b]$, then it is possible to replace the interval with a subinterval on which $f(x)$ takes on its miniumum value
+- Select two interior points $c < d \Rightarrow a < c < d < b$
+- $f(c), f(d) < max(f(a), f(b))$:
+  - When $f(c) \le f(d)$:
+    - The minimum must occur in $[a,d]$
+    - New subinterval $[a, d]$
+  - When $f(d) < f(c)$:
+    - The minimum must occur in $[c, d]$
+    - New subinterval $[c, b]$
+- $c = ra + (1 - r)b$
+- $d = (1 - r)a + rb$
+- $r = \frac{-1 + \sqrt 5}{2}$
+
+### Fibonacci Search
+- The value r is not constant on each subinterval
+- Number of subintervals (iterations) is predetermined and based on the specified tolerance
+- The interior poitns $c_k$ and $d_k$ of the k-th subinterval $[a_k, b_k]$ are:
+  - $c_k = a_k + (1 - \frac{F_{n-k-1}{F_{n-k}}})(b_k - a_k)$
+  - $d_k = a_k + \frac{F_{n-k-1}}{F_{n-k}}(b_k - a_k)$
+
+- For a tolerance $\epsilon$, find the smallest value of $n$ such that:
+  - $$\frac{b_0 - a_0}{F_n} < \epsilon, F_n > \frac{b_0 - a_0}{\epsilon}$$
+
+### Multidimensional Optimization
+- Find the extremum of a function of several variables:
+  - Direct method (No derivatives)
+  - Gradient method (Use derivatives)
+
+#### Direct Methods - Random Search
+- Based on evaluation of the fuction randomly at selected values of the independent variables.
+- If a sufficient number of samples are ocnducted, the optimum will be eventually located
+- Advantages:
+  - Works even for discontiuous and nondifferentiable functions.
+- Disadvantages:
+  - As the number of independent variables grows, the task can become onerous.
+  - Not efficient, it does not account for the behavior of underlying function
+
+#### Direct Method - Univariate and Pattern Search
+- More efficient than random search and still doesn't require derivative evaluation
+- The baisc strategy:
+  - Change one variable at a time while the other variables are held constant.
+  - Problem is reduced to a sequence of one-dimensional searches that can be solved by variety of methods
+  - The search becomes less efficient as you approach the maximum.
+
+### Gradient
+- Graident of a function $f$, $\nabla f$, tells us:
+  - $$\nabla f = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}$
+
+### Hessian Matrix (of Hessian of $f$)
+- $$H = \begin{bmatrix} \frac{\partial^2 f}{\partial x_1^2} & \frac{\partial^2 f}{\partialx_1 \partial x} & \cdots & \frac{\partial^2 f}{\partial x_1 \partial x_n} \\ \frac{\partial^2 f}{\partial x_2 \partial x_1} & \frac{\partial^2 f}{\partial x_2^2} & \cdots & \frac{\partial^2 f}{\partial x_2 \partial x_n} \\ \vdots & \vdots & \ddots & \vdots \\ \frac{\partial^2 f}{\partial x_n \partial x_1} & \frac{\partial^2 f}{\partial x_n \partial x_2} & \cdots & \frac{\partial^2 f}{\partialx_n^2} \end{bmatrix}$
+- Also known as the matrix of second partial derivatives.
+- It provides a way to discern if a funciton has reached an optimum or not.
+
+## Solution of Nonlinear Equation
+### Basis of Bisection Method
+- An equation $f(x) = 0$, where $f(x)$ is a real continuous function, has at least one root between $x_l$ and $x_u$ if $f(x_l)f(x_u) < 0$.
+- If 
