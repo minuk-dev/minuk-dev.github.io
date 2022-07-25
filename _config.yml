@@ -18,18 +18,18 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: "LMU page"
-email: makerdark98@gmail.com
+title: "minuk.dev"
+email: minuk.dev@gmail.com
 baseurl: "/" # the subpath of your site, e.g. /blog
-url: "https://makerdark98.dev" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://minuk.dev" # the base hostname & protocol for your site, e.g. http://example.com
 languageCode: "ko-kr"
 twitter_username: jekyllrb
 github_username:  jekyll
 
 params:
-  author: "Min-Uk.Lee"
+  author: "Min Uk Lee"
   description: "개발 위키와 기타 모음"
-  githubUsername: "makerdark98"
+  githubUsername: "minuk-dev"
   favicon : "images/Rb.png"
 
 kramdown:
@@ -58,11 +58,11 @@ menu:
     weight: 5
 icon:
   - mail:
-    url: "mailto:makerdark98@gmail.com"
+    url: "mailto:minuk.dev@gmail.com"
     name: "envelope-o"
     weight: 1
   - github:
-    url: "https://github.com/makerdark98/"
+    url: "https://github.com/minuk-dev/"
     name: "github"
     weight: 2
 
@@ -76,7 +76,7 @@ exclude:
 
 
 utterances:
-  repo: makerdark98/makerdark98.github.io
+  repo: minuk-dev/minuk-dev.github.io
   issue-term: pathname
   label: Comment
   branch: master
