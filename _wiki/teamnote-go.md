@@ -1,12 +1,12 @@
 ---
 layout  : wiki
-title   : 
-summary : 
+title   : teamnote-go
+summary : go teamnote
 date    : 2022-07-08 20:57:32 +0900
-lastmod : 2022-07-27 20:10:49 +0900
-tags    : 
+lastmod : 2022-08-01 17:04:11 +0900
+tags    : [algorithm, teamnote]
 draft   : false
-parent  : 
+parent  : algorithm
 ---
 
 ## FASTIO
@@ -28,11 +28,16 @@ type Pair[T1, T2 any] struct {
 	First  T1
 	Second T2
 }
+// Usage
+// p := Pair[int, int]{5, 3}
 ```
 
 ## Pair Priority Queue
 
 ```go
+// Usage
+// pq := &PQueue[int]{}
+// heap.push(pq, Pair[int, int]{5, 3})
 
 type Pair[T1, T2 any] struct {
 	First  T1
