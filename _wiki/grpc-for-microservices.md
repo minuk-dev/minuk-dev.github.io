@@ -1,9 +1,9 @@
 ---
 layout  : wiki
-title   : gRPC For Microservices: Service-mesh and Observability
+title   : gRPC For Microservices Service-mesh and Observability
 summary : kubecon north america 2022 발표 중 자료 정리
 date    : 2022-08-02 23:00:08 +0900
-lastmod : 2022-08-02 23:08:35 +0900
+lastmod : 2022-08-02 23:16:55 +0900
 tags    : [kubecon, devops, grpc]
 draft   : false
 parent  : kubecon
