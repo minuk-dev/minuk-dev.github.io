@@ -3,7 +3,7 @@ layout  : wiki
 title   : go-http
 summary : go 언어 http 동작방식이 궁금해져서 탐구해보는 자료
 date    : 2022-08-02 15:55:09 +0900
-lastmod : 2022-08-02 16:23:30 +0900
+lastmod : 2022-08-02 16:32:57 +0900
 tags    : [go, http]
 draft   : false
 parent  : go
