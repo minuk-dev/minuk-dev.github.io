@@ -2,12 +2,13 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2022-08-02 13:33:04 +0900
+lastmod: 2022-08-02 15:52:30 +0900
 ---
 
 ## 즐겨찾기
 - [[devops]]
 - [[kubernetes]]
+- [[go]]
 
 ### Study
 - [[lectures]]
