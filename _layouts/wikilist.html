@@ -1,42 +1,43 @@
 {% include header.html %}
 
 <main class="container content">
-    <div class="navigator" style="display:flex;">
-      <div style="display:flex;">
-        <a href="/wiki"><button class="btn btn-primary">Front Page</button></a>
-      </div>
-      <div style="margin-left:auto;">
-        {% include wikihistory.html %}
-      </div>
+  <div class="navigator" style="display:flex;">
+    <div style="display:flex;">
+      <a href="/wiki"><button class="btn btn-primary">{{ page.title }}</button></a>
     </div>
-
-    <h2> 최근 게시물 </h2>
-    <div class="recent">
-      {% assign wikis = site.wiki | sort: 'lastmod' | reverse %}
-      {% for doc in wikis %}
-        {% include list-item.html %}
-      {% endfor %}
-      <nav class="wiki-log">
-          <button class="page-link btn btn-primary" id="prev-item">
-            <i class="fa fa-arrow-left"></i>
-            Prev
-          </button>
-          <a class="page-link" id="pageNumber">
-            0
-          </a>
-          <button class="page-link btn btn-primary" id="next-item">
-            Next
-            <i class="fa fa-arrow-right"> </i>
-          </button>
-        </ul>
-      </nav>
+    <div style="margin-left:auto;">
+      {% include wikihistory.html %}
     </div>
+  </div>
+  <h2>{{ page.title }}</h2>
 
-    <h2>{{ page.title }}</h2>
-        {% include created.html %}
-        {% include tags.html %}
-    </div>
+  <h2> 최근 게시물 </h2>
+  <div class="recent">
+    {% assign wikis = site.wiki | sort: 'lastmod' | reverse %}
+    {% for doc in wikis %}
+    {% include list-item.html %}
+    {% endfor %}
+    <nav class="wiki-log">
+      <button class="page-link btn btn-primary" id="prev-item">
+        <i class="fa fa-arrow-left"></i>
+        Prev
+      </button>
+      <a class="page-link" id="pageNumber">
+        0
+      </a>
+      <button class="page-link btn btn-primary" id="next-item">
+        Next
+        <i class="fa fa-arrow-right"> </i>
+      </button>
+      </ul>
+    </nav>
+  </div>
 
-    <div align="start" class="content">{{ content }}</div>
+  <div>
+  {% include created.html %}
+  {% include tags.html %}
+  </div>
+
+  <div align="start" class="content">{{ content }}</div>
 </main>
 {% include footer.html %}
