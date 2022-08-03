@@ -10,13 +10,6 @@
       </div>
     </div>
 
-    <h2>{{ page.title }}</h2>
-        {% include created.html %}
-        {% include tags.html %}
-    </div>
-
-    <div align="start" class="content">{{ content }}</div>
-
     <h2> 최근 게시물 </h2>
     <div class="recent">
       {% assign wikis = site.wiki | sort: 'lastmod' | reverse %}
@@ -38,6 +31,12 @@
         </ul>
       </nav>
     </div>
-    {% include comment.html %}
+
+    <h2>{{ page.title }}</h2>
+        {% include created.html %}
+        {% include tags.html %}
+    </div>
+
+    <div align="start" class="content">{{ content }}</div>
 </main>
 {% include footer.html %}
