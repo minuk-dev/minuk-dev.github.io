@@ -3,7 +3,7 @@ layout  : wiki
 title   : devops
 summary : devops 공부 자료
 date    : 2022-07-02 03:26:27 +0900
-lastmod : 2022-08-02 22:58:55 +0900
+lastmod : 2022-08-03 15:42:58 +0900
 tags    : [devops]
 draft   : false
 parent  :
@@ -21,3 +21,4 @@ parent  :
 - [[vagrant]]
 - [[cri]]
 - [[kubecon]]
+- [[http2]]
