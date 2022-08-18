@@ -2,7 +2,7 @@
 layout  : wiki
 title   : vim/vim-go
 date    : 2022-08-17 04:51:27 +0900
-lastmod : 2022-08-17 05:15:24 +0900
+lastmod : 2022-08-18 13:50:01 +0900
 tags    : [vim, go]
 draft   : false
 parent  : vim
@@ -11,6 +11,7 @@ parent  : vim
 ## 간단 설명
 - vim에서 go를 지원하는 플러그인
 - 일반적으로 가장 많이 제시됨.
+- 기본적인 공부는 [공식 사이트의 튜토리얼](https://github.com/fatih/vim-go/wiki/Tutorial)을 따라하면 좋다.
 
 ## 지원하는 좋은 기능
 - 저장시에 자동으로 go fmt 을 실행한다. 이때 import 도 해준다.
