@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubecon
 summary : kubecon 동영상 정리
 date    : 2022-08-02 22:58:55 +0900
-lastmod : 2022-08-19 01:01:46 +0900
+lastmod : 2022-08-23 02:46:35 +0900
 tags    : [kubecon, devops]
 draft   : false
 parent  : devops
@@ -16,3 +16,4 @@ parent  : devops
 - [[the-future-of-reproducible-research-powered-by-kubeflow]]
 - [[What-if-kube-apiserver-could-be-extended-via-webassembly]]
 - [[running-containerd-and-k3s-on-macos]]
+- [[spark-on-kubernetes-the-elastic-story]]
