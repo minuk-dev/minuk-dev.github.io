@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2022-08-18 13:51:44 +0900
+lastmod : 2022-08-22 13:49:39 +0900
 tags    : [book]
 parent  :
 ---
@@ -19,6 +19,7 @@ parent  :
 ### 정리 하는 중
 - [[software-engineering-at-google]]
 - [[kubernetes-patterns]]
+- [[devops와-se를-위한-리눅스-커널-이야기]]
 
 ### 정리 보류한거
 - [[keras-book]]

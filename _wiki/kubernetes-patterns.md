@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 쿠버네티스 패턴
 date    : 2022-08-16 10:56:05 +0900
-lastmod : 2022-08-18 15:21:03 +0900
+lastmod : 2022-08-22 13:38:06 +0900
 tags    : [kubernetes, k8s, book]
 draft   : false
 parent  : kubernetes
@@ -74,19 +74,19 @@ parent  : kubernetes
 - 서비스는 `<service-name>.<namespace-name>.svc.cluster.local` 형식의 dns address 를 갖는다.
 - ResourceQuota는 네임스페이스 별로 제약조건을 걸 수 있다.
 
-# 1부 기본 패턴
-## 2장 예측 범위 내의 요구사항
+## 1부 기본 패턴
+### 2장 예측 범위 내의 요구사항
 - 애플리케이션의 요구사항에 따라서 필요한 자원량은 달라지며, 이를 예측하는 것은 어려운 일이다.
 - 쿠버네티스를 사용하면서 런타임 요구사항을 알아야하는 이유:
   - 효율적인 하드웨어 사용을 위한 배치
   - 전체 클러스터 설계 및 관리
 
-### 런타임 의존성
+#### 런타임 의존성
 - PersistentVolume
 - hostPort
 - configMap, secret
 
-### 자원 프로파일
+#### 자원 프로파일
 - compressible resource : cpu, network
 - incompressible resource : memory
 - incompressible resource를 너무 많이 사용할 경우 컨테이너가 죽게 된다.
@@ -100,7 +100,7 @@ parent  : kubernetes
     - requests와 limts가 같다.
     - 가장 나중에 죽는다.
 
-### 파드 우선순위
+#### 파드 우선순위
 - 책의 내용과 살짝 다르다. k8s v1.24 문서를 기준으로 작성되었다.
 
 ```yaml
@@ -125,7 +125,7 @@ spec:
   priorityClassName: high-prioirty
 ```
 
-### 프로젝트 자원
+#### 프로젝트 자원
 - 추가 참고자료 : [메모리 상승과 오버커밋](https://hakkyoonjung31.github.io/linux/memory-overcommit/)
 - 메모리 오버커밋 : 요구된 메모리를 그대로 할당하는 것이 아닌 실제 사용되는 시점에서 필요한 만큼의 메모리를 할당하는 방식에 의해 요구되는 메모리의 총량이 100%를 넘기는 경우
 - 오버 커밋 상태에서 실제 메모리 사용 총량이 메모리 총량을 넘기게 될 수도 있는데, 이때 OOM-Killer에 의해 프로세스들을 죽여서 용량을 확보하게 된다.
@@ -134,7 +134,7 @@ spec:
   - 즉 requests는 250M를 하는데, pod에서 오버커밋을 이용해 500M를 할당하고, 사용은 200M를 하고 있는 상황같은게 발생 할 수 있다는 것이다.
   - kubernetes 는 기본적으로 requests 를 기준으로 스케줄링한다.
 
-## 3장 선언적 배포
+### 3장 선언적 배포
 - 선언적 업데이트를 작동시키기 위한 옵션:
   - `kubectl replace`로 새로운 버전의 deployment로 전체 deployment를 교체한다.
   - deployment를 `kubectl patch` 나 `kubectl edit`으로 새로운 버전을 넣는다.
@@ -145,23 +145,23 @@ spec:
   - deployment의 정의는 운영 환경에 배포되기 전에 다양한 환경에서 테스트된 실행 가능한 객체이다.
   - 업데이트 프로세스는 모두 기록되며, 일시 중지 및 계속을 위한 옵션, 이전 버전으로 롤백을 위한 옵션으로 버전이 지정된다.
 
-### 고정 배포
+#### 고정 배포
 - Recreate 전략:
   - 우선적으로 현재 버전의 모든 컨테이너를 죽이고, 이전 버전의 컨테이너가 축출될때 모든 신규 컨테이너를 동시에 시작한다.
 
-### 블루-그린
+#### 블루-그린
 - 블루(이전 버전), 그린(현재 버전)
 - 블루와 그린을 모두 띄운뒤 신규 트래픽을 그린으로 보낸뒤, 기존 트래픽을 다 처리하면 블루를 삭제한다.
 - 블루와 그린이 순간적으로 동시에 뜨게 된다.
 - 즉, 자원이 2배로 필요하다.
 
-### 카나리아
+#### 카나리아
 - 소수의 인스턴스를 교체하면서 동작한다.
 
-## 4장 정상상태 점검
+### 4장 정상상태 점검
 - 프로세스 상태는 애플리케이션의 정상상태를 결정하기에는 충분하지 않다.
 
-### Liveness probe
+#### Liveness probe
 - HTTP : 200~399 사이 응답코드
 - TCP : 성공적인 TCP connection
 - Exec : 성공적인 종료코드(0)
@@ -190,15 +190,15 @@ spec:
       initialDelaySeconds: 30
 ```
 
-### Readiness probe
+#### Readiness probe
 - liveness와는 다르게 readiness probe 이 실패할 경우, service의 endpoint가 제거되어 새로운 트래픽을 수신할 수 없게 된다.
 
-### Others
+#### Others
 - spring actuator, wide-fly swarm, karaf, microprofile spec 등 애플리케이션 프레임워크는 정상상태 점검을 위한 인터페이스를 제공한다.
 - 로그는 표준스트림 이외에도 `/dev/termination-log` 에 남기는 것이 좋다.
 - OpenTracing이나 Prometheus 같은 트레이싱, 메트릭 수집 라이브러리와 통합하여 어플리케이션 상태를 관찰할 수 있도록 해야한다.
 
-## 5장 수명주기 관리
+### 5장 수명주기 관리
 - k8s는 컨테이너를 종료시킬때, SIGTERM을 먼저, 그 다음 `.spec.terminationGracePeriodSeconds` 의 유예시간 이후 SIGKILL을 발생시킨다.
 - postStart, preStop 훅
 
@@ -234,26 +234,26 @@ spec:
 | 타이밍(Timing) 보장 | postStart 명령은 컨테이너의 ENTRYPOINT 와 동시에 실행     | 애플리케이션 컨테이너가 시작되기 전에 모든 초기화 컨테이너는 성공적으로 종료가 완료되어야 한다. |
 | 사용 사례           | 컨테이너별로 트고하된 중요하지 않은 시작/정리 종료를 실행 | 컨테이너를 사용해 워크플로우 같은 순차적 작업을 수행. 작업 실행을 위해 컨테이너를 재사용        |
 
-## 6장 자동 배치
+### 6장 자동 배치
 - 가용한 노드 자원:
   - Allocatable = Node Capacity - Kube-Reserved - System-Reserved
   - Kube-Reserved : 쿠버네티스 데몬에 의해 사용되는 자원
   - System-Reserved : sshd, udev 와 같은 시스템 데몬에 사용되는 자원
   - OS와 Kubernetes가 사용하는 자원을 따로 예약해두지 않으면 자원 부족 문제가 생길 수 있다.
 
-### Node Affinity
+#### Node Affinity
 - `.spec.affinity.nodeAffinity` 를 통해서 선호 조건, 필수 조건을 걸 수 있다.
 
-### Pod Affinity
+#### Pod Affinity
 - 다른 파드와 상대적인 위치
 
-### Taint 와 Toleration
+#### Taint 와 Toleration
 - taint 종류:
   - `effect=NoSchedule` : 스케줄링을 피하는
   - `effect=PreferNoSchdule` : 가급적 스케줄링을 피하는
   - `effect=NoExecute` : 이미 실행중인것을 빼도록
 
-### Descheduler
+#### Descheduler
 - 처음 들어본 개념이라 좀 찾아봤는데, 기본적으로 지원하는 건 아니고 추가적으로 deployment 형태로 설치해야하는 것 같다.
 - [공식사이트](https://github.com/kubernetes-sigs/descheduler) 에서는 helm 이나 다른 방법으로 설치하는 것도 안내해주고 있다.
 - Scheduler 만으로는 앞으로 Balance 하는것을 만드는 거지, 이미 배포된 것들에 대해서 처리하지 못하기 때문에 사용한다.
@@ -265,8 +265,8 @@ spec:
   - PodDisruptionBudget 규칙에 위배되는 Pod
   - Deschdeduler 파드
 
-# 2부 행동 패턴
-## 7장 배치 잡
+## 2부 행동 패턴
+### 7장 배치 잡
 - 잡의 특징:
   - 잡은 일시적인 인메모리 작업이 아니라, 클러스터 재시작에도 살아남는 지속된 작업이다.
   - 잡은 완료되고 나면, 삭제되지 않고 추적 목적으로 유지된다. 잡의 일부분으로 생성된 파드도 삭제되지 않으며 검사가 가능하다.
@@ -284,7 +284,7 @@ spec:
 
 - 복잡한 작업은 batch application framework(e.g. Spring Batch, JBeret) 으로 실행
 
-## 8장 주기적 잡
+### 8장 주기적 잡
 - 책에 있는 내용은 v1beta1 이지만, 현재(v1.24) 에서는 v1 이다.
 
 ```yaml
@@ -319,7 +319,7 @@ spec:
 - 개인 생각:
   - 시간대별로 필요한거면, 복잡한 Job에 해당한다고 생각한다. Spring Batch를 사용하는게 옳지 않나 싶다.
 
-## 9장 데몬 서비스
+### 9장 데몬 서비스
 - DeamonSet 의 특징:
   - nodeSelector를 통해 제한하지 않는한, 모든 노드에 하나의 Pod가 배치된다.
   - DeamonSet 에 의해 생성된 Pod은 생성된 시점에 nodeName을 가진다. 따라서 Scheduler에 의해 배치 되지 않는다. 이는 Scheduler와 상관 없이 실행되며, Scheduler에 의해 Pod들이 배치 되기 전에 실행할 수 있다는 것을 의미한다.
@@ -334,9 +334,9 @@ spec:
 - Static Pod 와 비교:
   - Static Pod 는 Kubelet에 의해서만 관리되며, controller는 없고 health check 를 실행하지 않는다. 이 모든 것이 kubelet에 의해서만 관리된다.
 
-## 10장 싱글톤 서비스
+### 10장 싱글톤 서비스
 
-### 애플리케이션 외부 잠금
+#### 애플리케이션 외부 잠금
 - 어플리케이션 외부에서 별도의 관리 프로세스를 통해서 싱글톤을 구현하는 방법
 - replica set으로 구현할 경우 replicas 숫자를 1로 유지한다는 보장이 없으므로 별도의 주의가 필요하다.
 - 일시적으로 node가 비정상 상태일 경우, 새롭게 Pod 가 생성되는데, 이때 비정상이였던 node가 살아나면 싱글톤 보장이 깨진다.
@@ -345,13 +345,13 @@ spec:
   - 책의 이 부분이 이해하기 어려운데, [참고자료 - 조대협의 블로그](https://bcho.tistory.com/1310) 를 읽어보면 이해가 쉽다.
   - 간략하게 요약하면, statfuleset 으로 만들어진 pod 같은 경우, 굳이 service를 통해서 접근할 필요가 없다. 하지만 service 가 없다면, pod 는 domain name을 가질수 없어 접근이 어렵다. 따라서 headless service 를 통해 pod를 묶기만 하고 접근은 pod로 한다.
 
-### 애플리케이션 내부 잠금
+#### 애플리케이션 내부 잠금
 - distributed lock 을 활용하여 pod 가 여러개 뜨더라도 하나의 pod 만 active 상태로 만든다.
 - distributed lock 을 위하여 zookeeper, redis, etcd 등 이러한 내용이 구현되어 있는 프로그램 또는 프레임 워크가 필요하다.
 - k8s 에서는 master node 의 etcd 를 kubernetes api 를 통해서 노출하고 사용하는 편이 좋은 선택이다.:
   - 또한 이렇게 하는 것이 아닌 configmap 이 동시에 하나의 pod만 수정 가능하다는 것을 이용하여 분산락을 대체해서 사용하는 방법도 있다.
 
-### PodDisruptionBudget
+#### PodDisruptionBudget
 - 일정 비율의 파드가 임의의 한 시점에 노드에서 자발적으로 축출되지 않게 보장한다.
 - 관련해서 책에서는 v1beta1 이지만 kubernetes v1.24 기준, v1 버전을 지원한다.
 
@@ -369,5 +369,143 @@ spec:
 
 - `.spec.minAvailable`, `spec.maxUnavilable` 중에 하나만 사용가능하다.
 
-## 11장 스테이트풀 서비스
+### 11장 스테이트풀 서비스
 - [[Twelve-Factor-App]]
+
+- Stateful 한 자원 : Storage, Networking, Identifier
+
+- 기본 예제에 꽤나 직관적으로 특징을 알아볼수 있어서 기재
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rg
+spec:
+  serviceName: random-generator
+  replicas: 2
+  selector:
+    matchLabels:
+      app: random-generator
+  template:
+    metadata:
+      labels:
+        app: random-generator
+    spec:
+      containers:
+      - image: k8spatterns/random-generator:1.0
+        name: random-generator
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: logs
+          mountPath: /logs
+  volumeClaimTemplates:
+  - metadata:
+      name: logs
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi
+```
+
+- Scale 이 증가할 때는 pvc 가 자동생성, Scale이 감소할 때는 pvc 가 삭제되지 않는다. (데이터 보존을 위해)
+  - 만약 PV 재사용을 원한다면 직접 pvc 삭제
+
+#### 네트워크
+- Headless Service 로 관리:
+  - DNS 생성을 위해서
+  - 단순히 묶기위한 객체
+
+#### 순서성
+- Pod 생성 순서가 Scale에 의해서 생긴 순서를 보장한다.
+- 내려갈때도 그 순서가 보장된다.
+
+#### 개인적인 궁금점
+- StatefulSet 에서 Durability는 어떻게 보장되지? Node가 죽으면 어떻게 동작하는지 잘 모르겠다.:
+  - [Kubernetes Tip: How Statefulsets Behave Differently Than Deployments When Node Fails?](https://medium.com/tailwinds-navigator/kubernetes-tip-how-statefulsets-behave-differently-than-deployments-when-node-fails-d29e36bca7d5)
+  - 위 글에서 꽤나 상세한 설명을 하고 있다. 하지만 그렇게 와닿지는 않아서 나중에 시간될때 kind로 cluster 간략하게 구성해서 테스트 해봐야할것 같다.
+
+#### 기타 기능
+- 분할 업데이트
+- 병렬 배포
+- at-most-one 보장
+
+### 12장 서비스 디스커버리
+- proxy 레이어를 둬서 application이 간접적으로 service registry 를 참조하는 구조
+
+#### 내부 디스커버리
+- Service 객체를 사용하는 방법:
+  - 환경 변수를 통한 방법:
+    - 환경변수를 참조하도록 어플리케이션 개발, 환경변수 주입
+  - DNS 참조를 통한 디스커버리
+  - 다중 포트
+  - 세션 어피니티
+  - 레디니스 점검
+  - 가상 IP:
+  - ClusterIP 선택:
+    - `.spec.clusterIP`를 사용
+
+#### 수동 서비스 디스커버리
+- Endpoint를 직접 만든다.
+- ExternalName을 사용하는 Service
+
+#### 클러스터 외부의 서비스 디스커버리
+- 외부에 서비스를 노출하는 방법:
+  - nodePort 등으로 외부에 서비스를 노출, 이를 외부 서비스 디스커버리로 참조
+  - LoadBalancer를 사용
+  - Headless service 이용
+
+#### 어플리케이션 계층 서비스 디스커버리
+- ingress를 활용하여 만든다.
+
+#### 개인생각
+- 이 책을 쓰는 시점에는 Istio가 서비스디스커버리의 메타가 아니라서 이런 여러 방법을 소개함에도 소개가 되지 않은 것 같다.
+- 물론 어떤 관점에서 본다면 ingress의 일종이라고 여길수 있겠지만, istio 는 envoy를 활용하여 더 많은 메커니즘이 있다.
+- 서비스 디스커버리에 대해서는 istio를 추가로 공부하자.
+
+### 13장 자기 인식
+- [Downward API 공식문서](https://kubernetes.io/ko/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/)
+- Downward API 는 자신에 대한 정보를 환경변수, 볼륨의 형태로 제공할 수 있다.
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubernetes-downwardapi-volume-example
+  labels:
+    zone: us-est-coast
+    cluster: test-cluster1
+    rack: rack-22
+  annotations:
+    build: two
+    builder: john-doe
+spec:
+  containers:
+    - name: client-container
+      image: k8s.gcr.io/busybox
+      command: ["sh", "-c"]
+      args:
+      - while true; do
+          if [[ -e /etc/podinfo/labels ]]; then
+            echo -en '\n\n'; cat /etc/podinfo/labels; fi;
+          if [[ -e /etc/podinfo/annotations ]]; then
+            echo -en '\n\n'; cat /etc/podinfo/annotations; fi;
+          sleep 5;
+        done;
+      volumeMounts:
+        - name: podinfo
+          mountPath: /etc/podinfo
+  volumes:
+    - name: podinfo
+      downwardAPI:
+        items:
+          - path: "labels"
+            fieldRef:
+              fieldPath: metadata.labels
+          - path: "annotations"
+            fieldRef:
+              fieldPath: metadata.annotations
+```
