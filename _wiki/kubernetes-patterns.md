@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 쿠버네티스 패턴
 date    : 2022-08-16 10:56:05 +0900
-lastmod : 2022-08-22 13:38:06 +0900
+lastmod : 2022-08-24 17:00:55 +0900
 tags    : [kubernetes, k8s, book]
 draft   : false
 parent  : kubernetes
@@ -509,3 +509,75 @@ spec:
             fieldRef:
               fieldPath: metadata.annotations
 ```
+
+## 3부 구조 패턴
+### 14장 초기화 컨테이너
+- 초기화 컨테이너가 실패하면, 전체 파드는 다시 시작되고, 모든 초기화 컨테이너도 다시 실행된다
+- 초기화 컨테이너 이외의 초기화 기법:
+  - admission controller
+  - admission webhook
+  - initializer
+  - PodPreset
+
+### 15장 사이드카
+- 일반적으로 서비스의 네트워킹, 모니터링, 트레이싱에 쓰인다.
+- 관점지향 프로그래밍과 유사
+
+### 16장 어댑터
+- application 이 쓰는 log의 형태가 모니터링할때 원하는 형태와 다를때 사용할 수 있다.
+- 일종의 사이드카
+
+### 17장 앰배서더(Ambassador)
+- application 에서 외부에 접근할때, 외부 복잡성을 숨기고 간단하게 접근하도록 할수 있다.
+- cache, circuit-breaker 등에 활용 될 수 있다.
+- 일종의 사이드카
+
+## 4부 설정 패턴
+### 18장 EnvVar 설정
+- 한눈에 여러개 설정을 볼수 있어서 yaml을 기재
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: random-generator
+spec:
+  containers:
+  - image: k8spatterns/random-generator:1.0
+    name: random-generator
+    env:
+    - name: LOG_FILE
+      value: /tmp/random.log
+    - name: PATTERN
+      valueFrom:
+        configMapKeyRef:
+          name: random-generator-config
+          key: pattern
+    - name: SEED
+      valueFrom:
+        secretKeyRef:
+          name: random-generator-secret
+          key: seed
+```
+
+- 시작하고나서는 변수를 변경할수 없어, 변경을 원할경우 재시작을 해야한다.:
+  - port, db connection configuration 등에 적합
+
+### 19장 설정 자원
+- volume 으로 mount 하면 변경이 반영된다.
+- Secret 의 특징:
+  - 자신에게 접근하는 파드가 실행 중인 노드에만 배포된다.
+  - 노드에서 시크릿은 tmpfs의 메모리에 저장되며, 실제 스토리지에는 기록되지 않고 파드가 제거될 때 함께 제거된다.
+  - etcd에 암호화된 형태로 저장된다.
+- configmap 과 secret 에는 자원 제약이 있으므로 무분별하게 사용해서는 안된다.
+
+### 20장 불변 설정
+- 불변 설정 패턴에 데이터 컨테이너를 사용하는 것은 다소 복잡하지만 아래 장점이 있다.:
+  - 환경별 설정은 컨테이너 안에 있으므로, 여타 컨테이너 이미지처럼 버전을 지정할 수 있다.
+  - 이런 방식으로 생성된 설정은 컨테이너 레지스트리를 통해 배포될 수 있고, 클러스터에 접근하지 않아도 설정을 확인할 수 있다.
+  - 컨테이너 이미지 안에 이쓴 설정을 직접 변경할 수는 없다. 설정을 변경하려면 버전을 업데이트한 새로운 컨테이너 이미지가 필요하다.
+  - 설정 데이터 이미지는 설정 데이터가 너무 복잡해 환경 변수나 컨피그맵에 넣을 수 없을 때 유용하다. 임의의 대규모 설정 데이터를 수용할 수 있기 때문이다.
+- 단점:
+  - 레지시트리를 통해 추가 컨테이너 이미지를 빌드하고 배포해야 하므로, 복잡성이 더 높다.
+  - 민감한 설정 데이터를 처리하는 보안 문제에는 아무런 대책이 없다.
+  - 쿠버네티스의 경우 별도의 초기화 컨테이너 처리가 필요하므로, 환경에 따라 다른 디플로이먼트 객체를 관리해야 한다.
