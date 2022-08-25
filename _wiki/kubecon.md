@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubecon
 summary : kubecon 동영상 정리
 date    : 2022-08-02 22:58:55 +0900
-lastmod : 2022-08-23 02:46:35 +0900
+lastmod : 2022-08-25 00:06:14 +0900
 tags    : [kubecon, devops]
 draft   : false
 parent  : devops
@@ -17,3 +17,4 @@ parent  : devops
 - [[What-if-kube-apiserver-could-be-extended-via-webassembly]]
 - [[running-containerd-and-k3s-on-macos]]
 - [[spark-on-kubernetes-the-elastic-story]]
+- [[intro-to-kubernetes-gitops-and-observability-hands-on-tutorial]]
