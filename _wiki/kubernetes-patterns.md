@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 쿠버네티스 패턴
 date    : 2022-08-16 10:56:05 +0900
-lastmod : 2022-08-24 17:00:55 +0900
+lastmod : 2022-08-26 14:30:42 +0900
 tags    : [kubernetes, k8s, book]
 draft   : false
 parent  : kubernetes
@@ -581,3 +581,77 @@ spec:
   - 레지시트리를 통해 추가 컨테이너 이미지를 빌드하고 배포해야 하므로, 복잡성이 더 높다.
   - 민감한 설정 데이터를 처리하는 보안 문제에는 아무런 대책이 없다.
   - 쿠버네티스의 경우 별도의 초기화 컨테이너 처리가 필요하므로, 환경에 따라 다른 디플로이먼트 객체를 관리해야 한다.
+
+### 21장 설정 템플릿
+- 어플리케이션이 시작되기 전에 설정 파일을 세팅하는 방법:
+  - 템플릿 처리기를 ENTRYPOINT의 일부로 Dockerfile에 추가해서, 탬플릿 처리를 컨테이너 이미지에 포함시킬 수 있다.
+  - 쿠버네티스의 경우 템플릿 처리기가 실행되고 파드의 어플리케이션 컨테이너에 대한 설정을 만드는 초기화 컨테이너를 사용할수 있다.
+- 모든 내용을 다 볼 필요는 없고, 아래 yaml 만 읽어도 대충은 어떻게 설정할지 보여서 yaml만 기재
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    example: cm-template
+  name: widfly-cm-template
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        example: cm-template
+    spec:
+      initContainers:
+      - image: k8spatterns/example-config-cm-template-init
+        name: init
+        volumeMounts:
+        - mountPath: "/params"
+          name: wildfly-parameters
+        - mountPath: "/out"
+          name: widfly-config
+      containers:
+      - image: jboss/wildfly:10.1.0.Final
+        name: server
+        command:
+        - "/opt/jboss/wildfly/bin/standalone.sh"
+        - "-Djboss.server.config.dir=/config"
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        volumeMounts:
+        - mountPath: "/config"
+          name: wildfly-config
+        volumes:
+        - name: wildfly-parameters
+          configMap:
+            name: wildfly-parameters
+        - name: wildfly-config
+          emptyDir: {}
+```
+
+## 5부 고급 패턴
+### 22장 컨트롤러
+- reconciliation 과정:
+  - observe : 관측하고 있는 자원이 변경될 때 쿠버네티스가 배포하는 이벤트를 watch 하여 actual state를 찾는다.
+  - analyze : 실제 상태와 요청한 상태의 차이를 알아낸다.
+  - act : 실제 상태가 요청한 상태로 구동되도록 작업을 수행한다.
+
+- reconciliation components:
+  - controller : 표준 쿠버네티스 자원을 모니터링하고 작동하는 간단한 reconciliation process.
+  - operator: CRD와 연동.
+
+- 컨트롤러는 Singletone Service 로 동작하여 동시성 문제를 방지한다.
+- controller 데이터를 저장할수 있는 위치:
+  - label:
+    - 자원 메타데이터의 일부인 label은 모든 컨트롤러에서 watch할 수 있으며, backend database 에서 indexing 되어 효율적인 쿼리검색이 가능하다.
+    - selector 를 사용하기 위해서는 반드시 label을 사용해야한다.
+    - label은 허용된 구문과 문자 집합이 따로 있다.
+  - annotation:
+    - label을 대체할 자원
+    - 색인되지 않는다.
+  - configmap:
+    - configmap 보다는 CRD가 더 권장되지만, CRD는 클러스터 권한이 더 높게 요구된다.
+
+- 책에는 추가적인 다른 내용도 있긴하지만, deprecated 된 내용도 있어서 이정도만 알면 될것 같다.
