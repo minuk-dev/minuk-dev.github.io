@@ -2,7 +2,7 @@
 layout  : wiki
 title   : 쿠버네티스 패턴
 date    : 2022-08-16 10:56:05 +0900
-lastmod : 2022-08-26 14:30:42 +0900
+lastmod : 2022-08-26 16:08:59 +0900
 tags    : [kubernetes, k8s, book]
 draft   : false
 parent  : kubernetes
@@ -655,3 +655,132 @@ spec:
     - configmap 보다는 CRD가 더 권장되지만, CRD는 클러스터 권한이 더 높게 요구된다.
 
 - 책에는 추가적인 다른 내용도 있긴하지만, deprecated 된 내용도 있어서 이정도만 알면 될것 같다.
+
+### 23장 오퍼레이터
+- CRD 에는 특별한 두가지 자원이 존재한다.:
+  - scale: 이 속성을 사용하면 CRD 에서 replica 수를 관리하는 방법을 지정할 수 있다. HorizontalPodAutoscaler를 사용한다면 필수로 지정되어야한다.
+  - status: 외부에서 상태를 업데이트 할 수 있다.
+
+- 컨트롤러와 오퍼레이터 분류:
+  - 설치 CRD:
+    - 쿠버네티스 플랫폼에서 애플리케이션을 설치하고 운영하는 데 사용된다. 일반적인 예로 프로메테우스 자체를 설치하고 관리하는 프로메테우스 CRD가 있다.
+  - 어플리케이션 CRD:
+    - 어플리케이션별 도메인 컨셉을 나타낼때 사용한다.
+
+- 오퍼레이터 개발과 배포에 도움되는 프로젝트들:
+  - CoreOS Operator Framework
+  - Kubebuilder
+  - Metacontroller
+
+### 24장 탄력적스케일
+
+- HPA 관련
+
+```bash
+kubectl autoscale deployment <deployment name> --cpu-percent=50 --min=1 --max=5
+```
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: random-generator
+  spec:
+    minReplicas: 1
+    maxReplicas: 5
+    scaleTargetRef:
+      apiVersion: apps/v1
+      kind: Deployment
+      name: random-generator
+    metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 50
+          type: Utilization
+      type: Resource
+```
+
+- metric types:
+  - standard metrics:
+    - `.spec.metrics.resource[:].type` 으로 선언되며 CPU, Memory 등 자원 사용량 메트릭을 나타낸다.
+  - user defined metrics:
+    - `.spec.metrics.resource[:].type` 으로 선언되며 클러스터별로 각기 다른 클러스터링 모니터링 설정이 필요하다.
+    - prometheus, datadog, azure 등등 에서 널리 사용되고 있다.
+  - 외부 메트릭:
+    - 메시지 큐와 같이 외부 서비스에 존재하는 지표를 사용하고 싶을때 사용
+
+- HPA 가 해주는 것들:
+  - 메트릭 선택
+  - 쓰래싱(thrashing) 방지
+  - 지연된 반응
+
+#### 수직 Pod Autoscaling
+- Veritcal Pod Autoscaler (VPA)
+- 좀 찾아보니까 기본으로 제공되는 건 아닌것 같다. [공식 사이트](https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler#readme):
+  - 이것저것 민감한 이슈들이 많아서 아직까지 beta 상태이다. 글을 쓰는 이 시점에도 19시간 전에 커밋된게 있는 걸로 보아 아직까지 개발중인 것 같다.
+- 책이랑 좀 다르니 공식 사이트를 따르자.
+
+```yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: my-app-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment
+    name:       my-app
+  updatePolicy:
+    updateMode: "Auto"
+```
+
+
+### 25장 이미지 빌더
+- 읽어보니까, 예전에 봤던 면접이 이걸 하라고 했던 것 같다.
+- 대충 yaml 만 적어둔다. 자세한건 공식 문서를 참고하자.
+
+```yaml
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  name: runtime
+spec:
+  source:
+    images:
+    - from:
+        kind: ImageStreamTag
+        name: random-generator-build:latest
+      paths:
+      - sourcePath: /deployments/.
+        destinationDir: "."
+    dockerfile: |-
+      FROM openjdk:8-alpine
+      COPY *.jar /
+      CMD java -jar /*.jar
+  strategy:
+    type: Docker
+  output:
+    to:
+      kind: ImageStreamTag
+      name: random-generator:latest
+  triggers:
+  - imageChange:
+      automatic: true
+      from:
+        kind: ImageStreamTag
+        name: random-gnerator-build:latest
+    type: ImageChange
+```
+
+- KNative 도 이를 지원한다고 한다. KNative는 조금더 공부해봐야지 알 것 같다.:
+  - 옮긴이의 말로는 중단되고, Tekton Pipelines 으로 대체되었다고 한다. 이것도 한번 찾아봐야지 알것 같다.
+
+--
+## 다읽은 후기
+- 책을 정리하면서 읽고, 최대한 모르는 건 찾아보면서 읽었으나 아직 잘 모르겠는게 많다.
+- 실습을 해보면서 익히는게 좋을 것 같다. 책이 좀 되서, 잘 안되는 예제를 몇개 만나고 나니 예제를 안하고 책 읽고, 공식문서 보고 넘어가는 식으로 공부하니 손에 익지 않았다.
+- 손으로 직접 해보고 싶은건 Builder, Autoscaler, Service Discovery 이다. 이렇게 3개는 다른 공부를 하면서도 접해본적이 없어서 책을 읽으면서도 꼭 나중에 손으로 해봐야겠다고 생각했다.
+- 전체적으로 훑기에 좋았던 것 같다. CKA 자격증 동영상만 볼때는 잘 몰랐던 내용들이 나와서 계속 찾아보면서 읽었고 전체적인 이해도에 도움을 주었다.:
+  - 특히 StatefulSet 을 읽었을때, 아 이런식으로 돌리는구나 싶었다.
+- 단점은 책이 좀 나온지 돼서, version issue나 deprecated 된 프로젝트가 있었다는 것 정도이다.
