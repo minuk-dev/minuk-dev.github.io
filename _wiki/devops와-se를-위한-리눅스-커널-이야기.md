@@ -2,7 +2,7 @@
 layout  : wiki
 title   : DevOps와 SE를 위한 리눅스 커널 이야기
 date    : 2022-08-22 13:49:39 +0900
-lastmod : 2022-08-22 15:30:47 +0900
+lastmod : 2022-08-30 18:17:47 +0900
 tags    : [book, devops, se, linux]
 draft   : false
 parent  : [devops]
@@ -53,3 +53,52 @@ parent  : [devops]
 - swap 영역을 사용할 때에는 어떤 프로세스에서 swap 영역을 사용하는지 정확하게 알 필요가 있으며 smem 이라는 툴을 이용해 빠르게 확인할 수 있다.
 - `vm.swappiness` 파라미터를 통해서 메모리 재할당시, swap을 사용하게 할지 페이지 캐시를 해제하게 할지 비율을 조절할 수 있다.
 - `vm.vfs_cache_pressure` 파라메터를 통해 메모리 재할당시, 페이지 캐시를 더 많이 해제할지 vfs 관련 cache를 더 많이 해제할지 비율을 조절할 수 있다.
+
+## 6. NUMA, 메모리 관리의 새로운 세계
+### 개인 의견
+- NUMA는 예전에 논문 볼때 봤던건데, 최근 본 kubecon에서도 관련 자료가 있고, 이 책에도 있어 좀 놀랐다. 이게 이렇게나 기본 상식인지 몰랐다.
+- 내용 자체는 좋으나 난이도가 있다고 생각해서, 모두 적지는 않는다.
+
+### 요약
+- NUMA : Non-Uniform Memory Access, 하드웨어 설계에 따른 cpu에 따라 특정 메모리에 접근하는 속도가 각기 다르다.
+- numastat, numactl 명령어를 사용해서 NUMA 의 상태, 제어를 할 수 있다.
+- `/proc/<pid>/numa_maps` 에 process 별 numa 정보가 확인 가능하다.
+- numad 는 데몬으로 상주하면서 프로세스의 numa 상태를 최적화한다. 하지만 항상 최적화가 좋은건 아니다.
+- `vm.zone_reclaim_mode` 는 zone 에서 최대한 재할당해서 메모리를 확보하려고 노력할지, 최대한 다른 zone 을 통해서 메모리를 확보할지를 결정하는 변수이다.
+- numa 정책:
+  - bind : 특정 노드에서 메모리를 할당받도록 강제한다.
+  - preferred : 선호하는 노드를 정하되, 부족하면 다른 곳에서 받는다.
+  - interleave : 최대한 여러 노드에서 균등하게 받도록 한다.
+- NUMA 아키텍쳐와 관련된 workload는 요구되는 memory size와 process의 thread 방식에 가장 큰 영향을 받는다.
+
+## 7. TIME_WAIT 소켓이 서비스에 미치는 영향
+### 개인 의견
+- 워낙에 유명한 문제이기도 하고, 운영을 배울때 거의 단골로 나오는 내용이라 정리한다는 느낌으로만 봤다.
+
+### 요약
+- TIME_WAIT 소켓은 먼저 연결을 끊는 쪽에서 발생한다.
+- 클라이언트 입장에서의 TIME_WAIT 소켓은 tw_reuse 파라미터를 통해 재사용할 수 있기 때문에 로컬 포트 고갈 문제는 발생하지 않는다.
+- 불필요한 TCP 3 way handshake가 일어날 수 있기 때문에 가급적, Connection Pool 방식을 적용해 TIME_WAIT 소켓을 줄이도록 한다.
+- 서버 입장에서는 TIME_WAIT 소켓은 tw_recycle 파라미터를 통해 빠르게 회수 할 수 있지만, 권장되지는 않는다. 근본적인 문제(connection 이 지나치게 낭비된다거나 등)를 찾아서 해결해야한다.
+- 서버 입장에서 keepalive 기능을 켬으로써 불필요한 TCP 3way handshake 를 줄일 수도 있고 TIME_WAIT 소켓도 줄일수 있다. 서비스의 응답 속도 향상이 가능하지만, keepalive 가 가져올수 있는 문제점이 있기에 사용 시 테스트를 반드시 해봐야한다. 자세한건 keepalive 관련 챕터 및 LB 관련 내용 참고
+- TIME_WAIT 소켓은 정상적인 TCP 연결 해제를 위해 반드시 필요하다.
+
+## 8. TCP Keepalive 를 이용한 세션 유지
+- TCP Keepalive 는 커널레벨에서 종단 간의 세션을 유지시켜주는 기능을 한다.
+- net.ipv4.tcp_keepalive_time 는 두 종단 간의 연결이 유지되어 있는지를 keepalive 패킷을 보내는 주기를 설정한다.
+- net.ipv4.tcp_keepalive_probes 는 keepalive 패킷에 대한 응답을 받지 못했을 때 추가로 보내는 패킷의 개수를 지정한다.
+- net.ipv4.tcp_keepalive_intvl은 keepalive 패킷에 대한 응답을 받지 못해서 재전송 패킷을 보낼 때 필요한 주기를 설정한다.
+- tcp keepalive 설정으로 좀비 커넥션을 관리한다.
+- HTTP keepalive가 설정되어 있다면 tcp keepalive 설정 값과 다르다고 해도 의도한 대로 동작한다. 혼동하지 말자
+- LB 환경에서는 TCP Keepalive 가 설정되어 있지 않다면 LB Idle time 값을 참조해 설정해야 한다.
+
+## 9. TCP 재전송과 타임아웃
+- RTO(Retransmission Timeout)
+- TCP 재전송은 RTO를 기준으로 발생한다.
+- RTO 는 RTT를 기반으로 동적으로 생성된다.
+- 관련 파라메터:
+  - net.ipv4.tcp_syn_retries
+  - net.ipv4.tcp_synack_retries
+  - net.ipv4.tcp_orphan_retries
+  - net.ipv4.tcp_retries1, net.ipv4.tcp_retries2
+- 최소한 한번의 재전송은 견딜 수 있도록 connection timeout 은 3s, read tiemout 은 300ms 이상으로 설정하는 것이 좋다.
