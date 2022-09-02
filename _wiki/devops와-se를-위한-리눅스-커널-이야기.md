@@ -2,7 +2,7 @@
 layout  : wiki
 title   : DevOps와 SE를 위한 리눅스 커널 이야기
 date    : 2022-08-22 13:49:39 +0900
-lastmod : 2022-08-30 18:17:47 +0900
+lastmod : 2022-09-02 20:40:26 +0900
 tags    : [book, devops, se, linux]
 draft   : false
 parent  : [devops]
@@ -102,3 +102,29 @@ parent  : [devops]
   - net.ipv4.tcp_orphan_retries
   - net.ipv4.tcp_retries1, net.ipv4.tcp_retries2
 - 최소한 한번의 재전송은 견딜 수 있도록 connection timeout 은 3s, read tiemout 은 300ms 이상으로 설정하는 것이 좋다.
+
+## 10. dirty page가 I/O에 끼치는 영향
+- 관련 파라메터:
+  - vm.dirty_ratio
+  - vm.dirty_background_ratio
+  - vm.dirty_background_bytes
+  - vm.dirty_writeback_centisecs
+- diry page를 너무 빨리 동기화시키면 flush 커널 스레드가 너무 자주 깨어나게 되며, dirty page를 너무 늦게 동기화시키면 동기화해야할 dirty page가 너무 많아서 vm.dirty_ratio 에 도달할 가능성이 커지게 된다. 워크로드와 시스템 구성에 맞게 적절히 설정해주어야한다.
+
+## 11. I/O 작업이 지나가는 관문, I/O 스케줄러
+- `/sys/block/<block device>/queue/scheduler` 에서 현재 사용하는 스케줄러, 사용 가능한 스케줄러 정보를 보고, 수정할 수 있다.
+- cfq, deadline, noop I/O scheduler
+- iotop 을 사용해서 I/O 프로세스를 확인 할 수 있다.
+- perf-tools 중에 iosnoop 은 I/O 요청들의 섹터 주소를 볼 수 있기에 순차 접근이 많은지 임의 접근이 많은지에 대한 I//O 워크로드 패턴을 살펴볼 수 있다.
+
+## 12. 어플리케이션 성능 측정과 튜닝
+- 워커 수를 최소한 CPU 코어 수와 같은 수로 설정해서 CPU 리소스를 최대로 사용할수 있도록 구성한다.
+- TIME_WAIT 소켓이 생긴다면 연결을 유지한 상태로 사용해 성능을 향상시킬수 있다.
+- 다른 서비스들과 연동할 때 keepalive 옵션과 커넥션 풀 방식을 사용해 성능을 증가 시킬수 있다.
+- 시스템 리소스가 부족함이 없을때 응답 속도가 느려질 경우 워커 설정 및 소프트웨어적 설정에 문제가 있는지 확인해야한다.
+
+
+## 개인 정리
+- 개인적으로 알고 있었던 설정들도 있고, 모르고 있던 설정들도 있는데 전반적으로 한곳에 이런걸 모아둬서 정리하는 보람이 있었다.
+- 사실 지식으로만 알고 있던 부분들을 실습을 섞어서 수치로 볼수 있게 구성되어 있어 책 자체 퀄리티가 좋다고 생각한다.
+- 몇몇 커널 파라메터는 너무 어렵다. 수치를 보면서도 바로바로 해석이 안된다.
