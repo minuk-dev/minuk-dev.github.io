@@ -3,7 +3,7 @@ layout  : wiki
 title   : tool
 summary :
 date    : 2020-06-27 15:17:31 +0900
-lastmod : 2022-05-23 00:10:34 +0900
+lastmod : 2022-09-02 21:47:52 +0900
 tags    : [tool]
 draft   : false
 parent  :
@@ -23,6 +23,7 @@ parent  :
  * [[tikz]]
  * [[zsh]]
  * [[nginx]]
+ * [[curl]]
 
 ## script
  * [[피시실]]
