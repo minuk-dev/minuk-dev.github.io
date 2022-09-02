@@ -3,7 +3,7 @@ layout  : wiki
 title   : go
 summary : go 언어 관련
 date    : 2022-08-02 15:52:30 +0900
-lastmod : 2022-08-22 02:21:32 +0900
+lastmod : 2022-09-02 22:05:47 +0900
 tags    : [go]
 draft   : false
 parent  : study-note
@@ -17,6 +17,9 @@ parent  : study-note
 
 ## 혼자서 탐구해본 자료
 - [[go-http]]
+
+## Snippet
+- [[http-go]]
 
 ### 특정 OS 용 파일이 vim-go 에서 자동완성이 안될때 (gopls가 인식하지 못할때)
 - [참고자료](https://github.com/fatih/vim-go/issues/1056)
