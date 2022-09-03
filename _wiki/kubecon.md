@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubecon
 summary : kubecon 동영상 정리
 date    : 2022-08-02 22:58:55 +0900
-lastmod : 2022-08-30 23:20:47 +0900
+lastmod : 2022-09-04 02:42:20 +0900
 tags    : [kubecon, devops]
 draft   : false
 parent  : devops
@@ -19,3 +19,4 @@ parent  : devops
 - [[spark-on-kubernetes-the-elastic-story]]
 - [[intro-to-kubernetes-gitops-and-observability-hands-on-tutorial]]
 - [[volcano-intro-and-deep-dive]]
+- [[make-cloud-native-chaos-engineering-easier-deep-dive-into-chaos-mesh]]
