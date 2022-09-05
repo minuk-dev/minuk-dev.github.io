@@ -42,7 +42,7 @@ collections:
 menu:
   - Home:
     url: "/"
-    name: "MD98"
+    name: "minuk-dev"
     weight: 1
   - Wiki:
     url: "/wiki/"
