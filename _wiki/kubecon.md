@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubecon
 summary : kubecon 동영상 정리
 date    : 2022-08-02 22:58:55 +0900
-lastmod : 2022-09-21 01:59:49 +0900
+lastmod : 2022-09-22 00:53:02 +0900
 tags    : [kubecon, devops]
 draft   : false
 parent  : devops
@@ -22,3 +22,4 @@ parent  : devops
 - [[make-cloud-native-chaos-engineering-easier-deep-dive-into-chaos-mesh]]
 - [[making-your-apps-and-infrastructure-services-failure-resilient-with-dapr]]
 - [[deep-dive-into-minikube]]
+- [[coredns-into-and-deep-dive]]
