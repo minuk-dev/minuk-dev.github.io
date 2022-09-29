@@ -2,7 +2,7 @@
 layout  : wiki
 title   : learning-coredns
 date    : 2022-09-28 11:30:48 +0900
-lastmod : 2022-09-28 14:23:13 +0900
+lastmod : 2022-09-29 18:51:08 +0900
 tags    : [coredns]
 draft   : false
 parent  : Book reviews
@@ -258,3 +258,120 @@ foo.example {
 
 - 여기서부터는 책만 보기에는 뭔가 기억에 안남을거 같아서, 실습으로 한다.
 - 사용하는 명령어는 coredns, dig, host, nslookup 을 사용해서 하고 있다.
+- 추가로, kubernetes 에서는 coredns 를 어떻게 설정하고 있나 궁금해서 찾아봤다:
+  - [kubeadm에서 addon 으로 붙어있는 coredns manifest](https://github.com/kubernetes/kubernetes/blob/50097acf156f8942d01301619603c61765dbf646/cmd/kubeadm/app/phases/addons/dns/manifests.go)
+
+### file 플러그인
+- reload 는 기본으로 1분이며 0이면 비활성화, 30s 와 같은 형태로 쓸수 있다.
+
+#### 실습
+```
+# Corefile
+foo.example {
+  file db.foo.example
+}
+```
+
+```
+# db.foo.example
+@ 3600 IN SOA ns1.foo.example. root.foo.example. (
+  2019041900
+  3600
+  600
+  604800
+  600 )
+  3600 IN NS ns1.foo.example.
+  3600 IN NS ns2.foo.example.
+
+ns1 IN A 10.0.0.53
+    IN AAAA 2001:db8:42:1::53
+ns2 IN A 10.0.1.53
+    IN AAAA 2001:db8:42:2::53
+www IN A 10.0.0.1
+    IN AAAA 2001:db8:42:1:1
+```
+
+```bash
+coredns # 위 파일들이 있는 디렉토리에서
+```
+
+```bash
+dig @localhost ns1.foo.example
+
+# 출력
+# ; <<>> DiG 9.10.6 <<>> @localhost ns1.foo.example
+# ; (2 servers found)
+# ;; global options: +cmd
+# ;; Got answer:
+# ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 36641
+# ;; flags: qr aa rd; QUERY: 1, ANSWER: 1, AUTHORITY: 2, ADDITIONAL: 1
+# ;; WARNING: recursion requested but not available
+#
+# ;; OPT PSEUDOSECTION:
+# ; EDNS: version: 0, flags:; udp: 4096
+# ;; QUESTION SECTION:
+# ;ns1.foo.example.               IN      A
+#
+# ;; ANSWER SECTION:
+# ns1.foo.example.        3600    IN      A       10.0.0.53
+#
+# ;; AUTHORITY SECTION:
+# foo.example.            3600    IN      NS      ns1.foo.example.
+# foo.example.            3600    IN      NS      ns2.foo.example.
+#
+# ;; Query time: 0 msec
+# ;; SERVER: ::1#53(::1)
+# ;; WHEN: Thu Sep 29 18:21:14 KST 2022
+# ;; MSG SIZE  rcvd: 155
+```
+
+### auto 플러그인
+
+```
+auto [ZONES...] {
+  directory DIR [REGEX ORIGIN_TEMPLATE]
+  transfer to ADDRESS...
+  reload DURATION
+}
+```
+
+### Git 과 auto 플러그인 사용
+- git-sync 와 auto 플러그인을 결합해서 git repo 에 있는 dns 내용을 끌어다가 동기화 시킬수 있다.
+
+### hosts 플러그인
+- host 문법
+
+  ```
+  <IP address> <canonical name> [aliases...]
+  ```
+
+```
+hosts [FILE [ZONES...]] {
+  [INLINE]
+  ttl SECONDS
+  no_reverse
+  reload DURATIOn
+  fallthrough [ZONES...]
+}
+```
+
+- hosts 플러그인은 A, AAAA, A PTR 레코드를 만든다.
+
+### AWS Route53 플러그인
+```
+route53 [ZONE:HOSTED_ZONE_ID...] {
+  [aws_access_key AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY]
+  upstream
+  credentials PROFILE [FILENAME]
+  fallthrough [ZONES...]
+}
+```
+
+
+## 5장 서비스 검색
+- [RFC 6763](https://www.rfc-editor.org/rfc/rfc6763.html) : DNS-Based Service Discovery 에 관한 RFC 문서:
+  - CoreDNS 는 DNS-SD 에 대한 전문적인 지원은 제공하지 않는다.
+
+### 서비스 검색 문제 해결
+- 초기에는 hosts 파일을 수정하였으나, 최근에는 DNS 서버를 제공하고 resolver 를 통해서 해결한다.:
+  - 장점 : SRV 레코드를 통해서 같은 ip 주소에 여러 서비스를 호스팅할 수 있어진다.
