@@ -2,7 +2,7 @@
 layout  : wiki
 title   : learning-coredns
 date    : 2022-09-28 11:30:48 +0900
-lastmod : 2022-09-29 18:51:08 +0900
+lastmod : 2022-10-03 19:27:23 +0900
 tags    : [coredns]
 draft   : false
 parent  : Book reviews
@@ -358,6 +358,7 @@ hosts [FILE [ZONES...]] {
 - hosts 플러그인은 A, AAAA, A PTR 레코드를 만든다.
 
 ### AWS Route53 플러그인
+
 ```
 route53 [ZONE:HOSTED_ZONE_ID...] {
   [aws_access_key AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY]
@@ -375,3 +376,27 @@ route53 [ZONE:HOSTED_ZONE_ID...] {
 ### 서비스 검색 문제 해결
 - 초기에는 hosts 파일을 수정하였으나, 최근에는 DNS 서버를 제공하고 resolver 를 통해서 해결한다.:
   - 장점 : SRV 레코드를 통해서 같은 ip 주소에 여러 서비스를 호스팅할 수 있어진다.
+
+### CoreDNS 및 etcd로 서비스 검색
+#### etcd 플러그인
+- SkyDNS 메시지 형식
+
+```json
+{
+  "host": "192.0.2.10",
+  "port": 20020,
+  "priority": 10,
+  "weight": 20
+}
+```
+
+- 책에서는 이렇게 나와있는데 솔직히 잘 이해가 안된다. 왜 port 가 있지?
+  - [github etcd plugin source](https://github.com/coredns/coredns/tree/master/plugin/etcd)
+  - [SRV record 설명](https://www.joinc.co.kr/w/man/12/srv) 을 읽어보니까 좀 이해가 된다. srv record 로 질의를 하면 port를 알 수 있다는걸 알게 되었다.
+
+- 실습은 적당히 따라해보긴 했는데, 나중에 서비스 만들때 찾아보면 되는 정도인듯 하다. 외우기에는 너무 많고 한번 해본다고 경험치가 확 올라가진 않는 느낌
+
+
+## 6장 쿠버네티스
+
+
