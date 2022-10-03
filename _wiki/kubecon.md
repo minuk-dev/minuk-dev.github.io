@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubecon
 summary : kubecon 동영상 정리
 date    : 2022-08-02 22:58:55 +0900
-lastmod : 2022-10-01 21:19:59 +0900
+lastmod : 2022-10-03 21:37:29 +0900
 tags    : [kubecon, devops]
 draft   : false
 parent  : devops
@@ -24,3 +24,4 @@ parent  : devops
 - [[deep-dive-into-minikube]]
 - [[coredns-into-and-deep-dive]]
 - [[prometheus-intro-and-deep-dive]]
+- [[to-ipv6-the-dual-stack-adoption-advisory-panel]]

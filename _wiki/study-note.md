@@ -3,7 +3,7 @@ layout  : wiki
 title   : study-note
 summary : 공부한거 모아두기
 date    : 2022-03-31 11:14:42 +0900
-lastmod : 2022-05-20 22:27:18 +0900
+lastmod : 2022-09-28 17:27:10 +0900
 tags    : [study]
 draft   : false
 ---
@@ -18,6 +18,7 @@ draft   : false
 - [[tikz]]
 - [[면접준비]]
 - [[kubernetes]]
+- [[cs]]
 
 ### Language
  * [[assembly]]
