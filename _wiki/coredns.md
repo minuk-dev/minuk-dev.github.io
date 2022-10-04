@@ -2,7 +2,7 @@
 layout  : wiki
 title   : learning-coredns
 date    : 2022-09-28 11:30:48 +0900
-lastmod : 2022-10-03 19:27:23 +0900
+lastmod : 2022-10-04 17:23:21 +0900
 tags    : [coredns]
 draft   : false
 parent  : Book reviews
@@ -399,4 +399,18 @@ route53 [ZONE:HOSTED_ZONE_ID...] {
 
 ## 6장 쿠버네티스
 
+- 책 내용을 좀 읽어봤는데 이건 그냥 coredns 의 kubernetes plugin 을 별도로 읽고 공부해야지 좀 이해할것 같다.
 
+### Plugin 구조 분석
+- caddy 를 coredns 를 실행시켜주고 plugin 으로 setup 에서 `plugin.Register(pluginName, setup)` 을 실행시켜서 등록한다. [관련코드](https://github.com/coredns/coredns/blob/0a8ef296ab7b0d6be9bf3deaa8bf4be69e40c300/plugin/kubernetes/setup.go#L33)
+- 기본적으로 parsing 작업해주고, `k.InitKubeCache()` 를 호출하면서 `newdnsController()` 를 실행시켜주면서 kubernetes 내부 자원들을 확인하면서 동작한다. [관련코드](https://github.com/coredns/coredns/blob/0a8ef296ab7b0d6be9bf3deaa8bf4be69e40c300/plugin/kubernetes/kubernetes.go#L255)
+- newdnsController 는 pod, endpoint, svc, ns 를 기본적으로 확인한다. [관련코드](https://github.com/coredns/coredns/blob/0a8ef296ab7b0d6be9bf3deaa8bf4be69e40c300/plugin/kubernetes/controller.go#L110)
+
+- 궁금증이 많이 해결되는 코드 분석이였는데, 기존에 가지고 있던 궁금증은:
+  - kubernetes 의 자원이 변경되는 것을 어떻게 coredns 는 관측하는가
+  - 어떤 기준으로 자원들이 관측되는가, crd 도 관측시킬수 있는가
+  - plugin 은 어떻게 동작하는가
+- 이에 대한 답은:
+  - controller 를 붙여서 informer 로부터 정보를 받는다.
+  - coredns 에 코드적으로 들어가 있기 때문에, 만약 crd로 연결하고 싶으면 svc 로 하던가, coredns 를 커스텀 해야한다.
+  - 기본적으로 coredns 는 caddy 를 사용하고, setup 함수를 인자로 넘기면서 실행을 위임한다.
