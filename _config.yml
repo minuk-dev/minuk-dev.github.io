@@ -38,6 +38,8 @@ kramdown:
 collections:
   wiki:
     output: true
+  s:
+    output: true
 
 menu:
   - Home:
