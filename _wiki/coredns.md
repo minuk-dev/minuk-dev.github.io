@@ -2,7 +2,7 @@
 layout  : wiki
 title   : learning-coredns
 date    : 2022-09-28 11:30:48 +0900
-lastmod : 2022-10-04 17:23:21 +0900
+lastmod : 2022-10-26 23:20:28 +0900
 tags    : [coredns]
 draft   : false
 parent  : Book reviews
@@ -414,3 +414,14 @@ route53 [ZONE:HOSTED_ZONE_ID...] {
   - controller 를 붙여서 informer 로부터 정보를 받는다.
   - coredns 에 코드적으로 들어가 있기 때문에, 만약 crd로 연결하고 싶으면 svc 로 하던가, coredns 를 커스텀 해야한다.
   - 기본적으로 coredns 는 caddy 를 사용하고, setup 함수를 인자로 넘기면서 실행을 위임한다.
+
+#### 클러스터 DNS 디플로이먼트 리소스
+- 역할 기반 액세스 제어:
+  - CoreDNS 는 클러스터 전체의 모든 서비스를 API 에서 데이터를 읽을수 있도록 하기 위해 더 많은 접근 권한의 서비스 어카운트가 필요하다.
+- 기본적으로 coredns 는 2개의 replica 가 뜨게 된다.:
+  - 이를 극복하기 위해서 dns-autoscaler 를 배포한다.
+  - [관련 k8s 문서](https://kubernetes.io/docs/tasks/administer-cluster/dns-horizontal-autoscaling/)
+
+#### CoreDNS 확장
+- pods disabled, pods insecure, pods verified
+- 와일드카드 질의
