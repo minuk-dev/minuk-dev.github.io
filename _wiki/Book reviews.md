@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2022-09-28 11:30:42 +0900
+lastmod : 2022-10-16 17:00:35 +0900
 tags    : [book]
 parent  :
 ---
@@ -21,6 +21,7 @@ parent  :
 ### 정리 하는 중
 - [[software-engineering-at-google]]
 - [[coredns]]
+- [[site-reliability-engineering]]
 
 ### 정리 보류한거
 - [[keras-book]]
