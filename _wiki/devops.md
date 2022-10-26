@@ -3,7 +3,7 @@ layout  : wiki
 title   : devops
 summary : devops 공부 자료
 date    : 2022-07-02 03:26:27 +0900
-lastmod : 2022-09-28 11:30:24 +0900
+lastmod : 2022-10-26 23:22:33 +0900
 tags    : [devops]
 draft   : false
 parent  :
@@ -29,3 +29,4 @@ parent  :
 - [[devops와-se를-위한-리눅스-커널-이야기]]
 - [[selinux]]
 - [[coredns]]
+- [[overlayfs]]
