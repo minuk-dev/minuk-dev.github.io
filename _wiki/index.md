@@ -2,7 +2,7 @@
 layout: wikilist
 title: "Front Page"
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2022-08-15 06:11:31 +0900
+lastmod: 2022-11-02 00:19:31 +0900
 ---
 
 ## 즐겨찾기
@@ -10,6 +10,8 @@ lastmod: 2022-08-15 06:11:31 +0900
 - [[kubernetes]]
 - [[go]]
 - [[vim]]
+- [[site-reliability-engineering]]
+- [[cloud-native-go]]
 
 ### Study
 - [[lectures]]
