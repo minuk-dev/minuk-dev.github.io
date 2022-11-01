@@ -2,7 +2,7 @@
 layout  : wiki
 title   : learning-coredns
 date    : 2022-09-28 11:30:48 +0900
-lastmod : 2022-10-26 23:20:28 +0900
+lastmod : 2022-11-02 00:19:28 +0900
 tags    : [coredns]
 draft   : false
 parent  : Book reviews
@@ -425,3 +425,6 @@ route53 [ZONE:HOSTED_ZONE_ID...] {
 #### CoreDNS 확장
 - pods disabled, pods insecure, pods verified
 - 와일드카드 질의
+
+## 개인 생각
+- 더 정리하는게 의미가 있나 싶어서 여기까지만 정리한다. 실제로 세팅할때 책을 참고하면 될거 같다.

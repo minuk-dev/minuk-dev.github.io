@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2022-10-16 17:00:35 +0900
+lastmod : 2022-11-02 00:19:35 +0900
 tags    : [book]
 parent  :
 ---
@@ -17,11 +17,12 @@ parent  :
 - [[effective-java]] (임시 보류, DevOps, 소프트웨어 공학이 더 우선순위)
 - [[devops와-se를-위한-리눅스-커널-이야기]]
 - [[kubernetes-patterns]]
+- [[coredns]]
 
 ### 정리 하는 중
 - [[software-engineering-at-google]]
-- [[coredns]]
 - [[site-reliability-engineering]]
+- [[cloud-native-go]]
 
 ### 정리 보류한거
 - [[keras-book]]
