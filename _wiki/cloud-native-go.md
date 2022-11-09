@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2022-11-06 23:57:27 +0900
+lastmod : 2022-11-10 00:13:41 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -241,5 +241,328 @@ type Context interface {
 
       return result, err
     }
+  }
+  ```
+
+  ```go
+  type Circuit func(context.Context) (string, error)
+
+  func DebounceLast(circuit Circuit, d time.Duration) Circuit {
+    threshold := time.Now()
+    var ticker *time.Ticker
+    var result string
+    var err error
+    var once sync.Once
+    var m sync.Mutex
+
+    return func(ctx context.Context) (string, error) {
+      m.Lock()
+      defer m.Unlock()
+
+      threshold = time.Now().Add(d)
+
+      once.Do(func() {
+        ticker = time.NewTicker(time.Millisecond * 100)
+
+        go func() {
+          defer func() {
+            m.Lock()
+            ticker.Stop()
+            once = sync.Once{}
+            m.Unlock()
+          }()
+
+          for {
+            select {
+            case <- ticker.C:
+              m.Lock()
+              if time.Now().After(threshold) {
+                result, err = circuit(ctx)
+                m.Unlock()
+                return
+              }
+              m.Unlock()
+            case <- ctx.Done():
+              m.Lock()
+              result, err = "", ctx.err()
+              m.Unlock()
+              return
+            }
+          }
+        }()
+      })
+    }
+    return result, err
+  }
+  ```
+
+#### Retry
+- Participants:
+  - Effector: The function that interacts with the service.
+  - Retry: A function that accepts Effector and returns a closure with the same function signature as Effector.
+
+- Sample Code:
+
+  ```golang
+  type Effector func(context.Context) (string, error)
+
+  func Retry(effector Effector, retries int, delay time.Duartion) Effector {
+    return func(ctx context.Context) (string, error) {
+      for r := 0; ; r++ {
+        response, err := effector(ctx)
+        if err == nil || r >= retries {
+          return response, err
+        }
+
+        select {
+        case <- time.After(delay):
+        case <- ctx.Done():
+          return "", ctx.Err()
+        }
+      }
+    }
+  }
+  ```
+
+#### Throttle
+- Participants:
+  - Effector: The function to regulate
+  - Throttle: A function that accepts Effector and returns a closure with the same function signature as Effector.
+
+- Sample Code:
+
+  ```golang
+  type Effector func(context.Context) (string, error)
+
+  func Throttle(e Effector, max uint, refill uint, d time.Duration) Effector {
+    var tokens = max
+    var once sync.Once
+
+    return func(ctx context.Context) (string, error) {
+      if ctx.Err() != nil {
+        return "", ctx.Err()
+      }
+
+      once.Do(func() {
+        ticker := time.NewTicker(d)
+
+        go func() {
+          defer ticker.Stop()
+
+          for {
+            select {
+            case <- ctx.Done():
+              return
+            case <- ticker.C:
+              t := tokens + refill
+              if t > max {
+                t = max
+              }
+              tokens = t
+            }
+          }
+        }()
+      })
+
+      if tokens <= 0 {
+        return "", fmt.Errorf("too many calls")
+      }
+
+      tokens--
+
+      return e(ctx)
+    }
+  }
+  ```
+
+#### Timeout
+- Participants:
+  - Client: The client who wants to exectue SlowFunciton
+  - SlowFunction: The long-runnign function that implements the funcitonality desired by Client.
+  - Timeout: A wrapper function around SlowFunction that implements the timeout logic.
+
+- Sample Code:
+
+  ```golang
+  type WithContext func(context.Context, string) (string, error)
+
+  func Timeout(f SlowFunction) WithContext {
+    return func(ctx context.Context, arg string) (string, error) {
+      chres := make(chan string)
+      cherr := make(chan error)
+
+      go func() {
+        res, err := f(arg)
+        chres <- res
+        cherr <- err
+      }()
+
+      select {
+      case res := <-chres:
+        return res, <-cherr
+      case <- ctx.Done():
+        return "", ctx.Err()
+      }
+    }
+  }
+  ```
+
+### Concurrency Patterns
+#### Fan-In
+- Participants:
+  - Sources: A set of one or more input channels with the same type. Accepted by Funnel.
+  - Destination: An output channel of the same type as Sources. Created and provided by Funnel.
+  - Funnel: Accepts Sources and immediately returns Destination. Any input from any Sources will be output by Destination.
+
+- Sample Code:
+
+  ```golang
+  func Funnel(sources ...chan int) chan int {
+    dest := make(chan int)
+
+    var wg sync.WatiGroup
+
+    wg.Add(len(sources))
+
+    for _, ch := range sources {
+      go func(c chan int) {
+        defer wg.Done()
+
+        for n := range c {
+          dest <- n
+        }
+      }(ch)
+    }
+
+    go func() {
+      wg.Wait()
+      close(dest)
+    }()
+
+    return dest
+  }
+  ```
+
+#### Fan-Out
+- Participants:
+  - Source: An input channel. Accepted by Split.
+  - Destinations: An output channel of the same type as Source. Created and provided by Split.
+  - Split: A function that accepts Source and immediately returns Destinations. ANy input from Source will be output to a Destination.
+
+- Sample Code:
+
+  ```golang
+  func Split(source chan int, n int) []chan int {
+    dests := make([]chan int, 0)
+
+    for i := 0; i < n; i ++ {
+      ch := make(chan int)
+      dests := append(dests, ch)
+
+      go func() {
+        defer close(ch)
+        for val := range source {
+          ch <- val
+        }
+      }()
+    }
+
+    return dests
+  }
+  ```
+
+#### Future
+- Participants:
+  - Future: The interface that is received by the consumer to retrieve the eventual result.
+  - SlowFunction: A wrapper funciton around some function to be asynchronously exectued; provides Future
+  - InnerFuture: Satisfies the Future interface; includes an attached method that contains the result access logic.
+
+- Sample Code:
+
+  ```golang
+  type Future interface {
+    Result() (string, error)
+  }
+
+  type InnerFuture struct {
+    once sync.Once
+    wg sync.WaitGroup
+
+    res string
+    err error
+    resCh chan string
+    errCh chan error
+  }
+
+  func (f *InnerFuture) Result() (string, error) {
+    f.once.Do(func() {
+      f.wg.Add(1)
+      defer f.wg.Done()
+      f.res = <- f.resCh
+      f.err = <-f.errCh
+    })
+
+    f.wg.Wait()
+
+    return f.res, f.err
+  }
+  ```
+
+#### Sharding
+- Horizontal vs Vertical:
+  - Horizontal sharding: partitioning of data across service instances.
+  - Vertical sharding: partitioning of data within a single instance.
+
+- Participants:
+  - ShardedMap: An abstraction around one or more Shards providing read and write access as if the Shards were a single map.
+  - Shard: An individually lockable collection representing a single data partition.
+
+- Sample code:
+
+  ```golang
+  type Shard struct {
+    sync.RWMutex
+    m map[string]any
+  }
+
+  type ShardedMap []*Shard
+
+  func NewShardedMap(nshards int) ShardedMap {
+    shards := make([]*Shard, nshards)
+
+    for i := 0; i < nshards; i ++ {
+      shard := make(map[string]any, 0)
+      shards[i] = &Shard{m: shard}
+    }
+
+    return shards
+  }
+
+  const arbitraryByte int = 17
+  func (m ShardedMap) getShardIndex(key string) int {
+    checksum := sha1.Sum([]byte(key))
+    hash := int(checksum[arbitraryByte])
+    return hash % len(m)
+  }
+
+  func (m ShardedMap) getShard(key string) *Shard {
+    index := m.getShardIndex(key)
+    return m[index]
+  }
+
+  func (m ShardedMap) Get(key string) any {
+    shard := m.getShard(key)
+    shard.RLock()
+    defer shard.RUnlock()
+
+    return shard.m[key]
+  }
+
+  func (m ShardedMap) Set(key string, value any) {
+    shard := m.getShard(key)
+    shard.Lock()
+    defer shard.Unlock()
+
+    shard.m[key] = value
   }
   ```
