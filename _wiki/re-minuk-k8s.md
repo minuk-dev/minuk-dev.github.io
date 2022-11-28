@@ -3,7 +3,7 @@ layout  : wiki
 title   : 다시 시작하는 쿠버네티스 세팅
 summary : 처음부터 세팅 다시하기
 date    : 2022-11-17 02:33:21 +0900
-lastmod : 2022-11-28 00:39:30 +0900
+lastmod : 2022-11-29 00:24:04 +0900
 tags    : [k8s]
 draft   : false
 parent  : devops
@@ -23,9 +23,6 @@ parent  : devops
 - jupyter notebook 를 띄워서 언제나 접속해서 간단한 스크립팅을 할수 있는 환경
 - 임시 pod 과 이를 위한 계정 발급을 통한 리눅스 샌드박스 서버 찍어내기
 - github action runner 를 통한 다중 architecture 빌드 및 테스트 지원
-
-## 할일 목록
-- [ ] kubespray 스크립팅
 
 
 ### 1. kubespray 설정
@@ -125,3 +122,36 @@ ansible-playbook -i ./inventory/minuk-cluster/inventory.ini cluster.yml --become
     ```bash
     ansible-playbook -i ./inventory/minuk-cluster/inventory.ini reset.yml --become --become-user=root
     ```
+
+- 중간에 이것저것 하다보니 calico 가 설치가 이상하게 되었다는 것을 알았다.:
+  - `/opt/cni/calico` 와 관련되어 파일이 없다고 나올 때 : [다음 링크](https://projectcalico.docs.tigera.io/getting-started/kubernetes/hardway/install-cni-plugin) 를 참고하여 파일을 노드 위에 설치해주자
+
+### 2. argocd 설정
+- 앞으로 cluster 위의 모든 자원을 argocd 로 gitops 할 계획이므로, argocd 를 설치한다.
+- 따라서, helm 으로 argocd 를 설치한다.
+
+- [해당 디렉토리 확인](https://github.com/minuk-dev/minuk-cluster/tree/master/helm/argocd)
+
+- argocd 초기 admin password 얻기
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+- argocd 에 접속하기(현재는 ingress 가 전혀 없으므로, 그냥 port-forward 로 접속한다.)
+
+```bash
+kubectl port-forward service/argocd-server -n argocd 8080:443
+```
+
+### 3. ingress 설정
+
+- 일단은 익숙한 nginx 로 설정하자:
+  - 나중에 istio 를 고민하자.
+
+- [해당 디렉토리 확인](https://github.com/minuk-dev/minuk-cluster/tree/master/argocd/nginx-ingress-controller)
+
+### 4. cert-manager, cluster issuer 설정
+
+- 앞으로도 argocd 를 이렇게 접속할 수는 없다. nginx 로 설정해주기 전에 cluster issuer 를 등록해준다.
+- [해당 디렉토리 확인](https://github.com/minuk-dev/minuk-cluster/tree/master/argocd/cert-manager)
