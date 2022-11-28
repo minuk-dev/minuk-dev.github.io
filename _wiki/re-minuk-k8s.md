@@ -3,7 +3,7 @@ layout  : wiki
 title   : 다시 시작하는 쿠버네티스 세팅
 summary : 처음부터 세팅 다시하기
 date    : 2022-11-17 02:33:21 +0900
-lastmod : 2022-11-29 00:24:04 +0900
+lastmod : 2022-11-29 00:31:26 +0900
 tags    : [k8s]
 draft   : false
 parent  : devops
@@ -155,3 +155,8 @@ kubectl port-forward service/argocd-server -n argocd 8080:443
 
 - 앞으로도 argocd 를 이렇게 접속할 수는 없다. nginx 로 설정해주기 전에 cluster issuer 를 등록해준다.
 - [해당 디렉토리 확인](https://github.com/minuk-dev/minuk-cluster/tree/master/argocd/cert-manager)
+
+
+- 드는 고민: 순서상으로 argocd 를 먼저 설치, nginx 를 그 다음에 설치했는데, 이제 nginx 에 argocd ingress 옵션을 켜주면 되긴 하는데, 이러면 순서대로 실행했을때 동일한 상태가 안나온다.:
+  - argocd 를 깔때 nginx 에 대한 dependency 가 생기기 때문에
+  - 결론 : values 를 두가지를 유지하자. 하나는 nginx 를 설치하기 전, 하나는 nginx 를 설치한 이후로 분리해서 보관하자. 일단은 시간이 늦었으니 고민만 해두고 오늘은 여기까지
