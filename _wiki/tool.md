@@ -10,24 +10,24 @@ parent  :
 ---
 
 ## tool 모음
- * [[vim]]
- * [[Nexus]]
- * [[docker]]
- * [[hugo]]
- * [[linux command]]
- * [[git]]
- * [[ssh]]
- * [[jupyter]]
- * [korean keyboard](https://gate2home.com/Korean-Keyboard)
-   * 한국어가 입력이 안되는 환경에서 복사 붙여넣기로 입력할수 있게 해주는 사이트
- * [[tikz]]
- * [[zsh]]
- * [[nginx]]
- * [[curl]]
+- [[vim]]
+- [[Nexus]]
+- [[docker]]
+- [[hugo]]
+- [[linux command]]
+- [[git]]
+- [[ssh]]
+- [[jupyter]]
+- [korean keyboard](https://gate2home.com/Korean-Keyboard)
+- 한국어가 입력이 안되는 환경에서 복사 붙여넣기로 입력할수 있게 해주는 사이트
+- [[tikz]]
+- [[zsh]]
+- [[nginx]]
+- [[curl]]
 
 ## script
- * [[피시실]]
- * [[사지방]]
+- [[피시실]]
+- [[사지방]]
 
 ## 설정
- * [[tool configuration]]
+- [[tool configuration]]
