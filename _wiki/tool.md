@@ -24,6 +24,7 @@ parent  :
 - [[zsh]]
 - [[nginx]]
 - [[curl]]
+- [[autoconf]]
 
 ## script
 - [[피시실]]

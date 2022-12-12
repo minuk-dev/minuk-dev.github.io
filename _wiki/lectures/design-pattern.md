@@ -422,3 +422,90 @@ parent  : lectures
 - Composite Pattern:
   - compose objects into tree structures to represent whole-part hierarchies.
   - lets clients treate individual objects and compositions of objects uniformly
+
+
+## Decorator Pattern
+- Purpose:
+  - Allows for the dynamic wrapping of objects in order to modify their existing responsibilities and behaviors.
+- Use When:
+  - Object responsibilities and behaviors should be dynamically modifiable.
+  - Concreate implementations should be decoupled from responsibilities and behaviors.
+  - Subclassing to achieve modification is impractical of impossible.
+  - Specific functionality should not reside high in the object hierarchy.
+  - A lot of little objects surrounding a concrete implementation is acceptable.
+
+### Design Princple: OCP
+- Open Closed Principle:
+  - Classes should be open for extension, but closed for modification
+  - Allow classes to be easily extended to incorporate new behavior without modifying existing code.
+  - resilient to change and flexible enough to take on new functionality to meet chaning requirements.
+- Caution: Don't try applying the Open-Closed Principle (OCP) to every single case. Keep simple designs if possible!
+
+### Review of Decorator Idea
+- The decorator adds its own behvior.
+- You can use one or more decorators to wrap an object.
+- We can pass around a decorated object in place of the original (wrapped) object.
+- Decorators have the same super type as the objects they decorate.
+- We can decorate objects dynamically at runtime with as many decorators as we want
+
+### The Definition of the Decorator
+- The Decorator Pattern attaches additional responsibilities to an object dynamically. Decorators provide a flexible alternative to subclassing for extending functionaliy.
+
+### Related Patterns
+- Regarding the interfaces:
+  - Adapter provides a different interface to its subject
+  - Proxy provides the same interface
+  - Decorator provides an enhanced interface
+
+### Summary
+- Design Principle: Open-Closed Principle (OCP)
+- Advantages:
+  - attaches additional responsibilities to an object dynamically
+  - flexible alternative to subclassing for extending functionality
+- Key mechanism:
+  - Uses object composition and delegation
+  - Decorator class mirrors the type of components they are decorating
+    - We can wrap a component with any number of decorators
+- Disadvantage:
+  - can generate a lot of small classes
+  - hard to understand if not familiar with the pattern
+  
+## State Pattern
+- Purpose:
+  - Ties object circumstances to its behavior, allowing the object to behave in different ways based upon its internal state.
+- Use When:
+  - The behavior of an object should be influenced by its state.
+  - Complex conditions tie object behavior to its state.
+  - Transitions between states need to be explicit.
+  
+### Applicaility of the State Pattern
+- Use the State pattern when:
+  - An object's behavior depends on its state, and it must change its behavior at run-time depending on that state
+  - Operations have large, multipart conditional statements that depend on the object's state. The State pattern puts each branch of the conditional in a separate class.
+
+### Consequences of the State Pattern
+- Benefits:
+  - Puts all behvior associated with a state into one object
+  - Allows state transition logic to be incorporated into a state object rather than in a monolithic if or switch statement
+  - Helps avoid inconsistent states since state changes occur using just the one state object and not several objects or attributes
+- Liabilities:
+  - Increased number of objects
+  
+### State vs. Strategy
+- Note the similarities between the State and Strategy patterns!:
+  - The difference is one of intent.
+- A State object encapsulates a state-dependent behavior (and possibly state transitions):
+  - The context's behavior chnages over tim
+  - An alternative to putting lots of conditionals in the context
+- A Strategy object encapsulates an algorithm:
+  - Often, there is a strategy object that is most appropriate for a context object
+  - A flexible alternative to subcalssing
+- They are both examples of Composition with Delegation!
+
+### Summary
+- State Pattern:
+  - Encapsulate state-based behavior and delegate behavior to the current state
+- Strategy Pattern:
+  - Encapsulate interchangeable behaviors and use delegation to decide which behavior to use
+- Template Method:
+  - Subclasses decide how to implement steps in an algorithm
