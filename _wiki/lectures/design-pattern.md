@@ -469,7 +469,7 @@ parent  : lectures
 - Disadvantage:
   - can generate a lot of small classes
   - hard to understand if not familiar with the pattern
-  
+
 ## State Pattern
 - Purpose:
   - Ties object circumstances to its behavior, allowing the object to behave in different ways based upon its internal state.
@@ -477,7 +477,7 @@ parent  : lectures
   - The behavior of an object should be influenced by its state.
   - Complex conditions tie object behavior to its state.
   - Transitions between states need to be explicit.
-  
+
 ### Applicaility of the State Pattern
 - Use the State pattern when:
   - An object's behavior depends on its state, and it must change its behavior at run-time depending on that state
@@ -490,7 +490,7 @@ parent  : lectures
   - Helps avoid inconsistent states since state changes occur using just the one state object and not several objects or attributes
 - Liabilities:
   - Increased number of objects
-  
+
 ### State vs. Strategy
 - Note the similarities between the State and Strategy patterns!:
   - The difference is one of intent.
@@ -509,3 +509,399 @@ parent  : lectures
   - Encapsulate interchangeable behaviors and use delegation to decide which behavior to use
 - Template Method:
   - Subclasses decide how to implement steps in an algorithm
+
+## Builder Pattern
+- Purpose:
+  - Allows for the dynamic creation of objects based upon easily interchangeable algorithms.
+- Use When:
+  - Runtime control over the creation process is required.
+  - Multiple representations of creation algorithms are required.
+  - Object creation algorithms should be decoupled form the system.
+  - The addtion of new creation funcitonality without changing the core code is necessary.
+
+### Builder - Participants
+- Client:
+  - selects director and concrete builder to build the product
+  - asks concrete builder to return final constructed product
+- Director:
+  - knows what steps it takes to build a product
+  - but it does not know how each step is to be carried out
+- Builder:
+  - specifies an abstract interface for creating parts of a Product object
+- Concrtete Builder:
+  - constructs and assembles parts of the product by implementing the Builder interface
+  - defines and keeps tractk of the representation it creates
+  - provides an interface for retrieving the product
+- Product:
+  - represents the complex object under construction
+
+### When a Builder Shouldn't Be Used
+- If the interface is not stable the Builder has few benefits:
+  - Every interface change requires a change to the Controller and impacts the abstract base class or its objects
+  - A new method would require changing the base class and all concrete classes that will need to override the new method
+  - A specific method interface change would require all concrete clases supporting the old method to change
+
+### Related Patterns and Summary
+- A Composite is what the Builder often builds
+- A Builder is a Strategy that is specialized to create a composite object or data struct
+- Comparison with Abstract Factory:
+  - Builder constructs the object step-by-step and the reulst is requested at a later stage
+  - Abstract factory returns the requested object immediately
+  - Abstract factory does not have an abstract builder; application calls the factory methods directly
+
+## Template Method Pattern
+- Purpose:
+  - Identifies the framework of an algorithm, allowing implementing classes to define the actual behavior.
+- Use When:
+  - A single abstract implementation of an algorithm is needed.
+  - Common behavior among subclasses should be localized to a common class.
+  - Parent classes should be able to uniformly invoke behavior in their subclasses.
+  - Most of all subclasses need to implement the behavior
+
+- The template pattern defines the steps of an algorithm and allows the subcalsses to implement one or more of the steps.
+- Encapsulates an algorithm by creating a template for it.
+- Defines the skeleton of an algorithm as a set of steps.
+- Some methods of the algorithm have to be implemented by the subclasses - these are abstract methods in the super class.
+- The subclasses can redefine certain steps of the algorithm without changing the algorithm's structure.
+- Some steps of the algorithm are concrete methods defined in the super class.
+
+### Design Princi8ple: Hollywood Principle
+- The Hollywood Principle: Don't call us, we'll call you!:
+  - It prevents "Dependency rot"
+  - Dependency rot: high-level components depend on low-level components, and vice versa.
+- With the Hollywood principle:
+  - We allow low level components to hook themselves into a system
+  - But high level components determine when they are needed and how.
+  - High level components give the low-level components a "don't call use, we'll call you" treatement.
+
+### Related Patterns
+- Template Method uses inheritance to vary part of an algorithm.
+- Strategy uses delegation to vary the entire algorithm.
+- Factory Method is a specialization of Template Method
+
+### Summary
+- Hollywood Principle:
+  - Don't call us, we'll call you
+- Template Method Pattern:
+  - Define the skeleton of an algorithm in an operation, deferring some steps to subclasses.
+  - Template Method lets subclsses redefine certain steps of an algorithm without changing the algorithm's structure.
+
+## Proxy Pattern
+- Purpose:
+  - Allows for object level access control by acting as a pass through entity or a placeholder object.
+- Use When:
+  - Access control for the original object is required.
+  - Added funcitonality is required when an object is accessed.
+- Proxy Pattern provides a surrogate or placeholder for another object to control access to it.
+
+### Proxy Pattern Collaborations
+- Subject:
+  - defines the common interface for RealSubject and Proxy so that a Proxy can be used anywherer a RealSubject is expected
+- RealSubject:
+  - defines the real object that the proxy represents
+- Proxy:
+  - maintains a reference that lets the proxy access the real subject
+  - provides an interface identical to Subject's so that a proxy can by substitued for the real subject
+  - controls access to the real subject and may be responsible for creating and deleting it
+
+### Applicability
+- whenever there is a need for a more versatile or sophisticated reference to an object than a simple pointer:
+  - remote proxy:
+    - responsible for encoding a request and its arguments and for sending the encoded request to the real subject in a different address space
+  - virtual proxy:
+    - may cache additional information about the real subject so that they can postpone accessing it
+  - protection proxy:
+    - checks that the caller has the access permissions required to perform a request
+
+### Distributed Computing
+- Distributed Computing:
+  - involves the design and implementation of applications as a set of cooperating software entities (processes, threads, objects) that are distributed across a network of machines
+- Advantages to Distributed Computing:
+  - Performance
+  - Scalability
+  - Resource Sharing
+  - Fault Tolerance
+- Difficulties in developing Distributed Computing systems:
+  - Latency
+  - Synchronization
+  - Partial Failure
+
+### Client-Server Model and Programming
+- Client-Server Model:
+  - Client - entity that makes a request for a service
+  - Server - entity that responds to a request and provides a service
+  - The predominant networking protocol in use today is the Internet Protocol (IP). The main API for writing client-server programs using IP is the Berkeley socket API.
+- Programming:
+  - Dealing with all of the details of the socket library calls can be tedious.
+  - The java.net package provides classes to abstract away many of the detials of socket-level programing, making it simple to write client-server applications
+
+### Remote Procedure Call (RPC)
+- Disadvantage of Client-Server model:
+  - Both the client and server had to be aware of the socket level details
+- Wouldn't it be nice if even these details were abstracted away and the request to the server looked like a local procedure call from the viewpoint of the client?
+- That's the idea behind a Remote Procedure Call (RPC), a technology introduced in the late 1970's.
+
+### Serialization basics
+- Serialization:
+  - the process of transforming an in-memory object to a byte stream.
+- Deserialization:
+  - the inverse process of reconstructing an object from a byte stream to the same state in which the object was previously serialized.
+- For an object to be serializable:
+  - its class or some ancestor must implement the empty `Serializable` interface
+- An empty interface is called a marker interface
+
+### Object graphs and transient fields
+- If an object has references to other objects or arrays, the entire object graph is serialized when the object is serialized.:
+  - The object graph consists of the object directly serialized and any other objects or arrays to which the object has direct or indirect references.
+- A field marked as `transient` is not impaced by serialization.:
+  - During deserialization, transient fields are restored to their default values
+
+### Related Patterns
+- w.r.t. Interface:
+  - Adapter provides a different interface to its subject
+  - Proxy provides the same interface
+  - Decorator provides an enhanced interface
+
+- w.r.t. Structure:
+  - Decorator and Proxy have similar structures
+  - Both describe how to provide a level of indireciton to another object, and the implementations keep a reference to the object to which they forward requests
+
+## Chain of Responsibility Pattern
+- Purpose:
+  - Gives more than one object an opportunity to handle a request by linking receiving objects together.
+- Use When:
+  - Multiple objects may handle a request and the handler doesn't have to be a specific object.
+  - A set of objects should be able to handle a request with the handler determined at runtime.
+  - A request not being handled is an acceptable potential outcome.
+
+- Each object in the chain:
+  - receives the request
+  - handle it or forward it to the next object
+- Notice:
+  - Object making the request has no knowledge of which object is handling the request
+  - The request has an implicit receiver
+
+### HelpHandler class diagram
+- Each object in the chain shares a cmmon interface for handling requests and accessing its successor on the chain
+
+### Participants
+- Handler:
+  - defines an interface for handling the requests
+  - (optional) implements the successor link
+- Concrete Handler:
+  - handles requests it is responsible for
+  - can access its successor
+  - if the COncrete Handler can handle the request, it does so; other wise it forwards the request to its successor
+- Client:
+  - initiates the reuqest to a COncrete Handler object on the chain
+
+### Consequences
+- Benefits:
+  - Decoupling of senders and receivers
+  - Added flexibility
+  - Sender doesn't need to know specifically who the handlers are
+- Potential Drawbacks:
+  - Client can't explicitly specify who handles a request
+  - No guarantee of request being handled (requirest falls off end of chain)
+
+### Implementation
+- Implementing the successor chain:
+  - Option 1 : Define new links (in Handler or COncreteHandler)
+  - Option 2 : Use existing links (such as the parent references from the Composite pattern)
+- Connecting successors
+- Representing requests
+
+### Related pattern
+- Chain of responsibility is often applied in conjuction with Composite.
+- Chain of Responsibility, Command, Mediator, and Observer, address how you can decouple senders and receivers, but with different tradeoffs.:
+  - Chain of Responsibility passes a sender request along a chain of potential receivers.
+- Chain of Responsibility can use Command to represent requests as objects.
+
+## Bridge Pattern
+- Purpose:
+  - Defines an abstract object structure independently of the implementation object structure in order to limit coupling.
+- Use When:
+  - Abstractions and implementations should not be bound at compile time.
+  - Abstractions and implementations should be independently extensible.
+  - Implementation details should be hidden from the client.
+
+### Problem Analysis
+- Problem: the class explosion, because:
+  - the coupling of the abstraction and the implementation is tight
+  - each type of shape must know what type of drawing program it is using.
+- Solution:
+  - Need to separate the variations in abstraction from the variations in implementation so that the number of classes only grows linearly
+
+### Introducing Bridge Pattern
+- Intent of the Bridge pattern:
+  - decouples an abstraction from its implementation so that the two can vary independently
+
+### Structure of Bridge Pattern
+- Abstraction (and RefinedAbstraction) is a high-level control layer for some entity
+- This layer isn't supposed to do any real work on its own.
+- It should delegate the work to the implementation layer (also called platform).
+
+### Participants & Collaborations
+- Abstraction:
+  - defines the abstraction's interface
+  - maintains a reference to the Implementor
+  - forwards requests to the Implementator (collaboration)
+- RefinedAbstraction:
+  - extends absraction interface
+- Implementator:
+  - defines interface for implementations
+- ConcreteImplementor:
+  - implemnts Implementor interface
+
+### Comparision with Adapter
+- Similarities:
+  - Both used to hide the details of the underlying implementation.
+- Difference:
+  - The adapter pattern is geared towards making unrelated components work together:
+    - Applied to systems after they're designed (reengineering, interface engineering).
+  - The bridge pattern is used up-front in a design to let abstractions and implementations vary independently.:
+    - Designing "extensible system"
+  - Structural difference:
+    - Bridge can abstract a complex entity from its implementation
+    - Adapter only abstracts a single interface
+
+### Summary
+- Bridge pattern:
+  - lets you split a large class or a set of closely related classes into two separate hierarchies - abstraction and implementation - which can be developed independently of each other.
+
+## Prototype Pattern
+- Purpose:
+  - Create objects based upon a template of an existing objects through cloning.
+- Use When:
+  - Composition, creation, and representation of objects should be decoupled from a system.
+  - Classes to be created are specified at runtime.
+  - Objects or object structures are required that are identical or closely resemble other existing objects or object structures.
+  - The initial creation of each object is an expensive operation.
+  - When to avoid building a class hierarchy of factories that parallels the class hierarchy of products.
+
+### Prototype - participants
+- Prototype:
+  - defines the interface (an operation) of cloning itself.
+- ConcreteProduct1 and ConcreteProduct2:
+  - Concrete objects that can clone themselves.
+- Client:
+  - Obtain more objects by asking them to clone themselves.
+
+### What's so special about the pattern?
+- Advantages of creational patterns:
+  - Hides concrete product classes from clients
+  - Decouples the clients from the creational process
+- Unique feature of Prototype:
+  - Prototypes can be supplied and changed at runtime
+  - Thus, it provides great flexibility in configuring and changing a program at runtime:
+    - Adding and removing products at run-time
+    - Reduced subclassing
+    - Configuring an application with classes dynamically:
+      - Loading the classes dynamically
+
+### Cloning in JAVA
+- Java provides support from cloning with `Cloneable` interface and a protected method clone method in the Object class.
+- Any class using the built-in cloning mechanism is supposed to:
+  - Implement the Cloneable interface
+  - Define a concrete public or protected `clone()` operation
+  - In the `clone()` operation, obtain a new object by calling `super.clone()`
+- Default `clone()` operation makes a shallow copy!
+
+### Review
+- Be aware of the shallow cloning VS deep cloning
+- Prototypes are useful when object initialization is expensive, and you anticipate few variations on the initialization parameters. In this context, Prototype can avoid expensive "creation from scratch", and support cheap cloning of a pre-initialized prototype.
+- Abstract Factory and Prototype can be used together:
+  - Abstract Factory can store set of prototypes which are cloned to return product objects
+- Very useful with Composite and Decorator patterns
+
+## Visitor Pattern
+- Purpose:
+  - Allowing one or more operations to be applied to a set of objects at runtime
+  - Decoupling the operations from the object structure (= the set of objects)
+- Use when:
+  - An object structure must have many unrelated operations performed upon it
+  - The object structure can't change but operations on it can
+  - Operations must be performed on the ocncrete classes of an object structure
+  - Operations should be albe to operate on multiple object structures that implement the same interface sets
+
+### Motivations and Benefits
+- Motivations:
+  - An object structure contains many classes of objects
+  - Many distinct and unrelated operations on these objects -> We want to avoid "polluting" their classes
+  - Classes defining the object structure rarely change, but operations change frequently
+- Benefits:
+  - Makes adding new operations easy
+  - Gathers related operations and separates unrelated operations
+  - Visitors can visit objects that don't have a common parent class
+
+### Participants
+- Visitor:
+  - declares a visit operation for each class of ConcreteElement in the ojbect structure
+- ConcreteVisitor:
+  - implements each operation declared by Visitor
+- Element:
+  - defines an Accept operation that takes a visitor as an argument
+- ConcreteElement:
+  - implements an Accept operation that takes a visitor as an argument
+- ObjectStructure:
+  - can enumerate its elements
+  - may provide a high-level interface to allow the visitor to visit its elements
+  - may be a composite or a collection like a set or list
+
+### Collaborations
+- A client must create ConcreteVisitor object and then traverse the object structure, visiting each element with the visitor
+- When the element is visited, it calls the Visitor operation that corresponds to its class.
+- The element supplies itself as an argument to this operation to let the visitor access its state, if necessary
+
+### Method Overloading
+- Method overloading, however, is done at compile time:
+  - useing "name mangling" where the internal name of the method has the argument's type encoded in it
+  - Different from method overriding (run-time polymorphism)
+
+### Technical Details
+- Double Dispatch:
+  - special form of multiple dispatch
+  - a mechanism that dispatches a method call to different concrete methods depending on the runtime types of two objects involved in the call
+- Single Dispatch:
+  - In most object-oriented systems, the concrete method that is called from a method call in the code depends on the dynamic type of a single object and therefore they are known as single dispatch calls or simply virtual function(method) calls
+
+### How Double-dispatch is implemented in Visitor Pattern
+- Consequently, the implementation of the visit method is chosen based on both:
+  - The dynamic type of the element
+  - The dynamic type of the visitor
+- This effectively implemnts double dispatch:
+  - Common Lisp language's object system supports multiple dispatch (not just single dispatch), and implementing the visitor pattern in Common Lisp is trivial
+
+### Benefits
+- Visitor makes adding new operations easy:
+  - You can define a new operation simply by adding a new visitor
+  - In contrast, if you spread funcitonality over many classes, then you must change each class to define a new operation
+- A visitor gathers related operations and separates unrelated ones:
+  - Related behavior is not spread over the classes defining the object strcture; it's localized in a visitor
+  - Unrelated sets of behavior are partitioned in their own visitor classes
+
+### Liabilities
+- Adding new ConcreteElement classes is hard:
+  - The Visitor pattern makes it hard to add new subclasses of Element
+  - Each new COncreteElement gives rise to a new abstract operation on Visitor and a corresponding implementation in every ConcreteVisitor class
+- Breaking encapsulation:
+  - Visitor's approach assumes that the ConcreteElement interface is powerful enough to let visitors do their job
+  - The pattern often ofrces you to provide public operations that access an element's internal state, which may compromise its encapsulation.
+
+### Implementation of Traversal
+- Who is responsible for traversing the object structure?:
+  - A visitor must visit each elemnt of the object structure.
+  - We can put responsibility for traversal in any of three places:
+    - In the object structure
+    - In the visitor
+    - In a seperate Iterator object
+  - Having the traversal code in the visitor is the least preferred option, as it forces you to repeat the code in every ConcreteVisitor for each ConcreteElement
+
+### Summary
+- The Visitor Design Pattern:
+  - (+) makes adding new operations easy
+  - (+) gathers related operations and separates unrelated ones
+  - (-) adding new COncreteElement classes is hard
+  - (-) Breaks encapsulation
+- Implementation Issues:
+  - Who is responsible for traversing the object structure?
