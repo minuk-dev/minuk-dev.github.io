@@ -905,3 +905,225 @@ parent  : lectures
   - (-) Breaks encapsulation
 - Implementation Issues:
   - Who is responsible for traversing the object structure?
+
+## Design Patterns Review
+### Abstraction
+- Hiding details:
+  - for the purpose of simplifying and managing the design of complex software.
+- Allows to separate categories and concepts related to problems from specific instances of implementation.:
+  - It means that code can be written so that:
+    - it does not depend on the specific detials (e.g. supporting applications, operating system software or hardware)
+    - but it depends on an abstract concept of the solution to the problem that can be integrated with the system with minimal additional work.
+
+### Information hiding and Encapsulation
+- Design principles for hiding internal design decisions related to the selected algorithm and data structures of a module from the outside world.:
+  - the internal design decisions are most likely to change
+  - Thus, reduce the side effects of any future maintenance or modification of the design and hence minimizing the effect on the other modules in the design
+- Information hiding : Encapsulation = Principle : Technique
+
+### Separation of COncerns (SoC)
+- Deisgn principle for separating a computer program into distinct sections, such that each section address a separate concern.
+- A concern is a set of information that affects the code of a computer program.
+- Can be traced back to "divide and conqure"
+- A program that embodies SoC well is called modular.
+- Modularity, and hence separation of concerns, is achieved by encapsulating information inside a section of code that has a well-defined interface
+
+### Interfaces
+- Interfaces are the points of accesses through which modules or systems communicated.
+- Each abstraction should possess a well defined interface clearly describing the expected inputs to and outputs from the abstraction.
+- If the objects are fully encapsulated then the interface will describe the only way in which objects may be accessed by other objects.
+
+### Modularity
+- Goal of design:
+  - partition the system into modules and assign responsibility among the components
+- MOdularity reduces the total complexity a programmer has to deal with at any one time:
+  - Functions are assigned to modules in a way that groups similar functions together (Separation of Concerns), and
+  - There are small, simple, well-defined interfaces between modules (Infromation Hiding)
+
+### Measuring Mdoularity
+- Coupling is a measure of the dependencies between modules
+- Cohesion is a measure of how strongly the elements in a module are related.
+
+### Copuling
+- Low (or loose) coupling : Good:
+  - refers to a relationship in which one module interacts with another module through a stable interface and does not need to be concerned with the otehr module's internal implementation
+- High (or tight) coupling: Bad:
+  - Systems migh experience the following difficulties:
+    - Change in one module forces a ripple of changes in other modules.
+    - Modules are difficult to understand in isolation.
+    - Modules are difficult to reuse or test becase dependent modules msut be included.
+- Low coupling can be achieved by:
+  - eliminating unncessary relationships
+  - reducing the number of necessary relationships
+
+### Cohesion
+- Definition:
+  - The degree to which all elements of a module are directed towards a single task.
+  - The degree to which all elements directed towards a task are contained in a single modules
+
+### Review of Behavioral Patterns
+#### Encapsulating Varitions
+- Encapsulate an aspect that changes frequently:
+  - Strategy: algorithms
+  - State: state-dependent behaviors
+  - Mediator: protocols between objects
+  - Iterator: the way you access and traverse componenets of aggregate object
+
+- Two kinds of objects in teh above patterns:
+  - new object(s) that encapsulate the aspect
+  - existing object(s) that use the new ones
+  - functionality of new obecjts was integeral part of the existing objects:
+    - ex) Strategy and State code : originally in Context class
+  - Not all object behavioral patterns like this:
+    - ex) COR: all of the objects already exist in the system
+
+#### Object as ARguments
+- Several patterns introduce an object that's used as an argument:
+  - Visitor:
+    - visitor object is the argument to polymorphic `accept()` operation on the objects it visits
+  - Command:
+    - act as tokens toe be passed around and invoked later
+    - the token represents a request
+
+#### Decoupling Senders and Receviers
+- Related Patterns:
+  - Command
+  - Observer
+  - Mediator
+  - Chain of Responsibility
+
+- Command Pattern:
+  - decouples invokers and receivers by command objects
+  - allow senders to work with different receivers
+  - a subclass for a sender-receiver connection
+
+- Observer Pattern:
+  - decouples subjects and observers by an interface for signaling changes
+  - a subject may have multiple observers
+  - the number of observers can vary at run-time
+  - best for decoupling objects with data dependencies
+
+- Mediator Pattern:
+  - decouple objects (Colleagues) through a Mediator object
+  - routes requests between Colleague objects
+  - centralizes communication between Colleague objects
+
+- Chain of Responsibility (COR) Pattern:
+  - decouple client and handler by passing the request along a chain
+  - when the chain is part of the system's structure
+  - when one of several objects may be in a position to handler the request
+
+#### Communication: Encapsulate vs. Distribute
+- Mediator:
+  - encapsulates communication between objects
+  - centralizes communications
+  - maintains a communication constraint in the mediator
+  - (-) mediators are hardly ever reusable
+  - (+) easire to understand the flow of communication
+- Observer:
+  - distributes communication by introducing Observer and Subject objects
+  - observer and subject cooperate to maintain a constraint
+  - (+) easire to make reusable observers and subjects
+  - (-) difficult to understand the flow of communication
+
+### Review of Structural Patterns
+#### Adapter vs. Bridge
+- Common:
+  - Both promote flexibility by providing a level of indirection to another object
+- Adapter:
+  - Focuses on resolving incompatibilities between two existing interfaces:
+    - Not focus on how those interfaces are implemented
+    - Nor does it consider how they might evolve independently
+  - It's a way of making two indepdently designed classes work together without re-implementing one ro the other
+- Bridge:
+  - Linking an abstraction and its (potentially numerous) implementations
+  - It provides a stable interface to clients even as it lets you vary the classes that implement it:
+    - It also acoomodates new implementations as the system evolves
+
+- Using points of Adapter:
+  - Becomes necessary when you discover that two incompatible classes should work together
+  - The coupling is unforeseen
+  - The Adapter pattern makes things work after they're designed
+
+- Using points of Bridge:
+  - The user of a bridge understands up-front that an abstraction must have several implementations, and both may evolve independently
+  - The Bridge pattern makes them work before they are
+
+#### Adapter vs. Facde
+- Common:
+  - Both act as wrappers of a pre-existing class
+  - Both tkae an interface that we don't need and convert it to an interface that we can use
+- Facade:
+  - simplify the existing interface
+  - defines a new interface
+- Adapter:
+  - we have a target interface that we are converting to
+  - reuses an old interface:
+    - Often want the dapter to plug into an exsiting framework and behave polymorphically
+
+#### Composite vs. Decorator
+- Common:
+  - recursive composition
+- Decorator:
+  - add responsibilities to objects without subclassing
+  - avoids the explosion of subclasses that can arise from trying to cover every combination of responsibilities statically
+- Composite:
+  - related objects can be treated uniformly, and multiple objects can be treated as one
+  - focus not on embellishment but on representation
+
+#### Decorator vs. Proxy
+- Common:
+  - Both provide a level of indirection to an object
+  - Both keep an reference to another object
+  - Both provide an identical interface to clients
+- Proxy:
+  - control access to an object:
+    - A subject defines functionality
+    - A proxy provides (or refuses) access of funcitonality of a subject
+  - focus on the relationship between the proxy and its subject
+- Decorator:
+  - add responsibilities to an object:
+    - A component provides only part of the functionality
+    - One or more decorators add functionalities to a component in runtime.
+
+### Review of Creational Patterns
+#### Parameterizing a System
+1. Subclassing:
+  - Require creating a new subclass just to change the class of the product
+  - Factory Method
+2. Object composition:
+  - Define an object responibile for knowing the class of the product objects and make it a parameter of the system
+  - Abstract Factory:
+    - the factory object produces objects of several classes
+  - Builder:
+    - the factory object builds a complex product incrementally using a correspondingly complex protocol
+  - Prototype:
+    - the factory object builds a product by copying a prototype object
+    - the factory object and the prototype are the same object
+
+#### Facotry Method vs Abstract Factory
+- Factory Method:
+  - Define an interface for creating an object, but let subclasses decide which class to instantiate.
+  - Let a class defer instantiation to be subclasses
+  - Uses inheritance (subclassing)
+- Abstract Factory:
+  - Provide an interface for creating familites of related or dependent objects without specifying their concrete classes.
+  - Uses composition
+
+#### Evolution of Creational Patterns
+- Factory Method makes a design more customizable and only a little more complicated, since other design patterns require new classes
+- Use Factory Method as the staring point to creat objects
+- Abstract Factory, Prototype, or Builder are more flexible but also more complex.:
+  - They can be used when more flexibility is needed
+
+#### Removing Conditional Statements
+- Object Type:
+  - Polymorphism
+- Action name:
+  - Command pattern
+- Algorithms:
+  - Strategy pattern
+- State dependent behaviors:
+  - State patterns
+- Exceptional cases:
+  - Null Object pattern
