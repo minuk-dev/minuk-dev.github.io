@@ -25,6 +25,7 @@ parent  :
 - [[nginx]]
 - [[curl]]
 - [[autoconf]]
+- [[spring-boot-cli]]
 
 ## script
 - [[피시실]]
