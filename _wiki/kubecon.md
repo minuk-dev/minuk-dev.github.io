@@ -25,3 +25,4 @@ parent  : devops
 - [[coredns-into-and-deep-dive]]
 - [[prometheus-intro-and-deep-dive]]
 - [[to-ipv6-the-dual-stack-adoption-advisory-panel]]
+- [[grafana-loki-like-prometheus-but-for-logs]]
