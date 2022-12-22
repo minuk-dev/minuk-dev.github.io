@@ -29,6 +29,7 @@ draft   : false
 - [[SQL]]
 - [[verilog]]
 - [[regex]]
+- [[kotlin]]
 
 ### English
 - [[english]]
