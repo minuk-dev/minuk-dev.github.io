@@ -30,3 +30,4 @@ parent  :
 - [[selinux]]
 - [[coredns]]
 - [[overlayfs]]
+- [[loki]]
