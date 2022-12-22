@@ -19,31 +19,32 @@ draft   : false
 - [[면접준비]]
 - [[kubernetes]]
 - [[cs]]
+- [[devops]]
 
 ### Language
- * [[assembly]]
- * [[C++]]
- * [[Javascript]]
- * [[Typescript]]
- * [[SQL]]
- * [[verilog]]
- * [[regex]]
+- [[assembly]]
+- [[C++]]
+- [[Javascript]]
+- [[Typescript]]
+- [[SQL]]
+- [[verilog]]
+- [[regex]]
 
 ### English
 - [[english]]
 
 ### Mathematics
- * [[statistics]]
+- [[statistics]]
 
 ### Book Review
- * [[Book reviews]]
+- [[Book reviews]]
 
 ### Algorithm
- * [[algorithm]]
+- [[algorithm]]
 
 ### School
- * [[lectures]]
+- [[lectures]]
 
 ### Others
- - [[topcit]]
- * [[latina]]
+- [[topcit]]
+- [[latina]]
