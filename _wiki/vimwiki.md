@@ -3,7 +3,7 @@ layout  : wiki
 title   : vimwiki
 summary : vimwiki 사용하면서 깨달은 것들
 date    : 2020-04-08 22:51:20 +0900
-lastmod : 2022-04-18 09:22:56 +0900
+lastmod : 2022-12-24 04:52:43 +0900
 tags    : [vim, vimwiki]
 draft   : false
 parent  : vim
