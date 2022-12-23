@@ -132,3 +132,234 @@ const val UNIX_LINE_SEPARATOR = "\n"
 ```kotlin
 fun String.lastChar(): Char = get(length - 1)
 ```
+
+```kotlin
+interface Clickable {
+  fun click()
+  fun showOff() = println("I'm clickable!")
+}
+
+interface Focusable {
+  fun setFocus(b: Boolean) =
+    println("I $if (b) "got" else "lost"} focus.")
+  fun showOff() = println("I'm focusable!")
+}
+
+class Button: Clickable, Focusable {
+  override fun click() = println("I was clicked")
+  override fun showOff() {
+    super<Clickable>.showOff()
+    super<Focusable>.showOff()
+  }
+}
+```
+
+```kotlin
+sealed class Expr {
+  class Num(val value: Int) : Expr()
+  class Sum(val left: Expr, val right: Expr) : Expr()
+}
+
+fun eval(e: Expr): Int =
+  when (e) {
+    is Expr.Num -> e.value
+    is Expr.Sum -> eval(e.right) + eval(e.left)
+  }
+```
+
+```kotlin
+class User constructor(_nickname: String) {
+  val nickname: String
+  init {
+    nickname = _nickname
+  }
+}
+
+class User (_nickname: String) {
+  val nickname = _nickname
+}
+
+class User(val nickname: String)
+
+class User(val nickname: String,
+           val isSubscribed: Boolean = true)
+
+open class User(val nickname: String) { ... }
+class TwitterUser(nickname: String) : User(nickname) { ... }
+```
+
+```kotlin
+open class View {
+  constructor(ctx: Context) {
+    // code
+  }
+
+  constructor(ctx: Context, attr: AttributeSet) {
+    // code
+  }
+}
+
+class MyButton : View {
+  constructor(ctx: Context)
+    : this(ctx, MY_STYLE) {
+    // code
+  }
+
+  constructor(ctx: Context, attr: AttributeSet)
+    : super(ctx, attr) {
+    // code
+  }
+}
+```
+
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other !is Client)
+      return false
+    return name == other.name &&
+      postalCode == other.postalCode
+  }
+  override fun hashCode(): Int = name.hashCode() * 31 + postalCode
+}
+val client1 = Client("John", 4122)
+val client2 = Client("John", 4122)
+
+println(client1 == client2) // true (called equals)
+println(client1 === client2) // false
+```
+
+```kotlin
+class DelegatingCollection<T> (
+  innerList: Collection<T> = ArrayList<T>()
+) : Collection<T> by innerList {}
+```
+
+```kotlin
+class CountingSet<T>(
+  val innerSet: MutableCollection<T> = HashSet<T>()
+) : MutableCollection<T> by innerSet {
+  var objectsAdded = 0
+  override fun add(element: T): Boolean {
+    objectsAdded++
+    return innserSet.add(element)
+  }
+
+  override fun addAll(c: Collection<T>): Boolean {
+    objectsAdded += c.size
+    return innerSet.addAll(c)
+  }
+}
+```
+
+```kotlin
+object CaseInsenitiveFileComparator: Comparator<File> {
+  override fun compare(file1: File, file2: File): Int {
+    return file1.path.compareTo(file2.path,
+      ignoreCase = true)
+  }
+}
+
+println(CaseInsensitiveFileComparator.compare(
+  File("/User"),
+  File("/user")
+))
+```
+
+```kotlin
+class A {
+  companion object {
+    fun bar() {
+      println("Companion object called")
+    }
+  }
+}
+A.bar()
+```
+
+```kotlin
+class User private consturctor(val nickname: String) {
+  companion object {
+    fun newSubscribingUser(email: String) =
+      User(email.substringBefore('@'))
+    fun newFacebookUser(accountId: Int) =
+      User(getFacebookName(accountId))
+  }
+}
+```
+
+```kotlin
+class Person(val name: String) {
+  companion object Loader {
+    fun fromJSON(jsonText: String): Person = ...
+  }
+}
+
+person = Person.Loader.fromJSON("{name: 'Dmitry'}")
+```
+
+```kotlin
+val sum = { x: Int, y: Int -> x + y }
+println(sum(1, 2)) // 3
+```
+
+```kotlin
+val people = listOf(Person("Alice", 29), Person("bob", 31))
+println(people.maxBy() { p: Person -> p.age })
+println(people.maxBy({ p: Person -> p.age })
+println(people.maxBy { p: Person -> p.age })
+println(people.maxBy { it.age })
+```
+
+```kotlin
+val list = listOf(1, 2, 3, 4)
+println(list.filter { it % 2 == 0 })
+println(list.map { it * it })
+```
+
+```kotlin
+val canBeInClub27 = { p: Person -> p.age <= 27 }
+val people = listOf(Person("Alice", 27), Person("Bob", 31))
+println(people.all(canBeInClub27)) // false
+println(people.any(canBeInClub27)) // true
+println(peopl.count(canBeInClub27)) // 1
+println(people.find(canBeInClub27)) // Person(name=Alice, age=27)
+```
+
+```kotlin
+println(people.groupBy { it. age })
+// {29=[Person(name=Bob, age=29)], 31=[Person(name=Alice, age=31)]}
+```
+
+```kotlin
+val strings = listOf("abc", "def")
+println(strings.flatMap { it.toList() })
+// [a, b, c, d, e, f]
+```
+
+```kotlin
+people.asSequence()
+  .map(Person::name)
+  .filter { it.startsWith("A") }
+  .toList()
+```
+
+```kotlin
+fun alphabet(): String {
+  val stringBuilder = StringBuilder()
+  return with(stringBuilder) {
+    for (letter in 'A'..'Z') {
+      this.append(letter)
+    }
+    append("\nNow I know the alphabet!")
+    this.toString()
+  }
+}
+
+fun alphabet() = StringBuilder().apply {
+  for (letter in 'A'..'Z') {
+    append("letter")
+  }
+  append("\nNow I know the alphabet!")
+}.toString()
+```
