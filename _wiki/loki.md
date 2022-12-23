@@ -3,7 +3,7 @@ layout  : wiki
 title   : loki
 summary : loki 자습자료
 date    : 2022-12-22 13:01:14 +0900
-updated : 2022-12-22 13:01:14 +0900
+lastmod : 2022-12-22 13:01:14 +0900
 tags    : [loki]
 draft   : false
 parent  : devops

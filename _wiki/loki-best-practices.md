@@ -3,7 +3,7 @@ layout  : wiki
 title   : loki label best practices
 summary : loki label best practices 문서를 번역해둔 문서
 date    : 2022-12-22 13:03:25 +0900
-updated : 2022-12-22 13:03:25 +0900
+lastmod : 2022-12-22 13:03:25 +0900
 tags    : [loki]
 draft   : false
 parent  : loki

@@ -3,7 +3,7 @@ layout  : wiki
 title   : spring boot cli
 summary : 내가 써먹으려고 적어두는 cli snippet
 date    : 2022-12-19 14:03:25 +0900
-updated : 2022-12-19 14:03:25 +0900
+lastmod : 2022-12-19 14:03:25 +0900
 tags    : [spring, kotlin]
 draft   : false
 parent  : tool

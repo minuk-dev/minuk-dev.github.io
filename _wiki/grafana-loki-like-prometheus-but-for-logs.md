@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Grafana Loki - Like Prometheus, But for logs.
 date    : 2022-12-20 20:02:46 +0900
-updated : 2022-12-20 20:02:46 +0900
+lastmod : 2022-12-20 20:02:46 +0900
 tags    : [grafana, loki, kubecon]
 draft   : false
 parent  : kubecon

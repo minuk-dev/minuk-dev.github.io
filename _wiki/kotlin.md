@@ -2,7 +2,7 @@
 layout  : wiki
 title   : kotlin
 date    : 2022-12-23 01:53:21 +0900
-updated : 2022-12-23 01:53:21 +0900
+lastmod : 2022-12-23 01:53:21 +0900
 tags    : [kotlin]
 draft   : false
 parent  : study-note

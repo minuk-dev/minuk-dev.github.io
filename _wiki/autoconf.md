@@ -3,7 +3,7 @@ layout  : wiki
 title   : autoconf
 summary : 
 date    : 2022-12-12 01:43:07 +0900
-updated : 2022-12-12 01:43:07 +0900
+lastmod : 2022-12-12 01:43:07 +0900
 tags    : 
 draft   : false
 parent  : 
