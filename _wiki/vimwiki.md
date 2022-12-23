@@ -3,7 +3,7 @@ layout  : wiki
 title   : vimwiki
 summary : vimwiki 사용하면서 깨달은 것들
 date    : 2020-04-08 22:51:20 +0900
-lastmod : 2022-12-24 04:52:43 +0900
+lastmod : 2022-12-24 04:55:11 +0900
 tags    : [vim, vimwiki]
 draft   : false
 parent  : vim
@@ -70,6 +70,6 @@ endfunction
 ```
 
 - 그냥 `~/.config/nvim/plugged/vimwiki/ftplugin/vimwiki.vim` 에다가 vimwiki 가 활성화 되었을때 적용되도록 해서 사용하고 있다.
-  - [image2.png](images/image2.png)
+  - ![image2.png](images/image2.png)
 - TODO: 블로그가 아닌 vimwiki 상태에서 사진 미리보기를 어떻게 하면 편리하게 할지는 좀 고민해봐야한다.
 - TODO: 복사는 cmd + c 로 하고, 붙여넣기는 p 로 하고 있는데 이걸 cmd + v 로 바꾸고 싶긴 한데 좀 고민 해봐야한다.
