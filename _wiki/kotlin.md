@@ -2,7 +2,7 @@
 layout  : wiki
 title   : kotlin
 date    : 2022-12-23 01:53:21 +0900
-lastmod : 2022-12-29 02:22:28 +0900
+lastmod : 2022-12-31 04:40:04 +0900
 tags    : [kotlin]
 draft   : false
 parent  : study-note
@@ -590,4 +590,131 @@ class Person(val name: String) {
       return _emails!!
     }
 }
+
+class Person(val name: String) {
+  val emails by lazy { loadEmails(this) }
+}
+```
+
+```kotlin
+fun twoAndThree(operation: (Int, Int) -> Int) {
+  val result = operation(2, 3)
+  println("The result is $result")
+}
+```
+
+```kotlin
+inline fun<T> synchronized(lock: Lock, action: () -> T): T {
+  lock.lock()
+  try {
+    return action()
+  }
+  finally {
+    lock.unlock()
+  }
+}
+
+val l = lock()
+synchronized(l) {
+  // do something
+}
+```
+
+```kotlin
+fun lookForAlice(people: List<Person>) {
+  people.forEach label@{
+    if (it.name == "Alice") return@label
+  }
+  println("Alice might be somewhere")
+}
+```
+
+```kotlin
+val <T> List<T>.penultimate: T
+  get() = this[size - 2]
+```
+
+```kotlin
+class Processor<T> {
+  fun process(value: T) {
+    value?.hashCode() // value is nullable
+  }
+}
+
+class Processor<T: Any> {
+  fun process(value: T) {
+    value.hashCode() // value is not nullable
+  }
+}
+```
+
+```kotlin
+if (value is List<*>) { ... }
+```
+
+```kotlin
+fun printSum(c: Collection<Int>) {
+  if (c is List<Int>) {
+    println(c.sum())
+  }
+}
+```
+
+```kotlin
+inline fun<reified> isA(value: Any) = value is T
+println(isA<String>("abc") // true
+println(isA<String>(123))  // false
+```
+
+```kotlin
+open class Animal {
+  fun feed() { ... }
+}
+
+class Herd<T: Animal> {
+  val size: Int get() = ...
+  operator fun get(i: Int): T { ... }
+}
+
+fun feedAll(animals: Herd<Animal>) {
+  for (i in 0 until animals.size) {
+    animals[i].feed()
+  }
+}
+```
+
+```kotlin
+interface FieldValidator<in T> {
+  fun validate(input: T): Boolean
+}
+
+object DefaultStringValidator: FieldValidator<String> {
+  override fun validate(input: String) = input.isNotEmpty()
+}
+
+object DefaultIntValidator : FieldValidator<Int> {
+  override fun validate(input: Int) = input >= 0
+}
+```
+
+```kotlin
+class HasTempFolder {
+  @get:Rule
+  val folder = TemporaryFolder()
+
+  @Test
+  fun testUsingTempFolder() {
+    val createdFile = folder.newFile("myfile.text")
+    ...
+  }
+}
+```
+
+- `property`, `field`, `get`, `set`, `receiver`, `param`, `setparam`, `delegate`, `file`
+
+```kotlin
+data class Person(
+  @JsonName("alias") val firstName: String,
+  @JsonExclude val age: Int? = null
+)
 ```
