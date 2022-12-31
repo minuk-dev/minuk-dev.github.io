@@ -2,7 +2,7 @@
 layout  : wiki
 title   : kotlin
 date    : 2022-12-23 01:53:21 +0900
-lastmod : 2022-12-31 04:40:04 +0900
+lastmod : 2022-12-31 19:13:09 +0900
 tags    : [kotlin]
 draft   : false
 parent  : study-note
@@ -717,4 +717,13 @@ data class Person(
   @JsonName("alias") val firstName: String,
   @JsonExclude val age: Int? = null
 )
+```
+
+```kotlin
+class Person(val name: String, val age: Int)
+val kClass = person.javaClass.kotlin // KClass<Person>
+println(kClass.simpleName) // Person
+kClass.memberProperties.forEach { println(it.name) }
+// age
+// name
 ```
