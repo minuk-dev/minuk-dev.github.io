@@ -3,7 +3,7 @@ layout  : wiki
 title   : study-note
 summary : 공부한거 모아두기
 date    : 2022-03-31 11:14:42 +0900
-lastmod : 2022-09-28 17:27:10 +0900
+lastmod : 2023-01-01 22:30:50 +0900
 tags    : [study]
 draft   : false
 ---
@@ -20,6 +20,7 @@ draft   : false
 - [[kubernetes]]
 - [[cs]]
 - [[devops]]
+- [[armeria]]
 
 ### Language
 - [[assembly]]
