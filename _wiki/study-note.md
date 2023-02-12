@@ -3,7 +3,7 @@ layout  : wiki
 title   : study-note
 summary : 공부한거 모아두기
 date    : 2022-03-31 11:14:42 +0900
-lastmod : 2023-01-01 22:30:50 +0900
+lastmod : 2023-02-12 16:52:35 +0900
 tags    : [study]
 draft   : false
 ---
@@ -31,6 +31,7 @@ draft   : false
 - [[verilog]]
 - [[regex]]
 - [[kotlin]]
+- [[rust]]
 
 ### English
 - [[english]]
