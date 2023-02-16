@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2022-11-10 00:13:41 +0900
+lastmod : 2023-02-16 23:50:46 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -566,3 +566,95 @@ type Context interface {
     shard.m[key] = value
   }
   ```
+
+## Chapter 5. Building a Cloud Native Service
+
+- Idempotent operations are safer
+- Idempotent operations are often simpler
+- Idempotent operations are more declarative
+
+### Building an HTTP Server with `net/http`
+
+```go
+type Handler interface {
+  ServeHTTP(ResponseWriter, *Request)
+}
+```
+
+- `DefaultServeMux`
+- `ListenAndServe`
+
+### Building an HTTP Server with `gorilla/mux`
+
+- https://github.com/gorilla/mux
+- Variables in URI paths:
+
+```go
+r := mux.NewRouter()
+r.HandleFunc("/products/{key}", ProductHandler)
+r.HandleFunc("/articles/{category}/", ArticlesCategoryHandler)
+r.HandleFunc("/articles/{category}/{id:[0-9]+}", ArticleHandler)
+
+vars := mux.Vars(request)
+category := vars["category"]
+```
+
+---
+- Warning : If you're using `iota` as enumerations in serializations(as we are here), take care to only append to the list, and don't reorder or insert values in the middle, or you won't be able to deserialize later.
+
+## Chapter 6. It's All about Dependability
+- Dependability:
+  - Attributes:
+    - Availability
+    - Reliability
+    - Maintainability
+  - Threats:
+    - Faults
+    - Errors
+    - Failures
+  - Means:
+    - Fault prevention - Scalability
+    - Fault tolerance - Resilience
+    - Fault removal - Manageability
+    - Fault forecasting - Observability
+
+### The Continuing Relevance of the Twelve-Factor App
+- Use declarative formats for setup automation, to minimize time and cost for new developers joining the project
+- Have a cleaen contact with the underlying operating system, offering maximum portability between execution environments
+- Are suitable for deployment on modern cloud platforms, obviating the need for servers and systems administration
+- Minimize divergence between development and production, enabling continuous deployment for maximum agility
+- Can scale up without significant changes to tooling, architecture, or development practices
+
+#### Twelve-Factor App
+- Codebase : One codebase tracked in revision control, many deploys.
+- Dependencies : Explicitly declare and isolate (code) dependencies.
+- Configuration : Store configuration in the environment.
+- Backing Services : Treat backing services as attached resources.
+- Build, Release, Run : Strictly separate build and run stages.
+- Processes : Execute the app as one or more stateless processes.
+- Data Isolation : Each service manages its own data
+- Scalability : Scale out via the process model.
+- Disposability : Maximize robustness with fast startup and graceful shutdown.
+- Development/Production Parity : Keep development, staging, and production as similar as possible.
+- Logs : Treat logs as event streams.
+- Administrative Processes : Run administrative/management tasks as one-off processes.
+
+## Chatpr 7. Scalability
+### The Four Common Bottlenecks
+- CPU, Memory, Disk I/O, Network I/O
+
+### Advantages of Statelessness
+- Scalability, Durability, Simplicity, Cacheability
+
+### Scaling Postponed: Efficiency
+- hashicorp/golang-lru
+
+### The pros and cons of serverlessness
+- Operational management
+- Scalability
+- Reduced costs
+- Productivity
+- Startup latency
+- Observability
+- Testing
+- Cost
