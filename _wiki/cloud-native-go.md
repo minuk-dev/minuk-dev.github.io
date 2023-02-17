@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2023-02-16 23:50:46 +0900
+lastmod : 2023-02-18 01:09:28 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -658,3 +658,87 @@ category := vars["category"]
 - Observability
 - Testing
 - Cost
+
+## Chapter 8. Loose Coupling
+### Tight Coupling
+- "Tightly coupled" components have a great deal of knowledge about another component.:
+  - Fragile exchange protocols
+  - Shared dependencies
+  - Shared point-in-time
+  - Fixed addresses
+- "Loosely coupled" components have minimal direct knowledge of one another.
+
+### Communications Between Services
+- Two messaging patterns:
+  - Request-response (synchronous)
+  - Publish-subscribe (asynchronous)
+
+#### Request-Response Messging
+- Common Request-Response Implementations:
+  - REST
+  - Remote procedure calls(RPC)
+  - GraphQL
+- Issuing HTTP Requests with net/http
+
+```go
+package main
+
+import (
+  "fmt"
+  "io"
+  "net/http"
+  "strings"
+)
+
+const json = `{ "name":"Matt", "age": 44}`
+
+func main() {
+  in := strings.NewReader(json)
+
+  resp, err := http.Post("http://example.com/upload", "text/json", in)
+  if err != nil {
+    panic(err)
+  }
+  defer resp.Body.Close()
+
+  message, err := io.ReadAll(resp.Body)
+  if err != nil {
+    panic(err)
+  }
+
+  fmt.Printf(string(message))
+}
+```
+
+- Remote Procedure Calls with gRPC:
+  - Advantages over REST:
+    - Conciseness : Its messages are more compact, consuming less network I/O.
+    - Speed : Its binary exchange format is much faster to marshal and unmarshal.
+    - Strong-typing : It's natively strongly typed, eliminating a lot of boilerplate and removing a common source of errors.
+    - Feature-rich : It has a number of built-in fetures like authentication, encryption, timeout, and compression (to name a few) that you would otherwise have to implement yourself.
+  - Disadvantages:
+    - Contact-driven: gPRC's contracts make it less suitable for external-facing services
+    - Binary format: gRPC data isn't human-redable, making it harder to inspect and debug.
+  - Interface definition with protocol buffers
+
+### Loose Coupling Local Resources with Plug-ins
+- Plug-in vocabulary:
+  - Plug-in, Open, Symbol, Look up
+- HashiCorp's Go Plug-in SYstem over RPC:
+  - They can't crash your host process
+  - They're more version-flexible
+  - They're relatively secure
+  - More verbose
+  - Lower performance
+
+### Hexagonal Architecture
+#### The Architecture
+- The core application
+- Ports and adapters
+- Actors
+
+## Chapter 9. Resilience
+- Resilience : The measure of a system's ability to withstand and recover from errors and failures.
+- Resilience is not reliability:
+  - The resilience of a system is the degree to which it can continue to operate correctly in the face of erros and faults.
+  - The reliability of a system is its ability to behave as expected for a given time interval.
