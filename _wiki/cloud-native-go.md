@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2023-02-18 11:47:41 +0900
+lastmod : 2023-02-19 01:25:22 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -903,3 +903,380 @@ for backoff := base; err != nil; backoff <<= 1 {
 ```
 
 #### Circuit Breaking
+- Circuit Breaker is generally applied only to outgoing requests. It usually doesn't care one bit about the request rate
+- Throttle works like the throttle in a car by limiting a number of requests
+
+#### Timeouts
+- Using Context for service-side timeouts
+
+```go
+func UserName(ctx context.Context, id int) (string, error) {
+  const query = "SELECT username FROM users WHERE id=?"
+
+  dctx, cancel := context.WithTimeout(ctx, 15 * time.Second)
+  defer cancel()
+
+  var username string
+  err := db.QueryRowContext(dctx, query, id.Scan(&username))
+
+  return username, err
+}
+
+func UserGetHandler(w http.ResponseWriter, r *http.Request) {
+  vars := mux.Vars(r)
+  id := vars["id"]
+
+  rctx := r.Context()
+
+  ctx, cancel := context.WithTimeout(rctx, 10*time.Second)
+  defer cancel()
+
+  username, err := UserName(ctx, id)
+
+  switch {
+  case errors.Is(err, sql.ErrNoRows):
+    http.Error(w, "no such user", http.StatusNotFound)
+  case errors.Is(err, context.DeadlineExceeded):
+    http.Error(w, "database timeout", http.StatusGatewayTimeout)
+  case err != nil:
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  default:
+    w.Write([]byte(username))
+  }
+}
+```
+
+#### Idempotence
+
+### Service Redundancy
+#### Designing for Redundancy
+- Fault masking : When a system fault is invisibly compensated for without being explicitly detected.
+
+#### Autoscaling
+
+### Healthy Health Checks
+- Failures:
+  - A local failure like an application error or resource depletion(CPU, Memory Issue)
+  - A remote failure in some dependency that affects the functioning of the service(Database)
+- Three Types of Health Checks:
+  - Liveness checks:
+    - That the service instance is listening and accepting new connections on the expected port
+    - That the instance is reachable over the network
+    - That any firewall, security group, or other configurations are correctly defined
+  - Shallow health checks:
+    - The availability of key local resources (memory, CPU, database connections)
+    - The ability to read or write local data, which checks disk space, permissions, and for hardware malfunctions such as disk failure
+    - The presence of support processes, like monitoring or updater processes
+  - Deep health checks:
+    - Deep health chekcs directly inspect the ability of a service to interact with its adjacent systems.
+    - Dependencies, invalid credentials, the loss of connectivity to data sotres, or other unexpected networking issues
+- Failing Open
+
+## Chapter 10. Manageability
+- Manageability describes the ease with which changes can be made to the behavior of a sytem, typically without having to resort to changing its code.
+- Maintainability describes the ease with which a software system or component can bemodified to change or add capbilities, correct faults or defects, or improve performance, usually by making changes to the code.
+
+### What Is Manageability and Why Should I Care?
+- Configurations and control
+- Monitoring, logging, and alerting
+- Deployment and updates
+- Service discovery and inventory
+
+### Configuring Your Application
+- Store configuration in the environment
+- Configuration should be strictly separated from the code
+- Configurations should be stored in version control
+
+#### Configuration Good Practice
+- Version control your configurations
+- Don't roll your own format
+- Make the zero value useful
+
+#### Configuring with Environment Variables
+
+```go
+name := os.Getenv("NAME")
+place := os.Getenv("CITY")
+
+fmt.Printf("%s lives in %s.\n", name, place)
+
+if val, ok := os.LookupEnv(key); ok {
+  fmt.Printf("%s=%s\n", key, val)
+} else {
+  fmt.Printf("%s not set\n", key)
+}
+```
+
+#### Configurint with Command-Line Arguments
+- The standard flag package
+
+```go
+pakcage main
+
+import (
+  "flag"
+  "fmt"
+)
+
+func main() {
+  strp := flag.String("string", "foo", "a string")
+
+  intp := flag.Int("number", 42, "an integer")
+  boolp := flag.Bool("boolean", false, "a boolean")
+
+  flag.Parse()
+
+  fmt.Println("string:", *strp)
+  fmt.Println("integer:", *intp)
+  fmt.Println("boolean:", *boolp)
+  fmt.Println("args:", flag.Args())
+}
+```
+
+- The Cobra command-line parser
+
+```go
+package main
+
+import (
+  "fmt"
+  "os"
+  "github.com/spf13/cobra"
+)
+
+var strp string
+var intp int
+var boolp bool
+
+var rootCmd = &cobra.Command{
+  Use: "flags",
+  Long: "A simple flags experimentation command, built with Cobra.",
+  Run: flagsFunc,
+}
+
+func init() {
+  rootCmd.Flags().StringVarP(&strp, "string", "s", "foo", "a string")
+  rootCmd.Flags().IntVarP(&intp, "number", "n", 42, "an integer")
+  rootCmd.Flags().BoolVarP(&boolp, "boolean", "b", false, "a boolean")
+}
+
+func flagsFunc(cmd *cobra.Command, args []string) {
+  fmt.Println("string:", strp)
+  fmt.Println("integer:", intp)
+  fmt.Println("boolean:", boolp)
+  fmt.Println("args:", args)
+}
+
+func main() {
+  if err := rootCmd.Execute(); err != nil {
+    fmt.Println(err)
+    os.Exit(1)
+  }
+}
+```
+
+- Configuring with Files:
+  - Our configuration data structure:
+    - Configuration keys and values can be mapped to corresponding fields in a specific struct type.
+    - Configuration data can be decoded and unmarshalled into one or more, possibly nested, maps of type `map[string]any`.
+  - Working with JSON:
+
+    ```go
+    type Config struct {
+      Host string
+      Port uint16
+      Tags map[string]string
+    }
+
+    // func Marhsal(v any) ([]byte, error)
+    // func MarshalIndent(v any, prefix, indent string) ([]byte, error)
+    bytes, err := json.MarhsalIndent(c, "", "  ")
+    fmt.Println(string(bytes))
+
+    c := Config{}
+    err := json.Unmarshal(bytes, &c)
+    ```
+
+  - Customizing JSON keys:
+
+    ```go
+    CustomKey string `json:"custom_key"`
+    OmitEmpty string `json:",omitempty"`
+    IgnoredName string `json:"-"`
+    ```
+
+  - Working with YAML:
+
+    ```go
+    Flow map[string]string `yaml:"flow"`
+    Inline map[string]string `yaml:",inline"`
+    ```
+
+- Watching for configuration file changes
+
+```go
+func loadConfiguration(filepath string) (Config, error) {
+  dat, err := ioutil.ReadFile(filepath)
+  if err != nil {
+    return Config{}, err
+  }
+
+  config := Config{}
+
+  err = yaml.Unmarshal(dat, &config)
+  if err != nil {
+    return Config{}, err
+  }
+
+  return config, nil
+}
+
+func startListening(update <- chan string, errors <- chan err) {
+  for {
+    select {
+    case filepath := <-updates:
+      c, err := loadConfiguration(filepath)
+      if err != nil {
+        log.Println("error loading config:", err)
+        continue
+      }
+      config = c
+
+    case err := <-errors:
+      log.Println("error watching config:", err)
+    }
+  }
+}
+
+func init() {
+  updates, errors, err := watchConfig("config.yaml")
+  if err != nil {
+    panic(err)
+  }
+
+  go startListening(updates, errors)
+}
+
+func calculateFileHash(filepath string) (string, error) {
+  file, err := os.Open(filepath)
+  if err != nil {
+    return "", err
+  }
+  defer file.Close()
+
+  hash := sha256.New()
+
+  if _, err := io.Copy(hash, file); err != nil {
+    return "", err
+  }
+
+  sum := fmt.Sprintf("%x", hash.Sum(nil))
+
+  return sum, nil
+}
+
+func watchConfig(filepath string) (<- chan string, <- chan error, error) {
+  errs := make(chan error)
+  changes := make(chan string)
+  hash := ""
+
+  go func() {
+    ticker := time.NewTicker(time.Second)
+
+    for range ticker.C {
+      newhash, err := calculateFileHash(filepath)
+      if err != nil {
+        errs <- err
+        continue
+      }
+    }
+
+    if hash != newhash {
+      hash = newhash
+      changes <- filepath
+    }
+  }()
+
+  return changes, errs, nil
+}
+```
+
+- fsnotify
+
+```go
+func watchConfigNotify(filepath string) (<-chan string, <- chan error, error) {
+  changes := make(chan string)
+
+  watcher, err := fsnotify.NewWatcher()
+  if err != nil {
+    return nil, nil, err
+  }
+
+  err = watcher.Add(filepath)
+  if err != nil {
+    return nil, nil, err
+  }
+
+  go func() {
+    changes <- filepath
+
+    for event := range watcher.Events {
+      if event.Op&fsnotify.Write == fsnotify.Write {
+        changes <- event.Name
+      }
+    }
+  }()
+
+  return changes, watcher.Errors, nil
+}
+```
+
+- Viper:
+  - Explicitly set values
+  - Command-line flags
+  - Environment variables
+  - Configuration files, in multiple file formats
+  - Remote key/value stores
+
+```go
+viper.Set("Verbose", true)
+viper.Set("LogFile", LogFile)
+
+var rootCmd = &cobra.Command{ /* */ }
+
+func init() {
+  rootCmd.Flags().IntP("number", "n", 42, "an integer")
+  viper.BindPFlag("number", rootCmd.Flags().Lookup("number"))
+}
+
+n := viper.GetInt("number")
+viper.BindEnv("id")
+viper.BindEnv("port", "SERVICE_PORT")
+
+id := viper.GetInt("id")
+port := viper.GetInt("port")
+
+viper.SetConfigName("config")
+viper.SetConfigType("yaml")
+
+viper.AddConfigPath("/etc/service/")
+viper.AddConfigPath("$HOME/.service")
+viper.AddConfigPath(".")
+
+if err := viper.ReadInConfig(); err != nil {
+  panic(fmt.Errorf("fatal error reading config: %w", err))
+}
+
+viper.WatchConfig()
+viper.OnConfigChange(func(e fsnotify.Event) {
+  fmt.Println("Config file changed:", e.Name)
+})
+```
+
+- viper remote provider
+
+### Feature Management with Feature Flags
+- Generation 0: The Initial Implementation
+- Generation 1: The Hard-Coded Feature Flag
+- Generation 2: The Configurable Flag
+- Generation 3: Dynamic Feature Flags
