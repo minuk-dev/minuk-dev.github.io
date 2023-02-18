@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2023-02-18 01:09:28 +0900
+lastmod : 2023-02-18 11:47:41 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -742,3 +742,164 @@ func main() {
 - Resilience is not reliability:
   - The resilience of a system is the degree to which it can continue to operate correctly in the face of erros and faults.
   - The reliability of a system is its ability to behave as expected for a given time interval.
+
+### Cascading Failures
+- Preventing Overload:
+  - Throttling
+  - Load shedding : Service using this strategy intentionally drop("shed") some proportion of load as they approach overload conditions by either refusing requests or falling back into a degraded mode.
+
+- Throttling
+
+```go
+type Effector func(context.Context) (string, error)
+type Throttled func(context.Context, string) (bool, string, error)
+
+type bucket struct {
+  tokens uint
+  time   time.Time
+}
+
+func Throttle(e Effector, max uint, refill uint, d time.Duration) Throttled {
+  buckets := map[string]*bucket{}
+
+  return func(ctx context.Context, uid string) (bool, string, error) {
+    b := buckets[uid]
+
+    if b == nil {
+      buckets[uid] = &bucket{
+        tokens: max -1,
+        time: time.Now(),
+      }
+
+      str, err := e(ctx)
+      return true, str, err
+    }
+
+    refillInterval := uint(time.Since(b.time) / d)
+    tokensAdded := refill * refillInterval
+    currentTokens := b.tokens + tokensAdded
+
+    if currentTokens < 1 {
+      return false, "", nil
+    }
+
+    if currentTokens > max {
+      b.time = time.Now()
+      b.tokens = max - 1
+    } else {
+      deltaTokens := currentTokens - b.tokens
+      deltaRefills := deltaTokens / refill
+      deltaTime := time.Duration(deltaRefills) * d
+
+      b.time = b.time.Add(deltaTime)
+      b.tokens = currentTokens - 1
+    }
+
+    str, err := e(ctx)
+
+    return true, str, err
+  }
+}
+```
+
+```go
+var throttled = Throttle(getHostname, 1, 1, time.Second)
+
+func getHostname(ctx context.Context) (string, error) {
+  if ctx.Err() != nil {
+    return "", ctx.Err()
+  }
+
+  return os.Hostname()
+}
+
+func throttledHandler(w http.ResposneWriter, r *http.Request) {
+  ok, hostname, err := throttled(r.Context(), r.RemoteAddr)
+
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  if !ok {
+    http.Error(w, "Too many requests", http.StatusTooManyRequests)
+    return
+  }
+
+  w.WriteHeader(http.StatusOK)
+  w.Write([]byte(hostname))
+}
+
+func main() {
+  r := mux.NewRouter()
+  r.HandleFunc("/hostname", throttledHandler)
+  log.Fatal(http.ListenAndServe(":8080", r))
+}
+```
+
+- Load shedding
+
+```go
+const MaxQueueDepth = 1000
+
+func loadSheddingMiddleware(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    if CurrentQueueDepth() > MaxQueueDepth {
+      log.Println("load shedding engaged")
+
+      http.Error(w,
+        err.Error(),
+        http.StatusServiceUnavailable)
+      return
+    }
+
+    next.ServeHTTP(w, r)
+  })
+}
+
+func main() {
+  r := mux.NewRouter()
+
+  r.Use(loadSheddingMiddleware)
+
+  log.Fatal(http.ListenAndServe(":8080", r))
+}
+```
+
+### Play It Again: Retrying Requests
+#### Backoff Algorithms
+
+- Very Common (not good)
+
+```go
+res, err := SendRequest()
+base, cap := time.Second, time.Minute
+
+for backoff := base; err != nil; backoff <<= 1 {
+  if backoff > cap {
+    backoff = cap
+  }
+  time.Sleep(backoff)
+  res, err = SendRequest()
+}
+```
+
+- With jitter(good)
+
+```go
+res, err := SendRequest()
+base, cap := time.Second, time.Minute
+
+for backoff := base; err != nil; backoff <<= 1 {
+  if backoff > cap {
+    backoff = cap
+  }
+
+  jitter := rand.Int63n(int64(backoff * 3))
+  sleep := base + time.Duration(jitter)
+  time.Sleep(sleep)
+  res, err = SendRequest()
+}
+```
+
+#### Circuit Breaking
