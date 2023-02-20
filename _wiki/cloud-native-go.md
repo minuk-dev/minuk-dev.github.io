@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2023-02-19 01:25:22 +0900
+lastmod : 2023-02-20 22:35:54 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -1280,3 +1280,83 @@ viper.OnConfigChange(func(e fsnotify.Event) {
 - Generation 1: The Hard-Coded Feature Flag
 - Generation 2: The Configurable Flag
 - Generation 3: Dynamic Feature Flags
+
+## Chapter 11. Observability
+
+- Data is not information, information is not knowledge, knowledge is not understanding, understanding is not wisdom.
+
+### The Three Pillars of Observability
+- Tracing, Metrics, logging
+
+### OpenTelemetry
+#### The OpenTelemetry Components
+- Specifications
+- API
+- SDK
+- Exporters
+- Collector
+
+#### Tracing Concepts
+- Spans : A span describes a unit of work performed by a request, such as a fork in the execution flow or hop across the network, as it propagates through a system. Each span has an associated name, a start time, and a duration.
+- Traces : A trace represents all of the events - individually represented as spans - that make up a request as it flow through a system
+
+#### Tracing with OpenTelemetry
+- The Console Exporter
+
+```go
+stdExporter, err := stdout.NewExporter(
+  stdout.WithPrettyPrint(),
+)
+```
+
+- The Jaeger Exporter
+
+```go
+jaegerEndpoint := "http://localhost:14268/api/traces"
+serviceName := "fibonacci"
+
+jaegerExporter, err := jaeger.NewRawExporter(
+  jaeger.WithCollectorEndpoint(jaegerEndpoint),
+  jaeger.WithProcess(jaeger.Process{
+    ServiceName: serviceName,
+  }),
+)
+```
+
+### Push Versus Pull Metric Collection
+
+- Push-based metric collection
+- Pull-based metric collection (e.g. Prometheus)
+
+### Logging
+- time, level, one or more contextual elements
+- Dynamic sampling:
+  - zap
+
+```go
+package main
+
+import (
+  "fmt"
+
+  "go.uber.org/zap"
+  "go.uber.org/zap/zapcore"
+)
+
+func init() {
+  cfg := zap.newDevelopmentConfig()
+  cfg.EncoderConfig.TimeKey = ""
+  cfg.Sampling = &zap.SamplingConfig{
+    Initial: 3,
+    Thereafter: 3,
+    Hook: func(e zapcore.Entry, d zapcore.SamplingDecision) {
+      if d == zapcore.LogDropped {
+        fmt.Println("event dropped...")
+      }
+    },
+  }
+
+  logger, _ := cfg.Build()
+  zap.ReplaceGlobals(logger)
+}
+```

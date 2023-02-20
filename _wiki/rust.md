@@ -2,7 +2,7 @@
 layout  : wiki
 title   : rust
 date    : 2023-02-12 16:52:36 +0900
-lastmod : 2023-02-12 18:46:08 +0900
+lastmod : 2023-02-19 15:48:36 +0900
 tags    : [rust]
 draft   : false
 parent  : study-note
@@ -240,3 +240,197 @@ fn main() {
   - Read `&'a Point` as "a borrowed `Point` which is valid for at least the time
   Lifetimes are always inferred by the compiler: you cannot assign a lifetime yourself.:
   Lifetime annotations create constraints; the compiler verifies that there is a valid solution.
+
+### Structs
+
+```rust
+struct Person {
+  name: String,
+  age: u8,
+}
+
+fn main() {
+  let mut peter = Person {
+    name: String::from("Peter"),
+    age: 27,
+  };
+  println!("{} is {} years old", peter.name, peter.age);
+
+  peter.age = 28;
+  println!("{} is {} years old", peter.name, peter.age);
+
+  let jackie = Person {
+    name: String::from("Jackie"),
+    ..peter
+  };
+
+  println!("{} is {} years old", jackie.name, jackie.age);
+}
+```
+
+### Tuple Structs
+
+```rust
+struct Point(i32, i32);
+
+struct Newtons(f64);
+```
+
+### Field Shorthand Syntax
+
+```rust
+struct Person {
+  name: String,
+  age: u8,
+}
+
+impl Person {
+  fn new(name: String, age: u8) -> Person {
+    Person { name, age }
+  }
+  /*
+  fn new(name: String, age: u8) -> Self {
+    Self { name, age }
+  }
+  */
+}
+
+fn main() {
+  let peter = Person::new(String::from("Peter"), 27);
+  println!("{peter:?}");
+}
+```
+
+### Enums
+
+```rust
+fn generate_random_number() -> i32 {
+  4
+}
+
+enum CoinFilp {
+  Heads,
+  Tails,
+}
+
+fn flip_coin() -> CoinFlip {
+  let random_number = generate_random_number();
+  if random_number % 2 == 0 {
+    return CoinFlip::Heads;
+  } else {
+    return CoinFlip::Tails;
+  }
+}
+
+fn main() {
+  println!("You got: {:?}", flip_coin());
+}
+```
+
+### Variant Payloads
+
+```rust
+enum WebEvent {
+  PageLoad,
+  KeyPress(char),
+  Click { x: i64, y: i64 },
+}
+
+fn inspect(event:WebEvnet) {
+  match event {
+    WebEvent::PageLoad => println!("page loaded"),
+    WebEvent::KeyPress(c) => println!("pressed '{c}'"),
+    WebEvent::Click { x, y } => println!("clicked at x={x}, y={y}"),
+  }
+}
+
+fn main() {
+  let load = WebEvent::PageLoad;
+  let press = WebEvent::KeyPress('x');
+  let click = WebEvent::Click { x: 20, y: 80 };
+
+  inspect(load);
+  inspect(press);
+  inspect(click);
+}
+```
+
+- `std::mem::discriminant()`
+
+### Methods
+
+```rust
+struct Person {
+  name: String,
+  age: u8,
+}
+
+impl Person {
+  fn say_hello(&self) {
+    println!("Hello, my name is {}", self.name);
+  }
+}
+
+fn main() {
+  let peter = Person {
+    name: String::from("Peter"),
+    age: 27,
+  };
+  peter.say_hello();
+}
+```
+
+### Method Receiver
+- `&self`: borrows the object from the caller using a shared and immutable reference.
+- `&mut self`: borrows the object from the caller using a unique and mutable reference.
+- `self` : takes onwership of the object and moves it away from the caller. The method becomes the owner of the object.
+- `mut self`: same as `self`, but while the method owns the object, it can mutate it too.
+- No receiver: this becomes a static method on the struct.
+
+### Pattern Matching
+
+```rust
+fn main() {
+  let input = 'x';
+
+  match input {
+    'q' => println!("Quitting"),
+    'a' | 's' | 'w' | 'd' => println!("Moving around"),
+    '0'..='9' => println!("Number input"),
+    _ => println!("Something else"),
+  }
+}
+```
+
+### Destructing Structs
+
+```rust
+struct Foo {
+  x: (u32, u32),
+  y: u32,
+}
+
+fn main() {
+  let foo = Foo { x: (1, 2), y: 3};
+  match foo {
+    Foo { x: (1, b), y } => println!("x.0 = 1, b = {b}, y = {y}"),
+    Foo { y: 2, x: i } => println!("y = 2, x = {i:?}"),
+    Foo { y, .. } => println!("y = {y}, other fields were ignored"),
+  }
+}
+```
+
+### Match Guards
+
+```rust
+fn main() {
+    let pair = (2, -2);
+    println!("Tell me about {pair:?}");
+    match pair {
+        (x, y) if x == y     => println!("These are twins"),
+        (x, y) if x + y == 0 => println!("Antimatter, kaboom!"),
+        (x, _) if x % 2 == 1 => println!("The first one is odd"),
+        _                    => println!("No correlation..."),
+    }
+}
+```
