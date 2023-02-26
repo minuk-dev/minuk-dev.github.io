@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Cloud Native Go
 date    : 2022-11-02 00:20:40 +0900
-lastmod : 2023-02-20 22:35:54 +0900
+lastmod : 2023-02-26 15:40:31 +0900
 tags    : [go]
 draft   : false
 parent  : Book reviews
@@ -1360,3 +1360,184 @@ func init() {
   zap.ReplaceGlobals(logger)
 }
 ```
+
+## Control Flow
+### Block
+
+```rust
+fn main() {
+  let x = {
+    let y = 10;
+    println!("y: {y}");
+    let z = {
+      let w = {
+        3 + 4
+      };
+      println!("w: {w}");
+      y * w
+    };
+    println!("z: {z}");
+    z - y
+  };
+  println!("x: {x}");
+}
+```
+
+### `if` expressions
+### `if let` expressions
+
+```rust
+fn main() {
+  let arg = std::env::args().next();
+  if let Some(value) = arg {
+    println!("Program name: {value}");
+  } else {
+    println!("Missing name?");
+  }
+}
+```
+
+### `while` expressions
+### `for` expressions
+
+```rust
+fn main() {
+  let v = vec![10, 20, 30];
+
+  for x in v {
+    println!("x: {x}");
+  }
+
+  for i in (0..10).step_by(2) {
+    println!("i: {i}");
+  }
+}
+```
+
+### `loop` expresssions
+
+```rust
+fn main() {
+  let mut x = 10;
+  loop {
+    x = if x % 2 == 0 {
+      x / 2
+    } else {
+      3 * x + 1
+    };
+    if x == 1 {
+      break;
+    }
+  }
+  println!("Final x: {x}");
+}
+```
+
+### `match` expressions
+### `break` and `continue`
+
+```rust
+fn main() {
+  let v = vec![10, 20, 30];
+  let mut iter = v.into_iter();
+  'outer: while let Some(x) = iter.next() {
+    println!("x: {x}");
+    let mut i = 0;
+    while i < x {
+      println!("x: {x}, i: {i}");
+      i += 1
+      if i == 3 {
+        break 'outer;
+      }
+    }
+  }
+}
+```
+
+## Standard Library
+- Option and Result types: used for optional values an derror handling.
+- String: the default string type used for owned data.
+- Vec: a standard extensible vector.
+- HashMap: a hash map type with a configurable hashing algorithm
+- Box: an owned poitner for heap-allocated data
+- Rc: a shared reference-counted poitner for heap-allocated data
+
+### Option and Result
+### String
+
+```rust
+fn main() {
+  let mut s1 = String::new();
+  s1.push_str("Hello");
+  println!("s1: len = {}, capacity = {}", s1.len(), s1.capacity());
+
+  let mut s2 = String::with_capacity(s1.len() + 1);
+  s2.push_str(&s1);
+  s2.push("!");
+  println!("s2: len = {}, capcity = {}", s2.len(), s2.capacity());
+
+  let s3 = String::from("🇨🇭");
+  println!("s3: len = {}, number of chars = {}", s3.len(), s3.chars().count());
+}
+```
+
+### Vec
+### HashMap
+### Box
+- `Box` is like `std::unique_ptr` in C++, except that it's guaranteed to be not null.
+
+### Niche Optimization
+
+```rust
+#[drive(Debug)]
+enum List<T> {
+  Cons(T, Blox<List<T>>),
+  Nil,
+}
+
+fun main() {
+  let list: List<i32> = List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil))));
+  println!("{list:?}");
+}
+```
+
+### Rc
+- Rc is a refernece-counted shared pointer.
+
+### Modules
+
+```rust
+mod foo {
+  pub fn do_something() {
+    println!("In the foo module");
+  }
+}
+
+mod bar {
+  pub fn do_something() {
+    println!("In the bar module");
+  }
+}
+
+fn main() {
+  foo::do_something();
+  bar::do_something();
+}
+```
+
+### Visibility
+- Modules are a privacy boundary:
+  - Module items are private by default (hides implementation details).
+  - Parent and sibling items are always visible.
+
+### Paths
+- As a relative path:
+  - `foo` or `self::foo` refers to `foo` in the current module,
+  - `super::foo` refers to `foo` in the parent module.
+- As an absolute path:
+  - `create::foo` refers to `foo` in the root of the current crate,
+  - `bar::foo` refers to `foo` in the `bar` crate.
+
+### Filesystem Hierarchy
+- `src/garden.rs` (modern Rust 2018 style)
+- `src/garden/mod.rs` (older Rust 2015 style)
