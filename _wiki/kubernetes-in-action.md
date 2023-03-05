@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2022-05-03 02:04:46 +0900
+lastmod : 2023-03-05 19:37:18 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -846,3 +846,150 @@ kubectl get sa
 - Heapster
 - Storing and analyzing historical resource consumption statistics:
   - InfluxDB, Grafana
+
+## Chatper 15. Automatic scaling of pods and cluseter nodes
+### 15.1. Horizontal pod autoscaling
+#### 15.1.1. Understanding the autoscaling process
+- Obtaining pod metrics:
+  - Pod(s) - cAdvisor(s) - Heapster - Horizontal Pod Autoscaler(s)
+  - Prior to k8s version 1.6, the HorizontalPodAutoscaler obtained the metrics from Heapster directly.
+  - Heapster was deprecated in version 1.11, and removed in version 1.13
+- Calculating the required number of pods
+- Updating the desired replica count on the scaled resource
+
+#### 15.1.2. Scaling based on CPU utilization
+- Creating a HorizontalPodAutoscaler based on CPU usage
+
+```bash
+kubectl autoscale deployment <deployment name> --cpu-percent=30 --min=1 --max=5
+```
+
+- Seeing the first automatic rescale event
+
+```bash
+kubectl get hpa
+```
+
+- Triggering a scale-up
+- Seeing the Autoscaler scale up the deployment
+- Understanding the maximum rate of scaling:
+  - auto scaling events has minimum gap.
+- Modifying the target metric value on an existing HPA object
+
+#### 15.1.3. Scaling based on memory consumption
+#### 15.1.4. Scaling based on other and custom metrics
+- https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics
+
+- Three types of metrics which we can use for an HPA object:
+  - Resource, Pods, object
+- Understanding the Resource metric type
+- Understanding the pods metric type
+
+#### 15.1.5. Determining which metrics areappropriate for autoscaling
+#### 15.1.6. Scaling down to zero replicas
+- https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics
+
+### 15.2. Vertical pod autoscaling
+- https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
+#### 15.2.1. Automatically configuring resource requests
+#### 15.2.2. Modifying resource requests while a pod is running
+
+### 15.3. Horizontal scaling of cluster nodes
+#### 15.3.1. Introducing the Cluster Autoscaler
+- Requesting additional nodes from the cloud infrastructure:
+  1. Autoscaler notices a Pod can't be schdeulded to exsiting nodes
+  2. Autoscaler determines which node type (if any) would be able to fit the pod. If multiple types could fit the pod, it selects one of them.
+  3. Autoscaler scales up the node group selected in previous step.
+
+- Relinquishing nodes
+
+#### 15.3.2. Enabling the Cluster Autoscaler
+#### 15.3.3. Limiting service disruption during cluster scale-down
+- PodDiscruptionBudget
+
+```bash
+kubectl create pdb <pdb name> --selector=<selector; e.g. app=kubia> --min-available=<numeric; e.g. 3>
+```
+
+### 15.4. Summary
+- Configuring the automatic horizontal scaling of pods is as easy as creating a Horizontal-PodAutoscaler object and pointing it to a Deployment, ReplicaSet, or ReplicationController and specifying the target CPU utilization for the pods.
+- Besides having the Horizontal Pod Autoscaler perform scaling operations based on the pods' CPU utilization, you can also configure it to scale based on your own application-provided custom metrics or metrics related to other objects deployed in the cluster.
+- Vertical pod autoscaling isn't possible yet.
+- Even cluster nodes can be scaled automatically if your Kubernetes cluster runs on a supported cloud provider.
+- You can run one-off processes in a pod and have the pod stopped and deleted automatically as soon you press CTRL+C by using kubectl run with the -it and --rm options.
+
+## Chapter 16. Advanced schdeuling
+### 16.1. Using taints and tolerations to repel pods from certain nodes
+#### 16.1.1. Introducing taints and tolerations
+- Displaying a node's taints
+- Displaying a pod's toelrations
+- Understanding taint effects:
+  - NoSchedule
+  - PreferNoSchedule
+  - NoExecute
+
+#### 16.1.2. Adding custom taints to a node
+#### 16.1.3. Adding toleratiosn to pods
+#### 16.1.4. Understanding what taints and tolerations can be used for
+- Using taints and tolerations during scheduling:
+  - Taints can be used to prevent scheduling of new pods and to define unpreferred nodes and even evict existing pods from a node
+- Configuring how long after a node failure a pod is rescheduled
+
+### 16.2. Using node affinity to attract pods to certain nodes
+- Comparing node affinity to node selectors
+- Examining the default node labels
+
+#### 16.2.1. Specifying hard node affinity rules
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubia-gpu
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: gpu
+            operation: In
+            values:
+            - "true"
+```
+
+- Making sense of the long nodeAffinity attribute name:
+  - `requiredDuringScheduling...` : the node must have for the pod to be scheduled to the node.
+  - `...IgnoredDuringExecution` : don't affect pods already executing on the node.
+
+- Understanding nodeSelectorTerms
+
+#### 16.2.2. Prioritizing nodes when scheduling a pod
+- Labeling nodes
+
+### 16.3. Co-locating pods with pod affinity and anti-affinity
+#### 16.3.1. Using inter-pod affinity to deploy pods on the same node
+- Specifying pod affinity in a pod definition
+- Deploying a pod with pod affinity
+- Understanding how the scheduler uses pod affinity rules
+
+#### 16.3.2. Deploying pods in the same rack, availability zone, or geographic region
+- https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+- Co-locating pods in the same availability zone
+- Co-locating pods in the same geographical region
+
+#### 16.3.3. Expressing pod affinity preferences instad of hard requirements
+#### 16.3.4. Schdeduling pods away from each other with pod anti-affinity
+
+### 16.4. Summary
+- If you add a taint to a node, pods won't be scheduled to that node unless they tolerate that taint.
+- Three types of taints exsit:
+  - `NoSchedule`: completely prevents chdeduling
+  - `PreferNoSchedule`: isn't as strict
+  - `NoExecute`: even evicts existing pods from a node.
+- The `NoExecute` taint is also used to specify how long the Control Plan should wait before rescheduling the pod when the node it runs on becomes unreachable or unready.
+- Node affinity allows you to specify which nodes a pod should be scheduled to. It can be used to specify a hard requirement or to only express a node preference.
+- Pod affinity is used to make the Scheduler deploy pods to the same node where another pod is running (based on the pod's lables).
+- Pod affinity's `topologyKey` specifies how close the pod should be deployed to the other pod(onto the same node or onto a node in the same rack, availability zone, or avabilability region).
+- Pod anti-affinity can be used to keep certain pods away from each other.
+- Both pod affinity and anti-affinity, like node affinity, can either specify hard requirements or preferences.
