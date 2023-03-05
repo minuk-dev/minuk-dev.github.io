@@ -2,7 +2,7 @@
 layout  : wiki
 title   : rust
 date    : 2023-02-12 16:52:36 +0900
-lastmod : 2023-02-19 15:48:36 +0900
+lastmod : 2023-03-05 19:42:25 +0900
 tags    : [rust]
 draft   : false
 parent  : study-note
@@ -434,3 +434,306 @@ fn main() {
     }
 }
 ```
+
+## Control Flow
+### Block
+
+```rust
+fn main() {
+  let x = {
+    let y = 10;
+    println!("y: {y}");
+    let z = {
+      let w = {
+        3 + 4
+      };
+      println!("w: {w}");
+      y * w
+    };
+    println!("z: {z}");
+    z - y
+  };
+  println!("x: {x}");
+}
+```
+
+### `if` expressions
+### `if let` expressions
+
+```rust
+fn main() {
+  let arg = std::env::args().next();
+  if let Some(value) = arg {
+    println!("Program name: {value}");
+  } else {
+    println!("Missing name?");
+  }
+}
+```
+
+### `while` expressions
+### `for` expressions
+
+```rust
+fn main() {
+  let v = vec![10, 20, 30];
+
+  for x in v {
+    println!("x: {x}");
+  }
+
+  for i in (0..10).step_by(2) {
+    println!("i: {i}");
+  }
+}
+```
+
+### `loop` expresssions
+
+```rust
+fn main() {
+  let mut x = 10;
+  loop {
+    x = if x % 2 == 0 {
+      x / 2
+    } else {
+      3 * x + 1
+    };
+    if x == 1 {
+      break;
+    }
+  }
+  println!("Final x: {x}");
+}
+```
+
+### `match` expressions
+### `break` and `continue`
+
+```rust
+fn main() {
+  let v = vec![10, 20, 30];
+  let mut iter = v.into_iter();
+  'outer: while let Some(x) = iter.next() {
+    println!("x: {x}");
+    let mut i = 0;
+    while i < x {
+      println!("x: {x}, i: {i}");
+      i += 1
+      if i == 3 {
+        break 'outer;
+      }
+    }
+  }
+}
+```
+
+## Standard Library
+- Option and Result types: used for optional values an derror handling.
+- String: the default string type used for owned data.
+- Vec: a standard extensible vector.
+- HashMap: a hash map type with a configurable hashing algorithm
+- Box: an owned poitner for heap-allocated data
+- Rc: a shared reference-counted poitner for heap-allocated data
+
+### Option and Result
+### String
+
+```rust
+fn main() {
+  let mut s1 = String::new();
+  s1.push_str("Hello");
+  println!("s1: len = {}, capacity = {}", s1.len(), s1.capacity());
+
+  let mut s2 = String::with_capacity(s1.len() + 1);
+  s2.push_str(&s1);
+  s2.push("!");
+  println!("s2: len = {}, capcity = {}", s2.len(), s2.capacity());
+
+  let s3 = String::from("🇨🇭");
+  println!("s3: len = {}, number of chars = {}", s3.len(), s3.chars().count());
+}
+```
+
+### Vec
+### HashMap
+### Box
+- `Box` is like `std::unique_ptr` in C++, except that it's guaranteed to be not null.
+
+### Niche Optimization
+
+```rust
+#[drive(Debug)]
+enum List<T> {
+  Cons(T, Blox<List<T>>),
+  Nil,
+}
+
+fun main() {
+  let list: List<i32> = List::Cons(1, Box::new(List::Cons(2, Box::new(List::Nil))));
+  println!("{list:?}");
+}
+```
+
+### Rc
+- Rc is a refernece-counted shared pointer.
+
+### Modules
+
+```rust
+mod foo {
+  pub fn do_something() {
+    println!("In the foo module");
+  }
+}
+
+mod bar {
+  pub fn do_something() {
+    println!("In the bar module");
+  }
+}
+
+fn main() {
+  foo::do_something();
+  bar::do_something();
+}
+```
+
+### Visibility
+- Modules are a privacy boundary:
+  - Module items are private by default (hides implementation details).
+  - Parent and sibling items are always visible.
+
+### Paths
+- As a relative path:
+  - `foo` or `self::foo` refers to `foo` in the current module,
+  - `super::foo` refers to `foo` in the parent module.
+- As an absolute path:
+  - `create::foo` refers to `foo` in the root of the current crate,
+  - `bar::foo` refers to `foo` in the `bar` crate.
+
+### Filesystem Hierarchy
+- `src/garden.rs` (modern Rust 2018 style)
+- `src/garden/mod.rs` (older Rust 2015 style)
+
+## Traits
+
+```rust
+trait Greet {
+  fn say_hello(&self);
+}
+
+struct Dog {
+  name: String,
+}
+
+struct Cat;
+
+impl Greet for Dog {
+  fn say_hello(&self) {
+    println!("Wuf, my name is {}!", self.name);
+  }
+}
+
+impl Greet for Cat {
+  fn say_hello(&self) {
+    println!("Miau!");
+  }
+}
+
+fn main() {
+  let pets: Vec<Box<dyn Greet>> = vec![
+    Box::new(Dog { name: String::from9"Fido") }),
+    Box::new(Cat),
+  ];
+  for pet in pets {
+    pet.say_hello();
+  }
+}
+```
+
+### Important Traits
+- `Iterator` and `IntoIterator` used in for loops,
+- `From` and `Into` used to convert values,
+- `Read` and `Write` used for IO,
+- `Add`, `Mul`, ... used for operator overloading, and
+- `Drop` used for defining destructors.
+- `Default` used to construct a default instance of a type.
+
+#### `Iterator`
+- `IntoIterator` is the trait that makes for loops work.
+- The `Iterator` trait implements many common functional programming operations over collections (e.g. `map`, `filter`, `reduce`, etc)
+
+#### `FromIterator`
+- `Iterator` implements `fn collect<B>(self) -> B where B: FromIterator<Self::Item>, Self:Sized`
+
+#### `From` and `Into`
+
+```rust
+fn main() {
+  let s = String::from("hello");
+  let addr = std::net::Ipv4Addr::from([127, 0, 0, 1]);
+  let one = i16::from(true);
+  let bigger = i32::form(123i16);
+  println!("{s}, {addr}, {one}, {bigger}");
+}
+
+fn main() {
+  let s: String = "hello".into();
+  let addr: std::net::Ipv4Addr = [127, 0, 0, 1].into();
+  let one: i16 = true.into();
+  let bigger: i32 = 123i16.into();
+  println!("{s}, {addr}, {one}, {bigger}");
+}
+```
+
+#### `Read` and `Write`
+#### `Add`, `Mul`, ...
+#### The `Drop` Trait
+#### The `Default` Trait
+### Generics
+#### Generic Data Types
+
+```rust
+#[derive(Debug)]
+struct Point<T> {
+  x: T,
+  y: T,
+}
+
+fn main() {
+  let integer = Point { x: 5, y: 10 };
+  let float = Point { x: 1.0, y: 4.0 };
+  println!("{integer:?} and {float:?}");
+}
+```
+
+#### Generic Method
+- `impl<T> Point<T> { ... }`
+- `impl Point<u32> { ... }`
+
+#### Trait Bounds
+
+```rust
+fn duplicate<T: Clone>(a: T) -> (T, T) {
+  (a.clone(), a.clone())
+}
+
+fn add_42_millions(x: impl Into<i32>) -> i32 {
+  x.into() + 42_000_000
+}
+
+fn main() {
+  let foo = String::from("foo");
+  let pair = duplicate(foo);
+  println!("{pair:?}");
+
+  let many = add_42_millions(42_i8);
+  println!("{many}");
+  let many_more = add_42_millions(10_000_000):
+  println!("{many_mor}");
+}
+```
+
+#### closures
+
