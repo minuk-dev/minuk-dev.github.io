@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Observability Engineering
 date    : 2023-02-20 22:40:32 +0900
-lastmod : 2023-03-05 22:48:38 +0900
+lastmod : 2023-03-12 23:34:49 +0900
 draft   : false
 parent  : Book Review
 resource: 946BEF17-575B-4500-ABE7-19CA927C1835
@@ -97,3 +97,38 @@ resource: 946BEF17-575B-4500-ABE7-19CA927C1835
 #### Traditional Monitoring Is Fundamentally Reactive
 
 ### How Observability Enables Better Debugging
+- Observability lets you explicitly discover the source of any problem, along any dimension or combination of dimensions, without needing to first predict where and how that problem might be happening; this model centers around questioning and understanding.
+- Differences:
+  - Relying on institutional knowledge
+  - Finding Hidden Issues
+  - Having confidence in diagnosing production issues
+- Observability tools pull high-cardinality, high-dimensionality context from telemetry data into a signle location where investigators can easily slice and dice to zoom in, zoom out, or follow breadcrumbs to find definitive answers.
+
+### Conclusion
+- Monitoring-based debugging:
+  - Metics & dashboard
+- Observability-based debugging:
+  - Withouth learning on experience or intimate system knowledge to generate a hunch
+
+## Chapter3. Lessons from Scaling Wihtout Observability
+- `If you can solve your problem with a LAMP stack (or equivalent), you probably should`:
+  - When architecting a service, the first rule is to not add unnecessary complexity.
+  - Don't confuse boring with bad.
+- On a technical level, thse shifts include several primary effects:
+  - The decomposition of everything, from one to many
+  - The need for a variety of data stores, from one database to many storage systems
+  - A migration from monolithic applications toward many smaller microservices
+  - A variety of infrastructure types away from "big iron" servers toward contatiners, functions, serverless, and other ephemeral, elastic resources
+
+### The Evolution Toward Modern Practices
+- Userexperience can no longer be generalized as being the same for all service users. In the new model, different users of a service may be routed through the system in different ways, using different components, providing experience s that can vary widely.
+- Monitoring alerts that look for edge cases in production that have system conditions exceeding known thresholds generate a tremendous number of false positives, false negatives, and meaningless noise. Alerting has shifted to a model in which fewer alerts are triggered, by focusing only on symptoms that directly impact user experience.
+- Debuggers can no longer be attached to one specific runtime. Fullfilling service requests now requires hopping across a network, spanning multiple runtimes, often multiple times per individual request.
+- Known recurring failures that require manual remediation and can be defined in a runbook are no longer the norm. Service failures have shifted from that model toward one in which known recurring fialures can be recovered automatically. Failures that cannot be automatcially recovered, and therefore trigger an alert, likely mean the responding engineer wil lbe facing a novel problem.
+
+- Tips to diagnose problems:
+  - Microservices and requests that spanned multiple runtimes.
+  - Polyglot storage systems, without requiring expertise in each.
+  - Multitenancy and running obht server-side code and queries; we could easily drill down into individual user experiences to see exactly what was happening.
+
+## Chapter 4. How Observability Relates to DevOps, SRE, and Cloud Native
