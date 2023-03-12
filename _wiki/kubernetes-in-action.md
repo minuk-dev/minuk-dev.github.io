@@ -3,7 +3,7 @@ layout  : wiki
 title   : Kubernetes in action
 summary : 쿠버네티스 ebook 읽으면서 대충 정리
 date    : 2022-01-31 04:38:12 +0900
-lastmod : 2023-03-05 19:37:18 +0900
+lastmod : 2023-03-12 21:16:57 +0900
 tags    : [k8s]
 draft   : false
 parent  : Book reviews
@@ -993,3 +993,93 @@ spec:
 - Pod affinity's `topologyKey` specifies how close the pod should be deployed to the other pod(onto the same node or onto a node in the same rack, availability zone, or avabilability region).
 - Pod anti-affinity can be used to keep certain pods away from each other.
 - Both pod affinity and anti-affinity, like node affinity, can either specify hard requirements or preferences.
+
+
+## Chapter 17. Best practices for developing apss
+### 17.1. Bringing everything together
+### 17.2. Understanding the pod's lifecycle
+#### 17.2.1. Applicatiosn must expect to be killed and replocated
+- Expecting the local IP and hostname to change
+- Expecting the data written to disk to disappear
+- Using volumdes to preserve data across container restarts
+
+#### 17.2.2. Rescheduling of dead or partially dead pods
+#### 17.2.3. Starting pods in a specific order
+- Understanding how pods are started
+- Introducing Init Containers
+- Adding an Init Container to a pod
+- Best practices for handlign inter-pod depdencies
+
+#### 17.2.4. Adding lifecycle hooks
+- Post-start hooks
+- Pre-stop hooks
+- Using a pre-stop hook because your app doesn't receive teh SIGTERM signal
+- Understanding that lifecycel hooks target containers, not pods
+
+#### 17.2.5. Understanding pod shutdown
+- Specifying the termination grace period:
+  - `spec.terminationGracePeriodSeconds` : defualt 30s
+
+  ```bash
+  kubectl delete pod mypod --grace-period=0 --force
+  ```
+
+- Implementing the proper shutdown handler in your application:
+  - There are absolutely no guarantees that the pod will be allowed to complete its whole shut-down procedure.
+- Replacing critical shut-down procedures with dedicated shut-down procedure pods
+
+### 17.3. Ensuring all client requests are handled properly
+#### 17.3.1. Preventing broken client connections when a pod is starting up
+#### 17.3.2. Preventing broken connections during pod shutdown
+- Understanding the sequence of events occurring at pod deletion:
+  - A & B simultaneously run
+  - A root : Watch notification(pod modified) - kubelet send `SIGTERM` to containers
+  - B root : Watch notification(pod modified) - Endpoitns controller remove pod's IP from endpoints using API Server:
+    - kube-proxy recognize endpoints changes using watch notification:
+      - Update iptables rule
+- To recap properly shutting down an application includes these steps:
+  - Wait for a few seconds, then stop accepting new connections
+  - Close all keep-alive connections not in the middle of a request
+  - Wait for all active requests to finish
+  - Then shut down completely.
+
+### 17.4. Making your apps easy to run and manage in Kubernetes
+#### 17.4.1. Making manageable container images
+#### 17.4.2. Properly tagging your images and using imagePullPolicy wisely
+- `imagePullPolicy` set `Always` with `latest` tag.
+
+#### 17.4.3. Using multi-dimensional instead of single-dimensional labels
+- Labels:
+  - The name of the application (or perhaps microservice) the resource belongs to
+  - Application tier (front-end, back-end, and so on)
+  - Environment (development, QA, staging, production, and so on)
+  - Version
+  - Type of release (stable, canary, green or blue for green/blue development,s and so on)
+  - Tenant (if you're running separate pods for each tenant instead of using namespaces)
+  - Shard for sharded systems
+
+#### 17.4.4. Describing each resource through annotations
+#### 17.4.5. Providing infromation on why the process terminated
+- `/dev/termination-log`, `terminationMessagePath`
+
+#### 17.4.6. Handling application logs
+- Using centralized logging:
+  - ELF, EFK
+- Handling multi-line log statments
+
+### 17.5. Best practices for development and testing
+#### 17.5.1. Running apps outside of Kubernetes during development
+- Connecting to backend services:
+  - `BACKEND_SERVICE_HOST` and `BACKEND_SERVICE_PORT`
+- Connecting to the API server
+- Runnign inside a container even during development
+
+#### 17.5.2. Using Minikube in development
+
+### 17.6. Summary
+- Make you think about the difference between apps that are rarely moved between machines and apps running as pods, which are relocated much more frequently.
+- Help you understand that yuour multi-component apps (or microservices, if you will) shouldn't rely on a specific start-up order
+- Introduce init containers, which can be used to initialize a pod or delay the start of the pod's main containers until a precondtition is met.
+- Teach you about container lifecycle hooks and when to use them
+Gain a deeper insight into the consequences of the distributed nature of Kubernetes components and its eventual consistency model.
+- Learn how to make your apps shut down properly without breaking client connections
