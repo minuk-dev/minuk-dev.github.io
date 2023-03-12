@@ -56,5 +56,44 @@ resource: 946BEF17-575B-4500-ABE7-19CA927C1835
 ### The Role of Cardinality
 - Cardinality matters for observability, because high-cardinality information is almost always the most useful in identifying data for debugging or understanding a system.
 - Unfortunately, metrics-based tooling systems can deal with only low-cardinality dimensions at any reasonable scale.
-- Two big implications:
-  - 
+
+### The Role of Dimensionality
+- Cardinality: The uniqueness of the value within your data
+- Dimensionality: The number of keys within that data
+
+## Debugging with Observability
+- Observability tools encourage developers to gather rich telemetry for every possible event that could occur, passing along the full context of any given request and storing it for possible use at some point down the line.
+- Observability tools are specifically designed to query aginst high-cardinality, high-dimensionality data.
+
+## Observability Is for Modern Systems
+
+# Chapter 2. How Debugging Practices Differ Between Observability and Monitoring
+- Traditional monitoring:
+  - checking system conditions against known thresholds
+  - reactive approach
+- Observability tools:
+  - enabling iterative exploratory investigations
+  - proactive approch to identifying any failure mode, whether known or unknown
+
+## How Monitoring Data Is Used for Debugging
+- Two main consumers of monitoring data:
+  - machine: alert
+  - human: dashboard
+
+### Troubleshooting Behaviors When Using Dashboards
+- Seeing that pattern, you quickly pull up the dashboard for the caching component of your system to confirm  your suspicion.
+
+#### The Limitations of Troubleshooting by Intuition
+- Example 1: Insufficient correlation:
+  - Is a particular query scanning fewer rows than before?
+  - How often is the new index getting chosen by the query planner, and for which queries?
+  - Are write latencies up overall, on average, or at the 95th/99th percentiles?
+  - Are queries fatser or slower when they use this index than their previous query plan?
+  - What other indexes are also used along with the new index?
+  - Has this index made any other indexes obsolete, so we can drop those and reclaim some write capacity?
+
+- The engineers in the preceding examples might go back and add custom metrics for each query family, for expiration rates per collection, for error rates per shards, etc.
+
+#### Traditional Monitoring Is Fundamentally Reactive
+
+### How Observability Enables Better Debugging
