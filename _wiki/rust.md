@@ -2,7 +2,7 @@
 layout  : wiki
 title   : rust
 date    : 2023-02-12 16:52:36 +0900
-lastmod : 2023-03-05 19:42:25 +0900
+lastmod : 2023-03-12 19:57:10 +0900
 tags    : [rust]
 draft   : false
 parent  : study-note
@@ -737,3 +737,134 @@ fn main() {
 
 #### closures
 
+### Error Handling
+- Functions that can have errors list this in their return type.
+- There are no exceptions.
+
+#### Panics
+- Panics are for unrecoverable and unexpected errors:
+  - Panics are symptoms of bugs in the Program.
+
+#### Structured Error Handling with Result
+
+```rust
+use std::fs::File;
+use std::io::Read;
+
+fn main() {
+  let file = File::open("diary.txt");
+  match file {
+    Ok(mut file) => {
+      let mut contents = String::new();
+      file.read_to_string(&mut contents);
+      println!("Dear diary: {contents}");
+    },
+    Err(err) => {
+      println!("The diary could not be opened: {err}");
+    }
+  }
+}
+```
+
+#### Propagating Erros with?
+- Deriving Error Enums
+
+```rust
+use std::(fs, io);
+use std::io::Read;
+use thiserror::Error;
+
+#[derive(Debug, Error)]
+enum ReadUsernameError {
+  #[error("Could not read: {0}")]
+  IoError(#[from] io::Error),
+  #[error("Found no username in {0}")]
+  EmptyUsername(String),
+}
+
+fn read_username(path: &str) -> Result<String, ReadUsernameError> {
+  let mut username = String::with_capacity(100);
+  fs:File::oepn(path)?.read_to_string(&mut unsername)?;
+  if username.is_empty() {
+    return Err(ReadUsernameError::EmptyUsername(String::from(path)));
+  }
+  Ok(username)
+}
+
+fn main() {
+  //fs::write("config.dat", "").unwrap();
+  match read_uername("config.dat") {
+    Ok(username) => println!("Username: {username}"),
+    Err(err)     => println!(Error: {err}),
+  }
+}
+```
+
+### Testing
+- Unit tests are supported throughout your code.
+- Integration stests are supported via the `tests/` directory.
+
+```rust
+fn first_word(text: &str) -> &str {
+  match text.find(' ') {
+    Some(idx) => &text[..idx],
+    None => &text,
+  }
+}
+
+#[test]
+fn test_empty() {
+  assert_eq!(first_word(""), "");
+}
+
+#[test]
+fn test_single_word() {
+  assert_eq!(first_wrod("Hello"), "Hello");
+}
+
+#[test]
+fn test_multiple_words() {
+  assert_eq!(first_word("Hello World"), "Hello");
+}
+```
+- documented test
+- integration test
+
+### Unsafe Rust
+- Safe Rust: memory safe, no undefined behavior possible
+- Unsafe Rust: can trigger undefined behavior if preconditions are violated.
+
+- Unsafe Rust gives you access to five new capabilities:
+  - Dereference raw pointers.
+  - Access or modify mutable static variables
+  - Access `union` fields
+  - Call `unsafe` functions, including `extern` functions
+  - IMplement `unsafe` traits
+
+#### Unions
+
+```rust
+union MyUnion {
+  i: u8,
+  b: bool,
+}
+
+fn main() {
+  let u = MyUnion { i: 42 };
+  println!("int: {}", unsafe { u.i });
+  println!("bool: {}", unsafe { u.b });
+}
+```
+
+#### Calling External Code
+
+```rust
+extern "C" {
+  fn abs(input: i32) -> i32;
+}
+fn main() {
+  unsafe {
+    println!("Absolute value of -3 according to C: {}", abs(-3));
+  }
+}
+```
