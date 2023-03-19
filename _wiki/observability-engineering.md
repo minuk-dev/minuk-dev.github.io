@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Observability Engineering
 date    : 2023-02-20 22:40:32 +0900
-lastmod : 2023-03-12 23:34:49 +0900
+lastmod : 2023-03-20 01:21:52 +0900
 draft   : false
 parent  : Book Review
 resource: 946BEF17-575B-4500-ABE7-19CA927C1835
@@ -132,3 +132,59 @@ resource: 946BEF17-575B-4500-ABE7-19CA927C1835
   - Multitenancy and running obht server-side code and queries; we could easily drill down into individual user experiences to see exactly what was happening.
 
 ## Chapter 4. How Observability Relates to DevOps, SRE, and Cloud Native
+### Cloud Native, DevOps, and SRE in a Nutshell
+- Loose coupling unlocks several key bueniness benefits
+- CNCF defines:
+  - cloud native: building and running scalable applications in modern, dynamic environments...
+  - resilient, manageable, and observable.
+  - make high-impact changes frequently and predictably with minimal toil
+
+### Observability: Deubbing Then Versus Now
+- Goal: agnostic in terms of how it's accomplished.
+- Immutable infrastructure means that it's no longer feasible to ssh into a host for debugging.
+
+### Observability Empowers DevOps and SRE Practices
+- Chaos engineering and continuous verification
+- Feature flagging
+- Progressive release patterns
+- Incident analysis and blameless postmortem
+
+### Conclusion
+- The shift toward DevOps, SRE, and cloud native practices have created a need for a solution like observability.
+
+# Part II. Fundamentals of Observability
+## Chatper 5. Structured Events Are the Building Blocks of Observability
+- Metrics do not retain the context of the event, simply an aggregate measurement of what occurred at a particular time.
+
+### Debugging with Structured Events
+- event : a record of everything that occurred while one particular request interacted with your service.
+- Details:
+  - unique IDs, variable values, headers, every parameter passed by the request, the execution time, any calls made to remote services, the execution time of those remote calls, or any other bit of context
+  - key value pairs
+- Arbitariliy wide events
+
+### The Limitations of Metrics as a Building Block
+- pre-aggregated measure
+- As aggregate numerical representations of predefined relations over predefined periods of time
+
+### The Limitations of Traditional Logs as a Building Block
+#### Unstructured Logs
+- Traditional logs are unstructured
+- hug volumes of noisy data : slow & clunky
+- Hard to handle in nowadays systems.
+
+#### Structured Logs
+- Many logs are only portions of events
+- Dozon log lines
+- Log data can be useful when redesigned to resemble a structured event.
+
+### Properties of Events That Are Useful in Debugging
+- unknown-unknowns
+- An observability tool must be able to support high-cardinality queries to be useful to an investigator.
+- High cardinality and high dimensionality are the capabilities that enable you to find very fine-grained needles in deeply complex distributed system haystacks
+
+### Conclusion
+- The fundamental building block of observability is the arbitrarily wide structured event.
+- Metrics aggregate system state over a predefined period of time.
+- Unstructured logs are human redable but computationally difficult to use.
+- Structured logs are machine parsable and can be useful for the goals of observability.
