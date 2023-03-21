@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Observability Engineering
 date    : 2023-02-20 22:40:32 +0900
-lastmod : 2023-03-20 01:21:52 +0900
+lastmod : 2023-03-21 23:42:17 +0900
 draft   : false
 parent  : Book Review
 resource: 946BEF17-575B-4500-ABE7-19CA927C1835
@@ -188,3 +188,93 @@ resource: 946BEF17-575B-4500-ABE7-19CA927C1835
 - Metrics aggregate system state over a predefined period of time.
 - Unstructured logs are human redable but computationally difficult to use.
 - Structured logs are machine parsable and can be useful for the goals of observability.
+
+## Chapter 6. Stitchign Events into Traces
+- Distributed traces are simply an interrelated series of events.
+
+### Distributed Tracing and Why It Matters Now
+- Distirbuted tracing is a method of tracking the progression of a single request as it is handled by various services that make up an application.
+- Solution
+  - Twitter's Zipkin (2012)
+  - Uber's Jaeger (2017)
+  - Honycomb, Lightstep
+
+### The Components of Tracing
+- TraceID: unique identifier
+- SpanID: unique identifier for each individual span created.
+- ParentID: A Parent ID is absent in the root span.
+- Timestamp: Each span must indicate when its work began
+- Duration: Each span must also record how long that work took to finish.
+
+### Instrumenting a Trace the Hard Way
+- traceID: UUID
+
+```go
+func rootHandler(r *http.Request, w http.ResponseWriter) {
+  traceData := make(map[string]any)
+  traceData["trace_id"] = uuid.String()
+  traceData["span_id"] = uuid.String()
+
+  startTime := time.Now()
+  traceData["timestamp"] = startTime.Unix()
+
+  authorized := callAuthService(r)
+  name := call NameService(r)
+
+  if authorized {
+    w.Write([]byte(fmt.Sprintf(`{"message": "Waddup %s"}`, name)))
+  } else {
+    w.Write([]byte(`{"message": "Not cool dawg"}`))
+  }
+
+  traceData["duration_ms"] = time.Now().Sub(startTime)
+  sendSpan(traceData)
+}
+```
+
+
+- [W3C](https://www.w3.org/TR/trace-context/)
+- X-B3-TraceId: Contains the trace ID for the entire trace
+- X-B3-ParentSpanId: Contains the current span ID, which will be set as the parent ID in the child's generated span
+
+### Adding Custom Fields into Trace Spans
+
+```go
+func rootHandler(r *http.Request, w http.ResponseWriter) {
+  traceData := make(map[string]any)
+  traceData["tags"] = make(map[string]any)
+
+  hostname, _ := os.Hostname()
+  traceData["tags"]["hostname"] = hostname
+  //
+}
+```
+
+### Stitching Events into Traces
+- Tracing doesn't have to be limited to service-to-service calls.
+
+### Conclusion
+- Events are the building blocks of observability, and traces are simply an interrelated series of events.
+
+## Chapter 7. Instrumentation with OpenTelemetry
+
+- OpenTelemetry standard
+
+### A Brief Introduction to Instrumentation
+- Before otel, we may have installed instrumentation libraries or agents in our applications
+
+### Open Instrumentation Standards
+- OpenTelemetry(OTel) : OpenTracing + OpenCensus
+- OTel has become the single open source standard for application instrumentation among observability solutions.
+
+### Instrumentation Using Code-Based Examples
+- OpenTelemetry:
+  - API
+  - SDK
+  - Tracer
+  - Meter
+  - Context propagation
+  - Exporter
+  - Collector
+
+#### Start wit hAutomatic Instrumentation
