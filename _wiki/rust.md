@@ -2,7 +2,7 @@
 layout  : wiki
 title   : rust
 date    : 2023-02-12 16:52:36 +0900
-lastmod : 2023-03-12 19:57:10 +0900
+lastmod : 2023-03-23 20:33:27 +0900
 tags    : [rust]
 draft   : false
 parent  : study-note
@@ -868,3 +868,67 @@ fn main() {
   }
 }
 ```
+
+## Concurrency
+### Threads
+
+```rust
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+  let handle = thread::spawn(|| {
+    for i in 1..10 {
+      println!("Count in thread: {i}!");
+      thread::sleep(Duration::from_millis(5));
+    }
+  });
+
+  for i in 1..5 {
+    println!("Main thread: {i}");
+    thread::sleep(Duration::from_millis(5));
+  }
+  handle.join();
+}
+```
+
+### Scoped Threads
+
+```rust
+use std::thread;
+
+fn main() {
+  let s = String::from("Hello");
+
+  thread::scope(|scope| {
+    scope.spawn(|| {
+      println!("Length: {}", s.len());
+    })
+  });
+}
+```
+
+### Channels
+
+```rust
+use std::sync::mpsc;
+use std::thread;
+
+fn main() {
+  let (tx, rx) = mpsc::channel();
+
+  tx.send(10).unwrap();
+  tx.send(20).unwrap();
+
+  println!("Received: {:?}", rx.recv());
+  println!("Recieved: {:?}", rx.recv());
+
+  let tx2 = tx.clone();
+  tx2.send(30).unwrap();
+  println!("Received: {:?}", rx.recv());
+}
+```
+
+### Shared State
+- `Arc<T>`, atomic reference counted `T`: handles sharing between threads and takes care to deallocate `T` when the last reference is dropped
+- `Mutex<T>`: ensures mutally exclusive access to the `T` value.

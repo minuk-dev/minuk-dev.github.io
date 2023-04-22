@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Observability Engineering
 date    : 2023-02-20 22:40:32 +0900
-lastmod : 2023-03-21 23:42:17 +0900
+lastmod : 2023-04-23 03:12:43 +0900
 draft   : false
 parent  : Book Review
 resource: 946BEF17-575B-4500-ABE7-19CA927C1835
@@ -277,4 +277,249 @@ func rootHandler(r *http.Request, w http.ResponseWriter) {
   - Exporter
   - Collector
 
-#### Start wit hAutomatic Instrumentation
+#### Start with Automatic Instrumentation
+- go:
+  - http
+
+    ```go
+    import "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
+
+    mux.Handle("/rout", otelhttp.NewHandler(otelhttp.WithRoutTag("/route", http.HandlerFunc(h)), "handler_span_name"))
+    ```
+
+  - gprc
+
+    ```go
+    import (
+      "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgprc"
+    )
+
+    s := grpc.NewServer(
+      grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
+      gprc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
+    )
+    ```
+
+- java:
+  - [openfeign micrometer - related commit](https://github.com/spring-cloud/spring-cloud-openfeign/commit/e745dd0c7cc84c916765337761edc7a92ad00e60)
+  - [open feign docs](https://docs.spring.io/spring-cloud-openfeign/docs/current/reference/html/#micrometer-support)
+
+  - `spring.cloud.openfeign.micrometer.enabled=true`
+  - `spring.cloud.openfeign.client.config.feignName.micrometer.enabled=true`
+  - create `MicrometerObservationCapability` using `ObservationRegistry` Bean
+
+  ```java
+  @Configuration
+  public class ObservationConfiguration {
+    @Bean
+    public MicrometerObservationCapability micrometerObservationCapability(ObservationRegistry registry) {
+        return new MicrometerObservationCapability(registry);
+    }
+  }
+  ```
+
+#### Add Custom Instrumentation
+- Starting and finishing trace spans
+
+```go
+import "go.opentelemetry.io/otel"
+
+var tr = otel.Tracer("module_name")
+
+func funcName(ctx context.Context) {
+  sp := tr.Start(ctx, "span_name")
+  defer sp.End()
+
+  // do work here
+}
+```
+
+- Adding wide fields to an event
+
+```go
+import "go.opentelemetry.io/otel/attribute"
+
+sp.SetAttributes(attribute.Int("http.code", resp.ResponseCode))
+sp.SetAttributes(attribute.String("app.user", username))
+```
+
+### Send Instrumentation Data to a Backend System
+
+```go
+import (
+  x "github.com/my/backend/exporter"
+  "go.opentelemetry.io/otel"
+  sdktrace "go.opentelemetry.io/otel/sdk/trace"
+)
+
+func main() {
+  exporterX := x.NewExporter(...)
+  exporterY := y.NewExporter(...)
+  tp, err := sdktrace.NewTracerProvider(
+    sdktrace.WithSampler(sdktrace.AlwaysSample()),
+    sdktrace.WithSyncer(exporterX),
+    sdktrace.WithBatcher(exporterY),
+  )
+  otel.SetTracerProvider(tp)
+}
+```
+
+### Conclusion
+- OTel is an open source standard.
+
+## Chapter 8. Analyzing Events to Achieve Observability
+- Hypothesis-driven debugging: form hypotheses and explorer the data to confirm or deny them. replying on intuition and pattern matching.
+
+### Debugging from Known Conditions
+- Prepare runbook to identify and solve evry possible "root cause"
+- Modern systems rarely fail in precisely the same way twice.:
+  - The time for creating runbooks & dashboards is largely wasted
+  - Technical debt
+  - Wrong documentation is perhaps more dangerous than no documentation
+
+- Be debugging from known conditions, is not collection event data for unknown conditions.:
+  - e.g. `tail -f` and `grep` with unstructured logs, or finding a spike on one dashboard
+
+### Debugging from First Principles
+- The real power of observability is that you shouldn't have to know so much in advance of debugging an issue.
+
+### Using the Core Analysis Loop
+- Four stages of the core analysis loop:
+  - What are you trying to understand?
+  - Visualize telemetry data to find relevant performance anomalies
+  - Search for common dimensions within the anomalous area by grouping of filtering for different attributes in your wide events
+  - Has this isolated likely dimensions that identify potential sources of the anomaly?
+
+### Automating the Brute-Force Portion of the Core Analysis Loop
+- The core analysis loop is a method to objectively find a signal that matters within a sea of otherwise normal system noise.
+
+### This Misleading Promise of AIOps
+- artificial intelligence for operations (AIOps)
+
+### Conclusion
+- The core analysis loop is an effective technique for fast fault localization.
+
+## Chapter 9. How Observability and Monitoring Come Together
+### Where Monitoring Fits
+- RRDs(round-robin databases) to TSDB(time series databases)
+- The optimization of monitoring systems to find known-unknowns means that it's a best fit for understanding the state of your systems, which change much less frequently and in more predictable ways than your application code.
+- Over time, metrics have also been adapted to creep into monitoring application-level concerns.:
+  - In the role of a warning signal, aggregate measures like metrics work well.
+
+### Where Observability Fits
+- The optimization of observability to find unknown-unknowns means it's a best fit for understanding the state of the code you write, which changes much more frequently than your systems (typically, every day) and in far less predictable ways.
+- Monitoring and observabitliy tools have different best practices and different implementations, and they serve different purposes.
+
+### System Versus Software Considerations
+- Software: the code you are actively developing that runs a production service delivering value to your customers.
+- System: an umbrella for everything else about the underlying infrastructure and runtime that is necessary to run that service.:
+  - databases(e.g., MySQL or MongoDB)
+  - compute and storage (e.g. containers or virtual machines)
+  - others (kafka, Postfix, HAProxy, Memcached, or even something like Jira)
+
+- Factors that vary between systems and software
+
+| Factor                    | Your systems                                 | Your software                                                                                             |
+| Rate of change            | Package updates (monthly)                    | Repo commits (daily)                                                                                      |
+| Predictability            | High (stable)                                | Low (many new features)                                                                                   |
+| Value to your business    | Low (cost center)                            | High (revenue generator)                                                                                  |
+| Number of users           | Few (internal teams)                         | Many (your customers)                                                                                     |
+| Core concern              | Is the system or service healthy?            | Can each request acquire the resources it needs for end-to-end execution in a timely and reliable manner? |
+| Evaluation perspective    | The system                                   | Your customers                                                                                            |
+| Evaluation criteria       | Low-level kernel and hardware device drivers | Variables and API endpoint                                                                                |
+| Functional responsibility | Infrastructure operations                    | Software development                                                                                      |
+| Method for understanding  | Monitoring                                   | Observability                                                                                             |
+
+### Accessing Your Organizational Needs
+- Observability will help you deeply understand how software you develop and ship is performing when serving your customers.
+- Metrics-based monitoring tools and their associated alerts help you see when capacity limits or known error conditions of underlying systems are being reached.:
+  - low level DNS counters, disk statistics, ethernet ports, statistics, system firmware, etc.
+- Today, your mileage may vary, depending on the robustness of your cloud provider.
+
+#### Exceptions: Infrastructure Monitoring That Can't Be Ignored.
+- higher-order infrastructure metircs like CPU usage, memory consumption, and disk activity are indicative of physical performance limitations.
+
+#### Real-World Examples
+- skip to summarize
+
+### Conclusion
+- Monitoring is best suited to evaluating the health of your systems.
+- The most notable exceptions to that neat dividing line are higher-order infrastructure metrics on physical devices that directly impact software performance.
+
+# Part III. Observability for Teams
+## Chapter 10. Applying Observability Practices in Your Team
+### Join a Community Group
+- Technical Advisory Group (TAG) for Observability: https://github.com/cncf/tag-observability
+
+### Start with the Biggest Pain Points
+- The fastest way to drive adoption is to solve the biggest pain points for teams responsible for managing their production services. Target those pains. Resist the urge to start small.
+
+### Buy Instead of Build
+- ROI
+- Your best way to do that is to instrument your applications by using OpenTelemetry.
+- ELK stack (Elasticsearch, Logstash, and Kibana)
+- Prometheus
+- Jaeger
+
+### Flesh Out Your Instrumentation Iteratively
+- You don't need a fully developed set of instrumentation to get immediate value with observability
+
+### Look for Opportunities to Leverage Existing Efforts
+- Individuals and organizations commit the sunk-cost fallacy when they continue a behavior or endeavor as a result of previously invested time, money, or effort.
+- Examples:
+  - If you're using an ELK stack - or even just the Logstash part - it's trivial to add a snippet of code to fork the output of a source stream to your observability tool.
+  - If you're already using structured logs, all you need to do is add a unique ID to log events as they propagate throughout your entire stack. You can keep those logs in your existing log analysis tool, while also sending them as trace events to your observability tool.
+  - Try running observability instrumentation (for example, Honeycomb's Beelines or OTel) alongside your existing APM solution.
+  - If you're using Ganglia, you can leverage that data by parsing the Extensible Markup Language (XML) dump it puts into `/var/tmp` with a once-a-minute cronjob that that shovels that data into your observability tool as events. That's a less than optimal use of observabilty, but it certainly creates familiarity for Ganglia users.
+  - Re-create the most useful of your old monitoring dashbaords as easily referenceable queries within your new observability tool. While dashbaords certainly have their shortcomings, this gives new users a landing spot where they can understand the system performance they care about at glance, and also gives them an opportunity to explore and know more.
+
+### Prepare for the Hardest Last Push
+- The goal of a complete implementation is to have built a reliable go-to debugging solution that can be used to fully understand the state of your production applications whenever anything goest wrong.
+
+### Conclusion
+- moving fast, demonstrating high value and ROI, and tackling work iteratively.
+
+## Chapter 11. Observability-Driven Development
+### Test-Driven Development
+- TDD is particularly powerful because tests run the same way every time.
+- Observability can help you write and ship better code even before it lands in source control
+
+### Observability in the Development Cycle
+- While the original intent is still fresh in the original author's head.
+
+### Determining Where to Debug
+- Observability is not for debugging your code logic.
+- Observability is for figuring out where in your systems to find the code you need to debug.
+
+### Debugging in the Time of Microservices
+- It is likely still incredibly unclear according to your monitoring tooling whether that slowness is being caused by any of the collowing:
+  - A bug in your code
+  - A particular user chaning their usage pattern
+  - A database overflowing its capacity
+  - Network connection limits
+  - A misconfigured load balancer
+  - Issues with service registration or service discovery
+  - Some combination of the preceding factors
+
+### How Instrumentation Drives Observability
+- Good instrumentation drives observability.
+- Every engineer should be expected to instrument their code such that they can answer these questions as soon as it's deployed:
+  - Is your code doing what your expected it to do?
+  - How does it compare to the previous version?
+  - Are users actively using your code?
+  - Are any abnormal condtions emerging?
+
+### Shifting Observability Left
+- observability-driven development
+
+### Using Observability to Speed Up Software Delivery
+- Observability-driven development in tandem with feature flags and progressive delivery patterns can equip engineering teams with the tools they need to stop instinctively rolling back deployments and instead dig in to further investigate what's really happening whenever issues occur during relase of a new feature.
+
+### Conclusion
+- Observability can, and should, be used early in the software development life cycel.
+- Test-driven development is a useful tool for examining how your code runs against a defined specification.
+- Observability-driven development is a useful tool for examining how your code behaves in the chaotic and turbulent world of production.
+
+## Chapter 12. Using Service-Level Objectives for Reliability
+### Traditional Monitoring Approaches Create Dangerous Alert Fatigue
+- Problem: normalization of deviance
