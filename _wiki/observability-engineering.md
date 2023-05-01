@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Observability Engineering
 date    : 2023-02-20 22:40:32 +0900
-lastmod : 2023-04-23 03:12:43 +0900
+lastmod : 2023-05-01 20:04:36 +0900
 draft   : false
 parent  : Book Review
 resource: 946BEF17-575B-4500-ABE7-19CA927C1835
@@ -523,3 +523,330 @@ func main() {
 ## Chapter 12. Using Service-Level Objectives for Reliability
 ### Traditional Monitoring Approaches Create Dangerous Alert Fatigue
 - Problem: normalization of deviance
+- alert fatigue
+- Distributed systems today require an alternative approach.
+
+### Threshold Alert Is for Known-Unknowns Only
+- failure is inevitable.
+- Distributed systems design for resilience with loosely coupled components.
+- Failures that get automatically remediated should not trigger alarms.
+- Alerting criteria:
+  - reliable indicator with service's UX
+  - alert must be solvable
+
+### User Experience Is a North Star
+- Static thresholds are too rigid and coarse to reliably indicate degreaded user experience in a dynamic environment.
+
+## What Is a Service-Level Objective?
+- Service-level objectives(SLOs)
+
+### Reliable Alerting with SLOs
+- Two kinds of SLIs exist:
+  - time-based measures
+  - event-based measures: must be actionable
+
+### Conclusion
+- SLOs decouple the "what" and "why" behind incident alerting. Focusing on symptom-of-pain-based alerts means that SLOs can be reliable indicators of customer experience.
+
+## Chatper 13. Acting on and Debugging SLO-Based ALerts
+### Alerting Before Your Error Budget Is Empty
+- error budge: maximum amount of system unavailability that your business is willing to tolerate
+
+### Framing Time as a Sliding Window
+- The correct first choice to make when calculating burn trajectories is to frame time as a sliding window, rather than a statci fixed window.
+- Otherwise, there isn't enough data after a window reset to make meaningful decisions
+
+### Forecasting to Create a Predictive Burn Alert
+- The Lookahead Window
+- Extrapolating the future from current burn rate
+- Short-term burn alerts
+- Context-aware burn alerts
+
+#### The Baseline Window
+#### Acting on SLO Burn Alerts
+
+### Using Observability Data for SLOs Versus Time-Series data
+- Observability data that traces actual user experience with your services is a more accurate representation of system state than coarsely aggregated time-series data.
+
+### Conclusion
+- SLOs are a modern form of monitoring that solve many of the problems with noisy monitoring we outlined before.
+- SLOs are not specific to observability.
+
+## Chapter 14. Observability and the Software Supply Chain
+- software supply chain
+
+
+# Part IV. Observability at Scale
+## Chatper 15. Build Versus Buy and Return on Investment
+### How to Anlyze the ROI of Observability
+### The Real Costs of Building Your Own
+- The Hidden Costs of Using "Free" Software
+- The Benefits of Building Your Own
+- The Risks of Building Your Own
+
+### The Real Costs of Buying Software
+- The Hidden Financial Costs of Commercial Software
+- The Hidden Nonfinancial Costs of Commercial Software
+
+### Buy Versus Build Is Not a Binary Choice
+
+## Chatper 16. Efficient Data Storage
+### The Functional Requirements for Observability
+- Time-Series Databases Are Inadequate for Observability:
+  - Traditionally, a time-series database(TSDB) is used to store aggregated metrics.
+  - Problem: Cardinality Explosion
+- Other Possible Data Stores:
+  - NoSQL
+  - Apache Cassandra, Elasticsearch/OpenSearch, ScyllaDB, and InfluxDB
+  - ClickHouse, Apache Druid
+- Data Storage Strategies:
+  - Row-based Storage:
+    - Bigtable
+  - Column-based Storage
+
+## Chapter 17. Cheap and AccurateEnough: Sampling
+### Sampling to Refine Your Data Collection
+- At scale, the need to refine your data set to optimize for resource costs becomes critical. But even at a smaller scale, where the need to shave resources is less pressing, refining the data you decide to keep can still provide valuable cost savings.
+
+### Using Different Approaches to Sampling
+#### Constant-Probability Sampling
+- Constant sampling is not effective in the following circumstances:
+  - You care a lot about error cases and not very much about success cases.
+  - Some customers send orders of magnitude more traffic than others, and you want all customers to have a good experience.
+  - You want to ensure that a huge increase in traffic on your servers can't overwhelm your analytics backend.
+
+#### Sampling on Recent Traffic Volume
+#### Sampling Based on Event Content (Keys)
+- Events with errors are more important than those with successes.
+- Events for newly placed orders are more important than those checking on order status.
+- Events affecting paying customers are more imporant to keep than those for cusomters using the free tier.
+
+- Others:
+  - HTTP method
+
+#### Combining per Key and Historical Methods
+#### Choosing Dynamic Sampling Options
+#### When to Make a Sampling Decision for Traces
+- tail-based sampling
+
+### Translating Sampling Strategies into Code
+- The Base Case
+
+```go
+func handler(resp http.ResponseWriter, req *http.Request) {
+  start := time.Now()
+  i, err := callAnotherService()
+  resp.Write(i)
+  RecordEvent(req, start, err)
+}
+```
+
+- Fixed-Rate Sampling
+
+```go
+var sampleRate = flag.Int("sampleRate", 1000, "Static sample rate")
+func handler(resp http.ResponseWriter, req *http.Request) {
+  start := time.Now()
+  i, err := callAnotherService()
+  resp.Write(i)
+
+  r := rand.Float64()
+  if r < 1.0 / *sampleRate {
+    RecordEvent(req, start, err)
+  }
+}
+```
+
+- Recording the Sample Rate
+
+```go
+var sampleRate = flag.Int("sampleRate", 1000, "Service's sample rate")
+
+fun handler(resp http.ResposneWriter, req *http.Request) {
+  start := time.Now()
+  i, err := callAnotherService()
+  resp.Write(i)
+
+  r := rand.Float64()
+  if r < 1.0 / *sampleRate {
+    RecordEvent(req, *sampleRate, start, err)
+  }
+}
+```
+
+- Consistent Sampling:
+  - Any full end-to-end trace
+
+```go
+var sampleRate = flag.Int("sampleRate", 1000, "Service's sample rate")
+
+func handler(resp http.ResponseWriter, req *http.Request) {
+  // Use an upstream-generated random sampling ID if it exists.
+  // otherwise we're a root span. generate & pass down a random ID.
+  var r float64
+  if r, err := floatFromHexBytes(req.Header.Get("Sampling-ID")); err != nil {
+    r = rand.Float64()
+  }
+
+  start := time.Now()
+  // Propagate the Sampling-ID when creating a child span
+  i, err := callAnotherService(r)
+  resp.Write(i)
+
+  if r < 1.0 / *sampleRate {
+    RecordEvent(req, *sampleRate, start, err)
+  }
+}
+```
+
+- Target Rate Sampling
+
+```go
+var targetEventsPerSec = flag.Int("targetEventsPerSec", 5,
+  "The Target number of requests per second to sample from this ervice.")
+
+var sampleRate float64 = 1.0
+var requestsInPastMinute *int
+
+func main() {
+  // Initialize counters.
+  rc := 0
+  requestsInPastMinute = &rc
+
+  go func() {
+    for {
+      time.Sleep(time.Minute)
+      newSampleRate = *requestsInPastMinute / (60 * *targetEventsPerSec)
+      if newSampleRate < 1 {
+        sampleRate = 1.0
+      } else {
+        sampleRate = newSampleRate
+      }
+      newRequestCounter := 0
+      requestsInPastMinute = &newRequestCounter
+    }
+  }()
+  http.Handler("/", handler)
+}
+
+fun handler(resp http.ResponseWriter, req *http.Request) {
+  var r float64
+  if r, err := floatFromHexBytes(req.Header.Get("Sampling-ID")); err != nil {
+    r = rand.Float64()
+  }
+
+  start := time.Now()
+  *requestsInPastMinute ++
+  i, err := call AnotherService(r)
+  resp.Write(i)
+
+  if r < 1.0 / sampleRate {
+    RecordEvent(req, sampleRate, start, err)
+  }
+}
+```
+
+- Having More Than One Static Sample Rate
+
+```go
+var sampleRate = flag.Int("sampleRate", 1000, "Service's sample rate")
+
+func handler(resp http.ResponseWriter, req *http.Request) {
+  start := time.Now()
+  i, err := callAnotherService(r)
+  resp.Write(i)
+
+  r := rand.Float64()
+  if err != nil || time.Since(start) > 500*time.Millisecond {
+    if r < 1.0 / *outlierSampleRate {
+      RecordEvent(req, *outlierSampleRate, start, err)
+    }
+  } else {
+    if r < 1.0 / *sampleRate {
+      RecordEvent(req, *sampleRate, start, err)
+    }
+  }
+}
+```
+
+- Sampling by Key and Target Rate
+- Sampling with Dynamic Rates on Arbitrarily Many Keys
+- Putting It All togheter: Head and Tail per Key Target Rate Sampling
+
+## Chapter 18. Telemetry Mangement with Pipelines
+### Attributes of Telemetry Pipelines
+- Routing
+- Security and Compliance
+- Workload Isolation: to protect the reliability and availability of data sets in critical scenarios.
+- Data Buffering
+- Capacity Management:
+  - Rate limiting
+  - Sampling
+  - Queuing
+- Data Filtering and Augmentation
+- Data Transformation
+- Ensuring Data Quality and Consistency:
+  - To use logs as an example:
+    - Convert unstructured logs to structured data by extracting sepcific fields
+    - Detect and redact or filter any PII or sensitive data in the log data
+    - Convert IP addresses to geographic latitude/longitude fields through the use of geolocation databases such as MaxMind
+    - Ensure the schema of the log data, to ensure that the expected data exists and that specific fields are of specific types
+    - Filter low-value logs from being sent to the backend
+
+### Managing a Telemetry Pipeline: Anatomy
+- Key components of a telemetry pipeline:
+  - A receiver collects data from a source:
+    - Prometheus scraper
+  - A buffers is a store for the data, often for a short period of time:
+    - Kafka
+  - A processor often takes the data from a buffer, applices a transformation to it, and then persists the data back to a buffer.
+  - An exporter is a component that acts as a sink for the telemetry data. An exporter often takes the data from a buffer and writes that data to a telemetry backend
+
+- Roles of the receiver, processor, and exporter in a pipeline:
+  - Trace data:
+    - Receiver:
+      - Gather trace data in different formats(Zipkin, Jaeger, AWS X-Ray, Otel)
+      - Gather data from different services ( from all Slack mobile clients)
+    - Exporter or processor:
+      - Ingest data into various trace backends
+      - Perform tail sampling of the data
+      - Drop low-value traces
+      - Extract logs from traces
+      - Route trace data to various backends for compliance needs
+      - Filter data
+  - Metrics data:
+    - Receiver:
+      - Identify and scrape targets
+    - Exporter or processor:
+      - Relabel metrics
+      - Downample metrics
+      - Aggregate metrics
+      - Push data to multiple backends
+      - Detect high-cardinality tags or time series
+      - Filter high-cardinality tags or metrics
+  - Logs data:
+    - Receiver:
+      - Gather data from different services
+      - Endpoitn for collecting logs pushed from different services
+    - Exporter or processor:
+      - Parse log data into semistructured or sturctured logs
+      - Filter PII and sensitive data from logs
+      - Push data to multiple backends for GDPR resons
+      - Route infrequently queried or audit logs to flat files, and high-value logs or frequent queries to an indexed system
+
+### Challenges When Managing a Telemetry Pipeline
+- Performance
+- Correctness
+- Availability
+- Reliability
+- Isolation
+- Data Freshness
+
+### Use Case: Telemetry Management at Slack
+### Open Source Alternatives
+- Facebook's Scribe
+- Logstash, Fluentd
+- Prometheus Pushgateway, M3 Aggregator
+
+# Part V. Spreading Observability Culture
+
