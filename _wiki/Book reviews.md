@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2023-02-20 22:40:32 +0900
+lastmod : 2023-05-05 23:04:36 +0900
 tags    : [book]
 parent  :
 ---
@@ -19,11 +19,11 @@ parent  :
 - [[kubernetes-patterns]]
 - [[coredns]]
 - [[cloud-native-go]]
+- [[observability-engineering]]
 
 ### 정리 하는 중
 - [[software-engineering-at-google]]
 - [[site-reliability-engineering]]
-- [[observability-engineering]]
 
 ### 정리 보류한거
 - [[keras-book]]

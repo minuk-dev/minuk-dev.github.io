@@ -2,7 +2,7 @@
 layout  : wikilist
 title   : "Front Page"
 date    : 2020-04-05T12:31:29+09:00
-lastmod : 2023-03-05 02:06:31 +0900
+lastmod : 2023-05-05 23:04:27 +0900
 ---
 
 ## 즐겨찾기
@@ -10,7 +10,6 @@ lastmod : 2023-03-05 02:06:31 +0900
 - [[kubernetes]]
 - [[go]]
 - [[site-reliability-engineering]]
-- [[observability-engineering]]
 - [[rust]]
 
 ### Study
