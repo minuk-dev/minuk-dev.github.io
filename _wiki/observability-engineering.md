@@ -2,7 +2,7 @@
 layout  : wiki
 title   : Observability Engineering
 date    : 2023-02-20 22:40:32 +0900
-lastmod : 2023-05-01 20:04:36 +0900
+lastmod : 2023-05-05 22:42:41 +0900
 draft   : false
 parent  : Book Review
 resource: 946BEF17-575B-4500-ABE7-19CA927C1835
@@ -849,4 +849,196 @@ func handler(resp http.ResponseWriter, req *http.Request) {
 - Prometheus Pushgateway, M3 Aggregator
 
 # Part V. Spreading Observability Culture
+## Chapter 19. The business Case for Observability
+### The Reactive Approach to Introducing Change
+- When to outage occurs
+- Dysfunction is no longer tolerated.
 
+### The Return on Investment of Observability
+- Observability's four important wyas:
+  - Higher incremental revenu:
+    - Observability tools helps teams improve uptime and performance, leading to increased incremental revenue directly as a result of improving code quality.
+  - Cost savings from faster incident response:
+    - Observability significantly reduces labor costs via faster mean time and detect (MTTD) and mean time to resolve(MTTR), improved query response times, the ability to find bottlenecks quicker, reduction of time spent on call, and time saved by avoiding rollbacks
+  - Cost savings from avoided incidents:
+    - Observability tools enable developers to find causes of problems before they become critical and long-lasting, which helps prevent incidents.
+  - Cost savings from decreased employee churn:
+    - Implementing observability results in improved job satisfaction and decrease in developer burnout, alert and on-call fatigue, and turnover
+
+### The Proactive Approach to Introducing Change
+### Introducing Observability as a Practice
+- The goal of observability is to provide engineering teams the capability to develop, operate, throughly debug, and report on their systems.
+- With a blameless culture in practice, business leaders should also ensure that a clear scope of work exists when introducing obserability.
+
+### Using the Approriate Tools
+#### Instrumentation
+- OTel is the merging standard. No longer lock into one specific vendor.
+
+#### Data Storage and Analytics
+- Popular opensource data storage layers: Cassandra, Elasticsearch, M3, and InfluxDB
+
+#### Rolling Out Tools to Your Teams
+
+### Knowing When You Have Enough Observability
+
+### Conclusion
+- The need for observability is recognized within teams for a variety of reasons.
+- Similar to security and testability, observability must be approached as an ongoing practice.
+- Observability requires onging care and maintenance.
+
+## Chapter 20. Observability's Stakeholders and Allies
+### Recognizing Nonengineering Observability Needs
+- Understanding the adoption of new features. Which customers are using your newly shipped feature? Does that match the list of customers who expressed interest in it? In what ways do useage patterns of active feature users differ from those who tried it but later abandoned the experience?
+- Finding successful product usage trends for new customers. Does the sales team understand which combination of features seems to reasonate with prospects who go on to become customers? Do you understand the product usage commonalities in users that failed to activate your product? Do those point to friction that needs to be eroded somehow?
+- Accurately relaying service availability information to both customers and internal support teams via up-to-date service status pages. Can you provide templated queires so that supprt teams can self-serve when users report outages?
+- Understanding both short-term and long-term reliabili8ty trends. Is reliability improving for users of your software? Dose the shape of that reliability graph match other sources of data, like customer complaints? Are you experiencing fewer outages or more? Are those outages recovering more slowly?
+- Resolving issues proactively. Are you able to find and resolve customer-impacting issues before they are reported by a critical mass of cusomers via support tickets? Are you proactively resolving issues, or are you relying on cusomers to find them for you?
+- Shipping features to cusomters more quickly and reliably. Are deploymenets to production being closely watched to spot performance anomalies and fix them? Can you decouple deployments from releases so that shipping new features is less likely to cause widespread outages?
+
+- The best way to further your organization-wide observability adoption initiative is to reach out to adjacent teams that could benefit from this knowledge.
+
+### Creating Observability Allies in Practice
+- skip
+
+### Using Observability Versus Business Intelligence Tools
+- Query Execution Time
+- Accuracy
+- Recency
+- Structure
+- Time Windows
+- Ephemerality
+
+## Chapter 21. An Observability Maturity Model
+### A Note About Maturity Models
+- CMM(Capability Maturity Model):
+  - Level 1: Initial(chaotic, ad hoc, individual heroics) - the starting point for use of a new or undocumented repeat process
+  - Level 2: Repeatable - the process is at least documented sufficiently such that repeating the same steps may be attempted.
+  - Level 3: Defined - the process is defined/confirmed as a standard business process
+  - Level 4: Capable - the process is quantitatively managed in accordance with agreed-upon metrics
+  - Level 5: Efficient - process management includes deliberate process optimization/improvement
+- Maturaity models can help you identify and quantify tangible and measurable objectives that are useful in driving long-term initiatives.
+- Those hypotheses, and the maturity model itself, should be continuously improved over time as more data becomes avaiable.
+
+### Why Observability Needs a Maturity Model
+- Production software systems present sociotechinal challenges
+
+### About the Obserability Maturity Model
+- OMM(Observability Maturity Model):
+  - Sustainable sysems and quality of life for engineers
+  - Delivering against business needs by increasing customer satisfaction
+- Observability is not aproperty of the computer system alone or the people alone.
+
+### Capabilities Refernced in the OMM
+- There is no singular and correct order or prescriptive way of doing these things.
+
+#### Respond to System Failure with Resilience
+- If your team is doign well:
+  - System uptime meets your business goals and is improving.
+  - On-call resposne to alerts is efficient, and alerts are not ignored.
+  - On-call dutiy is not excessively stressful, and engineers are not hesitant to take additional shifts as needed.
+  - Engineers can handle incident workload without working extra hours or feeling unduly stressed.
+- If you team is doing poeerly:
+  - The organization is spending a lot of additional time and money staffing on-call rotations.
+  - Incidents are frequent and prolonged.
+  - Those on call suffer from alert fatigue or aren't alerted about real failures
+  - Incident responders cannot easily diagnose issues.
+  - Some team members are disproportionately pulled into emergencies.
+
+- How observability is related:
+  - Democratization of troubleshooting techiniques by easily sharing past investigation paths helps distribute incident resolution skills across a team, so anyone can effectively respond to incidents as they occur.
+
+#### Deliver High-Quality Code
+- If your team is doing well:
+  - Code is stable, fewer burgs are discoverd in production, and fewer outages occur.
+  - After code is deployed to production, your team focuses on customer solutions rather than support.
+  - Engineers find it intutive to debug problems at any stage, from writing code in development to troubleshooting incidents in production at full release scale.
+  - Isolated issues that occur can typically be fixed withotu triggering cascading failures.
+- If your team is doing poeerly:
+  - Customer support costs are high.
+  - A high percentage of engineering time is spent fixing bugs instead of working on new features.
+  - Team members are often reluctant to deploy new features because of perceived risk.
+  - It takes a long time to identify an issue, construct a way to reproduce the failure case, and reparie it.
+  - Developers have low confidence in their code's reliability after it has shipped.
+
+- How observability is related:
+  - Well-monitored and tracked code makes it easy to see when and how a process is failing, and easy to identify and fix vulnerable spots.
+  - Be alerted rapidly, fix before visible to users
+
+#### Manage Complexity and Technical Debt
+- If your team is doing well:
+  - Engineers spend the majority of their time making forward progress on core business goals.
+  - Bug fixing and other reactive work takes up a minority of the team's time.
+  - Engineers spend very little time disoriented or trying to find where in the codebase they need to plumb through changes.
+- If your team is doing poorly:
+  - Engineering time is wated rebuilding thigns when their scaling limits are reached or edge cases are hit.
+  - Teams are distracted by fixing the wrong thing or picking the wrong way to fix something.
+  - Engineers frequently experience uncontrollable ripple effects from a localized change.
+  - People are afraid to make changes to the code, aka the "haunted graveyard" effect.
+
+- How observability is related:
+  - Observability enables teams to understand the end-to-end performance of their systems and debug failures and slowness without wasting time.
+
+#### Release on a Predictable Cadence
+- If your team is doing well:
+  - The release cadence matches business needs and customer expectations.
+  - Code gest into production shortly after being written. Engieers can trigger deployment of their own code after it's been peer reviewed, satisfies controls, and is checked in.
+  - Code paths can be enabled or disabled instantly, without needing a deployment.
+  - Deployments and rollbacks are fast.
+- If your team is doing poorly:
+  - Releases are infrequent and require lots of human intervention.
+  - Lots of changes are shipped at once.
+  - Releases have to happen in a particular order.
+  - The sales team has to gate promises on a particular release train.
+  - Teams avoid deploying on certain days or times of year. They are hesitant because poorly managed release cycles have frequently interfered with quality of life during nonbusiness hours.
+
+- How observability is related:
+  - Observability is how your understand the build pipeline as well as production.
+  - Observability and instrumentation are also how you gain confidence in your release.
+
+#### Understand User Behavior
+- If your team is doing well:
+  - Instrumentation is easy to add and augment.
+  - Developers have easy access to key performance indicators (KIPs) for customer outcomes and system utilization/cost, and can visualize them side by side.
+  - Feature flagging or similar makes it possible to iterate rapidly with a small subset of users before fully launching.
+  - Product managers cna get a useful view of customer feedback and behavior.
+  - Product-market fit is easier to achieve.
+- If your team is doing poorly:
+  - Product managers don't have enought data to make good decisions about what to build next.
+  - Developers feel that their work doesn't have impact.
+  - Product features grow to excessive scope, are designed by committe, or don't receive customer feedback until late in the cycle.
+  - Product-market fit is not achieved.
+
+- How observability is related:
+  - Effective product management requires access to relavant data.
+
+### Using the OMM for Your Organization
+- To remember that creatign a mature observability practice is not a linear progression and that these capabilities do not exist in a vaccum.
+
+
+### Conclusion
+- How they respond to system failure with resilience
+- How easily they can deliver high-quality code
+- How well they manage complexity and technical debt
+- How predictable their software release cadence is
+- How well they can understand user behavior
+
+## Chatper 22. Where to Go from Here
+
+- Observability for software systems is a measure of how well you can understand and explain any state your system can get into, no matter how novel or bizarre. You must be able to comparatively debug that bizarre or novel state across all dimensions of system state data, and combinations of dimensions, in an ad hoc iterative investigation, without being required to define or predict those debugging needs in advance. If you can understand any bizarre or novel state without needing to ship new code, you have observability.
+
+### Observability, Then Versus Now
+### Additional Resource
+- Site Reliability Engineering
+- Implementing Service Level Objectives
+- Cloud Native Observability with OpenTelemetry
+- Distributed Tracing in Practice
+- Honycomb's blog
+
+### Predictions for Where Observability Is Going
+- Otel
+- RUM(real user monitoring):
+  - colelction and recording web traffic
+  - without impacting code performance
+- synthetic monitoring:
+  - allow proactive testing
+  - catch performance issues before they can possibly create impacts to real users.
