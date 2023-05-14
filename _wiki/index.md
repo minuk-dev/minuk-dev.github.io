@@ -2,15 +2,13 @@
 layout  : wikilist
 title   : "Front Page"
 date    : 2020-04-05T12:31:29+09:00
-lastmod : 2023-05-05 23:04:27 +0900
+lastmod : 2023-05-08 01:19:41 +0900
 ---
 
 ## 즐겨찾기
 - [[devops]]
 - [[kubernetes]]
-- [[go]]
 - [[site-reliability-engineering]]
-- [[rust]]
 
 ### Study
 - [[lectures]]
