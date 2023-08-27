@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubecon
 summary : kubecon 동영상 정리
 date    : 2022-08-02 22:58:55 +0900
-lastmod : 2023-01-08 06:16:05 +0900
+lastmod : 2023-08-27 15:49:30 +0900
 tags    : [kubecon, devops]
 draft   : false
 parent  : devops
@@ -27,3 +27,5 @@ parent  : devops
 - [[to-ipv6-the-dual-stack-adoption-advisory-panel]]
 - [[grafana-loki-like-prometheus-but-for-logs]]
 - [[opentelemetry-metrics-deep-dive]]
+- [[defining-a-common-observability-query-language-and-other-observability-tag-updates]]
+- [[making-sense-of-your-vital-signals-the-future-of-pod-and-containers-monitoring]]
