@@ -3,7 +3,7 @@ layout  : wiki
 title   : Book Review
 summary : 본책들 정리
 date    : 2020-04-07 20:43:34 +0900
-lastmod : 2023-05-05 23:04:36 +0900
+lastmod : 2024-05-11 01:31:18 +0900
 tags    : [book]
 parent  :
 ---
@@ -24,6 +24,8 @@ parent  :
 ### 정리 하는 중
 - [[software-engineering-at-google]]
 - [[site-reliability-engineering]]
+- [[시계열 예측과 분석]]
+- [[Learning OpenTelemetry]]
 
 ### 정리 보류한거
 - [[keras-book]]

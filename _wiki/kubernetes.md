@@ -3,7 +3,7 @@ layout  : wiki
 title   : kubernetes
 summary : k8s 관련 공부 모음
 date    : 2022-05-03 02:09:39 +0900
-lastmod : 2022-11-17 02:33:21 +0900
+lastmod : 2024-05-20 04:54:16 +0900
 tags    : [k8s]
 draft   : false
 parent  : study-note
