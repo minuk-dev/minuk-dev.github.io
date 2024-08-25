@@ -4,7 +4,7 @@ title   : Learning OpenTelemetry
 date    : 2024-05-11 01:31:18 +0900
 lastmod : 2024-05-15 23:34:03 +0900
 tags    : 
-draft   : true
+draft   : false
 parent  : 
 resource: fb84f5e3-ac61-4165-b8b1-4e1cd84f2e6e
 ---
@@ -179,3 +179,16 @@ resource: fb84f5e3-ac61-4165-b8b1-4e1cd84f2e6e
 #### The OpenTelemetry SDK
 
 ### Infrastructure Telemetry
+#### Telemetry Pipelines
+- OTLP
+- OpenTelemetry Collector
+
+#### What's Not Included in OpenTelemetry
+- No Official Observability Backend
+
+#### Hands-On with the OpenTelemetry Demo
+- OpenTelemetry provides APIs, SDKs, and an ecosystem of tools to create, collect, transform, and ensure the quality of telemetry data.
+- OpenTelemetry ensures that telemetry data is portable and interoperable.
+- Unlike the old “three pillars” model, OpenTelemetry braids tracing, metrics, logging, and resources together into a single data model. This creates regularized data that is highly correlated and of uniformly high quality.
+- OpenTelemetry Semantic Conventions ensure that telemetry from different libraries is consistent and of uniformly high quality.
+- OpenTelemetry is just telemetry. It is designed to send data to a variety of storage and analysis tools and enable newer, more advanced analysis tools to be built.

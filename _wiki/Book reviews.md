@@ -26,6 +26,7 @@ parent  :
 - [[site-reliability-engineering]]
 - [[시계열 예측과 분석]]
 - [[Learning OpenTelemetry]]
+- [[observability-engineering-kr]]
 
 ### 정리 보류한거
 - [[keras-book]]
