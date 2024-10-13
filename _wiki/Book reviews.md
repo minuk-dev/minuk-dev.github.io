@@ -20,12 +20,12 @@ parent  :
 - [[coredns]]
 - [[cloud-native-go]]
 - [[observability-engineering]]
+- [[Learning OpenTelemetry]]
 
 ### 정리 하는 중
 - [[software-engineering-at-google]]
 - [[site-reliability-engineering]]
 - [[시계열 예측과 분석]]
-- [[Learning OpenTelemetry]]
 - [[observability-engineering-kr]]
 
 ### 정리 보류한거

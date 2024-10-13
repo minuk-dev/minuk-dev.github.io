@@ -9,6 +9,7 @@ draft   : false
 parent  :
 ---
 
+- [[Kubernetes Community Day Korea]]
 ## 잡다한거
  * [[5 articles per week]]
 

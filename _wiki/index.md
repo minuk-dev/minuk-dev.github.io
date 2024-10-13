@@ -9,12 +9,12 @@ lastmod : 2024-05-20 04:54:16 +0900
 - [[devops]]
 - [[kubernetes]]
 - [[시계열 예측과 분석]]
-- [[Learning OpenTelemetry]]
 
 ### Study
 - [[lectures]]
 - [[study-note]]
 - [[계룡 개발 모임]]
+- [[Others]]
 
 ### Tool
 - [[tool]]
