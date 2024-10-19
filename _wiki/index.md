@@ -6,6 +6,7 @@ lastmod : 2024-05-20 04:54:16 +0900
 ---
 
 ## 즐겨찾기
+- [[observability-engineering-kr]]
 - [[devops]]
 - [[kubernetes]]
 - [[시계열 예측과 분석]]
