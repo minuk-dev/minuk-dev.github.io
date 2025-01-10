@@ -1,7 +1,7 @@
 ---
 layout: wiki
-title: 2025-01-05
-date: 2025-01-05T12:23
+title: "{{ title }}"
+date: 2025-01-10T18:53
 lastmod: 2025-01-10T18:53
 tags: 
 draft: true
