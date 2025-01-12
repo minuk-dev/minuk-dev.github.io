@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "archetypes/default.md",
+                "file": "content/wiki/daily/2025-01-12.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "default"
+              "title": "2025-01-12"
             }
           }
         ]
@@ -185,8 +185,8 @@
   },
   "active": "360f14e64982c3fa",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-01-12.md",
     "archetypes/default.md",
+    "content/wiki/daily/2025-01-12.md",
     "content/wiki/autoconf.md",
     "jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
     "index.md",

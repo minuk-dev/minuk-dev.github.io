@@ -1,7 +1,7 @@
 {
   "frontmatterProperty": "lastmod",
   "createdDateProperty": "date",
-  "momentFormat": "YYYY-MM-DD HH:MM:ss ZZ",
+  "momentFormat": "YYYY-MM-DD HH:mm:ss ZZ",
   "storeHistoryLog": false,
   "historyNewestFirst": false,
   "historyMaxItems": 0,
