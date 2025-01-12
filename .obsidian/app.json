@@ -24,5 +24,9 @@
     "editor:redo",
     "editor:configure-toolbar"
   ],
-  "mobilePullAction": "obsidian-excalidraw-plugin:excalidraw-autocreate-newtab"
+  "mobilePullAction": "obsidian-excalidraw-plugin:excalidraw-autocreate-newtab",
+  "trashOption": "local",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "content/wiki",
+  "attachmentFolderPath": "assets"
 }

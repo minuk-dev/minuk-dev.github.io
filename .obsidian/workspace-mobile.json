@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/daily/2025-01-13.md",
+                "file": "content/wiki/_index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-01-13"
+              "title": "_index"
             }
           }
         ]
@@ -48,7 +48,7 @@
         "state": {
           "type": "search",
           "state": {
-            "query": "",
+            "query": "index",
             "matchingCase": false,
             "explainSearch": false,
             "collapseAll": false,
@@ -83,7 +83,7 @@
         }
       }
     ],
-    "currentTab": 0
+    "currentTab": 3
   },
   "right": {
     "id": "b43bb01087082d9f",
@@ -161,6 +161,8 @@
   },
   "active": "d34456b0a5b1a9e4",
   "lastOpenFiles": [
+    "content/wiki/daily/2025-01-13.md",
+    "content/wiki/quicksaved",
     "content/wiki/daily/2025-01-05.md",
     "assets/bayesian/week3.pdf",
     "assets/bayesian/week2.pdf",
@@ -179,13 +181,11 @@
     "static/images/favicon/apple-icon-60x60.png",
     "static/images/favicon/apple-icon-76x76.png",
     "static/images/favicon/android-icon-48x48.png",
-    "static/images/favicon/manifest.json",
     "static/images/favicon/favicon-96x96.png",
     "static/images/favicon/apple-icon-180x180.png",
     "content/wiki/_index.md",
     "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md",
     "content/wiki/daily/2025-01-10.md",
-    "content/wiki/daily/2025-01-13.md",
     "content/wiki/daily/2025-01-12.md",
     "_wiki/index.md",
     "_wiki/daily/2025-01-05.md",
