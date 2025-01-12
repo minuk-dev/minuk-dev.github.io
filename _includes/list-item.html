@@ -1,7 +1,0 @@
-<div class="item">
-    <h4><a href="{{ doc.url }}">{{ doc.title | default: "untitled" }}</a></h4>
-    <div>{{ doc.lastmod }}</div>
-    {% for t in doc.tags %}
-      <a href="/wiki/tags?tag={{ t }}"><kbd class="item-tag">{{ t }}</kbd></a>
-    {% endfor %}
-</div>

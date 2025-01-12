@@ -1,0 +1,64 @@
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css" />
+
+    {{ hugo.Generator }}
+
+    {{ with $.Site.Params.site.googleVerification }}
+        <meta name="google-site-verification" content="{{ . }}" />
+    {{ end }}
+
+    {{ if $.IsPage }}
+        {{ if isset $.Params "description" }}
+            <meta name="description" content="{{ $.Params.description }}" />
+        {{ else if isset $.Site.Params.globalFrontmatter "description" }}
+            <meta
+                name="description"
+                content="{{ $.Site.Params.globalFrontmatter.description }}" />
+        {{ end }}
+
+        {{ if isset $.Params "keywords" }}
+            <meta name="keywords" content="{{ $.Params.keywords }}" />
+        {{ else if isset $.Site.Params.globalFrontmatter "keywords" }}
+            <meta
+                name="keywords"
+                content="{{ $.Site.Params.globalFrontmatter.keywords }}" />
+        {{ end }}
+
+        {{ if isset $.Params "author" }}
+            <meta name="author" content="{{ $.Params.author }}" />
+        {{ else if isset $.Site.Params.globalFrontmatter "author" }}
+            <meta
+                name="author"
+                content="{{ $.Site.Params.globalFrontmatter.author }}" />
+        {{ end }}
+
+    {{ else }}
+        {{ with $.Site.Params.globalFrontmatter.description }}
+            <meta name="description" content="{{ . }}" />
+        {{ end }}
+
+        {{ with $.Site.Params.globalFrontmatter.author }}
+            <meta name="author" content="{{ . }}" />
+        {{ end }}
+
+    {{ end }}
+
+
+    <title>
+        {{ if .IsHome }}
+            {{ $.Site.Params.header.title }}
+        {{ else }}
+            {{ $.Page.Title }} |
+            {{ $.Site.Params.header.title }}
+        {{ end }}
+    </title>
+
+    {{ with $.Site.Params.site.faviconUrl }}
+        <link rel="icon" href="{{ . }}" />
+    {{ end }}
+    {{ partial "module/show_math" . }}
+</head>
