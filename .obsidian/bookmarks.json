@@ -4,6 +4,18 @@
       "type": "file",
       "ctime": 1736701837527,
       "path": "content/wiki/_index.md"
+    },
+    {
+      "type": "group",
+      "ctime": 1736702041582,
+      "items": [],
+      "title": "책"
+    },
+    {
+      "type": "group",
+      "ctime": 1736702058367,
+      "items": [],
+      "title": "슬립노트"
     }
   ]
 }

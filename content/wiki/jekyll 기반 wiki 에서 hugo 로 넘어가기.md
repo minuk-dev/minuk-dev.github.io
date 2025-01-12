@@ -22,4 +22,10 @@
 - 일단 hugo 에서 jekyll 로 넘어올때의 commit 을 봐보자.
 	- https://github.com/minuk-dev/minuk-dev.github.io/tree/5630fca1452dfaa97d1a25e4e9f91d50d2d58d56/src
 - content 폴더 내에 wiki 를 넣고, layout 을 설정해주자
-- 
+
+- 일단 좀 넘어왔다. 와 근데 진짜 jekyll에 비하면 hugo는 확실히 문서화 되어있는거 같다
+
+---
+
+앞으로, css를 다음어야한다 조금 막막하긴 하다
+기본적으로는 osidian 과 유사한 정도의 레이아웃이 목표이다.... hugo에 테마가 있으려나?

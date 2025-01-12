@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/_index.md",
+                "file": "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "_index"
+              "title": "jekyll 기반 wiki 에서 hugo 로 넘어가기"
             }
           }
         ]
@@ -161,6 +161,7 @@
   },
   "active": "d34456b0a5b1a9e4",
   "lastOpenFiles": [
+    "content/wiki/_index.md",
     "content/wiki/daily/2025-01-13.md",
     "content/wiki/quicksaved",
     "content/wiki/daily/2025-01-05.md",
@@ -183,7 +184,6 @@
     "static/images/favicon/android-icon-48x48.png",
     "static/images/favicon/favicon-96x96.png",
     "static/images/favicon/apple-icon-180x180.png",
-    "content/wiki/_index.md",
     "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md",
     "content/wiki/daily/2025-01-10.md",
     "content/wiki/daily/2025-01-12.md",
