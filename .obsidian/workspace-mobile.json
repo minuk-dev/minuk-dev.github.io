@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/daily/2025-01-05.md",
+                "file": "content/wiki/daily/2025-01-13.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-01-05"
+              "title": "2025-01-13"
             }
           }
         ]
@@ -39,7 +39,7 @@
             "sortOrder": "alphabetical"
           },
           "icon": "lucide-folder-closed",
-          "title": "파일 탐색기"
+          "title": "Files"
         }
       },
       {
@@ -140,8 +140,8 @@
         "state": {
           "type": "calendar",
           "state": {},
-          "icon": "calendar-with-checkmark",
-          "title": "Calendar"
+          "icon": "lucide-file",
+          "title": "Plugin no longer active"
         }
       }
     ],
@@ -149,49 +149,44 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
       "templater-obsidian:Templater": false,
-      "switcher:퀵 스위처 열기": false,
-      "graph:그래프 뷰 열기": false,
-      "canvas:새 캔버스 만들기": false,
-      "daily-notes:오늘의 데일리 노트 열기": false,
-      "templates:템플릿 삽입": false,
-      "command-palette:명령어 팔레트 열기": false
+      "obsidian-excalidraw-plugin:Create new drawing": false
     }
   },
   "active": "d34456b0a5b1a9e4",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-01-10.md",
-    "content/wiki/daily/2025-01-05.md",
-    "content/wiki/daily/2025-01-13.md",
-    "images/favicon/apple-icon-60x60.png",
-    "images/favicon/favicon-32x32.png",
-    "images/favicon/ms-icon-310x310.png",
-    "images/image1.png",
-    "images/favicon/favicon-96x96.png",
-    "images/favicon/manifest.json",
-    "images/favicon/ms-icon-144x144.png",
-    "images/favicon/ms-icon-150x150.png",
-    "resources/bayesian/week3.pdf",
-    "resources/bayesian/week2.pdf",
-    "resources/bayesian/week2.Rmd",
-    "resources/bayesian/week1.Rmd",
-    "resources/bayesian/week3.ipynb",
-    "resources/bayesian",
-    "resources",
-    "images/favicon/favicon.ico",
-    "images/favicon/apple-icon-57x57.png",
-    "resources/bayesian/week1.pdf",
-    "images/favicon/ms-icon-70x70.png",
-    "images/image2.png",
     "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md",
-    "content/wiki/_index.md",
+    "content/wiki/daily/2025-01-13.md",
     "content/wiki/daily/2025-01-12.md",
     "_wiki/index.md",
     "_wiki/daily/2025-01-05.md",
+    "archetypes",
+    "hugo.toml",
+    "static/css",
+    "static",
+    "static/js/sidebar.js",
+    "static/js/wikilink.js",
+    "static/js",
     "archetypes/default.md",
+    "layouts/partials/module/section_tree.html",
+    "layouts/partials/module/breadcrumb.html",
+    "layouts/partials/module/sidebar_btn.html",
     "content/wiki/lectures/Bayesian/week2.md",
     "content/wiki/lectures/Bayesian/week3.md",
+    "content/about/images/paas-ta.png",
+    "content/about/images/todays_topic.jpg",
+    "content/about/images/teamproject room reservation.png",
+    "content/about/images/lmu.jpeg",
+    "content/about/images/mcube-1.png",
+    "content/about/images/security-academy.jpg",
+    "content/about/images/caucsenotice2.png",
+    "content/about/images/ggm.jpg",
     "content/wiki/lectures/machine-learning.md",
     "content/wiki/lectures/network_design_and_application.md",
     "content/wiki/lectures/bayesian-statistics.md",
@@ -206,6 +201,11 @@
     "content/wiki/lectures/numerical_analysis.md",
     "content/wiki/lectures/introduction-to-statistical-learning.md",
     "content/wiki/lectures/nonparametric-statistic.md",
-    "content/wiki/lectures/design-pattern.md"
+    "content/wiki/lectures/design-pattern.md",
+    "content/wiki/lectures/signal_and_system.md",
+    "content/wiki/lectures/image processing.md",
+    "content/wiki/english/proverb.md",
+    "content/wiki/images/linux-kakao-4.png",
+    "content/wiki/images/linux-kakao-5.jpg"
   ]
 }

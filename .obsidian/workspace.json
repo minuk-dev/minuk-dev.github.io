@@ -10,15 +10,17 @@
           {
             "id": "360f14e64982c3fa",
             "type": "leaf",
+            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "archetypes/default.md",
+                "file": "content/wiki/임시 메모.md",
                 "mode": "source",
                 "source": false
               },
+              "pinned": true,
               "icon": "lucide-file",
-              "title": "default"
+              "title": "임시 메모"
             }
           }
         ]
@@ -52,7 +54,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "enterp",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -185,8 +187,39 @@
   },
   "active": "360f14e64982c3fa",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-01-12.md",
+    "Untitled.canvas",
+    "content/wiki/Book reviews.md",
+    "content/wiki/Enterprise-Integration-Patterns.md",
     "archetypes/default.md",
+    "content/wiki/daily/2025-01-13.md",
+    "content/wiki/lectures/multi-variant-statistical-analysis.md",
+    "static/css/main.css~",
+    "public/images/image2.png",
+    "public/images/image1.png",
+    "public/images/favicon/ms-icon-70x70.png",
+    "public/images/favicon/favicon-32x32.png",
+    "public/images/favicon/apple-icon-120x120.png",
+    "public/images/favicon/apple-icon-72x72.png",
+    "public/images/favicon/android-icon-144x144.png",
+    "public/images/favicon/browserconfig.xml",
+    "public/images/favicon/apple-icon-60x60.png",
+    "public/images/favicon/apple-icon-76x76.png",
+    "public/images/favicon/android-icon-48x48.png",
+    "public/images/favicon/manifest.json",
+    "public/images/favicon/favicon.ico",
+    "public/images/favicon",
+    "public/images",
+    "static/images/favicon/manifest.json",
+    "static/images/favicon/favicon.ico",
+    "static/images/favicon/browserconfig.xml",
+    "static/images/favicon",
+    "content/wiki/임시 메모.md",
+    "content/wiki/_index.md",
+    "content/wiki/test2.md",
+    "content/wiki/test-2.md",
+    "content/wiki/index.md",
+    "content/wiki/daily/2025-01-05.md",
+    "content/wiki/daily/2025-01-12.md",
     "content/wiki/autoconf.md",
     "jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
     "index.md",
@@ -194,15 +227,11 @@
     "ipad.md",
     "drawings/Drawing 2025-01-05 05.54.32.excalidraw.md",
     "drawings/Drawing 2025-01-05 05.12.23.excalidraw.md",
-    "drawings",
     "daily/Drawing 2025-01-05 06.04.59.excalidraw.md",
     "daily/Drawing 2025-01-05 06.04.49.excalidraw.md",
     "daily/Drawing 2025-01-05 06.04.41.excalidraw.md",
     "daily/2025-01-10.md",
     "daily/2025-01-05.md",
-    "daily",
-    "2025-01-05.md",
-    "Book reviews.md",
-    "macos-initialization.md"
+    "2025-01-05.md"
   ]
 }

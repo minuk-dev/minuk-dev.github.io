@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2025-01-02T05:49:25+09:00
+lastmod: 2025-01-12 23:33:56 +0900
 tags:
   - book
 parent: 

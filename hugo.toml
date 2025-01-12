@@ -20,50 +20,6 @@ title = "minuk dev wiki"
 # Subtitle for this site, used in homepage only
 subtitle = "Minuk dev"
 
-# Config about your's site logo, remove this item to hide the logo
-[params.header.logo]
-# Where is your site's URL
-imgUrl = ""
-
-# If the logo is clickable, where should it be linked?
-# In default, it will linked to the homepage of the site.
-logoLink = ""
-
-# Customized info shown in footer of the page
-[params.footer]
-# CopyRight string shown in the footer. Keep it an empty string or remove this item will hide it from the page.
-copyrightStr = "All Rights Reserved ®."
-
-# Should show the counter in the footer or not
-# In the home page, it will show the numbers of all pages
-# In the sections pages, it will show the numbers of pages within the section
-# In the taxonomy pages, it will show the numbers of pages belong to the taxonomy.
-# In the regular content pages, it will show the word count.
-counter = true
-
-# Should show the language of the page or not
-language = true
-
-# Should show the hugo version or not
-hugoVersion = true
-
-# Should show the theme info or not
-theme = true
-
-# Should show the edited time of the page or not
-modifiedTime = true
-
-# The format of the `modifiedTime`.
-# Refer to page https://gohugo.io/functions/format/ for more detail.
-# Below is the default format, please do not remove it, unless you set `false` in `modifiedTime` field.
-dateFormat = "Jan 02 2006 15:04:05"
-
-# Should show the current git HEAD hash or not
-# To make this show up correctly, please follow the prerequisites in page
-# https://gohugo.io/variables/git/
-gitHash = true
-
-# Social link in the footer, listed items are supported, delete unwanted items to hide it.
 [params.footer.socialLink]
 github = ""
 facebook = ""

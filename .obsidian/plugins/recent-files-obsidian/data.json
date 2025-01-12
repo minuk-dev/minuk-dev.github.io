@@ -1,24 +1,40 @@
 {
   "recentFiles": [
     {
-      "basename": "2025-01-05",
-      "path": "content/wiki/daily/2025-01-05.md"
-    },
-    {
-      "basename": "2025-01-10",
-      "path": "content/wiki/daily/2025-01-10.md"
-    },
-    {
       "basename": "2025-01-13",
       "path": "content/wiki/daily/2025-01-13.md"
     },
     {
-      "basename": "2025-01-12",
-      "path": "content/wiki/daily/2025-01-12.md"
+      "basename": "Drawing 2025-01-13 00.26.22.excalidraw",
+      "path": "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md"
+    },
+    {
+      "basename": "임시 메모",
+      "path": "content/wiki/임시 메모.md"
+    },
+    {
+      "basename": "Book reviews",
+      "path": "content/wiki/Book reviews.md"
+    },
+    {
+      "basename": "Enterprise-Integration-Patterns",
+      "path": "content/wiki/Enterprise-Integration-Patterns.md"
     },
     {
       "basename": "default",
       "path": "archetypes/default.md"
+    },
+    {
+      "basename": "multi-variant-statistical-analysis",
+      "path": "content/wiki/lectures/multi-variant-statistical-analysis.md"
+    },
+    {
+      "basename": "2025-01-05",
+      "path": "content/wiki/daily/2025-01-05.md"
+    },
+    {
+      "basename": "2025-01-12",
+      "path": "content/wiki/daily/2025-01-12.md"
     },
     {
       "basename": "autoconf",
