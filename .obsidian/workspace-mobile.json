@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
+                "file": "content/wiki/daily/2025-01-13.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "jekyll 기반 wiki 에서 hugo 로 넘어가기"
+              "title": "2025-01-13"
             }
           }
         ]
@@ -161,6 +161,7 @@
   },
   "active": "d34456b0a5b1a9e4",
   "lastOpenFiles": [
+    "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
     "content/wiki/_index.md",
     "content/wiki/daily/2025-01-13.md",
     "content/wiki/quicksaved",
