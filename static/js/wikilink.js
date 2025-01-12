@@ -6,6 +6,7 @@ const convertWikiLink = (elem) => {
         display = "Front Page";
         matching = "";
       }
+      matching = matching.replace(/ /g, "-")
       return `<a href="/wiki/${matching.replace(/[()]/g, "")}">${display}</a>`;
     },
   );
@@ -15,6 +16,7 @@ const convertWikiLink = (elem) => {
       display = "Front Page";
       matching = "";
     }
+    matching = matching.replace(/ /g, "-")
     return `<a href="/wiki/${matching.replace(/[()]/g, "")}">${display}</a>`;
   });
 };

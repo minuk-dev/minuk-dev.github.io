@@ -1,19 +1,9 @@
 <header class="header">
     <div class="header_left">
-        {{ with $.Site.Params.header.logo.imgUrl }}
-            {{ if $.Site.Params.header.logo.logoLink }}
-                <a href="{{ $.Site.Params.header.logo.logoLink }}">
-                    <img class="logo" src="{{ "{{ . }}" | relLangURL }}"
-                    alt="logo" />
-                </a>
-            {{ else }}
-                <a href="/">
-                    <img class="logo" src="{{ "{{ . }}" | relLangURL }}"
-                    alt="logo" />
-                </a>
-            {{ end }}
-
-        {{ end }}
+      <a href="/">
+          <img class="logo" src="/images/Rb.png" alt="logo" />
+          MinUk.Dev
+      </a>
     </div>
 
     <div class="header_middle">
