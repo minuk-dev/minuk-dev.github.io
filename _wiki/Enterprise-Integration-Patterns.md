@@ -87,3 +87,38 @@ parent:
 	- Asynchronous sub-processes can execute in any order.
 
 ### Distributed Applications vs. Integration
+- n-tier architecture is not application distribution & not application integration:
+	- The communicating parts are tightly coupled
+	- Communication between tiers tends to be synchronous
+	- An application tends to have human users that will only accept rapid system response.
+- Integrated applications are independent applications
+- Integrated applications communicating asynchronously don't have to wait for a response.
+
+### Commercial Messaging Systems
+- Message System Categories:
+	- Operating Systems
+	- Application Servers
+	- EAI Suits
+	- Web Services Toolkits
+
+### Pattern Form
+- Pattern language uses the follwing pattern structure:
+	- Name: This is an identifier for the pattern that indicates what the pattern does.
+	- Icon: Many patterns are associated with an icon in addition to the pattern name.
+	- Context: This explains what you might be working on that sould make you likely to run into the problem that this pattern solves.
+	- Problem: This explains the difficulty you are facing, expressed as a question you're asking yourself, which this pattern solves.
+	- Forces: The forces explore the constraints that make the problem difficult to solve.
+	- Solution: This is a template that explains what you shold do to solve the problem.
+	- Sketch: One of the most appealing properties of the Alexandrian form is that each pattern contains a sketch that illustrates the solution.
+	- Results: This part expands upon the solution to explain the details of how to apply the solution and how it resolves the forces.
+	- Next, Sidebars, Examples.
+
+
+## 1. Solving Integration Problems using Patterns
+### The Need for Integration
+- In order to support common business processes and data sharing across applications, these applications need to be integrated.
+
+### Integration Challenges
+- Enterprise integration requires a siginificant shift in corporate politics.
+- Because of their wide scope, integration efforts typically have far-reaching implications on the business.
+- One imporatant constraint of developing integration solutions is the limited amount of control the integration developers typically have over the participating applications.

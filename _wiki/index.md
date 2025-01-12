@@ -7,6 +7,7 @@ lastmod : 2024-05-20 04:54:16 +0900
 - [[ipad]]
 - [[제텔카스텐]]
 
+- [[macos-initialization]]
 ## 즐겨찾기
 - [[observability-engineering-kr]]
 - [[devops]]
