@@ -1,20 +1,28 @@
 {
   "recentFiles": [
     {
-      "basename": "multi-variant-statistical-analysis",
-      "path": "content/wiki/lectures/multi-variant-statistical-analysis.md"
-    },
-    {
       "basename": "임시 메모",
       "path": "content/wiki/임시 메모.md"
+    },
+    {
+      "basename": "Book reviews",
+      "path": "content/wiki/Book reviews.md"
     },
     {
       "basename": "Enterprise-Integration-Patterns",
       "path": "content/wiki/Enterprise-Integration-Patterns.md"
     },
     {
-      "basename": "Book reviews",
-      "path": "content/wiki/Book reviews.md"
+      "basename": "default",
+      "path": "archetypes/default.md"
+    },
+    {
+      "basename": "2025-01-13",
+      "path": "content/wiki/daily/2025-01-13.md"
+    },
+    {
+      "basename": "multi-variant-statistical-analysis",
+      "path": "content/wiki/lectures/multi-variant-statistical-analysis.md"
     },
     {
       "basename": "2025-01-05",
@@ -23,10 +31,6 @@
     {
       "basename": "2025-01-12",
       "path": "content/wiki/daily/2025-01-12.md"
-    },
-    {
-      "basename": "default",
-      "path": "archetypes/default.md"
     },
     {
       "basename": "autoconf",
