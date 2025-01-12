@@ -1,0 +1,210 @@
+{
+  "main": {
+    "id": "581001f6fb35b509",
+    "type": "split",
+    "children": [
+      {
+        "id": "ab3ff777928b6354",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d34456b0a5b1a9e4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/daily/2025-01-12.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2025-01-12"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "5dc38e94bccd7f98",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "890252883618c72e",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-folder-closed",
+          "title": "파일 탐색기"
+        }
+      },
+      {
+        "id": "cce210408997d7c6",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-search",
+          "title": "검색"
+        }
+      },
+      {
+        "id": "86557aedf50c7041",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true
+          },
+          "icon": "lucide-tags",
+          "title": "Tags"
+        }
+      },
+      {
+        "id": "ed848f9aaffdec9a",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {},
+          "icon": "lucide-bookmark",
+          "title": "Bookmarks"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "b43bb01087082d9f",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "696656c939e381c0",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "_wiki/ipad.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-coming-in",
+          "title": "백링크"
+        }
+      },
+      {
+        "id": "c889dd0a610dfb74",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "_wiki/ipad.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-going-out",
+          "title": "나가는 링크"
+        }
+      },
+      {
+        "id": "5a841b470baf6d63",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "_wiki/ipad.md"
+          },
+          "icon": "lucide-list",
+          "title": "개요"
+        }
+      },
+      {
+        "id": "c4b1da6b8c0828df",
+        "type": "leaf",
+        "state": {
+          "type": "calendar",
+          "state": {},
+          "icon": "calendar-with-checkmark",
+          "title": "Calendar"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "templater-obsidian:Templater": false,
+      "switcher:퀵 스위처 열기": false,
+      "graph:그래프 뷰 열기": false,
+      "canvas:새 캔버스 만들기": false,
+      "daily-notes:오늘의 데일리 노트 열기": false,
+      "templates:템플릿 삽입": false,
+      "command-palette:명령어 팔레트 열기": false
+    }
+  },
+  "active": "d34456b0a5b1a9e4",
+  "lastOpenFiles": [
+    "content/wiki/daily/2025-01-12.md",
+    "_wiki/index.md",
+    "_wiki/daily/2025-01-05.md",
+    "archetypes",
+    "hugo.toml",
+    "static/css",
+    "static",
+    "static/js/sidebar.js",
+    "static/js/wikilink.js",
+    "static/js",
+    "archetypes/default.md",
+    "layouts/partials/module/section_tree.html",
+    "layouts/partials/module/breadcrumb.html",
+    "layouts/partials/module/sidebar_btn.html",
+    "content/wiki/lectures/Bayesian/week2.md",
+    "content/wiki/lectures/Bayesian/week3.md",
+    "content/about/images/paas-ta.png",
+    "content/about/images/todays_topic.jpg",
+    "content/about/images/teamproject room reservation.png",
+    "content/about/images/lmu.jpeg",
+    "content/about/images/mcube-1.png",
+    "content/about/images/security-academy.jpg",
+    "content/about/images/caucsenotice2.png",
+    "content/about/images/ggm.jpg",
+    "content/wiki/lectures/machine-learning.md",
+    "content/wiki/lectures/network_design_and_application.md",
+    "content/wiki/lectures/bayesian-statistics.md",
+    "content/wiki/lectures/information_security_theory.md",
+    "content/wiki/lectures/database_system.md",
+    "content/wiki/lectures/computer architecture.md",
+    "content/wiki/lectures/wireless.md",
+    "content/wiki/lectures/regression.md",
+    "content/wiki/lectures/automata.md",
+    "content/wiki/lectures/compiler.md",
+    "content/wiki/lectures/computer-communication.md",
+    "content/wiki/lectures/numerical_analysis.md",
+    "content/wiki/lectures/introduction-to-statistical-learning.md",
+    "content/wiki/lectures/nonparametric-statistic.md",
+    "content/wiki/lectures/design-pattern.md",
+    "content/wiki/lectures/signal_and_system.md",
+    "content/wiki/lectures/image processing.md",
+    "content/wiki/english/proverb.md",
+    "content/wiki/Modern C++ Design Pattern/Chapter 16- 반복자.md",
+    "content/wiki/Modern C++ Design Pattern/Chapter 13- 책임사슬(Chain of Responsibility).md",
+    "content/wiki/images/linux-kakao-4.png",
+    "content/wiki/images/linux-kakao-5.jpg"
+  ]
+}
