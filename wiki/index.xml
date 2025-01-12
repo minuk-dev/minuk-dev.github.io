@@ -24662,15 +24662,8 @@ AIwDDwfQYyz63Vp3XEHXnwAYCS37enDGrNrjN0Bb3O93vckIxkOAA3EWtlkTAARkCABGQQAA&lt;/cod
 &lt;/ul>
 &lt;h2 id="과정">과정&lt;/h2>
 &lt;ul>
-&lt;li>솔직히 막막하다&amp;hellip; 너무 커스텀을 많이 해두어서&amp;hellip;&lt;/li>
-&lt;li>일단 hugo 에서 jekyll 로 넘어올때의 commit 을 봐보자.
-&lt;ul>
-&lt;li>&lt;a href="https://github.com/minuk-dev/minuk-dev.github.io/tree/5630fca1452dfaa97d1a25e4e9f91d50d2d58d56/src">https://github.com/minuk-dev/minuk-dev.github.io/tree/5630fca1452dfaa97d1a25e4e9f91d50d2d58d56/src&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>content 폴더 내에 wiki 를 넣고, layout 을 설정해주자&lt;/li>
-&lt;li>&lt;/li>
-&lt;/ul></description></item><item><title/><link>https://minuk.dev/wiki/lectures/compiler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://minuk.dev/wiki/lectures/compiler/</guid><description>&lt;h3 id="---">&amp;mdash;&lt;/h3>
+&lt;li>
+&lt;p>솔직히 막막하다&amp;hellip; 너무 커스텀을 많이 해두어서&amp;hellip;&lt;/p></description></item><item><title/><link>https://minuk.dev/wiki/lectures/compiler/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://minuk.dev/wiki/lectures/compiler/</guid><description>&lt;h3 id="---">&amp;mdash;&lt;/h3>
 &lt;h2 id="parent---lectures">layout : wiki
 title : 컴파일러 수업 정리
 summary : 2022-1 컴파일러 수업 정리
