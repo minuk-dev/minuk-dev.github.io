@@ -1,0 +1,28 @@
+{
+  "recentFiles": [
+    {
+      "basename": "default",
+      "path": "archetypes/default.md"
+    },
+    {
+      "basename": "autoconf",
+      "path": "content/wiki/autoconf.md"
+    },
+    {
+      "basename": "index",
+      "path": "index.md"
+    },
+    {
+      "basename": "jekyll 기반 wiki 에서 hugo 로 넘어가기",
+      "path": "jekyll 기반 wiki 에서 hugo 로 넘어가기.md"
+    },
+    {
+      "basename": "Enterprise-Integration-Patterns",
+      "path": "Enterprise-Integration-Patterns.md"
+    }
+  ],
+  "omittedPaths": [],
+  "omittedTags": [],
+  "updateOn": "file-open",
+  "omitBookmarks": false
+}

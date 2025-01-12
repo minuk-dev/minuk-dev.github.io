@@ -1,5 +1,10 @@
-+++
-date = '{{ .Date }}'
-draft = true
-title = '{{ replace .File.ContentBaseName "-" " " | title }}'
-+++
+---
+layout: wiki
+title: <% tp.file.title %>
+summary: 
+date: <% tp.file.creation_date("YYYY-DD-MM HH:mm:ss ZZ") %>
+lastmod: <% tp.file.last_modified_date("YYYY-DD-MM HH:mm:ss ZZ") %>
+tags: 
+draft: true
+parent:
+---
