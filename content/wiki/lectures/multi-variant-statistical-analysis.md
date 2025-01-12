@@ -1,12 +1,12 @@
 ---
-layout  : wiki
-title   : Multi Variant Statistical Analysis
-summary : 2021-fall lecture
-date    : 2021-09-24 12:38:16 +0900
-lastmod : 2021-12-26 17:49:51 +0900
-tags    :
-draft   : false
-parent  : lectures
+layout: wiki
+title: Multi Variant Statistical Analysis
+summary: 2021-fall lecture
+date: 2021-09-24 12:38:16 +0900
+lastmod: 2025-01-12 23:33:56 +0900
+tags: 
+draft: false
+parent: lectures
 ---
 
 ## Chapter 0. Introduction
@@ -19,7 +19,7 @@ parent  : lectures
 ### 0.1 Visualization of Multivariate Data
  * The following list includes several graphical methods to display multivariate data. Note the each face or star in Chernoff faces and star plot is made based on the measurements on a unit while the scatter plot matrix or scatter plots are made based on the variables.
 
-```{r}
+```r
 head(USArrests)
 library(psych) # Scatter Plot Matrix
 paris.panels(USArrests)

@@ -2,7 +2,7 @@
 layout: wiki
 title: Enterprise-Integration-Patterns
 date: 2025-01-12 19:48:34 +0900
-lastmod: 2025-01-12 22:48:13 +0900
+lastmod: 2025-01-12 23:33:56 +0900
 tags: 
 draft: true
 parent: 
