@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Flyweight on</title><link>https://minuk.dev/tags/flyweight/</link><description>Recent content in Flyweight on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Sep 2020 23:21:47 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/flyweight/index.xml" rel="self" type="application/rss+xml"/><item><title>Modern C++ Design Pattern/Chapter 11. 플라이웨이트</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-11--%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</link><pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-11--%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</guid><description>&lt;ul>
+&lt;li>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;quot;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용자-이름">사용자 이름&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">User&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>User(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> first_name, &lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> last_name)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> first_name{add(first_anem)}, last_name{add(last_name)} {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">protected&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> key first_name, last_name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">static&lt;/span> bimap&lt;span style="color:#f92672">&amp;lt;&lt;/span>key, string&lt;span style="color:#f92672">&amp;gt;&lt;/span> names; &lt;span style="color:#75715e">// boost:bimap(양방향 map)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> key seed;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">static&lt;/span> key &lt;span style="color:#a6e22e">add&lt;/span>(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> s) { ...}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> key &lt;span style="color:#a6e22e">add&lt;/span>(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> s)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> it &lt;span style="color:#f92672">=&lt;/span> names.right.find(s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (it &lt;span style="color:#f92672">==&lt;/span> names.right.end())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> names.insert({&lt;span style="color:#f92672">++&lt;/span>seed, s});
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> seed;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> it&lt;span style="color:#f92672">-&amp;gt;&lt;/span>second;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> get_first_name() &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> names.left.find(last_name)&lt;span style="color:#f92672">-&amp;gt;&lt;/span>second;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> get_last_name9) &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> names.left.find(last_name)&lt;span style="color:#f92672">-&amp;gt;&lt;/span>second;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="boostflyweight">&lt;code>Boost.Flyweight&lt;/code>&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">BetterFormattedText&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">TextRange&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> start, end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> capitalize;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> &lt;span style="color:#a6e22e">covers&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> position) &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> position &lt;span style="color:#f92672">&amp;gt;=&lt;/span> start &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> position &lt;span style="color:#f92672">&amp;lt;=&lt;/span> end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string plain_text;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>TextRange&lt;span style="color:#f92672">&amp;gt;&lt;/span> formatting;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>TextRange&lt;span style="color:#f92672">&amp;amp;&lt;/span> get_range(&lt;span style="color:#66d9ef">int&lt;/span> start, &lt;span style="color:#66d9ef">int&lt;/span> end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> formatting.emplace_back(TextRange{ start, end });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">*&lt;/span>formatting.rbegin();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">friend&lt;/span> std&lt;span style="color:#f92672">::&lt;/span>ostream&lt;span style="color:#f92672">&amp;amp;&lt;/span> &lt;span style="color:#66d9ef">operator&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>(std&lt;span style="color:#f92672">::&lt;/span>ostream&lt;span style="color:#f92672">&amp;amp;&lt;/span> os,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> BetterFormattedText&lt;span style="color:#f92672">&amp;amp;&lt;/span> obj)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string s;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (size_t i &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> obj.plain_text.length(); i&lt;span style="color:#f92672">++&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> c &lt;span style="color:#f92672">=&lt;/span> obj.plain_text[i];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">auto&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span> rng : obj.formatting)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (rng.covers(i) &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> rng.capitalize)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c &lt;span style="color:#f92672">=&lt;/span> toupper(c);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> s &lt;span style="color:#f92672">+=&lt;/span> c;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> os &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> s;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>기본적으로 공간 절약을 위한 테크닉이다.&lt;/li>
+&lt;li>다른 예로는 API 토큰을 전달 받는 경우 등의로 활용 가능하다.&lt;/li>
+&lt;/ul></description></item></channel></rss>

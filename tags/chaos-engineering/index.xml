@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chaos-Engineering on</title><link>https://minuk.dev/tags/chaos-engineering/</link><description>Recent content in Chaos-Engineering on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 04 Sep 2022 03:17:07 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/chaos-engineering/index.xml" rel="self" type="application/rss+xml"/><item><title>Make Cloud Native Chaos Engineering Easier Deep Dive into Chaos Mesh</title><link>https://minuk.dev/wiki/make-cloud-native-chaos-engineering-easier-deep-dive-into-chaos-mesh/</link><pubDate>Sun, 04 Sep 2022 02:42:20 +0900</pubDate><guid>https://minuk.dev/wiki/make-cloud-native-chaos-engineering-easier-deep-dive-into-chaos-mesh/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/bZnI5omUKe4">원본&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="testing-a-distributed-system-is-difficult">Testing a distributed system is difficult&lt;/h2>
+&lt;ul>
+&lt;li>Distributed systems are more and more complex nowadays:
+&lt;ul>
+&lt;li>Faults can happen anytime, anywhere, in any ways&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Writing tests and debugging is hard:
+&lt;ul>
+&lt;li>Deterministic test is very hard and impossible to cover all faults&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>But, No crash, No data loss, No wrong results&lt;/li>
+&lt;/ul>
+&lt;h2 id="chaos-engieering-to-the-rescue">Chaos Engieering to the rescue&lt;/h2>
+&lt;ul>
+&lt;li>Chaos engineering is about breaking things in a controlled environment and through well-planned experiments in order to build confidence in your application to withstand turbulent conditions.&lt;/li>
+&lt;li>Chaos engineering is NOT about breaking things randomly without a perpose.&lt;/li>
+&lt;li>Program Cycle:
+&lt;ul>
+&lt;li>Improve -&amp;gt; Steady State -&amp;gt; Hypothesis -&amp;gt; Run Experiment -&amp;gt; Verify -&amp;gt; Improve&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="why-chaos-mesh">Why Chaos Mesh&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>On Kubernetes:&lt;/p></description></item></channel></rss>

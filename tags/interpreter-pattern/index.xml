@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Interpreter Pattern on</title><link>https://minuk.dev/tags/interpreter-pattern/</link><description>Recent content in Interpreter Pattern on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Sep 2020 23:24:31 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/interpreter-pattern/index.xml" rel="self" type="application/rss+xml"/><item><title>Modern C++ Design Pattern/Chatper 15. 인터프리터</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-15--%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</link><pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-15--%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</guid><description>&lt;h2 id="인터프리터-디자인-패턴">인터프리터 디자인 패턴?&lt;/h2>
+&lt;ul>
+&lt;li>입력 데이터를 해석하는 것&lt;/li>
+&lt;li>대부분 텍스트이지만 텍스트에 한정되지는 않음.&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>&amp;hellip; 이책에서 굳이 이 내용을 다루는 이유를 모르겠다. 차라리 &lt;code>Lex/Yacc&lt;/code>를
+보는게 좋다고 생각한다.&lt;/li>
+&lt;li>아마도 &lt;code>Boost.Spirit&lt;/code>을 알려주고 싶어서 굳이 끼워넣은 느낌?&lt;/li>
+&lt;li>키워드만 정리하자면, &lt;code>AST&lt;/code>, &lt;code>Lex/Yacc&lt;/code>&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tool on</title><link>https://minuk.dev/tags/tool/</link><description>Recent content in Tool on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 02 Sep 2022 21:59:14 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>curl</title><link>https://minuk.dev/wiki/curl/</link><pubDate>Fri, 02 Sep 2022 21:47:51 +0900</pubDate><guid>https://minuk.dev/wiki/curl/</guid><description>&lt;h2 id="참고자료">참고자료&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.lesstif.com/software-architect/curl-http-get-post-rest-api-14745703.html">https://www.lesstif.com/software-architect/curl-http-get-post-rest-api-14745703.html&lt;/a>&lt;/li>
+&lt;li>간단한것만 기술, 더 자세한건 참고자료에서 확인&lt;/li>
+&lt;/ul>
+&lt;h2 id="파일-다운">파일 다운&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="curl%20-o%20%3cfilename%3e%20%3curl%3e">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -o &amp;lt;filename&amp;gt; &amp;lt;url&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="curl%20-O%20%3curl%3e">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -O &amp;lt;url&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="for-rest-api">For REST API&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>-L&lt;/code> : follow redirect, &lt;code>-v&lt;/code> : verbose, &lt;code>-H&lt;/code> : Header&lt;/li>
+&lt;/ul>
+&lt;h3 id="basic">Basic&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="curl%20-L%20%3curl%3e%20%7c%20jq%20.">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -L &amp;lt;url&amp;gt; | jq .&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h3 id="with-auth">With Auth&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -v -L -H &lt;span style="color:#e6db74">&amp;#39;Authorization: Bearer &amp;lt;token&amp;gt;&amp;#39;&lt;/span> &amp;lt;url&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h3 id="change-method">Change method&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="curl%20-v%20-L%20-X%20POST%20%3curl%3e">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -v -L -X POST &amp;lt;url&amp;gt;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h3 id="file">File&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="curl%20-T%20%3cfilename%3e%20%3curl%3e%20#%20method%20%eb%9e%91%20%ec%a1%b0%ed%95%a9%ed%95%b4%ec%84%9c%20%ec%82%ac%ec%9a%a9%ed%95%a0%ea%b2%83">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -T &amp;lt;filename&amp;gt; &amp;lt;url&amp;gt; &lt;span style="color:#75715e"># method 랑 조합해서 사용할것&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h3 id="form">Form&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="curl%20-d%20%22foo=bar&amp;amp;x=y%22%20%3curl%3e%20#%20%ec%9e%90%eb%8f%99%ec%9c%bc%eb%a1%9c%20POST%20%eb%a1%9c%20%ec%b2%98%eb%a6%ac">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -d &lt;span style="color:#e6db74">&amp;#34;foo=bar&amp;amp;x=y&amp;#34;&lt;/span> &amp;lt;url&amp;gt; &lt;span style="color:#75715e"># 자동으로 POST 로 처리&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div></description></item><item><title>zsh</title><link>https://minuk.dev/wiki/zsh/</link><pubDate>Fri, 03 Dec 2021 13:33:49 +0900</pubDate><guid>https://minuk.dev/wiki/zsh/</guid><description>zsh 쓰면서 불편했던거 모음</description></item><item><title>tool</title><link>https://minuk.dev/wiki/tool/</link><pubDate>Sat, 27 Jun 2020 15:17:31 +0900</pubDate><guid>https://minuk.dev/wiki/tool/</guid><description>&lt;h2 id="tool-모음">tool 모음&lt;/h2>
+&lt;ul>
+&lt;li>[[vim]]&lt;/li>
+&lt;li>[[Nexus]]&lt;/li>
+&lt;li>[[docker]]&lt;/li>
+&lt;li>[[hugo]]&lt;/li>
+&lt;li>[[linux command]]&lt;/li>
+&lt;li>[[git]]&lt;/li>
+&lt;li>[[ssh]]&lt;/li>
+&lt;li>[[jupyter]]&lt;/li>
+&lt;li>&lt;a href="https://gate2home.com/Korean-Keyboard">korean keyboard&lt;/a>&lt;/li>
+&lt;li>한국어가 입력이 안되는 환경에서 복사 붙여넣기로 입력할수 있게 해주는 사이트&lt;/li>
+&lt;li>[[tikz]]&lt;/li>
+&lt;li>[[zsh]]&lt;/li>
+&lt;li>[[nginx]]&lt;/li>
+&lt;li>[[curl]]&lt;/li>
+&lt;li>[[autoconf]]&lt;/li>
+&lt;li>[[spring-boot-cli]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="script">script&lt;/h2>
+&lt;ul>
+&lt;li>[[피시실]]&lt;/li>
+&lt;li>[[사지방]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="설정">설정&lt;/h2>
+&lt;ul>
+&lt;li>[[tool configuration]]&lt;/li>
+&lt;/ul></description></item><item><title>tmuxinator</title><link>https://minuk.dev/wiki/tmuxinator/</link><pubDate>Sat, 20 Jun 2020 01:04:36 +0900</pubDate><guid>https://minuk.dev/wiki/tmuxinator/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>tmux 의 session 을 자동으로 열어주는 거다. 주로 프로젝트 환경을 구성할때 쓴다.&lt;/li>
+&lt;li>[[vim-startify]] 와 함께 사용하면 굉장히 편하다.&lt;/li>
+&lt;li>아쉬운점은 ruby로 구성되어 있어서 dependency가 있는 편이다.&lt;/li>
+&lt;li>설치할때는 공식적인 방법(gem 을 이용하는) 편보다 데비안 계열이면 &lt;code>sudo apt install tmuxinator&lt;/code> 를 사용해서 조금 뒤쳐진 버전이더라도 쉽게 설치하는게 속이 편하다.&lt;/li>
+&lt;/ul></description></item><item><title>vim-startify</title><link>https://minuk.dev/wiki/vim-staritfy/</link><pubDate>Sat, 20 Jun 2020 01:02:39 +0900</pubDate><guid>https://minuk.dev/wiki/vim-staritfy/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>공홈 : &lt;a href="https://github.com/mhinz/vim-startify">https://github.com/mhinz/vim-startify&lt;/a>&lt;/li>
+&lt;li>Session을 관리해주는 건데 나도 다른 분의 위키를 참고하다보니 알게되었다. 쓰다보니 좋아서 쓰고 있다.&lt;/li>
+&lt;li>주로 [[tmuxinator]]와 함께 사용하면 엄청 편하다.&lt;/li>
+&lt;/ul></description></item><item><title>사지방</title><link>https://minuk.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9/</link><pubDate>Tue, 02 Jun 2020 19:05:23 +0900</pubDate><guid>https://minuk.dev/wiki/%EC%82%AC%EC%A7%80%EB%B0%A9/</guid><description>사지방에서 사용하는 스크립트나 페이지들 모음</description></item><item><title>Tool configuration</title><link>https://minuk.dev/wiki/tool-configuration/</link><pubDate>Tue, 07 Apr 2020 20:36:45 +0900</pubDate><guid>https://minuk.dev/wiki/tool-configuration/</guid><description>&lt;h1 id="--neovim">- Neovim&lt;/h1>
+&lt;pre>&lt;code>- `.vimrc`
+
+ &amp;quot; vim-bootstrap 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Vim-PLug core
+ &amp;quot;*****************************************************************************
+ let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
+ 
+ let g:vim_bootstrap_langs = &amp;quot;c,html,javascript,python&amp;quot;
+ let g:vim_bootstrap_editor = &amp;quot;nvim&amp;quot;				&amp;quot; nvim or vim
+ 
+ if !filereadable(vimplug_exists)
+ if !executable(&amp;quot;curl&amp;quot;)
+ echoerr &amp;quot;You have to install curl or first install vim-plug yourself!&amp;quot;
+ execute &amp;quot;q!&amp;quot;
+ endif
+ echo &amp;quot;Installing Vim-Plug...&amp;quot;
+ echo &amp;quot;&amp;quot;
+ silent exec &amp;quot;!\curl -fLo &amp;quot; . vimplug_exists . &amp;quot; --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&amp;quot;
+ let g:not_finish_vimplug = &amp;quot;yes&amp;quot;
+ 
+ autocmd VimEnter * PlugInstall
+ endif
+ 
+ &amp;quot; Required:
+ call plug#begin(expand('~/.config/nvim/plugged'))
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Plug install packages
+ &amp;quot;*****************************************************************************
+ if has('nvim')
+ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+ Plug 'wokalski/autocomplete-flow'
+ Plug 'zchee/deoplete-clang' 
+ else
+ Plug 'Shougo/deoplete.nvim'
+ Plug 'roxma/nvim-yarp'
+ Plug 'roxma/vim-hug-neovim-rpc'
+ endif
+ let g:deoplete#enable_at_startup = 1
+ 
+ Plug 'vimwiki/vimwiki'
+ Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+ &amp;quot;let g:vimwiki_list = [{'path': '~/workspace/vimwiki'}]
+ Plug 'scrooloose/nerdtree'
+ Plug 'jistr/vim-nerdtree-tabs'
+ Plug 'Xuyuanp/nerdtree-git-plugin'
+ Plug 'qpkorr/vim-bufkill'
+ Plug 'tpope/vim-commentary'
+ Plug 'tpope/vim-fugitive'
+ Plug 'vim-airline/vim-airline'
+ Plug 'vim-airline/vim-airline-themes'
+ Plug 'airblade/vim-gitgutter'
+ Plug 'vim-scripts/grep.vim'
+ Plug 'vim-scripts/CSApprox'
+ Plug 'Raimondi/delimitMate'
+ Plug 'majutsushi/tagbar'
+ Plug 'w0rp/ale'
+ Plug 'Yggdroot/indentLine'
+ Plug 'avelino/vim-bootstrap-updater'
+ Plug 'sheerun/vim-polyglot'
+ Plug 'tpope/vim-rhubarb' &amp;quot; required by fugitive to :Gbrowse
+ Plug 'easymotion/vim-easymotion'
+ 
+ if isdirectory('/usr/local/opt/fzf')
+ Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+ else
+ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+ Plug 'junegunn/fzf.vim'
+ endif
+ let g:make = 'gmake'
+ if exists('make')
+ let g:make = 'make'
+ endif
+ Plug 'Shougo/vimproc.vim', {'do': g:make}
+ 
+ &amp;quot;&amp;quot; Vim-Session
+ Plug 'xolox/vim-misc'
+ Plug 'xolox/vim-session'
+ 
+ &amp;quot;&amp;quot; Snippets
+ Plug 'SirVer/ultisnips'
+ Plug 'honza/vim-snippets'
+ 
+ &amp;quot;&amp;quot; Color
+ Plug 'dracula/vim', { 'as': 'dracula' }
+ &amp;quot;Plug 'dracula/dracula-theme'
+ &amp;quot;Plug 'tomasr/molokai'
+ &amp;quot;let g:gruvbox_italic=1 
+ &amp;quot;Plug 'morhetz/gruvbox'
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Custom bundles
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot; c
+ Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
+ Plug 'ludwig/split-manpage.vim'
+ 
+ 
+ &amp;quot; html
+ &amp;quot;&amp;quot; HTML Bundle
+ Plug 'hail2u/vim-css3-syntax'
+ Plug 'gorodinskiy/vim-coloresque'
+ Plug 'tpope/vim-haml'
+ Plug 'mattn/emmet-vim'
+ 
+ 
+ &amp;quot; javascript
+ &amp;quot;&amp;quot; Javascript Bundle
+ Plug 'jelera/vim-javascript-syntax'
+ 
+ 
+ &amp;quot; python
+ &amp;quot;&amp;quot; Python Bundle
+ Plug 'davidhalter/jedi-vim'
+ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot;&amp;quot; Include user's extra bundle
+ if filereadable(expand(&amp;quot;~/.config/nvim/local_bundles.vim&amp;quot;))
+ source ~/.config/nvim/local_bundles.vim
+ endif
+ 
+ call plug#end()
+ 
+ &amp;quot; Required:
+ filetype plugin indent on
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Basic Setup
+ &amp;quot;*****************************************************************************&amp;quot;
+ &amp;quot;&amp;quot; Encoding
+ set encoding=utf-8
+ set fileencoding=utf-8
+ set fileencodings=utf-8
+ 
+ 
+ &amp;quot;&amp;quot; Fix backspace indent
+ set backspace=indent,eol,start
+ 
+ &amp;quot;&amp;quot; Tabs. May be overridden by autocmd rules
+ set tabstop=2
+ set softtabstop=0
+ set shiftwidth=2
+ set expandtab
+ 
+ &amp;quot;&amp;quot; Map leader to ,
+ let mapleader=','
+ 
+ &amp;quot;&amp;quot; Enable hidden buffers
+ set hidden
+ 
+ &amp;quot;&amp;quot; Searching
+ set hlsearch
+ set incsearch
+ set ignorecase
+ set smartcase
+ 
+ set fileformats=unix,dos,mac
+ 
+ if exists('$SHELL')
+ set shell=$SHELL
+ else
+ set shell=/bin/sh
+ endif
+ 
+ &amp;quot; session management
+ let g:session_directory = &amp;quot;~/.config/nvim/session&amp;quot;
+ let g:session_autoload = &amp;quot;no&amp;quot;
+ let g:session_autosave = &amp;quot;no&amp;quot;
+ let g:session_command_aliases = 1
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Visual Settings
+ &amp;quot;*****************************************************************************
+ syntax on
+ set ruler
+ set number
+ 
+ let no_buffers_menu=1
+ silent! colorscheme molokai
+ 
+ set mousemodel=popup
+ set t_Co=256
+ set guioptions=egmrti
+ set gfn=Monospace\ 10
+ 
+ if has(&amp;quot;gui_running&amp;quot;)
+ if has(&amp;quot;gui_mac&amp;quot;) || has(&amp;quot;gui_macvim&amp;quot;)
+ set guifont=Menlo:h12
+ set transparency=7
+ endif
+ else
+ let g:CSApprox_loaded = 1
+ 
+ &amp;quot; IndentLine
+ let g:indentLine_enabled = 1
+ let g:indentLine_concealcursor = 0
+ let g:indentLine_char = '┆'
+ let g:indentLine_faster = 1
+ 
+ 
+ endif
+ 
+ 
+ 
+ &amp;quot;&amp;quot; Disable the blinking cursor.
+ set gcr=a:blinkon0
+ set scrolloff=3
+ 
+ &amp;quot;&amp;quot; Status bar
+ set laststatus=2
+ 
+ &amp;quot;&amp;quot; Use modeline overrides
+ set modeline
+ set modelines=10
+ 
+ set title
+ set titleold=&amp;quot;Terminal&amp;quot;
+ set titlestring=%F
+ 
+ set statusline=%F%m%r%h%w%=(%{&amp;amp;ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+ 
+ &amp;quot; Search mappings: These will make it so that going to the next one in a
+ &amp;quot; search will center on the line it's found in.
+ nnoremap n nzzzv
+ nnoremap N Nzzzv
+ 
+ if exists(&amp;quot;*fugitive#statusline&amp;quot;)
+ set statusline+=%{fugitive#statusline()}
+ endif
+ 
+ &amp;quot; vim-airline
+ let g:airline_theme = 'dracula'
+ let g:airline#extensions#branch#enabled = 1
+ let g:airline#extensions#ale#enabled = 1
+ let g:airline#extensions#tabline#enabled = 1
+ let g:airline#extensions#tagbar#enabled = 1
+ let g:airline_skip_empty_sections = 1
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Abbreviations
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; no one is really happy until you have this shortcuts
+ cnoreabbrev W! w!
+ cnoreabbrev Q! q!
+ cnoreabbrev Qall! qall!
+ cnoreabbrev Wq wq
+ cnoreabbrev Wa wa
+ cnoreabbrev wQ wq
+ cnoreabbrev WQ wq
+ cnoreabbrev W w
+ cnoreabbrev Q q
+ cnoreabbrev Qall qall
+ 
+ &amp;quot;&amp;quot; NERDTree configuration
+ let g:NERDTreeChDirMode=2
+ let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
+ let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
+ let g:NERDTreeShowBookmarks=1
+ let g:nerdtree_tabs_focus_on_files=1
+ let g:NERDTreeMapOpenInTabSilent = '&amp;lt;RightMouse&amp;gt;'
+ let g:NERDTreeWinSize = 30
+ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;F2&amp;gt; :NERDTreeFind&amp;lt;CR&amp;gt;
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;F3&amp;gt; :NERDTreeToggle&amp;lt;CR&amp;gt;
+ 
+ &amp;quot; grep.vim
+ let Grep_Default_Options = '-IR'
+ let Grep_Skip_Files = '*.log *.db'
+ let Grep_Skip_Dirs = '.git node_modules'
+ 
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Commands
+ &amp;quot;*****************************************************************************
+ &amp;quot; remove trailing whitespaces
+ command! FixWhitespace :%s/\s\+$//e
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Functions
+ &amp;quot;*****************************************************************************
+ if !exists('*s:setupWrapping')
+ function s:setupWrapping()
+ set wrap
+ set wm=2
+ set textwidth=79
+ endfunction
+ endif
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Autocmd Rules
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; The PC is fast enough, do syntax highlight syncing from start unless 200 lines
+ augroup vimrc-sync-fromstart
+ autocmd!
+ autocmd BufEnter * :syntax sync maxlines=200
+ augroup END
+ 
+ &amp;quot;&amp;quot; Remember cursor position
+ augroup vimrc-remember-cursor-position
+ autocmd!
+ autocmd BufReadPost * if line(&amp;quot;'\&amp;quot;&amp;quot;) &amp;gt; 1 &amp;amp;&amp;amp; line(&amp;quot;'\&amp;quot;&amp;quot;) &amp;lt;= line(&amp;quot;$&amp;quot;) | exe &amp;quot;normal! g`\&amp;quot;&amp;quot; | endif
+ augroup END
+ 
+ &amp;quot;&amp;quot; txt
+ augroup vimrc-wrapping
+ autocmd!
+ autocmd BufRead,BufNewFile *.txt call s:setupWrapping()
+ augroup END
+ 
+ &amp;quot;&amp;quot; make/cmake
+ augroup vimrc-make-cmake
+ autocmd!
+ autocmd FileType make setlocal noexpandtab
+ autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
+ augroup END
+ 
+ set autoread
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Mappings
+ &amp;quot;*****************************************************************************
+ 
+ 
+ &amp;quot;&amp;quot; Tabs
+ nnoremap &amp;lt;Tab&amp;gt; gt
+ nnoremap &amp;lt;S-Tab&amp;gt; gT
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;S-t&amp;gt; :tabnew&amp;lt;CR&amp;gt;
+ 
+ 
+ &amp;quot;&amp;quot; fzf.vim
+ set wildmode=list:longest,list:full
+ set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+ let $FZF_DEFAULT_COMMAND = &amp;quot;find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o -type f -print -o -type l -print 2&amp;gt; /dev/null&amp;quot;
+ 
+ &amp;quot; The Silver Searcher
+ if executable('ag')
+ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g &amp;quot;&amp;quot;'
+ set grepprg=ag\ --nogroup\ --nocolor
+ endif
+ 
+ &amp;quot; ripgrep
+ if executable('rg')
+ let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob &amp;quot;!.git/*&amp;quot;'
+ set grepprg=rg\ --vimgrep
+ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob &amp;quot;!.git/*&amp;quot; --color &amp;quot;always&amp;quot; '.shellescape(&amp;lt;q-args&amp;gt;).'| tr -d &amp;quot;\017&amp;quot;', 1, &amp;lt;bang&amp;gt;0)
+ endif
+ 
+ cnoremap &amp;lt;C-P&amp;gt; &amp;lt;C-R&amp;gt;=expand(&amp;quot;%:p:h&amp;quot;) . &amp;quot;/&amp;quot; &amp;lt;CR&amp;gt;
+ 
+ &amp;quot; snippets
+ let g:UltiSnipsExpandTrigger=&amp;quot;&amp;lt;tab&amp;gt;&amp;quot;
+ let g:UltiSnipsJumpForwardTrigger=&amp;quot;&amp;lt;tab&amp;gt;&amp;quot;
+ let g:UltiSnipsJumpBackwardTrigger=&amp;quot;&amp;lt;c-b&amp;gt;&amp;quot;
+ let g:UltiSnipsEditSplit=&amp;quot;vertical&amp;quot;
+ 
+ &amp;quot; ale
+ let g:ale_linters = {'javascript' : ['eslint']}
+ 
+ &amp;quot; Tagbar
+ nmap &amp;lt;silent&amp;gt; &amp;lt;F4&amp;gt; :TagbarToggle&amp;lt;CR&amp;gt;
+ let g:tagbar_autofocus = 1
+ 
+ &amp;quot; Disable visualbell
+ set noerrorbells visualbell t_vb=
+ if has('autocmd')
+ autocmd GUIEnter * set visualbell t_vb=
+ endif
+ 
+ &amp;quot;&amp;quot; Copy/Paste/Cut
+ if has('unnamedplus')
+ set clipboard=unnamed,unnamedplus
+ endif
+ 
+ noremap YY &amp;quot;+y&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;p &amp;quot;+gP&amp;lt;CR&amp;gt;
+ noremap XX &amp;quot;+x&amp;lt;CR&amp;gt;
+ 
+ if has('macunix')
+ &amp;quot; pbcopy for OSX copy/paste
+ vmap &amp;lt;C-x&amp;gt; :!pbcopy&amp;lt;CR&amp;gt;
+ vmap &amp;lt;C-c&amp;gt; :w !pbcopy&amp;lt;CR&amp;gt;&amp;lt;CR&amp;gt;
+ endif
+ 
+ 
+ 
+ &amp;quot;&amp;quot; Switching windows
+ noremap &amp;lt;C-j&amp;gt; &amp;lt;C-w&amp;gt;j
+ noremap &amp;lt;C-k&amp;gt; &amp;lt;C-w&amp;gt;k
+ noremap &amp;lt;C-l&amp;gt; &amp;lt;C-w&amp;gt;l
+ noremap &amp;lt;C-h&amp;gt; &amp;lt;C-w&amp;gt;h
+ 
+ &amp;quot;&amp;quot; Vmap for maintain Visual Mode after shifting &amp;gt; and &amp;lt;
+ vmap &amp;lt; &amp;lt;gv
+ vmap &amp;gt; &amp;gt;gv
+ 
+ &amp;quot;&amp;quot; Move visual block
+ vnoremap J :m '&amp;gt;+1&amp;lt;CR&amp;gt;gv=gv
+ vnoremap K :m '&amp;lt;-2&amp;lt;CR&amp;gt;gv=gv
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Custom configs
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot; c
+ autocmd FileType c setlocal tabstop=2 shiftwidth=2 expandtab 
+ autocmd FileType c let g:loaded_nvimgdb = 1
+ autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab 
+ autocmd FileType cpp let g:loaded_nvimgdb = 1
+ 
+ 
+ &amp;quot; html
+ &amp;quot; for html files, 2 spaces
+ autocmd Filetype html setlocal ts=2 sw=2 expandtab
+ 
+ 
+ &amp;quot; javascript
+ let g:javascript_enable_domhtmlcss = 1
+ 
+ &amp;quot; vim-javascript
+ augroup vimrc-javascript
+ autocmd!
+ autocmd FileType javascript setl tabstop=2|setl shiftwidth=2|setl expandtab softtabstop=2
+ augroup END
+ 
+ 
+ &amp;quot; python
+ &amp;quot; vim-python
+ augroup vimrc-python
+ autocmd!
+ autocmd FileType python setlocal expandtab shiftwidth=2 tabstop=4 colorcolumn=79
+ \ formatoptions+=croq softtabstop=2
+ \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+ augroup END
+ 
+ &amp;quot; jedi-vim
+ let g:jedi#popup_on_dot = 0
+ let g:jedi#goto_assignments_command = &amp;quot;&amp;lt;leader&amp;gt;g&amp;quot;
+ let g:jedi#goto_definitions_command = &amp;quot;&amp;lt;leader&amp;gt;d&amp;quot;
+ let g:jedi#documentation_command = &amp;quot;K&amp;quot;
+ let g:jedi#usages_command = &amp;quot;&amp;lt;leader&amp;gt;n&amp;quot;
+ let g:jedi#rename_command = &amp;quot;&amp;lt;leader&amp;gt;r&amp;quot;
+ let g:jedi#show_call_signatures = &amp;quot;0&amp;quot;
+ let g:jedi#completions_command = &amp;quot;&amp;lt;C-Space&amp;gt;&amp;quot;
+ let g:jedi#smart_auto_mappings = 0
+ 
+ &amp;quot; ale
+ :call extend(g:ale_linters, {
+ \'python': ['flake8'], })
+ 
+ &amp;quot; vim-airline
+ let g:airline#extensions#virtualenv#enabled = 1
+ 
+ &amp;quot; Syntax highlight
+ &amp;quot; Default highlight is better than polyglot
+ let g:polyglot_disabled = ['python']
+ let python_highlight_all = 1
+ 
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot;&amp;quot; Include user's local vim config
+ if filereadable(expand(&amp;quot;~/.config/nvim/local_init.vim&amp;quot;))
+ source ~/.config/nvim/local_init.vim
+ endif
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Convenience variables
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot; vim-airline
+ if !exists('g:airline_symbols')
+ let g:airline_symbols = {}
+ endif
+ 
+ if !exists('g:airline_powerline_fonts')
+ let g:airline#extensions#tabline#left_sep = ' '
+ let g:airline#extensions#tabline#left_alt_sep = '|'
+ let g:airline_left_sep = '▶'
+ let g:airline_left_alt_sep = '»'
+ let g:airline_right_sep = '◀'
+ let g:airline_right_alt_sep = '«'
+ let g:airline#extensions#branch#prefix = '⤴' &amp;quot;➔, ➥, ⎇
+ let g:airline#extensions#readonly#symbol = '⊘'
+ let g:airline#extensions#linecolumn#prefix = '¶'
+ let g:airline#extensions#paste#symbol = 'ρ'
+ let g:airline_symbols.linenr = '␊'
+ let g:airline_symbols.branch = '⎇'
+ let g:airline_symbols.paste = 'ρ'
+ let g:airline_symbols.paste = 'Þ'
+ let g:airline_symbols.paste = '∥'
+ let g:airline_symbols.whitespace = 'Ξ'
+ else
+ let g:airline#extensions#tabline#left_sep = ''
+ let g:airline#extensions#tabline#left_alt_sep = ''
+ 
+ &amp;quot; powerline symbols
+ let g:airline_left_sep = ''
+ let g:airline_left_alt_sep = ''
+ let g:airline_right_sep = ''
+ let g:airline_right_alt_sep = ''
+ let g:airline_symbols.branch = ''
+ let g:airline_symbols.readonly = ''
+ let g:airline_symbols.linenr = ''
+ endif
+ 
+ let g:deoplete#sources#clang#libclang_path='/usr/lib/llvm-6.0/lib/libclang.so'
+ &amp;quot; grep.vim
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;f :Rgrep&amp;lt;CR&amp;gt;
+ &amp;quot; terminal emulation
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;sh :terminal&amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Open current line on GitHub
+ nnoremap &amp;lt;Leader&amp;gt;o :.Gbrowse&amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Clean search (highlight)
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;&amp;lt;space&amp;gt; :noh&amp;lt;cr&amp;gt;
+ &amp;quot;&amp;quot; Buffer nav
+ noremap &amp;lt;leader&amp;gt;z :bp&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;q :bp&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;x :bn&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;w :bn&amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Close buffer
+ noremap &amp;lt;leader&amp;gt;c :bd&amp;lt;CR&amp;gt;
+ 
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;b :Buffers&amp;lt;CR&amp;gt;
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;e :FZF -m&amp;lt;CR&amp;gt;
+ &amp;quot;Recovery commands from history through FZF
+ nmap &amp;lt;leader&amp;gt;y :History:&amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Set working directory
+ nnoremap &amp;lt;leader&amp;gt;. :lcd %:p:h&amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Opens an edit command with the path of the currently edited file filled in
+ noremap &amp;lt;Leader&amp;gt;e :e &amp;lt;C-R&amp;gt;=expand(&amp;quot;%:p:h&amp;quot;) . &amp;quot;/&amp;quot; &amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Opens a tab edit command with the path of the currently edited file filled
+ noremap &amp;lt;Leader&amp;gt;te :tabe &amp;lt;C-R&amp;gt;=expand(&amp;quot;%:p:h&amp;quot;) . &amp;quot;/&amp;quot; &amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Split
+ noremap &amp;lt;Leader&amp;gt;h :&amp;lt;C-u&amp;gt;split&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;v :&amp;lt;C-u&amp;gt;vsplit&amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Git
+ noremap &amp;lt;Leader&amp;gt;ga :Gwrite&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gc :Gcommit&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gsh :Gpush&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gll :Gpull&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gs :Gstatus&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gb :Gblame&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gd :Gvdiff&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gr :Gremove&amp;lt;CR&amp;gt;
+ 
+ &amp;quot; session management
+ nnoremap &amp;lt;leader&amp;gt;so :OpenSession&amp;lt;Space&amp;gt;
+ nnoremap &amp;lt;leader&amp;gt;ss :SaveSession&amp;lt;Space&amp;gt;
+ nnoremap &amp;lt;leader&amp;gt;sd :DeleteSession&amp;lt;CR&amp;gt;
+ nnoremap &amp;lt;leader&amp;gt;sc :CloseSession&amp;lt;CR&amp;gt;
+ color dracula
+ 
+ 
+ if filereadable(expand(&amp;quot;.local.vim&amp;quot;))
+ source .local.vim
+ endif
+ 
+ set undofile
+ set undodir=/home/lmu/.config/nvim/.vimundo
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>
+&lt;p>zsh&lt;/p></description></item><item><title>docker</title><link>https://minuk.dev/wiki/docker/</link><pubDate>Tue, 07 Apr 2020 20:34:43 +0900</pubDate><guid>https://minuk.dev/wiki/docker/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>install&lt;/p>
+&lt;p>curl -fsSL &lt;a href="https://get.docker.com/">https://get.docker.com/&lt;/a> | sudo sh&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>user 추가&lt;/p>
+&lt;p>sudo useradd {username} -m -s /bin/bash -G docker&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>docker container run&lt;/p>
+&lt;p>docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG&amp;hellip;]&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>-d : detached mode (background mode)&lt;/p>
+&lt;p>-p : port forwarding from host port to container&lt;/p>
+&lt;p>-v : mount host directory&lt;/p>
+&lt;p>-name : configure container name&lt;/p>
+&lt;p>-rm : remove automatically when process terminated&lt;/p>
+&lt;p>-it : -i + -t ⇒ interactive terminal&lt;/p>
+&lt;p>-link : container link&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>sample ubuntu 18.04 image&lt;/p></description></item><item><title>Nexus</title><link>https://minuk.dev/wiki/nexus/</link><pubDate>Tue, 07 Apr 2020 20:21:19 +0900</pubDate><guid>https://minuk.dev/wiki/nexus/</guid><description>&lt;h1 id="docker-설치">docker 설치&lt;/h1>
+&lt;pre>&lt;code>sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&amp;quot;
+sudo apt update
+sudo apt install docker-ce -y
+&lt;/code>&lt;/pre>
+&lt;h1 id="nexus-실행">nexus 실행&lt;/h1>
+&lt;pre>&lt;code>sudo docker volume create --name nexus-data
+sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
+&lt;/code>&lt;/pre>
+&lt;h1 id="nexus-bash-실행">nexus bash 실행&lt;/h1>
+&lt;pre>&lt;code>sudo docker exec -it 7f1dc6675c11 /bin/bash
+&lt;/code>&lt;/pre>
+&lt;h1 id="docker-volume">[[Docker Volume]]&lt;/h1></description></item></channel></rss>

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Book on</title><link>https://minuk.dev/tags/book/</link><description>Recent content in Book on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 12 Jan 2025 23:33:56 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/book/index.xml" rel="self" type="application/rss+xml"/><item><title>DevOps와 SE를 위한 리눅스 커널 이야기</title><link>https://minuk.dev/wiki/devops%EC%99%80-se%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EC%9D%B4%EC%95%BC%EA%B8%B0/</link><pubDate>Mon, 22 Aug 2022 13:49:39 +0900</pubDate><guid>https://minuk.dev/wiki/devops%EC%99%80-se%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EC%9D%B4%EC%95%BC%EA%B8%B0/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>이 책은 실습과 개념, Tip 이 동시에 존재하는 책이다.&lt;/li>
+&lt;li>개념, 실습에 대한 내용은 책을 반드시 참고하자. 실험이 알차다.&lt;/li>
+&lt;li>여기선 Tip 에 해당하는 각 챕터의 요약부분만을 정리해둔다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-시스템-구성-정보-확인하기">1. 시스템 구성 정보 확인하기&lt;/h2>
+&lt;ul>
+&lt;li>demidecode 명령을 통해서 CPU, 메모리, BIOS 등의 정보를 확인할 수 있다.&lt;/li>
+&lt;li>CPU 정보는 &lt;code>/proc/cpuinfo&lt;/code> 파일을 통해서도 확인할 수 있다.&lt;/li>
+&lt;li>free 명령을 통해서 시스템에 설치된 메모리의 전체 크기를 알 수 있다.&lt;/li>
+&lt;li>시스템에 마운트된 블록 디바이스의 정보는 df 명령을 통해 확인할 수 있다.&lt;/li>
+&lt;li>네트워크 카드 정보는 ethtool 명령을 통해서 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -g 옵션으로 네트워크 카드에 설정된 Ring Buffer의 최대 크기와 현재 크기를 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -k 옵션으로 네트워크 카드의 부수적인 기능들을 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -i 옵션으로 네트워크 카드가 사용 중인 커널 드라이버의 정보를 확인할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-top을-통해-살펴보는-프로세스-정보들">2. top을 통해 살펴보는 프로세스 정보들&lt;/h2>
+&lt;ul>
+&lt;li>top 명령으로 현재 시스템의 CPU, Memory, swap의 사용량 및 각 프로세스들의 상태와 메모리 점유 상태를 확인할 수 있다.&lt;/li>
+&lt;li>top 명령의 결과 중 VIRT는 프로세스에게 할당된 가상 메모리 전체의 크기를 가리킨다. RES는 그 중에서도 실제로 메모리에 올려서 사용하고 있는 물리 메모리의 크기, 그리고 SHR은 다른 프로세스와 공유하고 있는 메모리의 크기를 의미한다.&lt;/li>
+&lt;li>커널은 프로세스가 메모리를 요청할 때 그에 맞는 크기를 할당해주지만 해당 영역을 물리 메모리에 바로 할당하지는 않는다. Memory Commit 참고- &lt;code>vm.overcommit_memory&lt;/code> 는 커널의 Memory Commit 동작 방식을 변경할 수 있게 해주는 커널 파라미터이다.&lt;/li>
+&lt;li>top으로 볼 수 있는 프로세스의 상태 중 D는 I/O 대기중인 프로세스, R은 실제 실행 중인 프로세스, S는 sleep 상태의 프로세스를 의미한다. T는 tracing 중인 프로세스, Z는 좀비 상태의 프로세스를 의미한다.&lt;/li>
+&lt;li>프로세스에는 우선순위가 있어 우선순위값이 더 작을 수록 빨리 실행된다. 우선순위는 nice 명령을 통해서 조절될 수 있다.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>개인 생각: nice를 조절해본 경험이 없는데, 조절할일이 많나?&lt;/li>
+&lt;/ul>
+&lt;h2 id="3-load-average와-시스템-부하">3. Load Average와 시스템 부하&lt;/h2>
+&lt;ul>
+&lt;li>Load Average는 실행 중 혹은 실행 대기 중이거나 I/O 작업 등을 위해 대기 큐에 있는 프로세스들의 수를 기반으로 만들어진 값이다.&lt;/li>
+&lt;li>Load Average 자체의 절대적인 높음과 낮음은 없다.&lt;/li>
+&lt;li>커널에도 버그가 있을 수 있으므로 Load Average 값을 절대적으로 신뢰해서는 안된다.&lt;/li>
+&lt;li>vmstat 툴도 시스템 부하를 측정하는데 사용할 수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/sched_debug&lt;/code>는 nr_running과 runnable tasks 항목에서 각 CPU에 할당된 프로세스 수와 프로세스의 PID 등 정보를 확인할수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="4-free-명령이-숨기고-있는-것들">4. free 명령이 숨기고 있는 것들&lt;/h2>
+&lt;ul>
+&lt;li>free 명령으로 볼 수 있는 buffers 는 파일 시스템의 메타 데이터 등을 저장하고 있는 블록 디바이스의 블록을 위한 캐시이다.&lt;/li>
+&lt;li>free 명령으로 볼 수 있는 cached는 I/O 작업의 효율성을 위해 한번 읽은 파일의 내용을 저장하는 데 사용하는 캐시이다.&lt;/li>
+&lt;li>buffers와 cached는 미사용중인 메모리 영역을 시스템의 효율성을 위해서 커널이 사용하고 있는 것이며, 프로세스가 요청하면 이 영역을 해제하여 프로세스에게 전달해 줄수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/meminfo&lt;/code> 에서 보이는 anon 영역은 프로세스에서 사용하는 영역, file 영역은 I/O 를 위한 캐시이다.&lt;/li>
+&lt;li>slab 영역은 커널이 사용하는 캐싱 영역을 의미, dentry cache, inode cache 등 다양한 캐싱 용도로 사용된다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="5-swap-메모리-증설의-포인트">5. swap, 메모리 증설의 포인트&lt;/h2>
+&lt;ul>
+&lt;li>버디시스템&lt;/li>
+&lt;li>swap 을 사용할 경우 성능하락이 생길수 있다.&lt;/li>
+&lt;li>swap 영역을 사용할 때에는 어떤 프로세스에서 swap 영역을 사용하는지 정확하게 알 필요가 있으며 smem 이라는 툴을 이용해 빠르게 확인할 수 있다.&lt;/li>
+&lt;li>&lt;code>vm.swappiness&lt;/code> 파라미터를 통해서 메모리 재할당시, swap을 사용하게 할지 페이지 캐시를 해제하게 할지 비율을 조절할 수 있다.&lt;/li>
+&lt;li>&lt;code>vm.vfs_cache_pressure&lt;/code> 파라메터를 통해 메모리 재할당시, 페이지 캐시를 더 많이 해제할지 vfs 관련 cache를 더 많이 해제할지 비율을 조절할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="6-numa-메모리-관리의-새로운-세계">6. NUMA, 메모리 관리의 새로운 세계&lt;/h2>
+&lt;h3 id="개인-의견">개인 의견&lt;/h3>
+&lt;ul>
+&lt;li>NUMA는 예전에 논문 볼때 봤던건데, 최근 본 kubecon에서도 관련 자료가 있고, 이 책에도 있어 좀 놀랐다. 이게 이렇게나 기본 상식인지 몰랐다.&lt;/li>
+&lt;li>내용 자체는 좋으나 난이도가 있다고 생각해서, 모두 적지는 않는다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약">요약&lt;/h3>
+&lt;ul>
+&lt;li>NUMA : Non-Uniform Memory Access, 하드웨어 설계에 따른 cpu에 따라 특정 메모리에 접근하는 속도가 각기 다르다.&lt;/li>
+&lt;li>numastat, numactl 명령어를 사용해서 NUMA 의 상태, 제어를 할 수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/&amp;lt;pid&amp;gt;/numa_maps&lt;/code> 에 process 별 numa 정보가 확인 가능하다.&lt;/li>
+&lt;li>numad 는 데몬으로 상주하면서 프로세스의 numa 상태를 최적화한다. 하지만 항상 최적화가 좋은건 아니다.&lt;/li>
+&lt;li>&lt;code>vm.zone_reclaim_mode&lt;/code> 는 zone 에서 최대한 재할당해서 메모리를 확보하려고 노력할지, 최대한 다른 zone 을 통해서 메모리를 확보할지를 결정하는 변수이다.&lt;/li>
+&lt;li>numa 정책:
+&lt;ul>
+&lt;li>bind : 특정 노드에서 메모리를 할당받도록 강제한다.&lt;/li>
+&lt;li>preferred : 선호하는 노드를 정하되, 부족하면 다른 곳에서 받는다.&lt;/li>
+&lt;li>interleave : 최대한 여러 노드에서 균등하게 받도록 한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>NUMA 아키텍쳐와 관련된 workload는 요구되는 memory size와 process의 thread 방식에 가장 큰 영향을 받는다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="7-time_wait-소켓이-서비스에-미치는-영향">7. TIME_WAIT 소켓이 서비스에 미치는 영향&lt;/h2>
+&lt;h3 id="개인-의견-1">개인 의견&lt;/h3>
+&lt;ul>
+&lt;li>워낙에 유명한 문제이기도 하고, 운영을 배울때 거의 단골로 나오는 내용이라 정리한다는 느낌으로만 봤다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약-1">요약&lt;/h3>
+&lt;ul>
+&lt;li>TIME_WAIT 소켓은 먼저 연결을 끊는 쪽에서 발생한다.&lt;/li>
+&lt;li>클라이언트 입장에서의 TIME_WAIT 소켓은 tw_reuse 파라미터를 통해 재사용할 수 있기 때문에 로컬 포트 고갈 문제는 발생하지 않는다.&lt;/li>
+&lt;li>불필요한 TCP 3 way handshake가 일어날 수 있기 때문에 가급적, Connection Pool 방식을 적용해 TIME_WAIT 소켓을 줄이도록 한다.&lt;/li>
+&lt;li>서버 입장에서는 TIME_WAIT 소켓은 tw_recycle 파라미터를 통해 빠르게 회수 할 수 있지만, 권장되지는 않는다. 근본적인 문제(connection 이 지나치게 낭비된다거나 등)를 찾아서 해결해야한다.&lt;/li>
+&lt;li>서버 입장에서 keepalive 기능을 켬으로써 불필요한 TCP 3way handshake 를 줄일 수도 있고 TIME_WAIT 소켓도 줄일수 있다. 서비스의 응답 속도 향상이 가능하지만, keepalive 가 가져올수 있는 문제점이 있기에 사용 시 테스트를 반드시 해봐야한다. 자세한건 keepalive 관련 챕터 및 LB 관련 내용 참고&lt;/li>
+&lt;li>TIME_WAIT 소켓은 정상적인 TCP 연결 해제를 위해 반드시 필요하다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="8-tcp-keepalive-를-이용한-세션-유지">8. TCP Keepalive 를 이용한 세션 유지&lt;/h2>
+&lt;ul>
+&lt;li>TCP Keepalive 는 커널레벨에서 종단 간의 세션을 유지시켜주는 기능을 한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_time 는 두 종단 간의 연결이 유지되어 있는지를 keepalive 패킷을 보내는 주기를 설정한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_probes 는 keepalive 패킷에 대한 응답을 받지 못했을 때 추가로 보내는 패킷의 개수를 지정한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_intvl은 keepalive 패킷에 대한 응답을 받지 못해서 재전송 패킷을 보낼 때 필요한 주기를 설정한다.&lt;/li>
+&lt;li>tcp keepalive 설정으로 좀비 커넥션을 관리한다.&lt;/li>
+&lt;li>HTTP keepalive가 설정되어 있다면 tcp keepalive 설정 값과 다르다고 해도 의도한 대로 동작한다. 혼동하지 말자&lt;/li>
+&lt;li>LB 환경에서는 TCP Keepalive 가 설정되어 있지 않다면 LB Idle time 값을 참조해 설정해야 한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="9-tcp-재전송과-타임아웃">9. TCP 재전송과 타임아웃&lt;/h2>
+&lt;ul>
+&lt;li>RTO(Retransmission Timeout)&lt;/li>
+&lt;li>TCP 재전송은 RTO를 기준으로 발생한다.&lt;/li>
+&lt;li>RTO 는 RTT를 기반으로 동적으로 생성된다.&lt;/li>
+&lt;li>관련 파라메터:
+&lt;ul>
+&lt;li>net.ipv4.tcp_syn_retries&lt;/li>
+&lt;li>net.ipv4.tcp_synack_retries&lt;/li>
+&lt;li>net.ipv4.tcp_orphan_retries&lt;/li>
+&lt;li>net.ipv4.tcp_retries1, net.ipv4.tcp_retries2&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>최소한 한번의 재전송은 견딜 수 있도록 connection timeout 은 3s, read tiemout 은 300ms 이상으로 설정하는 것이 좋다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="10-dirty-page가-io에-끼치는-영향">10. dirty page가 I/O에 끼치는 영향&lt;/h2>
+&lt;ul>
+&lt;li>관련 파라메터:
+&lt;ul>
+&lt;li>vm.dirty_ratio&lt;/li>
+&lt;li>vm.dirty_background_ratio&lt;/li>
+&lt;li>vm.dirty_background_bytes&lt;/li>
+&lt;li>vm.dirty_writeback_centisecs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>diry page를 너무 빨리 동기화시키면 flush 커널 스레드가 너무 자주 깨어나게 되며, dirty page를 너무 늦게 동기화시키면 동기화해야할 dirty page가 너무 많아서 vm.dirty_ratio 에 도달할 가능성이 커지게 된다. 워크로드와 시스템 구성에 맞게 적절히 설정해주어야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="11-io-작업이-지나가는-관문-io-스케줄러">11. I/O 작업이 지나가는 관문, I/O 스케줄러&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>/sys/block/&amp;lt;block device&amp;gt;/queue/scheduler&lt;/code> 에서 현재 사용하는 스케줄러, 사용 가능한 스케줄러 정보를 보고, 수정할 수 있다.&lt;/li>
+&lt;li>cfq, deadline, noop I/O scheduler&lt;/li>
+&lt;li>iotop 을 사용해서 I/O 프로세스를 확인 할 수 있다.&lt;/li>
+&lt;li>perf-tools 중에 iosnoop 은 I/O 요청들의 섹터 주소를 볼 수 있기에 순차 접근이 많은지 임의 접근이 많은지에 대한 I//O 워크로드 패턴을 살펴볼 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="12-어플리케이션-성능-측정과-튜닝">12. 어플리케이션 성능 측정과 튜닝&lt;/h2>
+&lt;ul>
+&lt;li>워커 수를 최소한 CPU 코어 수와 같은 수로 설정해서 CPU 리소스를 최대로 사용할수 있도록 구성한다.&lt;/li>
+&lt;li>TIME_WAIT 소켓이 생긴다면 연결을 유지한 상태로 사용해 성능을 향상시킬수 있다.&lt;/li>
+&lt;li>다른 서비스들과 연동할 때 keepalive 옵션과 커넥션 풀 방식을 사용해 성능을 증가 시킬수 있다.&lt;/li>
+&lt;li>시스템 리소스가 부족함이 없을때 응답 속도가 느려질 경우 워커 설정 및 소프트웨어적 설정에 문제가 있는지 확인해야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-정리">개인 정리&lt;/h2>
+&lt;ul>
+&lt;li>개인적으로 알고 있었던 설정들도 있고, 모르고 있던 설정들도 있는데 전반적으로 한곳에 이런걸 모아둬서 정리하는 보람이 있었다.&lt;/li>
+&lt;li>사실 지식으로만 알고 있던 부분들을 실습을 섞어서 수치로 볼수 있게 구성되어 있어 책 자체 퀄리티가 좋다고 생각한다.&lt;/li>
+&lt;li>몇몇 커널 파라메터는 너무 어렵다. 수치를 보면서도 바로바로 해석이 안된다.&lt;/li>
+&lt;/ul></description></item><item><title>쿠버네티스 패턴</title><link>https://minuk.dev/wiki/kubernetes-patterns/</link><pubDate>Tue, 16 Aug 2022 10:56:05 +0900</pubDate><guid>https://minuk.dev/wiki/kubernetes-patterns/</guid><description>&lt;ul>
+&lt;li>책 내용 정리 및 공식 문서와 비교하며 버전 확인&lt;/li>
+&lt;/ul>
+&lt;h3 id="1장-개요">1장 개요&lt;/h3>
+&lt;h4 id="클라우드-네이티브로-가는길">클라우드 네이티브로 가는길&lt;/h4>
+&lt;ul>
+&lt;li>클린코드&lt;/li>
+&lt;li>도메인 주도 설계&lt;/li>
+&lt;li>마이크로서비스 아키텍처 방식&lt;/li>
+&lt;li>컨테이너&lt;/li>
+&lt;/ul>
+&lt;h4 id="분산-기본-요소">분산 기본 요소&lt;/h4>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>개념&lt;/th>
+ &lt;th>로컬 기본 요소&lt;/th>
+ &lt;th>분산 기본 요소&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>캡슐화 동작&lt;/td>
+ &lt;td>클래스&lt;/td>
+ &lt;td>컨테이너 이미지&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>인스턴스화 동작&lt;/td>
+ &lt;td>객체&lt;/td>
+ &lt;td>컨테이너&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>재사용 단위&lt;/td>
+ &lt;td>Jar 파일&lt;/td>
+ &lt;td>컨테이너 이미지&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>컴포지션&lt;/td>
+ &lt;td>포함 관계&lt;/td>
+ &lt;td>사이드카 패턴&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>상속&lt;/td>
+ &lt;td>확장 관계&lt;/td>
+ &lt;td>FROM 으로 부모 이미지 상속&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>배포 단위&lt;/td>
+ &lt;td>.jar/.war/.ear&lt;/td>
+ &lt;td>pod&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>빌드타임/런타임 격리&lt;/td>
+ &lt;td>모듈, 패키지, 클래스&lt;/td>
+ &lt;td>namespace, pod, container&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>초기화 필요조건&lt;/td>
+ &lt;td>Constructor&lt;/td>
+ &lt;td>초기화 컨테이너&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>초기화 직 후 트리거&lt;/td>
+ &lt;td>Init method&lt;/td>
+ &lt;td>postStart&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>삭제 직전 트리거&lt;/td>
+ &lt;td>Destroy method&lt;/td>
+ &lt;td>preStop&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>정리 절차&lt;/td>
+ &lt;td>finalize(), shutdown hook&lt;/td>
+ &lt;td>Defer 컨테이너&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>비동기 &amp;amp; 병렬 칫행&lt;/td>
+ &lt;td>ThreadPoolExecutor, ForkJoinPool&lt;/td>
+ &lt;td>Job&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>주기적 작업&lt;/td>
+ &lt;td>Timer, ScheduleExecutorService&lt;/td>
+ &lt;td>CronJob&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>백그라운드 작업&lt;/td>
+ &lt;td>Deamon Thread&lt;/td>
+ &lt;td>DeamonSets&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>설정관리&lt;/td>
+ &lt;td>System.getenv(), Properties&lt;/td>
+ &lt;td>ConfigMap, Secret&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h4 id="컨테이너">컨테이너&lt;/h4>
+&lt;ul>
+&lt;li>컨테이너 이미지는 하나의 문제를 해결하는 기능 단위다.&lt;/li>
+&lt;li>컨테이너 이미지는 하나의 팀에 의해 소유되며, 릴리즈 주기가 있다.&lt;/li>
+&lt;li>컨테이너 이미지는 자기 완비적이며, 런타임 의존 성을 정의하고 수행한다.&lt;/li>
+&lt;li>컨테이너 이미지는 불변적이며, 한번 만들어지면 변경되지 않는다. 즉 이미 설정 값이 정해져 있다.&lt;/li>
+&lt;li>컨테이너 이미지는 런타임 의존성과 자원 요구사항이 정의되어 있다.&lt;/li>
+&lt;li>컨테이너 이미지는 기능을 노출시키기 위해 잘 정의된 API가 있다.&lt;/li>
+&lt;li>컨테이너는 일반적으로 하나의 유닉스 프로세스로 실행된다.&lt;/li>
+&lt;li>컨테이너는 일회용이며 언제든지 스케일 업과 스케일 다운을 안전하게 수행할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="파드">파드&lt;/h4>
+&lt;ul>
+&lt;li>파드는 스케줄링의 최소 단위이다.&lt;/li>
+&lt;li>파드는 파드에 속한 컨테이너들의 동일 장소 배치를 보장한다.&lt;/li>
+&lt;li>한 파드는 파드 안의 모든 컨테이너가 공유하는 하나의 IP 주소와 이름, 포트 범위를 갖는다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="서비스">서비스&lt;/h4>
+&lt;ul>
+&lt;li>서비스는 애플리케이션에 접근하기 위한 이름으로 된 진입점이다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="레이블">레이블&lt;/h4>
+&lt;ul>
+&lt;li>레이블은 실행 중인 특정 파드의 인스턴스들을 가리키기 위해 사용된다.&lt;/li>
+&lt;li>레이블은 스케줄러에서 많이 사용된다.&lt;/li>
+&lt;li>레이블은 파드를 논리적 그룹으로 묶어 가리킬 수 있다.&lt;/li>
+&lt;li>미리 앞서서 레이블을 추가하지 않아야한다. 레이블 삭제가 어떤 영향을 일으키는지 알아낼 방법이 없다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="어노테이션">어노테이션&lt;/h4>
+&lt;ul>
+&lt;li>레이블과 유사한 기능을 하지만, 사람보다는 봇을 위한 용도로 사용된다.&lt;/li>
+&lt;li>검색 불가능한 메타데이터를 지정하는데 사용한다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="네임스페이스">네임스페이스&lt;/h4>
+&lt;ul>
+&lt;li>네임스페이스는 쿠버네티스 자원으로서 관리된다.&lt;/li>
+&lt;li>네임스페이스는 컨테이너, 파드, 서비스, 레플리카세트 등의 자원에 대한 영역을 제공한다.&lt;/li>
+&lt;li>네임스페이스 내에서 자원명은 고유해야한다.&lt;/li>
+&lt;li>네임스페이스는 격리시키는 것이 아니므로 자원간 접근을 막을수는 없다.&lt;/li>
+&lt;li>노드, PersistentVolume 등은 네임스페이스 내에 속하지 않는다.&lt;/li>
+&lt;li>서비스는 &lt;code>&amp;lt;service-name&amp;gt;.&amp;lt;namespace-name&amp;gt;.svc.cluster.local&lt;/code> 형식의 dns address 를 갖는다.&lt;/li>
+&lt;li>ResourceQuota는 네임스페이스 별로 제약조건을 걸 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1부-기본-패턴">1부 기본 패턴&lt;/h2>
+&lt;h3 id="2장-예측-범위-내의-요구사항">2장 예측 범위 내의 요구사항&lt;/h3>
+&lt;ul>
+&lt;li>애플리케이션의 요구사항에 따라서 필요한 자원량은 달라지며, 이를 예측하는 것은 어려운 일이다.&lt;/li>
+&lt;li>쿠버네티스를 사용하면서 런타임 요구사항을 알아야하는 이유:
+&lt;ul>
+&lt;li>효율적인 하드웨어 사용을 위한 배치&lt;/li>
+&lt;li>전체 클러스터 설계 및 관리&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="런타임-의존성">런타임 의존성&lt;/h4>
+&lt;ul>
+&lt;li>PersistentVolume&lt;/li>
+&lt;li>hostPort&lt;/li>
+&lt;li>configMap, secret&lt;/li>
+&lt;/ul>
+&lt;h4 id="자원-프로파일">자원 프로파일&lt;/h4>
+&lt;ul>
+&lt;li>compressible resource : cpu, network&lt;/li>
+&lt;li>incompressible resource : memory&lt;/li>
+&lt;li>incompressible resource를 너무 많이 사용할 경우 컨테이너가 죽게 된다.&lt;/li>
+&lt;li>requests, limits 에 따른 서비스 구분:
+&lt;ul>
+&lt;li>Best-Effort:
+&lt;ul>
+&lt;li>requests, limits 를 갖고 있지 않다.&lt;/li>
+&lt;li>incompressible resource가 모자랄때, 가장 먼저 죽는다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Burstable:
+&lt;ul>
+&lt;li>requests와 limits 가 다르다. (일반적으로 limits 가 requests 보다 크다.)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Guaranteed:
+&lt;ul>
+&lt;li>requests와 limts가 같다.&lt;/li>
+&lt;li>가장 나중에 죽는다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="파드-우선순위">파드 우선순위&lt;/h4>
+&lt;ul>
+&lt;li>책의 내용과 살짝 다르다. k8s v1.24 문서를 기준으로 작성되었다.&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">apiVersion&lt;/span>: &lt;span style="color:#ae81ff">scheduling.k8s.io/v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">kind&lt;/span>: &lt;span style="color:#ae81ff">PrioirtyClass&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">metadata&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">high-priority&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">value&lt;/span>: &lt;span style="color:#ae81ff">1000&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">globalDefault&lt;/span>: &lt;span style="color:#ae81ff">flase&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">description&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;This is a very high priority Pod class&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>---
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">apiVersion&lt;/span>: &lt;span style="color:#ae81ff">v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">kind&lt;/span>: &lt;span style="color:#ae81ff">Pod&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">metadata&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">random-generator&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">labels&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">env&lt;/span>: &lt;span style="color:#ae81ff">random-generator&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">spec&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">containers&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">k8spatterns/random-generator:1.0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">random-generator&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">priorityClassName&lt;/span>: &lt;span style="color:#ae81ff">high-prioirty&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h4 id="프로젝트-자원">프로젝트 자원&lt;/h4>
+&lt;ul>
+&lt;li>추가 참고자료 : &lt;a href="https://hakkyoonjung31.github.io/linux/memory-overcommit/">메모리 상승과 오버커밋&lt;/a>&lt;/li>
+&lt;li>메모리 오버커밋 : 요구된 메모리를 그대로 할당하는 것이 아닌 실제 사용되는 시점에서 필요한 만큼의 메모리를 할당하는 방식에 의해 요구되는 메모리의 총량이 100%를 넘기는 경우&lt;/li>
+&lt;li>오버 커밋 상태에서 실제 메모리 사용 총량이 메모리 총량을 넘기게 될 수도 있는데, 이때 OOM-Killer에 의해 프로세스들을 죽여서 용량을 확보하게 된다.&lt;/li>
+&lt;li>개인 해석:
+&lt;ul>
+&lt;li>오버커밋에 의해 요청된 메모리와 사용하는 메모리는 차이가 날 수 있다.&lt;/li>
+&lt;li>즉 requests는 250M를 하는데, pod에서 오버커밋을 이용해 500M를 할당하고, 사용은 200M를 하고 있는 상황같은게 발생 할 수 있다는 것이다.&lt;/li>
+&lt;li>kubernetes 는 기본적으로 requests 를 기준으로 스케줄링한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="3장-선언적-배포">3장 선언적 배포&lt;/h3>
+&lt;ul>
+&lt;li>선언적 업데이트를 작동시키기 위한 옵션:
+&lt;ul>
+&lt;li>&lt;code>kubectl replace&lt;/code>로 새로운 버전의 deployment로 전체 deployment를 교체한다.&lt;/li>
+&lt;li>deployment를 &lt;code>kubectl patch&lt;/code> 나 &lt;code>kubectl edit&lt;/code>으로 새로운 버전을 넣는다.&lt;/li>
+&lt;li>&lt;code>kubectl set image&lt;/code> 을 통해서 deployment에 새로운 이미지를 넣는다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>deployment 의 장점:
+&lt;ul>
+&lt;li>deployment는 상태가 내부적으로 관리되는 객체이므로 클라이언트와 상호작용 없이, 서버측에서 실행된다.&lt;/li>
+&lt;li>deployment 의 선언적 특성은 배포에 필요한 단계보다는 배포된 상태가 어떻게 보여야하는지를 알 수 있다.&lt;/li>
+&lt;li>deployment의 정의는 운영 환경에 배포되기 전에 다양한 환경에서 테스트된 실행 가능한 객체이다.&lt;/li>
+&lt;li>업데이트 프로세스는 모두 기록되며, 일시 중지 및 계속을 위한 옵션, 이전 버전으로 롤백을 위한 옵션으로 버전이 지정된다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="고정-배포">고정 배포&lt;/h4>
+&lt;ul>
+&lt;li>Recreate 전략:
+&lt;ul>
+&lt;li>우선적으로 현재 버전의 모든 컨테이너를 죽이고, 이전 버전의 컨테이너가 축출될때 모든 신규 컨테이너를 동시에 시작한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="블루-그린">블루-그린&lt;/h4>
+&lt;ul>
+&lt;li>블루(이전 버전), 그린(현재 버전)&lt;/li>
+&lt;li>블루와 그린을 모두 띄운뒤 신규 트래픽을 그린으로 보낸뒤, 기존 트래픽을 다 처리하면 블루를 삭제한다.&lt;/li>
+&lt;li>블루와 그린이 순간적으로 동시에 뜨게 된다.&lt;/li>
+&lt;li>즉, 자원이 2배로 필요하다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="카나리아">카나리아&lt;/h4>
+&lt;ul>
+&lt;li>소수의 인스턴스를 교체하면서 동작한다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="4장-정상상태-점검">4장 정상상태 점검&lt;/h3>
+&lt;ul>
+&lt;li>프로세스 상태는 애플리케이션의 정상상태를 결정하기에는 충분하지 않다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="liveness-probe">Liveness probe&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>HTTP : 200~399 사이 응답코드&lt;/p></description></item><item><title>Effective Java</title><link>https://minuk.dev/wiki/effective-java/</link><pubDate>Sun, 26 Dec 2021 17:48:34 +0900</pubDate><guid>https://minuk.dev/wiki/effective-java/</guid><description>Effective Java 책 정리</description></item><item><title>Book Review</title><link>https://minuk.dev/wiki/book-reviews/</link><pubDate>Tue, 07 Apr 2020 20:43:34 +0900</pubDate><guid>https://minuk.dev/wiki/book-reviews/</guid><description>본책들 정리</description></item></channel></rss>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gutentags on</title><link>https://minuk.dev/tags/gutentags/</link><description>Recent content in Gutentags on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 28 Apr 2020 21:41:36 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/gutentags/index.xml" rel="self" type="application/rss+xml"/><item><title>gutentags</title><link>https://minuk.dev/wiki/gutentags/</link><pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate><guid>https://minuk.dev/wiki/gutentags/</guid><description>&lt;h2 id="발생한-문제점">발생한 문제점&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>git&lt;/code> 에서 커밋할때마다 아래와 같은 에러로그가 뜬다&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>hint: Waiting for your editor to close the file...
+Error detected while processing DirChanged Autocommands for &amp;#34;*&amp;#34;:
+E475: Invalid argument: Channel doesn&amp;#39;t exist
+E475: Invalid argument: Channel doesn&amp;#39;t exist
+Error detected while processing function &amp;lt;SNR&amp;gt;149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job:
+line 22:&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-vimrc" data-lang="vimrc">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>:&lt;span style="color:#a6e22e">gutentags_exclude_filetypes&lt;/span> = [&lt;span style="color:#e6db74">&amp;#39;gitcommit&amp;#39;&lt;/span>]&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div></description></item></channel></rss>

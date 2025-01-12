@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubeflow on</title><link>https://minuk.dev/tags/kubeflow/</link><description>Recent content in Kubeflow on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 06 Aug 2022 00:55:39 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/kubeflow/index.xml" rel="self" type="application/rss+xml"/><item><title>The Future Of Reproducible Research - Powered by Kubeflow</title><link>https://minuk.dev/wiki/the-future-of-reproducible-research-powered-by-kubeflow/</link><pubDate>Sat, 06 Aug 2022 00:54:31 +0900</pubDate><guid>https://minuk.dev/wiki/the-future-of-reproducible-research-powered-by-kubeflow/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/JiqY5lWbFVE">출처&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;h3 id="articles-about-why-reproducible-research-is-important">Articles About Why Reproducible Research is Important&lt;/h3>
+&lt;h3 id="the-replication-crisis-what-is-it">The Replication Crisis: What Is It?&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphrase:
+&lt;ul>
+&lt;li>Many scientific studies are difficult or impossible to reproduce.&lt;/li>
+&lt;li>Most prevalent in psychology and medicine, but also serious in other natural and social sciences.&lt;/li>
+&lt;li>Term coined in eary 2010s, gave rise to meta-science discipline.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis--causes">The Replication Crisis : Causes&lt;/h3>
+&lt;ul>
+&lt;li>Wikipiedia Article Paraphrase:
+&lt;ul>
+&lt;li>C ommodification of Science&lt;/li>
+&lt;li>Publish or Perish Culture in Academia&lt;/li>
+&lt;li>Fraud and otherwise “Questionable” Research Practices&lt;/li>
+&lt;li>Statistical Issues&lt;/li>
+&lt;li>Base Rate Hypotheses Accuracy&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis-consequences">The Replication Crisis: Consequences&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphrase:
+&lt;ul>
+&lt;li>Political repercussions&lt;/li>
+&lt;li>Public awareness and perceptions&lt;/li>
+&lt;li>Response in Academia&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis-potential-remedies">The Replication Crisis: Potential Remedies&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphase:
+&lt;ul>
+&lt;li>Reforms in publishing&lt;/li>
+&lt;li>Statistical Reform&lt;/li>
+&lt;li>Replication Efforts&lt;/li>
+&lt;li>Changes to scientific approach&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="my-experience-trying-to-reproduce-research">My Experience Trying to Reproduce Research&lt;/h3>
+&lt;ul>
+&lt;li>Grad Student/ Academic Papers&lt;/li>
+&lt;li>Working on someone else’s old junk code&lt;/li>
+&lt;li>Working on my own old junk code&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-we-did">What we did&lt;/h2>
+&lt;h3 id="tower-of-babel-making-apache-spark-k8s-and-kubeflow-play-nice">Tower of Babel: Making Apache Spark, K8s, and Kubeflow Play Nice&lt;/h3>
+&lt;h3 id="10-minute-quick-overview-of-kf4covid">10 Minute Quick Overview of KF4COVID&lt;/h3>
+&lt;ul>
+&lt;li>Early days of pandemic - everyone was scared, no solutions were out of bounds.&lt;/li>
+&lt;li>Various ERs turned to CT scans and ultrasounds to detect ‘ground glass occlusions’ a hallmark of covid (technique has been used in ERs in the past for rapid pneumonia detection).&lt;/li>
+&lt;li>CT Scans deliver high dose of radition&lt;/li>
+&lt;li>Low Dose CT Scans deliver, low dose of radiation, but produce ‘noisy’ images.&lt;/li>
+&lt;li>We used K8s, Apache Spark, Apache Mahout &amp;amp; Kubeflow to denoise CT Scans&lt;/li>
+&lt;/ul>
+&lt;h3 id="rapid-testing-needed--desperately">Rapid Testing Needed -Desperately&lt;/h3>
+&lt;ul>
+&lt;li>Mental Time Machine - to March 2020.
+&lt;ul>
+&lt;li>No one understands Coronavirus - but hospitals are being overrune and people are dying.&lt;/li>
+&lt;li>Slow Tests&lt;/li>
+&lt;li>Rapid test “issues”&lt;/li>
+&lt;li>No answer was ‘out of bounds’&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-pipeline-overview">The Pipeline: Overview&lt;/h3>
+&lt;ul>
+&lt;li>S3 Buckets of images (can be easily swapped out to other image repo)&lt;/li>
+&lt;li>PyDiCOM to turn CT scan into numerical matrix, write matrix to disk&lt;/li>
+&lt;li>Load matrix in apache spark (~500 MB each) then wrap RDD into Mahout DRM&lt;/li>
+&lt;li>DS-SVD on Mahout DRM (why couldn’t do this in Numpy?)&lt;/li>
+&lt;li>DS-SVD results in two matrices- one of basis vectors, one of weights per image - to “de noise” you only use first X% of basis vectors. These get output and can be easily rastered using a laptop.&lt;/li>
+&lt;/ul>
+&lt;h2 id="call-to-action--how-you-can-do-the-same">Call to action / How you can do the same&lt;/h2>
+&lt;ul>
+&lt;li>Assume they won’t be using your laptop.&lt;/li>
+&lt;/ul>
+&lt;h3 id="use-kubeflow">Use Kubeflow&lt;/h3>
+&lt;p>Assuming someone will want to replicate your work, and that they won’t have access to your machine, Kubeflow provides a nice framework for reproducing results.&lt;/p></description></item></channel></rss>

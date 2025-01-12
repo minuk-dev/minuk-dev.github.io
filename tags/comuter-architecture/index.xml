@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Comuter Architecture on</title><link>https://minuk.dev/tags/comuter-architecture/</link><description>Recent content in Comuter Architecture on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:23:27 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/comuter-architecture/index.xml" rel="self" type="application/rss+xml"/><item><title>lectures/computer architecture</title><link>https://minuk.dev/wiki/lectures/computer-architecture/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/computer-architecture/</guid><description>&lt;ol start="5">
+&lt;li>Large and Fast : Exploiting Memory Hierarchy5.&lt;/li>
+&lt;/ol>
+&lt;h1 id="principle-of-locality">Principle of Locality&lt;/h1>
+&lt;ul>
+&lt;li>Temporal locality&lt;/li>
+&lt;li>Spatial locality&lt;/li>
+&lt;/ul>
+&lt;h1 id="taking-advantage-of-locality">Taking Advantage of Locality&lt;/h1>
+&lt;ul>
+&lt;li>Memory hierarchy
+&lt;ul>
+&lt;li>Store everything on disk (lowest level)&lt;/li>
+&lt;li>Copy recently accessed (and nearby) items from disk to smaller DRAM(e.g. Main Memory)&lt;/li>
+&lt;li>copy more recently accessed (and nearby) items from DRAM to smaller SRAM memory(e.g. Cache memory attached to CPU)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="memory-hierarchy-levels">Memory Hierarchy Levels&lt;/h1>
+&lt;ul>
+&lt;li>A block (aka line) : unit of copying&lt;/li>
+&lt;li>If accessed data is present in upper level
+&lt;ul>
+&lt;li>Hit : access satisfied by upper level
+&lt;ul>
+&lt;li>Hit ratio: hits/accesses&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>If accessed data is absent
+&lt;ul>
+&lt;li>Miss : block copied from lower level
+&lt;ul>
+&lt;li>Time taken : miss penalty&lt;/li>
+&lt;li>Miss ratio : misses/accesses = 1 - hit ratio&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Then accessed data supplied from upper level&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="memory-technology">Memory Technology&lt;/h1>
+&lt;ul>
+&lt;li>Static RAM (SRAM) : 0.5ns - 2.5ns, $2000 - $5000 per GB&lt;/li>
+&lt;li>Dynamic RAM(DRAM) : 50ns - 70ns, $20 - $75 per GB&lt;/li>
+&lt;li>Magnetic disk : 5ms - 20ms, $0.20 - $2 per GB&lt;/li>
+&lt;li>Ideal memory
+&lt;ul>
+&lt;li>Access time of SRAM&lt;/li>
+&lt;li>Capacity and cost/GB of disk&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="sram-technology">SRAM Technology&lt;/h1>
+&lt;ul>
+&lt;li>Data stored using 6~8 transistors in an IC
+&lt;ul>
+&lt;li>fast, but expensive&lt;/li>
+&lt;li>fixed access time to any datum&lt;/li>
+&lt;li>no refresh needed&lt;/li>
+&lt;li>usually for caches, integrated on processor chips&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="dram-technology">DRAM Technology&lt;/h1>
+&lt;ul>
+&lt;li>Data stored as a charge in a capacitor
+&lt;ul>
+&lt;li>Single transistor used to access the charge&lt;/li>
+&lt;li>Must periodically be refreshed
+&lt;ul>
+&lt;li>Read contents and write back&lt;/li>
+&lt;li>Performed on a DRAM &amp;ldquo;row&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Synchronous DRAM (SDRAM)
+&lt;ul>
+&lt;li>DRAM with clocks to improve bandwidth&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ex&amp;gt; Double data rate (DDR) DRAM
+&lt;ul>
+&lt;li>Transfer on rising and falling clock edges&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="flash-memory">Flash Memory&lt;/h1>
+&lt;ul>
+&lt;li>Non-volatile semiconductor storage ( a type of EEPROM)
+&lt;ul>
+&lt;li>100x - 1000x faster than disk&lt;/li>
+&lt;li>smaller, lower power, more robust&lt;/li>
+&lt;li>But more $/GB (between disk and DRAM)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Types
+&lt;ul>
+&lt;li>NOR flash : bit cell like a NOR gate
+&lt;ul>
+&lt;li>Random read/write access&lt;/li>
+&lt;li>Used for instruction memory in embedded systems&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>NAND flash : bit cell like a NAND gate
+&lt;ul>
+&lt;li>Denser (bits/area), but block-at-a-time access&lt;/li>
+&lt;li>Cheaper per GB&lt;/li>
+&lt;li>Used for USB keys, media storage, &amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Flash bits wears out after 1000&amp;rsquo;s of accesses
+&lt;ul>
+&lt;li>Not suitable for direct RAM or disk replacemenet&lt;/li>
+&lt;li>Wear leveling : remap data to less used blocks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="disk-storage">Disk Storage&lt;/h1>
+&lt;ul>
+&lt;li>Nonvolatile, rotating magnetic storage&lt;/li>
+&lt;/ul>
+&lt;h2 id="disk-sectors-and-access">Disk Sectors and Access&lt;/h2>
+&lt;ul>
+&lt;li>Each sector records : Sector ID, Data(512 bytes, 4096 bytes proposed), Error correcting code (ECC), Synchronization fields and gaps&lt;/li>
+&lt;li>Access to a sector involves : Queuing delay if other accesses are pending, Seek(move the heads), Rotational latency, Data transfer,Controller overhead&lt;/li>
+&lt;/ul>
+&lt;h2 id="disk-access-example">Disk Access Example&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Given : 512B sector, 15000rpm, 4ms average seek time, 100MB/s transfer rate, 0.2ms controller overhead, idle disk&lt;/p></description></item></channel></rss>

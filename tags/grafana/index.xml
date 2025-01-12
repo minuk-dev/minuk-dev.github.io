@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Grafana on</title><link>https://minuk.dev/tags/grafana/</link><description>Recent content in Grafana on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Mon, 06 Mar 2023 02:56:19 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/grafana/index.xml" rel="self" type="application/rss+xml"/><item><title>Beyond Tracing - What do we do with all this data</title><link>https://minuk.dev/wiki/beyond-tracing-what-do-we-do-with-all-this-data/</link><pubDate>Mon, 06 Mar 2023 02:28:31 +0900</pubDate><guid>https://minuk.dev/wiki/beyond-tracing-what-do-we-do-with-all-this-data/</guid><description>&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=zVHHeO8tAWQ">https://www.youtube.com/watch?v=zVHHeO8tAWQ&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="overview">Overview&lt;/h2>
+&lt;ul>
+&lt;li>Metrics-generator&lt;/li>
+&lt;li>Parquet&lt;/li>
+&lt;li>TraceQL&lt;/li>
+&lt;/ul>
+&lt;h2 id="matrics-generator">Matrics-generator&lt;/h2>
+&lt;h3 id="why-metrics-if-you-have-traces">Why metrics if you have traces?&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Transcation-oriented : Highly structured&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Service-oriented : Aggregated, historical&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Span metrics:&lt;/p>
+&lt;ul>
+&lt;li>Rate, Error, Duration&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Service graph metrics:&lt;/p>
+&lt;ul>
+&lt;li>Extract service topology&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Tempo Launched at Oct 2022&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Tempo 1.0 Jun 2021&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Search over recent data Nov 2021&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Full backend search Jan 2022&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Parquet storage format Dec 2021&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-is-parquet">What is Parquet?&lt;/h2>
+&lt;ul>
+&lt;li>Apache Parquet is an opensource, column-oriented data file format designed for efficient data storage and retrieval.&lt;/li>
+&lt;li>What dos this mean?:
+&lt;ul>
+&lt;li>Tempo can store and access data more efficiently&lt;/li>
+&lt;li>So can you - arege ecosystem of tools&lt;/li>
+&lt;li>No new infrastructure - just a new file format&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="schema">Schema&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="TraceID%0aDuration%0a%20%20Span%20#1%0a%20%20%20%20Name%0a%20%20%20%20ServiceName%0a%20%20%20%20Tag%20#1%0a%20%20%20%20Tag%20#2%0a%20%20%20%20.%0a%20%20%20%20Duration%0a%20%20Span%20#2%0a%20%20%20%20Name%0a%20%20%20%20ServiceName%0a%20%20%20%20Tag%20#1%0a%20%20%20%20Event#1%0a%20%20%20%20.%0a%20%20%20%20Duration">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>TraceID
+Duration
+ Span #1
+ Name
+ ServiceName
+ Tag #1
+ Tag #2
+ .
+ Duration
+ Span #2
+ Name
+ ServiceName
+ Tag #1
+ Event#1
+ .
+ Duration&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>
+&lt;ol>
+&lt;li>Encodings:&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>traceID into dictionary&lt;/li>
+&lt;li>duration into delta&lt;/li>
+&lt;li>tags into dictionary&lt;/li>
+&lt;li>events into snappy&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;ol start="2">
+&lt;li>FindTraceByID&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="3">
+&lt;li>Attribute search:&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>&lt;code>cluster=&amp;quot;foo&amp;quot;, namespace=&amp;quot;bar&amp;quot;&lt;/code>&lt;/li>
+&lt;li>It uses their tags&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;ol start="4">
+&lt;li>Felxible schema:&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>easily add new column (e.g. cluster, http.url)&lt;/li>
+&lt;li>This feature makes us easily find tracing data using custom columns.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="inside-a-block">Inside a block&lt;/h3>
+&lt;ul>
+&lt;li>Parquet:
+&lt;ul>
+&lt;li>Open file format - use existing tools&lt;/li>
+&lt;li>&lt;code>parquet-tools head data.parquet&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="traceql">TraceQL&lt;/h2>
+&lt;h3 id="selecting-traces---basics">Selecting Traces - Basics&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="%7b%20duration%20%3e%202s%20%7d%0a%7b%20name%20=%20%22GET%20/:endpoint%22%20%7d%0a%7b%20.http.status%20=%20200%20%7d%0a%7b%20span.http.url%20=~%20%22/api/v1/.*%22%20%7d%0a%7b%20resource.namespace%20=%20%22prod%22%20%7d%0a%7b%20.http.url=%22/:endpoint%22%20&amp;amp;&amp;amp;%20.http.status%20=%20200%20%7d">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>{ duration &amp;gt; 2s }
+{ name = &amp;#34;GET /:endpoint&amp;#34; }
+{ .http.status = 200 }
+{ span.http.url =~ &amp;#34;/api/v1/.*&amp;#34; }
+{ resource.namespace = &amp;#34;prod&amp;#34; }
+{ .http.url=&amp;#34;/:endpoint&amp;#34; &amp;amp;&amp;amp; .http.status = 200 }&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;h3 id="traceql---aggregates">TraceQL - Aggregates&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="%7b%20.db.system%20=%20%22postgres%22%20%7d%20%7c%20cound%28%29%20%3e%203%20%7d%0a%7b%20name%20=%20%22dns.lookup%22%20%7d%20%7c%20avg%28duration%29%20%3e%20500ms%20%7d">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>{ .db.system = &amp;#34;postgres&amp;#34; } | cound() &amp;gt; 3 }
+{ name = &amp;#34;dns.lookup&amp;#34; } | avg(duration) &amp;gt; 500ms }&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;h3 id="traceql---pipelines-of-spansets">TraceQL - Pipelines of Spansets&lt;/h3>
+&lt;h3 id="selecting-traces---structural">Selecting Traces - Structural&lt;/h3>
+&lt;h3 id="traceql---structural">TraceQL - Structural&lt;/h3>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="%7b%20.service.name%20=%20%22foo%22%20%7d%20%3e%3e%20%7b.service.name%20=%20%22bar%22%20%7d%0a%7b%20name%20=%20%22tcp.connect%22%20%7d%20~%20%7b%20name%20=%20%22dns.lookup%22%20%7d%0a%7b%20.service.name%20!=%20parent.service.name%20%7d">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>{ .service.name = &amp;#34;foo&amp;#34; } &amp;gt;&amp;gt; {.service.name = &amp;#34;bar&amp;#34; }
+{ name = &amp;#34;tcp.connect&amp;#34; } ~ { name = &amp;#34;dns.lookup&amp;#34; }
+{ .service.name != parent.service.name }&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;h2 id="personal-notes">Personal Notes&lt;/h2>
+&lt;ul>
+&lt;li>How to connect metircs and tracing graph? Is only the traceId enough to do it?:
+&lt;ul>
+&lt;li>For now, prometheus is well known as a troublesome because of its structure which cannot be horizontally scaled.&lt;/li>
+&lt;li>To solve this problem, lots of companies use Thanos with low resolution.&lt;/li>
+&lt;li>In this situation, tracing information is newly occurred data to save it.&lt;/li>
+&lt;li>In my opinion, it is needed to be examined especially in the sight of storage like retention &amp;amp; resolution. Because it is linked to metrics which can be stored with short retention and low resolution.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>grafanacon</title><link>https://minuk.dev/wiki/grafanacon/</link><pubDate>Mon, 06 Mar 2023 02:26:29 +0900</pubDate><guid>https://minuk.dev/wiki/grafanacon/</guid><description>&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>grafanacon2022 : &lt;a href="https://grafana.com/about/events/grafanacon/2022/">https://grafana.com/about/events/grafanacon/2022/&lt;/a>&lt;/li>
+&lt;li>youtube playlists : &lt;a href="https://www.youtube.com/playlist?list=PLDGkOdUX1Ujr0fY5Fv4bT8i0MURQArPwI">https://www.youtube.com/playlist?list=PLDGkOdUX1Ujr0fY5Fv4bT8i0MURQArPwI&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="notes">Notes&lt;/h2>
+&lt;ul>
+&lt;li>[[beyond-tracing-what-do-we-do-with-all-this-data]]&lt;/li>
+&lt;/ul></description></item><item><title>Grafana Loki - Like Prometheus, But for logs.</title><link>https://minuk.dev/wiki/grafana-loki-like-prometheus-but-for-logs/</link><pubDate>Tue, 20 Dec 2022 20:02:46 +0900</pubDate><guid>https://minuk.dev/wiki/grafana-loki-like-prometheus-but-for-logs/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/CQiawXlgabQ">원본 링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="0-simple-and-cost-effective-to-operate">0. Simple and cost effective to operate&lt;/h2>
+&lt;ul>
+&lt;li>Loki doesn&amp;rsquo;t index the text of the logs, instead grouping entries into &amp;ldquo;streams&amp;rdquo; and indexing those with labels.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-integrated-with-existing-observability-tools">1. Integrated with existing observability tools&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>As a DevOps Engineer, how to work:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;ol>
+&lt;li>Alert&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="2">
+&lt;li>Dashboard&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="3">
+&lt;li>Adhoc Query&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="4">
+&lt;li>Log Aggregation&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="5">
+&lt;li>Distributed Tracing&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="6">
+&lt;li>Fix&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Basically, fluentd makes app push their log into fluentd:&lt;/p>
+&lt;ul>
+&lt;li>It causes various problems.&lt;/li>
+&lt;li>But, promtail pulls their log.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-cloud-native-and-airplane-mode">2. Cloud Native and Airplane mode&lt;/h2>
+&lt;h2 id="whats-new">What&amp;rsquo;s new?&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>LogQL Filter Chaining : &lt;code>{job=&amp;quot;app&amp;quot;} |= &amp;quot;/foo&amp;quot; !~ &amp;quot;/foo/bar&amp;quot;&lt;/code>&lt;/p></description></item></channel></rss>

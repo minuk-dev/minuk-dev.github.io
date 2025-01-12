@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Minikube on</title><link>https://minuk.dev/tags/minikube/</link><description>Recent content in Minikube on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 21 Sep 2022 02:58:44 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/minikube/index.xml" rel="self" type="application/rss+xml"/><item><title>Deep Dive into Minikube</title><link>https://minuk.dev/wiki/deep-dive-into-minikube/</link><pubDate>Wed, 21 Sep 2022 01:59:49 +0900</pubDate><guid>https://minuk.dev/wiki/deep-dive-into-minikube/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/Iyq_MlSku-I">원본&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="it-all-started-in-2016">It all started in 2016&lt;/h2>
+&lt;ul>
+&lt;li>Minkube was created 6 years ago by Google to alleviate the difficulties that developers had when setting up a Kubernetes environment for local development&lt;/li>
+&lt;/ul>
+&lt;h3 id="ok-google--assist-the-developers-please">OK Google &amp;hellip; Assist the developers please!&lt;/h3>
+&lt;ul>
+&lt;li>Google has continued to evolve the Minikube project to grow the Kubernetes ecosystem by making Kubernetes development more attractive and frictionless&lt;/li>
+&lt;/ul>
+&lt;h2 id="primary-goal">Primary Goal&lt;/h2>
+&lt;ul>
+&lt;li>make it simple to run Kubernetes locally for learning and day-to-day development, testing &amp;amp; debugging workflows:
+&lt;ol>
+&lt;li>inclusive&lt;/li>
+&lt;li>Community-driven&lt;/li>
+&lt;li>User-friendly&lt;/li>
+&lt;li>Support all Kubernetes features&lt;/li>
+&lt;li>Cross-platform&lt;/li>
+&lt;li>Reliable&lt;/li>
+&lt;li>High Performance&lt;/li>
+&lt;li>Developer Focused&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="our-first-integration-tests-ran-in-the-office">Our first Integration tests ran in the office.&lt;/h3>
+&lt;ul>
+&lt;li>Minikube&amp;rsquo;s VM drivers needed Baremetal servers with virtualization enabled.&lt;/li>
+&lt;li>Nested Virtualization only available for certain Linux Distros&lt;/li>
+&lt;/ul>
+&lt;h3 id="it-takes-a-village-to-test-minikube">It takes a village to test Minikube&lt;/h3>
+&lt;ul>
+&lt;li>Minikube is the most tested local Kubernetes tool.:
+&lt;ul>
+&lt;li>46 Self-hosted CI VMs in 5 different clouds (GCP, AWS, Equinix Metal, Azure, Macstadium) + Prow and Github Action&lt;/li>
+&lt;li>296 end to end tests in integration testing suite&lt;/li>
+&lt;li>100 unit tests&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="flake-rate-system">Flake Rate System&lt;/h2>
+&lt;ul>
+&lt;li>Problem:
+&lt;ul>
+&lt;li>Running hundreds of test cases on dozen platforms, there are always some flaky test that fail 10-15% of the time on Master.&lt;/li>
+&lt;li>Reviewer had to have a lot of context to approve a PR with failed test.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Solution:
+&lt;ul>
+&lt;li>Run tests on master regularly, generate failed rate on master.&lt;/li>
+&lt;li>On each PR comments how many of the Failed tests are a known Flake&lt;/li>
+&lt;li>Automatically create Github issue for frequently failing test.&lt;/li>
+&lt;li>Generate Visualized&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Minikube&amp;rsquo;s Flake Rate System is built on top of Gopogh&lt;/li>
+&lt;/ul>
+&lt;h3 id="what-is-gopogh---reducing-squinting-for-go-developers">What is Gopogh? - Reducing Squinting for go developers&lt;/h3>
+&lt;ul>
+&lt;li>Problem: Failed minikube test logs come with thousands of lines of post mortem logs low-level system logs. (sometimes 10K lines) that makes it very hard to see what log is for what!:
+&lt;ul>
+&lt;li>Created in a hackathon with a funny name&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="minikube-speaks-your-language">Minikube speaks your language&lt;/h2>
+&lt;h2 id="checkout-minikubes-side-project">Checkout Minikube&amp;rsquo;s Side Project!&lt;/h2>
+&lt;ul>
+&lt;li>Slow jam&lt;/li>
+&lt;li>Triage Party&lt;/li>
+&lt;li>Gopogh&lt;/li>
+&lt;li>Time To k8s&lt;/li>
+&lt;li>Minikube-CI&lt;/li>
+&lt;li>Pull Sheet&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-story-of-kbuernetes-124">The story of Kbuernetes 1.24&amp;hellip;&lt;/h2>
+&lt;ul>
+&lt;li>Kubernetes removed the code for supporting docker runtime&lt;/li>
+&lt;li>CNI&amp;hellip;&lt;/li>
+&lt;li>Cgroup V2&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h3 id="minikube-continues-to-support-docker-env">Minikube continues to support docker-env&lt;/h3>
+&lt;ul>
+&lt;li>Users love &amp;ldquo;min8ikube docker-env&amp;rdquo;(building images directly on the cluster) and we can&amp;rsquo;t blame them, it is 36X time faster than Image load.&lt;/li>
+&lt;/ul>
+&lt;h2 id="minikube-cpu-usage-overtime">Minikube CPU usage overtime&lt;/h2>
+&lt;ul>
+&lt;li>Save energy by using these Minikube features Features that can save energy:
+&lt;ul>
+&lt;li>try &amp;ldquo;minikube pause&amp;rdquo;&lt;/li>
+&lt;li>Auto-Pause Addon&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="benchmarking">Benchmarking&lt;/h2>
+&lt;ul>
+&lt;li>Measure Weekly/Daily and per release&lt;/li>
+&lt;li>Measure agsinst similar tools&lt;/li>
+&lt;/ul>
+&lt;h2 id="minikubes-base-image">Minikube&amp;rsquo;s Base Image&lt;/h2>
+&lt;h3 id="did-you-know-minikube-maintains-its-own-linux">Did you know minikube maintains its own linux?&lt;/h3>
+&lt;ul>
+&lt;li>Hand Crafted - Just enough Linux for Kubernetes&lt;/li>
+&lt;li>Small ISO - 280MB&lt;/li>
+&lt;li>Based on CoreOS BUildroot&lt;/li>
+&lt;li>Might Graduate out of Minikube to is own repo&lt;/li>
+&lt;li>Advantages:
+&lt;ul>
+&lt;li>Granular control of enabled kernel modules and packages&lt;/li>
+&lt;li>Tailored for Kubernetes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="types-of-minikube-users">Types of Minikube users&lt;/h3>
+&lt;ul>
+&lt;li>Learn Kubernetes&lt;/li>
+&lt;li>Develop on Kubernetes&lt;/li>
+&lt;li>Test/CI&lt;/li>
+&lt;/ul>
+&lt;h3 id="new-category-of-minikube-users">New category of minikube users!&lt;/h3>
+&lt;ul>
+&lt;li>Tens of Blog posts, tweets and survey comments shows that a lot of new users are using minikube merely as a Docker Desktop Replacement.&lt;/li>
+&lt;/ul>
+&lt;h3 id="minikube-start--no-kubernetes">minikube start -no-kubernetes?&lt;/h3>
+&lt;ul>
+&lt;li>IMO : ?? what?&lt;/li>
+&lt;/ul>
+&lt;h3 id="top-differentiators-minikube-vs-similar-tools">Top differentiators Minikube vs similar tools&lt;/h3>
+&lt;ul>
+&lt;li>Multiple container runtimes for Kubernetes&lt;/li>
+&lt;li>Direct access to container runtime for faster image build&lt;/li>
+&lt;li>Integration tests (most comprehensive)&lt;/li>
+&lt;/ul>
+&lt;h2 id="advantages-of-vm-drivers">Advantages of VM Drivers&lt;/h2>
+&lt;ul>
+&lt;li>No need to have Docker Desktop License&lt;/li>
+&lt;li>Less CPU usage&lt;/li>
+&lt;li>You can hit the port directly (for example if you have a hotspot service running on port 80 you can curl $(minikube ip):80 on your machine vs Docker Drive that by design needs to be assigned a random port.)&lt;/li>
+&lt;/ul>
+&lt;h2 id="tens-of-survey-requests-for-vm-driver-on-m1arm64">Tens of Survey Requests for VM driver on M1/Arm64&lt;/h2>
+&lt;h3 id="1-try-qemu-driver-on-apple-m1">1. Try Qemu Driver on Apple M1&lt;/h3>
+&lt;ul>
+&lt;li>Qemu driver is finally available for Arm64 and M1&lt;/li>
+&lt;li>This means on Arm-based machines like Apple M1 you could have a Kbuernetes experience without having to have Docker Desktop.&lt;/li>
+&lt;/ul>
+&lt;h3 id="challenges-of-adding-arm64-iso">Challenges of adding ARM64 ISO&lt;/h3>
+&lt;ul>
+&lt;li>Slow iteration of testing&lt;/li>
+&lt;li>BIOS/EFI&lt;/li>
+&lt;li>AppArmor&lt;/li>
+&lt;li>Lack of team familiarity with Buildroot&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-try-early-prototype-of-minikube-gui">2. Try Early prototype of Minikube-GUI&lt;/h3>
+&lt;ul>
+&lt;li>Go to minikube website&lt;/li>
+&lt;li>Search for Minikube GUI&lt;/li>
+&lt;li>Things to try:
+&lt;ul>
+&lt;li>Simplified View (one cluster)&lt;/li>
+&lt;li>Advanced View (multi cluster)&lt;/li>
+&lt;li>Right click tray icon&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>개인적으로 퀄리티가 굉장히 좋은 강연이였다.&lt;/li>
+&lt;li>일단:
+&lt;ul>
+&lt;li>minikube에 대한 간략한 설명(k8s 에 고통을 덜기위해)&lt;/li>
+&lt;li>왜 써야하는지 (안정성)&lt;/li>
+&lt;li>겪고 있는 문제(flake, k8s 1.24)&lt;/li>
+&lt;li>화제거리(docker 를 사용하기 위해 k8s 없이 minikube 를 돌릴수 있게 해달라)&lt;/li>
+&lt;li>새로운 소식(M1 에 대한 지원, GUI 지원)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>위 사항들을 모두 요약한 좋은 강연이였다고 생각된다.&lt;/li>
+&lt;li>다만 아쉬운 점은 최근 이야기가 많이 나오고 있는 k3s라던가 minikube 가 내부적으로 어떻게 동작하는지에 대한 설명이 있었으면 좋았을 거 같은데, 사실 이건 시간 관계상 하기 어렵기도 하고 minikube 를 사용하는 사람이 아닌 개발하는 사람에게 필요한 내용이므로 적합하지 않다고 생각해서 뺀것 같다. (혹은 예전에 이미 했어서 중복되서 안하거나?)&lt;/li>
+&lt;li>이 강연을 통해서 얻게된 내용:
+&lt;ul>
+&lt;li>minikube 내부구조를 살짝 공부하고, kind(kubernetes in docker) 와 k3s 와 비교해봐야겠다. (목적성이나 구조적인 문제 둘다)&lt;/li>
+&lt;li>중간에 소개해줬던 내부 툴 repo를 살펴봤는데, 현재 사용하고 있지만 툴 자체가 발전하지는 않는 상황인것 같다. 살펴봐야겠다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

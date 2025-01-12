@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chain of Responsibility on</title><link>https://minuk.dev/tags/chain-of-responsibility/</link><description>Recent content in Chain of Responsibility on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Sep 2020 23:22:30 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/chain-of-responsibility/index.xml" rel="self" type="application/rss+xml"/><item><title>Modern C++ Design Pattern/Chatper 13. 책임사슬(Chain of Responsibility)</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-13--%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</link><pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-13--%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</guid><description>&lt;h2 id="시나리오">시나리오&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="struct%20Creature%0a%7b%0a%20%20string%20name;%0a%20%20int%20attack,%20defense;%0a%20%20//%20Constructor,%20operator...%0a%7d;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Creature&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> attack, defense;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Constructor, operator...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="포인터-사슬">포인터 사슬&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">CreatureModifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CreatureModifier&lt;span style="color:#f92672">*&lt;/span> next{&lt;span style="color:#66d9ef">nullptr&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">protected&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creture; &lt;span style="color:#75715e">// reference, pointer or shared_ptr
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> CreatureModifier(Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> creature(creture) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">add&lt;/span>(CreatureModifier&lt;span style="color:#f92672">*&lt;/span> cm)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (next) next&lt;span style="color:#f92672">-&amp;gt;&lt;/span>add(cm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span> next &lt;span style="color:#f92672">=&lt;/span>cm;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">handle&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (next) next&lt;span style="color:#f92672">-&amp;gt;&lt;/span>handle();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>참조를 넘겨받아 저장하고 변경할 준비&lt;/li>
+&lt;li>추상 클래스가 아님&lt;/li>
+&lt;li>&lt;code>next&lt;/code>는 다음 변경 작업을 가리킴&lt;/li>
+&lt;li>&lt;code>add()&lt;/code>를 통해서 작업 사슬에 연결하여 추가&lt;/li>
+&lt;li>&lt;code>handle()&lt;/code> 맴버 함수는 단순히 다음 항목을 처리한다. 원한다면 오버라이딩해서
+처리한다.&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">DoubleAttackModifier&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> CreatureModifier
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> DoubleAttackModifier(Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> CreatureModifier(creature) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">handle&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> creature.attack &lt;span style="color:#f92672">*=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CreatureModifier&lt;span style="color:#f92672">::&lt;/span>handle();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">NoBonusesModifier&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> CreatureModifier
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> NoBonusesModifer(Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> CreatureModifier(creature) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">handle&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Do Nothing
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="브로커-사슬">브로커 사슬&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="struct%20Game%0a%7b%0a%20%20signal%3cvoid%28Query&amp;amp;%29%3e%20queries;%20//%20Boost.Signals2%0a%7d;%0a%0astruct%20Query%0a%7b%0a%20%20string%20creature_name;%0a%20%20enum%20Argumnet%20%7b%20attack,%20defense%20%7d%20argument;%0a%20%20int%20result;%0a%7d;%0a%0aclass%20Creature%0a%7b%0a%20%20Game&amp;amp;%20game;%0a%20%20int%20attack,%20defense;%0apublic:%0a%20%20string%20name;%0a%20%20Creature%28Game&amp;amp;%20game,%20...%29%20:%20game%7bgame%7d,%20...%20%7b%20...%20%7d%0a%20%20//%20Other%20Members%0a%7d;%0a%0aint%20Creature::get_attack%28%29%20const%0a%7b%0a%20%20Query%20q%7b%20name,%20Query::Argument::attack,%20attack%20%7d;%0a%20%20game.queries%28q%29;%0a%20%20return%20q.result;%0a%7d%0a%0aclass%20CreatureModifier%0a%7b%0a%20%20Game&amp;amp;%20game;%0a%20%20Creature&amp;amp;%20creature;%0apublic:%0a%20%20CreatureModifier%28Game&amp;amp;%20game,%20Creature&amp;amp;%20creature%29%0a%20%20%20%20:%20game%28game%29,%20creature%28creature%29%20%7b%7d%0a%7d;%0a%0aclass%20DoubleAttackModifier%20:%20public%20CreatureModifier%0a%7b%0a%20%20connection%20conn;%0apublic:%0a%20%20DoubleAttackModifier%28Game&amp;amp;%20game,%20Creature&amp;amp;%20creature%29%0a%20%20%20%20:%20CreatureModifier%28game,%20creature%29%0a%20%20%7b%0a%20%20%20%20conn%20=%20game.queries.connect%28[&amp;amp;]%28Query&amp;amp;%20q%29%20%7b%0a%20%20%20%20%20%20if%20%28q.creature_name%20==%20creature.name%20&amp;amp;&amp;amp;%0a%20%20%20%20%20%20%20%20q.argument%20==%20Query::Argument::attack%29%0a%20%20%20%20%20%20%20%20q.result%20*=%202;%0a%20%20%20%20%7d%29%0a%20%20%7d%0a%0a%20%20~DoubleAttackModifier%28%29%20%7b%20conn.disconnect%28%29;%20%7d%0a%7d">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Game&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> signal&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">void&lt;/span>(Query&lt;span style="color:#f92672">&amp;amp;&lt;/span>)&lt;span style="color:#f92672">&amp;gt;&lt;/span> queries; &lt;span style="color:#75715e">// Boost.Signals2
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Query&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string creature_name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">enum&lt;/span> &lt;span style="color:#a6e22e">Argumnet&lt;/span> { attack, defense } argument;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Creature&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> attack, defense;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Creature(Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game, ...) &lt;span style="color:#f92672">:&lt;/span> game{game}, ... { ... }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Other Members
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> Creature&lt;span style="color:#f92672">::&lt;/span>get_attack() &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Query q{ name, Query&lt;span style="color:#f92672">::&lt;/span>Argument&lt;span style="color:#f92672">::&lt;/span>attack, attack };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> game.queries(q);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> q.result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">CreatureModifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CreatureModifier(Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game, Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> game(game), creature(creature) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">DoubleAttackModifier&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> CreatureModifier
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> connection conn;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DoubleAttackModifier(Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game, Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> CreatureModifier(game, creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> conn &lt;span style="color:#f92672">=&lt;/span> game.queries.connect([&lt;span style="color:#f92672">&amp;amp;&lt;/span>](Query&lt;span style="color:#f92672">&amp;amp;&lt;/span> q) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (q.creature_name &lt;span style="color:#f92672">==&lt;/span> creature.name &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> q.argument &lt;span style="color:#f92672">==&lt;/span> Query&lt;span style="color:#f92672">::&lt;/span>Argument&lt;span style="color:#f92672">::&lt;/span>attack)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> q.result &lt;span style="color:#f92672">*=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">~&lt;/span>DoubleAttackModifier() { conn.disconnect(); }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>컴포넌트들이 어떤 명령이나 조회 작업을 차례로 처리할 수 있게 하는 매우 단순한
+디자인 패턴이다.&lt;/li>
+&lt;li>이론적으로 포인터 사슬은 보통 &lt;code>vector&lt;/code>나 &lt;code>list&lt;/code>로 대체될 수 있다.&lt;/li>
+&lt;li>좀 더 복잡한 브로커 사슬의 구현에서는 매개자 패턴과 관찰자 패턴을 활용한다.&lt;/li>
+&lt;/ul></description></item></channel></rss>

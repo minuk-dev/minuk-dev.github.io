@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ssd on</title><link>https://minuk.dev/tags/ssd/</link><description>Recent content in Ssd on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 26 Aug 2020 20:54:02 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/ssd/index.xml" rel="self" type="application/rss+xml"/><item><title>Flash Translation Layer</title><link>https://minuk.dev/wiki/ftl/</link><pubDate>Tue, 14 Jul 2020 19:32:21 +0900</pubDate><guid>https://minuk.dev/wiki/ftl/</guid><description>&lt;h2 id="ftl-">FTL ?&lt;/h2>
+&lt;ul>
+&lt;li>Flash Translation Layer의 약자.&lt;/li>
+&lt;li>SSD를 Disk 처럼 사용할 수 있게 변환하는 Layer&lt;/li>
+&lt;/ul>
+&lt;h2 id="구성요소">구성요소&lt;/h2>
+&lt;ul>
+&lt;li>STL (Sector Translation Layer)
+&lt;ul>
+&lt;li>Address Mapping : Logical Address 를 Physical Address 로 변환&lt;/li>
+&lt;li>Garbage Collection : 안 쓰는 NAND Memory를 초기화하여 쓰기 가능한 상태로 바꾸는 것.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Wear Leveling : 특정한 NAND Memory에 쓰기가 몰리지 않게 하여, 전체적인 수명을 관리하는 것.&lt;/li>
+&lt;li>BML (Bad-Block Management Layer)
+&lt;ul>
+&lt;li>BBM(Bad Block Management) : NAND 특성상, 새 NAND 조차 불량 블록이 있을수 있으며, 이런 블록을 관리.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>LLD (Low Level Driver)
+&lt;ul>
+&lt;li>NAND Flash를 위한 Driver&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="address-mapping-in-ftl">Address Mapping in FTL&lt;/h2>
+&lt;h3 id="page-level-maping">Page-level Maping&lt;/h3>
+&lt;ul>
+&lt;li>Page 단위 모든 Maping을 Mapping Table에 두는것&lt;/li>
+&lt;li>Mapping Table 안에는 [[LPN]]과 [[PPN]]이 들어있다.&lt;/li>
+&lt;li>장점
+&lt;ul>
+&lt;li>새로운 쓰기 요청을 사용중이 아닌 페이지라면 어디에든 쓸수 있다. 이는 랜덤 쓰기에서 높은 성능을 보여준다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>단점
+&lt;ul>
+&lt;li>NAND Flash Memory 특성상, 쓰기는 페이지 단위로 할 수 있어도, 지우기는 Block 단위로 밖에 안되기 때문에, Free Space가 부족하게 될 경우, 공간을 확보하기 위해서 Copy를 통해 데이터를 모으게 되고, 이 과정에서 쓰기 성능이 매우 떨어지게 된다.&lt;/li>
+&lt;li>Mapping Table의 크기가 상대적으로 커서 RAM영역을 많이 차지하게 된다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="block-level-mapping">Block-level Mapping&lt;/h3>
+&lt;ul>
+&lt;li>Erase 의 단위인 Block단위로 관리하는 방법&lt;/li>
+&lt;li>Maping Table에는 LBN(Logical Block Number)와 PBN(Physical Block Number)가 존재하며, 접근할때 PBN으로 Block을 찾은뒤, Page Offset을 통해서 접근한다.&lt;/li>
+&lt;li>장점
+&lt;ul>
+&lt;li>Mapping Table의 크기가 작으며 순차쓰기에서 성능이 좋다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>단점
+&lt;ul>
+&lt;li>랜덤 쓰기에서 Block Copy로 인해 성능이 떨어진다.&lt;/li>
+&lt;li>(이건 개인적 생각) 수명 관리 측면에서도 좋지는 않을 듯&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="hybrid-mapping">Hybrid Mapping&lt;/h3>
+&lt;ul>
+&lt;li>위 방법 둘을 혼합한 것으로. 쓰기에 대해서 Log Block을 사용한다.&lt;/li>
+&lt;/ul></description></item><item><title>PPN(Physical Page Number)</title><link>https://minuk.dev/wiki/ppn/</link><pubDate>Tue, 14 Jul 2020 19:29:54 +0900</pubDate><guid>https://minuk.dev/wiki/ppn/</guid><description>&lt;h2 id="같이-볼거리">같이 볼거리&lt;/h2>
+&lt;ul>
+&lt;li>[[FTL]]&lt;/li>
+&lt;li>[[LPN]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>FTL에 의해 변환된 주소를 Page 단위에 따라서 나누고 여기에 번호를 붙인것.&lt;/li>
+&lt;li>PBN(Page Block Number)의 변화와 상관없이 연속적으로 붙여진다.
+&lt;ul>
+&lt;li>예시 : Page Block에 4개의 Page가 들어갈 경우 0번 Page Block 은 PPN이 0&lt;del>3, 1번 Page Block은 4&lt;/del>7을 가지고 있다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>LPN(Logical Page Number)</title><link>https://minuk.dev/wiki/lpn/</link><pubDate>Tue, 14 Jul 2020 19:28:19 +0900</pubDate><guid>https://minuk.dev/wiki/lpn/</guid><description>&lt;h2 id="같이-볼거리">같이 볼거리&lt;/h2>
+&lt;ul>
+&lt;li>[[FTL]]&lt;/li>
+&lt;li>[[PPN]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>Logical Page Number 이며, [[FTL]]에 의해 변환되기 전 논리적 Page 주소를 Page 단위로 나누고, 이 Page에 번호를 붙인것&lt;/li>
+&lt;/ul></description></item><item><title>open-nvm</title><link>https://minuk.dev/wiki/open-nvm/</link><pubDate>Mon, 06 Jul 2020 19:38:43 +0900</pubDate><guid>https://minuk.dev/wiki/open-nvm/</guid><description>&lt;h2 id="기본-용어-정리">기본 용어 정리&lt;/h2>
+&lt;ul>
+&lt;li>[[FSM]]&lt;/li>
+&lt;li>[[VHDCI]]&lt;/li>
+&lt;li>[[UART]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="공식-홈페이지">공식 홈페이지&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://open-fpga-nvm.github.io/home/">http://open-fpga-nvm.github.io/home/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="나름-정리">나름 정리&lt;/h2>
+&lt;ul>
+&lt;li>최근 몇년간, 여러 nvm 기술들이 현대 메모리 시스템들의 결정적인 문제(집적, 지연시간, 전력) 의 문제를 해결할 가능성이 있다는 것을 보여주었다. 이런 최첨단 NVMs 은 높은 저장 용량과 신뢰할만한 성능을 적은 전력 소모에서 보여주는 동안, 광범위한 연구가 이러한 NVMs 을 기존에 존재하던 다른 메모리 조직 층에 맞출려고 하고 있다.&lt;/li>
+&lt;li>기존 연구들이 이론적인 NVM의 가능성을 을 탐구하고 NVM 시스템을 위한 메모리 관리 기술에서 전례없는 관점을 제공했음에도 불구하고 누구나 접근할수 있는 데이터들은 간단한 분석 모델 또는 검증되지 않은 현실 장비들로부터 생성된다. 현실 장비의 정확한 특성 셈픙른 NVM의 무궁무진한 진실된 가능성을 이해하는 것과, 메모리 계층에서 최적화된 위치를 식별하는데 중요하다.&lt;/li>
+&lt;li>서로 다른 제조 업체에서 NVM 제품은 나올수 있지만, 널리 알려진 위치에서 적절한 NVM 컨트롤러와 평가 플랫폼의 부재는 이러한 떠오르는 NVM 기술에서 결정적인 데이터를 추출하는데에 있어서 주요 과제이다.&lt;/li>
+&lt;li>생략&lt;/li>
+&lt;/ul>
+&lt;h2 id="소스코드">소스코드&lt;/h2>
+&lt;ul>
+&lt;li>ㅠ 어렵다. 잘 모르겠다.근데, 내가 생각하는 NVMe Controller 는 아니고, NVM 자체를 Hardware 마다 측정하는 것같다.&lt;/li>
+&lt;/ul></description></item><item><title>MRAM (Magnetic Random Access Memory)</title><link>https://minuk.dev/wiki/mram/</link><pubDate>Mon, 06 Jul 2020 19:19:38 +0900</pubDate><guid>https://minuk.dev/wiki/mram/</guid><description>&lt;h2 id="출처">출처&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.samsungsemiconstory.com/1992">https://www.samsungsemiconstory.com/1992&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://en.wikipedia.org/wiki/Magnetoresistive_random-access_memory">https://en.wikipedia.org/wiki/Magnetoresistive_random-access_memory&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="간단-요약">간단 요약&lt;/h2>
+&lt;ul>
+&lt;li>자성체 소자를 이용한 비휘발성 메모리, Flash Memory 대비 쓰기 속도가 약 1000배 빠르고 전력 소모가 적은 특징이 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="위키피디아-번역">위키피디아 번역&lt;/h2>
+&lt;ul>
+&lt;li>일반적인 RAM chip 기술과는 다르게, MRAM은 데이터를 전기 충전이나 흐름으로 저장하지 않고 자기 저장 요소를 사용한다. 이 자기 저장 요소는 2가지 강자성 판들로 구성되며, 각자 자기화 되어 있으며 얇은 절연판에 의해 분리되어 있다. 한 판은 영구적으로 구성되어 있으며, 다른 한판은 메모리를 저장하기 위한 외부 장에 맞추어 바뀌게 된다. 이런 설정은 magnetic tunnel junction 으로 널리 알려져 있으며 MRAM bit 의 가장 간단한 구조이다. &amp;hellip; 생략&lt;/li>
+&lt;/ul>
+&lt;h3 id="다른-시스템들과의-비교">다른 시스템들과의 비교&lt;/h3>
+&lt;ul>
+&lt;li>Density(밀도)&lt;/li>
+&lt;li>Power consumption&lt;/li>
+&lt;li>Data retention&lt;/li>
+&lt;li>Speed&lt;/li>
+&lt;li>Endurance&lt;/li>
+&lt;li>Overall&lt;/li>
+&lt;/ul></description></item><item><title>nvme</title><link>https://minuk.dev/wiki/nvme/</link><pubDate>Mon, 15 Jun 2020 20:13:59 +0900</pubDate><guid>https://minuk.dev/wiki/nvme/</guid><description>&lt;h1 id="시작">시작&lt;/h1>
+&lt;ul>
+&lt;li>아무것도 모르고 SSD 에 대해서 아는거라곤, 개발자를 위한 SSD 라는 카카오에서 올린 글(&lt;a href="https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/">https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/&lt;/a>) 와 [[simplessd]] 논문만 보고 무턱대고 시작한 공부&lt;/li>
+&lt;/ul>
+&lt;h2 id="linux-nvme-공부">Linux NVMe 공부&lt;/h2>
+&lt;ul>
+&lt;li>[[workqueue]]&lt;/li>
+&lt;li>[[block layer]]&lt;/li>
+&lt;li>[[IO mapping]]&lt;/li>
+&lt;li>[[blk_mq]]&lt;/li>
+&lt;li>[[IOMMU]]&lt;/li>
+&lt;li>[[SGL]]{Scatter-Gatter List}&lt;/li>
+&lt;/ul>
+&lt;h2 id="nvme-자료구조">nvme 자료구조&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://testkernel.tistory.com/3">https://testkernel.tistory.com/3&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="의문점">의문점&lt;/h2>
+&lt;ul>
+&lt;li>linux/drivers/nvme/host 에 있는 nvme 함수들은 어떻게 호출되는가? -&amp;gt; scsi interface 를 사용해서&lt;/li>
+&lt;li>-&amp;gt; 그러면 어디에 있지? source code를 찾아보고 싶다. -&amp;gt; 일단 request 는 찾았다. block device 에 접근 하려면 (실제로 block device는 아닐수도 있지만 SSD를 일단 Block 으로 사용하고 FTL 로 처리?할테니까)&lt;/li>
+&lt;li>-&amp;gt; 흠? 그런데 찾아보니까 /include/nvme.h 라는 파일이 있는데? 이건 만약 nvme 가 단순히 scsi 로만 처리된다면 굳이 맨 바깥쪽 include 에 있을 필요는 없는거 아닌가? 이건 마친 nvme 가 단독으로 interface를 가지고 있는거 같은데?&lt;/li>
+&lt;/ul>
+&lt;h3 id="중간-결론">중간 결론&lt;/h3>
+&lt;ul>
+&lt;li>interface 마다 module 을 만들어 놓고 어떤 interface 를 사용하는지 KConfig 에 정의 되어있다.
+&lt;ul>
+&lt;li>&lt;code>BLK_DEV_NVME&lt;/code> : block device 로 생각하고 접근&lt;/li>
+&lt;li>&lt;code>NVME_MULTIPATH&lt;/code> : NVMe multipath support&lt;/li>
+&lt;li>&lt;code>NVME_HWMON&lt;/code> : hardware monitoring&lt;/li>
+&lt;li>&lt;code>NVME_FABRICS&lt;/code> : 사용 X&lt;/li>
+&lt;li>&lt;code>NVME_RDMA&lt;/code> : NVM Express over Fabrics RDMA host driver&lt;/li>
+&lt;li>&lt;code>NVME_FC&lt;/code> : NVM Express over Fabrics FC host driver&lt;/li>
+&lt;li>&lt;code>NVME_TCP&lt;/code> : NVM Express over Fabrics TCP host driver&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>일단 나는 block layer를 통하는 path 를 공부하는게 목표 : 이럴 경우 PCI 와 NVMe Core 부분만 보면 된다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="pci-driver-structure-실제로-module-의-interface">PCI driver structure (실제로 module 의 interface)&lt;/h4>
+&lt;ul>
+&lt;li>참고 : PCI driver structure 설명 : &lt;a href="https://wiki.kldp.org/wiki.php/PCI%20Drivers">https://wiki.kldp.org/wiki.php/PCI%20Drivers&lt;/a>&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="static%20struct%20pci_driver%20nvme_driver%20=%20%7b%0a%09.name%09%09=%20%22nvme%22,%0a%09.id_table%09=%20nvme_id_table,%0a%09.probe%09%09=%20nvme_probe,%0a%09.remove%09%09=%20nvme_remove,%0a%09.shutdown%09=%20nvme_shutdown,%0a#ifdef%20CONFIG_PM_SLEEP%0a%09.driver%09%09=%20%7b%0a%09%09.pm%09=%20&amp;amp;nvme_dev_pm_ops,%0a%09%7d,%0a#endif%0a%09.sriov_configure%20=%20pci_sriov_configure_simple,%0a%09.err_handler%09=%20&amp;amp;nvme_err_handler,%0a%7d;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> pci_driver nvme_driver &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.name		&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;nvme&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.id_table	&lt;span style="color:#f92672">=&lt;/span> nvme_id_table,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.probe		&lt;span style="color:#f92672">=&lt;/span> nvme_probe,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.remove		&lt;span style="color:#f92672">=&lt;/span> nvme_remove,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.shutdown	&lt;span style="color:#f92672">=&lt;/span> nvme_shutdown,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_PM_SLEEP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	.driver		&lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.pm	&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>nvme_dev_pm_ops,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	},
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	.sriov_configure &lt;span style="color:#f92672">=&lt;/span> pci_sriov_configure_simple,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.err_handler	&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>nvme_err_handler,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>하나씩 보면 &lt;code>name&lt;/code> 은 driver 이름, &lt;code>id_table&lt;/code> : driver 가 처리하는 id table 의 포인터&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="static%20const%20struct%20pci_device_id%20nvme_id_table[]%20=%20%7b%0a%09%7b%20PCI_VDEVICE%28INTEL,%200x0953%29,%0a%09%09.driver_data%20=%20NVME_QUIRK_STRIPE_SIZE%20%7c%0a%09%09%09%09NVME_QUIRK_DEALLOCATE_ZEROES,%20%7d,%0a%09%7b%20PCI_VDEVICE%28INTEL,%200x0a53%29,%0a%09%09.driver_data%20=%20NVME_QUIRK_STRIPE_SIZE%20%7c%0a%09%09%09%09NVME_QUIRK_DEALLOCATE_ZEROES,%20%7d,%0a%09%7b%20PCI_VDEVICE%28INTEL,%200x0a54%29,%0a%09%09.driver_data%20=%20NVME_QUIRK_STRIPE_SIZE%20%7c%0a%09%09%09%09NVME_QUIRK_DEALLOCATE_ZEROES,%20%7d,%0a%09%7b%20PCI_VDEVICE%28INTEL,%200x0a55%29,%0a%09%09.driver_data%20=%20NVME_QUIRK_STRIPE_SIZE%20%7c%0a%09%09%09%09NVME_QUIRK_DEALLOCATE_ZEROES,%20%7d,%0a%09%7b%20PCI_VDEVICE%28INTEL,%200xf1a5%29,%09/*%20Intel%20600P/P3100%20*/%0a%09%09.driver_data%20=%20NVME_QUIRK_NO_DEEPEST_PS%20%7c%0a%09%09%09%09NVME_QUIRK_MEDIUM_PRIO_SQ%20%7c%0a%09%09%09%09NVME_QUIRK_NO_TEMP_THRESH_CHANGE%20%7d,%0a%20%20/*%20%ec%9d%b4%ed%95%98%20%ec%83%9d%eb%9e%b5%20*/%0a%7d;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> pci_device_id nvme_id_table[] &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0953&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a53&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a54&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a55&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0xf1a5&lt;/span>),	&lt;span style="color:#75715e">/* Intel 600P/P3100 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_NO_DEEPEST_PS &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_MEDIUM_PRIO_SQ &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_NO_TEMP_THRESH_CHANGE },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* 이하 생략 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;code>probe&lt;/code> : id 테이블과 매치한 뒤, 아직 다른 드라이버에 의해 처리되지 않은 모든 장치들에 대한 장치 검색 함수의 포인터, 0을 반환하면 driver가 device를 잘인식하고 쓴다는 것(원문은 device가 driver 를 accept 하면 이라고 써져 있는데, 평소 말하듯이 쓰면 이렇게 쓰는게 맞을듯?)&lt;/li>
+&lt;/ul>
+&lt;h4 id="nvme_probe-함수-nvme_driver-의-probe-부분">&lt;code>nvme_probe&lt;/code> 함수 (&lt;code>nvme_driver&lt;/code> 의 &lt;code>probe&lt;/code> 부분)&lt;/h4>
+&lt;h5 id="하는일">하는일&lt;/h5>
+&lt;ol>
+&lt;li>
+&lt;p>NUMA NODE 설정
+1-2. &lt;code>dev_to_node&lt;/code> 를 통해서 [[NUMA]] NODE 를 가져온다. (단, &lt;code>CONFIG_NUMA&lt;/code> 가 선언되어 있지 않으면 아무것도 하지 않는다.)
+1-3. device 에 numa 노드가 설정되지 않았다면, &lt;code>first_memory_node&lt;/code> 를 가져온다.&lt;/p></description></item><item><title>simple-ssd</title><link>https://minuk.dev/wiki/simplessd/</link><pubDate>Wed, 10 Jun 2020 19:39:41 +0900</pubDate><guid>https://minuk.dev/wiki/simplessd/</guid><description>&lt;h2 id="새롭게-알게된-것">새롭게 알게된 것&lt;/h2>
+&lt;ul>
+&lt;li>[[gem5]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="다운로드">다운로드&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://docs.simplessd.org/en/v2.0.12/instructions/start.html">simplessd 공홈&lt;/a>&lt;/li>
+&lt;li>하라는 대로 하면 된다. (FullSystem은 example 을 실행해도 그대로 안되서, 그냥 standalone 을 먼저 봐보기로 했다.)&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="문서-읽기">문서 읽기&lt;/h2>
+&lt;ul>
+&lt;li>그냥 홈페이지에 있는 문서를 읽어보자. 중요하니까 정리해놨겠지&lt;/li>
+&lt;/ul>
+&lt;h2 id="그림으로-그려보기">그림으로 그려보기&lt;/h2>
+&lt;ul>
+&lt;li>&lt;img src="https://minuk.dev/wiki/images/simplessd.png" alt="simplessd drawio">&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="host-interface-layer">Host Interface Layer&lt;/h3>
+&lt;ul>
+&lt;li>HIL 이라고도 불리는 Host Interface Layer에 대한 설명이다.&lt;/li>
+&lt;li>HIL 은 host side에 있는 host controller, host controller 에게 추상화된 API를 제공해주는 SSD Interface&lt;/li>
+&lt;/ul>
+&lt;h4 id="host-controller">Host Controller&lt;/h4>
+&lt;ul>
+&lt;li>NVMe, SATA and UFS를 구현해 놓았으며, Open-Channel SSD 는 NVMe 를 상속받음.&lt;/li>
+&lt;/ul>
+&lt;h5 id="host-interface">Host Interface&lt;/h5>
+&lt;ul>
+&lt;li>&lt;code>hil/nvme/interface.hh&lt;/code> 에 &lt;code>SimpleSSD::DMAInterface&lt;/code>를 상속하여 선언된 &lt;code>SimpleSSD::HIL::NVMe::Interface&lt;/code> 를 보자.&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">DMAInterface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DMAInterface() {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#f92672">~&lt;/span>DMAInterface() {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">dmaRead&lt;/span>(&lt;span style="color:#66d9ef">uint64_t&lt;/span>, &lt;span style="color:#66d9ef">uint64_t&lt;/span>, &lt;span style="color:#66d9ef">uint8_t&lt;/span> &lt;span style="color:#f92672">*&lt;/span>, DMAFunction &lt;span style="color:#f92672">&amp;amp;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>) &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">dmaWrite&lt;/span>(&lt;span style="color:#66d9ef">uint64_t&lt;/span>, &lt;span style="color:#66d9ef">uint64_t&lt;/span>, &lt;span style="color:#66d9ef">uint8_t&lt;/span> &lt;span style="color:#f92672">*&lt;/span>, DMAFunction &lt;span style="color:#f92672">&amp;amp;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>) &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Interface&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> SimpleSSD&lt;span style="color:#f92672">::&lt;/span>DMAInterface {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">protected&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Controller &lt;span style="color:#f92672">*&lt;/span>pController;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> updateInterrupt(&lt;span style="color:#66d9ef">uint16_t&lt;/span>, &lt;span style="color:#66d9ef">bool&lt;/span>) &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">getVendorID&lt;/span>(&lt;span style="color:#66d9ef">uint16_t&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>, &lt;span style="color:#66d9ef">uint16_t&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>) &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>&lt;code>DMAInterface&lt;/code> 에서는 Direct Memory Access 를 위해서 &lt;code>dmaRead&lt;/code>, &lt;code>dmaWrite&lt;/code> 를 제공한다.&lt;/li>
+&lt;li>&lt;code>updateInterrupt&lt;/code> 는 host의 특정 interrupt vector 에 interrupt를 보낸다.&lt;/li>
+&lt;li>&lt;code>getVendorId&lt;/code> 는 NVMe의 &lt;code>Identify Controller&lt;/code>가 vendor Id와 subsystem vendor ID를 필요로 하기 때문에 존재하는 method 이다.&lt;/li>
+&lt;/ul>
+&lt;h5 id="controller-and-firmware">Controller and Firmware&lt;/h5>
+&lt;ul>
+&lt;li>NVMe controller/firmware 는 아래 3가지 컴포넌트 (Controller, Subsystem and Namespace)로 구성된다.
+&lt;ul>
+&lt;li>Controller는 모든 queue 연산(SQ 에서 request 를 읽고, CQ에 request를 쓰고, 인터럽트를 발생시키는)을 담당한다.&lt;/li>
+&lt;li>Subsystem은 모든 NVMe의 admin commands를 다루며, Namespace를 제어하고, SSD Layer에 I/O를 실행한다.&lt;/li>
+&lt;li>Namespace는 모든 NVMe의 I/O commands 를 다룬다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h6 id="controller">Controller&lt;/h6>
+&lt;ul>
+&lt;li>
+&lt;p>모든 queue 연산을 담당하는 Controller는 &lt;code>hil/nvme/controller.hh&lt;/code>에 &lt;code>SimpleSSD::HIL::NVMe::Controller&lt;/code> 로 정의되어 있다.&lt;/p></description></item><item><title>SSD</title><link>https://minuk.dev/wiki/ssd/</link><pubDate>Tue, 28 Apr 2020 21:46:46 +0900</pubDate><guid>https://minuk.dev/wiki/ssd/</guid><description>&lt;h2 id="다른-링크">다른 링크&lt;/h2>
+&lt;ul>
+&lt;li>[[SSD 공부자료 모음]]&lt;/li>
+&lt;li>[[SSD(Solid-State Drive)]]&lt;/li>
+&lt;li>[[simplessd]]&lt;/li>
+&lt;li>[[nvme]]&lt;/li>
+&lt;li>[[verilog]]&lt;/li>
+&lt;li>[[MRAM]]&lt;/li>
+&lt;li>[[open-nvm]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="용어">용어&lt;/h2>
+&lt;ul>
+&lt;li>[[FTL]]
+&lt;ul>
+&lt;li>[[LPN]]&lt;/li>
+&lt;li>[[PPN]]&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>SSD(Solid-State Drive)</title><link>https://minuk.dev/wiki/ssdsolid-state-drive/</link><pubDate>Tue, 07 Apr 2020 20:21:10 +0900</pubDate><guid>https://minuk.dev/wiki/ssdsolid-state-drive/</guid><description>&lt;h1 id="1-ssd의-구조">1. SSD의 구조&lt;/h1>
+&lt;h2 id="11-ssdsolid-state-drive">1.1. SSD(Solid-State Drive)&lt;/h2>
+&lt;ul>
+&lt;li>Flash Memory를 기반으로 한 저장 매체&lt;/li>
+&lt;li>비트들은 Floating-Gate Transistor로 구성된 Cell에 저장됨.&lt;/li>
+&lt;li>모든 컴포넌트가 전기 장치&lt;/li>
+&lt;li>대부분 NAND사용 (cf. NOR VS NAND)&lt;/li>
+&lt;/ul>
+&lt;h3 id="111-nand-flash-memory-property">1.1.1. NAND Flash Memory Property&lt;/h3>
+&lt;ul>
+&lt;li>Lifecycle is wearing-off(수명이 제한적이다.)
+&lt;ul>
+&lt;li>이유 : P/E(Program &amp;amp; Erase) 사이클마다 일부 전자가 오류로 인해 쌓이게 되어 트랜지스터에 갇힘. 이로 인해 갇힌 전자가 일정 수준을 넘어가면 사용 불가해짐.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="112-cell의-종류">1.1.2. Cell의 종류&lt;/h3>
+&lt;ul>
+&lt;li>SLC(Single Level Cell) : 하나의 비트만 저장 가능, 긴 수명&lt;/li>
+&lt;li>MLC(Multiple Level Cell) : 2비트, 레이턴시가 높고 짧은 수명&lt;/li>
+&lt;li>TLC(Triple Level Cell) : 3비트, 레이턴시가 매우 높고 더 짧은 수명&lt;/li>
+&lt;li>쓰기가 많을 수록 SLC가 좋고, 읽기가 많을 수록 TLC가 좋음.&lt;/li>
+&lt;/ul>
+&lt;h2 id="12-ssd의-구성">1.2 SSD의 구성&lt;/h2>
+&lt;p>..&lt;/p></description></item><item><title>SSD 공부 자료 모음</title><link>https://minuk.dev/wiki/ssd-%EA%B3%B5%EB%B6%80%EC%9E%90%EB%A3%8C-%EB%AA%A8%EC%9D%8C/</link><pubDate>Tue, 07 Apr 2020 20:14:30 +0900</pubDate><guid>https://minuk.dev/wiki/ssd-%EA%B3%B5%EB%B6%80%EC%9E%90%EB%A3%8C-%EB%AA%A8%EC%9D%8C/</guid><description>&lt;h1 id="httpswwwusenixorgsystemfileshotstorage19-paper-choipdf">&lt;a href="https://www.usenix.org/system/files/hotstorage19-paper-choi.pdf">&lt;/a>&lt;/h1>
+&lt;p>An In-Depth Study of Next Generation Interface for
+Emerging Non-Volatile Memories&lt;/p>
+&lt;p>&lt;a href="http://camelab.org/uploads/Main/nvmesim.pdf">&lt;/a>&lt;/p>
+&lt;p>F2FS: A New File System for Flash Storage&lt;/p>
+&lt;p>&lt;a href="https://www.usenix.org/system/files/conference/fast15/fast15-paper-lee.pdf">&lt;/a>&lt;/p>
+&lt;p>The new ext4 filesystem: current status and future plans&lt;/p>
+&lt;p>&lt;a href="https://pdfs.semanticscholar.org/b8dd/ec47f9fab1eddb5c9cacf703781dd5337b87.pdf">&lt;/a>&lt;/p>
+&lt;p>개발자를 위한 SSD (Coding for SSD) – Part 5 : 접근 방법과 시스템 최적화&lt;/p>
+&lt;p>&lt;a href="https://tech.kakao.com/2016/07/17/coding-for-ssd-part-5/">개발자를 위한 SSD (Coding for SSD) - Part 5 : 접근 방법과 시스템 최적화&lt;/a>&lt;/p>
+&lt;p>개발자를 위한 SSD (Coding for SSD) – Part 6 : A Summary – What every programmer should know about solid-state drives&lt;/p></description></item></channel></rss>

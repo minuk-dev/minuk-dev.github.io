@@ -1,0 +1,1722 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubecon on</title><link>https://minuk.dev/tags/kubecon/</link><description>Recent content in Kubecon on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Mon, 04 Sep 2023 01:32:44 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/kubecon/index.xml" rel="self" type="application/rss+xml"/><item><title>prometheus-native-histograms-in-proudction</title><link>https://minuk.dev/wiki/prometheus-native-histograms-in-production/</link><pubDate>Mon, 04 Sep 2023 01:05:34 +0900</pubDate><guid>https://minuk.dev/wiki/prometheus-native-histograms-in-production/</guid><description>&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=TgINvIK9SYc&amp;amp;list=PLj6h78yzYM2ORxwcjTn4RLAOQOYjvQ2A3&amp;amp;index=6">https://www.youtube.com/watch?v=TgINvIK9SYc&amp;amp;list=PLj6h78yzYM2ORxwcjTn4RLAOQOYjvQ2A3&amp;amp;index=6&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="disclaimer">Disclaimer&lt;/h2>
+&lt;ul>
+&lt;li>Native Histograms are an experimental feature!&lt;/li>
+&lt;li>Everything described here can stil lchange!&lt;/li>
+&lt;li>Things might break or behave weirdly!&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="prometheus%20--enable-feature=native-histograms">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>prometheus --enable-feature&lt;span style="color:#f92672">=&lt;/span>native-histograms&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="wishlist">Wishlist&lt;/h2>
+&lt;ul>
+&lt;li>Everything that works well now should continue to work well.&lt;/li>
+&lt;li>I never want to configure buckets again.&lt;/li>
+&lt;li>All histograms should always be aggregatable with each other, across time and space.&lt;/li>
+&lt;li>I want accurate quantile and percentage estimations across the whole range of observations.&lt;/li>
+&lt;li>I want all of that at a lower cost thant current histograms so that I can finally partition histograms at will.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-resource-consumption-of-the-instrumented-binary">1. Resource consumption of the instrumented binary&lt;/h2>
+&lt;h2 id="2-frequency-of-resets-and-resolution-reduction">2. Frequency of resets and resolution reduction&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Scraping 15 instances of the cloud-backend-gateway.&lt;/p></description></item><item><title>Making Sense of Your Vital Signals - The Future of Pod and Containers Monitoring</title><link>https://minuk.dev/wiki/making-sense-of-your-vital-signals-the-future-of-pod-and-containers-monitoring/</link><pubDate>Sun, 27 Aug 2023 15:49:49 +0900</pubDate><guid>https://minuk.dev/wiki/making-sense-of-your-vital-signals-the-future-of-pod-and-containers-monitoring/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/program/schedule/">https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/program/schedule/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=w6PeNpPhIF8&amp;amp;t=1s&amp;amp;ab_channel=CNCF%5BCloudNativeComputingFoundation%5D">https://www.youtube.com/watch?v=w6PeNpPhIF8&amp;amp;t=1s&amp;amp;ab_channel=CNCF%5BCloudNativeComputingFoundation%5D&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="you-were-paged-why">You were paged! Why!?&lt;/h2>
+&lt;ul>
+&lt;li>Observability:
+&lt;ul>
+&lt;li>Understand resource usage, changes with deployments, rollouts&lt;/li>
+&lt;li>Identify issues and unexpected behavior with applications&lt;/li>
+&lt;li>Alerting on unexpected conditions&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>SLO/SLIs&lt;/li>
+&lt;li>Node stability:
+&lt;ul>
+&lt;li>Kubelet subcomponents:
+&lt;ul>
+&lt;li>(e.g. eviction manager) depend on metrics to understand which pods to evict:
+&lt;ul>
+&lt;li>e.g. pod that over consumes ephemeral storage will be evicted&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="theres-a-lot-of-metrics-in-k8s">There&amp;rsquo;s a lot of metrics in k8s&amp;hellip;&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Node Level Metrics (i.e. node-exporter)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Kubernetes component metrics (e.g. api-server, controller manager, scheduler, kubelet etc)&lt;/p></description></item><item><title>Defining A Common Observability Query Language and Other observability TAG Updates</title><link>https://minuk.dev/wiki/defining-a-common-observability-query-language-and-other-observability-tag-updates/</link><pubDate>Sun, 27 Aug 2023 14:41:29 +0900</pubDate><guid>https://minuk.dev/wiki/defining-a-common-observability-query-language-and-other-observability-tag-updates/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=9mchgI3mr_8&amp;amp;list=PLj6h78yzYM2PyrvCoOii4rAopBswfz1p7&amp;amp;index=55&amp;amp;ab_channel=CNCF%5BCloudNativeComputingFoundation%5D">Original Link&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://kccnceu2023.sched.com/event/1Ipz2/defining-a-common-observability-query-language-and-other-observability-tag-updates-alolita-sharma-matt-young-apple?iframe=no&amp;amp;w=100%25&amp;amp;sidebar=yes&amp;amp;bg=no">https://kccnceu2023.sched.com/event/1Ipz2/defining-a-common-observability-query-language-and-other-observability-tag-updates-alolita-sharma-matt-young-apple?iframe=no&amp;amp;w=100%&amp;amp;sidebar=yes&amp;amp;bg=no&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="cncf-observability-project-landscape">CNCF Observability Project Landscape&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Graduated Projectes:&lt;/p>
+&lt;ul>
+&lt;li>fluentd&lt;/li>
+&lt;li>jeager&lt;/li>
+&lt;li>prometheus&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Incubating Projects:&lt;/p>
+&lt;ul>
+&lt;li>chaos mesh&lt;/li>
+&lt;li>openmetrics&lt;/li>
+&lt;li>opentelemetry&lt;/li>
+&lt;li>cortex&lt;/li>
+&lt;li>litmux&lt;/li>
+&lt;li>thanos&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Sandbox Projects:&lt;/p>
+&lt;ul>
+&lt;li>chaosblade&lt;/li>
+&lt;li>Pixie&lt;/li>
+&lt;li>fonio&lt;/li>
+&lt;li>skooner&lt;/li>
+&lt;li>kuberhealthy&lt;/li>
+&lt;li>trickster&lt;/li>
+&lt;li>opencost&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="otag-initiatives-workgroups-activities">OTAG Initiatives, Workgroups, Activities&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Initiatives:&lt;/p>
+&lt;ul>
+&lt;li>Observability query language standardization&lt;/li>
+&lt;li>Continuous cost measurement and optimization&lt;/li>
+&lt;li>Profilling in Open Telemetry&lt;/li>
+&lt;li>Graphs in Observability&lt;/li>
+&lt;li>Exceptions as another telemetry data type&lt;/li>
+&lt;li>Correlation across telemetry data signals&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://opentelemetry.io/blog/2022/why-and-how-ebay-pivoted-to-opentelemetry/">https://opentelemetry.io/blog/2022/why-and-how-ebay-pivoted-to-opentelemetry/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://px.dev/">https://px.dev/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="profiling-support-in-opentelemetry">Profiling support in OpenTelemetry&lt;/h2>
+&lt;ul>
+&lt;li>Profiling support in Opentelemetry:
+&lt;ul>
+&lt;li>Update by Ryan Perry (Jan 2023)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="observability-query-language-standardization">Observability Query Language Standardization&lt;/h2>
+&lt;ul>
+&lt;li>Started as a request at Open Telemetry Community Meeting at Kubecon NA 2022 in Detroit:
+&lt;ul>
+&lt;li>OpenTelemetry project recommendation to continue query specification discussions in OTAG
+This discussion has been requestsed by several end-users( e.g. EBay, Netflix, Apple)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Workgroup charter discussed and finalkized in CNCF Observability TAG&lt;/li>
+&lt;li>Workgroup creation request for approval from TOC is currently under consideration&lt;/li>
+&lt;li>Get Involved. See the following links:
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/cncf/tag-observability/blob/main/working-groups/query-standardization.md">https://github.com/cncf/tag-observability/blob/main/working-groups/query-standardization.md&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="observability-query-language-stadnardization">Observability Query Language Stadnardization&lt;/h2>
+&lt;ul>
+&lt;li>Benefits:
+&lt;ul>
+&lt;li>Portability for end users&lt;/li>
+&lt;li>Correlate various telemetry data types&lt;/li>
+&lt;li>Reduce developer and operations toil&lt;/li>
+&lt;li>Federated veiw regardless of data location&lt;/li>
+&lt;li>Let vendors focus on unique features&lt;/li>
+&lt;li>Lower migration and acquisition costs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Goals:
+&lt;ul>
+&lt;li>Compile a list of end user use cases&lt;/li>
+&lt;li>Research existing QLs&lt;/li>
+&lt;li>Recommend semantics, models and behaviors for a standard:
+&lt;ul>
+&lt;li>Follow-up groups/projects would implement recommendations&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Help Needed:
+&lt;ul>
+&lt;li>Provides uses cases
+Document languages and semantics
+Work together towards a standard&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="qa">Q&amp;amp;A&lt;/h2>
+&lt;ul>
+&lt;li>There are various types in tsdb, how can I define how to sort the results when querying:
+&lt;ul>
+&lt;li>Details about the implementation, there are various languages right now, and there are some that are not open source, so we still have to come up with a proposal to know.&lt;/li>
+&lt;li>(Personal thought) I thought the question was ambiguous to answer, so the answer is bound to be ambiguous accordingly. I wonder if it was a question with too standard content and an answer with standard content.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="personal-impression">Personal Impression&lt;/h2>
+&lt;ul>
+&lt;li>There are a lot of links in the presentation. But, there is no link to access it. It made me spend a lot of time to find the links.&lt;/li>
+&lt;li>It is just a good video to follow the recent observability&amp;rsquo;s trend.:
+&lt;ul>
+&lt;li>Many observability tools are separated.&lt;/li>
+&lt;li>And too many developers are suffered by repeated implementation and makes a mistake again.&lt;/li>
+&lt;li>So, observability query languages should be defined nowadays.&lt;/li>
+&lt;li>IMO, promql is a de-facto standard for metrics.
+&lt;ul>
+&lt;li>There are not a standard for log &amp;amp; trace.&lt;/li>
+&lt;li>But, cncf &amp;amp; opentelemetry are very closed to grafana.&lt;/li>
+&lt;li>logql &amp;amp; traceql are strong candidates because of it.&lt;/li>
+&lt;li>I believe they are not kind to user, so I worry.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>opentelemetry metrics deep dive</title><link>https://minuk.dev/wiki/opentelemetry-metrics-deep-dive/</link><pubDate>Sun, 08 Jan 2023 06:16:05 +0900</pubDate><guid>https://minuk.dev/wiki/opentelemetry-metrics-deep-dive/</guid><description>&lt;h2 id="original">Original&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/L-Ss8PtWlRA">Youtube link&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-goals--timeline">1. Goals &amp;amp; timeline&lt;/h2>
+&lt;h3 id="goals-who-is-this-for">Goals: Who is this for?&lt;/h3>
+&lt;ul>
+&lt;li>Platform engineer: install SDKs and colelctors, configure resources, metrics receivers, export pipelines&lt;/li>
+&lt;li>Software engineer: use metrics APIs, write instrumentations pkgs&lt;/li>
+&lt;li>End user: observe and monitor!&lt;/li>
+&lt;/ul>
+&lt;h3 id="goals-vendor-netural">Goals: Vendor-netural&lt;/h3>
+&lt;ul>
+&lt;li>OpenTelemetry mandates a strong separation of the API, the SDK, and exporters&lt;/li>
+&lt;li>Decoupling these avoids vendor &amp;ldquo;lock-in&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;h3 id="goals-open-source--observaibility">Goals: Open-source &amp;amp; observaibility&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>First-class support for open-source ecosystems&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Community devloped.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Jaeger : Open Metrics&lt;/p></description></item><item><title>Grafana Loki - Like Prometheus, But for logs.</title><link>https://minuk.dev/wiki/grafana-loki-like-prometheus-but-for-logs/</link><pubDate>Tue, 20 Dec 2022 20:02:46 +0900</pubDate><guid>https://minuk.dev/wiki/grafana-loki-like-prometheus-but-for-logs/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/CQiawXlgabQ">원본 링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="0-simple-and-cost-effective-to-operate">0. Simple and cost effective to operate&lt;/h2>
+&lt;ul>
+&lt;li>Loki doesn&amp;rsquo;t index the text of the logs, instead grouping entries into &amp;ldquo;streams&amp;rdquo; and indexing those with labels.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-integrated-with-existing-observability-tools">1. Integrated with existing observability tools&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>As a DevOps Engineer, how to work:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;ol>
+&lt;li>Alert&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="2">
+&lt;li>Dashboard&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="3">
+&lt;li>Adhoc Query&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="4">
+&lt;li>Log Aggregation&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="5">
+&lt;li>Distributed Tracing&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="6">
+&lt;li>Fix&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Basically, fluentd makes app push their log into fluentd:&lt;/p>
+&lt;ul>
+&lt;li>It causes various problems.&lt;/li>
+&lt;li>But, promtail pulls their log.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-cloud-native-and-airplane-mode">2. Cloud Native and Airplane mode&lt;/h2>
+&lt;h2 id="whats-new">What&amp;rsquo;s new?&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>LogQL Filter Chaining : &lt;code>{job=&amp;quot;app&amp;quot;} |= &amp;quot;/foo&amp;quot; !~ &amp;quot;/foo/bar&amp;quot;&lt;/code>&lt;/p></description></item><item><title>To IPv6 - The Dual-stack Adoption Advisory Panel</title><link>https://minuk.dev/wiki/to-ipv6-the-dual-stack-adoption-advisory-panel/</link><pubDate>Mon, 03 Oct 2022 21:37:29 +0900</pubDate><guid>https://minuk.dev/wiki/to-ipv6-the-dual-stack-adoption-advisory-panel/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/CqfEwzXI5W0">원본&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>강연이 아닌 자유 토론식으로 진행된 세션&lt;/li>
+&lt;li>따라서 여기에 정리된 내용도 세션 순서에서 시간흐름대로 난잡하게 정리함.&lt;/li>
+&lt;li>PPT 없이 말하는걸 그대로 직역직해해서 적어야해서 놓치는 워딩을 다시 잡기위해서 평소보다 오래 봤다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="본문">본문&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Question :&lt;/p>
+&lt;ul>
+&lt;li>&amp;ldquo;How many of you are already familiar with dual stack networking?&amp;rdquo;&lt;/li>
+&lt;li>ipv6 bandwagon when it comes to k8s?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>기본적으로 네트워크에 대해 알고 있는 사람을 10점 만점으로 했을떼 6~8 점인 사람을 위한 세션인듯 하다.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="앱-개발자로서-ipv6-를-정말로-알아야할까요-그렇다면-어디서부터-시작해야하죠-do-i-really-care-about-ipv6-should-i-really-care-about-ipv6-if-i-do-what-are-my-resources-to-get-started">앱 개발자로서 ipv6 를 정말로 알아야할까요? 그렇다면 어디서부터 시작해야하죠? (Do I really care about ipv6? Should I really care about ipv6? If I do, what are my resources to get started?)&lt;/h3>
+&lt;ul>
+&lt;li>cluster admin 이 부담하면 상관 없긴한데, 얼마만큼 부담을 주고 싶나요?&lt;/li>
+&lt;li>예전에는 ipv4 일때는 클러스터 밖에서 안으로 route 안됬는데, ipv6 나 dual stack 을 사용하면서 routable 해졌다. 알긴 해야하는것 같다.&lt;/li>
+&lt;li>nat 안에 있을때는 괜찮았지만 지금은 ipv6 로 되면서 다 연결 가능해졌고, 기존에 복잡하게 했던 것들을 더 단순하게 할수 있게 되었다. 그렇다면 간단한 방법을 안쓸 이유가 있나?&lt;/li>
+&lt;li>결과적으로 ipv6 가 되면서 converting 없이 할 수 있게 되었고 이는 개발자에게 더 좋은 방향일 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="ipv4-에서-ip6-로-어떻게-이주해야할까요">ipv4 에서 ip6 로 어떻게 이주해야할까요.&lt;/h3>
+&lt;ul>
+&lt;li>과거에는 사용하면 &amp;ldquo;와, 이거 웰케 어렵냐?&amp;rdquo; 라는 소리가 절로 나왔지만, 1.20 버전 이후로는 단순해졌고 이를 위해서 지속적으로 노력하고 있다.&lt;/li>
+&lt;li>고객들은 ipv6 를 바로 사용하는 것을 원할수 있지만, 당분간은 dual stack 을 사용해야 할 것이다. 단순히 transport 뿐만 아니라 software application 에서 달라진 network 를 적응하기 어려울 것이다.&lt;/li>
+&lt;li>ipv4 와 ipv6 를 동시에 사용하고 싶을 때 dual stack 은 정말 도움이 될 것이다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="ipv4-에-비해서-ipv6-가-모두에게-필요하지-않을-수-있다고-말했는데-nat-64는-어떤-선택지인지">ipv4 에 비해서 ipv6 가 모두에게 필요하지 않을 수 있다고 말했는데 nat 64는 어떤 선택지인지?&lt;/h3>
+&lt;ul>
+&lt;li>참고 : nat64 는 ipv4 와 ipv6 간 변환하는 전환 매커니즘&lt;/li>
+&lt;li>두가지 channel 을 동시에 사용하는 것은 충분히 혼란스러운 일이지만, overhead 나 service discovery 등 문제들을 복합적으로 고려한다면 결과적으로 ipv4 에서 문제를 해결하는 것이 아니라 ipv6 로 옮겨가서 문제를 해결하는게 맞다. 앞으로도 계속 규모는 커질 것이고(pod 가 증가하는 예시) 언제까지고 ipv4 로는 addressing problem 을 막을 수는 없다.&lt;/li>
+&lt;li>dual stack 은 ipv6 에 대해서 사용자들이 친숙하게 하는 것에 도움을 줄 것이다.&lt;/li>
+&lt;li>v6 는 simple address 이다. 전환하는건 어렵더라도 결과적으로 올바른 방향이 맞다.&lt;/li>
+&lt;li>결국에는 사용자들도, 제공하는 것도 계속 증가한다. kubernetes 는 이를 위해서 만들어진 것이고 이를 위해서 노력해야한다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="향후-가장-강조되고-있는-이슈는-무엇인가요">향후 가장 강조되고 있는 이슈는 무엇인가요?&lt;/h3>
+&lt;ul>
+&lt;li>adressing scheme 이며 만약 이에 어려움을 겪는다면 언제라도 물어봐주면 usecase 들을 제공해준다고 한다.&lt;/li>
+&lt;li>내 해석 : 전환하는데에서 어떻게 주소부여를 할 것이며 어떻게 하는 것이 올바른 것인지 어려움이 많을텐데 이를 위해서 많이 질문해줬으면 좋겠다 라고 답변한걸로 이해했다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="모든-컴포넌트가-addressable-한데-어떻게-security-제어할-것인지">모든 컴포넌트가 addressable 한데 어떻게 security 제어할 것인지?&lt;/h3>
+&lt;ul>
+&lt;li>질문 해석 : 모든 컴포넌트가 addressable 하면, 외부에 너무나 많은 것들이 노출되게 되는데 이를 제어하기 위한 수단이 있는지:
+&lt;ul>
+&lt;li>과거 ipv4 에서는 어짜피 local network 라서 접근을 못해서 이에 대해 단순하게 생각할수 있었지만 앞으로는 어떻게 해야하는가?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>ipv6 에만 해당하는 답변은 아닌데 anp(admin network policy) 와 관련된 api 를 만들고 있다.&lt;/li>
+&lt;li>지금은 cluster network policy 로 만들고 있긴 한데 multi-cluster network policy 로 넘어갈 것이다.&lt;/li>
+&lt;li>약간 벗어난 이야기이긴 한데, 단순히 만들기만 하면 아무도 안쓸꺼기 때문에 core api나 components 들에 dual stack 을 적용하기 위한 provider 를 만들고 있고 이를 위해 interface 도 만들고 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="내-생각">내 생각&lt;/h2>
+&lt;ul>
+&lt;li>위에 더 내용이 많긴 한데, 중복되는 내용도 많고, 이미 정리된 내용으로 강연의 목적이나 향후 방향성에 대해서 충분히 엿볼수 있는 것 같아서 저정도만 정리했다.&lt;/li>
+&lt;li>요약하자면, ipv4 에서 문제를 계속 들고 있는 것 보다 ipv6 에서 문제를 해결하는 것이 올바른 방향이며, 지금까지 ipv4와 ipv6를 공존시키기 위해 nat64 를 사용했지만 이는 결과적으로 모든 문제를 해결하지 못했다.&lt;/li>
+&lt;li>하지만, 당장 ipv6 에 대해서 모든 사람이 익숙한 것이 아니며, 개발해야할 툴들도 많다. 이를 위해서 dual stack 을 사용해서 동시에 사용하는 것을 선택하였으며 core api 나 component 에 지속적으로 영향이 있을 것이다. 이를 위해 provider 들도 노력하고 있다.&lt;/li>
+&lt;li>이런 결의 내용이며, 자잘한 툴들이나 팁들 같은 경우는 세션의 성격에 맞지 않아서 안한듯 하다.&lt;/li>
+&lt;li>여기서 얻을 수 있는 내용은:
+&lt;ul>
+&lt;li>nat64 는 더이상 해결책이 아니다.&lt;/li>
+&lt;li>dual stack 을 사용한다.&lt;/li>
+&lt;li>ipv6 에서 addressable 문제가 있기에 이를 위한 해결책들이 제시되고 있다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Prometheus Intro and Deep Dive</title><link>https://minuk.dev/wiki/prometheus-intro-and-deep-dive/</link><pubDate>Sat, 01 Oct 2022 21:20:08 +0900</pubDate><guid>https://minuk.dev/wiki/prometheus-intro-and-deep-dive/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/eM3RXdK1yys">원본 링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-is-prometheus">What is Prometheus&lt;/h2>
+&lt;ul>
+&lt;li>OSS metrics-based monitoring &amp;amp; alerting stack.&lt;/li>
+&lt;li>Instrumentation - Metrics collection and storage - Querying, Alerting, Dashboarding&lt;/li>
+&lt;li>Works for all levels of the stack!&lt;/li>
+&lt;li>Mode for dynamic cloud environments.&lt;/li>
+&lt;/ul>
+&lt;h2 id="architecture">Architecture&lt;/h2>
+&lt;ul>
+&lt;li>Instrumentation &amp;amp; Exposition - Target (web app, API server, Linux VM, mysqld, cgouprs &amp;hellip;)&lt;/li>
+&lt;li>Collection, Storage &amp;amp; Processing - Prometheus + Service Discovery (DNS, Kubernetes, AWS, &amp;hellip;)&lt;/li>
+&lt;li>Qurying, Dashboards - Grafana, Prometheus Web UI, Automation&lt;/li>
+&lt;li>Alertmanager&lt;/li>
+&lt;/ul>
+&lt;h2 id="selling-points">Selling Points&lt;/h2>
+&lt;ul>
+&lt;li>Dimensional data model&lt;/li>
+&lt;li>Powerful query language&lt;/li>
+&lt;li>Simple architecture &amp;amp; efficient server&lt;/li>
+&lt;li>Service discovery integration&lt;/li>
+&lt;/ul>
+&lt;h2 id="data-model">Data Model&lt;/h2>
+&lt;ul>
+&lt;li>What is a time series?:
+&lt;ul>
+&lt;li>&lt;code>&amp;lt;identifyer&amp;gt; -&amp;gt; [(t0, v0), (t1, v1), ...]&lt;/code>&lt;/li>
+&lt;li>metric name&lt;/li>
+&lt;li>labels&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="querying">Querying&lt;/h2>
+&lt;ul>
+&lt;li>PromQL:
+&lt;ul>
+&lt;li>Functional query language&lt;/li>
+&lt;li>Great for time series computations&lt;/li>
+&lt;li>Not SQL-style&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="example">Example&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>All partitions in my entire infrastructure with more than 100GB capacity that are not mounted on root?:&lt;/p></description></item><item><title>CoreDNS - Intro and Deep Dive</title><link>https://minuk.dev/wiki/coredns-into-and-deep-dive/</link><pubDate>Thu, 22 Sep 2022 00:53:03 +0900</pubDate><guid>https://minuk.dev/wiki/coredns-into-and-deep-dive/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/rNlSgYZoIYs">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-is-coredns">What is CoreDNS?&lt;/h2>
+&lt;ul>
+&lt;li>Flexible DNS server written in GO&lt;/li>
+&lt;li>Focus on service discovery&lt;/li>
+&lt;li>Plugin based architecture, easily extended&lt;/li>
+&lt;li>Support serving via DNS, DNS over TLS, DNS over HTTP/2, DNS over gRPC&lt;/li>
+&lt;li>Support forwarding to upstream via DNS, DNS over TLS, DNS over gRPC&lt;/li>
+&lt;li>Integration with Route53/Google Cloud DNS/Azuer DNS&lt;/li>
+&lt;li>Integrates with Prometheus, Open Tracing, OPA&lt;/li>
+&lt;li>Default DNS server in Kubernetes&lt;/li>
+&lt;li>Basis for node local cache feature in K8s&lt;/li>
+&lt;/ul>
+&lt;h2 id="latest-updates">Latest Updates&lt;/h2>
+&lt;ul>
+&lt;li>1.8.5 - 1.9.2:
+&lt;ul>
+&lt;li>1.9.2. Released May, 2022&lt;/li>
+&lt;li>New plugins: geoip, header:
+&lt;ul>
+&lt;li>geoip reports where the query comes from&lt;/li>
+&lt;li>header allows fiddle with header bits&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Backwards incompatible changes:
+&lt;ul>
+&lt;li>kubernetes: Removed wild card query functionality.&lt;/li>
+&lt;li>route53: Plaintext secret in Corefile deprecated.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Built with golang 1.17.8+ since 1.9.1:
+&lt;ul>
+&lt;li>golang &amp;lt; 1.17.6 security issues&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="security-audit">Security Audit&lt;/h3>
+&lt;ul>
+&lt;li>Completed by Tail of Bits (March 2022)&lt;/li>
+&lt;li>Sponsored by Linux Foundation&lt;/li>
+&lt;li>1 high severity issue (TOB-CDNS-8):
+&lt;ul>
+&lt;li>May lead to cache poisoning attacks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>1 medium issue (TOB-CDNS-12):
+&lt;ul>
+&lt;li>Mitigation possible withouth coredns update&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>12 low or informational issues.&lt;/li>
+&lt;li>All have been resolved now.&lt;/li>
+&lt;/ul>
+&lt;h2 id="three-ways-to-cusomize-coredns">Three ways to cusomize CoreDNS&lt;/h2>
+&lt;ul>
+&lt;li>Rebuilding with external plugins&lt;/li>
+&lt;li>Using CoreDNS as a library&lt;/li>
+&lt;li>Building your own plugin&lt;/li>
+&lt;/ul>
+&lt;h3 id="rebuilding-with-external-plugins">Rebuilding with External Plugins&lt;/h3>
+&lt;ul>
+&lt;li>You do not need to know Go to do this!&lt;/li>
+&lt;li>&amp;ldquo;External&amp;rdquo;:
+&lt;ul>
+&lt;li>Not built into the standard binaries and Docker images&lt;/li>
+&lt;li>Not supported by core team&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>No dynamic loading of plugins:
+&lt;ul>
+&lt;li>Plugins are built-in at compile time&lt;/li>
+&lt;li>Controlled by plugin.cfg&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Plugin ordering is fixed at compile time&lt;/li>
+&lt;/ul>
+&lt;h3 id="external-plugins">External Plugins&lt;/h3>
+&lt;ul>
+&lt;li>Prerequisites: Docker and a shell:
+&lt;ol>
+&lt;li>Clone CoreDNS&lt;/li>
+&lt;li>Modify plugin.cfg&lt;/li>
+&lt;li>Build CoreDNS&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="coredns-as-a-library">CoreDNS as a Library&lt;/h3>
+&lt;ul>
+&lt;li>Replace the CoreDNS main.go&lt;/li>
+&lt;li>Allows you to:
+&lt;ul>
+&lt;li>Reduced the size and memory footprint of the binary&lt;/li>
+&lt;li>Limit the functionality and CLI flags&lt;/li>
+&lt;li>Do extra setup or initialization&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Used, for example, by Node Local DNS in K8s&lt;/li>
+&lt;/ul>
+&lt;h3 id="example-dnscached">Example: dnscached&lt;/h3>
+&lt;ul>
+&lt;li>Source is in &lt;a href="https://github.com/coredns/learning-coredns">https://github.com/coredns/learning-coredns&lt;/a>&lt;/li>
+&lt;li>Simple caching DNS server&lt;/li>
+&lt;li>Embeds only bind, cache, erros, forward and log plugins&lt;/li>
+&lt;li>CLI args to generate a Corefile internally&lt;/li>
+&lt;/ul>
+&lt;h3 id="writing-a-plugin">Writing a Plugin&lt;/h3>
+&lt;ul>
+&lt;li>Three categories of plugins&lt;/li>
+&lt;li>Best practice: stick to one of these in your plugin&lt;/li>
+&lt;li>Backends:
+&lt;ul>
+&lt;li>Source of data&lt;/li>
+&lt;li>file, forward, hosts, clouddns, template, kubernetes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Mutators:
+&lt;ul>
+&lt;li>Modify the inbound request, the outbound response, or both&lt;/li>
+&lt;li>acl, cache, rewrite, nsid&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Configurators:
+&lt;ul>
+&lt;li>Modify the internal state or functioning of CoreDNS&lt;/li>
+&lt;li>bind, log, health, ready&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="four-functions">Four functions&lt;/h2>
+&lt;ul>
+&lt;li>Name - literally, just returns the name of the plugin&lt;/li>
+&lt;li>ServeDNS - request handling&lt;/li>
+&lt;li>init - register your plugin with Caddy&lt;/li>
+&lt;li>setup - parse your config&lt;/li>
+&lt;/ul>
+&lt;h3 id="example-there-can-be-only-one">Example: There can be only one!&lt;/h3>
+&lt;ul>
+&lt;li>onlyone plugin from Learning CoreDNS&lt;/li>
+&lt;li>Filters out all but one of specific record types&lt;/li>
+&lt;/ul>
+&lt;h3 id="function-setup">Function: setup&lt;/h3>
+&lt;ul>
+&lt;li>setup.go&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">setup&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">caddy&lt;/span>.&lt;span style="color:#a6e22e">Controller&lt;/span>) &lt;span style="color:#66d9ef">error&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">t&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parse&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">plugin&lt;/span>.&lt;span style="color:#a6e22e">Error&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;onlyone&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dnsserver&lt;/span>.&lt;span style="color:#a6e22e">GetConfig&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>).&lt;span style="color:#a6e22e">AddPlugin&lt;/span>(&lt;span style="color:#66d9ef">func&lt;/span>(&lt;span style="color:#a6e22e">next&lt;/span> &lt;span style="color:#a6e22e">plugin&lt;/span>.&lt;span style="color:#a6e22e">Handler&lt;/span>) &lt;span style="color:#a6e22e">plugin&lt;/span>.&lt;span style="color:#a6e22e">Handler&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">t&lt;/span>.&lt;span style="color:#a6e22e">Next&lt;/span> = &lt;span style="color:#a6e22e">next&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">t&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h3 id="function-servedns">Function: ServeDNS&lt;/h3>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>기본적으로 Google 개발자들이 발표하는게 퀄리티가 좋은듯? 너무 기업에서 &amp;ldquo;우리 최고죠?&amp;rdquo; 이런 느낌으로 홍보 가까운 느낌인데, 구글껀 괜찮은듯, 일단 전체적으로 보편적으로 다들 쓰고 있는걸 말한다.: 구글이 쓰니까 보편적인건가? 뭐든 학습자 입장에서는 쓰지도 않을 Framework, Library 공부하는 것보다는 좋은듯&lt;/li>
+&lt;li>CoreDNS Plugin 을 만드는 방법에 대해서 설명해주고 있다. 마지막에 Learning CoreDNS 책을 소개해주는데 github 에도 있어서 읽어봐야겠다.&lt;/li>
+&lt;/ul></description></item><item><title>Deep Dive into Minikube</title><link>https://minuk.dev/wiki/deep-dive-into-minikube/</link><pubDate>Wed, 21 Sep 2022 01:59:49 +0900</pubDate><guid>https://minuk.dev/wiki/deep-dive-into-minikube/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/Iyq_MlSku-I">원본&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="it-all-started-in-2016">It all started in 2016&lt;/h2>
+&lt;ul>
+&lt;li>Minkube was created 6 years ago by Google to alleviate the difficulties that developers had when setting up a Kubernetes environment for local development&lt;/li>
+&lt;/ul>
+&lt;h3 id="ok-google--assist-the-developers-please">OK Google &amp;hellip; Assist the developers please!&lt;/h3>
+&lt;ul>
+&lt;li>Google has continued to evolve the Minikube project to grow the Kubernetes ecosystem by making Kubernetes development more attractive and frictionless&lt;/li>
+&lt;/ul>
+&lt;h2 id="primary-goal">Primary Goal&lt;/h2>
+&lt;ul>
+&lt;li>make it simple to run Kubernetes locally for learning and day-to-day development, testing &amp;amp; debugging workflows:
+&lt;ol>
+&lt;li>inclusive&lt;/li>
+&lt;li>Community-driven&lt;/li>
+&lt;li>User-friendly&lt;/li>
+&lt;li>Support all Kubernetes features&lt;/li>
+&lt;li>Cross-platform&lt;/li>
+&lt;li>Reliable&lt;/li>
+&lt;li>High Performance&lt;/li>
+&lt;li>Developer Focused&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="our-first-integration-tests-ran-in-the-office">Our first Integration tests ran in the office.&lt;/h3>
+&lt;ul>
+&lt;li>Minikube&amp;rsquo;s VM drivers needed Baremetal servers with virtualization enabled.&lt;/li>
+&lt;li>Nested Virtualization only available for certain Linux Distros&lt;/li>
+&lt;/ul>
+&lt;h3 id="it-takes-a-village-to-test-minikube">It takes a village to test Minikube&lt;/h3>
+&lt;ul>
+&lt;li>Minikube is the most tested local Kubernetes tool.:
+&lt;ul>
+&lt;li>46 Self-hosted CI VMs in 5 different clouds (GCP, AWS, Equinix Metal, Azure, Macstadium) + Prow and Github Action&lt;/li>
+&lt;li>296 end to end tests in integration testing suite&lt;/li>
+&lt;li>100 unit tests&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="flake-rate-system">Flake Rate System&lt;/h2>
+&lt;ul>
+&lt;li>Problem:
+&lt;ul>
+&lt;li>Running hundreds of test cases on dozen platforms, there are always some flaky test that fail 10-15% of the time on Master.&lt;/li>
+&lt;li>Reviewer had to have a lot of context to approve a PR with failed test.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Solution:
+&lt;ul>
+&lt;li>Run tests on master regularly, generate failed rate on master.&lt;/li>
+&lt;li>On each PR comments how many of the Failed tests are a known Flake&lt;/li>
+&lt;li>Automatically create Github issue for frequently failing test.&lt;/li>
+&lt;li>Generate Visualized&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Minikube&amp;rsquo;s Flake Rate System is built on top of Gopogh&lt;/li>
+&lt;/ul>
+&lt;h3 id="what-is-gopogh---reducing-squinting-for-go-developers">What is Gopogh? - Reducing Squinting for go developers&lt;/h3>
+&lt;ul>
+&lt;li>Problem: Failed minikube test logs come with thousands of lines of post mortem logs low-level system logs. (sometimes 10K lines) that makes it very hard to see what log is for what!:
+&lt;ul>
+&lt;li>Created in a hackathon with a funny name&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="minikube-speaks-your-language">Minikube speaks your language&lt;/h2>
+&lt;h2 id="checkout-minikubes-side-project">Checkout Minikube&amp;rsquo;s Side Project!&lt;/h2>
+&lt;ul>
+&lt;li>Slow jam&lt;/li>
+&lt;li>Triage Party&lt;/li>
+&lt;li>Gopogh&lt;/li>
+&lt;li>Time To k8s&lt;/li>
+&lt;li>Minikube-CI&lt;/li>
+&lt;li>Pull Sheet&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-story-of-kbuernetes-124">The story of Kbuernetes 1.24&amp;hellip;&lt;/h2>
+&lt;ul>
+&lt;li>Kubernetes removed the code for supporting docker runtime&lt;/li>
+&lt;li>CNI&amp;hellip;&lt;/li>
+&lt;li>Cgroup V2&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h3 id="minikube-continues-to-support-docker-env">Minikube continues to support docker-env&lt;/h3>
+&lt;ul>
+&lt;li>Users love &amp;ldquo;min8ikube docker-env&amp;rdquo;(building images directly on the cluster) and we can&amp;rsquo;t blame them, it is 36X time faster than Image load.&lt;/li>
+&lt;/ul>
+&lt;h2 id="minikube-cpu-usage-overtime">Minikube CPU usage overtime&lt;/h2>
+&lt;ul>
+&lt;li>Save energy by using these Minikube features Features that can save energy:
+&lt;ul>
+&lt;li>try &amp;ldquo;minikube pause&amp;rdquo;&lt;/li>
+&lt;li>Auto-Pause Addon&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="benchmarking">Benchmarking&lt;/h2>
+&lt;ul>
+&lt;li>Measure Weekly/Daily and per release&lt;/li>
+&lt;li>Measure agsinst similar tools&lt;/li>
+&lt;/ul>
+&lt;h2 id="minikubes-base-image">Minikube&amp;rsquo;s Base Image&lt;/h2>
+&lt;h3 id="did-you-know-minikube-maintains-its-own-linux">Did you know minikube maintains its own linux?&lt;/h3>
+&lt;ul>
+&lt;li>Hand Crafted - Just enough Linux for Kubernetes&lt;/li>
+&lt;li>Small ISO - 280MB&lt;/li>
+&lt;li>Based on CoreOS BUildroot&lt;/li>
+&lt;li>Might Graduate out of Minikube to is own repo&lt;/li>
+&lt;li>Advantages:
+&lt;ul>
+&lt;li>Granular control of enabled kernel modules and packages&lt;/li>
+&lt;li>Tailored for Kubernetes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="types-of-minikube-users">Types of Minikube users&lt;/h3>
+&lt;ul>
+&lt;li>Learn Kubernetes&lt;/li>
+&lt;li>Develop on Kubernetes&lt;/li>
+&lt;li>Test/CI&lt;/li>
+&lt;/ul>
+&lt;h3 id="new-category-of-minikube-users">New category of minikube users!&lt;/h3>
+&lt;ul>
+&lt;li>Tens of Blog posts, tweets and survey comments shows that a lot of new users are using minikube merely as a Docker Desktop Replacement.&lt;/li>
+&lt;/ul>
+&lt;h3 id="minikube-start--no-kubernetes">minikube start -no-kubernetes?&lt;/h3>
+&lt;ul>
+&lt;li>IMO : ?? what?&lt;/li>
+&lt;/ul>
+&lt;h3 id="top-differentiators-minikube-vs-similar-tools">Top differentiators Minikube vs similar tools&lt;/h3>
+&lt;ul>
+&lt;li>Multiple container runtimes for Kubernetes&lt;/li>
+&lt;li>Direct access to container runtime for faster image build&lt;/li>
+&lt;li>Integration tests (most comprehensive)&lt;/li>
+&lt;/ul>
+&lt;h2 id="advantages-of-vm-drivers">Advantages of VM Drivers&lt;/h2>
+&lt;ul>
+&lt;li>No need to have Docker Desktop License&lt;/li>
+&lt;li>Less CPU usage&lt;/li>
+&lt;li>You can hit the port directly (for example if you have a hotspot service running on port 80 you can curl $(minikube ip):80 on your machine vs Docker Drive that by design needs to be assigned a random port.)&lt;/li>
+&lt;/ul>
+&lt;h2 id="tens-of-survey-requests-for-vm-driver-on-m1arm64">Tens of Survey Requests for VM driver on M1/Arm64&lt;/h2>
+&lt;h3 id="1-try-qemu-driver-on-apple-m1">1. Try Qemu Driver on Apple M1&lt;/h3>
+&lt;ul>
+&lt;li>Qemu driver is finally available for Arm64 and M1&lt;/li>
+&lt;li>This means on Arm-based machines like Apple M1 you could have a Kbuernetes experience without having to have Docker Desktop.&lt;/li>
+&lt;/ul>
+&lt;h3 id="challenges-of-adding-arm64-iso">Challenges of adding ARM64 ISO&lt;/h3>
+&lt;ul>
+&lt;li>Slow iteration of testing&lt;/li>
+&lt;li>BIOS/EFI&lt;/li>
+&lt;li>AppArmor&lt;/li>
+&lt;li>Lack of team familiarity with Buildroot&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-try-early-prototype-of-minikube-gui">2. Try Early prototype of Minikube-GUI&lt;/h3>
+&lt;ul>
+&lt;li>Go to minikube website&lt;/li>
+&lt;li>Search for Minikube GUI&lt;/li>
+&lt;li>Things to try:
+&lt;ul>
+&lt;li>Simplified View (one cluster)&lt;/li>
+&lt;li>Advanced View (multi cluster)&lt;/li>
+&lt;li>Right click tray icon&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>개인적으로 퀄리티가 굉장히 좋은 강연이였다.&lt;/li>
+&lt;li>일단:
+&lt;ul>
+&lt;li>minikube에 대한 간략한 설명(k8s 에 고통을 덜기위해)&lt;/li>
+&lt;li>왜 써야하는지 (안정성)&lt;/li>
+&lt;li>겪고 있는 문제(flake, k8s 1.24)&lt;/li>
+&lt;li>화제거리(docker 를 사용하기 위해 k8s 없이 minikube 를 돌릴수 있게 해달라)&lt;/li>
+&lt;li>새로운 소식(M1 에 대한 지원, GUI 지원)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>위 사항들을 모두 요약한 좋은 강연이였다고 생각된다.&lt;/li>
+&lt;li>다만 아쉬운 점은 최근 이야기가 많이 나오고 있는 k3s라던가 minikube 가 내부적으로 어떻게 동작하는지에 대한 설명이 있었으면 좋았을 거 같은데, 사실 이건 시간 관계상 하기 어렵기도 하고 minikube 를 사용하는 사람이 아닌 개발하는 사람에게 필요한 내용이므로 적합하지 않다고 생각해서 뺀것 같다. (혹은 예전에 이미 했어서 중복되서 안하거나?)&lt;/li>
+&lt;li>이 강연을 통해서 얻게된 내용:
+&lt;ul>
+&lt;li>minikube 내부구조를 살짝 공부하고, kind(kubernetes in docker) 와 k3s 와 비교해봐야겠다. (목적성이나 구조적인 문제 둘다)&lt;/li>
+&lt;li>중간에 소개해줬던 내부 툴 repo를 살펴봤는데, 현재 사용하고 있지만 툴 자체가 발전하지는 않는 상황인것 같다. 살펴봐야겠다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Making Your Apps and Infrastructure Services Failure-Resilient with Dapr</title><link>https://minuk.dev/wiki/making-your-apps-and-infrastructure-services-failure-resilient-with-dapr/</link><pubDate>Wed, 07 Sep 2022 00:57:53 +0900</pubDate><guid>https://minuk.dev/wiki/making-your-apps-and-infrastructure-services-failure-resilient-with-dapr/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/Jw05zFpsPms">원본 링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-is-dapr">What is Dapr?&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://dapr.io/">Dapr : Distributed Application Runtime&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="sidecar">Sidecar&lt;/h3>
+&lt;ul>
+&lt;li>Dapr API (HTTP/gRPC)&lt;/li>
+&lt;/ul>
+&lt;h3 id="dapr-components">Dapr Components&lt;/h3>
+&lt;ul>
+&lt;li>State Stores&lt;/li>
+&lt;li>Pubsub Brokers&lt;/li>
+&lt;li>Bindings &amp;amp; Triggers&lt;/li>
+&lt;li>Secret Stores&lt;/li>
+&lt;li>Observability&lt;/li>
+&lt;li>Configuration&lt;/li>
+&lt;/ul>
+&lt;h2 id="resiliency">Resiliency&lt;/h2>
+&lt;ul>
+&lt;li>State Management&lt;/li>
+&lt;li>Application Configuration&lt;/li>
+&lt;li>Input Binding&lt;/li>
+&lt;li>Service Invocation&lt;/li>
+&lt;li>Secret Management&lt;/li>
+&lt;li>Publish &amp;amp; Subscribe&lt;/li>
+&lt;li>Output Binding&lt;/li>
+&lt;/ul>
+&lt;h2 id="resiliency-configuration-yaml">Resiliency Configuration YAML&lt;/h2>
+&lt;h3 id="resiliency-as-crd">Resiliency as CRD&lt;/h3>
+&lt;ul>
+&lt;li>In kubernetes Resiliency is defined as a CRD&lt;/li>
+&lt;li>Allows for multiple policies to be defined&lt;/li>
+&lt;li>Dapr merges all found policies into singl configuration&lt;/li>
+&lt;/ul>
+&lt;h3 id="resiliency-policies">Resiliency Policies&lt;/h3>
+&lt;ul>
+&lt;li>Timeouts:
+&lt;ul>
+&lt;li>Allows for the cancellation of requets after a given duration&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Regries:
+&lt;ul>
+&lt;li>Allows for the generic retrying of a request or operation&lt;/li>
+&lt;li>Two supported retry types. constant and exponential&lt;/li>
+&lt;li>Can specify erros which are retryable and permanent&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Circuit Breakers:
+&lt;ul>
+&lt;li>Allows for broken/breaking systems to be cut-off from requests&lt;/li>
+&lt;li>Helps reduce traffic and requests to allow for recovery time&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="resiliency-policies---retries">Resiliency Policies - Retries&lt;/h4>
+&lt;ul>
+&lt;li>Constant Policieis:
+&lt;ul>
+&lt;li>maxRetries - The maximum number of attempts to make for a request&lt;/li>
+&lt;li>duration - The time in-between retries&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Exponential Policies:
+&lt;ul>
+&lt;li>maxRetries - The maximum number of attempts to make for a request&lt;/li>
+&lt;li>initialinterval - The starting time between retries&lt;/li>
+&lt;li>randomizationFactor - Jitter used to offset requests&lt;/li>
+&lt;li>multiplier - Growth rate of the retry interval&lt;/li>
+&lt;li>maxInterval - The maximum duration between retries&lt;/li>
+&lt;li>maxElapsedTime - The maximum time spent over all retries&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="resiliency-policies---circuit-breakers">Resiliency Policies - Circuit Breakers&lt;/h4>
+&lt;ul>
+&lt;li>maxRequets - The maximum number of requets allowed while the breakers is in the half-open state&lt;/li>
+&lt;li>interval - The cyclical period that errors are evaluated in, if not specified the evaluation period is continuous&lt;/li>
+&lt;li>timeout - the Time in which the circuit breaker will remain open after breaking&lt;/li>
+&lt;li>trip - The criteria that errors are evaluated against to trigger state changes&lt;/li>
+&lt;/ul>
+&lt;h3 id="resiliency-targets">Resiliency Targets&lt;/h3>
+&lt;ul>
+&lt;li>Can be defined as Applications, Actors, and Components&lt;/li>
+&lt;li>A target maps the policies to be used when calling into a system&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>전반적으로 kubecon 이 자기가 만들거나 사용하고 있는 프로그램을 소개할수 밖에 없는 구조 이긴한데, 이건 좀 그냥 그랬다.&lt;/li>
+&lt;li>그냥 아.. 있나보다 싶은 생각?&lt;/li>
+&lt;li>굳이 공부한 거라고는 Policy 마다 저런 요소들을 고민해야한다 정도?&lt;/li>
+&lt;li>실제로 내가 Dapr 을 쓸께아니라면, 그닥 매력적인 강연은 아닌것 같다.&lt;/li>
+&lt;/ul></description></item><item><title>Make Cloud Native Chaos Engineering Easier Deep Dive into Chaos Mesh</title><link>https://minuk.dev/wiki/make-cloud-native-chaos-engineering-easier-deep-dive-into-chaos-mesh/</link><pubDate>Sun, 04 Sep 2022 02:42:20 +0900</pubDate><guid>https://minuk.dev/wiki/make-cloud-native-chaos-engineering-easier-deep-dive-into-chaos-mesh/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/bZnI5omUKe4">원본&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="testing-a-distributed-system-is-difficult">Testing a distributed system is difficult&lt;/h2>
+&lt;ul>
+&lt;li>Distributed systems are more and more complex nowadays:
+&lt;ul>
+&lt;li>Faults can happen anytime, anywhere, in any ways&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Writing tests and debugging is hard:
+&lt;ul>
+&lt;li>Deterministic test is very hard and impossible to cover all faults&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>But, No crash, No data loss, No wrong results&lt;/li>
+&lt;/ul>
+&lt;h2 id="chaos-engieering-to-the-rescue">Chaos Engieering to the rescue&lt;/h2>
+&lt;ul>
+&lt;li>Chaos engineering is about breaking things in a controlled environment and through well-planned experiments in order to build confidence in your application to withstand turbulent conditions.&lt;/li>
+&lt;li>Chaos engineering is NOT about breaking things randomly without a perpose.&lt;/li>
+&lt;li>Program Cycle:
+&lt;ul>
+&lt;li>Improve -&amp;gt; Steady State -&amp;gt; Hypothesis -&amp;gt; Run Experiment -&amp;gt; Verify -&amp;gt; Improve&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="why-chaos-mesh">Why Chaos Mesh&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>On Kubernetes:&lt;/p></description></item><item><title>Volcano - Intro &amp; Deep Dive</title><link>https://minuk.dev/wiki/volcano-intro-and-deep-dive/</link><pubDate>Tue, 30 Aug 2022 23:20:47 +0900</pubDate><guid>https://minuk.dev/wiki/volcano-intro-and-deep-dive/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/a76CajRhsX0">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h1 id="intro--deep-dive---volcano-a-cloud-native-batch-system">Intro &amp;amp; Deep dive - Volcano: A Cloud Native Batch System&lt;/h1>
+&lt;h2 id="cloud-native-for-intelligent-workload">Cloud Native for Intelligent Workload&lt;/h2>
+&lt;ul>
+&lt;li>More and more organization are leveraging cloud native technology to avoid fragmental ecosystem, isolated stack, low resource utilization&lt;/li>
+&lt;/ul>
+&lt;h2 id="batch-on-k8s-challenges">Batch on K8s: Challenges&lt;/h2>
+&lt;ul>
+&lt;li>Job meanagement:
+&lt;ul>
+&lt;li>Pod level scheduling, no awareness of upper-level applications.&lt;/li>
+&lt;li>Lack of fine-grained lifecycle management.&lt;/li>
+&lt;li>Lack of task dependencies, Job dependencies.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Scheduling:
+&lt;ul>
+&lt;li>Lack of job based scheduling, e.g. job ordering, job priority, job preemption, job fair-share, job reservation.&lt;/li>
+&lt;li>Not enough advanced scheduling algortihms, E.g. CPU topology, task-topology, IO-Awareness, backfill.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Multi-framework support:
+&lt;ul>
+&lt;li>Insufficient suport for mainstream computing frameowrks like MPI, Tensorflow, Mxnet, Pytorch.&lt;/li>
+&lt;li>Complex deployment and O&amp;amp;M because each frameowrk corresponding to a different operator.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Resource planning, sharing, heterogeneous computing:
+&lt;ul>
+&lt;li>Lack of support to resource sharing mechanism between jobs, queues, namespaces.&lt;/li>
+&lt;li>Lack of Deeper support on heterogenous resources.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Performance:
+&lt;ul>
+&lt;li>Not enough throughput, roundtrip for batch workload.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="volcano-overview">Volcano Overview&lt;/h2>
+&lt;ul>
+&lt;li>Created at March 2019; Sandbox at April 2020; Incubator at April 2022&lt;/li>
+&lt;li>2.3k star, 360+ contributors, latest version v1.5.1&lt;/li>
+&lt;li>50+ enterprises adopt Volcano in production environments.&lt;/li>
+&lt;/ul>
+&lt;h3 id="key-concept">Key Concept&lt;/h3>
+&lt;ul>
+&lt;li>Job:
+&lt;ul>
+&lt;li>Multiple Pod Template&lt;/li>
+&lt;li>Lifecycle management/Erro handling&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>User/namespace/resource quota:
+&lt;ul>
+&lt;li>namespace is regarded as user&lt;/li>
+&lt;li>resource quota is regarded as the upper limit resource that users in the namespace are able to use at most. Like the QPS in Kube-apiserver.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Resource share:
+&lt;ul>
+&lt;li>Use Queue for resource sharing&lt;/li>
+&lt;li>Share resources between different &amp;ldquo;tenants&amp;rdquo; or resource pools.&lt;/li>
+&lt;li>Support different scheduling policies or algorithms for different &amp;ldquo;tenants&amp;rdquo; or resource pools.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="job-mangement">Job mangement&lt;/h3>
+&lt;ul>
+&lt;li>Volcano Job:
+&lt;ul>
+&lt;li>Unified Job interface for most of batch job like mpi, pytorch, tensorflow, mxnet, etc.&lt;/li>
+&lt;li>Fine-grained Job Lifecycle mangement&lt;/li>
+&lt;li>Extendable job plugin:
+&lt;ul>
+&lt;li>env, svc, ssh, tensorflow&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Coordinate with Scheduler&lt;/li>
+&lt;li>Job dependency&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="resource-mangement--queue">Resource mangement- Queue&lt;/h3>
+&lt;ul>
+&lt;li>Queue is cluster scoped, decoupled with user/namespace&lt;/li>
+&lt;li>Queue is used to share resources between &amp;ldquo;multi-tenants&amp;rdquo; or resource pool.&lt;/li>
+&lt;li>Configure policy for each queue, e.g. FIFO, fair share, priority, SLA.&lt;/li>
+&lt;/ul>
+&lt;h3 id="dynamic-resource-sharing-between-queues">Dynamic resource sharing between queues&lt;/h3>
+&lt;ul>
+&lt;li>Queue Guarantee/Capacity&lt;/li>
+&lt;li>Share resource between Queues proportionally by weight&lt;/li>
+&lt;/ul>
+&lt;h4 id="개인-생각">개인 생각&lt;/h4>
+&lt;ul>
+&lt;li>?? 왜 Queue 들끼리 균등하게 분할할 생각이 아니라 Queue 끼리 자원을 서로 대여하는 구조인거지??&lt;/li>
+&lt;li>Queue 끼리 우선순위를 조정하는 Policy 도 있겠지?? 일단 Queue 내부 Policy 는 있는거 같은데 Queue 간 제어하는 로직이 확실치 않네&lt;/li>
+&lt;/ul>
+&lt;h3 id="fair-share-within-queue">Fair share within Queue&lt;/h3>
+&lt;ul>
+&lt;li>Sharing resource between jobs&lt;/li>
+&lt;li>Sharing resource between namespaces&lt;/li>
+&lt;li>Per-Queue policy (FIFO, Priority, Fair share, &amp;hellip;)&lt;/li>
+&lt;/ul>
+&lt;h4 id="case--hierarchical-queue">Case : hierarchical queue&lt;/h4>
+&lt;ul>
+&lt;li>How to share resource in a multi-level org more easily?&lt;/li>
+&lt;li>Problem: flat queue cannot meet complex resource share and isolation easily for big org.&lt;/li>
+&lt;li>Solution:
+&lt;ul>
+&lt;li>Multiple level queue constructs a tree which is mapped to the org.&lt;/li>
+&lt;li>Each level queue has min, max, weight. Use max to isolate resource, use queue weight to balance resource betweeen queues.&lt;/li>
+&lt;li>Share resources between queues and reclaim by weight&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Benefit:
+&lt;ul>
+&lt;li>Flexible resource mangement, easy to map the organization&lt;/li>
+&lt;li>fine-grained control resource share and isolation for a big multi-tenants organization&lt;/li>
+&lt;li>The queue min capacity ensures guaranteed resource, the proportion by weight offers flexible sharing&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="scenario-elastic-scheduling">Scenario: Elastic scheduling&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>What is elastic job&lt;/p></description></item><item><title>Intro to Kubernetes, GitOps, and Observability Hands-On Tutorial</title><link>https://minuk.dev/wiki/intro-to-kubernetes-gitops-and-observability-hands-on-tutorial/</link><pubDate>Thu, 25 Aug 2022 00:06:14 +0900</pubDate><guid>https://minuk.dev/wiki/intro-to-kubernetes-gitops-and-observability-hands-on-tutorial/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="https://www.youtube.com/watch?v=WKvogzTg2iM">원본&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>기본적으로 따라서 하는 Hands On Tutorial 강의이다.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="intro-to-kubernetes">Intro to Kubernetes&lt;/h2>
+&lt;ul>
+&lt;li>Oss CNCF graduated project for container orchestration&lt;/li>
+&lt;li>Declarative configuration to manage containerized workloads and services&lt;/li>
+&lt;li>Cloud Native, provides:
+&lt;ul>
+&lt;li>Automation and observability&lt;/li>
+&lt;li>Self-healing and horizontal scaling&lt;/li>
+&lt;li>Service discovery and load balancing&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Scalable, runs on-premises, in public cloud, and hybrid environments&lt;/li>
+&lt;/ul>
+&lt;h3 id="kubernetes-cluster-overview">Kubernetes Cluster Overview&lt;/h3>
+&lt;ul>
+&lt;li>API server&lt;/li>
+&lt;li>Cloud controller manager(optional)&lt;/li>
+&lt;li>Controller manager&lt;/li>
+&lt;li>etcd(persistence store)&lt;/li>
+&lt;li>kubelet&lt;/li>
+&lt;li>kube-proxy&lt;/li>
+&lt;li>Scheduler&lt;/li>
+&lt;li>Control plane&lt;/li>
+&lt;li>Node&lt;/li>
+&lt;/ul>
+&lt;h3 id="kubernetes-resources-review">Kubernetes Resources Review&lt;/h3>
+&lt;ul>
+&lt;li>Kubernetes REST API and declarative resources manage operations and communications between components&lt;/li>
+&lt;li>Kubernetes API Groups (resources grouped based on their primary functions):
+&lt;ul>
+&lt;li>RBAC, scheduling, admission registration, autoscaling, events, apps, core&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Core API group objects (core/v1 + apps/v1 API Groups):
+&lt;ul>
+&lt;li>Namespaces, Deployments, Services, Secrets&lt;/li>
+&lt;li>CRUD operations&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>API extensions via Custom Resource Definitions + Controllers&lt;/li>
+&lt;li>Declaraitve (YAML)&lt;/li>
+&lt;/ul>
+&lt;h3 id="kubernetes-resources-at-a-galance">Kubernetes Resources At A Galance&lt;/h3>
+&lt;ul>
+&lt;li>Container : Runs an image (immutable copy of your application code and all code dependencies in an isolated environment&lt;/li>
+&lt;li>Pod : A set of containers, co-scheduled on one machien. Mortal. Has pod IP. Has labels.&lt;/li>
+&lt;li>Deployment : Ensures a certain number of replicas of a pod are running across the cluster&lt;/li>
+&lt;li>Service : Gets virtual IP, mapped to endpoints via labels, Named in DNS&lt;/li>
+&lt;li>Namespace : Resource names are scoped to a Namespace. Logical boundary&lt;/li>
+&lt;/ul>
+&lt;h2 id="intro-to-gitops">Intro to GitOps&lt;/h2>
+&lt;h3 id="gitops-principles">GitOps Principles&lt;/h3>
+&lt;ul>
+&lt;li>Declarative: A system managed by GitOPs must have its desired state expressed declaratively&lt;/li>
+&lt;li>Versioned and Immutable: Desired state is stored in a way that enforces immutatibility, versioning and retains a complete version history.&lt;/li>
+&lt;li>Pulled Automatically: Software agents automatically pull the desired state declarations from the source&lt;/li>
+&lt;li>Continuously Reconciled: Software agents continuously observe actual system state and attempt to apply the desired state.&lt;/li>
+&lt;/ul>
+&lt;h3 id="gitops-a-cloud-native-operating-model">GitOps: A Cloud Native Operating Model&lt;/h3>
+&lt;ul>
+&lt;li>Unifying Deployment, Monitoring and Management:
+&lt;ul>
+&lt;li>Git as the single source of truth of a system&amp;rsquo;s desired state&lt;/li>
+&lt;li>ALL intended operations are committed by pull request&lt;/li>
+&lt;li>ALL diffs between intended and observed state with automatic convergence&lt;/li>
+&lt;li>ALL changes are observable, verifiable, and auditable.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="intro-to-gitops-1">Intro to GitOps&lt;/h3>
+&lt;ul>
+&lt;li>GitOps is the practice of using Git to store declaratively defined desired state and Continuous Delivery agents (e.g. Flux) to automate the reconcilation of current state to desired state. With GitOps, CI and CD are effectively decoupled.&lt;/li>
+&lt;/ul>
+&lt;h3 id="intro-to-flux">Intro to Flux&lt;/h3>
+&lt;ul>
+&lt;li>OSS CNCF Project&lt;/li>
+&lt;li>Created at Weaveworks&lt;/li>
+&lt;li>Runtime composed of Kubernetes Controllers + CRDs&lt;/li>
+&lt;li>Flux keeps kubernetes clusters in sync with sources of configuration and automatically + continuously reconciles running state to desired state.&lt;/li>
+&lt;/ul>
+&lt;h2 id="intro-to-observability">Intro to Observability&lt;/h2>
+&lt;ul>
+&lt;li>Monitoring vs. Observability:
+&lt;ul>
+&lt;li>Monitoring: Metrics, alerts, actionable, dashboards, canned quieries&lt;/li>
+&lt;li>Observabiilty: Inspect, observe, explore, trace, custom queries&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="observability-instrumentation">Observability Instrumentation&lt;/h3>
+&lt;ul>
+&lt;li>Metrics:
+&lt;ul>
+&lt;li>Prometheus:
+&lt;ul>
+&lt;li>OSS CNCF monitoring and alerting toolkit&lt;/li>
+&lt;li>Time series database for metrics collection created by SoundCloud&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>DataVisualization:
+&lt;ul>
+&lt;li>Grafana:
+&lt;ul>
+&lt;li>OSS metrics visualization dashboards&lt;/li>
+&lt;li>Created by Grafana Labs, CNCF Platinum Partner&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Logging:
+&lt;ul>
+&lt;li>Fluent Bit:
+&lt;ul>
+&lt;li>OSS CNCF project for lightweight logs and metrics processing + forwarding&lt;/li>
+&lt;li>Sub-project under Fluentd umbrella created by Treasure Data&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="개인생각">개인생각&lt;/h2>
+&lt;ul>
+&lt;li>강연이 좀 혼란했다. 개념적인걸 설명하고, Flux 를 활용한 gitops 실습이 목표였던 것 같은데 codespace가 잘 동작하지 않거나, port binding 이 잘 동작하지 않아서 영상 중 상당 시간이 지연되었다.&lt;/li>
+&lt;li>실습 자료가 나쁜편은 아닌데, 어짜피 대부분은 경험해본적이 있어서 굳이 실습을 하진 않았다.&lt;/li>
+&lt;li>영상만을 보고 실습을 하기에는 조금 무릭 ㅏ있다. 기본적으로 로그인도 안되고, 실습 환경도 직접 구축해야하니까&amp;hellip;&lt;/li>
+&lt;li>얻어간건 위에 요약된 정보들과 k9s 정도 이다.&lt;/li>
+&lt;/ul></description></item><item><title>Spark on Kubernetes - The Elastic Story</title><link>https://minuk.dev/wiki/spark-on-kubernetes-the-elastic-story/</link><pubDate>Tue, 23 Aug 2022 02:46:35 +0900</pubDate><guid>https://minuk.dev/wiki/spark-on-kubernetes-the-elastic-story/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/n7WeoTJq-40">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="benefits-of-cloud">Benefits of Cloud&lt;/h2>
+&lt;ul>
+&lt;li>Agile : Resources are on-dmand, pay as you go&lt;/li>
+&lt;li>Elastic &amp;amp; Scalable : Almost infinite scale of compute and storage&lt;/li>
+&lt;li>Strong Resource Isolation : Container-native on K8S&lt;/li>
+&lt;li>Privacy-First : Leverage cloud security techniques to enforce security&lt;/li>
+&lt;li>Operation Friendly : Our developers can focus on building and improving services to achieve higher ROI&lt;/li>
+&lt;/ul>
+&lt;h2 id="design-principles">Design Principles&lt;/h2>
+&lt;ul>
+&lt;li>Leverage Cloud Infra&lt;/li>
+&lt;li>Full Containerizng - Elastic, Agile, Lightweight&lt;/li>
+&lt;li>Decouple Compute/Storage, Scale Independently&lt;/li>
+&lt;li>Developer-Friendly, API Centric&lt;/li>
+&lt;li>Security &amp;amp; Privacy as First Class Citizen&lt;/li>
+&lt;li>Use Apple Internal Spark distribution&lt;/li>
+&lt;/ul>
+&lt;h2 id="architecture-of-cloud-native-spark-service">Architecture of Cloud-Native Spark Service&lt;/h2>
+&lt;ul>
+&lt;li>원본 링크 PPT 참고&lt;/li>
+&lt;li>Spark K8s Operator 가 Resource Queues 를 가르키고 있고 Resource Queue 는 Node 를 관리한다.&lt;/li>
+&lt;li>이를 Skate(Spark service gateway) 로 호출하면서 관리하며, 이는 API, CLI, Airflow 등 다양한 Batch Processing 으로 처리한다.&lt;/li>
+&lt;li>또한 Jupyter Notebook 을 Interactive Spark Gateway랑 연결해서 달아둘수도 있다.&lt;/li>
+&lt;li>이러한 환경에서 Observability Infra, Security &amp;amp; Privacy Infra 가 당연하게도 깔려있어야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="cost-saving-and-elasticity-needs">Cost saving and Elasticity Needs&lt;/h2>
+&lt;ul>
+&lt;li>Varing workload pattern: fluctuating within a day and/or a week&lt;/li>
+&lt;li>Different use cases: daily/weekly scheduled jobs, ad hoc jobs, scheduled + adhoc, backfill&lt;/li>
+&lt;li>Fixed amount of resources must account for max usage, which causes resource waste&lt;/li>
+&lt;/ul>
+&lt;h2 id="design-of-reactive-autoscaling">Design of Reactive AUtoscaling&lt;/h2>
+&lt;h3 id="reactive-autoscaling-cluster-nodegroups-layout">Reactive AutoScaling Cluster NodeGroups Layout&lt;/h3>
+&lt;ul>
+&lt;li>자세한건 원본 링크 PPT 참고&lt;/li>
+&lt;li>Physical isolation : Minimize potential impact&lt;/li>
+&lt;li>Minimum capacity: Guaranteed at any time&lt;/li>
+&lt;li>maximum capacity: Jobs will be queued if executed&lt;/li>
+&lt;li>Multi-tenant Autoscaling K8S Cluster
+&lt;ul>
+&lt;li>spark-system(node group) : static size; shared by all queues&lt;/li>
+&lt;li>spark-drive(node group): scale-out; shared by all queues&lt;/li>
+&lt;li>spark-executor(node group): scale in/out&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="reactive-autoscaling-workflow">Reactive AutoScaling Workflow&lt;/h3>
+&lt;ul>
+&lt;li>자세한건 원본 링크 참조&lt;/li>
+&lt;li>CLI/SDK/Airflow Operator of Skate clients - 1. Submitting Spark job to Spark Platform&lt;/li>
+&lt;li>Skate(Spark service gateway) - 2. Creating SparkAPP CRD on cluster&lt;/li>
+&lt;li>Spark K8S Operator - 3. Creating driver and executor pods in YK resources queue&lt;/li>
+&lt;li>YuniKorn - 4. Creating Spark Driver pod in driver node group&lt;/li>
+&lt;li>YuniKorn - 5. Creating Spark executor pods in executor node group&lt;/li>
+&lt;li>6.1 Sned pending pods signal in each node groups for scale-out&lt;/li>
+&lt;li>6.2 Send idel node in each node groups for scale in&lt;/li>
+&lt;li>
+&lt;ol start="7">
+&lt;li>Send scale in/out request to cloud provider per node group&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="reactive-autoscaling-scale-inout-controls">Reactive AutoScaling Scale in/out Controls&lt;/h3>
+&lt;ul>
+&lt;li>Scale in Controls:
+&lt;ul>
+&lt;li>Only when no running executor pods on the node&lt;/li>
+&lt;li>Enabled Apache YuniKorn bin-packing in resource scheduling&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Scale out Controls:
+&lt;ul>
+&lt;li>Spark-driver node group scale out only&lt;/li>
+&lt;li>Speed up executor pods allocation size config of Spark&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="production-status">Production Status&lt;/h2>
+&lt;ul>
+&lt;li>In production for 3+ months&lt;/li>
+&lt;li>Cost saving report: Cost saving percentage per queue is located in 20% - 70%&lt;/li>
+&lt;/ul>
+&lt;h3 id="migration-findings-1">Migration findings 1&lt;/h3>
+&lt;ul>
+&lt;li>Scale in/out events are stable:
+&lt;ul>
+&lt;li>Tens of thousands of job per week running successfully&lt;/li>
+&lt;li>All scale-in events works as expected&lt;/li>
+&lt;li>Scale out latency is consistent(&amp;lt;= 5 mins from 2 to 200)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="migration-findings-2">Migration findings 2&lt;/h3>
+&lt;ul>
+&lt;li>Compared to massive over-provisioning approach before, runtime of workloads with autoscaling enbaled may increase:
+&lt;ul>
+&lt;li>Most negligible, a couple jobs increased ~20%&lt;/li>
+&lt;li>Users need to take this into consideration and optimize jobs if there&amp;rsquo;s strict data delivery time SLO&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="challenges-solutions-learnings">Challenges, Solutions, Learnings&lt;/h3>
+&lt;ul>
+&lt;li>Physical Isolation and min/max capacity setting&lt;/li>
+&lt;li>How to guarantee no impact to existing Spark jobs when scale-in&lt;/li>
+&lt;li>How to speed up scale-out latency and always allow Spark driver getting start&lt;/li>
+&lt;li>Monitoring autoscaling performance&lt;/li>
+&lt;/ul>
+&lt;h3 id="top-community-feature-requests">Top Community Feature Requests&lt;/h3>
+&lt;ul>
+&lt;li>Mixed instance type support&lt;/li>
+&lt;li>Dynamic Allocation support&lt;/li>
+&lt;li>Spot instance support with Remote Shuffle Service&lt;/li>
+&lt;li>Predictive Autoscaling leveraging the platform&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="개인-생각">개인 생각&lt;/h3>
+&lt;ul>
+&lt;li>Apple 에서 k8s에 spark 를 돌리는 것에 대해서 나와있다.&lt;/li>
+&lt;li>Apache YuniKorn 에 대해서 처음 알게 되었다. 좀더 정확히는 Spark 가 Kbuernetes 위에서 동작하는 구조 자체를 처음 공부했다.&lt;/li>
+&lt;li>단순히 Spark Pod 이 많이 띄워져 있다. 이런 식으로 끝나는 것이 아니라 Layer 를 나눠서 설명해준 점이 좋았다.&lt;/li>
+&lt;li>뭐 당연하게도 CRD 로 관리하고 있었다.&lt;/li>
+&lt;li>대충 요약하자면, Spark 를 그냥 동작시키게 되면 skew 현상이 너무 심하고 이는 리소스가 남는 상황에서도 이를 잘 활용하지 못하는 것을 의미한다.&lt;/li>
+&lt;li>따라서 중간에 Queue Layer를 두고 API/CLI/Airflow/Jupyter Notebook 등등은 Skate 에 요청한다.:
+&lt;ul>
+&lt;li>skate 는 처음 나오는 단어이고 특별한 프레임워크를 의미하는게 아니라 Spark service gateway를 줄여서 저렇게 부르는것 같다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>여기서 YuniKorn Resource Queue 로 작업을 분배하게 된다. 이때 설정에 따라서 여러 cluster를 사용할 수 있는 것으로 보인다.&lt;/li>
+&lt;li>특히나 인상 깊은건 Scale in/out Control에 따른 Memory, CPU Utilization Graph 인데 봐보면 너무나도 이상적으로 나왔다. 특정 노드가 엄청나게 뛰는게 아니라 전체적으로 스케줄링이 잘되는 것을 볼 수 있다. 물론 이 그래프만 가지고 판단하기에는 대조군도 없고, 그래프가 너무 컬러풀해서 잘 식별되지는 않지만 충분히 유의미한 그래프이며 이 구조가 어느정도의 안정성을 보임을 확인할수 있다.&lt;/li>
+&lt;/ul></description></item><item><title>Running Containerd and k3s on MacOS</title><link>https://minuk.dev/wiki/running-containerd-and-k3s-on-macos/</link><pubDate>Fri, 19 Aug 2022 01:01:46 +0900</pubDate><guid>https://minuk.dev/wiki/running-containerd-and-k3s-on-macos/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/g5GCsbjkzRM">원본&lt;/a>, Kubecon EU 2022&lt;/li>
+&lt;li>&lt;a href="https://static.sched.com/hosted_files/kccnceu2022/5f/lima.pdf">Slide&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://events.linuxfoundation.org/archive/2022/kubecon-cloudnativecon-europe/program/schedule/">Slide 출처&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="why-run-containers-on-macos">Why run containers on macOS?&lt;/h2>
+&lt;ul>
+&lt;li>2022 is The Year of the Linux Desktop&lt;/li>
+&lt;li>But ordinary developers still need macOS (or Windows)&lt;/li>
+&lt;li>Almost solely for the dev &amp;amp; test environment&lt;/li>
+&lt;li>Not the best fit for running a production server&lt;/li>
+&lt;/ul>
+&lt;h2 id="existing-methods">Existing methods&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Docker Desktop for Mac has been the popular solution&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Supports automatic host filesystem sharing&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Supports automatic port forwarding&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>But proprietary&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Just install Docker and Kubernetes inside a Linux VM? Maybe via minikube?:&lt;/p></description></item><item><title>What If… Kube-Apiserver Could be Extended Via WebAssembly?</title><link>https://minuk.dev/wiki/what-if-kube-apiserver-could-be-extended-via-webassembly/</link><pubDate>Thu, 11 Aug 2022 01:58:52 +0900</pubDate><guid>https://minuk.dev/wiki/what-if-kube-apiserver-could-be-extended-via-webassembly/</guid><description>&lt;p>&lt;a href="https://www.youtube.com/watch?v=4CKcMZySUbc&amp;amp;list=PLj6h78yzYM2MCEgkd8zH0vJWF7jdQ-GRR&amp;amp;index=2">출처&lt;/a>&lt;/p>
+&lt;h2 id="what-is-web-assembly">What is Web Assembly?&lt;/h2>
+&lt;ul>
+&lt;li>Polyglot
+&lt;ul>
+&lt;li>Many langugages can be compiled to Wasm(Web assembly)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Small
+&lt;ul>
+&lt;li>Like Container&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Portable
+&lt;ul>
+&lt;li>Can run on any architecture and any OS&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Secure
+&lt;ul>
+&lt;li>In sandbox&lt;/li>
+&lt;li>Memory safety&lt;/li>
+&lt;li>Control-flow integrity&lt;/li>
+&lt;li>Runtime isolation&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="webassembly-outside-of-the-browser">WebAssembly Outside of the Browser&lt;/h2>
+&lt;ul>
+&lt;li>A new way to build and distribute applications&lt;/li>
+&lt;li>Implement plugin systems&lt;/li>
+&lt;/ul>
+&lt;h2 id="kubernetes-control-plan-extensibility">Kubernetes Control Plan Extensibility&lt;/h2>
+&lt;ul>
+&lt;li>Authentication and Autorization&lt;/li>
+&lt;li>Scheduler&lt;/li>
+&lt;li>Dynamic Admission Controllers&lt;/li>
+&lt;/ul>
+&lt;h3 id="dynamic-admission-controller">Dynamic Admission Controller&lt;/h3>
+&lt;ul>
+&lt;li>Authentication, Authorization&lt;/li>
+&lt;li>Mutating admission&lt;/li>
+&lt;li>Schema Validation&lt;/li>
+&lt;li>Validating admission&lt;/li>
+&lt;/ul>
+&lt;h2 id="introducting-kubewarden">Introducting Kubewarden&lt;/h2>
+&lt;ul>
+&lt;li>A policy engine for Kubernetes&lt;/li>
+&lt;li>Its mission is to simplify the adoption of Policy As Code.&lt;/li>
+&lt;/ul>
+&lt;h3 id="kubewarden-policies">Kubewarden Policies&lt;/h3>
+&lt;ul>
+&lt;li>Written using:
+&lt;ul>
+&lt;li>Rust, Go, AssemblyScript, Swift&lt;/li>
+&lt;li>Rego&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Compiled to WebAssembly&lt;/li>
+&lt;li>Distributed using container registries&lt;/li>
+&lt;li>Signed and verified using Sigstore&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-idea">The Idea&lt;/h3>
+&lt;ul>
+&lt;li>Define admission rules using WebAssembly modules&lt;/li>
+&lt;li>Extend the API server to make use of WebAssembly-based rules&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-do-we-gain">What do we gain?&lt;/h2>
+&lt;h3 id="remove-uncertainty">Remove Uncertainty&lt;/h3>
+&lt;ul>
+&lt;li>Webhooks rely on the network&lt;/li>
+&lt;li>The network introduces many types of failures&lt;/li>
+&lt;li>The network increase attack surface&lt;/li>
+&lt;/ul>
+&lt;h3 id="limit-resource-usage">Limit Resource Usage&lt;/h3>
+&lt;ul>
+&lt;li>A set of Kubernetes Cusom Resource Definitions&lt;/li>
+&lt;li>&lt;del>The Webhook server&lt;/del>&lt;/li>
+&lt;li>&lt;del>The Controller that reconciles the Custom Resources&lt;/del>&lt;/li>
+&lt;/ul>
+&lt;p>→ Great for Edge environments!&lt;/p></description></item><item><title>The Future Of Reproducible Research - Powered by Kubeflow</title><link>https://minuk.dev/wiki/the-future-of-reproducible-research-powered-by-kubeflow/</link><pubDate>Sat, 06 Aug 2022 00:54:31 +0900</pubDate><guid>https://minuk.dev/wiki/the-future-of-reproducible-research-powered-by-kubeflow/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/JiqY5lWbFVE">출처&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;h3 id="articles-about-why-reproducible-research-is-important">Articles About Why Reproducible Research is Important&lt;/h3>
+&lt;h3 id="the-replication-crisis-what-is-it">The Replication Crisis: What Is It?&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphrase:
+&lt;ul>
+&lt;li>Many scientific studies are difficult or impossible to reproduce.&lt;/li>
+&lt;li>Most prevalent in psychology and medicine, but also serious in other natural and social sciences.&lt;/li>
+&lt;li>Term coined in eary 2010s, gave rise to meta-science discipline.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis--causes">The Replication Crisis : Causes&lt;/h3>
+&lt;ul>
+&lt;li>Wikipiedia Article Paraphrase:
+&lt;ul>
+&lt;li>C ommodification of Science&lt;/li>
+&lt;li>Publish or Perish Culture in Academia&lt;/li>
+&lt;li>Fraud and otherwise “Questionable” Research Practices&lt;/li>
+&lt;li>Statistical Issues&lt;/li>
+&lt;li>Base Rate Hypotheses Accuracy&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis-consequences">The Replication Crisis: Consequences&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphrase:
+&lt;ul>
+&lt;li>Political repercussions&lt;/li>
+&lt;li>Public awareness and perceptions&lt;/li>
+&lt;li>Response in Academia&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis-potential-remedies">The Replication Crisis: Potential Remedies&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphase:
+&lt;ul>
+&lt;li>Reforms in publishing&lt;/li>
+&lt;li>Statistical Reform&lt;/li>
+&lt;li>Replication Efforts&lt;/li>
+&lt;li>Changes to scientific approach&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="my-experience-trying-to-reproduce-research">My Experience Trying to Reproduce Research&lt;/h3>
+&lt;ul>
+&lt;li>Grad Student/ Academic Papers&lt;/li>
+&lt;li>Working on someone else’s old junk code&lt;/li>
+&lt;li>Working on my own old junk code&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-we-did">What we did&lt;/h2>
+&lt;h3 id="tower-of-babel-making-apache-spark-k8s-and-kubeflow-play-nice">Tower of Babel: Making Apache Spark, K8s, and Kubeflow Play Nice&lt;/h3>
+&lt;h3 id="10-minute-quick-overview-of-kf4covid">10 Minute Quick Overview of KF4COVID&lt;/h3>
+&lt;ul>
+&lt;li>Early days of pandemic - everyone was scared, no solutions were out of bounds.&lt;/li>
+&lt;li>Various ERs turned to CT scans and ultrasounds to detect ‘ground glass occlusions’ a hallmark of covid (technique has been used in ERs in the past for rapid pneumonia detection).&lt;/li>
+&lt;li>CT Scans deliver high dose of radition&lt;/li>
+&lt;li>Low Dose CT Scans deliver, low dose of radiation, but produce ‘noisy’ images.&lt;/li>
+&lt;li>We used K8s, Apache Spark, Apache Mahout &amp;amp; Kubeflow to denoise CT Scans&lt;/li>
+&lt;/ul>
+&lt;h3 id="rapid-testing-needed--desperately">Rapid Testing Needed -Desperately&lt;/h3>
+&lt;ul>
+&lt;li>Mental Time Machine - to March 2020.
+&lt;ul>
+&lt;li>No one understands Coronavirus - but hospitals are being overrune and people are dying.&lt;/li>
+&lt;li>Slow Tests&lt;/li>
+&lt;li>Rapid test “issues”&lt;/li>
+&lt;li>No answer was ‘out of bounds’&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-pipeline-overview">The Pipeline: Overview&lt;/h3>
+&lt;ul>
+&lt;li>S3 Buckets of images (can be easily swapped out to other image repo)&lt;/li>
+&lt;li>PyDiCOM to turn CT scan into numerical matrix, write matrix to disk&lt;/li>
+&lt;li>Load matrix in apache spark (~500 MB each) then wrap RDD into Mahout DRM&lt;/li>
+&lt;li>DS-SVD on Mahout DRM (why couldn’t do this in Numpy?)&lt;/li>
+&lt;li>DS-SVD results in two matrices- one of basis vectors, one of weights per image - to “de noise” you only use first X% of basis vectors. These get output and can be easily rastered using a laptop.&lt;/li>
+&lt;/ul>
+&lt;h2 id="call-to-action--how-you-can-do-the-same">Call to action / How you can do the same&lt;/h2>
+&lt;ul>
+&lt;li>Assume they won’t be using your laptop.&lt;/li>
+&lt;/ul>
+&lt;h3 id="use-kubeflow">Use Kubeflow&lt;/h3>
+&lt;p>Assuming someone will want to replicate your work, and that they won’t have access to your machine, Kubeflow provides a nice framework for reproducing results.&lt;/p></description></item><item><title>This is The Way- A Crash Course on the Intricacies of Managing CPUs in K8s</title><link>https://minuk.dev/wiki/this-is-the-way-a-crash-course-on-intricacies-of-managing-cpus/</link><pubDate>Fri, 05 Aug 2022 02:07:46 +0900</pubDate><guid>https://minuk.dev/wiki/this-is-the-way-a-crash-course-on-intricacies-of-managing-cpus/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/IFEJD1YOpXo">원본 링크&lt;/a>&lt;/li>
+&lt;li>Scope : We will cover CPU Management requirements Only, but also reference other projects.&lt;/li>
+&lt;/ul>
+&lt;h2 id="simple-systems">Simple Systems&lt;/h2>
+&lt;ul>
+&lt;li>Nodes
+&lt;ul>
+&lt;li>Single NIC&lt;/li>
+&lt;li>Single Socket CPU&lt;/li>
+&lt;li>Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Kubelet was designed for simple at first&lt;/li>
+&lt;li>Early Kubelet&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># &amp;lt; Kubernetes v1.8 - before 2017&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">apiVersion&lt;/span>: &lt;span style="color:#ae81ff">v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">kind&lt;/span>: &lt;span style="color:#ae81ff">Pod&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">metadata&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">frontend&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">spec&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">containers&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">app&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">my-company.example/myapp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">resources&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">requests&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">memory&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;64Mi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cpu&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;250m&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">limits&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">memory&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;128Mi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cpu&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;500m&amp;#34;&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>Resources supported:
+&lt;ul>
+&lt;li>CPU&lt;/li>
+&lt;li>Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Reuqests: Ask for resources for your container&lt;/li>
+&lt;li>Limits: limit the amount of resources consumed by the container&lt;/li>
+&lt;li>Resource Mangement in Kubelet
+&lt;ul>
+&lt;li>Kubernetes v1.8-v.11 (2017-2018)&lt;/li>
+&lt;li>Pre-allocated hugepage support as native resources (Alpha support v1.8, graduated to Beta in v.11)&lt;/li>
+&lt;li>CPU Manager support to enable container level CPU affinity support (Alpha support v1.8, graduated to Beta in v.11)&lt;/li>
+&lt;li>Device Plugin Support to enable a consistent and portable solution for users to consume hardware devices across k8s clusters(Alpha support in v1.8, graduated to Beta in v.10)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="high-performance-uses-cases">High Performance Uses Cases&lt;/h2>
+&lt;ul>
+&lt;li>Performance Sensitive Workloads&lt;/li>
+&lt;li>High Performance, AI/ML Clusters
+&lt;ul>
+&lt;li>Multiple CPU Socket&lt;/li>
+&lt;li>Multiple NIC&lt;/li>
+&lt;li>Multiple Numa&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager---pinned-cores">CPU Manager - Pinned Cores&lt;/h3>
+&lt;ul>
+&lt;li>Cpu Manager with static policy allocates CPUs exclusively for a container if
+&lt;ul>
+&lt;li>pod QoS is Guaranteed&lt;/li>
+&lt;li>has a positive integer CPU request&lt;/li>
+&lt;li>does not change CPU assignments for exclusively pinned guaranteed containers after the main container process start&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager-policies">CPU Manager Policies&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>--cpu-manager-policy&lt;/code> kubelet flag used to specify the policy&lt;/li>
+&lt;li>None:
+&lt;ul>
+&lt;li>Default&lt;/li>
+&lt;li>Provides no affinity beyond what the OS scheduler does automatically&lt;/li>
+&lt;li>Can handle partial CPUs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Static:
+&lt;ul>
+&lt;li>allows containers access to exclusive CPUs on the node&lt;/li>
+&lt;li>does not change CPU assignments for exclusively pinned guaranteed containers after the main container process starts&lt;/li>
+&lt;li>Only uses whole CPUs, so increases perceived CPU utilization&lt;/li>
+&lt;li>Only by container, not by pod&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager-policy-options">CPU Manager Policy Options&lt;/h3>
+&lt;ul>
+&lt;li>Introduced in v1.22, Beta in v1.23&lt;/li>
+&lt;li>&lt;code>--cpu-manager-policy-options&lt;/code> : kubelet flag used to specify the policy option&lt;/li>
+&lt;li>full-pcpus-only:
+&lt;ul>
+&lt;li>Beta option, visible by default&lt;/li>
+&lt;li>the static policy will always allocate full physical cores, so guarantee same NUMA zone.&lt;/li>
+&lt;li>Fails with SMTAlignmentError for partial core allocation&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>distribute-cpus-acorss-numa:
+&lt;ul>
+&lt;li>alpha, hidden by default&lt;/li>
+&lt;li>the static policy will evenly distribute CPUs across NUMA nodes&lt;/li>
+&lt;li>Still per container&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="numa-zones-not-for-the-weak-of-heart">NUMA Zones: Not for the weak of heart&lt;/h2>
+&lt;ul>
+&lt;li>If CPU and Memory are located in different NUMA zones, …&lt;/li>
+&lt;/ul>
+&lt;h3 id="along-comes-topology-management">Along Comes Topology Management&lt;/h3>
+&lt;ul>
+&lt;li>Kubernetes v1.8 (2019 onwards)&lt;/li>
+&lt;li>Topology Manger to coordinate resource assignment to avoid cross NUMA assignments (alpha support v1.16, graduated to beta in v1.18)&lt;/li>
+&lt;li>Memory Manager for guarnteed memory (and hugepages) allocation to pods (alpha support v1.21, graduated to beta in v1.22))&lt;/li>
+&lt;li>Known Issue: Scheduler is not NUMA aware and pod can fail with TopologyAffinityError if kubelet is unable to align all the resources based on the Topology Manager policy.&lt;/li>
+&lt;/ul>
+&lt;h3 id="going-with-the-topology-flow">Going with the Topology Flow&lt;/h3>
+&lt;p>kubelet - Admit()&lt;/p></description></item><item><title>Automated Progressive Delivery Using GitOps and Service Mesh</title><link>https://minuk.dev/wiki/automated-progressive-delivery-using-gitops-and-service-mesh/</link><pubDate>Thu, 04 Aug 2022 01:56:34 +0900</pubDate><guid>https://minuk.dev/wiki/automated-progressive-delivery-using-gitops-and-service-mesh/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/5Ko-CnP2qhA">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="service-mesh">Service Mesh&lt;/h2>
+&lt;h3 id="k8s-at-scale-at-intuit">K8s at scale at Intuit&lt;/h3>
+&lt;h3 id="why-service-mesh-at-intuit">Why service mesh at Intuit?&lt;/h3>
+&lt;ul>
+&lt;li>Provides &amp;gt; 30% network latency imporvement per API call by reducing hops&lt;/li>
+&lt;li>East-West Communication Solution
+&lt;ul>
+&lt;li>Keep traffic in private network
+&lt;ul>
+&lt;li>Reduces cost&lt;/li>
+&lt;li>Removes redundant hops&lt;/li>
+&lt;li>Reduces Latency&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Automates certificate management
+&lt;ul>
+&lt;li>No need for last-mile check&lt;/li>
+&lt;li>increases developer productivity&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Provides Transactional visibility&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="istio-architecture-at-intuit">Istio architecture at Intuit&lt;/h3>
+&lt;h3 id="cross-cluster-service-discovery---with-service-mesh">Cross-cluster service discovery - With Service Mesh&lt;/h3>
+&lt;ul>
+&lt;li>Admiral&lt;/li>
+&lt;li>Called&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="개인-생각">개인 생각&lt;/h3>
+&lt;ul>
+&lt;li>Intuit 회사에서 계속해서 K8s 의 수요가 증가하고 있으며, 단순한 API Gateway 구조로는 더이상 감당하기 힘든 단계가 다가오고 있다. 서비스 끼리 서로를 호출하는 구조라던가, 보안적인 관점에서 한계를 보인다.&lt;/li>
+&lt;li>궁금점 : mTLS 라는 단어가 지속적으로 등작하고 있는데 왜 m 이 붙었을까? mTLS 규격이 어떻게 될까?&lt;/li>
+&lt;li>Istio architecture at Intuit 부분에서 L7 Proxy (Envoy) 를 통해서 Service 끼리 통신하고 있다는 것을 알 수 있다. 이는 layer 화를 하다보니 생기는 일인 것 같다.&lt;/li>
+&lt;li>cluster 내부 를 넘어서 cluster 간에서도 serviceMesh 를 통해서 통신할 수 있다고 말하는게 인상 깊었다. &lt;a href="https://github.com/istio-ecosystem/admiral">Admiral&lt;/a> 이라는 라이브러리&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="progressive-delivery">Progressive Delivery&lt;/h2>
+&lt;h3 id="progressive-delivery-at-intuit">Progressive Delivery at Intuit&lt;/h3>
+&lt;ul>
+&lt;li>Increase Operational Excellence
+&lt;ul>
+&lt;li>Minimize impact from change incidents&lt;/li>
+&lt;li>Reduce MTTR if and incident occur&lt;/li>
+&lt;li>Increase automation &amp;amp; reliability of deployment process&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Use Argo Rollouts&lt;/li>
+&lt;li>Day 0 experience for new services&lt;/li>
+&lt;li>Opt-in migration for existing services&lt;/li>
+&lt;li>All configuration and templates stored in git&lt;/li>
+&lt;li>Rollouts deployed and managed by Argo Team in “waves”&lt;/li>
+&lt;/ul>
+&lt;h2 id="mesh--progressive-delivery-challenges--learnings">Mesh + Progressive Delivery Challenges &amp;amp; Learnings&lt;/h2>
+&lt;h3 id="issues-uncovered">Issues uncovered&lt;/h3>
+&lt;ul>
+&lt;li>Using multiple traffic providers&lt;/li>
+&lt;li>Incompatible mesh end point generation&lt;/li>
+&lt;/ul>
+&lt;h3 id="onboarding-2000-services-x-2">Onboarding 2000 services x 2&lt;/h3>
+&lt;ul>
+&lt;li>Make migration easy and fun&lt;/li>
+&lt;li>Stop the bleed&lt;/li>
+&lt;/ul>
+&lt;h3 id="configuring-analysis-templates">Configuring analysis templates&lt;/h3>
+&lt;ul>
+&lt;li>Low Service Commonality
+&lt;ul>
+&lt;li>
+&lt;p>Wide variety of services types&lt;/p></description></item><item><title>containerd Project Update and Deep Dive</title><link>https://minuk.dev/wiki/containerd-proejct-update-and-deep-dive/</link><pubDate>Thu, 04 Aug 2022 00:23:24 +0900</pubDate><guid>https://minuk.dev/wiki/containerd-proejct-update-and-deep-dive/</guid><description>kubecon 2022 eu</description></item><item><title>gRPC For Microservices Service-mesh and Observability</title><link>https://minuk.dev/wiki/grpc-for-microservices/</link><pubDate>Tue, 02 Aug 2022 23:00:08 +0900</pubDate><guid>https://minuk.dev/wiki/grpc-for-microservices/</guid><description>kubecon north america 2022 발표 중 자료 정리</description></item><item><title>kubecon</title><link>https://minuk.dev/wiki/kubecon/</link><pubDate>Tue, 02 Aug 2022 22:58:55 +0900</pubDate><guid>https://minuk.dev/wiki/kubecon/</guid><description>kubecon 동영상 정리</description></item></channel></rss>

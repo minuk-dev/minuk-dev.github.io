@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Image Processing on</title><link>https://minuk.dev/tags/image-processing/</link><description>Recent content in Image Processing on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:23:41 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/image-processing/index.xml" rel="self" type="application/rss+xml"/><item><title>lectures/image processing</title><link>https://minuk.dev/wiki/lectures/image-processing/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/image-processing/</guid><description>&lt;p>PCA (Principal Components Analysis)&lt;/p>
+&lt;h1 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors&lt;/h1>
+&lt;ul>
+&lt;li>The prefix eigen- is adopted from the German word eigen for &amp;ldquo;proper&amp;rdquo;, &amp;ldquo;characteristic&amp;rdquo;&lt;/li>
+&lt;li>Eigenvalues are a special set of scalars associated with a linear system of equations that are sometimes also known as characteristic roots, characteristic values&lt;/li>
+&lt;li>Each eigenvalue is paired with a corresponding so-called eigen vector.&lt;/li>
+&lt;li>Eigenvectors are a special set of vectors associated with a linear system of equations that are sometimes also known as characteristic vectors&lt;/li>
+&lt;li>The Lanczos algorithm is an algorithm for computing the eigenvalues and eigenvectors&lt;/li>
+&lt;li>Eigenvalues and eigenvectors feature prominently in the analysis of transformations&lt;/li>
+&lt;/ul>
+&lt;h2 id="covariance-matrix">Covariance matrix&lt;/h2>
+&lt;ul>
+&lt;li>The covariance matrix consists of the variances of the variables along the main diagonal and the covariance between each pair of variables in the other matrix positions&lt;/li>
+&lt;/ul>
+&lt;h2 id="face-recognition">Face Recognition&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>obtain face images I_1, &amp;hellip; , I_m (training faces) (very important : the face images must be centered and of the same size)&lt;/p></description></item></channel></rss>

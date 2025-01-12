@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Paper on</title><link>https://minuk.dev/tags/paper/</link><description>Recent content in Paper on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Mar 2022 03:41:30 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/paper/index.xml" rel="self" type="application/rss+xml"/><item><title>F2FS- A New File System for Flash Storage</title><link>https://minuk.dev/wiki/f2fs-paper/</link><pubDate>Thu, 02 Jul 2020 22:31:19 +0900</pubDate><guid>https://minuk.dev/wiki/f2fs-paper/</guid><description>&lt;ul>
+&lt;li>Changman Lee, Dongho Sim, Joo-Young Hwang, and Sangyeun Cho, Samsung Electronics Co., Ltd.&lt;/li>
+&lt;li>USENIX Conference on File and Stoarage Technologies (FAST 15)&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="1-introduction">1. Introduction&lt;/h1>
+&lt;h2 id="a-flash-memory의-한계점">a. Flash Memory의 한계점&lt;/h2>
+&lt;ul>
+&lt;li>쓰기 작업 전 지우기 (erase-before-write requirement)&lt;/li>
+&lt;li>순차적으로 지워진 Blocks에 쓰기 (need to write on erased blocks sequentially)&lt;/li>
+&lt;li>제한된 쓰고 지우기 cycles (limited write cycles per erase block)&lt;/li>
+&lt;/ul>
+&lt;h2 id="b-flash-memory-사용의-증가">b. Flash Memory 사용의 증가&lt;/h2>
+&lt;ul>
+&lt;li>이때까지는 HDD를 계속해서 저장 매체로 썻으나 점점 더 많은 저장 매체가 필요하고 빠른걸 원하게 되었다.&lt;/li>
+&lt;li>저장 매체의 필요성 증가에 의해 다수의 Flash chips를 controller에 연결해서 사용하는 해결책이 일반적이 되었다. (Flash Chip의 가격 하락으로)&lt;/li>
+&lt;/ul>
+&lt;h2 id="c-flash-memory에-대한-이해-부족으로-인한-단점">c. Flash Memory에 대한 이해 부족으로 인한 단점&lt;/h2>
+&lt;ul>
+&lt;li>위의 a의 문제점에 의해 HDD처럼 계속해서 I/O를 하면 Flash Memory의 특징을 잘 못살리게 된다.&lt;/li>
+&lt;li>오히려 I/O latency 가 증가하고 수명을 빠르게 깍게 된다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="d-기존의-연구">d. 기존의 연구&lt;/h2>
+&lt;ul>
+&lt;li>위와 같은 점들을 고려하여 선행연구에서 LFS(Log-Structured File System)의 접근 방법과 Copy-On-Write 전략으로 위의 한계점을 극복할수 있다.&lt;/li>
+&lt;li>예시로 BTRFS(B+-Tree File System)과 NILFS2(이건 먼지 모르겠네요 ㅠ)가 NAND Flash SSD에서 잘 동작한다. (cf. NAND 기반과 NOR 기반으로 크게 나뉜다.)&lt;/li>
+&lt;li>하지만 기존 선행 연구는 Flash Memory 의 특징을 전부 고려하지 못했고 성능과 수명 측면에서 좋지 않았다.&lt;/li>
+&lt;li>따라서 새로운 F2FS를 제시한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="e-f2fs의-특징">e. F2FS의 특징&lt;/h2>
+&lt;ul>
+&lt;li>Flash-friendly on-disk layout : Segment, section and zone
+&lt;ul>
+&lt;li>Segment, section 그리고 zone이라는 개념을 통해 Flash에 친화적인 layout을 사용한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Cost-effective index structure : NAT (Node address table)
+&lt;ul>
+&lt;li>비용 측면(시간과 공간 둘다)에서 효율적인 index 구조를 필요로 한다.&lt;/li>
+&lt;li>SSD나 Flash Memory는 LBA(Logical Base Address)가 존재하지 않지만, 이를 호환성 측면에서 제공해야하고 (FTL-Flash Translation Layer) 이를 효과적으로 제시한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Multi-head Logging
+&lt;ul>
+&lt;li>기존 연구의 LFS에서 착안하여 Logging Strucutre를 사용하지만 Multi-head를 사용하여 병렬처리를 하고, Hot/Cold 를 분류한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Adaptive Logging
+&lt;ul>
+&lt;li>dirty segment를 Cleaning 하지 않고 새로운 데이터를 기록한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;code>fsync&lt;/code> acceleration with roll-forward recovery
+&lt;ul>
+&lt;li>예시 상황 : sqlite3&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h1 id="2-design-and-implementation-of-f2fs">2. Design and Implementation of F2FS&lt;/h1>
+&lt;p>&lt;img src="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/001cab83-197f-42b8-892b-0541b17acb77/layout.jpg" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/001cab83-197f-42b8-892b-0541b17acb77/layout.jpg">&lt;/p></description></item><item><title>Endurable Transient Inconsistency in Byte Addressable Persistent B+-Tree</title><link>https://minuk.dev/wiki/endurable_transient_inconsistency_in_byte_addressable_persistent_b+-tree/</link><pubDate>Tue, 07 Apr 2020 20:15:43 +0900</pubDate><guid>https://minuk.dev/wiki/endurable_transient_inconsistency_in_byte_addressable_persistent_b+-tree/</guid><description>&lt;ul>
+&lt;li>논문을 고른 이유 : 2018, 2019, 2020 년도 FAST 학회의 모든 논문을 읽고 전역을 하는 게 목표인데 2018, 2019년도 FAST에 동일한 한국인이 실려서 관심이 가서 읽어보게 됨.&lt;/li>
+&lt;/ul>
+&lt;h1 id="abstract">Abstract&lt;/h1>
+&lt;ul>
+&lt;li>
+&lt;p>Persistent Memory(이하 PM)의 byte 주소 기반 접근의 등장으로 데이터 전송 단위가 page→cache line이 됨.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>쓰기 실패 원자성(Failure-Atomic Write Operation)는 8Bytes 씩 보장되지 cache line단위로는 보장되지 않는다.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>B+-Tree는 Block 기반 데이터 구조이고, 재 디자인이 부상하게 된다.&lt;/p>
+&lt;p>→흠.. 갑자기 8Bytes 씩 쓰기와 cache line 이야기하다가 block 기반 이야기를 하는 이유는 block 기반에서는 dirty page를 통해서 내렸고, cache line 단위로 동기화를 해야하는 일이 없었다고 생각한다.&lt;/p></description></item></channel></rss>

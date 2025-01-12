@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pintos on</title><link>https://minuk.dev/tags/pintos/</link><description>Recent content in Pintos on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 14:54:37 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/pintos/index.xml" rel="self" type="application/rss+xml"/><item><title>Pintos</title><link>https://minuk.dev/wiki/pintos/</link><pubDate>Tue, 07 Apr 2020 20:20:28 +0900</pubDate><guid>https://minuk.dev/wiki/pintos/</guid><description>&lt;h2 id="설정하기-configuration">설정하기 Configuration&lt;/h2>
+&lt;h3 id="프로젝트-기본-다운로드">프로젝트 기본 다운로드&lt;/h3>
+&lt;ul>
+&lt;li>대부분 우분투에서 설정할테니, 다른사람들이 잘 설정해좋은거 다운 받자&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ git clone https://github.com/kumardeepakr3/PINTOS-Ubuntu.git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ cd PINTOS-Ubuntu
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ bash ./pintos_ubuntu.sh&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>여기서 9,10 작업은 필요가 없는 작업이니 다시 원복해주자&lt;/li>
+&lt;/ul>
+&lt;h3 id="vim-설정하기">vim 설정하기&lt;/h3>
+&lt;ul>
+&lt;li>나는 vim(정확히는 neovim)으로 코딩할꺼니 자동완성 같은걸 설정해주자&lt;/li>
+&lt;li>여기서는 [[coc]], [[tagbar]], [[ALE]], [[cscope]]를 사용해서 설정했다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="coc">coc&lt;/h4>
+&lt;ul>
+&lt;li>ccls 를 설치하고&lt;/li>
+&lt;li>CocLocalConfig를 명령어로 친뒤&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-json" data-lang="json">&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;languageserver&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;ccls&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;command&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;ccls&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;filetypes&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;c&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;cpp&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;objc&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;objcpp&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;rootPatterns&amp;#34;&lt;/span>: [
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;.ccls&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;compile_commands.json&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;.vim/&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;.git/&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;.hg/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ],
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;initializationOptions&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;cache&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;directory&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;/tmp/ccls&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;clang&amp;#34;&lt;/span>: {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;resourceDir&amp;#34;&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;.&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;#34;extraArgs&amp;#34;&lt;/span>: [&lt;span style="color:#e6db74">&amp;#34;-isystem./&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;-isystem./lib/kernel&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;-isystem./lib&amp;#34;&lt;/span>]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> 
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h4 id="tagbar-ale-설정">tagbar, ale 설정&lt;/h4>
+&lt;ul>
+&lt;li>local.vim(프로젝트 폴더에다가 두는 vimrc 설정, 자세한건 [[vim]] 참조)&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-vimrc" data-lang="vimrc">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>:&lt;span style="color:#a6e22e">ale_linters&lt;/span>= { &lt;span style="color:#e6db74">&amp;#39;c&amp;#39;&lt;/span> : [&lt;span style="color:#e6db74">&amp;#39;g++&amp;#39;&lt;/span>], &lt;span style="color:#e6db74">&amp;#39;cpp&amp;#39;&lt;/span> : [&lt;span style="color:#e6db74">&amp;#39;g++&amp;#39;&lt;/span>] }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>:&lt;span style="color:#a6e22e">ale_c_gcc_options&lt;/span>=&lt;span style="color:#e6db74">&amp;#34;-I. -I./lib/kernel -I./lib -Wall&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>:&lt;span style="color:#a6e22e">ale_cpp_gcc_options&lt;/span>=&lt;span style="color:#e6db74">&amp;#34;-I. -I./lib/kernel -I./lib -Wall&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">function&lt;/span>! &lt;span style="color:#a6e22e">LoadCscope&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">db&lt;/span> = &lt;span style="color:#a6e22e">findfile&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;cscope.out&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;.;&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (!&lt;span style="color:#a6e22e">empty&lt;/span>(&lt;span style="color:#a6e22e">db&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">path&lt;/span> = &lt;span style="color:#a6e22e">strpart&lt;/span>(&lt;span style="color:#a6e22e">db&lt;/span>, &lt;span style="color:#ae81ff">0&lt;/span>, &lt;span style="color:#a6e22e">match&lt;/span>(&lt;span style="color:#a6e22e">db&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;/cscope.out$&amp;#34;&lt;/span>))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">set&lt;/span> &lt;span style="color:#a6e22e">nocscopeverbose&lt;/span> &lt;span style="color:#75715e">&amp;#34; suppress &amp;#39;duplicate connection&amp;#39; error&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">exe&lt;/span> &lt;span style="color:#e6db74">&amp;#34;cs add &amp;#34;&lt;/span> . &lt;span style="color:#a6e22e">db&lt;/span> . &lt;span style="color:#e6db74">&amp;#34; &amp;#34;&lt;/span> . &lt;span style="color:#a6e22e">path&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">set&lt;/span> &lt;span style="color:#a6e22e">cscopeverbose&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> &amp;#34; else add the database pointed to by environment variable&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">elseif&lt;/span> $&lt;span style="color:#a6e22e">CSCOPE_DB&lt;/span> != &lt;span style="color:#e6db74">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">cs&lt;/span> &lt;span style="color:#a6e22e">add&lt;/span> $&lt;span style="color:#a6e22e">CSCOPE_DB&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">endif&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">endfunction&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">au&lt;/span> &lt;span style="color:#a6e22e">BufEnter&lt;/span> /* &lt;span style="color:#a6e22e">call&lt;/span> &lt;span style="color:#a6e22e">LoadCscope&lt;/span>()&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h3 id="shutdown-버그-수정">shutdown 버그 수정&lt;/h3>
+&lt;ul>
+&lt;li>pintos를 키면 계속 죽는다.&lt;/li>
+&lt;li>&lt;code>src/devices/shutdown.c&lt;/code> 에서&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="%20%20%20/*%20This%20is%20a%20special%20power-off%20sequence%20supported%20by%20Bochs%20and%0a%20%20%20%20%20%20QEMU,%20but%20not%20by%20physical%20hardware.%20*/%0a%20%20%20for%20%28p%20=%20s;%20*p%20!=%20%27%5c0%27;%20p&amp;#43;&amp;#43;%29%0a%20%20%20%20%20outb%20%280x8900,%20*p%29;%0a%0a&amp;#43;%20%20outw%20%280x604,%200x0%20%7c%200x2000%29;%20/*%20Fix%20shutdown%20*/%0a&amp;#43;%0a%20%20%20/*%20This%20will%20power%20off%20a%20VMware%20VM%20if%20%22gui.exitOnCLIHLT%20=%20TRUE%22%0a%20%20%20%20%20%20is%20set%20in%20its%20configuration%20file.%20%20%28The%20%22pintos%22%20script%20does%0a%20%20%20%20%20%20that%20automatically.%29%20%20*/%0a%20%20%20asm%20volatile%20%28%22cli;%20hlt%22%20:%20:%20:%20%22memory%22%29;%0a%0a%20%20%20/*%20None%20of%20those%20worked.%20*/">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* This is a special power-off sequence supported by Bochs and
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> QEMU, but not by physical hardware. */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (p &lt;span style="color:#f92672">=&lt;/span> s; &lt;span style="color:#f92672">*&lt;/span>p &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#e6db74">&amp;#39;\0&amp;#39;&lt;/span>; p&lt;span style="color:#f92672">++&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">outb&lt;/span> (&lt;span style="color:#ae81ff">0x8900&lt;/span>, &lt;span style="color:#f92672">*&lt;/span>p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">+&lt;/span> &lt;span style="color:#a6e22e">outw&lt;/span> (&lt;span style="color:#ae81ff">0x604&lt;/span>, &lt;span style="color:#ae81ff">0x0&lt;/span> &lt;span style="color:#f92672">|&lt;/span> &lt;span style="color:#ae81ff">0x2000&lt;/span>); &lt;span style="color:#75715e">/* Fix shutdown */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">+&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* This will power off a VMware VM if &amp;#34;gui.exitOnCLIHLT = TRUE&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> is set in its configuration file. (The &amp;#34;pintos&amp;#34; script does
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> that automatically.) */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">asm&lt;/span> &lt;span style="color:#66d9ef">volatile&lt;/span> (&lt;span style="color:#e6db74">&amp;#34;cli; hlt&amp;#34;&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#e6db74">&amp;#34;memory&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* None of those worked. */&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;p>로 추가해준다.&lt;/p></description></item></channel></rss>

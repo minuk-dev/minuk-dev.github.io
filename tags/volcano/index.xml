@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Volcano on</title><link>https://minuk.dev/tags/volcano/</link><description>Recent content in Volcano on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 31 Aug 2022 00:24:46 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/volcano/index.xml" rel="self" type="application/rss+xml"/><item><title>Volcano - Intro &amp; Deep Dive</title><link>https://minuk.dev/wiki/volcano-intro-and-deep-dive/</link><pubDate>Tue, 30 Aug 2022 23:20:47 +0900</pubDate><guid>https://minuk.dev/wiki/volcano-intro-and-deep-dive/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/a76CajRhsX0">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h1 id="intro--deep-dive---volcano-a-cloud-native-batch-system">Intro &amp;amp; Deep dive - Volcano: A Cloud Native Batch System&lt;/h1>
+&lt;h2 id="cloud-native-for-intelligent-workload">Cloud Native for Intelligent Workload&lt;/h2>
+&lt;ul>
+&lt;li>More and more organization are leveraging cloud native technology to avoid fragmental ecosystem, isolated stack, low resource utilization&lt;/li>
+&lt;/ul>
+&lt;h2 id="batch-on-k8s-challenges">Batch on K8s: Challenges&lt;/h2>
+&lt;ul>
+&lt;li>Job meanagement:
+&lt;ul>
+&lt;li>Pod level scheduling, no awareness of upper-level applications.&lt;/li>
+&lt;li>Lack of fine-grained lifecycle management.&lt;/li>
+&lt;li>Lack of task dependencies, Job dependencies.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Scheduling:
+&lt;ul>
+&lt;li>Lack of job based scheduling, e.g. job ordering, job priority, job preemption, job fair-share, job reservation.&lt;/li>
+&lt;li>Not enough advanced scheduling algortihms, E.g. CPU topology, task-topology, IO-Awareness, backfill.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Multi-framework support:
+&lt;ul>
+&lt;li>Insufficient suport for mainstream computing frameowrks like MPI, Tensorflow, Mxnet, Pytorch.&lt;/li>
+&lt;li>Complex deployment and O&amp;amp;M because each frameowrk corresponding to a different operator.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Resource planning, sharing, heterogeneous computing:
+&lt;ul>
+&lt;li>Lack of support to resource sharing mechanism between jobs, queues, namespaces.&lt;/li>
+&lt;li>Lack of Deeper support on heterogenous resources.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Performance:
+&lt;ul>
+&lt;li>Not enough throughput, roundtrip for batch workload.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="volcano-overview">Volcano Overview&lt;/h2>
+&lt;ul>
+&lt;li>Created at March 2019; Sandbox at April 2020; Incubator at April 2022&lt;/li>
+&lt;li>2.3k star, 360+ contributors, latest version v1.5.1&lt;/li>
+&lt;li>50+ enterprises adopt Volcano in production environments.&lt;/li>
+&lt;/ul>
+&lt;h3 id="key-concept">Key Concept&lt;/h3>
+&lt;ul>
+&lt;li>Job:
+&lt;ul>
+&lt;li>Multiple Pod Template&lt;/li>
+&lt;li>Lifecycle management/Erro handling&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>User/namespace/resource quota:
+&lt;ul>
+&lt;li>namespace is regarded as user&lt;/li>
+&lt;li>resource quota is regarded as the upper limit resource that users in the namespace are able to use at most. Like the QPS in Kube-apiserver.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Resource share:
+&lt;ul>
+&lt;li>Use Queue for resource sharing&lt;/li>
+&lt;li>Share resources between different &amp;ldquo;tenants&amp;rdquo; or resource pools.&lt;/li>
+&lt;li>Support different scheduling policies or algorithms for different &amp;ldquo;tenants&amp;rdquo; or resource pools.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="job-mangement">Job mangement&lt;/h3>
+&lt;ul>
+&lt;li>Volcano Job:
+&lt;ul>
+&lt;li>Unified Job interface for most of batch job like mpi, pytorch, tensorflow, mxnet, etc.&lt;/li>
+&lt;li>Fine-grained Job Lifecycle mangement&lt;/li>
+&lt;li>Extendable job plugin:
+&lt;ul>
+&lt;li>env, svc, ssh, tensorflow&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Coordinate with Scheduler&lt;/li>
+&lt;li>Job dependency&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="resource-mangement--queue">Resource mangement- Queue&lt;/h3>
+&lt;ul>
+&lt;li>Queue is cluster scoped, decoupled with user/namespace&lt;/li>
+&lt;li>Queue is used to share resources between &amp;ldquo;multi-tenants&amp;rdquo; or resource pool.&lt;/li>
+&lt;li>Configure policy for each queue, e.g. FIFO, fair share, priority, SLA.&lt;/li>
+&lt;/ul>
+&lt;h3 id="dynamic-resource-sharing-between-queues">Dynamic resource sharing between queues&lt;/h3>
+&lt;ul>
+&lt;li>Queue Guarantee/Capacity&lt;/li>
+&lt;li>Share resource between Queues proportionally by weight&lt;/li>
+&lt;/ul>
+&lt;h4 id="개인-생각">개인 생각&lt;/h4>
+&lt;ul>
+&lt;li>?? 왜 Queue 들끼리 균등하게 분할할 생각이 아니라 Queue 끼리 자원을 서로 대여하는 구조인거지??&lt;/li>
+&lt;li>Queue 끼리 우선순위를 조정하는 Policy 도 있겠지?? 일단 Queue 내부 Policy 는 있는거 같은데 Queue 간 제어하는 로직이 확실치 않네&lt;/li>
+&lt;/ul>
+&lt;h3 id="fair-share-within-queue">Fair share within Queue&lt;/h3>
+&lt;ul>
+&lt;li>Sharing resource between jobs&lt;/li>
+&lt;li>Sharing resource between namespaces&lt;/li>
+&lt;li>Per-Queue policy (FIFO, Priority, Fair share, &amp;hellip;)&lt;/li>
+&lt;/ul>
+&lt;h4 id="case--hierarchical-queue">Case : hierarchical queue&lt;/h4>
+&lt;ul>
+&lt;li>How to share resource in a multi-level org more easily?&lt;/li>
+&lt;li>Problem: flat queue cannot meet complex resource share and isolation easily for big org.&lt;/li>
+&lt;li>Solution:
+&lt;ul>
+&lt;li>Multiple level queue constructs a tree which is mapped to the org.&lt;/li>
+&lt;li>Each level queue has min, max, weight. Use max to isolate resource, use queue weight to balance resource betweeen queues.&lt;/li>
+&lt;li>Share resources between queues and reclaim by weight&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Benefit:
+&lt;ul>
+&lt;li>Flexible resource mangement, easy to map the organization&lt;/li>
+&lt;li>fine-grained control resource share and isolation for a big multi-tenants organization&lt;/li>
+&lt;li>The queue min capacity ensures guaranteed resource, the proportion by weight offers flexible sharing&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="scenario-elastic-scheduling">Scenario: Elastic scheduling&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>What is elastic job&lt;/p></description></item></channel></rss>

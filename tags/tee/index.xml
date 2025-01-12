@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tee on</title><link>https://minuk.dev/tags/tee/</link><description>Recent content in Tee on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:13:58 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/tee/index.xml" rel="self" type="application/rss+xml"/><item><title>tee (Linux Command)</title><link>https://minuk.dev/wiki/tee/</link><pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate><guid>https://minuk.dev/wiki/tee/</guid><description>&lt;h2 id="사용-용도">사용 용도&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>stdin&lt;/code>을 &lt;code>stdout&lt;/code> 과 파일로 모두 보내고 싶을때&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Delayed_work on</title><link>https://minuk.dev/tags/delayed_work/</link><description>Recent content in Delayed_work on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 21 Jun 2020 19:47:46 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/delayed_work/index.xml" rel="self" type="application/rss+xml"/><item><title>delayed work</title><link>https://minuk.dev/wiki/delayed_work/</link><pubDate>Sun, 21 Jun 2020 19:42:23 +0900</pubDate><guid>https://minuk.dev/wiki/delayed_work/</guid><description>&lt;h2 id="참조-사이트">참조 사이트&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://egloos.zum.com/rousalome/v/9990982">http://egloos.zum.com/rousalome/v/9990982&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="delayed-work">delayed work&lt;/h2>
+&lt;ul>
+&lt;li>일정 시간 뒤에 지연시켜서 워크를 실행하는 방법&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용방법">사용방법&lt;/h2>
+&lt;ul>
+&lt;li>출처 : &lt;a href="http://egloos.zum.com/rousalome/v/9982311">http://egloos.zum.com/rousalome/v/9982311&lt;/a>&lt;/li>
+&lt;li>&lt;code>INIT_DELAYED_WORKWORK()&lt;/code>&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="INIT_DELAYED_WORK%28&amp;amp;work,%20handler%29;%0a%0aqueue_delayed_work%28workqueue,%20&amp;amp;work,%20delayed_time%29;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">INIT_DELAYED_WORK&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>work, handler);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue_delayed_work&lt;/span>(workqueue, &lt;span style="color:#f92672">&amp;amp;&lt;/span>work, delayed_time);&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="같이보기-좋은-자료">같이보기 좋은 자료&lt;/h2>
+&lt;ul>
+&lt;li>[[workqueue]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mediator on</title><link>https://minuk.dev/tags/mediator/</link><description>Recent content in Mediator on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Sep 2020 23:25:04 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/mediator/index.xml" rel="self" type="application/rss+xml"/><item><title>Modern C++ Design Pattern/Chatper 17. 매개자</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-17--%EB%A7%A4%EA%B0%9C%EC%9E%90/</link><pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-17--%EB%A7%A4%EA%B0%9C%EC%9E%90/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>서로 다른 컴포넌트 간에 포인터나 직접적인 참조를 통한 커뮤니케이션이 필요하다&lt;/li>
+&lt;li>일부 경우 상대방 객체의 존재를 알아야하는점, 객체의 생성/소멸 시점에대한 관리 때문에 포인터나 참조로 접근하는게 불안정할 수 있다.&lt;/li>
+&lt;li>이를 위한 매커니즘&lt;/li>
+&lt;li>전역 정적 변수이거나 모든 컴포넌트에 그 참조가 노출되어야 한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="내용">내용&lt;/h2>
+&lt;ul>
+&lt;li>여기서는 &lt;code>Boost.Signals2&lt;/code> 라이브러리를 사용해서 구현한다.&lt;/li>
+&lt;li>잘 모르겠다. 일단 요약부분만 적고 나중에 필요하면 찾아보자&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>매개자 디자인 패턴은 시스탬 내 컴포넌트 모두가 참조할 수 있는 어떤 중간자를 컴포넌트 간에 서로 직접적으로 참조하지 않더라도 커뮤니케이션을 할수 있게 한다는 것을 기본아이디어로 한다.&lt;/li>
+&lt;li>가장 단순한 구현 형태는 맴버 변수로 리스트를 두고 그 리스트를 검사하여 필요한 항목만 선택적으로 처리하는 함수를 만드는 것이다.&lt;/li>
+&lt;/ul></description></item></channel></rss>

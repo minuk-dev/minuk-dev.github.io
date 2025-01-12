@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cli on</title><link>https://minuk.dev/tags/cli/</link><description>Recent content in Cli on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 03 Dec 2021 04:17:30 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>glob</title><link>https://minuk.dev/wiki/glob/</link><pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate><guid>https://minuk.dev/wiki/glob/</guid><description>&lt;h2 id="glob">glob&lt;/h2>
+&lt;h3 id="wikipedia">Wikipedia&lt;/h3>
+&lt;p>In computer programming, glob patterns specify sets of filenames with wildcard characters. For example, the Unix Bash shell command mv *.txt textfiles/ moves (mv) all files with names ending in .txt from the current directory to the directory textfiles. Here, * is a wildcard standing for &amp;ldquo;any string of characters&amp;rdquo; and *.txt is a glob pattern. The other common wildcard is the question mark (?), which stands for one character. In addition to matching filenames, globs are also used widely for matching arbitrary strings (wildcard matching). In this capacity a common interface is fnmatch.&lt;/p></description></item><item><title>tee (Linux Command)</title><link>https://minuk.dev/wiki/tee/</link><pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate><guid>https://minuk.dev/wiki/tee/</guid><description>&lt;h2 id="사용-용도">사용 용도&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>stdin&lt;/code>을 &lt;code>stdout&lt;/code> 과 파일로 모두 보내고 싶을때&lt;/li>
+&lt;/ul></description></item><item><title>rm (Linux Command)</title><link>https://minuk.dev/wiki/rm/</link><pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate><guid>https://minuk.dev/wiki/rm/</guid><description>&lt;h2 id="자주-사용하는-거-모음">자주 사용하는 거 모음&lt;/h2>
+&lt;h3 id="특정-파일-제외하고-지우기">특정 파일 제외하고 지우기&lt;/h3>
+&lt;ul>
+&lt;li>단일&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="$%20rm%20-v%20!%28%22filename%22%29">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ rm -v !&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>다중&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="$%20rm%20-v%20!%28%22filename1%22%20%7c%20%22filename2%22%29">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ rm -v !&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename1&amp;#34;&lt;/span> | &lt;span style="color:#e6db74">&amp;#34;filename2&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>만약 zsh을 쓰고 있다면&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="$%20setopt%20extendedglob%0a$%20rm%20%5e%28%22filename1%22%20%7c%20%22filename2%22%29">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-zsh" data-lang="zsh">&lt;span style="display:flex;">&lt;span>$ setopt extendedglob
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ rm ^&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename1&amp;#34;&lt;/span> | &lt;span style="color:#e6db74">&amp;#34;filename2&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>*(pattern-list)&lt;/code> : matches zero or more occurrences of the specified patterns&lt;/li>
+&lt;li>&lt;code>?(pattern-list)&lt;/code> : matches zero or one occurence of the specified patterns&lt;/li>
+&lt;li>&lt;code>+(pattern-list)&lt;/code> : matches one or more occurrences of the spcified patterns&lt;/li>
+&lt;li>&lt;code>@(pattern-list)&lt;/code> : matches one of the spcified patterns&lt;/li>
+&lt;li>&lt;code>!(pattern-list)&lt;/code> : matches anytthing except one of the given patterns&lt;/li>
+&lt;li>자세한건 [[glob]] 참고&lt;/li>
+&lt;/ul></description></item><item><title>linux user command</title><link>https://minuk.dev/wiki/user/</link><pubDate>Tue, 07 Apr 2020 20:35:41 +0900</pubDate><guid>https://minuk.dev/wiki/user/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>check username&lt;/p>
+&lt;p>cat /etc/passwd | grep {username}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>create user &amp;amp; select default shell&lt;/p>
+&lt;p>useradd {username} -m -s /bin/bash&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>password&lt;/p>
+&lt;p>echo {password} | passwd &amp;ndash;stdin {username}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>home directory&lt;/p>
+&lt;p>mkhomedir_helper {username}&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Brightness (화면 밝기 조절) command</title><link>https://minuk.dev/wiki/brightness/</link><pubDate>Tue, 07 Apr 2020 20:35:31 +0900</pubDate><guid>https://minuk.dev/wiki/brightness/</guid><description>&lt;h1 id="echo-5000--sudo-tee-sysclassbacklightintel_backlightbrightness">&lt;code>echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness&lt;/code>&lt;/h1></description></item><item><title>Wifi commands</title><link>https://minuk.dev/wiki/wifi-command-line/</link><pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate><guid>https://minuk.dev/wiki/wifi-command-line/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>Wifi Adapter 찾기&lt;/p>
+&lt;p>iw dev&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter status&lt;/p>
+&lt;p>ip link show wlp2s0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter Start&lt;/p>
+&lt;p>ip link set wlp2s0 up&lt;/p>
+&lt;h1 id="when-operation-fail-because-of-rfkill">When Operation fail because of rfkill&lt;/h1>
+&lt;h1 id="rfkill-list">$rfkill list&lt;/h1>
+&lt;h1 id="sudo-rfkill-unblock-wifi">$sudo rfkill unblock wifi&lt;/h1>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Adapter interface check&lt;/p>
+&lt;p>iw wlp2s0 link&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Scan&lt;/p>
+&lt;p>iw wlp2s0 scan&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Public Wifi Connect&lt;/p>
+&lt;p>sudo iw dev wlp2s0 connect iptime&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>WPA/WPA2 Wifi Connect&lt;/p>
+&lt;p>$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.conf
+${password}&lt;/p>
+&lt;p>$ sudo wpa_supplicant -B -i wlp2s0 -c wpa_supplicant.conf&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>dhcp&lt;/p></description></item><item><title>Wifi commands</title><link>https://minuk.dev/wiki/wifi/</link><pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate><guid>https://minuk.dev/wiki/wifi/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>Wifi Adapter 찾기&lt;/p>
+&lt;p>iw dev&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter status&lt;/p>
+&lt;p>ip link show wlp2s0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter Start&lt;/p>
+&lt;p>ip link set wlp2s0 up&lt;/p>
+&lt;h1 id="when-operation-fail-because-of-rfkill">When Operation fail because of rfkill&lt;/h1>
+&lt;h1 id="rfkill-list">$rfkill list&lt;/h1>
+&lt;h1 id="sudo-rfkill-unblock-wifi">$sudo rfkill unblock wifi&lt;/h1>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Adapter interface check&lt;/p>
+&lt;p>iw wlp2s0 link&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Scan&lt;/p>
+&lt;p>iw wlp2s0 scan&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Public Wifi Connect&lt;/p>
+&lt;p>sudo iw dev wlp2s0 connect iptime&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>WPA/WPA2 Wifi Connect&lt;/p>
+&lt;p>$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.conf
+${password}&lt;/p>
+&lt;p>$ sudo wpa_supplicant -B -i wlp2s0 -c wpa_supplicant.conf&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>dhcp&lt;/p></description></item><item><title>Linux Command 모음</title><link>https://minuk.dev/wiki/linux-command/</link><pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate><guid>https://minuk.dev/wiki/linux-command/</guid><description>&lt;h1 id="command-line">command line&lt;/h1>
+&lt;ul>
+&lt;li>[[wifi]]&lt;/li>
+&lt;li>[[brightness]]&lt;/li>
+&lt;li>[[rm]]&lt;/li>
+&lt;li>[[tee]]&lt;/li>
+&lt;li>[[glob]]&lt;/li>
+&lt;li>[[free]]&lt;/li>
+&lt;li>[[cache]]&lt;/li>
+&lt;li>[[ffmpeg]]&lt;/li>
+&lt;/ul>
+&lt;h1 id="server">Server&lt;/h1>
+&lt;ul>
+&lt;li>[[simple-file]]&lt;/li>
+&lt;li>[[user]]&lt;/li>
+&lt;li>[[ftp]]&lt;/li>
+&lt;li>[[firewall]]&lt;/li>
+&lt;li>[[ssh server]]&lt;/li>
+&lt;li>[[ssh]]&lt;/li>
+&lt;li>[[mongo]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Containerd on</title><link>https://minuk.dev/tags/containerd/</link><description>Recent content in Containerd on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 19 Aug 2022 01:48:53 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/containerd/index.xml" rel="self" type="application/rss+xml"/><item><title>Running Containerd and k3s on MacOS</title><link>https://minuk.dev/wiki/running-containerd-and-k3s-on-macos/</link><pubDate>Fri, 19 Aug 2022 01:01:46 +0900</pubDate><guid>https://minuk.dev/wiki/running-containerd-and-k3s-on-macos/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/g5GCsbjkzRM">원본&lt;/a>, Kubecon EU 2022&lt;/li>
+&lt;li>&lt;a href="https://static.sched.com/hosted_files/kccnceu2022/5f/lima.pdf">Slide&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://events.linuxfoundation.org/archive/2022/kubecon-cloudnativecon-europe/program/schedule/">Slide 출처&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="why-run-containers-on-macos">Why run containers on macOS?&lt;/h2>
+&lt;ul>
+&lt;li>2022 is The Year of the Linux Desktop&lt;/li>
+&lt;li>But ordinary developers still need macOS (or Windows)&lt;/li>
+&lt;li>Almost solely for the dev &amp;amp; test environment&lt;/li>
+&lt;li>Not the best fit for running a production server&lt;/li>
+&lt;/ul>
+&lt;h2 id="existing-methods">Existing methods&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Docker Desktop for Mac has been the popular solution&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Supports automatic host filesystem sharing&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Supports automatic port forwarding&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>But proprietary&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Just install Docker and Kubernetes inside a Linux VM? Maybe via minikube?:&lt;/p></description></item><item><title>containerd Project Update and Deep Dive</title><link>https://minuk.dev/wiki/containerd-proejct-update-and-deep-dive/</link><pubDate>Thu, 04 Aug 2022 00:23:24 +0900</pubDate><guid>https://minuk.dev/wiki/containerd-proejct-update-and-deep-dive/</guid><description>kubecon 2022 eu</description></item></channel></rss>

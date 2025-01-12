@@ -1,0 +1,928 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Design Pattern on</title><link>https://minuk.dev/tags/design-pattern/</link><description>Recent content in Design Pattern on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 23 Oct 2022 20:24:38 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/design-pattern/index.xml" rel="self" type="application/rss+xml"/><item><title>lectures/design-pattern</title><link>https://minuk.dev/wiki/lectures/design-pattern/</link><pubDate>Sun, 23 Oct 2022 00:15:47 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/design-pattern/</guid><description>&lt;h2 id="5-factory">5. Factory&lt;/h2>
+&lt;h3 id="factory-patterns">Factory Patterns&lt;/h3>
+&lt;ul>
+&lt;li>Creational patterns:
+&lt;ul>
+&lt;li>Allow to creating new objects without explicitly using the new operator&lt;/li>
+&lt;li>We can instantiate different objects without modifying client code!&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Factory Method:
+&lt;ul>
+&lt;li>Uses inheritance to decide the object to be instantiated&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Abstract Factory:
+&lt;ul>
+&lt;li>Delegates object creation to a factory object&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="factory-method-pattern">Factory Method Pattern&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Purpose:&lt;/p>
+&lt;ul>
+&lt;li>Exposes a method for creating objects, allowing subclasses to constrol the actual creation process.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Use When:&lt;/p>
+&lt;ul>
+&lt;li>A class will not know what classes it will be required to create.&lt;/li>
+&lt;li>Subclasses may specify what objects should be created.&lt;/li>
+&lt;li>Parent classes wish to defer creation to their subclasses.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Defines an instance for creating an object, but lets subclasses decide which class to instantiate.&lt;/p></description></item><item><title>Modern C++ Design Pattern/Chatper 17. 매개자</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-17--%EB%A7%A4%EA%B0%9C%EC%9E%90/</link><pubDate>Mon, 27 Apr 2020 21:43:50 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-17--%EB%A7%A4%EA%B0%9C%EC%9E%90/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>서로 다른 컴포넌트 간에 포인터나 직접적인 참조를 통한 커뮤니케이션이 필요하다&lt;/li>
+&lt;li>일부 경우 상대방 객체의 존재를 알아야하는점, 객체의 생성/소멸 시점에대한 관리 때문에 포인터나 참조로 접근하는게 불안정할 수 있다.&lt;/li>
+&lt;li>이를 위한 매커니즘&lt;/li>
+&lt;li>전역 정적 변수이거나 모든 컴포넌트에 그 참조가 노출되어야 한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="내용">내용&lt;/h2>
+&lt;ul>
+&lt;li>여기서는 &lt;code>Boost.Signals2&lt;/code> 라이브러리를 사용해서 구현한다.&lt;/li>
+&lt;li>잘 모르겠다. 일단 요약부분만 적고 나중에 필요하면 찾아보자&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>매개자 디자인 패턴은 시스탬 내 컴포넌트 모두가 참조할 수 있는 어떤 중간자를 컴포넌트 간에 서로 직접적으로 참조하지 않더라도 커뮤니케이션을 할수 있게 한다는 것을 기본아이디어로 한다.&lt;/li>
+&lt;li>가장 단순한 구현 형태는 맴버 변수로 리스트를 두고 그 리스트를 검사하여 필요한 항목만 선택적으로 처리하는 함수를 만드는 것이다.&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chatper 16. 반복자</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-16--%EB%B0%98%EB%B3%B5%EC%9E%90/</link><pubDate>Tue, 21 Apr 2020 23:12:43 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-16--%EB%B0%98%EB%B3%B5%EC%9E%90/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>복잡한 데이터 구조를 다루어야 할 때 데이터 순회 문제를 해결하는 방법&lt;/li>
+&lt;/ul>
+&lt;h2 id="표준-라이브러리의-반복자">표준 라이브러리의 반복자&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>begin&lt;/code>&lt;/li>
+&lt;li>&lt;code>end&lt;/code>&lt;/li>
+&lt;li>&lt;code>rbegin&lt;/code>&lt;/li>
+&lt;li>&lt;code>rend&lt;/code>&lt;/li>
+&lt;li>&lt;code>cbegin&lt;/code>&lt;/li>
+&lt;li>&lt;code>cend&lt;/code>&lt;/li>
+&lt;li>&lt;code>crbegin&lt;/code>&lt;/li>
+&lt;li>&lt;code>crend&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h2 id="이진-트리의-탐색">이진 트리의 탐색&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> U&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">PreOrderIterator&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">BinaryTree&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Node&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> T value;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#f92672">*&lt;/span>left &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#f92672">*&lt;/span>right &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#f92672">*&lt;/span>parent &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BinaryTree&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> tree &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> &lt;span style="color:#a6e22e">Node&lt;/span>(&lt;span style="color:#66d9ef">const&lt;/span> T&lt;span style="color:#f92672">&amp;amp;&lt;/span> value)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> value(value) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node(&lt;span style="color:#66d9ef">const&lt;/span> T&lt;span style="color:#f92672">&amp;amp;&lt;/span> value, Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> left, Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> right)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> value(value), left(left), right(right)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">-&amp;gt;&lt;/span>left&lt;span style="color:#f92672">-&amp;gt;&lt;/span>tree &lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">-&amp;gt;&lt;/span>right&lt;span style="color:#f92672">-&amp;gt;&lt;/span>tree &lt;span style="color:#f92672">=&lt;/span> tree;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">-&amp;gt;&lt;/span>left&lt;span style="color:#f92672">-&amp;gt;&lt;/span>parent &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>&lt;span style="color:#f92672">-&amp;gt;&lt;/span>right&lt;span style="color:#f92672">-&amp;gt;&lt;/span>parent &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">this&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">set_tree&lt;/span>(BinaryTree&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> t)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> tree &lt;span style="color:#f92672">=&lt;/span> t;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (left) left&lt;span style="color:#f92672">-&amp;gt;&lt;/span>set_tree(t);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (right) right&lt;span style="color:#f92672">-&amp;gt;&lt;/span>set_tree(t);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">BinaryTree&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> root &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">nullptr&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> &lt;span style="color:#a6e22e">BinaryTree&lt;/span>(Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> root)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> root{ root }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> root&lt;span style="color:#f92672">-&amp;gt;&lt;/span>set_tree(&lt;span style="color:#66d9ef">this&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">typedef&lt;/span> PreOrderIterator&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;&lt;/span> iterator;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> iterator &lt;span style="color:#a6e22e">begin&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>T&lt;span style="color:#f92672">&amp;gt;*&lt;/span> n &lt;span style="color:#f92672">=&lt;/span> root;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (n)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (n&lt;span style="color:#f92672">-&amp;gt;&lt;/span>left)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> n &lt;span style="color:#f92672">=&lt;/span> n&lt;span style="color:#f92672">-&amp;gt;&lt;/span>left;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> iterator{ n }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> iterator &lt;span style="color:#a6e22e">end&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> iteraotr { &lt;span style="color:#66d9ef">nullptr&lt;/span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> U&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">PreOrderIterator&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>U&lt;span style="color:#f92672">&amp;gt;*&lt;/span> current;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> &lt;span style="color:#a6e22e">PreOrderIterator&lt;/span>(Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>U&lt;span style="color:#f92672">&amp;gt;*&lt;/span> current)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> current(current)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> &lt;span style="color:#66d9ef">operator&lt;/span>&lt;span style="color:#f92672">!=&lt;/span>(&lt;span style="color:#66d9ef">const&lt;/span> PreOrderIterator&lt;span style="color:#f92672">&amp;lt;&lt;/span>U&lt;span style="color:#f92672">&amp;gt;&amp;amp;&lt;/span> other)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> current &lt;span style="color:#f92672">!=&lt;/span> other.current;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>U&lt;span style="color:#f92672">&amp;gt;&amp;amp;&lt;/span> &lt;span style="color:#66d9ef">operator&lt;/span>&lt;span style="color:#f92672">*&lt;/span>() { &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">*&lt;/span>current; }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PreOrderIterator&lt;span style="color:#f92672">&amp;lt;&lt;/span>U&lt;span style="color:#f92672">&amp;gt;&amp;amp;&lt;/span> &lt;span style="color:#66d9ef">operator&lt;/span>&lt;span style="color:#f92672">++&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (current&lt;span style="color:#f92672">-&amp;gt;&lt;/span>right)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> current &lt;span style="color:#f92672">=&lt;/span> current&lt;span style="color:#f92672">-&amp;gt;&lt;/span>right;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (current&lt;span style="color:#f92672">-&amp;gt;&lt;/span>left)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> current &lt;span style="color:#f92672">=&lt;/span> current&lt;span style="color:#f92672">-&amp;gt;&lt;/span>left;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Node&lt;span style="color:#f92672">&amp;lt;&lt;/span>U&lt;span style="color:#f92672">&amp;gt;*&lt;/span> p &lt;span style="color:#f92672">=&lt;/span> current&lt;span style="color:#f92672">-&amp;gt;&lt;/span>parent;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (p &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> current &lt;span style="color:#f92672">==&lt;/span> p&lt;span style="color:#f92672">-&amp;gt;&lt;/span>right)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> current &lt;span style="color:#f92672">=&lt;/span> p;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> p &lt;span style="color:#f92672">=&lt;/span> p&lt;span style="color:#f92672">-&amp;gt;&lt;/span>parent;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> current &lt;span style="color:#f92672">=&lt;/span> p;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#66d9ef">this&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="코루틴을-이용한-순회">코루틴을 이용한 순회&lt;/h2>
+&lt;ul>
+&lt;li>흐음&amp;hellip; 잘 모르겠다. 아직 이런 불편함을 안겪어봐서인듯&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chatper 15. 인터프리터</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-15--%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</link><pubDate>Mon, 20 Apr 2020 22:46:23 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-15--%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0/</guid><description>&lt;h2 id="인터프리터-디자인-패턴">인터프리터 디자인 패턴?&lt;/h2>
+&lt;ul>
+&lt;li>입력 데이터를 해석하는 것&lt;/li>
+&lt;li>대부분 텍스트이지만 텍스트에 한정되지는 않음.&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>&amp;hellip; 이책에서 굳이 이 내용을 다루는 이유를 모르겠다. 차라리 &lt;code>Lex/Yacc&lt;/code>를
+보는게 좋다고 생각한다.&lt;/li>
+&lt;li>아마도 &lt;code>Boost.Spirit&lt;/code>을 알려주고 싶어서 굳이 끼워넣은 느낌?&lt;/li>
+&lt;li>키워드만 정리하자면, &lt;code>AST&lt;/code>, &lt;code>Lex/Yacc&lt;/code>&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chatper 14. 커맨드</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-14--%EC%BB%A4%EB%A7%A8%EB%93%9C/</link><pubDate>Sun, 19 Apr 2020 21:40:23 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-14--%EC%BB%A4%EB%A7%A8%EB%93%9C/</guid><description>&lt;h2 id="필요성">필요성&lt;/h2>
+&lt;ul>
+&lt;li>어떤 객체를 활용할 때 직접 그 객체의 API를 호출하여 조작하는 대신, 작업을 어떻게 하라고 명령을 보내는 방식을 제안한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="시나리오">시나리오&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="struct%20BankAccount%0a%7b%0a%20%20int%20balance%20=%200;%0a%20%20int%20overdraft_limit%20=%20-500;%0a%0a%20%20void%20deposit%28int%20amount%29%0a%20%20%7b%0a%20%20%20%20balance%20&amp;#43;=%20amount;%0a%20%20%20%20cout%20%3c%3c%20%22deposited%20%22%20%3c%3c%20amount%20%3c%3c%20%22,%20balance%20is%20now%20%22%20%3c%3c%20balance%20%3c%3c%20%22%5cn%22;%0a%20%20%7d%0a%0a%20%20void%20withdraw%28int%20amount%29%0a%20%20%7b%0a%20%20%20%20if%20%28balance%20-%20amount%20%3e=%20overdraft_limit%29%0a%20%20%20%20%7b%0a%20%20%20%20%20%20balance%20-=%20amount;%0a%20%20%20%20%20%20cout%20%3c%3c%20%22withdrew%20%22%20%3c%3c%20amount%20%3c%3c%20%22,%20balance%20is%20now%20%22%20%3c%3c%20balance%20%3c%3c%20%22%5cn%22;%0a%20%20%20%20%7d%0a%20%20%7d%0a%7d;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">BankAccount&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> balance &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> overdraft_limit &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">-&lt;/span>&lt;span style="color:#ae81ff">500&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">deposit&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> amount)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> balance &lt;span style="color:#f92672">+=&lt;/span> amount;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;deposited &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> amount &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;, balance is now &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> balance &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">withdraw&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> amount)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (balance &lt;span style="color:#f92672">-&lt;/span> amount &lt;span style="color:#f92672">&amp;gt;=&lt;/span> overdraft_limit)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> balance &lt;span style="color:#f92672">-=&lt;/span> amount;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;withdrew &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> amount &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;, balance is now &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> balance &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="커맨드-패턴의-구현">커맨드 패턴의 구현&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Command&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">call&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">BankAccountCommand&lt;/span> &lt;span style="color:#f92672">:&lt;/span> Command
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BankAccount&lt;span style="color:#f92672">&amp;amp;&lt;/span> account;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">enum&lt;/span> &lt;span style="color:#a6e22e">Action&lt;/span> { deposit, withdraw } action;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> amount;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BankAccountCommand(BankAccount&lt;span style="color:#f92672">&amp;amp;&lt;/span> account, &lt;span style="color:#66d9ef">const&lt;/span> Action action, &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> amount)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> account(account), action(action), amount(amount) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">call&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> (action)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> deposit:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> account.deposit(amount);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> withdraw:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> account.withdraw(amount);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">BankAccount ba;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">BankAccountCommand cmd{ba, BankAccountCommand::deposit, 100};
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">cmd.call();
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">*/&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="되돌리기undo-작업">되돌리기(Undo) 작업&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">BankAccount&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> &lt;span style="color:#a6e22e">widthdraw&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> amount)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (balance &lt;span style="color:#f92672">-&lt;/span> amount &lt;span style="color:#f92672">&amp;gt;=&lt;/span> overdraft_limit)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> balance &lt;span style="color:#f92672">-=&lt;/span> amount;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;widthdrew &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> amount &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;, balance now &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> balance &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#ae81ff">\n&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> true;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> flase;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Command&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">call&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">undo&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">BankAccountCommand&lt;/span> &lt;span style="color:#f92672">:&lt;/span> Command
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BankAccount&lt;span style="color:#f92672">&amp;amp;&lt;/span> account;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">enum&lt;/span> &lt;span style="color:#a6e22e">Action&lt;/span> { deposit, withdraw } action;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> amount;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> widthdrawal_succeeded;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> BankAccountCommand(BankAccount&lt;span style="color:#f92672">&amp;amp;&lt;/span> account, &lt;span style="color:#66d9ef">const&lt;/span> Action action, &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> amount)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> account(account), action(action), amount(amount), widthdrawal_succeeded{false} {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">call&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> (action)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> deposit:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> account.deposit(amount);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> withdraw:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> widthdrawal_succeeded &lt;span style="color:#f92672">=&lt;/span> account.withdraw(amount);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">undo&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">switch&lt;/span> (action)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> widthdraw:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (widthdrawal_succeeded)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> account.deposit(amount);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">case&lt;/span> deposit:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> account.widthdraw(amount);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">break&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">BankAccount ba;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">BankAccountCommand cmd{ba, BankAccountCommand::deposit, 100};
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">cmd.call();
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">*/&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="컴포지트-커맨드">컴포지트 커맨드&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">CompositeBankAccountCommand&lt;/span> &lt;span style="color:#f92672">:&lt;/span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>BankAccountCommand&lt;span style="color:#f92672">&amp;gt;&lt;/span>, Command
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CompositeBankAccountCommand(&lt;span style="color:#66d9ef">const&lt;/span> initializer_list&lt;span style="color:#f92672">&amp;lt;&lt;/span>value_type&lt;span style="color:#f92672">&amp;gt;&amp;amp;&lt;/span> items)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>BankAccountCommand&lt;span style="color:#f92672">&amp;gt;&lt;/span>(items) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">call&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">auto&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span> cmd : &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#66d9ef">this&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmd.call();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">undo&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">auto&lt;/span> it &lt;span style="color:#f92672">=&lt;/span> rbegin(); it &lt;span style="color:#f92672">!=&lt;/span> rend(); &lt;span style="color:#f92672">++&lt;/span>it)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> it&lt;span style="color:#f92672">-&amp;gt;&lt;/span>undo();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Command&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> succeeded;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="명령과-조회의-분리">명령과 조회의 분리&lt;/h2>
+&lt;ul>
+&lt;li>Command Query Separation (CQS)&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>작업 지시 내용을 감싸는 특별한 객체를 두어 객체와 커뮤니케이션 하게 한다.&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chatper 13. 책임사슬(Chain of Responsibility)</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-13--%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</link><pubDate>Sat, 18 Apr 2020 22:14:11 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-13--%EC%B1%85%EC%9E%84%EC%82%AC%EC%8A%ACchain-of-responsibility/</guid><description>&lt;h2 id="시나리오">시나리오&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="struct%20Creature%0a%7b%0a%20%20string%20name;%0a%20%20int%20attack,%20defense;%0a%20%20//%20Constructor,%20operator...%0a%7d;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Creature&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> attack, defense;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Constructor, operator...
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="포인터-사슬">포인터 사슬&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">CreatureModifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CreatureModifier&lt;span style="color:#f92672">*&lt;/span> next{&lt;span style="color:#66d9ef">nullptr&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">protected&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creture; &lt;span style="color:#75715e">// reference, pointer or shared_ptr
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> CreatureModifier(Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> creature(creture) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">add&lt;/span>(CreatureModifier&lt;span style="color:#f92672">*&lt;/span> cm)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (next) next&lt;span style="color:#f92672">-&amp;gt;&lt;/span>add(cm);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span> next &lt;span style="color:#f92672">=&lt;/span>cm;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">handle&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (next) next&lt;span style="color:#f92672">-&amp;gt;&lt;/span>handle();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;ul>
+&lt;li>참조를 넘겨받아 저장하고 변경할 준비&lt;/li>
+&lt;li>추상 클래스가 아님&lt;/li>
+&lt;li>&lt;code>next&lt;/code>는 다음 변경 작업을 가리킴&lt;/li>
+&lt;li>&lt;code>add()&lt;/code>를 통해서 작업 사슬에 연결하여 추가&lt;/li>
+&lt;li>&lt;code>handle()&lt;/code> 맴버 함수는 단순히 다음 항목을 처리한다. 원한다면 오버라이딩해서
+처리한다.&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">DoubleAttackModifier&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> CreatureModifier
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> DoubleAttackModifier(Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> CreatureModifier(creature) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">handle&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> creature.attack &lt;span style="color:#f92672">*=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CreatureModifier&lt;span style="color:#f92672">::&lt;/span>handle();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">NoBonusesModifier&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> CreatureModifier
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">explicit&lt;/span> NoBonusesModifer(Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> CreatureModifier(creature) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">handle&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Do Nothing
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="브로커-사슬">브로커 사슬&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="struct%20Game%0a%7b%0a%20%20signal%3cvoid%28Query&amp;amp;%29%3e%20queries;%20//%20Boost.Signals2%0a%7d;%0a%0astruct%20Query%0a%7b%0a%20%20string%20creature_name;%0a%20%20enum%20Argumnet%20%7b%20attack,%20defense%20%7d%20argument;%0a%20%20int%20result;%0a%7d;%0a%0aclass%20Creature%0a%7b%0a%20%20Game&amp;amp;%20game;%0a%20%20int%20attack,%20defense;%0apublic:%0a%20%20string%20name;%0a%20%20Creature%28Game&amp;amp;%20game,%20...%29%20:%20game%7bgame%7d,%20...%20%7b%20...%20%7d%0a%20%20//%20Other%20Members%0a%7d;%0a%0aint%20Creature::get_attack%28%29%20const%0a%7b%0a%20%20Query%20q%7b%20name,%20Query::Argument::attack,%20attack%20%7d;%0a%20%20game.queries%28q%29;%0a%20%20return%20q.result;%0a%7d%0a%0aclass%20CreatureModifier%0a%7b%0a%20%20Game&amp;amp;%20game;%0a%20%20Creature&amp;amp;%20creature;%0apublic:%0a%20%20CreatureModifier%28Game&amp;amp;%20game,%20Creature&amp;amp;%20creature%29%0a%20%20%20%20:%20game%28game%29,%20creature%28creature%29%20%7b%7d%0a%7d;%0a%0aclass%20DoubleAttackModifier%20:%20public%20CreatureModifier%0a%7b%0a%20%20connection%20conn;%0apublic:%0a%20%20DoubleAttackModifier%28Game&amp;amp;%20game,%20Creature&amp;amp;%20creature%29%0a%20%20%20%20:%20CreatureModifier%28game,%20creature%29%0a%20%20%7b%0a%20%20%20%20conn%20=%20game.queries.connect%28[&amp;amp;]%28Query&amp;amp;%20q%29%20%7b%0a%20%20%20%20%20%20if%20%28q.creature_name%20==%20creature.name%20&amp;amp;&amp;amp;%0a%20%20%20%20%20%20%20%20q.argument%20==%20Query::Argument::attack%29%0a%20%20%20%20%20%20%20%20q.result%20*=%202;%0a%20%20%20%20%7d%29%0a%20%20%7d%0a%0a%20%20~DoubleAttackModifier%28%29%20%7b%20conn.disconnect%28%29;%20%7d%0a%7d">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Game&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> signal&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">void&lt;/span>(Query&lt;span style="color:#f92672">&amp;amp;&lt;/span>)&lt;span style="color:#f92672">&amp;gt;&lt;/span> queries; &lt;span style="color:#75715e">// Boost.Signals2
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Query&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string creature_name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">enum&lt;/span> &lt;span style="color:#a6e22e">Argumnet&lt;/span> { attack, defense } argument;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Creature&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> attack, defense;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Creature(Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game, ...) &lt;span style="color:#f92672">:&lt;/span> game{game}, ... { ... }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Other Members
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> Creature&lt;span style="color:#f92672">::&lt;/span>get_attack() &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Query q{ name, Query&lt;span style="color:#f92672">::&lt;/span>Argument&lt;span style="color:#f92672">::&lt;/span>attack, attack };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> game.queries(q);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> q.result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">CreatureModifier&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CreatureModifier(Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game, Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> game(game), creature(creature) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">DoubleAttackModifier&lt;/span> &lt;span style="color:#f92672">:&lt;/span> &lt;span style="color:#66d9ef">public&lt;/span> CreatureModifier
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> connection conn;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DoubleAttackModifier(Game&lt;span style="color:#f92672">&amp;amp;&lt;/span> game, Creature&lt;span style="color:#f92672">&amp;amp;&lt;/span> creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> CreatureModifier(game, creature)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> conn &lt;span style="color:#f92672">=&lt;/span> game.queries.connect([&lt;span style="color:#f92672">&amp;amp;&lt;/span>](Query&lt;span style="color:#f92672">&amp;amp;&lt;/span> q) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (q.creature_name &lt;span style="color:#f92672">==&lt;/span> creature.name &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> q.argument &lt;span style="color:#f92672">==&lt;/span> Query&lt;span style="color:#f92672">::&lt;/span>Argument&lt;span style="color:#f92672">::&lt;/span>attack)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> q.result &lt;span style="color:#f92672">*=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">~&lt;/span>DoubleAttackModifier() { conn.disconnect(); }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>컴포넌트들이 어떤 명령이나 조회 작업을 차례로 처리할 수 있게 하는 매우 단순한
+디자인 패턴이다.&lt;/li>
+&lt;li>이론적으로 포인터 사슬은 보통 &lt;code>vector&lt;/code>나 &lt;code>list&lt;/code>로 대체될 수 있다.&lt;/li>
+&lt;li>좀 더 복잡한 브로커 사슬의 구현에서는 매개자 패턴과 관찰자 패턴을 활용한다.&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chapter 12. 프록시</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-12--%ED%94%84%EB%A1%9D%EC%8B%9C/</link><pubDate>Sun, 12 Apr 2020 23:10:03 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-12--%ED%94%84%EB%A1%9D%EC%8B%9C/</guid><description>&lt;h2 id="스마트-포인터">스마트 포인터&lt;/h2>
+&lt;ul>
+&lt;li>가장 단순하면서도 직접적인 프록시 패턴의 예&lt;/li>
+&lt;/ul>
+&lt;h2 id="속성-프록시">속성 프록시&lt;/h2>
+&lt;ul>
+&lt;li>다른 프로그래밍 언어에서는 &lt;code>get/set&lt;/code> 메서드를 지원하는 경우도 있음.&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="template%20%3ctypename%20T%3e%20struct%20Property%0a%7b%0a%20%20T%20value;%0a%20%20Property%28const%20T%20initial_value%29%0a%20%20%7b%0a%20%20%20%20*this%20=%20initial_value;%0a%20%20%7d%0a%20%20operate%20T%28%29%0a%20%20%7b%0a%20%20%20%20return%20value;%0a%20%20%7d%0a%20%20T%20operator=%28T%20new_value%29%0a%20%20%7b%0a%20%20return%20value%20=%20new_value;%0a%20%20%7d%0a%7d%0a%0a%0astruct%20Creature%0a%7b%0a%20%20Property%3cint%3e%20strength%7b%2010%20%7d;%0a%20%20Property%3cint%3e%20agility%7b%205%20%7d;%0a%7d%0a%0aCreature%20creature;%0acreature.agility%20=%2020;%0aauto%20x%20=%20creature.strength;">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Property&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> T value;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Property(&lt;span style="color:#66d9ef">const&lt;/span> T initial_value)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#66d9ef">this&lt;/span> &lt;span style="color:#f92672">=&lt;/span> initial_value;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> operate &lt;span style="color:#a6e22e">T&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> value;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> T &lt;span style="color:#66d9ef">operator&lt;/span>&lt;span style="color:#f92672">=&lt;/span>(T new_value)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> value &lt;span style="color:#f92672">=&lt;/span> new_value;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Creature&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Property&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> strength{ &lt;span style="color:#ae81ff">10&lt;/span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Property&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> agility{ &lt;span style="color:#ae81ff">5&lt;/span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Creature creature;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>creature.agility &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">20&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">auto&lt;/span> x &lt;span style="color:#f92672">=&lt;/span> creature.strength;&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="가상-프록시">가상 프록시&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>nullptr&lt;/code>나 초기화되지 않은 포인터를 역참조하면 크래시가 발생함.&lt;/li>
+&lt;li>&lt;code>lazy instantiation&lt;/code>을 하여 불필요하게 일찍 자원이 할당되지 않게 할수 있다.&lt;/li>
+&lt;/ul>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Image&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">draw&lt;/span>() &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Bitmap&lt;/span> &lt;span style="color:#f92672">:&lt;/span> Image
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Bitmap(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> filename)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Loading image from &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> filename &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> endl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">draw&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Drawing Image &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> filename &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> endl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">LazyBitmap&lt;/span> &lt;span style="color:#f92672">:&lt;/span> Image
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LazyBitmap(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> filename)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> filename(filename) {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">~&lt;/span>LazyBitmap() { &lt;span style="color:#66d9ef">delete&lt;/span> bmp; }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">draw&lt;/span>() &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (&lt;span style="color:#f92672">!&lt;/span>bmp)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bmp &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> Bitmap(filename);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bmp&lt;span style="color:#f92672">-&amp;gt;&lt;/span>draw();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Bitmap &lt;span style="color:#f92672">*&lt;/span>bmp(&lt;span style="color:#66d9ef">nullptr&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string filename;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="커뮤니케이션-프록시">커뮤니케이션 프록시&lt;/h2>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>[[Modern C++ Design Pattern/Chapter 9. 데코레이터]]{데코레이터 패턴}과는 다르게 프록시는 어떤 객체에 새로운 맴버를 추가하여 기능을 확장하지 않는다.&lt;/li>
+&lt;li>프록시에는 다양한 종류가 있다.
+&lt;ul>
+&lt;li>속성 프록시는 필드를 대신하여 클래스에 내장되는 객체로 접근/대입 연사자가 구동될 때 추가적인 작업을 수행할 수 있게 한다.&lt;/li>
+&lt;li>버츄얼 프록시는 감싸고 있는 객체에 가상으로 접근할 수 있게 한다. 이를 통해 느긋한 객체의 로딩을 구현할 수 있다.&lt;/li>
+&lt;li>커뮤니케이션 프록시는 객체의 물리적 위치를 바꾸면서도 API를 기존과 거의 동일하게 유지할 수 있게 해준다.&lt;/li>
+&lt;li>로깅 프록시는 감싸진 함수가 호출될 때 로깅과 같은 추가적인 작업을 수행할 수 있게 해준다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chapter 11. 플라이웨이트</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-11--%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</link><pubDate>Sat, 11 Apr 2020 23:28:27 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-11--%ED%94%8C%EB%9D%BC%EC%9D%B4%EC%9B%A8%EC%9D%B4%ED%8A%B8/</guid><description>&lt;ul>
+&lt;li>플라이웨이트 패턴 : 많은 수의 가벼운 임시 객체들을 &amp;ldquo;스마트 참조&amp;quot;로 사용하는 것을 말하며, 그러한 객체들을 플라이웨이트라고 부른다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용자-이름">사용자 이름&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">User&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>User(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> first_name, &lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> last_name)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> first_name{add(first_anem)}, last_name{add(last_name)} {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">protected&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> key first_name, last_name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">static&lt;/span> bimap&lt;span style="color:#f92672">&amp;lt;&lt;/span>key, string&lt;span style="color:#f92672">&amp;gt;&lt;/span> names; &lt;span style="color:#75715e">// boost:bimap(양방향 map)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> key seed;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">static&lt;/span> key &lt;span style="color:#a6e22e">add&lt;/span>(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> s) { ...}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> key &lt;span style="color:#a6e22e">add&lt;/span>(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> s)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> it &lt;span style="color:#f92672">=&lt;/span> names.right.find(s);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (it &lt;span style="color:#f92672">==&lt;/span> names.right.end())
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> names.insert({&lt;span style="color:#f92672">++&lt;/span>seed, s});
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> seed;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> it&lt;span style="color:#f92672">-&amp;gt;&lt;/span>second;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> get_first_name() &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> names.left.find(last_name)&lt;span style="color:#f92672">-&amp;gt;&lt;/span>second;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> get_last_name9) &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> names.left.find(last_name)&lt;span style="color:#f92672">-&amp;gt;&lt;/span>second;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="boostflyweight">&lt;code>Boost.Flyweight&lt;/code>&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">BetterFormattedText&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">public&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">TextRange&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> start, end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> capitalize;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> &lt;span style="color:#a6e22e">covers&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> position) &lt;span style="color:#66d9ef">const&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> position &lt;span style="color:#f92672">&amp;gt;=&lt;/span> start &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> position &lt;span style="color:#f92672">&amp;lt;=&lt;/span> end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string plain_text;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>TextRange&lt;span style="color:#f92672">&amp;gt;&lt;/span> formatting;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>TextRange&lt;span style="color:#f92672">&amp;amp;&lt;/span> get_range(&lt;span style="color:#66d9ef">int&lt;/span> start, &lt;span style="color:#66d9ef">int&lt;/span> end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> formatting.emplace_back(TextRange{ start, end });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">*&lt;/span>formatting.rbegin();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">friend&lt;/span> std&lt;span style="color:#f92672">::&lt;/span>ostream&lt;span style="color:#f92672">&amp;amp;&lt;/span> &lt;span style="color:#66d9ef">operator&lt;/span>&lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span>(std&lt;span style="color:#f92672">::&lt;/span>ostream&lt;span style="color:#f92672">&amp;amp;&lt;/span> os,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">const&lt;/span> BetterFormattedText&lt;span style="color:#f92672">&amp;amp;&lt;/span> obj)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string s;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (size_t i &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> obj.plain_text.length(); i&lt;span style="color:#f92672">++&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> c &lt;span style="color:#f92672">=&lt;/span> obj.plain_text[i];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">auto&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span> rng : obj.formatting)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (rng.covers(i) &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> rng.capitalize)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> c &lt;span style="color:#f92672">=&lt;/span> toupper(c);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> s &lt;span style="color:#f92672">+=&lt;/span> c;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> os &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> s;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>기본적으로 공간 절약을 위한 테크닉이다.&lt;/li>
+&lt;li>다른 예로는 API 토큰을 전달 받는 경우 등의로 활용 가능하다.&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern/Chapter 10. 퍼사드</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-10--%ED%8D%BC%EC%82%AC%EB%93%9C/</link><pubDate>Thu, 09 Apr 2020 23:56:51 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-10--%ED%8D%BC%EC%82%AC%EB%93%9C/</guid><description>&lt;h2 id="퍼사드는-어디에-있는가">퍼사드는 어디에 있는가?&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Console&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Viewport&lt;span style="color:#f92672">*&amp;gt;&lt;/span> viewports;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Size charSize, gridSize;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Console&lt;span style="color:#f92672">::&lt;/span>Console(&lt;span style="color:#66d9ef">bool&lt;/span> fullscreen, &lt;span style="color:#66d9ef">int&lt;/span> char_width, &lt;span style="color:#66d9ef">int&lt;/span> char_height,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> width, &lt;span style="color:#66d9ef">int&lt;/span> height, optional&lt;span style="color:#f92672">&amp;lt;&lt;/span>Size&lt;span style="color:#f92672">&amp;gt;&lt;/span> client_size)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Implement
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Console&lt;span style="color:#f92672">::&lt;/span>Console(&lt;span style="color:#66d9ef">const&lt;/span> ConsoleCreateionParamters&lt;span style="color:#f92672">*&lt;/span> ccp) { ... }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">ConsoleCreationParameters&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> optional&lt;span style="color:#f92672">&amp;lt;&lt;/span>Size&lt;span style="color:#f92672">&amp;gt;&lt;/span> client_size;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> character_width{&lt;span style="color:#ae81ff">10&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> character_height{&lt;span style="color:#ae81ff">14&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> width{&lt;span style="color:#ae81ff">20&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> height{&lt;span style="color:#ae81ff">30&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> fullscreen{false};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">bool&lt;/span> create_default_view_and_buffer{true};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>하나 이상의 복잡한 서브 시스템 앞에 단순한 인터페이스를 두기 위한 방법&lt;/li>
+&lt;/ul></description></item><item><title>Modern C++ Design Pattern</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/</link><pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/</guid><description>챕터별 정리</description></item></channel></rss>

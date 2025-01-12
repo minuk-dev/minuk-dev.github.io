@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on</title><link>https://minuk.dev/tags/go/</link><description>Recent content in Go on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 05 Mar 2023 19:41:57 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>Cloud Native Go</title><link>https://minuk.dev/wiki/cloud-native-go/</link><pubDate>Wed, 02 Nov 2022 00:20:40 +0900</pubDate><guid>https://minuk.dev/wiki/cloud-native-go/</guid><description>&lt;h4 id="누가-이-책을-읽어야하는가">누가 이 책을 읽어야하는가&lt;/h4>
+&lt;ul>
+&lt;li>imtermediate-to-advanced developers&lt;/li>
+&lt;li>web application engineer&lt;/li>
+&lt;li>DevOps specialists/site reliability engieers&lt;/li>
+&lt;/ul>
+&lt;h1 id="part-1-going-cloud-native">Part 1. Going Cloud Native&lt;/h1>
+&lt;h2 id="chapter-1-what-is-a-cloud-native-application">Chapter 1. What is a &amp;ldquo;Cloud Native&amp;rdquo; Application?&lt;/h2>
+&lt;ul>
+&lt;li>A traditional three-tiered architecture:
+&lt;ul>
+&lt;li>Client - Web server + application server - Database server&lt;/li>
+&lt;li>Presentation tier - Business logic tier - Data management tier&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="what-is-cloud-native">What Is Cloud Native?&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Cloud native technologies empower organizations to build and run scalable applications in modern, dynamic environments such as public, private, and hybrid clouds&lt;/p></description></item><item><title>go snippet for go</title><link>https://minuk.dev/wiki/http-go/</link><pubDate>Fri, 02 Sep 2022 22:06:05 +0900</pubDate><guid>https://minuk.dev/wiki/http-go/</guid><description>&lt;h2 id="get-post-snippet">Get, Post Snippet&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">url&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;lt;url&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">resp&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">Get&lt;/span>(&lt;span style="color:#a6e22e">url&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// resp, err := http.Post(url, &amp;#34;text/plain&amp;#34;, reqBody) // reqBody []bytes
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// resp, err := http.PostForm(url, url.Values{&amp;#34;Foo&amp;#34;:{&amp;#34;Bar&amp;#34;}})
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// resp, err := http.Post(url, &amp;#34;application/json&amp;#34;, reqBody) // reqBody []bytes; reqBody, err := json.Marshal(data)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">defer&lt;/span> &lt;span style="color:#a6e22e">resp&lt;/span>.&lt;span style="color:#a6e22e">Body&lt;/span>.&lt;span style="color:#a6e22e">Close&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">raw&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">ioutil&lt;/span>.&lt;span style="color:#a6e22e">ReadAll&lt;/span>(&lt;span style="color:#a6e22e">resp&lt;/span>.&lt;span style="color:#a6e22e">Body&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">data&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">A&lt;/span>, &lt;span style="color:#a6e22e">B&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">err&lt;/span> = &lt;span style="color:#a6e22e">json&lt;/span>.&lt;span style="color:#a6e22e">Unmarshal&lt;/span>(&lt;span style="color:#a6e22e">raw&lt;/span>, &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">data&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div>
+&lt;h2 id="with-auth">With Auth&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">url&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&amp;lt;url&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">bearer&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Bearer &amp;lt;token&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">req&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">NewRequest&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;GET&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">url&lt;/span>, &lt;span style="color:#66d9ef">nil&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">req&lt;/span>.&lt;span style="color:#a6e22e">Header&lt;/span>.&lt;span style="color:#a6e22e">Add&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Authorization&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">bearer&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">resp&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">http&lt;/span>.&lt;span style="color:#a6e22e">Do&lt;/span>(&lt;span style="color:#a6e22e">req&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// skip
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>
+ 
+&lt;/div></description></item><item><title>vim/vim-go</title><link>https://minuk.dev/wiki/vim-go/</link><pubDate>Wed, 17 Aug 2022 04:51:27 +0900</pubDate><guid>https://minuk.dev/wiki/vim-go/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>vim에서 go를 지원하는 플러그인&lt;/li>
+&lt;li>일반적으로 가장 많이 제시됨.&lt;/li>
+&lt;li>기본적인 공부는 &lt;a href="https://github.com/fatih/vim-go/wiki/Tutorial">공식 사이트의 튜토리얼&lt;/a>을 따라하면 좋다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="지원하는-좋은-기능">지원하는 좋은 기능&lt;/h2>
+&lt;ul>
+&lt;li>저장시에 자동으로 go fmt 을 실행한다. 이때 import 도 해준다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="자주-사용하는-명령어">자주 사용하는 명령어&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>GoRun&lt;/code> : 간단하게 실행할때 사용한다.&lt;/li>
+&lt;li>&lt;code>CTRL-]&lt;/code> : GoDef&lt;/li>
+&lt;/ul>
+&lt;h2 id="자주-사용하면-좋은데-손에-잘-안익는거">자주 사용하면 좋은데 손에 잘 안익는거&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>:GoDoc&lt;/code>&lt;/li>
+&lt;li>&lt;code>:GoDecls&lt;/code>&lt;/li>
+&lt;li>&lt;code>:GoDeclsDir&lt;/code>&lt;/li>
+&lt;li>나머지 유용한 내용은 &lt;a href="https://johngrib.github.io/wiki/vim-go-env/">여기&lt;/a>가 더 잘나와있다. 하지만 솔직히 하나씩 손에 익히는게 좋다고 생각하고 몇가지 자주 쓰는 기능만 손에 익히고, 나머지는 기능이 있구나 정도 여부만 알고 진짜 필요할때만 보면 될거 같다. (예를 들어 인터페이스 구현 목록이라던가 등등)&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>나는 coc-go랑 같이 사용하고 있는데 둘이 동시에 사용하는 것도 좋다.&lt;/li>
+&lt;li>딱히 충돌난 경험은 없다.&lt;/li>
+&lt;li>GoReferers 같은 기능은 잘 안쓰게 되는데, coc 에서는 gr(go referers)로 이동할 수 있어서 사용한다.&lt;/li>
+&lt;/ul></description></item><item><title>go-http</title><link>https://minuk.dev/wiki/go-http/</link><pubDate>Tue, 02 Aug 2022 15:55:09 +0900</pubDate><guid>https://minuk.dev/wiki/go-http/</guid><description>go 언어 http 동작방식이 궁금해져서 탐구해보는 자료</description></item><item><title>go</title><link>https://minuk.dev/wiki/go/</link><pubDate>Tue, 02 Aug 2022 15:52:30 +0900</pubDate><guid>https://minuk.dev/wiki/go/</guid><description>go 언어 관련</description></item></channel></rss>
