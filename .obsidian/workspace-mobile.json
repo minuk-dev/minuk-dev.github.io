@@ -83,7 +83,7 @@
         }
       }
     ],
-    "currentTab": 3
+    "currentTab": 0
   },
   "right": {
     "id": "b43bb01087082d9f",
@@ -159,7 +159,7 @@
       "command-palette:명령어 팔레트 열기": false
     }
   },
-  "active": "d34456b0a5b1a9e4",
+  "active": "890252883618c72e",
   "lastOpenFiles": [
     "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
     "content/wiki/_index.md",
