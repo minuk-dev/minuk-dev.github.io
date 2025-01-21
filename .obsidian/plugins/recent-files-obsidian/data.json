@@ -1,12 +1,16 @@
 {
   "recentFiles": [
     {
-      "basename": "기본",
-      "path": "content/wiki/기본.md"
-    },
-    {
       "basename": "2025-01-22",
       "path": "content/wiki/daily/2025-01-22.md"
+    },
+    {
+      "basename": "Kanban",
+      "path": "content/wiki/Kanban.md"
+    },
+    {
+      "basename": "임시 메모",
+      "path": "content/wiki/임시 메모.md"
     },
     {
       "basename": "2025-01-21",
@@ -27,10 +31,6 @@
     {
       "basename": "Drawing 2025-01-13 00.26.22.excalidraw",
       "path": "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md"
-    },
-    {
-      "basename": "임시 메모",
-      "path": "content/wiki/임시 메모.md"
     },
     {
       "basename": "Book reviews",
