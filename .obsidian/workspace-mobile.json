@@ -11,20 +11,14 @@
             "id": "d34456b0a5b1a9e4",
             "type": "leaf",
             "state": {
-              "type": "kanban",
+              "type": "markdown",
               "state": {
-                "file": "content/wiki/기본.md",
-                "kanbanViewState": {
-                  "kanban-plugin": "board",
-                  "list-collapse": [
-                    false,
-                    false,
-                    false
-                  ]
-                }
+                "file": "content/wiki/daily/2025-01-22.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-trello",
-              "title": "기본"
+              "icon": "lucide-file",
+              "title": "2025-01-22"
             }
           }
         ]
@@ -101,7 +95,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "content/wiki/기본.md",
+            "file": "content/wiki/daily/2025-01-22.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -168,8 +162,10 @@
   },
   "active": "d34456b0a5b1a9e4",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-01-22.md",
     "content/wiki/기본.md",
+    "assets/Pasted image 20250122013131.png",
+    "content/wiki/Kanban.md",
+    "content/wiki/daily/2025-01-22.md",
     "content/wiki/daily/2025-01-21.md",
     "content/wiki/daily/2025-01-13.md",
     "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
@@ -194,7 +190,6 @@
     "static/images/favicon/apple-icon-76x76.png",
     "static/images/favicon/android-icon-48x48.png",
     "static/images/favicon/favicon-96x96.png",
-    "static/images/favicon/apple-icon-180x180.png",
     "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md",
     "content/wiki/daily/2025-01-10.md",
     "content/wiki/daily/2025-01-12.md",
@@ -211,8 +206,6 @@
     "content/wiki/lectures/computer architecture.md",
     "content/wiki/lectures/wireless.md",
     "content/wiki/lectures/regression.md",
-    "content/wiki/lectures/automata.md",
-    "content/wiki/lectures/compiler.md",
-    "content/wiki/lectures/computer-communication.md"
+    "content/wiki/lectures/automata.md"
   ]
 }
