@@ -1,6 +1,10 @@
 {
   "recentFiles": [
     {
+      "basename": "_index",
+      "path": "content/wiki/_index.md"
+    },
+    {
       "basename": "2025-01-22",
       "path": "content/wiki/daily/2025-01-22.md"
     },
@@ -23,10 +27,6 @@
     {
       "basename": "jekyll 기반 wiki 에서 hugo 로 넘어가기",
       "path": "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md"
-    },
-    {
-      "basename": "_index",
-      "path": "content/wiki/_index.md"
     },
     {
       "basename": "Drawing 2025-01-13 00.26.22.excalidraw",
