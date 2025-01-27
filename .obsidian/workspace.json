@@ -4,147 +4,92 @@
     "type": "split",
     "children": [
       {
-        "id": "38338cd6c5af8d3f",
-        "type": "split",
+        "id": "ce42ab5f9850481e",
+        "type": "tabs",
         "children": [
           {
-            "id": "ce42ab5f9850481e",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "360f14e64982c3fa",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/임시 메모.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "pinned": true,
-                  "icon": "lucide-file",
-                  "title": "임시 메모"
-                }
+            "id": "360f14e64982c3fa",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/임시 메모.md",
+                "mode": "source",
+                "source": false
               },
-              {
-                "id": "0a3e43404a5d63a9",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "kanban",
-                  "state": {
-                    "file": "content/wiki/Kanban.md",
-                    "kanbanViewState": {
-                      "kanban-plugin": "board",
-                      "list-collapse": [
-                        false,
-                        false,
-                        false,
-                        false
-                      ]
-                    }
-                  },
-                  "pinned": true,
-                  "icon": "lucide-trello",
-                  "title": "Kanban"
-                }
-              },
-              {
-                "id": "d0be66aa6465073e",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/_index.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "_index"
-                }
-              },
-              {
-                "id": "28fd8c9761221065",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/study-note.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "study-note"
-                }
-              },
-              {
-                "id": "0aa0646efe2972d4",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/무엇이 1등 팀을 만드는가?.md",
-                    "mode": "source",
-                    "source": true
-                  },
-                  "icon": "lucide-file",
-                  "title": "무엇이 1등 팀을 만드는가?"
-                }
-              }
-            ],
-            "currentTab": 4
+              "pinned": true,
+              "icon": "lucide-file",
+              "title": "임시 메모"
+            }
           },
           {
-            "id": "15490fb32f0749b8",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "f8dea7388b4af15f",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "terminal:terminal",
-                  "state": {
-                    "terminal:terminal": {
-                      "cwd": "/Users/min-uklee/workspace/repos/minuk-dev.github.io",
-                      "focus": false,
-                      "profile": {
-                        "args": [],
-                        "executable": "/bin/zsh",
-                        "name": "",
-                        "platforms": {
-                          "darwin": true
-                        },
-                        "pythonExecutable": "python3",
-                        "restoreHistory": true,
-                        "successExitCodes": [
-                          "0",
-                          "SIGINT",
-                          "SIGTERM"
-                        ],
-                        "terminalOptions": {
-                          "documentOverride": null
-                        },
-                        "type": "integrated",
-                        "useWin32Conhost": true
-                      },
-                      "serial": {
-                        "columns": 97,
-                        "data": " \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master \u001b[38;5;178m!6 \u001b[38;5;39m?2\u001b[38;5;178m \u001b[38;5;76m❯\u001b[0m \u001b[31;1mㅣㄴ\u001b[33C\u001b[38;5;66;22m 20:04:15\r\n\u001b[0mzsh: command not found: ㅣㄴ\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master \u001b[38;5;178m!6 \u001b[38;5;39m?2\u001b[38;5;178m \u001b[38;5;196m❯\u001b[0m \u001b[32mls\u001b[35C\u001b[38;5;66m 20:04:16\r\n\u001b[0mCNAME      \u001b[36;1marchetypes\u001b[0m \u001b[36;1mcontent\u001b[0m    hugo.toml  \u001b[36;1mlayouts\u001b[0m    \u001b[36;1mstatic\r\n\u001b[0mREADME.md  \u001b[36;1massets\u001b[0m     \u001b[36;1mdata\u001b[0m       \u001b[36;1mi18n\u001b[0m       \u001b[36;1mpublic\u001b[0m     \u001b[36;1mthemes\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master \u001b[38;5;178m!6 \u001b[38;5;39m?2\u001b[38;5;178m \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status               \u001b[14C\u001b[38;5;66m 20:04:17\r\n\u001b[0mOn branch master\r\nYour branch is up to date with 'origin/master'.\r\n\r\nChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/app.json\r\n\u001b[8Cmodified:   .obsidian/plugins/recent-files-obsidian/data.json\r\n\u001b[8Cmodified:   .obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/.obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/Book reviews.md\r\n\u001b[8Cmodified:   content/wiki/Kanban.md\r\n\r\n\u001b[0mUntracked files:\r\n  (use \"git add <file>...\" to include in what will be committed)\r\n\u001b[8C\u001b[31m\"content/wiki/ceph login \\354\\235\\204 oauth \\353\\241\\234 \\355\\225\\240\\354\\210\\230 \\354\\236\\210\\352\\262\\214 \\355\\225\\230\\352\\270\\260.md\"\r\n\u001b[8C\"content/wiki/\\353\\254\\264\\354\\227\\207\\354\\235\\264 1\\353\\223\\261 \\355\\214\\200\\354\\235\\204 \\353\\247\\214\\353\\223\\234\\353\\212\\224\\352\\260\\200?.md\"\r\n\r\n\u001b[0mno changes added to commit (use \"git add\" and/or \"git commit -a\")\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master \u001b[38;5;178m!6 \u001b[38;5;39m?2\u001b[38;5;178m \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m pull origin master   \u001b[14C\u001b[38;5;66m 20:04:18\r\n\u001b[0mremote: Enumerating objects: 21, done.\r\nremote: Counting objects: 100% (21/21), done.\r\nremote: Compressing objects: 100% (15/15), done.\r\nremote: Total 15 (delta 10), reused 5 (delta 0), pack-reused 0 (from 0)\r\nUnpacking objects: 100% (15/15), 16.83 KiB | 1.12 MiB/s, done.\r\nFrom github.com:minuk-dev/minuk-dev.github.io\r\n * branch              master     -> FETCH_HEAD\r\n   9e519451..c9cb9802  master     -> origin/master\r\nUpdating 9e519451..c9cb9802\r\nerror: Your local changes to the following files would be overwritten by merge:\r\n\u001b[8C.obsidian/plugins/recent-files-obsidian/data.json\r\nPlease commit your changes or stash them before you merge.\r\nAborting\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3 \u001b[38;5;178m!6 \u001b[38;5;39m?2\u001b[38;5;178m \u001b[38;5;196m❯\u001b[0m \u001b[32mg\u001b[0m status            \u001b[14C\u001b[38;5;66m 20:04:25\r\n\u001b[0mOn branch master\r\nYour branch is behind 'origin/master' by 3 commits, and can be fast-forwarded.\r\n  (use \"git pull\" to update your local branch)\r\n\r\nChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/app.json\r\n\u001b[8Cmodified:   .obsidian/plugins/recent-files-obsidian/data.json\r\n\u001b[8Cmodified:   .obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/.obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/Book reviews.md\r\n\u001b[8Cmodified:   content/wiki/Kanban.md\r\n\r\n\u001b[0mUntracked files:\r\n  (use \"git add <file>...\" to include in what will be committed)\r\n\u001b[8C\u001b[31m\"content/wiki/ceph login \\354\\235\\204 oauth \\353\\241\\234 \\355\\225\\240\\354\\210\\230 \\354\\236\\210\\352\\262\\214 \\355\\225\\230\\352\\270\\260.md\"\r\n\u001b[8C\"content/wiki/\\353\\254\\264\\354\\227\\207\\354\\235\\264 1\\353\\223\\261 \\355\\214\\200\\354\\235\\204 \\353\\247\\214\\353\\223\\234\\353\\212\\224\\352\\260\\200?.md\"\r\n\r\n\u001b[0mno changes added to commit (use \"git add\" and/or \"git commit -a\")\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3 \u001b[38;5;178m!6 \u001b[38;5;39m?2\u001b[38;5;178m \u001b[38;5;76m❯\u001b[0m \u001b[32mgit\u001b[0m add \u001b[4m.\u001b[0m \u001b[24C\u001b[38;5;66m 20:04:28\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3 \u001b[38;5;178m+8 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status \u001b[28C\u001b[38;5;66m 20:04:30\r\n\u001b[0mOn branch master\r\nYour branch is behind 'origin/master' by 3 commits, and can be fast-forwarded.\r\n  (use \"git pull\" to update your local branch)\r\n\r\nChanges to be committed:\r\n  (use \"git restore --staged <file>...\" to unstage)\r\n\u001b[8C\u001b[32mmodified:   .obsidian/app.json\r\n\u001b[8Cmodified:   .obsidian/plugins/recent-files-obsidian/data.json\r\n\u001b[8Cmodified:   .obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/.obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/Book reviews.md\r\n\u001b[8Cmodified:   content/wiki/Kanban.md\r\n\u001b[8Cnew file:   \"content/wiki/ceph login \\354\\235\\204 oauth \\353\\241\\234 \\355\\225\\240\\354\\210\\230 \\354\\236\\210\\352\\262\\214 \\355\\225\\230\\352\\270\\260.md\"\r\n\u001b[8Cnew file:   \"content/wiki/\\353\\254\\264\\354\\227\\207\\354\\235\\264 1\\353\\223\\261 \\355\\214\\200\\354\\235\\204 \\353\\247\\214\\353\\223\\234\\353\\212\\224\\352\\260\\200?.md\"\r\n\r\n\u001b[0mChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3 \u001b[38;5;178m+8 !1 \u001b[38;5;76m❯\u001b[0m \u001b[32mgit\u001b[0m add \u001b[4m.\u001b[0m       \u001b[18C\u001b[38;5;66m 20:04:31\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3 \u001b[38;5;178m+8 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status \u001b[28C\u001b[38;5;66m 20:04:35\r\n\u001b[0mOn branch master\r\nYour branch is behind 'origin/master' by 3 commits, and can be fast-forwarded.\r\n  (use \"git pull\" to update your local branch)\r\n\r\nChanges to be committed:\r\n  (use \"git restore --staged <file>...\" to unstage)\r\n\u001b[8C\u001b[32mmodified:   .obsidian/app.json\r\n\u001b[8Cmodified:   .obsidian/plugins/recent-files-obsidian/data.json\r\n\u001b[8Cmodified:   .obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/.obsidian/workspace.json\r\n\u001b[8Cmodified:   content/wiki/Book reviews.md\r\n\u001b[8Cmodified:   content/wiki/Kanban.md\r\n\u001b[8Cnew file:   \"content/wiki/ceph login \\354\\235\\204 oauth \\353\\241\\234 \\355\\225\\240\\354\\210\\230 \\354\\236\\210\\352\\262\\214 \\355\\225\\230\\352\\270\\260.md\"\r\n\u001b[8Cnew file:   \"content/wiki/\\353\\254\\264\\354\\227\\207\\354\\235\\264 1\\353\\223\\261 \\355\\214\\200\\354\\235\\204 \\353\\247\\214\\353\\223\\234\\353\\212\\224\\352\\260\\200?.md\"\r\n\r\n\u001b[0mChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3 \u001b[38;5;178m+8 !1 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m commit -m \u001b[33m\"content: 무엇이 1등 팀을 만드는\u001b[7m \u001b[27m가\"\r\n\u001b[0m[master 5b39477a] content: 무엇이 1등 팀을 만드는가\r\n 8 files changed, 400 insertions(+), 62 deletions(-)\r\n create mode 100644 \"content/wiki/ceph login \\354\\235\\204 oauth \\353\\241\\234 \\355\\225\\240\\354\\210\\230 \\354\\236\\210\\352\\262\\214 \\355\\225\\230\\352\\270\\260.md\"\r\n create mode 100644 \"content/wiki/\\353\\254\\264\\354\\227\\207\\354\\235\\264 1\\353\\223\\261 \\355\\214\\200\\354\\235\\204 \\353\\247\\214\\353\\223\\234\\353\\212\\224\\352\\260\\200?.md\"\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 \u001b[38;5;178m!1 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m pull origin master \u001b[14C\u001b[38;5;66m 20:04:54\r\n\u001b[0mFrom github.com:minuk-dev/minuk-dev.github.io\r\n * branch              master     -> FETCH_HEAD\r\n\u001b[33mhint: You have divergent branches and need to specify how to reconcile them.\r\nhint: You can do so by running one of the following commands sometime before\r\nhint: your next pull:\r\nhint:\r\nhint:   git config pull.rebase false  # merge\r\nhint:   git config pull.rebase true   # rebase\r\nhint:   git config pull.ff only       # fast-forward only\r\nhint:\r\nhint: You can replace \"git config\" with \"git config --global\" to set a default\r\nhint: preference for all repositories. You can also pass --rebase, --no-rebase,\r\nhint: or --ff-only on the command line to override the configured default per\r\nhint: invocation.\r\n\u001b[0mfatal: Need to specify how to reconcile divergent branches.\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 \u001b[38;5;178m!1 \u001b[38;5;196m❯\u001b[0m \u001b[32mg\u001b[0m pull origin master --rebase\u001b[6C\u001b[38;5;66m 20:05:00\r\n\u001b[0merror: cannot pull with rebase: You have unstaged changes.\r\nerror: Please commit or stash them.\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 \u001b[38;5;178m!1 \u001b[38;5;196m❯\u001b[0m \u001b[32mg\u001b[0m stsh                       \u001b[6C\u001b[38;5;66m 20:05:03\r\n\u001b[0mgit: 'stsh' is not a git command. See 'git --help'.\r\n\r\nThe most similar command is\r\n\u001b[8Cstash\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 \u001b[38;5;178m!1 \u001b[38;5;196m❯\u001b[0m \u001b[32mg\u001b[0m stash \u001b[27C\u001b[38;5;66m 20:05:10\r\n\u001b[0mSaved working directory and index state WIP on master: 5b39477a content: 무엇이 1등 팀을 만드는가\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m  master ⇣3⇡1 *1 ❯\u001b[0m \u001b[32mg\u001b[0m pull origin master --rebase\u001b[6C\u001b[38;5;66m 20:05:12\r\n\u001b[0merror: cannot pull with rebase: You have unstaged changes.\r\nerror: Please commit or stash them.\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m!1 \u001b[38;5;196m❯\u001b[0m \u001b[32mg\u001b[0m status                     \u001b[3C\u001b[38;5;66m 20:05:14\r\n\u001b[0mOn branch master\r\nYour branch and 'origin/master' have diverged,\r\nand have 1 and 3 different commits each, respectively.\r\n  (use \"git pull\" if you want to integrate the remote branch with yours)\r\n\r\nChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0mno changes added to commit (use \"git add\" and/or \"git commit -a\")\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m!1 \u001b[38;5;76m❯\u001b[0m \u001b[32mgit\u001b[0m add \u001b[4m.obsidian/\u001b[14C\u001b[38;5;66;24m 20:05:18\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m+1 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status          \u001b[14C\u001b[38;5;66m 20:05:25\r\n\u001b[0mOn branch master\r\nYour branch and 'origin/master' have diverged,\r\nand have 1 and 3 different commits each, respectively.\r\n  (use \"git pull\" if you want to integrate the remote branch with yours)\r\n\r\nChanges to be committed:\r\n  (use \"git restore --staged <file>...\" to unstage)\r\n\u001b[8C\u001b[32mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0mChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m+1 !1 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status\u001b[21C\u001b[38;5;66m 20:05:27\r\n\u001b[0mOn branch master\r\nYour branch and 'origin/master' have diverged,\r\nand have 1 and 3 different commits each, respectively.\r\n  (use \"git pull\" if you want to integrate the remote branch with yours)\r\n\r\nChanges to be committed:\r\n  (use \"git restore --staged <file>...\" to unstage)\r\n\u001b[8C\u001b[32mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0mChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m+1 !1 \u001b[38;5;76m❯\u001b[0m \u001b[32mgit\u001b[0m add \u001b[4m.obsidian/\u001b[11C\u001b[38;5;66;24m 20:05:31\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m+1 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status          \u001b[14C\u001b[38;5;66m 20:05:32\r\n\u001b[0mOn branch master\r\nYour branch and 'origin/master' have diverged,\r\nand have 1 and 3 different commits each, respectively.\r\n  (use \"git pull\" if you want to integrate the remote branch with yours)\r\n\r\nChanges to be committed:\r\n  (use \"git restore --staged <file>...\" to unstage)\r\n\u001b[8C\u001b[32mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0mChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/workspace.json\r\n\r\n\u001b[0m \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master ⇣3⇡1 *1 \u001b[38;5;178m+1 !1 \u001b[38;5;76m❯\u001b[0m \u001b[32mexit\u001b[25C\u001b[38;5;66m 20:05:34\r\n\u001b[0m",
-                        "rows": 24
-                      }
-                    }
-                  },
-                  "pinned": true,
-                  "icon": "terminal",
-                  "title": "Terminal: exit"
+            "id": "0a3e43404a5d63a9",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "content/wiki/Kanban.md",
+                "kanbanViewState": {
+                  "kanban-plugin": "board",
+                  "list-collapse": [
+                    false,
+                    false,
+                    false,
+                    false
+                  ]
                 }
-              }
-            ]
+              },
+              "pinned": true,
+              "icon": "lucide-trello",
+              "title": "Kanban"
+            }
+          },
+          {
+            "id": "d0be66aa6465073e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/_index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "_index"
+            }
+          },
+          {
+            "id": "28fd8c9761221065",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/study-note.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "study-note"
+            }
+          },
+          {
+            "id": "0aa0646efe2972d4",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/무엇이 1등 팀을 만드는가?.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "무엇이 1등 팀을 만드는가?"
+            }
           }
         ],
-        "direction": "horizontal"
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
