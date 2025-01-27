@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "3e8ac617ba72dc57",
+        "id": "f4a9db22ae4eca19",
         "type": "tabs",
         "children": [
           {
-            "id": "ce7ed2be9fe14f93",
+            "id": "9300847fb49978c8",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -154,7 +154,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "ce7ed2be9fe14f93",
+  "active": "9300847fb49978c8",
   "lastOpenFiles": [
     "Kanban.md"
   ]

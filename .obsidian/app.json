@@ -1,5 +1,5 @@
 {
-  "vimMode": true,
+  "vimMode": false,
   "mobileToolbarCommands": [
     "obsidian-excalidraw-plugin:excalidraw-insert-transclusion",
     "obsidian-excalidraw-plugin:excalidraw-autocreate-newtab",

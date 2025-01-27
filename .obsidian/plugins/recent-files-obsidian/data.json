@@ -1,20 +1,36 @@
 {
   "recentFiles": [
     {
+      "basename": "무엇이 1등 팀을 만드는가?",
+      "path": "content/wiki/무엇이 1등 팀을 만드는가?.md"
+    },
+    {
+      "basename": "Book reviews",
+      "path": "content/wiki/Book reviews.md"
+    },
+    {
+      "basename": "study-note",
+      "path": "content/wiki/study-note.md"
+    },
+    {
       "basename": "_index",
       "path": "content/wiki/_index.md"
     },
     {
-      "basename": "2025-01-22",
-      "path": "content/wiki/daily/2025-01-22.md"
+      "basename": "임시 메모",
+      "path": "content/wiki/임시 메모.md"
     },
     {
       "basename": "Kanban",
       "path": "content/wiki/Kanban.md"
     },
     {
-      "basename": "임시 메모",
-      "path": "content/wiki/임시 메모.md"
+      "basename": "ceph login 을 oauth 로 할수 있게 하기",
+      "path": "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md"
+    },
+    {
+      "basename": "2025-01-22",
+      "path": "content/wiki/daily/2025-01-22.md"
     },
     {
       "basename": "2025-01-21",
@@ -31,10 +47,6 @@
     {
       "basename": "Drawing 2025-01-13 00.26.22.excalidraw",
       "path": "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md"
-    },
-    {
-      "basename": "Book reviews",
-      "path": "content/wiki/Book reviews.md"
     },
     {
       "basename": "Enterprise-Integration-Patterns",
