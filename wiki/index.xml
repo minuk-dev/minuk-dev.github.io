@@ -1,4 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Front Page on</title><link>https://minuk.dev/wiki/</link><description>Recent content in Front Page on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Mon, 13 Jan 2025 09:01:16 +0900</lastBuildDate><atom:link href="https://minuk.dev/wiki/index.xml" rel="self" type="application/rss+xml"/><item><title>2025-01-13</title><link>https://minuk.dev/wiki/daily/2025-01-13/</link><pubDate>Mon, 13 Jan 2025 00:14:58 +0900</pubDate><guid>https://minuk.dev/wiki/daily/2025-01-13/</guid><description>&lt;p>![[Drawing 2025-01-13 00.26.22.excalidraw]]&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Front Page on</title><link>https://minuk.dev/wiki/</link><description>Recent content in Front Page on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 29 Jan 2025 02:53:20 +0900</lastBuildDate><atom:link href="https://minuk.dev/wiki/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://minuk.dev/wiki/kanban/</link><pubDate>Wed, 22 Jan 2025 01:04:48 +0900</pubDate><guid>https://minuk.dev/wiki/kanban/</guid><description>&lt;h2 id="backlog">backlog&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> node dashboard 좀더 직관적이게 변경하기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> ceph cluster 상태 고치기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> [[ceph login 을 oauth 로 할수 있게 하기]]&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> cluster architecture 문서화하기&lt;/li>
+&lt;/ul>
+&lt;h2 id="todo">Todo&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> Self-hosted gitlab 띄우기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> gitea 띄워보기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> github action runner 띄우기&lt;/li>
+&lt;/ul>
+&lt;h2 id="in-progress">In progress&lt;/h2>
+&lt;h2 id="pending">Pending&lt;/h2>
+&lt;p>%% kanban:settings&lt;/p>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="#ZgotmplZ">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>{&amp;#34;kanban-plugin&amp;#34;:&amp;#34;board&amp;#34;,&amp;#34;list-collapse&amp;#34;:[false,false,false,false],&amp;#34;new-note-folder&amp;#34;:&amp;#34;content/wiki/kanban&amp;#34;}&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;p>%%&lt;/p></description></item><item><title>2025-01-13</title><link>https://minuk.dev/wiki/daily/2025-01-13/</link><pubDate>Mon, 13 Jan 2025 00:14:58 +0900</pubDate><guid>https://minuk.dev/wiki/daily/2025-01-13/</guid><description>&lt;p>![[Drawing 2025-01-13 00.26.22.excalidraw]]&lt;/p>
 &lt;p>하루애 하나씩 나아지는게 좋을거같다
 오늘은 7시30분에 일어나 미적거리다가 8시30분에 서현으로 출근한다
 워크샵이 있기 때문이다
