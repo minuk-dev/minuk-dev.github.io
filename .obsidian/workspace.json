@@ -120,7 +120,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "index",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -150,9 +150,21 @@
               "icon": "lucide-file",
               "title": "Plugin no longer active"
             }
+          },
+          {
+            "id": "c6e5e702d068c595",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content/wiki/무엇이 1등 팀을 만드는가?.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 무엇이 1등 팀을 만드는가?"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -214,18 +226,6 @@
             }
           },
           {
-            "id": "c6e5e702d068c595",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "content/wiki/daily/2025-01-22.md"
-              },
-              "icon": "lucide-list",
-              "title": "Outline of 2025-01-22"
-            }
-          },
-          {
             "id": "cf41d88e0147f607",
             "type": "leaf",
             "state": {
@@ -236,7 +236,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
