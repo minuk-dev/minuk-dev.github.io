@@ -2,7 +2,7 @@
 layout: wikilist
 title: Front Page
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2024-05-20 04:54:16 +0900
+lastmod: 2025-01-29 02:53:20 +0900
 ---
 - [[ipad]]
 - [[제텔카스텐]]

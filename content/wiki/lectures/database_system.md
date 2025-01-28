@@ -1,11 +1,13 @@
 ---
-layout  : wiki
-title   : Database System
-summary : 학교 데이터베이스 시스템 수업 정리
-date    : 2021-04-18 18:42:47 +0900
-lastmod : 2021-06-15 04:20:11 +0900
-tags    : [lectures, database]
-parent  : lectures
+layout: wiki
+title: Database System
+summary: 학교 데이터베이스 시스템 수업 정리
+date: 2021-04-18 18:42:47 +0900
+lastmod: 2025-01-29 02:53:20 +0900
+tags:
+  - lectures
+  - database
+parent: lectures
 ---
 
 ## Chapter 12. Physical Storage Systems

@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2025-01-27 17:06:09 +0900
+lastmod: 2025-01-29 02:53:20 +0900
 tags:
   - book
 parent: 
@@ -29,7 +29,7 @@ parent:
 - [[site-reliability-engineering]]
 - [[시계열 예측과 분석]]
 - [[Enterprise-Integration-Patterns]]
-- [[무엇이 1등 팀을 만드는가만드는가?]]
+- [[무엇이 1등 팀을 만드는가?]]
 
 ### 정리 보류한거
 - [[keras-book]]
