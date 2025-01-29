@@ -4,147 +4,92 @@
     "type": "split",
     "children": [
       {
-        "id": "52e3d312bd9afb32",
-        "type": "split",
+        "id": "ce42ab5f9850481e",
+        "type": "tabs",
         "children": [
           {
-            "id": "ce42ab5f9850481e",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "360f14e64982c3fa",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/임시 메모.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "pinned": true,
-                  "icon": "lucide-file",
-                  "title": "임시 메모"
-                }
+            "id": "360f14e64982c3fa",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/임시 메모.md",
+                "mode": "source",
+                "source": false
               },
-              {
-                "id": "0a3e43404a5d63a9",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "kanban",
-                  "state": {
-                    "file": "content/wiki/Kanban.md",
-                    "kanbanViewState": {
-                      "kanban-plugin": "board",
-                      "list-collapse": [
-                        false,
-                        false,
-                        false,
-                        false
-                      ]
-                    }
-                  },
-                  "pinned": true,
-                  "icon": "lucide-trello",
-                  "title": "Kanban"
-                }
-              },
-              {
-                "id": "d0be66aa6465073e",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/_index.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "_index"
-                }
-              },
-              {
-                "id": "28fd8c9761221065",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/Book reviews.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "Book reviews"
-                }
-              },
-              {
-                "id": "f0695006df03d008",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md",
-                    "mode": "source",
-                    "source": false
-                  },
-                  "icon": "lucide-file",
-                  "title": "ceph login 을 oauth 로 할수 있게 하기"
-                }
-              }
-            ],
-            "currentTab": 4
+              "pinned": true,
+              "icon": "lucide-file",
+              "title": "임시 메모"
+            }
           },
           {
-            "id": "9f0118091abe39b6",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "3c768560fc9c27b6",
-                "type": "leaf",
-                "pinned": true,
-                "state": {
-                  "type": "terminal:terminal",
-                  "state": {
-                    "terminal:terminal": {
-                      "cwd": "/Users/min-uklee/workspace/repos/minuk-dev.github.io",
-                      "focus": false,
-                      "profile": {
-                        "args": [],
-                        "executable": "/bin/zsh",
-                        "name": "",
-                        "platforms": {
-                          "darwin": true
-                        },
-                        "pythonExecutable": "python3",
-                        "restoreHistory": true,
-                        "successExitCodes": [
-                          "0",
-                          "SIGINT",
-                          "SIGTERM"
-                        ],
-                        "terminalOptions": {
-                          "documentOverride": null
-                        },
-                        "type": "integrated",
-                        "useWin32Conhost": true
-                      },
-                      "serial": {
-                        "columns": 64,
-                        "data": " \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master *1 \u001b[38;5;178m!3 \u001b[38;5;76m❯\u001b[0m \u001b[32mhugo\u001b[0m serve\r\nWatching for changes in /Users/min-uklee/workspace/repos/minuk-dev.github.io/{archetypes,assets,content,data,i18n,layouts,static}\r\nWatching for config changes in /Users/min-uklee/workspace/repos/minuk-dev.github.io/hugo.toml\r\nStart building sites … \r\nhugo v0.140.2+extended+withdeploy darwin/arm64 BuildDate=2024-12-30T15:01:53Z VendorInfo=brew\r\n\r\n\u001b[33mWARN  \u001b[0mRaw HTML omitted while rendering \"/Users/min-uklee/workspace/repos/minuk-dev.github.io/content/wiki/lectures/database_system.md\"; see https://gohugo.io/getting-started/configuration-markup/#rendererunsafe\r\nYou can suppress this warning by adding the following to your site configuration:\r\nignoreLogs = ['warning-goldmark-raw-html']\r\n\u001b[33mWARN  \u001b[0mRaw HTML omitted while rendering \"/Users/min-uklee/workspace/repos/minuk-dev.github.io/content/wiki/verilog.md\"; see https://gohugo.io/getting-started/configuration-markup/#rendererunsafe\r\nYou can suppress this warning by adding the following to your site configuration:\r\nignoreLogs = ['warning-goldmark-raw-html']\r\n\r\n                   | EN   \r\n-------------------+------\r\n  Pages            | 711  \r\n  Paginator pages  |   0  \r\n  Non-page files   |  54  \r\n  Static files     |  35  \r\n  Processed images |   0  \r\n  Aliases          |   0  \r\n  Cleaned          |   0  \r\n\r\nBuilt in 1149 ms\r\nEnvironment: \"development\"\r\nServing pages from disk\r\nRunning in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender\r\nWeb Server is available at http://localhost:1313/ (bind address 127.0.0.1) \r\nPress Ctrl+C to stop\r\n^C\u001b[7;1m%\u001b[0m                                                             \r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master *1 \u001b[38;5;178m!3 \u001b[38;5;76m❯\u001b[0m \u001b[32mhugo\u001b[0m build\r\nStart building sites … \r\nhugo v0.140.2+extended+withdeploy darwin/arm64 BuildDate=2024-12-30T15:01:53Z VendorInfo=brew\r\n\r\n\u001b[33mWARN  \u001b[0mRaw HTML omitted while rendering \"/Users/min-uklee/workspace/repos/minuk-dev.github.io/content/wiki/lectures/database_system.md\"; see https://gohugo.io/getting-started/configuration-markup/#rendererunsafe\r\nYou can suppress this warning by adding the following to your site configuration:\r\nignoreLogs = ['warning-goldmark-raw-html']\r\n\u001b[33mWARN  \u001b[0mRaw HTML omitted while rendering \"/Users/min-uklee/workspace/repos/minuk-dev.github.io/content/wiki/verilog.md\"; see https://gohugo.io/getting-started/configuration-markup/#rendererunsafe\r\nYou can suppress this warning by adding the following to your site configuration:\r\nignoreLogs = ['warning-goldmark-raw-html']\r\n\r\n                   | EN   \r\n-------------------+------\r\n  Pages            | 711  \r\n  Paginator pages  |   0  \r\n  Non-page files   |  54  \r\n  Static files     |  35  \r\n  Processed images |   0  \r\n  Aliases          |   0  \r\n  Cleaned          |   0  \r\n\r\nTotal in 1036 ms\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master *1 \u001b[38;5;178m!3 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m status\r\nOn branch master\r\nYour branch is up to date with 'origin/master'.\r\n\r\nChanges not staged for commit:\r\n  (use \"git add <file>...\" to update what will be committed)\r\n  (use \"git restore <file>...\" to discard changes in working directory)\r\n\u001b[8C\u001b[31mmodified:   .obsidian/plugins/recent-files-obsidian/data.json\r\n\u001b[8Cmodified:   .obsidian/workspace.json\r\n\u001b[8Cmodified:   \"content/wiki/ceph login \\354\\235\\204 oauth \\353\\241\\234 \\355\\225\\240\\354\\210\\230 \\354\\236\\210\\352\\262\\214 \\355\\225\\230\\352\\270\\260.md\"\r\n\r\n\u001b[0mno changes added to commit (use \"git add\" and/or \"git commit -a\")\r\n \u001b[38;5;31m \u001b[38;5;39;1m~\u001b[38;5;31;22m/\u001b[38;5;103mw\u001b[38;5;31m/\u001b[38;5;103mr\u001b[38;5;31m/\u001b[38;5;39;1mminuk-dev.github.io\u001b[38;5;31;22m \u001b[38;5;76m\u001b[38;5;178m \u001b[38;5;76m master *1 \u001b[38;5;178m!3 \u001b[38;5;76m❯\u001b[0m \u001b[32mg\u001b[0m add \u001b[4m.\u001b[0m",
-                        "rows": 24
-                      }
-                    }
-                  },
-                  "pinned": true,
-                  "icon": "terminal",
-                  "title": "Terminal: min-uklee@Min-UKs-MacBook-Air:~/workspace/repos/minuk-dev.github.io"
+            "id": "0a3e43404a5d63a9",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "content/wiki/Kanban.md",
+                "kanbanViewState": {
+                  "kanban-plugin": "board",
+                  "list-collapse": [
+                    false,
+                    false,
+                    false,
+                    false
+                  ]
                 }
-              }
-            ]
+              },
+              "pinned": true,
+              "icon": "lucide-trello",
+              "title": "Kanban"
+            }
+          },
+          {
+            "id": "d0be66aa6465073e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/_index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "_index"
+            }
+          },
+          {
+            "id": "28fd8c9761221065",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/Book reviews.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Book reviews"
+            }
+          },
+          {
+            "id": "f0695006df03d008",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ceph login 을 oauth 로 할수 있게 하기"
+            }
           }
         ],
-        "direction": "horizontal"
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -211,9 +156,11 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {},
+              "state": {
+                "file": "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md"
+              },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of ceph login 을 oauth 로 할수 있게 하기"
             }
           }
         ],
@@ -221,7 +168,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "7e13f139063007fb",
@@ -309,14 +257,29 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "3c768560fc9c27b6",
+  "active": "f0695006df03d008",
   "lastOpenFiles": [
-    "public/wiki/kanban/index.html",
-    "public/wiki/kanban",
-    "public/wiki/drawings/drawing-2025-01-13-00.26.22.excalidraw/index.html",
-    "public/wiki/drawings/drawing-2025-01-13-00.26.22.excalidraw",
-    "public/wiki/daily/2025-01-13/index.html",
-    "public/wiki/daily/2025-01-13",
+    "layouts/partials/header.html~",
+    "layouts/partials/module/breadcrumb.html~",
+    "public/wiki/index.xml",
+    "public/index.xml",
+    "public/tags/verilog/index.xml",
+    "public/tags/회고/index.xml",
+    "public/tags/typescript/index.xml",
+    "public/tags/제텔카스텐/index.xml",
+    "public/tags/workqueue/index.xml",
+    "public/tags/설대회/index.xml",
+    "public/tags/추석대회/index.xml",
+    "public/wiki/images/simplessd.png",
+    "public/wiki/images/simple-file-1.png",
+    "public/wiki/images/nvme.jpg",
+    "public/wiki/images/new_year.png",
+    "public/wiki/images/mysql_architecture.png",
+    "public/wiki/images/linux-kakao-5.jpg",
+    "public/wiki/images/linux-kakao-4.png",
+    "public/wiki/images/linux-kakao-3.jpg",
+    "public/wiki/images/linux-kakao-2.png",
+    "public/wiki/images/linux-kakao-1.png",
     "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md",
     "content/wiki/lectures/database_system.md",
     "content/wiki/무엇이 1등 팀을 만드는가?.md",
@@ -331,25 +294,10 @@
     "content/wiki/_index.md",
     "content/wiki/임시 메모.md",
     "content/wiki/Kanban.md",
-    "content/wiki/kanban",
-    "assets/Pasted image 20250122013131.png",
     "Untitled.canvas",
     "content/wiki/drawings/Drawing 2025-01-13 00.26.22.excalidraw.md",
     "content/wiki/Enterprise-Integration-Patterns.md",
     "content/wiki/lectures/multi-variant-statistical-analysis.md",
-    "static/css/main.css~",
-    "public/images/image2.png",
-    "public/images/image1.png",
-    "public/images/favicon/ms-icon-70x70.png",
-    "public/images/favicon/favicon-32x32.png",
-    "public/images/favicon/apple-icon-120x120.png",
-    "public/images/favicon/apple-icon-72x72.png",
-    "public/images/favicon/android-icon-144x144.png",
-    "public/images/favicon/browserconfig.xml",
-    "public/images/favicon/apple-icon-60x60.png",
-    "public/images/favicon/apple-icon-76x76.png",
-    "public/images/favicon/manifest.json",
-    "public/images/favicon/favicon.ico",
     "content/wiki/test2.md",
     "content/wiki/test-2.md",
     "content/wiki/index.md",

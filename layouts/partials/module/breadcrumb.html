@@ -1,15 +1,5 @@
-{{ if .Parent }}
-    {{ partial "module/breadcrumb" .Parent }}
-{{ else if not .IsHome }}
-    {{ partial "module/breadcrumb" .Site.Home }}
-{{ end }}
-
-{{ if .IsHome }}
-    {{ i18n "breadcrumb_home" | title }}
-{{ else if .IsPage }}
-  {{ if .Params.parent }}
-    [[{{ .Params.parent }}]]
-  {{ end }}
+{{ if .Params.parent }}
+  [[{{ .Params.parent }}]]
 {{ else }}
-    {{ .Title }}
+  [[_index]]
 {{ end }}

@@ -9,9 +9,10 @@
     <div class="header_middle">
         {{ if .IsHome }}
             {{ $.Site.Params.header.title }}
+        {{ else if $.Page.Title }}
+            {{ $.Page.Title }}
         {{ else }}
-            {{ $.Page.Title }} -
-            {{ $.Site.Params.header.title }}
+          {{ $.File.BaseFileName | humanize }}
         {{ end }}
     </div>
 </header>
