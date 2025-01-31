@@ -3,7 +3,7 @@ layout: wiki
 title: go
 summary: go 언어 관련
 date: 2022-08-02 15:52:30 +0900
-lastmod: 2025-01-31 11:55:09 +0900
+lastmod: 2025-01-31 11:56:02 +0900
 tags:
   - go
 draft: false
@@ -23,6 +23,7 @@ parent: study-note
 
 ## 혼자서 탐구해본 자료
 - [[go-http]]
+- [[go-websocket]]
 
 ## Snippet
 - [[http-go]]

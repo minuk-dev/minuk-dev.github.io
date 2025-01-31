@@ -1,6 +1,10 @@
 {
   "recentFiles": [
     {
+      "basename": "go-websocket",
+      "path": "content/wiki/go-websocket.md"
+    },
+    {
       "basename": "go",
       "path": "content/wiki/go.md"
     },

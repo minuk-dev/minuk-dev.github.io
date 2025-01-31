@@ -103,9 +103,23 @@
               "icon": "lucide-file",
               "title": "go"
             }
+          },
+          {
+            "id": "85917b1b8af65989",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/go-websocket.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "go-websocket"
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -273,8 +287,13 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "f6c422fd8094bf1f",
+  "active": "85917b1b8af65989",
   "lastOpenFiles": [
+    "content/wiki/go.md",
+    "github.com/gorilla/websocket.md",
+    "content/wiki/go-websocket.md",
+    "github.com/gorilla",
+    "github.com",
     "content/wiki/study-note.md",
     "content/wiki/_index.md",
     "content/wiki/Book reviews.md",
@@ -288,8 +307,6 @@
     "public/tags/회고/index.xml",
     "public/tags/typescript/index.xml",
     "public/tags/제텔카스텐/index.xml",
-    "public/tags/workqueue/index.xml",
-    "public/tags/설대회/index.xml",
     "public/wiki/images/simplessd.png",
     "public/wiki/images/simple-file-1.png",
     "public/wiki/images/nvme.jpg",
@@ -318,9 +335,6 @@
     "content/wiki/test-2.md",
     "content/wiki/index.md",
     "content/wiki/daily/2025-01-05.md",
-    "content/wiki/autoconf.md",
-    "jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
-    "index.md",
-    "Enterprise-Integration-Patterns.md"
+    "content/wiki/autoconf.md"
   ]
 }
