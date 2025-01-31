@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on</title><link>https://minuk.dev/tags/go/</link><description>Recent content in Go on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 31 Jan 2025 11:55:09 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>Cloud Native Go</title><link>https://minuk.dev/wiki/cloud-native-go/</link><pubDate>Wed, 02 Nov 2022 00:20:40 +0900</pubDate><guid>https://minuk.dev/wiki/cloud-native-go/</guid><description>&lt;h4 id="누가-이-책을-읽어야하는가">누가 이 책을 읽어야하는가&lt;/h4>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on</title><link>https://minuk.dev/tags/go/</link><description>Recent content in Go on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 01 Feb 2025 03:08:28 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>go-websocket</title><link>https://minuk.dev/wiki/go-websocket/</link><pubDate>Fri, 31 Jan 2025 11:55:53 +0900</pubDate><guid>https://minuk.dev/wiki/go-websocket/</guid><description>&lt;h2 id="해당-글을-쓰는-이유">해당 글을 쓰는 이유&lt;/h2>
+&lt;ul>
+&lt;li>golang 에서 websocket 을 구성해볼 일이 있는데, 그에 관한 생각과 참조자료들을 정리해두기 위해서이다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="go-에서-websocket-구성시-널리쓰이는-방법">Go 에서 websocket 구성시 널리쓰이는 방법&lt;/h3>
+&lt;ul>
+&lt;li>server side: &lt;a href="https://github.com/gin-gonic/examples/blob/master/websocket/server/server.go">https://github.com/gin-gonic/examples/blob/master/websocket/server/server.go&lt;/a>
+&lt;ul>
+&lt;li>라이브러리 하나를 제대로 알고 쓰는게 중요하다고 생각하고, gin 이 가장 널리 쓰이는 라이브러리라 생각해서 해당 코드를 가져왔다.&lt;/li>
+&lt;li>&lt;a href="https://github.com/gorilla/websocket">gorilla/websocket&lt;/a>&lt;/li>
+&lt;li>라이브러리를 쓰는게 가장 일반적인 방법이다.&lt;/li>
+&lt;li>이를 쓰는 이유는 다음과 같다고 생각한다.
+&lt;ul>
+&lt;li>
+&lt;p>Upgrade 처리&lt;/p>
+&lt;ul>
+&lt;li>websocket 에서는 일반 http request 가 올때 protocol 을 websocket 으로 교체해주기 위해서 Upgrade 헤더를 사용해서 응답을 돌려줘야하는데, 이를 매우 쉽게 처리해주고, 이를 위한 옵션들을 제공해준다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>connection 객체를 통한 ReadMessage, WriteMessage 메서드 제공&lt;/p></description></item><item><title>Cloud Native Go</title><link>https://minuk.dev/wiki/cloud-native-go/</link><pubDate>Wed, 02 Nov 2022 00:20:40 +0900</pubDate><guid>https://minuk.dev/wiki/cloud-native-go/</guid><description>&lt;h4 id="누가-이-책을-읽어야하는가">누가 이 책을 읽어야하는가&lt;/h4>
 &lt;ul>
 &lt;li>imtermediate-to-advanced developers&lt;/li>
 &lt;li>web application engineer&lt;/li>
