@@ -1,11 +1,12 @@
 ---
-layout  : wiki
-title   : study-note
-summary : 공부한거 모아두기
-date    : 2022-03-31 11:14:42 +0900
-lastmod : 2023-02-12 16:52:35 +0900
-tags    : [study]
-draft   : false
+layout: wiki
+title: study-note
+summary: 공부한거 모아두기
+date: 2022-03-31 11:14:42 +0900
+lastmod: 2025-01-31 11:53:28 +0900
+tags:
+  - study
+draft: false
 ---
 
 - [[software-engineering]]
@@ -32,6 +33,7 @@ draft   : false
 - [[regex]]
 - [[kotlin]]
 - [[rust]]
+- [[go]]
 
 ### English
 - [[english]]
