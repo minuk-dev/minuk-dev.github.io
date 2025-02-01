@@ -6,7 +6,7 @@ function convertWikiLink(elem) {
         display = "Front Page";
         matching = "";
       }
-      matching = matching.replace(/ /g, "-")
+      matching = matching.replace(/ /g, "-").toLowerCase()
       return `<a href="/wiki/${matching.replace(/[()]/g, "")}">${display}</a>`;
     },
   );
@@ -16,7 +16,7 @@ function convertWikiLink(elem) {
       display = "Front Page";
       matching = "";
     }
-    matching = matching.replace(/ /g, "-")
+    matching = matching.replace(/ /g, "-").toLowerCase()
     return `<a href="/wiki/${matching.replace(/[()]/g, "")}">${display}</a>`;
   });
 };
