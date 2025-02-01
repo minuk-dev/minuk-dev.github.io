@@ -1,4 +1,4 @@
-const convertWikiLink = (elem) => {
+function convertWikiLink(elem) {
   elem.innerHTML = elem.innerHTML.replace(
     /((\[\[([^(\]\])]+?)\]\])\{(.+?)\})/g,
     (_a, _b, _c, matching, display) => {
@@ -110,3 +110,4 @@ const moveToTag = (tagName) => {
 
 document.addEventListener("DOMContentLoaded", activateWikiLink);
 document.addEventListener("DOMContentLoaded", activateWikiLog);
+

@@ -1,118 +1,37 @@
-baseURL = 'https://minuk.dev'
-languageCode = 'ko-kr'
+baseURL = "https://minuk.dev/"
+languageCode = "ko-kr"
+title = "minuk.dev"
+theme = "minimal"
+googleAnalytics = ""
 
-[taxonomies]
-tag = "tags"
-
-# Theme parameters
 [params]
+    author = "Min-Uk.Lee"
+    description = "개발 위키와 기타 모음"
+    githubUsername = "minuk-dev"
+    accent = "#00a3d2"
+    showBorder = true
+    backgroundColor = "white"
+    font = "Raleway" # should match the name on Google Fonts!
+    highlight = true
+    highlightStyle = "default"
+    highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift", "cpp", "c", "javascript", "typescript", "bash"]
 
-# Parameters applied in HTML <head>
-[params.site]
-# Website ICON
-faviconUrl = ""
+[[menu.main]]
+    url = "/"
+    name = "Home"
+    weight = 1
 
-googleVerification = ""
-# Customized info shown in header of the page        # Customized info shown in header of the page
-[params.header]
-title = "minuk dev wiki"
+[[menu.main]]
+    url = "/wiki/"
+    name = "Wiki"
+    weight = 2
 
-# Subtitle for this site, used in homepage only
-subtitle = "Minuk dev"
+[[menu.main]]
+    url = "/posts/"
+    name = "Posts"
+    weight = 3
 
-[params.footer.socialLink]
-github = ""
-facebook = ""
-twitter = ""
-email = ""
-linkedin = ""
-instagram = ""
-telegram = ""
-medium = ""
-vimeo = ""
-youtube = ""
-
-# Metadata of the site, value will be used in HTML <header>
-# These value would be used when they didn't appear in the frontmatter of a single page.
-# In other words, these value will be overwritten by the frontmatter in the single page.
-[params.globalFrontmatter]
-# The author of this site. This will be shown in 
-# 1. the footer of all page
-# 2. the author filed in the single page. (this could be overwritten by the frontmatter of the single page.)
-# Keep it an empty string or remove this item will hide it from the page
-author = "Min-Uk.Lee"
-
-# Website description for RSS and SEO. Theme will generate a <meta> tag for this item
-description = "minuk.dev wiki"
-
-# Website keywords. Theme will generate a <meta> tag for this item.
-keywords = "hugo,site,new"
-
-# Parameters applied in the homepage only
-[params.homePage]
-# Long Descripition shown in home page "Start Block". Is is recommended to have the paragraph shorter than 100 words.        
-siteLongDescription = ""
-
-# If you don't like the title of "siteLongDescription" be "Start" (default), 
-# you may change the value of this item to "Description" or something you like.
-siteLongDescriptionTitle = "Min Uk Wiki"
-
-# Param to decide whether to show the most recent blog posts or not. (Default: true)
-showRecentPostsBlock = true
-
-# Param to decide how many recent posts to show in the home page. (Default: 5)
-numOfRecentPosts = 5
-
-# Parameter to decide whether to show the URL behind the title.
-# It will be more like an editor if it is shown. However, in general, it can be messy if it is displayed.        
-# (Default: true)
-recentPostShowUrl = true
-
-
-# Paramater applied in the single page
-# These values could be overwritten by the frontmatter in the single page.
-[params.page]
-# Should include Table of Content in front of the page or not.
-includeToc = true
-
-# Should show the author of the page or not.
-# The author name will be shown in the single page if and only if 
-#   1. this items been set as true and
-#   2. "aurthor" filed been provided in the 
-#       A. single page frontmatter or
-#       B. "author" filed in above "globalFrontmatter" block
-showAuthor = true
-
-# Should show the date of the page or not
-showDate = true
-
-# The format of the date.
-# Refer to page https://gohugo.io/functions/format/ for more detail.
-# Below is the default format, please do not remove it, unless you set `false` in `showDate` field.
-dateFormat = "Jan 02 2006 15:04:05"
-
-# Should show the estimate reading time in front of the page or not.
-showTimeToRead = true
-
-# Should show the breadcrumb in front of the page or not.
-showBreadcrumb = true
-
-# Should show the "copy" button in the codeblock or not.
-codeBlockCopible = true
-
-# Should include LaTeX support on a single page or not?
-# This parameter will be overwritten by the page front matter (if it has been set).
-# Since enabling this configuration loads some external JavaScript, 
-#   it will slow down the page loading speed. 
-# It's recommended to keep it turned off by default and only enable this configuration when required.
-useMath = true
-
-# Filed tp describe how should we pass the "trust" params to the `KaTex` module.
-# Thos params would affect if we could trust the HTML related code in LaTex blocks.
-# https://katex.org/docs/options.html
-trustedmath = false
-
-[params.preference]
-# Use "true" to show the real fila name in both breadcrumb and the sidebar
-# Use "false" to show the tile in the file in both breadcrumb and the sidebar
-showFileName = false
+[[menu.main]]
+    url = "/about/"
+    name = "About"
+    weight = 5
