@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title/><link>https://minuk.dev/</link><description>Recent content on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 01 Feb 2025 03:08:28 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>go-websocket</title><link>https://minuk.dev/wiki/go-websocket/</link><pubDate>Fri, 31 Jan 2025 11:55:53 +0900</pubDate><guid>https://minuk.dev/wiki/go-websocket/</guid><description>&lt;h2 id="해당-글을-쓰는-이유">해당 글을 쓰는 이유&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title/><link>https://minuk.dev/</link><description>Recent content on</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 01 Feb 2025 19:07:25 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>go-websocket</title><link>https://minuk.dev/wiki/go-websocket/</link><pubDate>Fri, 31 Jan 2025 11:55:53 +0900</pubDate><guid>https://minuk.dev/wiki/go-websocket/</guid><description>&lt;h2 id="해당-글을-쓰는-이유">해당 글을 쓰는 이유&lt;/h2>
 &lt;ul>
 &lt;li>golang 에서 websocket 을 구성해볼 일이 있는데, 그에 관한 생각과 참조자료들을 정리해두기 위해서이다.&lt;/li>
 &lt;/ul>
@@ -24588,6 +24588,28 @@ fX11ydc/X5gqfv/X2QDdf6AiHj&amp;#43;elAB189cA3GQIFCuhx4KDdQA4N31icAV9CaCkgO8FmjI3
 CQAE3RN&amp;#43;cBI3Nt8QCUgCAEFBK31t6QAkALWGwC3QBAbgAMsrwfdEkAG2HcS&amp;#43;QgIK3CkAygHCAAAFAMTUAvAOxgJ3YMEqwAAlPSB1ACAMoCiQG6JHcx3bWvHf53o&amp;#43;u8Cp3EAKbcw3v8EDe/AgUBjycADphkkZ3toJ7cFQ01zKBZA/t8EDpnpAJmdHAa5IQBu3qAIhdHAHACDjcAg92giP004KFCIXpt3YAs7YwMwDkgw93ADe3vt8PcB3FqVBhjAh
 
 AIwDDwfQYyz63Vp3XEHXnwAYCS37enDGrNrjN0Bb3O93vckIxkOAA3EWtlkTAARkCABGQQAA&lt;/code>&lt;/pre>
+ 
+&lt;/div>
+&lt;p>%%&lt;/p></description></item><item><title/><link>https://minuk.dev/wiki/drawings/drawing-2025-02-01-19.06.24.excalidraw/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://minuk.dev/wiki/drawings/drawing-2025-02-01-19.06.24.excalidraw/</guid><description>&lt;p>==⚠ Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠== You can decompress Drawing data with the command palette: &amp;lsquo;Decompress current Excalidraw file&amp;rsquo;. For more info check in plugin settings under &amp;lsquo;Saving&amp;rsquo;&lt;/p>
+&lt;h2 id="drawing">Drawing&lt;/h2>
+
+
+
+
+
+
+
+&lt;div class="codeblock">
+ 
+ &lt;div class="copy-button-box">
+ &lt;button class="copy-button" state="copy" data="N4IgLgngDgpiBcIYA8DGBDANgSwCYCd0B3EAGhADcZ8BnbAewDsEAmcm&amp;#43;gV31TkQAswYKDXgB6MQHNsYfpwBGAOlT0AtmIBeNCtlQbs6RmPry6uA4wC0KDDgLFLUTJ2lH8MTDHQ0YNMWHRJMRZFAHZFAFYyJE9VGEYwGgQAbQBdcnQoKABlALA&amp;#43;UEl8PGzsDT5GTkxMch0YIgAhdFQAayKuRlwAYXpMenwEEABiADMx8ZAAX0mgA">
+ &lt;i class="bi bi-copy">&lt;/i>
+ &lt;/button>
+ &lt;/div>
+ 
+
+ 
+ &lt;pre>&lt;code>N4IgLgngDgpiBcIYA8DGBDANgSwCYCd0B3EAGhADcZ8BnbAewDsEAmcm&amp;#43;gV31TkQAswYKDXgB6MQHNsYfpwBGAOlT0AtmIBeNCtlQbs6RmPry6uA4wC0KDDgLFLUTJ2lH8MTDHQ0YNMWHRJMRZFAHZFAFYyJE9VGEYwGgQAbQBdcnQoKABlALA&amp;#43;UEl8PGzsDT5GTkxMch0YIgAhdFQAayKuRlwAYXpMenwEEABiADMx8ZAAX0mgA&lt;/code>&lt;/pre>
  
 &lt;/div>
 &lt;p>%%&lt;/p></description></item><item><title/><link>https://minuk.dev/wiki/excalidraw/test-draw/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://minuk.dev/wiki/excalidraw/test-draw/</guid><description>&lt;p>==⚠ Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠==&lt;/p>
