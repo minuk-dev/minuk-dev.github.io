@@ -195,6 +195,9 @@
   },
   "active": "492c1568d5f58952",
   "lastOpenFiles": [
+    "content/wiki/daily/2025-01-31.md",
+    "content/wiki/drawings/Drawing 2025-02-01 19.06.24.excalidraw.md",
+    "content/wiki/go-websocket.md",
     "content/wiki/_index.md",
     "content/wiki/daily/2025-02-01.md",
     "content/wiki/daily/2025-01-22.md",
@@ -237,9 +240,6 @@
     "content/wiki/lectures/bayesian-statistics.md",
     "content/wiki/lectures/information_security_theory.md",
     "content/wiki/lectures/database_system.md",
-    "content/wiki/lectures/computer architecture.md",
-    "content/wiki/lectures/wireless.md",
-    "content/wiki/lectures/regression.md",
-    "content/wiki/lectures/automata.md"
+    "content/wiki/lectures/computer architecture.md"
   ]
 }

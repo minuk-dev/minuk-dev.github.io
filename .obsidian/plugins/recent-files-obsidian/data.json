@@ -11,12 +11,10 @@
     {
       "basename": "무엇이 1등 팀을 만드는가?",
       "path": "content/wiki/무엇이 1등 팀을 만드는가?.md"
-      "basename": "go-websocket",
-      "path": "content/wiki/go-websocket.md"
     },
     {
-      "basename": "go",
-      "path": "content/wiki/go.md"
+      "basename": "Book reviews",
+      "path": "content/wiki/Book reviews.md"
     },
     {
       "basename": "study-note",
@@ -25,60 +23,26 @@
     {
       "basename": "임시 메모",
       "path": "content/wiki/임시 메모.md"
-      "basename": "_index",
-      "path": "content/wiki/_index.md"
     },
     {
-      "basename": "Book reviews",
-      "path": "content/wiki/Book reviews.md"
-    },
-    {
-      "basename": "2025-01-31",
-      "path": "content/wiki/daily/2025-01-31.md"
+      "basename": "Kanban",
+      "path": "content/wiki/Kanban.md"
     },
     {
       "basename": "ceph login 을 oauth 로 할수 있게 하기",
       "path": "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md"
     },
     {
-      "basename": "database_system",
-      "path": "content/wiki/lectures/database_system.md"
-    },
-    {
-      "basename": "무엇이 1등 팀을 만드는가?",
-      "path": "content/wiki/무엇이 1등 팀을 만드는가?.md"
-    },
-    {
-      "basename": "2025-01-12",
-      "path": "content/wiki/daily/2025-01-12.md"
-    },
-    {
-      "basename": "2025-01-13",
-      "path": "content/wiki/daily/2025-01-13.md"
+      "basename": "2025-01-22",
+      "path": "content/wiki/daily/2025-01-22.md"
     },
     {
       "basename": "2025-01-21",
       "path": "content/wiki/daily/2025-01-21.md"
     },
     {
-      "basename": "Drawing 2025-01-05 06.04.41.excalidraw",
-      "path": "content/wiki/daily/Drawing 2025-01-05 06.04.41.excalidraw.md"
-    },
-    {
-      "basename": "2025-01-22",
-      "path": "content/wiki/daily/2025-01-22.md"
-    },
-    {
-      "basename": "default",
-      "path": "archetypes/default.md"
-    },
-    {
-      "basename": "임시 메모",
-      "path": "content/wiki/임시 메모.md"
-    },
-    {
-      "basename": "Kanban",
-      "path": "content/wiki/Kanban.md"
+      "basename": "2025-01-13",
+      "path": "content/wiki/daily/2025-01-13.md"
     },
     {
       "basename": "jekyll 기반 wiki 에서 hugo 로 넘어가기",
@@ -93,12 +57,20 @@
       "path": "content/wiki/Enterprise-Integration-Patterns.md"
     },
     {
+      "basename": "default",
+      "path": "archetypes/default.md"
+    },
+    {
       "basename": "multi-variant-statistical-analysis",
       "path": "content/wiki/lectures/multi-variant-statistical-analysis.md"
     },
     {
       "basename": "2025-01-05",
       "path": "content/wiki/daily/2025-01-05.md"
+    },
+    {
+      "basename": "2025-01-12",
+      "path": "content/wiki/daily/2025-01-12.md"
     },
     {
       "basename": "autoconf",
