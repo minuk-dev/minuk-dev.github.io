@@ -1,8 +1,5 @@
 {{ define "main_article" }}
 <article class="main">
-  {{ partial "module/sidebar_btn" . }}
-
-
   <div class="home">
     <div class="title">
       {{ with $.Site.Params.header.logo.imgUrl }}
@@ -36,7 +33,11 @@
             href="{{ .Permalink }}"
             title=".{{ .RelPermalink }}"
           >
-            {{ $page.Title }}
+            {{ if $page.Title }}
+              {{ $page.Title }}
+            {{ else }}
+              {{ .File.BaseFileName | humanize }}
+            {{ end }}
           </a>
           <div class="list-terms">
             <ul>
