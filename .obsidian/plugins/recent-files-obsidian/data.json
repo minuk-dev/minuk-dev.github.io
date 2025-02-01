@@ -1,6 +1,14 @@
 {
   "recentFiles": [
     {
+      "basename": "2025-02-01",
+      "path": "content/wiki/daily/2025-02-01.md"
+    },
+    {
+      "basename": "_index",
+      "path": "content/wiki/_index.md"
+    },
+    {
       "basename": "무엇이 1등 팀을 만드는가?",
       "path": "content/wiki/무엇이 1등 팀을 만드는가?.md"
     },
@@ -11,10 +19,6 @@
     {
       "basename": "study-note",
       "path": "content/wiki/study-note.md"
-    },
-    {
-      "basename": "_index",
-      "path": "content/wiki/_index.md"
     },
     {
       "basename": "임시 메모",
