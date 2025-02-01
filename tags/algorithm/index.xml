@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Algorithm on minuk.dev</title><link>https://minuk.dev/tags/algorithm/</link><description>Recent content in Algorithm on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Mon, 15 Aug 2022 20:02:01 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/algorithm/index.xml" rel="self" type="application/rss+xml"/><item><title>teamnote-go</title><link>https://minuk.dev/wiki/teamnote-go/</link><pubDate>Fri, 08 Jul 2022 20:57:32 +0900</pubDate><guid>https://minuk.dev/wiki/teamnote-go/</guid><description>go teamnote</description></item><item><title>algorithm</title><link>https://minuk.dev/wiki/algorithm/</link><pubDate>Thu, 31 Mar 2022 11:17:20 +0900</pubDate><guid>https://minuk.dev/wiki/algorithm/</guid><description>알고리즘 관련</description></item><item><title>회고/2020-08-30</title><link>https://minuk.dev/wiki/%ED%9A%8C%EA%B3%A0/2020-08-30/</link><pubDate>Sun, 30 Aug 2020 23:09:33 +0900</pubDate><guid>https://minuk.dev/wiki/%ED%9A%8C%EA%B3%A0/2020-08-30/</guid><description>&lt;h2 id="지난-할일">지난 할일&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> LFS 논문 정리 끝내기&lt;/li>
+&lt;li>&lt;input checked="" disabled="" type="checkbox"> BOJ 단계별로 풀기 40(문자열 알고리즘) 까지 전부 다 풀기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 영어 드라마 하나 이상 보고 있기(또는 다 보기)&lt;/li>
+&lt;/ul>
+&lt;h2 id="회고">회고&lt;/h2>
+&lt;pre tabindex="0">&lt;code>이번 회고에서 키워드는 scpc와 알고리즘 공부, 논문 리딩, 통계학 공부 정도이다.
+scpc를 지원해봤는데 광탈했다. 그냥 이것저것 잡념이 많이 든다. 집중하지 못했던게 가장 컷고, 종이로, 논리적으로 풀었어야 했는데 먼가 될꺼같다라는 생각만 가지고 한게 문제였다. 씁쓸하고, 공부를 더 열심히 해야겠다. 사실 정말 씁쓸하고 그날 하루 종일 기분이 좋지 않았다. 하지만 내가 그냥 못했던거고 공부를 더 열심히 하자는 결론이 가장 건강하다고 생각했고, 그렇게 하기로 했다.
+두번째는 LFS 논문 정리? 를 나름대로 끝냈다. 다행이다. 근데 이해하지 못했고, 그럼으로써 아직 한참 모자라다는 걸 알게됬다. 이제 SimpleSSD를 다시 코드 보면서 그림 그리면서 정리할껀데, 이건 이해를 더 많이 하면 좋겠다.
+세번째는 통계학 공부인데, 슬슬 복학할 생각을 하면 부전공 생각을 해야했다. 통계학 실력이 스스로도 별로라고 생각하고, 다시 공부할 필요성이 있긴 하다. 일단 전체 용어 정리를 다시 해보자.
+
+지난 할일을 싲가하지 못했다. 영어 드라마 하나 이상 보고 있기라고 했는데, 영상 컨텐츠를 별로 좋아하지 않기도 하고, 딱히 마음에 드는 영어 드라마를 찾지도 못했다. 그나마 google io는 조금더 나을줄 알고 보려고 헀는데 그마저도 안봤다. 영어 컨텐츠를 즐기면서 영어 실력을 늘려야할텐데 걱정이다.
+
+슬슬 복학하고 어떻게 공부할지를 생각할 시기인데, 대충 잡기는
+12월-1월 : 토플 시험(8주), 학원을 등록해야겠지? 독학은 어려울듯
+2월 : 휴식 + 운전면허
+3월 : 복학으로 생각하고 있다.
+이때 안 힘드려면 지금 영어 공부를 많이 해놔야할텐데 걱정이다.
+&lt;/code>&lt;/pre>&lt;h2 id="다음-할일">다음 할일&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> BOJ 단계별로 풀기 45 까지 전부 다 풀기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 영어 컨텐츠를 즐기고 있기&lt;/li>
+&lt;/ul></description></item><item><title>teamnote</title><link>https://minuk.dev/wiki/teamnote/</link><pubDate>Sat, 08 Aug 2020 00:10:21 +0900</pubDate><guid>https://minuk.dev/wiki/teamnote/</guid><description>알고리즘 문풀용 팀노트</description></item><item><title>lectures/algorithm</title><link>https://minuk.dev/wiki/lectures/algorithm/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/algorithm/</guid><description>&lt;ol start="8">
+&lt;li>Basic Sorting algorithm
+The most common uses of sorted sequences are&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>making lookup or search efficient;&lt;/li>
+&lt;li>making merging of sequences efficient&lt;/li>
+&lt;li>enable processing of data in a defined order&lt;/li>
+&lt;/ul>
+&lt;h1 id="sorting-algorithm">Sorting algorithm&lt;/h1>
+&lt;p>The output of any sorting algorithm must satisfy two conditions&lt;/p>
+&lt;ul>
+&lt;li>The output is in non-decreasing order: each element is no smaller than the previous element according to the desired total order&lt;/li>
+&lt;li>The output is a permutation meaning that a reordering, yet retaining all of the original elements of the input.&lt;/li>
+&lt;/ul>
+&lt;h1 id="classification-of-sorting-algorithms">Classification of Sorting Algorithms&lt;/h1>
+&lt;ul>
+&lt;li>Computational Complexity : O(nlogn)&lt;/li>
+&lt;li>Memory usage : O(1), sometimes O(log(n))&lt;/li>
+&lt;li>Recursion&lt;/li>
+&lt;li>Stability&lt;/li>
+&lt;li>Whether or not they are a comparison sort&lt;/li>
+&lt;li>Adaptability&lt;/li>
+&lt;/ul>
+&lt;h1 id="common-sorting-algorithms">Common sorting algorithms&lt;/h1>
+&lt;ul>
+&lt;li>Bubble sort : Exchange two adjacent elements if they are out of order. Repeat until array is sorted.&lt;/li>
+&lt;li>Selection sort : Find the smallest element in the array, and put it in the proper place. Swap it with the value in the first position. Repeat until array is sorted.&lt;/li>
+&lt;li>Insertion sort : Scan successive elements for an out-of-order item, then insert the item in the proper place.&lt;/li>
+&lt;li>Merge sort : Divide the list of elements in two parts, sort the two parts individually and then merge it.&lt;/li>
+&lt;li>Quick sort : Partition the array into two segments. In the first segment, all elements are less than or equal to the pivot value. In the second segment, all elements are greater than or equal to the pivot value. Finally, sort the two segments recursively.&lt;/li>
+&lt;/ul>
+&lt;ol start="9">
+&lt;li>Divide and Conqure&lt;/li>
+&lt;/ol>
+&lt;h1 id="divide-and-conquer-paradigm">Divide and Conquer Paradigm&lt;/h1>
+&lt;h2 id="advantages-of-divide-and-conquer">Advantages of Divide and Conquer&lt;/h2>
+&lt;ul>
+&lt;li>Solving difficult problems&lt;/li>
+&lt;li>Algorithm efficiency
+&lt;ul>
+&lt;li>Karatsuba&amp;rsquo;s fast multiplication method, quick and merge sort, Strassen algorithm for matrix multiplication, fast Fourier transforms.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Parallelism
+&lt;ul>
+&lt;li>multi-processor machines, sub-problems can be executed on different processors.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Memory access
+&lt;ul>
+&lt;li>An algorithm designed to exploit the cache in this way is called cache-oblivious&lt;/li>
+&lt;li>D&amp;amp;C(Divide and Conquer) algorithms can be designed for important algorithms such as sorting, FFTs, matrix multiplication to be optimal cache-oblivious algorithms&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Roundoff control&lt;/li>
+&lt;/ul>
+&lt;h2 id="implementation-issues">Implementation issues&lt;/h2>
+&lt;ul>
+&lt;li>Recursion
+&lt;ul>
+&lt;li>If D&amp;amp;C algorithms are naturally implemented as recursive procedures, the partial sub-problems leading to the one currently being solved are automatically stored in the procedure call stack.&lt;/li>
+&lt;li>A recursive function is a function that calls itself within its definition.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Explicit stack
+&lt;ul>
+&lt;li>If D&amp;amp;C algorithms are implemented by a non-recursive program that stored the partial sub-problems in some explicit data structure, such as a stack, queue, or priority queue.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Stack size
+&lt;ul>
+&lt;li>In recursive implementations of D&amp;amp;C algorithms, one must make sure that there is sufficient memory allocated for the recursion stack, otherwise the execution may fail because of stack overflow.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Choosing the base cases&lt;/li>
+&lt;li>Sharing repeated subproblems&lt;/li>
+&lt;/ul>
+&lt;h2 id="general-method">General Method&lt;/h2>
+&lt;h2 id="divide-and-conquer-strategy">Divide and Conquer Strategy&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>divide the problem instance into two or more smaller instances of the same problem, solve the smaller instances recursively, and assemble the solutions to form a solution of the original instance.&lt;/p></description></item></channel></rss>

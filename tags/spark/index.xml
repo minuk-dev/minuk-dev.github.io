@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Spark on minuk.dev</title><link>https://minuk.dev/tags/spark/</link><description>Recent content in Spark on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 23 Aug 2022 03:39:03 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/spark/index.xml" rel="self" type="application/rss+xml"/><item><title>Spark on Kubernetes - The Elastic Story</title><link>https://minuk.dev/wiki/spark-on-kubernetes-the-elastic-story/</link><pubDate>Tue, 23 Aug 2022 02:46:35 +0900</pubDate><guid>https://minuk.dev/wiki/spark-on-kubernetes-the-elastic-story/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/n7WeoTJq-40">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="benefits-of-cloud">Benefits of Cloud&lt;/h2>
+&lt;ul>
+&lt;li>Agile : Resources are on-dmand, pay as you go&lt;/li>
+&lt;li>Elastic &amp;amp; Scalable : Almost infinite scale of compute and storage&lt;/li>
+&lt;li>Strong Resource Isolation : Container-native on K8S&lt;/li>
+&lt;li>Privacy-First : Leverage cloud security techniques to enforce security&lt;/li>
+&lt;li>Operation Friendly : Our developers can focus on building and improving services to achieve higher ROI&lt;/li>
+&lt;/ul>
+&lt;h2 id="design-principles">Design Principles&lt;/h2>
+&lt;ul>
+&lt;li>Leverage Cloud Infra&lt;/li>
+&lt;li>Full Containerizng - Elastic, Agile, Lightweight&lt;/li>
+&lt;li>Decouple Compute/Storage, Scale Independently&lt;/li>
+&lt;li>Developer-Friendly, API Centric&lt;/li>
+&lt;li>Security &amp;amp; Privacy as First Class Citizen&lt;/li>
+&lt;li>Use Apple Internal Spark distribution&lt;/li>
+&lt;/ul>
+&lt;h2 id="architecture-of-cloud-native-spark-service">Architecture of Cloud-Native Spark Service&lt;/h2>
+&lt;ul>
+&lt;li>원본 링크 PPT 참고&lt;/li>
+&lt;li>Spark K8s Operator 가 Resource Queues 를 가르키고 있고 Resource Queue 는 Node 를 관리한다.&lt;/li>
+&lt;li>이를 Skate(Spark service gateway) 로 호출하면서 관리하며, 이는 API, CLI, Airflow 등 다양한 Batch Processing 으로 처리한다.&lt;/li>
+&lt;li>또한 Jupyter Notebook 을 Interactive Spark Gateway랑 연결해서 달아둘수도 있다.&lt;/li>
+&lt;li>이러한 환경에서 Observability Infra, Security &amp;amp; Privacy Infra 가 당연하게도 깔려있어야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="cost-saving-and-elasticity-needs">Cost saving and Elasticity Needs&lt;/h2>
+&lt;ul>
+&lt;li>Varing workload pattern: fluctuating within a day and/or a week&lt;/li>
+&lt;li>Different use cases: daily/weekly scheduled jobs, ad hoc jobs, scheduled + adhoc, backfill&lt;/li>
+&lt;li>Fixed amount of resources must account for max usage, which causes resource waste&lt;/li>
+&lt;/ul>
+&lt;h2 id="design-of-reactive-autoscaling">Design of Reactive AUtoscaling&lt;/h2>
+&lt;h3 id="reactive-autoscaling-cluster-nodegroups-layout">Reactive AutoScaling Cluster NodeGroups Layout&lt;/h3>
+&lt;ul>
+&lt;li>자세한건 원본 링크 PPT 참고&lt;/li>
+&lt;li>Physical isolation : Minimize potential impact&lt;/li>
+&lt;li>Minimum capacity: Guaranteed at any time&lt;/li>
+&lt;li>maximum capacity: Jobs will be queued if executed&lt;/li>
+&lt;li>Multi-tenant Autoscaling K8S Cluster
+&lt;ul>
+&lt;li>spark-system(node group) : static size; shared by all queues&lt;/li>
+&lt;li>spark-drive(node group): scale-out; shared by all queues&lt;/li>
+&lt;li>spark-executor(node group): scale in/out&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="reactive-autoscaling-workflow">Reactive AutoScaling Workflow&lt;/h3>
+&lt;ul>
+&lt;li>자세한건 원본 링크 참조&lt;/li>
+&lt;li>CLI/SDK/Airflow Operator of Skate clients - 1. Submitting Spark job to Spark Platform&lt;/li>
+&lt;li>Skate(Spark service gateway) - 2. Creating SparkAPP CRD on cluster&lt;/li>
+&lt;li>Spark K8S Operator - 3. Creating driver and executor pods in YK resources queue&lt;/li>
+&lt;li>YuniKorn - 4. Creating Spark Driver pod in driver node group&lt;/li>
+&lt;li>YuniKorn - 5. Creating Spark executor pods in executor node group&lt;/li>
+&lt;li>6.1 Sned pending pods signal in each node groups for scale-out&lt;/li>
+&lt;li>6.2 Send idel node in each node groups for scale in&lt;/li>
+&lt;li>
+&lt;ol start="7">
+&lt;li>Send scale in/out request to cloud provider per node group&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="reactive-autoscaling-scale-inout-controls">Reactive AutoScaling Scale in/out Controls&lt;/h3>
+&lt;ul>
+&lt;li>Scale in Controls:
+&lt;ul>
+&lt;li>Only when no running executor pods on the node&lt;/li>
+&lt;li>Enabled Apache YuniKorn bin-packing in resource scheduling&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Scale out Controls:
+&lt;ul>
+&lt;li>Spark-driver node group scale out only&lt;/li>
+&lt;li>Speed up executor pods allocation size config of Spark&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="production-status">Production Status&lt;/h2>
+&lt;ul>
+&lt;li>In production for 3+ months&lt;/li>
+&lt;li>Cost saving report: Cost saving percentage per queue is located in 20% - 70%&lt;/li>
+&lt;/ul>
+&lt;h3 id="migration-findings-1">Migration findings 1&lt;/h3>
+&lt;ul>
+&lt;li>Scale in/out events are stable:
+&lt;ul>
+&lt;li>Tens of thousands of job per week running successfully&lt;/li>
+&lt;li>All scale-in events works as expected&lt;/li>
+&lt;li>Scale out latency is consistent(&amp;lt;= 5 mins from 2 to 200)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="migration-findings-2">Migration findings 2&lt;/h3>
+&lt;ul>
+&lt;li>Compared to massive over-provisioning approach before, runtime of workloads with autoscaling enbaled may increase:
+&lt;ul>
+&lt;li>Most negligible, a couple jobs increased ~20%&lt;/li>
+&lt;li>Users need to take this into consideration and optimize jobs if there&amp;rsquo;s strict data delivery time SLO&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="challenges-solutions-learnings">Challenges, Solutions, Learnings&lt;/h3>
+&lt;ul>
+&lt;li>Physical Isolation and min/max capacity setting&lt;/li>
+&lt;li>How to guarantee no impact to existing Spark jobs when scale-in&lt;/li>
+&lt;li>How to speed up scale-out latency and always allow Spark driver getting start&lt;/li>
+&lt;li>Monitoring autoscaling performance&lt;/li>
+&lt;/ul>
+&lt;h3 id="top-community-feature-requests">Top Community Feature Requests&lt;/h3>
+&lt;ul>
+&lt;li>Mixed instance type support&lt;/li>
+&lt;li>Dynamic Allocation support&lt;/li>
+&lt;li>Spot instance support with Remote Shuffle Service&lt;/li>
+&lt;li>Predictive Autoscaling leveraging the platform&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="개인-생각">개인 생각&lt;/h3>
+&lt;ul>
+&lt;li>Apple 에서 k8s에 spark 를 돌리는 것에 대해서 나와있다.&lt;/li>
+&lt;li>Apache YuniKorn 에 대해서 처음 알게 되었다. 좀더 정확히는 Spark 가 Kbuernetes 위에서 동작하는 구조 자체를 처음 공부했다.&lt;/li>
+&lt;li>단순히 Spark Pod 이 많이 띄워져 있다. 이런 식으로 끝나는 것이 아니라 Layer 를 나눠서 설명해준 점이 좋았다.&lt;/li>
+&lt;li>뭐 당연하게도 CRD 로 관리하고 있었다.&lt;/li>
+&lt;li>대충 요약하자면, Spark 를 그냥 동작시키게 되면 skew 현상이 너무 심하고 이는 리소스가 남는 상황에서도 이를 잘 활용하지 못하는 것을 의미한다.&lt;/li>
+&lt;li>따라서 중간에 Queue Layer를 두고 API/CLI/Airflow/Jupyter Notebook 등등은 Skate 에 요청한다.:
+&lt;ul>
+&lt;li>skate 는 처음 나오는 단어이고 특별한 프레임워크를 의미하는게 아니라 Spark service gateway를 줄여서 저렇게 부르는것 같다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>여기서 YuniKorn Resource Queue 로 작업을 분배하게 된다. 이때 설정에 따라서 여러 cluster를 사용할 수 있는 것으로 보인다.&lt;/li>
+&lt;li>특히나 인상 깊은건 Scale in/out Control에 따른 Memory, CPU Utilization Graph 인데 봐보면 너무나도 이상적으로 나왔다. 특정 노드가 엄청나게 뛰는게 아니라 전체적으로 스케줄링이 잘되는 것을 볼 수 있다. 물론 이 그래프만 가지고 판단하기에는 대조군도 없고, 그래프가 너무 컬러풀해서 잘 식별되지는 않지만 충분히 유의미한 그래프이며 이 구조가 어느정도의 안정성을 보임을 확인할수 있다.&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Glob on minuk.dev</title><link>https://minuk.dev/tags/glob/</link><description>Recent content in Glob on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:14:23 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/glob/index.xml" rel="self" type="application/rss+xml"/><item><title>glob</title><link>https://minuk.dev/wiki/glob/</link><pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate><guid>https://minuk.dev/wiki/glob/</guid><description>&lt;h2 id="glob">glob&lt;/h2>
+&lt;h3 id="wikipedia">Wikipedia&lt;/h3>
+&lt;p>In computer programming, glob patterns specify sets of filenames with wildcard characters. For example, the Unix Bash shell command mv *.txt textfiles/ moves (mv) all files with names ending in .txt from the current directory to the directory textfiles. Here, * is a wildcard standing for &amp;ldquo;any string of characters&amp;rdquo; and *.txt is a glob pattern. The other common wildcard is the question mark (?), which stands for one character. In addition to matching filenames, globs are also used widely for matching arbitrary strings (wildcard matching). In this capacity a common interface is fnmatch.&lt;/p></description></item><item><title>rm (Linux Command)</title><link>https://minuk.dev/wiki/rm/</link><pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate><guid>https://minuk.dev/wiki/rm/</guid><description>&lt;h2 id="자주-사용하는-거-모음">자주 사용하는 거 모음&lt;/h2>
+&lt;h3 id="특정-파일-제외하고-지우기">특정 파일 제외하고 지우기&lt;/h3>
+&lt;ul>
+&lt;li>단일&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ rm -v !&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>다중&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ rm -v !&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename1&amp;#34;&lt;/span> | &lt;span style="color:#e6db74">&amp;#34;filename2&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>만약 zsh을 쓰고 있다면&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-zsh" data-lang="zsh">&lt;span style="display:flex;">&lt;span>$ setopt extendedglob
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ rm ^&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename1&amp;#34;&lt;/span> | &lt;span style="color:#e6db74">&amp;#34;filename2&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>*(pattern-list)&lt;/code> : matches zero or more occurrences of the specified patterns&lt;/li>
+&lt;li>&lt;code>?(pattern-list)&lt;/code> : matches zero or one occurence of the specified patterns&lt;/li>
+&lt;li>&lt;code>+(pattern-list)&lt;/code> : matches one or more occurrences of the spcified patterns&lt;/li>
+&lt;li>&lt;code>@(pattern-list)&lt;/code> : matches one of the spcified patterns&lt;/li>
+&lt;li>&lt;code>!(pattern-list)&lt;/code> : matches anytthing except one of the given patterns&lt;/li>
+&lt;li>자세한건 [[glob]] 참고&lt;/li>
+&lt;/ul></description></item></channel></rss>

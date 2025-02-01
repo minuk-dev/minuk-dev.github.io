@@ -1,0 +1,297 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>linux-debug/interrupt</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>linux-debug/interrupt</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
+<i class="fa fa-arrow-left"></i>
+[[debug-linux]]</button></div></div></div><div><h2>linux-debug/interrupt</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/linux-debug/interrupt.md><h5>created : Tue, 10 Nov 2020 23:55:41 +0900</h5><h5>modified : Wed, 09 Dec 2020 13:31:37 +0900</h5></a><a href=https://minuk.dev/tags/linux-debug><kbd class=item-tag>linux-debug</kbd></a>
+<a href=https://minuk.dev/tags/interrupt><kbd class=item-tag>interrupt</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><ul><li></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h4 id=인터럽트>인터럽트</h4><ul><li>인터럽트 벡터와 인터럽트 핸들러</li><li>IRQ(Interrupt ReQuest)</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>int</span> (<span style=color:#f92672>*</span>request_irq)(<span style=color:#66d9ef>struct</span> dispc_device <span style=color:#f92672>*</span>dispc, <span style=color:#66d9ef>irq_handler_t</span> handler, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev_id);
+</span></span></code></pre></div><h5 id=인터럽트-컨텍스트-활성화-시기>인터럽트 컨텍스트 활성화 시기</h5><ul><li>프로세스 실행 중</li><li>인터럽트 벡터 실행</li><li>커널 인터럽트 내부 함수 호출</li><li>인터럽트 종류별로 인터럽트 핸들러 호출<ul><li>인터럽트 컨텍스트 시작</li></ul></li><li>인터럽트 핸들러의 서브루틴 실행 시작</li><li>인터럽트 핸들러의 서브루틴 실행 마무리<ul><li>인터럽트 컨텍스트 마무리</li></ul></li></ul><h5 id=인터럽트-디스크립터>인터럽트 디스크립터</h5><ul><li>인터럽트 핸들러</li><li>인터럽트 핸들러 매개변수</li><li>논리적인 인터럽트 번호</li><li>인터럽트 실행 횟수</li></ul><h5 id=인터럽트-처리-흐름>인터럽트 처리 흐름</h5><ol><li>인터럽트 발생 : 인터럽트가 발생하면 프로세스는 실행 도중 인터럽트 벡터로 이동, 인터럽트 벡터에서 인터럽트 처리를 마리한 후 다시 프로세스를 실행하기 위해 실행 중인 프로세스의 레지스터 세트를 스택에 저장, IRQ 서 브시스템을 구성하는 함수들이 호출</li><li>인터럽트 핸들러 호출 : 발생한 인터럽트에 대앙하는 인터럽트 디스크립터를 읽어서 인터럽트 핸들러를 호출</li><li>인터럽트 핸들러 실행 : 인터럽트 핸들러에서 하드웨어를 직접 제어하고 유저 공간에 전달</li></ol><h5 id=인터럽트-서술자-테이블-interrupt-descriptor-table---idt>인터럽트 서술자 테이블 (Interrupt Descriptor Table - IDT)</h5><ul><li>인터럽트 벡터 테이블을 구현하기 위해 x86 아키텍처에서 사용되는 데이터 구조체이다.</li><li>IDT의 사용은 다음 3 종류의 이벹느들에 의해 발생된다.<ul><li>하드웨어 인터럽트</li><li>소프트웨어 인터럽트</li><li>프로세서 예외</li></ul></li></ul><h5 id=irq-chip>IRQ Chip</h5><ul><li>참고 : <a href=http://jake.dothome.co.kr/interrupts-2/>http://jake.dothome.co.kr/interrupts-2/</a></li><li>인터럽트 컨트롤러 드라이버를 위해 hw 제어를 담당하는 구현 부분을 가짐.</li></ul><h5 id=리눅스-커널>리눅스 커널</h5><ul><li><code>arch/x86/entry/entry_64.S</code> line number 655 common_interrupt: -> call <code>do_IRQ</code></li><li><code>arch/x86/kernel/irq.c</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * do_IRQ handles all normal device IRQ&#39;s (the special
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * SMP cross-CPU interrupts have their own specific
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * handlers).
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span>__visible <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> __irq_entry <span style=color:#a6e22e>do_IRQ</span>(<span style=color:#66d9ef>struct</span> pt_regs <span style=color:#f92672>*</span>regs)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> pt_regs <span style=color:#f92672>*</span>old_regs <span style=color:#f92672>=</span> <span style=color:#a6e22e>set_irq_regs</span>(regs);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> irq_desc <span style=color:#f92672>*</span> desc;
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* high bit used in ret_from_ code  */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> vector <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>regs<span style=color:#f92672>-&gt;</span>orig_ax;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>entering_irq</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* entering_irq() tells RCU that we&#39;re not quiescent.  Check it. */</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>RCU_LOCKDEP_WARN</span>(<span style=color:#f92672>!</span><span style=color:#a6e22e>rcu_is_watching</span>(), <span style=color:#e6db74>&#34;IRQ failed to wake up RCU&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  desc <span style=color:#f92672>=</span> <span style=color:#a6e22e>__this_cpu_read</span>(vector_irq[vector]);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>handle_irq</span>(desc, regs)) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>ack_APIC_irq</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (desc <span style=color:#f92672>!=</span> VECTOR_RETRIGGERED <span style=color:#f92672>&amp;&amp;</span> desc <span style=color:#f92672>!=</span> VECTOR_SHUTDOWN) {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>pr_emerg_ratelimited</span>(<span style=color:#e6db74>&#34;%s: %d.%d No irq handler for vector</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,
+</span></span><span style=display:flex><span>               __func__, <span style=color:#a6e22e>smp_processor_id</span>(),
+</span></span><span style=display:flex><span>               vector);
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>__this_cpu_write</span>(vector_irq[vector], VECTOR_UNUSED);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>exiting_irq</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>set_irq_regs</span>(old_regs);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>check handler at <code>if (!handle_irq(desc, regs))</code>. handler_irq is defined by an irq chip driver.</li><li>gic_handle_irq -> __handler_domain_irq -> generic_handle_irq -> handle_fasteoi_irq -> handle_irq_event -> handle_irq_event_percpu</li></ul><h5 id=interrupt-context>Interrupt Context</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-asm data-lang=asm><span style=display:flex><span>common_interrupt:
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>addq</span>	<span style=color:#66d9ef>$-0x80</span>, (%rsp)			<span style=color:#75715e>/* Adjust vector to [-256, -1] range */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>call</span>	<span style=color:#66d9ef>interrupt_entry</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>UNWIND_HINT_REGS</span> <span style=color:#66d9ef>indirect</span><span style=color:#960050;background-color:#1e0010>=</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>call</span>	<span style=color:#66d9ef>do_IRQ</span>	<span style=color:#75715e>/* rdi points to pt_regs */</span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>/* 0(%rsp): old RSP */</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-asm data-lang=asm><span style=display:flex><span><span style=color:#a6e22e>ENTRY</span>(<span style=color:#66d9ef>interrupt_entry</span>)
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>UNWIND_HINT_IRET_REGS</span> <span style=color:#66d9ef>offset</span><span style=color:#960050;background-color:#1e0010>=</span><span style=color:#ae81ff>16</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>ASM_CLAC</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>cld</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>testb</span>	<span style=color:#66d9ef>$3</span>, <span style=color:#66d9ef>CS-ORIG_RAX</span><span style=color:#960050;background-color:#1e0010>+</span><span style=color:#ae81ff>8</span>(%rsp)
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>jz</span>	<span style=color:#ae81ff>1</span><span style=color:#66d9ef>f</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>SWAPGS</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>FENCE_SWAPGS_USER_ENTRY</span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * Switch to the thread stack. The IRET frame and orig_ax are
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * on the stack, as well as the return address. RDI..R12 are
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * not (yet) on the stack and space has not (yet) been
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * allocated for them.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	%rdi
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>/* Need to switch before accessing the thread stack. */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>SWITCH_TO_KERNEL_CR3</span> <span style=color:#66d9ef>scratch_reg</span><span style=color:#960050;background-color:#1e0010>=</span>%rdi
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>movq</span>	%rsp, %rdi
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>movq</span>	<span style=color:#66d9ef>PER_CPU_VAR</span>(<span style=color:#66d9ef>cpu_current_top_of_stack</span>), %rsp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>   * We have RDI, return address, and orig_ax on the stack on
+</span></span></span><span style=display:flex><span><span style=color:#75715e>   * top of the IRET frame. That means offset=24
+</span></span></span><span style=display:flex><span><span style=color:#75715e>   */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>UNWIND_HINT_IRET_REGS</span> <span style=color:#66d9ef>base</span><span style=color:#960050;background-color:#1e0010>=</span>%rdi <span style=color:#66d9ef>offset</span><span style=color:#960050;background-color:#1e0010>=</span><span style=color:#ae81ff>24</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>7</span>*<span style=color:#ae81ff>8</span>(%rdi)		<span style=color:#75715e>/* regs-&gt;ss */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>6</span>*<span style=color:#ae81ff>8</span>(%rdi)		<span style=color:#75715e>/* regs-&gt;rsp */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>5</span>*<span style=color:#ae81ff>8</span>(%rdi)		<span style=color:#75715e>/* regs-&gt;eflags */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>4</span>*<span style=color:#ae81ff>8</span>(%rdi)		<span style=color:#75715e>/* regs-&gt;cs */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>3</span>*<span style=color:#ae81ff>8</span>(%rdi)		<span style=color:#75715e>/* regs-&gt;ip */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>UNWIND_HINT_IRET_REGS</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>2</span>*<span style=color:#ae81ff>8</span>(%rdi)		<span style=color:#75715e>/* regs-&gt;orig_ax */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>pushq</span>	<span style=color:#ae81ff>8</span>(%rdi)			<span style=color:#75715e>/* return address */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>movq</span>	(%rdi), %rdi
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>jmp</span>	<span style=color:#ae81ff>2</span><span style=color:#66d9ef>f</span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>1:</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>FENCE_SWAPGS_KERNEL_ENTRY</span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>2:</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>PUSH_AND_CLEAR_REGS</span> <span style=color:#66d9ef>save_ret</span><span style=color:#960050;background-color:#1e0010>=</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>ENCODE_FRAME_POINTER</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>testb</span>	<span style=color:#66d9ef>$3</span>, <span style=color:#66d9ef>CS</span><span style=color:#960050;background-color:#1e0010>+</span><span style=color:#ae81ff>8</span>(%rsp)
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>jz</span>	<span style=color:#ae81ff>1</span><span style=color:#66d9ef>f</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * IRQ from user mode.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  *
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * We need to tell lockdep that IRQs are off.  We can&#39;t do this until
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * we fix gsbase, and we should do it before enter_from_user_mode
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * (which can take locks).  Since TRACE_IRQS_OFF is idempotent,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * the simplest way to handle it is to just call it twice if
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * we enter from user mode.  There&#39;s no reason to optimize this since
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  * TRACE_IRQS_OFF is a no-op if lockdep is off.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>TRACE_IRQS_OFF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>CALL_enter_from_user_mode</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>1:</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>ENTER_IRQ_STACK</span> <span style=color:#66d9ef>old_rsp</span><span style=color:#960050;background-color:#1e0010>=</span>%rdi <span style=color:#66d9ef>save_ret</span><span style=color:#960050;background-color:#1e0010>=</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>/* We entered an interrupt context - irqs are off: */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>TRACE_IRQS_OFF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>ret</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>END</span>(<span style=color:#66d9ef>interrupt_entry</span>)
+</span></span></code></pre></div><ul><li>여기서 이전에 있던 걸 저장하는 asm은 PUSH_AND_CLEAR_REGS 이다.</li></ul><h5 id=in_interrupt>in_interrupt</h5><ul><li><code>include/linux/preempt.h</code></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define in_interrupt()		(irq_count())
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define irq_count()	(preempt_count() &amp; (HARDIRQ_MASK | SOFTIRQ_MASK \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>   | NMI_MASK))
+</span></span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#a6e22e>DECLARE_PER_CPU</span>(<span style=color:#66d9ef>int</span>, __preempt_count);
+</span></span><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * We mask the PREEMPT_NEED_RESCHED bit so as not to confuse all current users
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * that think a non-zero value indicates we cannot preempt.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>preempt_count</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>raw_cpu_read_4</span>(__preempt_count) <span style=color:#f92672>&amp;</span> <span style=color:#f92672>~</span>PREEMPT_NEED_RESCHED;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>cpu 마다 <code>__preempt_count</code> 라는 변수를 만들고, 여기에 비트 연산해서 가져온다.</li><li>동작 순서<ol><li>irqchip driver에서 handle_domain_irq 를 호출해한다.</li><li>handle_domain_irq -> __handle_domain_irq -> irq_enter -> __irq_enter -> preempt_count_add 순으로 호출하면서 cpu가 인터럽트를 처리중이라는걸 명시해준다.</li><li>__handle_domain_irq -> generic_handle_irq -> handle_fasteoi_irq -> handle_irq_event -> handle_irq_event_percpu 순으로 호출되면서, interrupt handler 가 처리하도록 한다.</li></ol></li><li>인터럽트 컨텍스트에서 스케줄링하면 커널 패닉이 발생한다.<ul><li>인터럽트 컨텍스트에서 mutext 를 획득하면 mutex 내부에서 스캐줄링이 있기 때문에, 터진다.</li></ul></li></ul><h5 id=인터럽트-핸들러-등록>인터럽트 핸들러 등록</h5><ul><li>request_irq</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>int</span> __must_check
+</span></span><span style=display:flex><span><span style=color:#a6e22e>request_irq</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>irq_handler_t</span> handler, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> flags,
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>name, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev)
+</span></span></code></pre></div><ul><li><p>irq : 인터럽트 번호</p></li><li><p>handler : 인터럽트 발생 시 호출될 인터럽트 핸들러 주소</p></li><li><p>flags : 인터럽트의 속성 플래그</p></li><li><p>naem : 인터럽트 이름</p></li><li><p>dev : 인터럽트 핸들러에 전달하는 매개변수</p></li><li><p>request_threaded_irq</p><ul><li>request_irq 가 내부적으로 호출하는 함수</li><li>동작<ul><li>인터럽트 번호로 인터럽트 디스크립터 가져오기</li><li>irqaction 구조체로 독적 메모리 할당</li><li>irqaction 구조체 필드에 인터럽트 초기화 인자(인터럽트 핸들러, 인터럽트 속성, 인터럽트 핸들러 매개변수)를 설정</li></ul></li></ul></li><li><p>IRQ Storm : 인터럽트 신호가 엄청 자주 발생해서 시스템 오동작 유발</p><ul><li>IRQF_TRIGGER_HIGH</li><li>IRQF_TRIGGER_LOW</li><li>IRQF_TRIGGER_RISING</li><li>IRQF_TRIGGER_FALLING</li></ul></li></ul><h5 id=인터럽트-디스크립터-1>인터럽트 디스크립터</h5><ul><li>커널이 특정 드라이버나 메모리 같은 중요한 객체를 관리하려고 쓰는 자료구조<ul><li>주로 <code>task_struct</code>, <code>page</code>, <code>files_struct</code></li></ul></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> irq_desc {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> irq_common_data irq_common_data;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> irq_data        irq_data;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> __purcpu  <span style=color:#f92672>*</span>kstat_irqs;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>irq_flow_handler_t</span>     handler_irq;
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_IRQ_PREFLOW_FASTEOI
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>irq_preflow_handler_t</span>  preflow_handler;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span> <span style=color:#66d9ef>struct</span> irqaction        <span style=color:#f92672>*</span>action;
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>            status_use_accessors;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>irq_common_data : 커널에서 처리하는 irq_chip 관련 함수에 대한 정보</li><li>irq_data : 인터럽트 번호와 해당 하드웨어 핀 번호</li><li>kstat_irq : 인터럽트가 발생한 횟수가 저장</li><li>action : 인터럽트 주요 정보</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> irqaction {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>irq_handler_t</span>         handler;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span>                  <span style=color:#f92672>*</span>dev_id;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> __percpu         <span style=color:#f92672>*</span>percpu_dev_id;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> irqaction      <span style=color:#f92672>*</span>next;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>irq_handler_t</span>         thread_fn;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> task_struct    <span style=color:#f92672>*</span><span style=color:#66d9ef>thread</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> irqaction      <span style=color:#f92672>*</span>second;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>          irq;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>          flags;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>         thread_flags;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>         thread_mask;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span>            <span style=color:#f92672>*</span>name;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> proc_dir_entry <span style=color:#f92672>*</span>dir;
+</span></span><span style=display:flex><span>} ____cacheline_internodealigned_in_smp;
+</span></span></code></pre></div><ul><li>handler : 인터럽트 핸들러의 함수 주소</li><li>dev_id : 인터럽트 핸들러에 전달되는 매개변수</li><li>thread_fn : 인터럽트를 threaded IRQ 방식으로 처리할때 IRQ 스레드 처리 함수의 주소를 저장하는 필드, 지정하지 않으면 NULL</li><li>irq : 인터럽트 번후</li><li>flags : 인터럽트 플레그 설정 필드</li></ul><h5 id=인터럽트가-비활성화되어야-할-때>인터럽트가 비활성화되어야 할 때</h5><ul><li><p>SoC에서 정의한 하드웨어 블록에 정확한 시퀀스를 줘야할 경우</p></li><li><p>시스템이 유휴 상태에 진입하기 직전의 <em>시스템의 상태 정보</em> 값을 저장하는 동작</p></li><li><p>각 디바이스 드라이버가 서스펜드 모드로 진입할 때 디바이스 드라이버에 데이ㅌ 시트에서 명시한 대로 정확히 특정 시퀀스를 줘야 할 경우</p></li><li><p>예외가 발생해서 시스템 리셋을 시키기 전</p></li><li><p>local_irq_disable : 해당 cpu 라인에서 인터럽트의 발생을 비활성화 하는 함수</p></li><li><p>local_irq_enable : 해당 CPU 인터럽트 라인을 활성화</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define raw_local_irq_enable()		arch_local_irq_enable()
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> notrace <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>arch_local_irq_enable</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>native_irq_enable</span>();
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>native_irq_enable</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>asm</span> <span style=color:#66d9ef>volatile</span>(<span style=color:#e6db74>&#34;sti&#34;</span><span style=color:#f92672>:</span> <span style=color:#f92672>:</span> <span style=color:#f92672>:</span><span style=color:#e6db74>&#34;memory&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h5 id=인터럽트-디버깅>인터럽트 디버깅</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>0</span> &gt; /sys/kernel/debug/tracing/tracing_on
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;tracing_off&#34;</span>
+</span></span><span style=display:flex><span>echo nop &gt; /sys/kernel/debug/tracing/current_tracer
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>0</span> &gt; /sys/kernel/debug/tracing/events/enable
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/sched/sched_switch/enable
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/irq/irq_handler_entry/enable
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/irq/irq_handler_exit/enable
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/tracing_on
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;tracing_on&#34;</span>
+</span></span></code></pre></div><h4 id=인터럽트-후반부-처리>인터럽트 후반부 처리</h4><ul><li>인터럽트 후반부의 필요성</li><li>인터럽트가 발생하면 커널은 실행 중인 프로세스를 멈추가 인터럽트 벡터를 실행해서 인터럽트 핸들러를 실행하게 된다. 이는 프로세스 입장에서는 실행 도중 멈추는 것이니 최대한 빨리 실행되지 않는다면, 프로세스가 동작하다가 멈춘 것처럼 보인다.</li><li>이는 다음 4가지 기법들을 이끌어 낸다.<ul><li>IRQ 스레드</li><li>Soft IRQ</li><li>테스크릿</li><li>워크큐</li></ul></li><li>인터럽트 컨텍스트에서 시간을 오래 소모하면 커널 패닉이 일어난다.</li></ul><h5 id=top-halfbottom-half>Top Half/Bottom Half</h5><ul><li>Top Half : 인터럽트가 발생한 후 빨리 처리해야 하는 일</li><li>Bottom Half : 조금 있다가 처리해도 되는일</li><li>인터럽트 핸들러는 Top Half를, 프로세스 레벨에선 Bottom Half 를 처리한다.</li></ul><h5 id=인터럽트-후반부-처리-기법-정리>인터럽트 후반부 처리 기법 정리</h5><ul><li>IRQ 쓰레드(threaded IRQ) : 인터럽트를 처리하는 전용 IRQ 스레드에서 인터럽트 후속 처리를 수행한다.</li><li>Soft IRQ : 인터럽트 핸들러 실행이 끝나면 바로 시작되며, Soft IRQ 컨텍스트에서 실행되며, 시간이 오래 걸릴 경우 ksoftirqd 프로세스를 깨우고 서비스를 종료한다. 이후 ksoftirqd 라는 프로세스에서 나머지 내용들을 처리한다.</li><li>테스크릿 : Soft IRQ 서비스를 동적으로 쓸 수 있는 인터페이스이자 자료구조</li><li>워크큐 : 인터럽트 핸들러가 실행될 때 워크를 워크큐에 큐잉하고 프로세스 레벨의 워커 스레드에서 인터럽트 후반부를 처리한다.</li></ul><h5 id=어떤-처리기법을-적용해야-하는가>어떤 처리기법을 적용해야 하는가</h5><ul><li>인터럽트가 자주 발생할 경우 : Soft IRQ나 테스크릿<ul><li>IRQ 스레드는 실시간 프로세스로 구동되며, 이는 선점 스케줄링을 유발하여 다른 프로세스들이 대기하게 된다. 이는 시스템 반응 속도가 느려지는 결과가 생긴다.</li><li>워크큐는 실행 시간 측면에서, 큐잉 뒤 워크를 깨우는 시간이 오래 걸리고, 워커 스레드는 일반 프로세스로 우선순위가 높지 않다.</li></ul></li><li>인터럽트 개수가 많을 경우 : IRQ 스레드를 생성할 때, 메모리 주의<ul><li>인터럽트 개수만큼 IRQ 스레드가 생성되기 때문에 메모리를 더 사용하게 된다.</li></ul></li></ul><h5 id=irq-스레드-threaded-irq>IRQ 스레드 (threaded IRQ)</h5><ul><li><p>IRQ : Interrupt Request으 약자로 하드웨어에서 발생한 인터럽트를 처리한다.</p></li><li><p>Threaed IRQ : 인터럽트 핸들러에서 바로 처리하지 않아도 되는 일을 수행하는 프로세스를 두고 처리하는 방식</p></li><li><p><code>irq/인터럽트 번호 - 인터럽트 이름</code> 의 순서로 IRQ 스레드의 이름이 지어진다. (예시 : irq/86-mmc1 는 mmc1이라는 이름의 86번 인터럽트를 처리하는 IRQ 스레드)</p></li></ul><h5 id=irq-생성-방법>IRQ 생성 방법</h5><ul><li><p>request_threaded_irq -> __setup_irq -> setup_irq_thread -> kthread_create 과정을 통해서 커널 스레드를 생성</p></li><li><p>request_threaded_irq</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>request_threaded_irq</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>irq_handler_t</span> handler,
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>irq_handler_t</span> thread_fn, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> irqflags,
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>devname, <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>dev_id);
+</span></span></code></pre></div><ul><li><p>irq : 인터럽트 번호</p></li><li><p>handler : 인터럽트 핸들러 주소</p></li><li><p>thread_fn : IRQ 스레드 처리 함수의 주소</p></li><li><p>irqflags : 인터럽트 핸들링 플래그</p></li><li><p>devname : 인터럽트 핸들러 이름</p></li><li><p>dev_id : 인터럽드 디바이스 정보</p></li><li><p>하는일</p><ol><li>인터럽트 디스크립터 설정 : 이나를 인터럽트 디스크립터 필드에 할당</li><li>IRQ 스레드 생성 : thread_fn 인자에 IRQ 스레드 처리 함수 주소를 지정하면 IRQ 스레드 생성</li></ol></li></ul></li><li><p>__setup_irq</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>__setup_irq</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>struct</span> irq_desc <span style=color:#f92672>*</span>desc, <span style=color:#66d9ef>struct</span> irqaction <span style=color:#f92672>*</span>new)
+</span></span></code></pre></div><ul><li><p>irq : 인터럽트 번호</p></li><li><p>desc : 인터럽트 디스크립터</p></li><li><p>new : 인터럽트 디스크립터의 action 필드</p></li><li><p>하는일</p><ul><li>IRQ 스레드 처리 함수가 등록됐는지 점검</li><li>만약 IRQ 스레드가 등록됐으면 setup_irq_thread 함수를 호출해 IRQ 스레드를 생성</li></ul></li></ul></li><li><p>setup_irq_thread</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>setup_irq_thread</span>(<span style=color:#66d9ef>struct</span> irqaction <span style=color:#f92672>*</span>new, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> irq, <span style=color:#66d9ef>bool</span> secondary)
+</span></span></code></pre></div></li><li><p>IRQ 스레드 처리 함수 : 인터럽트별로 지정한 IRQ 스레드별로 후반부를 처리하는 함수</p></li><li><p>IRQ 스레드 핸들러 함수 : irq_thread() 함수를 뜻하며, 인터럽트별로 지정된 IRQ 스레드 처리함수를 호출하는 역할</p></li></ul><h5 id=irq-스레드의-실행과정>IRQ 스레드의 실행과정</h5><ol><li>인터럽트 핸들러에서 IRQ_WAKE_THREAD를 반환</li><li>IRQ 스레드를 꺠움</li><li>IRQ 스레드 핸들러인 irq_thread() 함수를 실행</li><li>irq_thread() 함수에서 IRQ 스레드 처리 함수 호출</li></ol><hr><ul><li>handle_irq_event -> handle_irq_event_percpu -> __handle_irq_event_percpu -> __irq_wake_thread -> wake_up_process</li><li>만약 IRQ 스레드를 깨우고 싶으면 IRQ_WAKE_THREAD를 반환하고,아니라면 IRQ_HANDLED를 반환하면 된다.</li></ul><h4 id=soft-irq>Soft IRQ</h4><ul><li>리눅스 커널에서 지원하는 10가지 Soft IRQ 서비스<ul><li>HI, TIMER, NET_TX, NET_RX, BLOCK, IRQ_POLL, TASKLET, SCHED, HRTIMER, RCU</li></ul></li></ul><h5 id=soft-irq-서비스의-라이프-사이클>Soft IRQ 서비스의 라이프 사이클</h5><ol><li>부팅 과정</li></ol><ul><li>Soft IRQ 서비스 등록</li><li>open_softirq()</li></ul><ol><li>인터럽트 처리</li></ol><ul><li>Soft IRQ 서비스 요청</li><li>raise_softirq()</li></ul><ol><li>Soft IRQ 컨텍스트</li></ol><ul><li>Soft IRQ 서비스 실행</li><li>__do_softirq()</li></ul><h5 id=발생-흐름>발생 흐름</h5><ol><li>인터럽트가 발생하면 해당 인터럽트 핸들러에서 Soft IRQ 서비스를 요청한다. 이를 위해 raise_softirq_irqoff() 함수를 호출해야 한다. 이는 인터럽트 핸들러에서 IRQ_WAKE_THREAD를 반환하는 동작과 유사하다.</li><li>인터럽트 서비스 루틴 동작이 끝나면 irq_exit() 함수를 호출한다. 여기서 Soft IRQ 서비스 요청 여부를 점검한다. 요청한 Soft IRQ 서비스가 있으면 __do_softirq() 함수를 호출해서 해당 Soft IRQ 서비스 핸들러를 실행한다. 만약 Soft IRQ 서비스 요청이 없으면 riq_exit() 함수는 바로 종료하게 된다.</li><li>__do_softirq() 함수에서 Soft IRQ 서비스 핸들러 호출을 끝내면 Soft IRQ 서비스 요청이 있었는지 다시 체크한다. 이미 Soft IRQ 서비 스핸들러 처리 시간이 2ms 이상이거나 10번 이상 Soft IRQ 서비스 핸들러를 처리했다면 다음 동작을 수행한다.</li></ol><ul><li>wakeup_softirqd() 함수를 호출해서 ksoftirqd 프로세스를 깨움</li><li>__do_softirq() 함수 종료</li></ul><ol><li>ksoftirqd 프로세스 가깨어나 3단계에서 마무리하지 못한 Soft IRQ 서비스 핸들러를 실행한다.</li></ol><h5 id=후반부-기법으로-soft-irq를-사용하는-상황>후반부 기법으로 Soft IRQ를 사용하는 상황</h5><ul><li>인터럽트 발생 빈도가 높거나 인터럽트 후반부를 빨리 처리해야 할 때 사용한다.</li><li>커널에서는 Soft IRQ를 디바이스 드라이버 레벨에서 쓸 수 있는 태스크릿이라는 인터페이스 환경을 제공한다.</li></ul><h5 id=soft-irq-서비스-설명>Soft IRQ 서비스 설명</h5><table><thead><tr><th>우선순위</th><th>Soft IRQ 서비스</th><th>설명</th><th>Soft IRQ 서비스 핸들러</th></tr></thead><tbody><tr><td>0</td><td>HI_SOFTIRQ</td><td>가장 우선순위가 높으며 TASKLET_HI로 적용</td><td>tasklet_hi_action()</td></tr><tr><td>1</td><td>TIMER_SOFTIRQ</td><td>동적 타이버로 사용</td><td>run_timer_softirq()</td></tr><tr><td>2</td><td>NET_TX_SOFTIRQ</td><td>네트워크 패킷 송신용으로 사용</td><td>net_tx_action()</td></tr><tr><td>3</td><td>NET_RX_SOFTIRQ</td><td>네트워크 패킷 수신용 사용</td><td>net_rx_action()</td></tr><tr><td>4</td><td>BLOCK_SOFTIRQ</td><td>블록 디바이스에서 사용</td><td>blk_done_softirq()</td></tr><tr><td>5</td><td>IRQ_POLL_SOFTIRQ</td><td>IRQ_POLL 연관 동작</td><td>blk_iopoll_softirq()</td></tr><tr><td>6</td><td>TASKLET_SOFTIRQ</td><td>일반 태스크릿으로 사용</td><td>tasklet_action()</td></tr><tr><td>7</td><td>SCHED_SOFTIRQ</td><td>스케쥴러에서 사용</td><td>run_reblanace_domains()</td></tr><tr><td>8</td><td>HRTIMER_SOFTIRQ</td><td>현재 사용하지 않지만 하위 호환성을 위해 남겨둠</td><td>run_timer_softirq()</td></tr><tr><td>9</td><td>RCU_SOFTIRQ</td><td>RCU 처리용으로 사용</td><td>rcu_process_callbacks()</td></tr></tbody></table><h5 id=raise_softirq-함수>raise_softirq() 함수</h5><ul><li>raise_softirq -> raise_softirq_irqoff -> or_softirq_pending</li><li>irq_exit -> invoke_softirq -> __do_softirq</li><li>run_ksoftirqd -> __do_softirq</li></ul><h5 id=__do_softirq-함수>__do_softirq 함수</h5><ul><li>실제로 Soft IRQ 서비스 핸들러를 실행시켜주는 곳</li><li>시간이 오래걸리거나, 특정 횟수 이상 서비스를 실행했으면ksoftirqd 스레드를 깨움.</li></ul><h5 id=ksoftirqd-스레드>ksoftirqd 스레드</h5><ul><li>wakeup_softirqd -> wake_up_process</li><li>run_ksoftirqd -> __do_softirq</li></ul><h5 id=정리>정리</h5><ul><li>Soft IRQ 서비스 요청 시기 : 인터럽트가 발생하면 인터럽트 핸들러에서 Soft IRQ 서비스를 요청</li><li>Soft IRQ 서비스 실행의 출발점 : 인터럽트 핸들러 수행이 끝나면 요청한 Soft IRQ 서비스가 있엇는지 체크, irq_exit() -> invoke_softirq() -> __do_softirq()</li><li>Soft IRQ 전용 스레드인 ksoftirqd 스레드의 기상 시점 : __do_softirqd() 함수 실행시간이 2ms 이상이거나, Soft IRQ 서비스 핸들러를 10번 이상 호출했다면 ksoftirqd 스레드가 일어난다.</li></ul><h4 id=ksoftirqd-스레드-1>ksoftirqd 스레드</h4><ul><li>Soft IRQ 서비스를 인터럽트를 처리 한 후의 시점이 아닌 프로세스 레벨에서 실행할 수 있게 생성된 프로세스</li><li>percpu 타입의 프로세스이며, cpu 코어의 개수 만큼 생성되어 정해진 cpu 내에서만 실행된다.</li></ul><h5 id=ksoftirqd-스레드-기상-시점>ksoftirqd 스레드 기상 시점</h5><ul><li><p>__do_softirq() 함수에서 Soft IRQ 서비스를 실행한 후</p></li><li><p>인터럽트 컨텍스트가 아닌 상황에서 Soft IRQ 서비스를 요청할 때</p></li><li><p>__do_softirq() 함수에서 Soft IRQ 서비스의 실행 시간이 MAX_SOFTIRQ_TIME 을 초과 했을 때</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>asmlinkage __visible <span style=color:#66d9ef>void</span> __softirq_entry <span style=color:#a6e22e>__do_softirq</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> end <span style=color:#f92672>=</span> jiffies <span style=color:#f92672>+</span> MAX_SOFTIRQ_TIME;
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  restart :
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> ((softirq_bit <span style=color:#f92672>=</span> <span style=color:#a6e22e>ffs</span>(pending))) {
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>trace_softirq_entry</span>(vec_nr);
+</span></span><span style=display:flex><span>    h<span style=color:#f92672>-&gt;</span><span style=color:#a6e22e>action</span>(h);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>trace_softirq_exit</span>(vec_nr);
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>    h <span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>    pending <span style=color:#f92672>&gt;&gt;=</span> softirq_bit;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  pending <span style=color:#f92672>=</span> <span style=color:#a6e22e>local_softirq_pending</span>();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (pending) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>time_before</span>(jiffies, end) <span style=color:#f92672>&amp;&amp;</span> <span style=color:#f92672>!</span><span style=color:#a6e22e>need_resched</span>() <span style=color:#f92672>&amp;&amp;</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>--</span>max_restart)
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>goto</span> restart;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>wake_softirqd</span>();
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>*</span> Soft IRQ <span style=color:#960050;background-color:#1e0010>서비스를</span> <span style=color:#960050;background-color:#1e0010>요청할</span> <span style=color:#960050;background-color:#1e0010>때</span> (raise_softirq_irqoff)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#960050;background-color:#1e0010>```</span>c
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>raise_softirq_irqoff</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> nr)
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>__raise_softirq_irqoff</span>(nr);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>in_interrupt</span>())
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>wakeup_softirqd</span>();
+</span></span><span style=display:flex><span>  }
+</span></span></code></pre></div><h5 id=ksoftirqd-핸들러-run_ksoftirqd>ksoftirqd 핸들러 run_ksoftirqd</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>run_ksoftirqd</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> cpu)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>local_irq_disable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>local_softirq_pending</span>()) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>__do_softirq</span>();
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>local_irq_enable</span>();
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>cond_resched_cru_qs</span>();
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>local_irq_enable</span>();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h5 id=soft-irq-컨텍스트>Soft IRQ 컨텍스트</h5><ul><li>Soft IRQ 컨텍스트의 시작점<ul><li>__do_softirq() 에서 __local_bh_disable_ip(<em>RET_IP</em>, SOFTIRQ_OFFSET) 을 호출하면서 시작</li></ul></li><li>Soft IRQ 컨텍스트 확인 : in_softirq()</li></ul><h4 id=태스크릿>태스크릿</h4><ul><li>동적으로 Soft IRQ 서비스를 쓸 수 있게 만든 인터페이스</li></ul><h5 id=태스크릿-실행-순서>태스크릿 실행 순서</h5><ol><li>Soft IRQ 서비스 요청</li><li>Soft IRQ 서비스 실행</li><li>ksoftirqd 스레드를 깨움</li><li>ksfotirqd 스레드 실행</li></ol><h5 id=태스크릿의-실행-주체>태스크릿의 실행 주체</h5><ul><li>tasklet_action()</li></ul><h5 id=태스크릿-자료-구조>태스크릿 자료 구조</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> tasklet_struct
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> tasklet_struct <span style=color:#f92672>*</span>next;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> state;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>atomic_t</span> count;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>func)(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> data;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>next : 다음 태스크릿을 가리키는 용도의 포인터</li><li>state : 캐스크릿의 세부 상태 정보를 저장하는 필드, 아래 나오는 플레그 중 하나를 저장한다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>enum</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  TASKLET_STATE_SCHED,  <span style=color:#75715e>/* Tasklet is scheduled for execution. */</span>
+</span></span><span style=display:flex><span>  TASKLET_STATE_RUN     <span style=color:#75715e>/* Tasklet is running (SMP only) */</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>TASKLET_STATE_SCHED : 태스크릿 서비스를 요청한 후 아직 태스크릿 핸들러를 처리하지 않는 상태</li><li>TASKLET_STATE_RUN : 태스크릿 핸들러를 실행 중인 상태</li><li>count : 태스크릿의 레퍼런스 카운터, 초기화할때(tasklet_init)에서 0으로 설정. 반드시 0이여야지만 태스크릿을 실행</li><li>func : 테스크릿 핸들러 함수 주소, tasklet_init 함수를 호출할 때 2번째 인자로 등록</li><li>data : 태스크릿 핸들러 함수에 전달되는 매개변수</li></ul><h5 id=태스크릿-등록-방법>태스크릿 등록 방법</h5><ul><li><p>태스크릿 전역변수 선언 : DECLARE_TASKLET() 또는 DECLARE_TASKLET_DISABLED() 함수 호출</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define DECLARE_TASKLET(name, func, data) \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(0), func, data }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define DECLARE_TASKLET_DISABLED(name, func, data) \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>struct tasklet_struct name = { NULL, 0, ATOMIC_INIT(1), func, data }
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/* example */</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>DECLARE_TASKLET_DISABLED</span>(keyboard_tasklet, kbd_bh, <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> __init <span style=color:#a6e22e>kdb_init</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>tasklet_enable</span>(<span style=color:#f92672>&amp;</span>keyboard_tasklet);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>tasklet_schedule</span>(<span style=color:#f92672>&amp;</span>keyboard_tasklet);
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>기본적으로는 태스크릿을 비활성화해 초기화 한 후 tasklet_enable() 함수를 호출하면 태스크릿을 활성화 할수 있다.</li></ul></li><li><p>테스크릿 초기화 함수 호출 : tasklet_init() 함수</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>extern</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>tasklet_init</span>(<span style=color:#66d9ef>struct</span> tasklet_struct <span style=color:#f92672>*</span>t,
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> (<span style=color:#f92672>*</span>func)(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>), <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> data);
+</span></span></code></pre></div><ul><li>t : 태스크릿을 식별하는 구조체</li><li>func : 태스크릿 핸들러 함수</li><li>data : 태스크릿 콜백 함수로 전달하는 매개변수</li></ul></li></ul><h5 id=태스크릿-실행-요청-방법>태스크릿 실행 요청 방법</h5><ul><li>tasklet_schedule()<ul><li>tasklet_schedule -> __tasklet_schedule -> __tasklet_schedule_common<ul><li>tasklet_schedule : state를 TASKLET_STATE_SCHED로 바꿈</li><li>__stasklet_schedule : __tasklet_schedule_commone 함수 호출</li><li>__tasklet_schedule_common : tasklet_vec 에 태스크릿 핸들러 등록</li></ul></li></ul></li></ul><h5 id=soft-irq-디버깅-해보기>Soft IRQ 디버깅 해보기</h5><ul><li>ftrace 코드</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>0</span> &gt; /sys/kernel/debug/tracing/tracing_on
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;tracing_off&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>0</span> &gt; /sys/kernel/debug/tracing/events/enable
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;events disabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/irq/softirq_raise/enable
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/irq/softirq_entry/enable
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/irq/softirq_exit/enable
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;set_ftrace_filter enabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/tracing_on
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;tracing_on&#34;</span>
+</span></span></code></pre></div><ul><li><p>ftrace log 확인하기</p><pre tabindex=0><code class=language-log data-lang=log> soft_irq_ftrace-2255  [000] d.h. 19085.301866: softirq_raise: vec=7 [action=SCHED]
+ soft_irq_ftrace-2255  [000] ..s. 19085.301920: softirq_entry: vec=1 [action=TIMER]
+ soft_irq_ftrace-2255  [000] ..s. 19085.301940: softirq_exit: vec=1 [action=TIMER]
+ soft_irq_ftrace-2255  [000] ..s. 19085.301944: softirq_entry: vec=7 [action=SCHED]
+</code></pre><ul><li>softirq_entry : 시작, softirq_exit : 실행 마무리, softirq_raise : 서비스 요청</li></ul></li><li><p>Soft IRQ 서비스 실행 횟수 확인</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cat /proc/softirqs
+</span></span></code></pre></div></li></ul><hr><h4 id=인터럽트-정리>인터럽트 정리</h4><ul><li>인터럽트가 발생했을 때 빨리 실행해야 하는 코드는 인터럽트 핸들러에서 처리, 나머지는 후반부 처리</li><li>IRQ 스레드는 후반부 처리를 위핸 전용 커널 스레드, request_threaded_irq 함수가 실행될 때 생성, 인터럽트 핸들러에서 IRQ_THREAD_WAKE를 반환하면 깨어남.</li><li>Soft IRQ : 빠른 시간 내에 인터럽트 후반부 처리를 하기 위한 기법, 네트워크 고속 패킷이나 스토리지 디바이스에 서사용</li><li>Soft IRQ 는 서비스 요청과 서비스 실행 단계로 나눌수 있으며, 실행할 때 softirq_vec 이라는 Soft IRQ 벡터에 등록된 함수를 호출</li><li>Soft IRQ 컨텍스트는 Soft IRQ 서비스를 실행 중인 상태이며, 프로세스를 관리하는 thread_info 구조체의 preempt_count 필드에 SOFTIRQ_OFFSET을 나타내는 0x100을 저장.</li><li>태스크릿은 동적으로 Soft IRQ 서비스를 사용하기 위한 인터페이스</li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>

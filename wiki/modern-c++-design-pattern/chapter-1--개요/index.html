@@ -1,0 +1,226 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Modern C++ Design Pattern/Chatper 1. 개요</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Modern C++ Design Pattern/Chatper 1. 개요</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
+<i class="fa fa-arrow-left"></i>
+[[Modern C++ Design Pattern]]</button></div></div></div><div><h2>Modern C++ Design Pattern/Chatper 1. 개요</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/Modern%20C++%20Design%20Pattern/Chapter%201-%20%ea%b0%9c%ec%9a%94.md><h5>created : Tue, 07 Apr 2020 20:44:17 +0900</h5><h5>modified : Sat, 26 Sep 2020 23:09:17 +0900</h5></a><a href=https://minuk.dev/tags/cpp><kbd class=item-tag>cpp</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#crtpcuriously-recurring-template-pattern>CRTP(Curiously Recurring Template Pattern)</a><ul><li><a href=#property>Property</a></li></ul></li><li><a href=#factory>Factory</a><ul><li><a href=#factory-method>Factory Method</a></li><li><a href=#solid-design-principle>SOLID Design Principle</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=crtpcuriously-recurring-template-pattern>CRTP(Curiously Recurring Template Pattern)</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Foo</span> <span style=color:#f92672>:</span> SomeBase<span style=color:#f92672>&lt;</span>Foo<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span> ...
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> Derived<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>SomeBase</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>foo</span>()
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> item : <span style=color:#f92672>*</span><span style=color:#66d9ef>static_cast</span><span style=color:#f92672>&lt;</span>Derived<span style=color:#f92672>*&gt;</span>(<span style=color:#66d9ef>this</span>))
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>    ...
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=property>Property</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>  <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Person</span>
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> age_;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> get_age() <span style=color:#66d9ef>const</span> {<span style=color:#66d9ef>return</span> age_; }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>set_age</span>(<span style=color:#66d9ef>int</span> value) {age_ <span style=color:#f92672>=</span> value; }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>__declspec</span>(property(get<span style=color:#f92672>=</span>get_age, put<span style=color:#f92672>=</span>set_age)) <span style=color:#66d9ef>int</span> age;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Person p;
+</span></span><span style=display:flex><span>  p.age <span style=color:#f92672>=</span> <span style=color:#ae81ff>20</span>; <span style=color:#75715e>// calls p.set_age(20)
+</span></span></span></code></pre></div><h2 id=factory>Factory</h2><h3 id=factory-method>Factory Method</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span>
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>protected</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    Point(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>float</span> y)
+</span></span><span style=display:flex><span>      <span style=color:#f92672>:</span> x {x}, y {y}
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> Point NewCartesian(<span style=color:#66d9ef>float</span> x, <span style=color:#66d9ef>float</span> y)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> {x, y};
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> Point <span style=color:#a6e22e>NewPolar</span>(<span style=color:#66d9ef>float</span> r, <span style=color:#66d9ef>float</span> theta)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> {r <span style=color:#f92672>*</span> cos(theta), r <span style=color:#f92672>*</span> sin(theta)};
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// skip
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  };
+</span></span></code></pre></div><h3 id=solid-design-principle>SOLID Design Principle</h3><ul><li>SRP(Single Responsibility Principle)<ul><li>If you need to edit a few classes(or little more?) in some very small retouching, there is an omen of something problem. It is named <code>code smell</code></li></ul></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Journal</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  string title;
+</span></span><span style=display:flex><span>  vector<span style=color:#f92672>&lt;</span>string<span style=color:#f92672>&gt;</span> entries;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>Journal</span> (<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> title) <span style=color:#f92672>:</span> title{title} {}
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>void</span> Journal<span style=color:#f92672>::</span>add(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> entry)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> count <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  entries.push_back(boost<span style=color:#f92672>::</span>lexical_cast<span style=color:#f92672>&lt;</span>string<span style=color:#f92672>&gt;</span>(count<span style=color:#f92672>++</span>) <span style=color:#f92672>+</span> <span style=color:#e6db74>&#34;: &#34;</span> <span style=color:#f92672>+</span> entry);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>Journal j{&#34;Dear Diary&#34;};
+</span></span></span><span style=display:flex><span><span style=color:#75715e>j.add(&#34;I cried today&#34;);
+</span></span></span><span style=display:flex><span><span style=color:#75715e>j.add(&#34;I ate a bug&#34;);
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>PersistenceManager</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>save</span>(<span style=color:#66d9ef>const</span> Journal<span style=color:#f92672>&amp;</span> j, <span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> filename)
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    ofstream ofs(filename);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> s : j.entries)
+</span></span><span style=display:flex><span>      ofs <span style=color:#f92672>&lt;&lt;</span> s <span style=color:#f92672>&lt;&lt;</span> endl;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><ul><li>OCP(Open-Closed Principle)</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Specification</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>is_satisfied</span>(T<span style=color:#f92672>*</span> item) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>template</span> <span style=color:#f92672>&lt;</span><span style=color:#66d9ef>typename</span> T<span style=color:#f92672>&gt;</span> <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Filter</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>virtual</span> vector<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>*&gt;</span> filter(
+</span></span><span style=display:flex><span>    vector<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>*&gt;</span> items,
+</span></span><span style=display:flex><span>    Specification<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&amp;</span> spec) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>BetterFilter</span> <span style=color:#f92672>:</span> Filter<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  vector<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>*&gt;</span> filter(
+</span></span><span style=display:flex><span>    vector<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>*&gt;</span> items,
+</span></span><span style=display:flex><span>    Specifiaction<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>&gt;&amp;</span> spec) <span style=color:#66d9ef>override</span>
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    vector<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>*&gt;</span> result;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>auto</span><span style=color:#f92672>&amp;</span> p : items)
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (spec.is_satisfied(p))
+</span></span><span style=display:flex><span>        result.push_back(p);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> result;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ColorSpecification</span> <span style=color:#f92672>:</span> Specification<span style=color:#f92672>&lt;</span>Product<span style=color:#f92672>&gt;</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  Color color;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>explicit</span> <span style=color:#a6e22e>ColorSpecification</span>(cosnt Color color) <span style=color:#f92672>:</span> color{color} {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>is_stisfied</span>(Product<span style=color:#f92672>*</span> item) <span style=color:#66d9ef>override</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> item<span style=color:#f92672>-&gt;</span>color <span style=color:#f92672>==</span> color;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>Product apple{ &#34;Apple&#34;, Color::Green, Size::Small };
+</span></span></span><span style=display:flex><span><span style=color:#75715e>Product tree{ &#34;Tree&#34;, Color::Green, Size::Large };
+</span></span></span><span style=display:flex><span><span style=color:#75715e>Product house{ &#34;House&#34;, Color:Blue, Size::Large };
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>vector&lt;Product*&gt; all{ &amp;apple, &amp;tree, &amp;house };
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>BetterFilter bf;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>ColorSpecification green(Color::Green);
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>auto green_things = bf.filter(all, green);
+</span></span></span><span style=display:flex><span><span style=color:#75715e>for (auto&amp; x : green_things)
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  cout &lt;&lt; x-&gt;name &lt;&lt; &#34; is green&#34; &lt;&lt; endl;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span></code></pre></div><ul><li>LSP(Liskove Substitution Principle)</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>RectangleFactory</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>static</span> Rectangle <span style=color:#a6e22e>create_rectangle</span>(<span style=color:#66d9ef>int</span> w, <span style=color:#66d9ef>int</span> h);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>static</span> Rectangle <span style=color:#a6e22e>create_square</span>(<span style=color:#66d9ef>int</span> size);
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>bool</span> Rectangle:is_square() <span style=color:#66d9ef>const</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> width <span style=color:#f92672>==</span> height;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>ISP(Interface Segregation Principle)</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>IPrinter</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>IScanner</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>scan</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Printer</span> <span style=color:#f92672>:</span> IPrinter
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#66d9ef>override</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Scanner</span> <span style=color:#f92672>:</span> IScanner
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>scan</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#66d9ef>override</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>IMachine</span><span style=color:#f92672>:</span> IPrinter, IScanner
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Machine</span> <span style=color:#f92672>:</span> IMachine
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  IPrinter<span style=color:#f92672>&amp;</span> printer;
+</span></span><span style=display:flex><span>  IScanner<span style=color:#f92672>&amp;</span> scanner;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Machine(IPrinter<span style=color:#f92672>&amp;</span> printer, IScanner<span style=color:#f92672>&amp;</span> scanner)
+</span></span><span style=display:flex><span>    <span style=color:#f92672>:</span> printer{printer},
+</span></span><span style=display:flex><span>      scanner{scanner}
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>print</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#66d9ef>override</span> {
+</span></span><span style=display:flex><span>    printer.print(docs);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>scan</span>(vector<span style=color:#f92672>&lt;</span>Document<span style=color:#f92672>*&gt;</span> docs) <span style=color:#66d9ef>override</span> {
+</span></span><span style=display:flex><span>    scanner.scan(docs);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>DIP(Dependency Inversion Principle)</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cpp data-lang=cpp><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ILogger</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>virtual</span> <span style=color:#f92672>~</span>ILogger() {}
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>Log</span>(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> s) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>ConsoleLogger</span> <span style=color:#f92672>:</span> ILogger
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  ConsoleLogger() {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>Log</span>(<span style=color:#66d9ef>const</span> string<span style=color:#f92672>&amp;</span> s) <span style=color:#66d9ef>override</span>
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    cout <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;LOG: &#34;</span> <span style=color:#f92672>&lt;&lt;</span> s.c_str() <span style=color:#f92672>&lt;&lt;</span> endl;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Car</span>
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  unique_ptr<span style=color:#f92672>&lt;</span>Engine<span style=color:#f92672>&gt;</span> engine;
+</span></span><span style=display:flex><span>  shared_ptr<span style=color:#f92672>&lt;</span>ILogger<span style=color:#f92672>&gt;</span> logger;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  Car(unique_ptr<span style=color:#f92672>&lt;</span>Engine<span style=color:#f92672>&gt;</span> engine,
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>const</span> shared_ptr<span style=color:#f92672>&lt;</span>ILogger<span style=color:#f92672>&gt;&amp;</span> logger)
+</span></span><span style=display:flex><span>    <span style=color:#f92672>:</span> engine{move(engine)},
+</span></span><span style=display:flex><span>      logger{logger}
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    logger<span style=color:#f92672>-&gt;</span>Log(<span style=color:#e6db74>&#34;making a car&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>friend</span> ostream<span style=color:#f92672>&amp;</span> <span style=color:#66d9ef>operator</span><span style=color:#f92672>&lt;&lt;</span>(ostream<span style=color:#f92672>&amp;</span> os, <span style=color:#66d9ef>const</span> Car<span style=color:#f92672>&amp;</span> obj)
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> os <span style=color:#f92672>&lt;&lt;</span> <span style=color:#e6db74>&#34;car with engine: &#34;</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#f92672>*</span>obj.engine;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>auto</span> injector <span style=color:#f92672>=</span> di<span style=color:#f92672>::</span>maker_injector(
+</span></span><span style=display:flex><span>  di<span style=color:#f92672>::</span>bind<span style=color:#f92672>&lt;</span>ILogger<span style=color:#f92672>&gt;</span>().to<span style=color:#f92672>&lt;</span>ConsoleLogger<span style=color:#f92672>&gt;</span>()
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>auto</span> car <span style=color:#f92672>=</span>injector.create<span style=color:#f92672>&lt;</span>shared_ptr<span style=color:#f92672>&lt;</span>Car<span style=color:#f92672>&gt;&gt;</span>();
+</span></span></code></pre></div></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>

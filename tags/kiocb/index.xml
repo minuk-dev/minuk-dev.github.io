@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kiocb on minuk.dev</title><link>https://minuk.dev/tags/kiocb/</link><description>Recent content in Kiocb on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 03 Jul 2020 20:43:47 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/kiocb/index.xml" rel="self" type="application/rss+xml"/><item><title>kiocb</title><link>https://minuk.dev/wiki/kiocb/</link><pubDate>Fri, 03 Jul 2020 20:30:47 +0900</pubDate><guid>https://minuk.dev/wiki/kiocb/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>동기/비동기 IO 함수에게 완료할때 실행할 콜백함수를 전달하기 위한 구조체?&lt;/li>
+&lt;/ul>
+&lt;h2 id="매개변수-설명">매개변수 설명&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>ki_filp&lt;/code> : 해당 파일&lt;/li>
+&lt;li>&lt;code>ki_complete&lt;/code> : 상태가 완료가 될때 실행되는 콜백함수&lt;/li>
+&lt;li>나머진 아직 모르겠네 알게되면 추가로 정리함
+&lt;ul>
+&lt;li>&lt;code>private&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_flags&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_hint&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_ioprio&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_cookie&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="코드">코드&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> kiocb {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> file		&lt;span style="color:#f92672">*&lt;/span>ki_filp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#75715e">/* The &amp;#39;ki_filp&amp;#39; pointer is shared in a union for aio */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	randomized_struct_fields_start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">loff_t&lt;/span>			ki_pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>ki_complete)(&lt;span style="color:#66d9ef">struct&lt;/span> kiocb &lt;span style="color:#f92672">*&lt;/span>iocb, &lt;span style="color:#66d9ef">long&lt;/span> ret, &lt;span style="color:#66d9ef">long&lt;/span> ret2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>private;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">int&lt;/span>			ki_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u16			ki_hint;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u16			ki_ioprio; &lt;span style="color:#75715e">/* See linux/ioprio.h */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>		ki_cookie; &lt;span style="color:#75715e">/* for -&amp;gt;iopoll */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	randomized_struct_fields_end
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

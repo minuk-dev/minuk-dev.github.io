@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Observability on minuk.dev</title><link>https://minuk.dev/tags/observability/</link><description>Recent content in Observability on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Mon, 04 Sep 2023 01:32:44 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/observability/index.xml" rel="self" type="application/rss+xml"/><item><title>prometheus-native-histograms-in-proudction</title><link>https://minuk.dev/wiki/prometheus-native-histograms-in-production/</link><pubDate>Mon, 04 Sep 2023 01:05:34 +0900</pubDate><guid>https://minuk.dev/wiki/prometheus-native-histograms-in-production/</guid><description>&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=TgINvIK9SYc&amp;amp;list=PLj6h78yzYM2ORxwcjTn4RLAOQOYjvQ2A3&amp;amp;index=6">https://www.youtube.com/watch?v=TgINvIK9SYc&amp;amp;list=PLj6h78yzYM2ORxwcjTn4RLAOQOYjvQ2A3&amp;amp;index=6&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="disclaimer">Disclaimer&lt;/h2>
+&lt;ul>
+&lt;li>Native Histograms are an experimental feature!&lt;/li>
+&lt;li>Everything described here can stil lchange!&lt;/li>
+&lt;li>Things might break or behave weirdly!&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>prometheus --enable-feature&lt;span style="color:#f92672">=&lt;/span>native-histograms
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="wishlist">Wishlist&lt;/h2>
+&lt;ul>
+&lt;li>Everything that works well now should continue to work well.&lt;/li>
+&lt;li>I never want to configure buckets again.&lt;/li>
+&lt;li>All histograms should always be aggregatable with each other, across time and space.&lt;/li>
+&lt;li>I want accurate quantile and percentage estimations across the whole range of observations.&lt;/li>
+&lt;li>I want all of that at a lower cost thant current histograms so that I can finally partition histograms at will.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-resource-consumption-of-the-instrumented-binary">1. Resource consumption of the instrumented binary&lt;/h2>
+&lt;h2 id="2-frequency-of-resets-and-resolution-reduction">2. Frequency of resets and resolution reduction&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Scraping 15 instances of the cloud-backend-gateway.&lt;/p></description></item><item><title>Making Sense of Your Vital Signals - The Future of Pod and Containers Monitoring</title><link>https://minuk.dev/wiki/making-sense-of-your-vital-signals-the-future-of-pod-and-containers-monitoring/</link><pubDate>Sun, 27 Aug 2023 15:49:49 +0900</pubDate><guid>https://minuk.dev/wiki/making-sense-of-your-vital-signals-the-future-of-pod-and-containers-monitoring/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/program/schedule/">https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/program/schedule/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.youtube.com/watch?v=w6PeNpPhIF8&amp;amp;t=1s&amp;amp;ab_channel=CNCF%5BCloudNativeComputingFoundation%5D">https://www.youtube.com/watch?v=w6PeNpPhIF8&amp;amp;t=1s&amp;amp;ab_channel=CNCF%5BCloudNativeComputingFoundation%5D&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="you-were-paged-why">You were paged! Why!?&lt;/h2>
+&lt;ul>
+&lt;li>Observability:
+&lt;ul>
+&lt;li>Understand resource usage, changes with deployments, rollouts&lt;/li>
+&lt;li>Identify issues and unexpected behavior with applications&lt;/li>
+&lt;li>Alerting on unexpected conditions&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>SLO/SLIs&lt;/li>
+&lt;li>Node stability:
+&lt;ul>
+&lt;li>Kubelet subcomponents:
+&lt;ul>
+&lt;li>(e.g. eviction manager) depend on metrics to understand which pods to evict:
+&lt;ul>
+&lt;li>e.g. pod that over consumes ephemeral storage will be evicted&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="theres-a-lot-of-metrics-in-k8s">There&amp;rsquo;s a lot of metrics in k8s&amp;hellip;&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Node Level Metrics (i.e. node-exporter)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Kubernetes component metrics (e.g. api-server, controller manager, scheduler, kubelet etc)&lt;/p></description></item><item><title>grafanacon</title><link>https://minuk.dev/wiki/grafanacon/</link><pubDate>Mon, 06 Mar 2023 02:26:29 +0900</pubDate><guid>https://minuk.dev/wiki/grafanacon/</guid><description>&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>grafanacon2022 : &lt;a href="https://grafana.com/about/events/grafanacon/2022/">https://grafana.com/about/events/grafanacon/2022/&lt;/a>&lt;/li>
+&lt;li>youtube playlists : &lt;a href="https://www.youtube.com/playlist?list=PLDGkOdUX1Ujr0fY5Fv4bT8i0MURQArPwI">https://www.youtube.com/playlist?list=PLDGkOdUX1Ujr0fY5Fv4bT8i0MURQArPwI&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="notes">Notes&lt;/h2>
+&lt;ul>
+&lt;li>[[beyond-tracing-what-do-we-do-with-all-this-data]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

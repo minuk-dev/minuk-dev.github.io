@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rust on minuk.dev</title><link>https://minuk.dev/tags/rust/</link><description>Recent content in Rust on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Thu, 23 Mar 2023 20:33:27 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/rust/index.xml" rel="self" type="application/rss+xml"/><item><title>rust</title><link>https://minuk.dev/wiki/rust/</link><pubDate>Sun, 12 Feb 2023 16:52:36 +0900</pubDate><guid>https://minuk.dev/wiki/rust/</guid><description>&lt;h2 id="공부-자료">공부 자료&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://google.github.io/comprehensive-rust/welcome.html">Comprehensive Rust&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="혼자-정리">혼자 정리&lt;/h2>
+&lt;h3 id="hello-world">Hello World!&lt;/h3>
+&lt;ul>
+&lt;li>Functions are introduced with &lt;code>fn&lt;/code>.&lt;/li>
+&lt;li>Blocks are delimited by curly braces like in C and C++.&lt;/li>
+&lt;li>The &lt;code>main&lt;/code> function is the entry point of the program.&lt;/li>
+&lt;li>Rust has hygienic macros, &lt;code>println!&lt;/code> is an example of this.&lt;/li>
+&lt;li>Rust strings are UTF-8 encoded and can contain any Unicode character.&lt;/li>
+&lt;/ul>
+&lt;h3 id="small-example">Small Example&lt;/h3>
+&lt;h3 id="why-rust">Why Rust?&lt;/h3>
+&lt;ul>
+&lt;li>Compile time memory safety.&lt;/li>
+&lt;li>Lack of undeinfed runtime behavior.&lt;/li>
+&lt;li>Modern language features.&lt;/li>
+&lt;/ul>
+&lt;h3 id="compile-time-guarantees">Compile Time Guarantees&lt;/h3>
+&lt;ul>
+&lt;li>Static memory mangement at compile time:
+&lt;ul>
+&lt;li>No uninitialized variables.&lt;/li>
+&lt;li>No memory leaks (mostly):
+&lt;ul>
+&lt;li>&lt;code>Box::leak&lt;/code>&lt;/li>
+&lt;li>&lt;code>std::mem::forget&lt;/code>&lt;/li>
+&lt;li>reference cycle with &lt;code>Rc&lt;/code> or &lt;code>Arc&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>No double-frees.&lt;/li>
+&lt;li>No use-after-free.&lt;/li>
+&lt;li>No &lt;code>NULL&lt;/code> pointers.&lt;/li>
+&lt;li>No forgotten locked mutexes.&lt;/li>
+&lt;li>No data races between threads.&lt;/li>
+&lt;li>No iterator invalidation.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="runtime-guarantees">Runtime Guarantees&lt;/h3>
+&lt;ul>
+&lt;li>No undefined behavior at runtime:
+&lt;ul>
+&lt;li>Array access is bounds checked.&lt;/li>
+&lt;li>Integer overflow is defined.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="references">References&lt;/h3>
+&lt;ul>
+&lt;li>Rust will auto-derefernece in some cases, in particular when invoking methods (try &lt;code>ref_x.count_ones()&lt;/code>).&lt;/li>
+&lt;/ul>
+&lt;h3 id="dangling-references">Dangling References&lt;/h3>
+&lt;h3 id="slices">Slices&lt;/h3>
+&lt;ul>
+&lt;li>If the slice starts at index 0, Rust&amp;rsquo;s range syntax allows us to drop the starting index, meaning that &lt;code>&amp;amp;a[0..a.len()]&lt;/code> and &lt;code>a[..a.len()]&lt;/code> are identical.&lt;/li>
+&lt;li>The same is true for the last index, so &lt;code>&amp;amp;a[2..a.len()]&lt;/code> and &lt;code>&amp;amp;a[2..]&lt;/code> are identical.&lt;/li>
+&lt;li>To easily create a slice of the full array, we can therefore use &lt;code>&amp;amp;a[..]&lt;/code>.&lt;/li>
+&lt;li>Slices always borrow from another object.&lt;/li>
+&lt;/ul>
+&lt;h3 id="string-vs-str">String vs str&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>&amp;amp;str&lt;/code> introduces a string slice, which is an immutable reference to UTF-8 encoded string data stored in a block of memory. String literals are stored in the probram&amp;rsquo;s binary.&lt;/li>
+&lt;li>Rust&amp;rsquo;s string type is a wrapper around a vector of bytes. As with a &lt;code>Vec&amp;lt;T&amp;gt;&lt;/code>, it is owned.&lt;/li>
+&lt;li>As with many other types &lt;code>String::from()&lt;/code> creates a string from a string literal; &lt;code>String::new()&lt;/code> creates a new empty string, to which string data can be added using the &lt;code>push()&lt;/code> and &lt;code>push_str()&lt;/code> methods.&lt;/li>
+&lt;li>The &lt;code>format!()&lt;/code> macro is a convenient way to generate an owned string from dynacmi values. It accepts the same format specification as &lt;code>println!()&lt;/code>.&lt;/li>
+&lt;li>You can borrow &lt;code>&amp;amp;str&lt;/code> slices from &lt;code>String&lt;/code> via &lt;code>&amp;amp;&lt;/code> and optionally range selection.&lt;/li>
+&lt;li>For C++ programeers: think of &lt;code>&amp;amp;str&lt;/code> as &lt;code>const char*&lt;/code> from C++, but the one that always points to a valid string in memory. Rust &lt;code>String&lt;/code> is a rough equivalent of &lt;code>std::string&lt;/code> from C++&lt;/li>
+&lt;/ul>
+&lt;h3 id="functions">Functions&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fizzbuzz_to(&lt;span style="color:#ae81ff">20&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">is_divisible_by&lt;/span>(lhs: &lt;span style="color:#66d9ef">u32&lt;/span>, rhs: &lt;span style="color:#66d9ef">u32&lt;/span>) -&amp;gt; &lt;span style="color:#66d9ef">bool&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> rhs &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lhs &lt;span style="color:#f92672">%&lt;/span> rhs &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">fizzbuzz&lt;/span>(n: &lt;span style="color:#66d9ef">u32&lt;/span>) -&amp;gt; () {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">match&lt;/span> (is_divisible_by(n, &lt;span style="color:#ae81ff">3&lt;/span>), is_divisible_by(n, &lt;span style="color:#ae81ff">5&lt;/span>)) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#66d9ef">true&lt;/span>, &lt;span style="color:#66d9ef">true&lt;/span>) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> println!(&lt;span style="color:#e6db74">&amp;#34;fizzbuzz&amp;#34;&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#66d9ef">true&lt;/span>, &lt;span style="color:#66d9ef">false&lt;/span>) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> println!(&lt;span style="color:#e6db74">&amp;#34;fizz&amp;#34;&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#66d9ef">true&lt;/span>) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> println!(&lt;span style="color:#e6db74">&amp;#34;buzz&amp;#34;&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> (&lt;span style="color:#66d9ef">false&lt;/span>, &lt;span style="color:#66d9ef">false&lt;/span>) &lt;span style="color:#f92672">=&amp;gt;&lt;/span> println!(&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#e6db74">{n}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">fizzbuzz_to&lt;/span>(n: &lt;span style="color:#66d9ef">u32&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> i &lt;span style="color:#66d9ef">in&lt;/span> &lt;span style="color:#ae81ff">1&lt;/span>&lt;span style="color:#f92672">..=&lt;/span>n {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fizzbuzz(i);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="mtehods">Mtehods&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-rust" data-lang="rust">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Rectangel&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> width: &lt;span style="color:#66d9ef">u32&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> height: &lt;span style="color:#66d9ef">u32&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">impl&lt;/span> Rectangle {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">area&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>self) -&amp;gt; &lt;span style="color:#66d9ef">u32&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> self.width &lt;span style="color:#f92672">*&lt;/span> self.height
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">inc_width&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#66d9ef">mut&lt;/span> self, delta: &lt;span style="color:#66d9ef">u32&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> self.width &lt;span style="color:#f92672">+=&lt;/span> delta;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#66d9ef">mut&lt;/span> rect &lt;span style="color:#f92672">=&lt;/span> Rectangle { width: &lt;span style="color:#ae81ff">10&lt;/span>, height: &lt;span style="color:#ae81ff">5&lt;/span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println!(&lt;span style="color:#e6db74">&amp;#34;old area: &lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>, rect.area());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> rect.inc_widtH(&lt;span style="color:#ae81ff">5&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> println!(&lt;span style="color:#e6db74">&amp;#34;new area: &lt;/span>&lt;span style="color:#e6db74">{}&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>, rect.area());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="function-overloading">Function Overloading&lt;/h3>
+&lt;ul>
+&lt;li>Overloading is nott supported:
+&lt;ul>
+&lt;li>Each function has a single implementation:
+&lt;ul>
+&lt;li>Always takes a fixed number of parameters.&lt;/li>
+&lt;li>Always takes a single set of parameter types.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Default values are not supported:
+&lt;ul>
+&lt;li>All call sites have thet same number of arguments.&lt;/li>
+&lt;li>Macros are sometimes used as an alternative.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="static-and-constant-variables">Static and Constant Variables&lt;/h3>
+&lt;ul>
+&lt;li>Mention that &lt;code>const&lt;/code> behaves semantically similar to C++&amp;rsquo;s &lt;code>constexpr&lt;/code>.&lt;/li>
+&lt;li>&lt;code>static&lt;/code>, on the other hand, is much mor simiar to a const or mutable global variable in C++.&lt;/li>
+&lt;li>It isn&amp;rsquo;t super common that one would need a runtime evaluated constant, but it is helpful and safer than using a static.&lt;/li>
+&lt;/ul>
+&lt;h3 id="scopes-and-shadowing">Scopes and Shadowing&lt;/h3>
+&lt;ul>
+&lt;li>Definition: Shadoing is different from mutation, becauser after shadowing both varible&amp;rsquo;s memory locations exist at the same time. Both are available under the same name, depending where you use it in the code.&lt;/li>
+&lt;li>Shadowing looks obscure at first, but is convenient for holding on to values after &lt;code>.unwrap()&lt;/code>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="memory-management">Memory Management&lt;/h3>
+&lt;ul>
+&lt;li>Full control and safety via compile time enforcement of correct memory management.&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-stack-vs-the-heap">The Stack vs The Heap&lt;/h3>
+&lt;ul>
+&lt;li>Stack: Continuous area of memory for local variables.:
+&lt;ul>
+&lt;li>Values have fixed sizes known at compile time.&lt;/li>
+&lt;li>Extremely fast: just move a stack pointer.&lt;/li>
+&lt;li>Easy to manage: follows function calls.&lt;/li>
+&lt;li>Great memory locality.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Heap: Storage of values outside of function calls.:
+&lt;ul>
+&lt;li>Values have dynamic sizes determined at runtime.&lt;/li>
+&lt;li>Slightly slower than the stack: some book-keeping needed.&lt;/li>
+&lt;li>No guarantee of memory locality.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="memory-management-in-rust">Memory Management in Rust&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Memory management in Rust is a mix:&lt;/p></description></item></channel></rss>

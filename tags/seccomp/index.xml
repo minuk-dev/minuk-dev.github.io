@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Seccomp on minuk.dev</title><link>https://minuk.dev/tags/seccomp/</link><description>Recent content in Seccomp on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 13 Sep 2020 19:41:58 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/seccomp/index.xml" rel="self" type="application/rss+xml"/><item><title>seccomp</title><link>https://minuk.dev/wiki/seccomp/</link><pubDate>Sun, 13 Sep 2020 19:37:24 +0900</pubDate><guid>https://minuk.dev/wiki/seccomp/</guid><description>&lt;h2 id="seccomp-secure-computing-mode">seccomp (secure computing mode)&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>참고 : &lt;a href="https://ko.wikipedia.org/wiki/Seccomp">https://ko.wikipedia.org/wiki/Seccomp&lt;/a>, &lt;a href="https://ssup2.github.io/theory_analysis/Linux_seccomp/">https://ssup2.github.io/theory_analysis/Linux_seccomp/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>system call filtering 기법&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>strict 와 filter 모드가 존재&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>strict 모드에서는 일부 시스템 콜만 허용(read, write, exit, sigreturn), 이외에 호출하면 SIGKILL 이 발생해서 죽음.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>filter 모드에서는 각 system call 별로 수행 동작을 설정 가능.&lt;/p>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

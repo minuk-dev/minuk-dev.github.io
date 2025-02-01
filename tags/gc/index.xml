@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Gc on minuk.dev</title><link>https://minuk.dev/tags/gc/</link><description>Recent content in Gc on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 15 Mar 2022 02:23:25 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/gc/index.xml" rel="self" type="application/rss+xml"/><item><title>Javascript Memory Leak</title><link>https://minuk.dev/wiki/memory_leak/</link><pubDate>Tue, 07 Apr 2020 20:16:46 +0900</pubDate><guid>https://minuk.dev/wiki/memory_leak/</guid><description>&lt;h1 id="주제-후보">주제 후보&lt;/h1>
+&lt;ul>
+&lt;li>메모리 누수란 왜 일어나는가? - garbage collector의 동작방식, javascript 에서 메모리 누수 없이 코딩하는 습관 가지기&lt;/li>
+&lt;li>비동기처리하기 - javascript callback, promise, async-await&lt;/li>
+&lt;li>웹사이트에서 원하는 정보 추출하기 - 웹사이트 크롤링, 파싱하기&lt;/li>
+&lt;li>나무위키 유의어, 반의어 - Word2Vec를 통한 나무위키 데이터 학습&lt;/li>
+&lt;/ul>
+&lt;p>→ 익명의 대학 동기에게 재밋는 주제를 고르라고 해서 진행되었습니다.&lt;/p>
+&lt;h2 id="메모리-누수란-왜-일어나는가">메모리 누수란 왜 일어나는가?&lt;/h2>
+&lt;h3 id="결론부터-말하자면-프로그래머의-실수-코딩-습관을-잘-들이자">결론부터 말하자면 프로그래머의 실수. 코딩 습관을 잘 들이자.&lt;/h3>
+&lt;ul>
+&lt;li>Garbage Collection 의 필요성
+&lt;ul>
+&lt;li>C언어에서 메모리를 직접 할당하고 해제하는 malloc, free 라는 방식을 사용하였다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;lt;stdlib.h&amp;gt;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span> argc, &lt;span style="color:#66d9ef">char&lt;/span>&lt;span style="color:#f92672">**&lt;/span> argv) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> n;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> scanf(&lt;span style="color:#e6db74">&amp;#34;%d&amp;#34;&lt;/span>,&lt;span style="color:#f92672">&amp;amp;&lt;/span>n);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">*&lt;/span> arr &lt;span style="color:#f92672">=&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">*&lt;/span>)malloc(&lt;span style="color:#66d9ef">sizeof&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#f92672">*&lt;/span> n);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// do something
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> free(arr);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;pre>&lt;code>- → 소프트웨어의 규모가 커지고 협업이 증가하면서 메모리를 책임지지 못하게 되었다.
+- →Garbage Collection의 필요성 (cf. rust 의 memory ownership)
+ - 단, 최초의 GC는 LISP 이라는 언어에서부터 있었다고 알려져있음.(1958년)
+&lt;/code>&lt;/pre>
+&lt;h2 id="garbage-collection">Garbage Collection&lt;/h2>
+&lt;h3 id="초기-아이디어---참조-카운트reference-counting">초기 아이디어 - 참조 카운트(Reference Counting)&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>A a &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> A();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>a.b &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> B();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>a.b.c &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> C();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>a.b.c &lt;span style="color:#f92672">=&lt;/span> null;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>f();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">f&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> A a &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span> A();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// do something
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>이 때 f 메서드 바깥에서는 a가 사용되지 않는다.&lt;/p></description></item></channel></rss>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Numa on minuk.dev</title><link>https://minuk.dev/tags/numa/</link><description>Recent content in Numa on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 05 Aug 2022 02:09:13 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/numa/index.xml" rel="self" type="application/rss+xml"/><item><title>This is The Way- A Crash Course on the Intricacies of Managing CPUs in K8s</title><link>https://minuk.dev/wiki/this-is-the-way-a-crash-course-on-intricacies-of-managing-cpus/</link><pubDate>Fri, 05 Aug 2022 02:07:46 +0900</pubDate><guid>https://minuk.dev/wiki/this-is-the-way-a-crash-course-on-intricacies-of-managing-cpus/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/IFEJD1YOpXo">원본 링크&lt;/a>&lt;/li>
+&lt;li>Scope : We will cover CPU Management requirements Only, but also reference other projects.&lt;/li>
+&lt;/ul>
+&lt;h2 id="simple-systems">Simple Systems&lt;/h2>
+&lt;ul>
+&lt;li>Nodes
+&lt;ul>
+&lt;li>Single NIC&lt;/li>
+&lt;li>Single Socket CPU&lt;/li>
+&lt;li>Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Kubelet was designed for simple at first&lt;/li>
+&lt;li>Early Kubelet&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># &amp;lt; Kubernetes v1.8 - before 2017&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">apiVersion&lt;/span>: &lt;span style="color:#ae81ff">v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">kind&lt;/span>: &lt;span style="color:#ae81ff">Pod&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">metadata&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">frontend&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">spec&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">containers&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">app&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">my-company.example/myapp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">resources&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">requests&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">memory&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;64Mi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cpu&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;250m&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">limits&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">memory&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;128Mi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cpu&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;500m&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Resources supported:
+&lt;ul>
+&lt;li>CPU&lt;/li>
+&lt;li>Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Reuqests: Ask for resources for your container&lt;/li>
+&lt;li>Limits: limit the amount of resources consumed by the container&lt;/li>
+&lt;li>Resource Mangement in Kubelet
+&lt;ul>
+&lt;li>Kubernetes v1.8-v.11 (2017-2018)&lt;/li>
+&lt;li>Pre-allocated hugepage support as native resources (Alpha support v1.8, graduated to Beta in v.11)&lt;/li>
+&lt;li>CPU Manager support to enable container level CPU affinity support (Alpha support v1.8, graduated to Beta in v.11)&lt;/li>
+&lt;li>Device Plugin Support to enable a consistent and portable solution for users to consume hardware devices across k8s clusters(Alpha support in v1.8, graduated to Beta in v.10)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="high-performance-uses-cases">High Performance Uses Cases&lt;/h2>
+&lt;ul>
+&lt;li>Performance Sensitive Workloads&lt;/li>
+&lt;li>High Performance, AI/ML Clusters
+&lt;ul>
+&lt;li>Multiple CPU Socket&lt;/li>
+&lt;li>Multiple NIC&lt;/li>
+&lt;li>Multiple Numa&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager---pinned-cores">CPU Manager - Pinned Cores&lt;/h3>
+&lt;ul>
+&lt;li>Cpu Manager with static policy allocates CPUs exclusively for a container if
+&lt;ul>
+&lt;li>pod QoS is Guaranteed&lt;/li>
+&lt;li>has a positive integer CPU request&lt;/li>
+&lt;li>does not change CPU assignments for exclusively pinned guaranteed containers after the main container process start&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager-policies">CPU Manager Policies&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>--cpu-manager-policy&lt;/code> kubelet flag used to specify the policy&lt;/li>
+&lt;li>None:
+&lt;ul>
+&lt;li>Default&lt;/li>
+&lt;li>Provides no affinity beyond what the OS scheduler does automatically&lt;/li>
+&lt;li>Can handle partial CPUs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Static:
+&lt;ul>
+&lt;li>allows containers access to exclusive CPUs on the node&lt;/li>
+&lt;li>does not change CPU assignments for exclusively pinned guaranteed containers after the main container process starts&lt;/li>
+&lt;li>Only uses whole CPUs, so increases perceived CPU utilization&lt;/li>
+&lt;li>Only by container, not by pod&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager-policy-options">CPU Manager Policy Options&lt;/h3>
+&lt;ul>
+&lt;li>Introduced in v1.22, Beta in v1.23&lt;/li>
+&lt;li>&lt;code>--cpu-manager-policy-options&lt;/code> : kubelet flag used to specify the policy option&lt;/li>
+&lt;li>full-pcpus-only:
+&lt;ul>
+&lt;li>Beta option, visible by default&lt;/li>
+&lt;li>the static policy will always allocate full physical cores, so guarantee same NUMA zone.&lt;/li>
+&lt;li>Fails with SMTAlignmentError for partial core allocation&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>distribute-cpus-acorss-numa:
+&lt;ul>
+&lt;li>alpha, hidden by default&lt;/li>
+&lt;li>the static policy will evenly distribute CPUs across NUMA nodes&lt;/li>
+&lt;li>Still per container&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="numa-zones-not-for-the-weak-of-heart">NUMA Zones: Not for the weak of heart&lt;/h2>
+&lt;ul>
+&lt;li>If CPU and Memory are located in different NUMA zones, …&lt;/li>
+&lt;/ul>
+&lt;h3 id="along-comes-topology-management">Along Comes Topology Management&lt;/h3>
+&lt;ul>
+&lt;li>Kubernetes v1.8 (2019 onwards)&lt;/li>
+&lt;li>Topology Manger to coordinate resource assignment to avoid cross NUMA assignments (alpha support v1.16, graduated to beta in v1.18)&lt;/li>
+&lt;li>Memory Manager for guarnteed memory (and hugepages) allocation to pods (alpha support v1.21, graduated to beta in v1.22))&lt;/li>
+&lt;li>Known Issue: Scheduler is not NUMA aware and pod can fail with TopologyAffinityError if kubelet is unable to align all the resources based on the Topology Manager policy.&lt;/li>
+&lt;/ul>
+&lt;h3 id="going-with-the-topology-flow">Going with the Topology Flow&lt;/h3>
+&lt;p>kubelet - Admit()&lt;/p></description></item></channel></rss>

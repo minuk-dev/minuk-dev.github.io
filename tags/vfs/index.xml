@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vfs on minuk.dev</title><link>https://minuk.dev/tags/vfs/</link><description>Recent content in Vfs on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 03 Jul 2020 20:52:44 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/vfs/index.xml" rel="self" type="application/rss+xml"/><item><title>vfs - file</title><link>https://minuk.dev/wiki/file/</link><pubDate>Fri, 03 Jul 2020 20:49:21 +0900</pubDate><guid>https://minuk.dev/wiki/file/</guid><description>&lt;h2 id="heading">&lt;/h2>
+&lt;h2 id="코드">코드&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> file {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">union&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#66d9ef">struct&lt;/span> llist_node	fu_llist;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#66d9ef">struct&lt;/span> rcu_head 	fu_rcuhead;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	} f_u;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> path		f_path;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> inode		&lt;span style="color:#f92672">*&lt;/span>f_inode;	&lt;span style="color:#75715e">/* cached value */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> file_operations	&lt;span style="color:#f92672">*&lt;/span>f_op;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#75715e">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">	 * Protects f_ep_links, f_flags.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">	 * Must not be taken from IRQ context.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">	 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">spinlock_t&lt;/span>		f_lock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">enum&lt;/span> rw_hint		f_write_hint;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">atomic_long_t&lt;/span>		f_count;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> 		f_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">fmode_t&lt;/span>			f_mode;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> mutex		f_pos_lock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">loff_t&lt;/span>			f_pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> fown_struct	f_owner;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> cred	&lt;span style="color:#f92672">*&lt;/span>f_cred;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> file_ra_state	f_ra;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u64			f_version;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_SECURITY
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>f_security;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#75715e">/* needed for tty driver, and maybe others */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>private_data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_EPOLL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#75715e">/* Used by fs/eventpoll.c to link all the hooks to this file */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> list_head	f_ep_links;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> list_head	f_tfile_llink;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif &lt;/span>&lt;span style="color:#75715e">/* #ifdef CONFIG_EPOLL */&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#66d9ef">struct&lt;/span> address_space	&lt;span style="color:#f92672">*&lt;/span>f_mapping;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">errseq_t&lt;/span>		f_wb_err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">errseq_t&lt;/span>		f_sb_err; &lt;span style="color:#75715e">/* for syncfs */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} __randomize_layout
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">__attribute__&lt;/span>((&lt;span style="color:#a6e22e">aligned&lt;/span>(&lt;span style="color:#ae81ff">4&lt;/span>)));	&lt;span style="color:#75715e">/* lest something weird decides that 2 is OK */&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>kiocb</title><link>https://minuk.dev/wiki/kiocb/</link><pubDate>Fri, 03 Jul 2020 20:30:47 +0900</pubDate><guid>https://minuk.dev/wiki/kiocb/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>동기/비동기 IO 함수에게 완료할때 실행할 콜백함수를 전달하기 위한 구조체?&lt;/li>
+&lt;/ul>
+&lt;h2 id="매개변수-설명">매개변수 설명&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>ki_filp&lt;/code> : 해당 파일&lt;/li>
+&lt;li>&lt;code>ki_complete&lt;/code> : 상태가 완료가 될때 실행되는 콜백함수&lt;/li>
+&lt;li>나머진 아직 모르겠네 알게되면 추가로 정리함
+&lt;ul>
+&lt;li>&lt;code>private&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_flags&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_hint&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_ioprio&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_cookie&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="코드">코드&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> kiocb {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> file		&lt;span style="color:#f92672">*&lt;/span>ki_filp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#75715e">/* The &amp;#39;ki_filp&amp;#39; pointer is shared in a union for aio */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	randomized_struct_fields_start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">loff_t&lt;/span>			ki_pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>ki_complete)(&lt;span style="color:#66d9ef">struct&lt;/span> kiocb &lt;span style="color:#f92672">*&lt;/span>iocb, &lt;span style="color:#66d9ef">long&lt;/span> ret, &lt;span style="color:#66d9ef">long&lt;/span> ret2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>private;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">int&lt;/span>			ki_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u16			ki_hint;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u16			ki_ioprio; &lt;span style="color:#75715e">/* See linux/ioprio.h */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>		ki_cookie; &lt;span style="color:#75715e">/* for -&amp;gt;iopoll */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	randomized_struct_fields_end
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>VFS-Virtual File System</title><link>https://minuk.dev/wiki/vfs/</link><pubDate>Fri, 03 Jul 2020 20:30:09 +0900</pubDate><guid>https://minuk.dev/wiki/vfs/</guid><description>&lt;h2 id="용어">용어&lt;/h2>
+&lt;ul>
+&lt;li>[[file]]&lt;/li>
+&lt;li>[[kiocb]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

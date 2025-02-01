@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Cs on minuk.dev</title><link>https://minuk.dev/tags/cs/</link><description>Recent content in Cs on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 30 Sep 2022 19:46:40 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/cs/index.xml" rel="self" type="application/rss+xml"/><item><title>cs 기본</title><link>https://minuk.dev/wiki/cs/</link><pubDate>Wed, 28 Sep 2022 17:27:10 +0900</pubDate><guid>https://minuk.dev/wiki/cs/</guid><description>&lt;h2 id="정리-동기">정리 동기&lt;/h2>
+&lt;ul>
+&lt;li>적으면서 공부하려고&lt;/li>
+&lt;li>&lt;a href="https://github.com/WooVictory/Ready-For-Tech-Interview">출처&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="algorithm">Algorithm&lt;/h2>
+&lt;h3 id="selection-sort">Selection Sort&lt;/h3>
+&lt;ul>
+&lt;li>Unstable sort&lt;/li>
+&lt;li>O(N^2)&lt;/li>
+&lt;li>단순한 알고리즘&lt;/li>
+&lt;li>적은 교환 횟수&lt;/li>
+&lt;li>추가 메모리 공간 필요 없음&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">sort&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 0; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span>; i &lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> standard &lt;span style="color:#f92672">=&lt;/span> i;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> j &lt;span style="color:#f92672">=&lt;/span> i &lt;span style="color:#f92672">+&lt;/span> 1; j &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span>; j&lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (arr&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>standard&lt;span style="color:#f92672">]&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> standard &lt;span style="color:#f92672">=&lt;/span> j;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> temp &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>standard&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arr&lt;span style="color:#f92672">[&lt;/span>standard&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arr&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> temp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="bubble-sort">Bubble Sort&lt;/h3>
+&lt;ul>
+&lt;li>구현이 단순&lt;/li>
+&lt;li>이미 정렬된 데이터를 정렬할때, 가장 빠르다.&lt;/li>
+&lt;li>배열 안에서 정렬하는 방식으로 다른 메모리 공간 필요 없음.&lt;/li>
+&lt;li>stable sort&lt;/li>
+&lt;li>O(n^2)&lt;/li>
+&lt;li>교환 횟수가 많다.&lt;/li>
+&lt;li>역순 정렬시 가장 느림.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">sort&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 0; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span>; i &lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> j &lt;span style="color:#f92672">=&lt;/span> 0; j &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span> &lt;span style="color:#f92672">-&lt;/span> i &lt;span style="color:#f92672">-&lt;/span> 1; j &lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (arr&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">&amp;gt;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>j &lt;span style="color:#f92672">+&lt;/span> 1&lt;span style="color:#f92672">]&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> temp &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arr&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>j &lt;span style="color:#f92672">+&lt;/span> 1&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arr&lt;span style="color:#f92672">[&lt;/span>j &lt;span style="color:#f92672">+&lt;/span> 1&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> temp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="merge-sort">Merge Sort&lt;/h3>
+&lt;ul>
+&lt;li>Stable stort&lt;/li>
+&lt;li>추가 메모리가 필요하다.&lt;/li>
+&lt;li>데이터 분포에 영향을 덜 받는다.&lt;/li>
+&lt;li>LinkedList 에서 효율적이다.&lt;/li>
+&lt;li>O(nlgn)&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">mergeSort&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> a, &lt;span style="color:#66d9ef">int&lt;/span> left, &lt;span style="color:#66d9ef">int&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (left &lt;span style="color:#f92672">&amp;lt;&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> mid &lt;span style="color:#f92672">=&lt;/span> (left &lt;span style="color:#f92672">+&lt;/span> right) &lt;span style="color:#f92672">/&lt;/span> 2;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mergeSort(a, left, mid);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> mergeSort(a, mid &lt;span style="color:#f92672">+&lt;/span> 1, right);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> merge(a, left, mid, right);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">merge&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> a, &lt;span style="color:#66d9ef">int&lt;/span> left, &lt;span style="color:#66d9ef">int&lt;/span> mid, &lt;span style="color:#66d9ef">int&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> i, j, k;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> i &lt;span style="color:#f92672">=&lt;/span> left;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> j &lt;span style="color:#f92672">=&lt;/span> (mid &lt;span style="color:#f92672">+&lt;/span> 1);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> k &lt;span style="color:#f92672">=&lt;/span> 0;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> sorted &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">new&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span>, right &lt;span style="color:#f92672">-&lt;/span> left &lt;span style="color:#f92672">+&lt;/span> 1);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (i &lt;span style="color:#f92672">&amp;lt;=&lt;/span> mid &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> j &lt;span style="color:#f92672">&amp;lt;=&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (a&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> a&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">]&lt;/span>) sorted&lt;span style="color:#f92672">[&lt;/span>k&lt;span style="color:#f92672">++]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> a&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">++]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span> sorted&lt;span style="color:#f92672">[&lt;/span>k&lt;span style="color:#f92672">++]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> a&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">++]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (i &lt;span style="color:#f92672">&amp;lt;=&lt;/span> mid) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sorted&lt;span style="color:#f92672">[&lt;/span>k&lt;span style="color:#f92672">++]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> a&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">++]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (j &lt;span style="color:#f92672">&amp;lt;=&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sorted&lt;span style="color:#f92672">[&lt;/span>k&lt;span style="color:#f92672">++]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> a&lt;span style="color:#f92672">[&lt;/span>j&lt;span style="color:#f92672">++]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (k &lt;span style="color:#f92672">=&lt;/span> 0; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> right &lt;span style="color:#f92672">-&lt;/span> left &lt;span style="color:#f92672">+&lt;/span> 1; i &lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> a&lt;span style="color:#f92672">[&lt;/span>left &lt;span style="color:#f92672">+&lt;/span> k&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> sorted&lt;span style="color:#f92672">[&lt;/span>k&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="insertion-sort">Insertion Sort&lt;/h3>
+&lt;ul>
+&lt;li>O(n^2) (평균, 최악), O(n) (최선)&lt;/li>
+&lt;li>추가 공간 필요 없음.&lt;/li>
+&lt;li>단순한 알고리즘&lt;/li>
+&lt;li>이미 정렬되어있는 경우 효율적&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">sort&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> 1; i &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span>; i &lt;span style="color:#f92672">++&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> standard &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>i&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> idx &lt;span style="color:#f92672">=&lt;/span> i &lt;span style="color:#f92672">-&lt;/span> 1;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (0 &lt;span style="color:#f92672">&amp;lt;=&lt;/span> idx &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> standard &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>idx&lt;span style="color:#f92672">]&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arr&lt;span style="color:#f92672">[&lt;/span>idx &lt;span style="color:#f92672">+&lt;/span> 1&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>idx&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> idx &lt;span style="color:#f92672">--&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> arr&lt;span style="color:#f92672">[&lt;/span>idx &lt;span style="color:#f92672">+&lt;/span> 1&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">=&lt;/span> standard;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="quick-sort">Quick Sort&lt;/h3>
+&lt;ul>
+&lt;li>Unstable sort&lt;/li>
+&lt;li>평균적으로 가장 빠른 구현&lt;/li>
+&lt;li>피벗 선정하는게 중요&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">quickSort&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr, &lt;span style="color:#66d9ef">int&lt;/span> left, &lt;span style="color:#66d9ef">int&lt;/span> right) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> L &lt;span style="color:#f92672">=&lt;/span> left;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> R &lt;span style="color:#f92672">=&lt;/span> right;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> pivot &lt;span style="color:#f92672">=&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>(left &lt;span style="color:#f92672">+&lt;/span> right) &lt;span style="color:#f92672">/&lt;/span> 2&lt;span style="color:#f92672">]&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (L &lt;span style="color:#f92672">&amp;lt;=&lt;/span> R) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (arr&lt;span style="color:#f92672">[&lt;/span>L&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> pivot) L &lt;span style="color:#f92672">++&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">while&lt;/span> (pivot &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>R&lt;span style="color:#f92672">]&lt;/span>) R &lt;span style="color:#f92672">--&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (L &lt;span style="color:#f92672">&amp;lt;=&lt;/span> R) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (L &lt;span style="color:#f92672">!=&lt;/span> R) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> swap(arr, L, R);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> L &lt;span style="color:#f92672">++&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> R &lt;span style="color:#f92672">--&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (left &lt;span style="color:#f92672">&amp;lt;&lt;/span> R) quickSort(arr, left, R);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (L &lt;span style="color:#f92672">&amp;lt;&lt;/span> right) quickSort(arr, L, right);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="heap-sort">Heap Sort&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">heapSort&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> n &lt;span style="color:#f92672">=&lt;/span> arr.&lt;span style="color:#a6e22e">length&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> (n &lt;span style="color:#f92672">/&lt;/span> 2) &lt;span style="color:#f92672">-&lt;/span> 1; i &lt;span style="color:#f92672">&amp;gt;=&lt;/span> 0; i &lt;span style="color:#f92672">--&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> heapify(arr, n, i);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> n &lt;span style="color:#f92672">-&lt;/span> 1; i &lt;span style="color:#f92672">&amp;gt;&lt;/span> 0; i &lt;span style="color:#f92672">--&lt;/span>) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> swap(arr, 0, i);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> heapify(arr, i, 0);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">private&lt;/span> &lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">heapify&lt;/span>(&lt;span style="color:#66d9ef">int&lt;/span>&lt;span style="color:#f92672">[]&lt;/span> arr, &lt;span style="color:#66d9ef">int&lt;/span> n, &lt;span style="color:#66d9ef">int&lt;/span> i) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> p &lt;span style="color:#f92672">=&lt;/span> i;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> l &lt;span style="color:#f92672">=&lt;/span> i &lt;span style="color:#f92672">*&lt;/span> 2 &lt;span style="color:#f92672">+&lt;/span> 1;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> r &lt;span style="color:#f92672">=&lt;/span> i &lt;span style="color:#f92672">*&lt;/span> 2 &lt;span style="color:#f92672">+&lt;/span> 2;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (l &lt;span style="color:#f92672">&amp;lt;&lt;/span> n &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>p&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>l&lt;span style="color:#f92672">]&lt;/span>) p &lt;span style="color:#f92672">=&lt;/span> l;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (r &lt;span style="color:#f92672">&amp;lt;&lt;/span> n &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>p&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span> arr&lt;span style="color:#f92672">[&lt;/span>r&lt;span style="color:#f92672">]&lt;/span>) p &lt;span style="color:#f92672">=&lt;/span> r;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (i &lt;span style="color:#f92672">!=&lt;/span> p) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> swap(arr, p, i);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> heapify(arr, n, p);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="lru-cache-least-recently-used">LRU Cache (Least Recently Used)&lt;/h3>
+&lt;ul>
+&lt;li>가장 오랫동안 사용하지 않은 페이지를 교체하는 알고리즘&lt;/li>
+&lt;li>자세한건 Demand Paging (페이지 요청 기법) 참고&lt;/li>
+&lt;/ul>
+&lt;h2 id="operating-system">Operating System&lt;/h2>
+&lt;h3 id="프로세스-쓰레드">프로세스, 쓰레드&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Process:&lt;/p></description></item></channel></rss>

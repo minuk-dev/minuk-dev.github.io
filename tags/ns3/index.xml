@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ns3 on minuk.dev</title><link>https://minuk.dev/tags/ns3/</link><description>Recent content in Ns3 on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 07 May 2021 11:07:35 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/ns3/index.xml" rel="self" type="application/rss+xml"/><item><title>Network Simulator 3</title><link>https://minuk.dev/wiki/lectures/ns3/</link><pubDate>Fri, 07 May 2021 08:59:07 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/ns3/</guid><description>&lt;h2 id="configuration">Configuration&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone https://github.com/nsnam/ns-3-dev-git.git --depth&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#ae81ff">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd ns-3-dev-git
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./waf configure --enable-examples
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>./waf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="basic">Basic&lt;/h2>
+&lt;h3 id="basic-from">Basic From&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;#34;ns3/core-module.h&amp;#34;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;#34;ns3/network-module.h&amp;#34;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;#34;ns3/internet-module.h&amp;#34;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;#34;ns3/point-to-point-module.h&amp;#34;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#include&lt;/span> &lt;span style="color:#75715e">&amp;#34;ns3/applications-module.h&amp;#34;&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">using&lt;/span> &lt;span style="color:#66d9ef">namespace&lt;/span> ns3;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>NS_LOG_COMPONENT_DEFINE (&lt;span style="color:#e6db74">&amp;#34;LMU_FirstScriptExample&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">int&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> argc, &lt;span style="color:#66d9ef">char&lt;/span> &lt;span style="color:#f92672">*&lt;/span>argv[]) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> CommandLine cmd(__FILE__);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cmd.Parse(argc, argv);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* 시간 정확도 설정 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Time&lt;span style="color:#f92672">::&lt;/span>SetResolution (Time&lt;span style="color:#f92672">::&lt;/span>NS);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* Log Level 설정 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LogComponentEnable(&lt;span style="color:#e6db74">&amp;#34;UdpEchoClientApplication&amp;#34;&lt;/span>, LOG_LEVEL_INFO);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LogComponentEnable(&lt;span style="color:#e6db74">&amp;#34;UdpEchoServerApplication&amp;#34;&lt;/span>, LOG_LEVEL_INFO);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* Node 설정 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> NodeContainer nodes;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> nodes.Create(&lt;span style="color:#ae81ff">2&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> PointToPointHelper pointToPoint;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pointToPoint.SetDeviceAttribute(&lt;span style="color:#e6db74">&amp;#34;DataRate&amp;#34;&lt;/span>, StringValue(&lt;span style="color:#e6db74">&amp;#34;5Mbps&amp;#34;&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> pointToPoint.SetChannelAttribute(&lt;span style="color:#e6db74">&amp;#34;Delay&amp;#34;&lt;/span>, StringValue(&lt;span style="color:#e6db74">&amp;#34;2ms&amp;#34;&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* Network Device 설정 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> NetDeviceContainer devices;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> devices &lt;span style="color:#f92672">=&lt;/span> pointToPoint.Install(nodes);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* Internet Stack 설정 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> InternetStackHelper stack;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> stack.Install(nodes);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* IP 할당 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Ipv4AddressHelper address;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> address.SetBase(&lt;span style="color:#e6db74">&amp;#34;10.1.1.0&amp;#34;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34;255.255.255.0&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Ipv4InterfaceContainer interfaces &lt;span style="color:#f92672">=&lt;/span> address.Assign (devices);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* Application 설정 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> UdpEchoServerHelper echoServer(&lt;span style="color:#ae81ff">9&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ApplicationContainer serverApps &lt;span style="color:#f92672">=&lt;/span> echoServer.Install(nodes.Get(&lt;span style="color:#ae81ff">1&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> serverApps.Start (Seconds(&lt;span style="color:#ae81ff">1.0&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> serverApps.Stop (Seconds(&lt;span style="color:#ae81ff">10.0&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> UdpEchoClientHelper echoClient (interfaces.GetAddress(&lt;span style="color:#ae81ff">1&lt;/span>), &lt;span style="color:#ae81ff">9&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> echoClient.SetAttribute(&lt;span style="color:#e6db74">&amp;#34;MaxPackets&amp;#34;&lt;/span>, UintegerValue(&lt;span style="color:#ae81ff">1&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> echoClient.SetAttribute(&lt;span style="color:#e6db74">&amp;#34;Interval&amp;#34;&lt;/span>, TimeValue(Seconds(&lt;span style="color:#ae81ff">1.0&lt;/span>)));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> echoClient.SetAttribute(&lt;span style="color:#e6db74">&amp;#34;PacketSize&amp;#34;&lt;/span>, UintegerValue(&lt;span style="color:#ae81ff">1024&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ApplicationContainer clientApps &lt;span style="color:#f92672">=&lt;/span> echoClient.Install (nodes.Get(&lt;span style="color:#ae81ff">0&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* 실행 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clientApps.Start (Seconds(&lt;span style="color:#ae81ff">2.0&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> clientApps.Stop (Seconds(&lt;span style="color:#ae81ff">10.0&lt;/span>));
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Simulator&lt;span style="color:#f92672">::&lt;/span>Run();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Simulator&lt;span style="color:#f92672">::&lt;/span>Destroy();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>NS_LOG_COMPONENT_DEFINE&lt;/code> in &lt;code>ns/log.h&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define NS_LOG_COMPONENT_DEFINE(name) \
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> static ns3::LogComponent g_log = ns3::LogComponent (name, __FILE__)
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>CommandLine&lt;/code> class in &lt;code>ns/command-line.h&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">/**
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * \code
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * int value1;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * int value2;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * CommandLine cmd (__FILE__);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * cmd.Usage (&amp;#34;...&amp;#34;);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * cmd.AddValue (&amp;#34;value1&amp;#34;, &amp;#34;first value&amp;#34;, value1);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * cmd.AddValue (&amp;#34;value2&amp;#34;, &amp;#34;second value&amp;#34;, value1);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * cmd.Parse (argc, argv);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> *
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * if (value1 * value2 &amp;lt; 0)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * {
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * std::cerr &amp;lt;&amp;lt; &amp;#34;value1 and value2 must have the same sign!&amp;#34; &amp;lt;&amp;lt; std::endl;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * std::cerr &amp;lt;&amp;lt; cmd;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * exit (-1);
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * }
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> * \endcode
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"> **/&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;/li>
+&lt;/ul></description></item></channel></rss>

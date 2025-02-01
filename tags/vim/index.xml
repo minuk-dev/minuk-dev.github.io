@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vim on minuk.dev</title><link>https://minuk.dev/tags/vim/</link><description>Recent content in Vim on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 24 Dec 2022 05:02:28 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/vim/index.xml" rel="self" type="application/rss+xml"/><item><title>vim/vim-go</title><link>https://minuk.dev/wiki/vim-go/</link><pubDate>Wed, 17 Aug 2022 04:51:27 +0900</pubDate><guid>https://minuk.dev/wiki/vim-go/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>vim에서 go를 지원하는 플러그인&lt;/li>
+&lt;li>일반적으로 가장 많이 제시됨.&lt;/li>
+&lt;li>기본적인 공부는 &lt;a href="https://github.com/fatih/vim-go/wiki/Tutorial">공식 사이트의 튜토리얼&lt;/a>을 따라하면 좋다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="지원하는-좋은-기능">지원하는 좋은 기능&lt;/h2>
+&lt;ul>
+&lt;li>저장시에 자동으로 go fmt 을 실행한다. 이때 import 도 해준다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="자주-사용하는-명령어">자주 사용하는 명령어&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>GoRun&lt;/code> : 간단하게 실행할때 사용한다.&lt;/li>
+&lt;li>&lt;code>CTRL-]&lt;/code> : GoDef&lt;/li>
+&lt;/ul>
+&lt;h2 id="자주-사용하면-좋은데-손에-잘-안익는거">자주 사용하면 좋은데 손에 잘 안익는거&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>:GoDoc&lt;/code>&lt;/li>
+&lt;li>&lt;code>:GoDecls&lt;/code>&lt;/li>
+&lt;li>&lt;code>:GoDeclsDir&lt;/code>&lt;/li>
+&lt;li>나머지 유용한 내용은 &lt;a href="https://johngrib.github.io/wiki/vim-go-env/">여기&lt;/a>가 더 잘나와있다. 하지만 솔직히 하나씩 손에 익히는게 좋다고 생각하고 몇가지 자주 쓰는 기능만 손에 익히고, 나머지는 기능이 있구나 정도 여부만 알고 진짜 필요할때만 보면 될거 같다. (예를 들어 인터페이스 구현 목록이라던가 등등)&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>나는 coc-go랑 같이 사용하고 있는데 둘이 동시에 사용하는 것도 좋다.&lt;/li>
+&lt;li>딱히 충돌난 경험은 없다.&lt;/li>
+&lt;li>GoReferers 같은 기능은 잘 안쓰게 되는데, coc 에서는 gr(go referers)로 이동할 수 있어서 사용한다.&lt;/li>
+&lt;/ul></description></item><item><title>vim-startify</title><link>https://minuk.dev/wiki/vim-staritfy/</link><pubDate>Sat, 20 Jun 2020 01:02:39 +0900</pubDate><guid>https://minuk.dev/wiki/vim-staritfy/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>공홈 : &lt;a href="https://github.com/mhinz/vim-startify">https://github.com/mhinz/vim-startify&lt;/a>&lt;/li>
+&lt;li>Session을 관리해주는 건데 나도 다른 분의 위키를 참고하다보니 알게되었다. 쓰다보니 좋아서 쓰고 있다.&lt;/li>
+&lt;li>주로 [[tmuxinator]]와 함께 사용하면 엄청 편하다.&lt;/li>
+&lt;/ul></description></item><item><title>gutentags</title><link>https://minuk.dev/wiki/gutentags/</link><pubDate>Tue, 28 Apr 2020 21:21:45 +0900</pubDate><guid>https://minuk.dev/wiki/gutentags/</guid><description>&lt;h2 id="발생한-문제점">발생한 문제점&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>git&lt;/code> 에서 커밋할때마다 아래와 같은 에러로그가 뜬다&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>hint: Waiting for your editor to close the file...
+Error detected while processing DirChanged Autocommands for &amp;#34;*&amp;#34;:
+E475: Invalid argument: Channel doesn&amp;#39;t exist
+E475: Invalid argument: Channel doesn&amp;#39;t exist
+Error detected while processing function &amp;lt;SNR&amp;gt;149_nvim_job_exit_wrapper[1]..gutentags#ctags#on_job_exit[1]..gutentags#remove_job_by_data[2]..gutentags#remove_job:
+line 22:
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>해결책 : 아래줄을 추가해줘서 특정 filetypes를 제외해준다. 일단 지금은 gitcommit 만 필요해서 처리했고 나머진 나중에 천천히 추가할 예정&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-vimrc" data-lang="vimrc">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#a6e22e">g&lt;/span>:&lt;span style="color:#a6e22e">gutentags_exclude_filetypes&lt;/span> = [&lt;span style="color:#e6db74">&amp;#39;gitcommit&amp;#39;&lt;/span>]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>coc (vim plugin coc)</title><link>https://minuk.dev/wiki/coc/</link><pubDate>Wed, 15 Apr 2020 23:13:04 +0900</pubDate><guid>https://minuk.dev/wiki/coc/</guid><description>coc 설정 + ccls 설정</description></item><item><title>vim</title><link>https://minuk.dev/wiki/vim/</link><pubDate>Wed, 08 Apr 2020 23:44:39 +0900</pubDate><guid>https://minuk.dev/wiki/vim/</guid><description>&lt;h2 id="사용할만한-plugin-정리">사용할만한 Plugin 정리&lt;/h2>
+&lt;ul>
+&lt;li>TODO:
+&lt;ul>
+&lt;li>[[vim-go]]&lt;/li>
+&lt;li>context.vim&lt;/li>
+&lt;li>coc&lt;/li>
+&lt;li>airline&lt;/li>
+&lt;li>indentLine&lt;/li>
+&lt;li>tagbar&lt;/li>
+&lt;li>fzf.vim&lt;/li>
+&lt;li>ripgrep.vim&lt;/li>
+&lt;li>trailingspace&lt;/li>
+&lt;li>vim-startify&lt;/li>
+&lt;li>syntatistic&lt;/li>
+&lt;li>vim-bufkill&lt;/li>
+&lt;li>delimitMate&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="vimwiki">vimwiki&lt;/h2>
+&lt;ul>
+&lt;li>[[vimwiki]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="coc">coc&lt;/h2>
+&lt;ul>
+&lt;li>[[coc]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="tag">tag&lt;/h2>
+&lt;ul>
+&lt;li>[[gutentags]]&lt;/li>
+&lt;/ul></description></item><item><title>vimwiki</title><link>https://minuk.dev/wiki/vimwiki/</link><pubDate>Wed, 08 Apr 2020 22:51:20 +0900</pubDate><guid>https://minuk.dev/wiki/vimwiki/</guid><description>vimwiki 사용하면서 깨달은 것들</description></item></channel></rss>

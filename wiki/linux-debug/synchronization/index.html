@@ -1,0 +1,278 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>linux-debug/synchronization</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>linux-debug/synchronization</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
+<i class="fa fa-arrow-left"></i>
+[[debug-linux]]</button></div></div></div><div><h2>linux-debug/synchronization</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/linux-debug/synchronization.md><h5>created : Wed, 11 Nov 2020 00:07:13 +0900</h5><h5>modified : Wed, 09 Dec 2020 13:31:12 +0900</h5></a><a href=https://minuk.dev/tags/linux-debug><kbd class=item-tag>linux-debug</kbd></a>
+<a href=https://minuk.dev/tags/synchronization><kbd class=item-tag>synchronization</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><ul><li><a href=#커널-동기화>커널 동기화</a></li></ul></li><li><a href=#정리>정리</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h3 id=커널-동기화>커널 동기화</h3><ul><li>주요 개념 : critical section, race condition</li><li>SMP : symmetric multiprocessing</li></ul><h4 id=커널-동기화-기법>커널 동기화 기법</h4><ul><li>스핀락과 뮤텍스</li></ul><h5 id=스핀락>스핀락</h5><ul><li><p>구현부가 상대적으로 간단하다</p></li><li><p>아키텍쳐에 의존적인 코드로 구현</p></li><li><p>휴면상태로 가지 않고 계속 기다림 (Busy-Wait)</p></li><li><p>spin_lock_irq(), spin_lock_irq_save()</p></li><li><p>spin_lock data structure</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> spinlock {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>union</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>struct</span> raw_spinlock rlock;
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>} <span style=color:#66d9ef>spinlock_t</span>;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> raw_spinlock {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>arch_spinlock_t</span> raw_lock;
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_DEBUG_SPINLOCK
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> magic, owner_cpu;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>owner;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_DEBUG_LOCK_ALLOC
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>struct</span> lockdep_map dep_map;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>} <span style=color:#66d9ef>raw_spinlock_t</span>;
+</span></span></code></pre></div><ul><li>아키텍쳐마다 다른데, x86은 asm-generic의 qspinlock 을 사용한다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> qspinlock {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>union</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>atomic_t</span> val;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>* By using the whole 2nd least significant byte for the
+</span></span></span><span style=display:flex><span><span style=color:#75715e>* pending bit, we can allow better optimization of the lock
+</span></span></span><span style=display:flex><span><span style=color:#75715e>* acquisition for the pending bit holder.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef __LITTLE_ENDIAN
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>      u8	locked;
+</span></span><span style=display:flex><span>      u8	pending;
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>      u16	locked_pending;
+</span></span><span style=display:flex><span>      u16	tail;
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>      u16	tail;
+</span></span><span style=display:flex><span>      u16	locked_pending;
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>struct</span> {
+</span></span><span style=display:flex><span>      u8	reserved[<span style=color:#ae81ff>2</span>];
+</span></span><span style=display:flex><span>      u8	pending;
+</span></span><span style=display:flex><span>      u8	locked;
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  };
+</span></span><span style=display:flex><span>} <span style=color:#66d9ef>arch_spinlock_t</span>;
+</span></span></code></pre></div></li><li><p>스핀락 사용 예제</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>spin_lock</span>(<span style=color:#66d9ef>spinlock_t</span> <span style=color:#f92672>*</span>lock);
+</span></span></code></pre></div></li><li><p>스핀락 획득 과정</p><ol><li>스핀락을 이미 획득했는지 판단 : lock instance의 next와 owner 필드를 확인한다.</li><li>스핀락을 획득한 후 바뀌는 자료구조 : next 값을 1증가 시킨다.</li><li>획득한 스핀락을 해제한 후 바뀌는 자료구조 : owner를 1만큼 증가시킨다.</li></ol></li><li><p>스핀락 구현부</p><ul><li><p>spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> __alwyas_inline <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>spin_lock</span>(<span style=color:#66d9ef>spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>raw_spin_lock</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>rlock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>raw_spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define raw_spin_lock(lock) _raw_spin_lock(lock)
+</span></span></span></code></pre></div></li><li><p>_raw_spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>void</span> __lock_func <span style=color:#a6e22e>_raw_spin_lock</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>__raw_spin_lock</span>(lock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>__raw_spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__raw_spin_lock</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>preempt_disable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_acquire</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>dep_map, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, _RET_IP_);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>LOCK_CONTENDED</span>(lock<span style=color:#f92672>&lt;</span> do_raw_spin_trylock, do_raw_spin_lock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>스핀락을 획득 한 후 preempt_disable() 함수를 호출할 필요가 없다. 내부적으로 호출해준다.</li></ul></li><li><p>do_raw_spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>do_raw_spin_lock</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock) <span style=color:#a6e22e>__acquires</span>(lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>__acquire</span>(lock);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>arch_spin_lock</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>raw_lock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>arch_spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define arch_spin_lock(l)		queued_spin_lock(l)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * queued_spin_lock - acquire a queued spinlock
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @lock: Pointer to queued spinlock structure
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>queued_spin_lock</span>(<span style=color:#66d9ef>struct</span> qspinlock <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  u32 val;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  val <span style=color:#f92672>=</span> <span style=color:#a6e22e>atomic_cmpxchg_acquire</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>val, <span style=color:#ae81ff>0</span>, _Q_LOCKED_VAL);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>likely</span>(val <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>queued_spin_lock_slowpath</span>(lock, val);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> pv_lock_ops pv_lock_ops <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_SMP
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  .queued_spin_lock_slowpath <span style=color:#f92672>=</span> native_queued_spin_lock_slowpath,
+</span></span><span style=display:flex><span>  .queued_spin_unlock <span style=color:#f92672>=</span> <span style=color:#a6e22e>PV_CALLEE_SAVE</span>(__native_queued_spin_unlock),
+</span></span><span style=display:flex><span>  .wait <span style=color:#f92672>=</span> paravirt_nop,
+</span></span><span style=display:flex><span>  .kick <span style=color:#f92672>=</span> paravirt_nop,
+</span></span><span style=display:flex><span>  .vcpu_is_preempted <span style=color:#f92672>=</span> <span style=color:#a6e22e>PV_CALLEE_SAVE</span>(__native_vcpu_is_preempted),
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif </span><span style=color:#75715e>/* SMP */</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>};
+</span></span></code></pre></div></li><li><p>이후부터는 링크를 참고했다. <a href=https://lwn.net/Articles/561775/>LWN.net</a></p><ul><li>간단하게 하면 0-1 비트는 4개의 entries로 per-cpu array 안에 들어있는 queue node의 index, 2-16은 cpu number + 1 로 (최대 cpu 개수는 16383)</li><li>ticket spinlock 보다 빠르며, [[NUMA]] 를 사용하는 여러개의 코어가 존재하는 곳에서 더욱더 적합하다.</li><li>추가적인 링크는 <a href="https://m.blog.naver.com/PostView.nhn?blogId=jjoommnn&amp;logNo=130141126016&amp;proxyReferer=https:%2F%2Fwww.google.com%2F">큐 스핀락</a> 여기를 참고하자.</li></ul></li></ul></li><li><p>[[assembly]]</p></li><li><p>흐으으음&mldr; 책은 대부분 arm 아키텍쳐와 관련된 내용이 많네 스킵</p></li></ul><h5 id=스핀락-플러그인-함수>스핀락 플러그인 함수</h5><ul><li><p>spin_lock_irq()</p></li><li><p>spin_unlock_irq()</p><ul><li>임계 영역에서 스핀락을 걸 때 인터럽트가 발생하지 않으면 좋겠다.
+스핀락을 획득해 다른 모듈이 접근하지 못하는건 좋지만, 임계 영역에서 인터럽트 발생이 문제다.</li></ul></li><li><p>임계 영역의 코드 구간에서 인터럽트를 비활성화</p></li><li><p>spin_lock_irq()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>spin_lock_irq</span>(<span style=color:#66d9ef>spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>raw_spin_lock_irq</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>rlock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>raw_spin_lock_irq()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__raw_spin_lock_irq</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>local_irq_disable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>preempt_disable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_acquire</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>dep_map, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, _RET_IP_);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>LOCK_CONTENDED</span>(lock, do_raw_spin_trylock, do_raw_spin_lock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>__raw_spin_lock()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__raw_spin_lock</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>preempt_disable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_acquire</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>dep_map, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, _RET_IP_);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>LOCK_CONTENDED</span>(lock, do_raw_spin_trylock, do_raw_spin_lock);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>local_irq_disable()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define local_irq_disable() \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  do { raw_local_irq_disable(); trace_hardirqs_off(); } while (0)
+</span></span></span></code></pre></div></li><li><p>raw_local_irq_disable()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define raw_local_irq_disable() arch_local_irq_disable()
+</span></span></span></code></pre></div></li><li><p>arch_local_irq_disable()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> notrace <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>arch_local_irq_disable</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>PVOP_VCALLEE0</span>(pv_irq_ops.irq_disable);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>irq_disable is driver specific.<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> irq_chip i8259A_chip <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>  .name		<span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;XT-PIC&#34;</span>,
+</span></span><span style=display:flex><span>  .irq_mask	<span style=color:#f92672>=</span> disable_8259A_irq,
+</span></span><span style=display:flex><span>  .irq_disable	<span style=color:#f92672>=</span> disable_8259A_irq,
+</span></span><span style=display:flex><span>  .irq_unmask	<span style=color:#f92672>=</span> enable_8259A_irq,
+</span></span><span style=display:flex><span>  .irq_mask_ack	<span style=color:#f92672>=</span> mask_and_ack_8259A,
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div></li></ul></li><li><p>spin_unlock_irq()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__raw_spin_unlock_irq</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_release</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>dep_map, <span style=color:#ae81ff>1</span>, _RET_IP_);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>do_raw_spin_unlock</span>(lock);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>local_irq_enable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>preempt_enable</span>();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>local_irq_enable()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define local_irq_enable() \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  do { trace_hardirqs_on(); raw_local_irq_enable(); } while (0)
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define raw_local_irq_enable() arch_local_irq_enable()
+</span></span></span></code></pre></div></li><li><p>spin_lock_irqsave()/spin_unlock_irqrestore()</p><ul><li>acquire spinlock, disable interrupt line, return interrupt state.</li></ul></li><li><p>spin_lock_irq_save()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#define spin_lock_irqsave(lock, flags)                  \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  do {                                                  \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    raw_spin_lock_irqsave(spinlock_check(lock), flags); \
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  } while (0)
+</span></span></span></code></pre></div></li><li><p>__raw_spin_lock_irqsave()</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#a6e22e>__raw_spin_lock_irqsave</span>(<span style=color:#66d9ef>raw_spinlock_t</span> <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> lfags;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>local_irq_save</span>(flags);
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>preempt_disable</span>();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_acquire</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>dep_map, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, _RET_IP_);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_LOCKDEP
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#a6e22e>LOCK_CONTENDED</span>(lock, do_raw_spin_trylock, do_raw_spin_lock);
+</span></span><span style=display:flex><span><span style=color:#75715e>#else
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#a6e22e>do_raw_spin_lock_falgs</span>(lock, <span style=color:#f92672>&amp;</span>flags);
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>return</span> flags;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><h5 id=mutex>Mutex?</h5><ul><li><p>mutex data structure</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> mutex {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>atomic_long_t</span>      owner;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>spinlock_t</span>         wait_lock;
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_MUTEX_SPIN_ON_ONWER
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>struct</span> optimistic_spin_queue osq; <span style=color:#75715e>/* Spinner MCS lock */</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>struct</span> list_head   wait_list;
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_DEBUG_MUTEXES
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>void</span>               <span style=color:#f92672>*</span>magic;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_DEBUG_LOCK_ALLOC
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>struct</span> lockdep_map dep_map;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>};
+</span></span></code></pre></div><ul><li>owner : 뮤텍스를 획득한 프로세스의 태스크 디스크립터 주소, 이 필드를 보고 잠겼는지 확인</li><li>wait_list : 뮤텍스를 기다리는 프로세스의 정보</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> mutex_waiter {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> list_head      list;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> task_struct    <span style=color:#f92672>*</span>task;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> ww_acquire_ctx <span style=color:#f92672>*</span>ww_ctx;
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifdef CONFIG_DEBUG_MUTEXES
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>void</span>                  <span style=color:#f92672>*</span>magic;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>}
+</span></span></code></pre></div><ul><li>list : 뮤텍스를 기다리는 잠든 프로세스 리스트</li><li>task : 뮤텍스를 기다리는 프로세스의 테스크 디스크립터 주소(???)</li><li>ww_ctx : wait/wound deadlock proof mutex 로 deadlock을 회피하여 뮤텍스 락을 처리하는 알고리즘에 사용</li></ul></li><li><p>fastpath : 뮤텍스를 다른 프로세스가 이미 획득하지 않은 상태때 동작 방식</p><ul><li><p>mutex 구조체의 owner 필드 점검</p></li><li><p>owner 가 0x0이니 뮤텍스를 다른 프로세스가 획득하지 않은 상태로 판단</p></li><li><p>뮤텍스 자료구조인 mutex 구조체의 onwer 필드에 획득한 프로세스의 테스크 디스크립터 저장</p></li><li><p>mutex_lock()</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>void</span> __sched <span style=color:#a6e22e>mutex_lock</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>might_sleep</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>__mutex_trylock_fast</span>(lock))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>__mutex_lock_slowpath</span>(lock);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#a6e22e>EXPORT_SYMBOL</span>(mutex_lock);
+</span></span></code></pre></div><ul><li>__mutex_trylock_fast()</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>__mutex_trylock_fast</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> curr <span style=color:#f92672>=</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)current;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>atomic_long_cmpxchg_acquire</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>owner, <span style=color:#ae81ff>0UL</span>, curr))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> true;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> false;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>__mutx_unlock_fast()</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#a6e22e>bool_mutex_unlock_fast</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> curr <span style=color:#f92672>=</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)current;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>atomic_long_cmpxchg_release</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>owner, curr, <span style=color:#ae81ff>0UL</span>) <span style=color:#f92672>==</span> curr)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> true;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> false;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><p>slowpath : 뮤텍스를 이미 획득해 휴면 상태에 진입한 후 깨어남</p><ul><li>__mutex_lock_slowpath()</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> noinline <span style=color:#66d9ef>void</span> __sched
+</span></span><span style=display:flex><span><span style=color:#a6e22e>__mutex_lock_slowpath</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>__mutex_lock</span>(lock, TASK_UNINTERRUPTIBLE, <span style=color:#ae81ff>0</span>, NULL, _RET_IP_);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>__mutex_lock()</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> __sched
+</span></span><span style=display:flex><span><span style=color:#a6e22e>__mutex_lock</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock, <span style=color:#66d9ef>long</span> state, unsgiend <span style=color:#66d9ef>int</span> subclass,
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> lockdep_map <span style=color:#f92672>*</span>nest_lock, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> ip)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>__mutex_lock_common</span>(lock, state, subclass, nest_lock, ip, NULL, false);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>__mutex_lock_common()</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>int</span> __sched
+</span></span><span style=display:flex><span><span style=color:#a6e22e>__mutex_lock_common</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock, <span style=color:#66d9ef>long</span> state, unsgiend <span style=color:#66d9ef>int</span> subclass,
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> lockdep_map <span style=color:#f92672>*</span>nest_lock, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> ip,
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> ww_acquire_ctx <span style=color:#f92672>*</span>ww_ctx, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>bool</span> use_ww_ctx)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> mutex_waiter waiter;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>bool</span> first <span style=color:#f92672>=</span> false;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> ww_mutex <span style=color:#f92672>*</span>ww;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>int</span> ret;
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  waiter.task <span style=color:#f92672>=</span> current;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>set_current_state</span>(state);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (;;) {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>spin_unlock</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>wait_lock);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>schedule_preempt_disabled</span>();
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>set_current_state</span>(state);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_lock</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>wait_lock);
+</span></span><span style=display:flex><span>acquired:
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>__set_current_state</span>(TASK_RUNNING);
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>mutex_remove_waiter</span>(lock, <span style=color:#f92672>&amp;</span>waiter, current);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>likely</span>(<span style=color:#a6e22e>list_empty</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>wait_list)))
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>__mutex_clear_flag</span>(lock, MUTEX_FLAGS);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>debug_mutex_free_waiter</span>(<span style=color:#f92672>&amp;</span>waiter);
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>mutex_unlock()</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>void</span> __sched <span style=color:#a6e22e>mutex_unlock</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#75715e>#ifndef CONFIG_DEBUG_LOCK_ALLOC
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>__mutex_unlock_fast</span>(lock))
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#a6e22e>__mutex_unlock_slowpath</span>(lock, _RET_IP_);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>__mutex_unlock_slowpath(struct mutex *lock, unsigned long ip)</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> noinline <span style=color:#66d9ef>void</span> __sched <span style=color:#a6e22e>__mutex_unlock_slowpath</span>(<span style=color:#66d9ef>struct</span> mutex <span style=color:#f92672>*</span>lock, unsgiend <span style=color:#66d9ef>long</span> ip)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> task_struct <span style=color:#f92672>*</span>next <span style=color:#f92672>=</span> NULL;
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>DEFINE_WAKE_Q</span>(wake_q);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> owner;
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span><span style=color:#a6e22e>list_empty</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>wait_list)) {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* get the first entry from the wait-list */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>struct</span> mutex_waiter <span style=color:#f92672>*</span>waiter <span style=color:#f92672>=</span>
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>list_first_entry</span>(<span style=color:#f92672>&amp;</span>lock<span style=color:#f92672>-&gt;</span>wait_list,
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>struct</span> mutex_waiter, list);
+</span></span><span style=display:flex><span>    next <span style=color:#f92672>=</span> waiter<span style=color:#f92672>-&gt;</span>task;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>debug_mutex_wake_waiter</span>(lock, waiter);
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>wake_q_add</span>(<span style=color:#f92672>&amp;</span>wake_q, next);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>wake_up_q</span>(<span style=color:#f92672>&amp;</span>wake_q);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><hr><h2 id=정리>정리</h2><ul><li>커널 동기화란 1개의 프로세스만 특정 코드 구간을 실행할 때 접근하거나 정해진 순서로 코드 구간을 실행하도록 설계하는 기업</li><li>임계 영역은 2개 이상의 프로세스가 동시에 실행하면 동시 접근 문제를 일으킬 수 있는 코드 블록</li><li>레이스 컨디션은 임계 영역에 두 개의 프로세스가 동시에 접근하는 상황</li><li>레이스 컨디션이 발생하는 요인은 선점 스케줄링, 인터럽트 발생, SMP 시스템에서 2개 이상의 프로세스가 같은 코드를 싱행하는 상황 등</li><li>레이스 컨디션 방지를 위해 선점 스케줄링이나 인터럽트 발생을 비활성화하거나 임계 영역에 락을 걸어야한다.</li><li>리눅스 커널에서 가장 많이 쓰이는 커널 동기화 기법은 스핀락과 뮤텍스</li><li>스핀락 획득을 시도할 때 __raw_tickets 구조체의 next 필드와 owner를 체크. next 와 owner가 동일하다면 스핀락을 획득한 적이 없으니 바로 획득 가능, next 필드가 owner 필드보다 크면 스핀락을 획득하기 전까지 계속 기다린다.</li><li>뮤텍스 획득을 시도할 때 mutex 구조체의 owner 필드를 체크한다. owner 필드가 0이면 프로세스는 바로 뮤텍스를 획득. 뮤텍스 획득에 성공했다면 mutex 구조체의 owner에 테스크 디스크립터 주소를 저장한다.</li><li>뮤텍스를 해제하는 프로세스는 뮤텍스 대기열을 체크하고 뮤텍스를 기다리며 잠든 프로세스를 깨운다. 이후 깨어난 프로세스는 뮤텍스를 획득한다.</li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>

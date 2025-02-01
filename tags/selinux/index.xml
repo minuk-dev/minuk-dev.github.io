@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Selinux on minuk.dev</title><link>https://minuk.dev/tags/selinux/</link><description>Recent content in Selinux on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 03 Sep 2022 05:44:54 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/selinux/index.xml" rel="self" type="application/rss+xml"/><item><title>selinux</title><link>https://minuk.dev/wiki/selinux/</link><pubDate>Sat, 03 Sep 2022 05:23:50 +0900</pubDate><guid>https://minuk.dev/wiki/selinux/</guid><description>&lt;h2 id="공부-계기">공부 계기&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/containerd/nerdctl">nerdctl&lt;/a> 에 최근 기여하게 되면서 issue를 유심히 보게되었는데 &lt;a href="https://github.com/containerd/nerdctl/issues/1336">selinux 관련 주제&lt;/a>로 불타서 대충 개념만 알고 있었는데, 구현레벨에서 이걸 어떻게 하는지를 전혀 모르고 있다는 것을 알게 되었다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개념">개념&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Security Enhanced Linux&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>상태나 생긴 이유나 이런건 다른 곳에도 많이 나와있으므로 스킵&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>구현과 동작 방식:&lt;/p>
+&lt;ul>
+&lt;li>Kernel space 에 Security Policy 와 AVC(Access Vector Cache) 가 있다.&lt;/li>
+&lt;li>이를 통해서 유저레벨에서 뿐만 아니라 추가적으로 관리를 한다.&lt;/li>
+&lt;li>동작하는 코드는 아래 순서로 보면 쉽다.:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L7081">file_ioctl 을 호출할 때 selinux_file_ioctl 훅을 걸도록 설정된 코드&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L3684">ioctl_has_perm 을 호출하며 권한을 체크하는 코드&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L3642">ioctl_has_perm 내부적으로 avc_has_extended_perms, avc_has_perm 등 권한 체크하는 코드&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>결론적으로 말하면 SELinux 를 쓰면 성능이 감소한다는 이야기는 어느정도 사실이다. hook 을 걸어 추가 로직을 동작시키는 방식이니까, 하지만 진짜 그렇게 떨어지나 보기는 조금 어렵다.:
+&lt;ul>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Fedora-23-SELinux-Impact">phoronix-Fedora 23 SELinux Impact&lt;/a> 자료를 보면 유의미하게 떨어진다고 보기 어려운 결과가 나온다. 저정도 성능감소 때문에 서버에서 SELinux 를 못킨다? c, rust 말고는 어플리케이션 금지하는건가? 그게 훨씬 유의미 하지 않나? 이런 생각이 들거 같다.&lt;/li>
+&lt;li>뭐 이것저것 추가적인 권한제어 로직이 있는거니 작업하기 번거롭기는 할 것 같다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>아직 이해하지 못한 부분:&lt;/p></description></item></channel></rss>

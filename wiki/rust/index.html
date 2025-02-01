@@ -1,0 +1,512 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>rust</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>rust</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
+<i class="fa fa-arrow-left"></i>
+[[study-note]]</button></div></div></div><div><h2>rust</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/rust.md><h5>created : Sun, 12 Feb 2023 16:52:36 +0900</h5><h5>modified : Thu, 23 Mar 2023 20:33:27 +0900</h5></a><a href=https://minuk.dev/tags/rust><kbd class=item-tag>rust</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#공부-자료>공부 자료</a></li><li><a href=#혼자-정리>혼자 정리</a><ul><li><a href=#hello-world>Hello World!</a></li><li><a href=#small-example>Small Example</a></li><li><a href=#why-rust>Why Rust?</a></li><li><a href=#compile-time-guarantees>Compile Time Guarantees</a></li><li><a href=#runtime-guarantees>Runtime Guarantees</a></li><li><a href=#references>References</a></li><li><a href=#dangling-references>Dangling References</a></li><li><a href=#slices>Slices</a></li><li><a href=#string-vs-str>String vs str</a></li><li><a href=#functions>Functions</a></li><li><a href=#mtehods>Mtehods</a></li><li><a href=#function-overloading>Function Overloading</a></li><li><a href=#static-and-constant-variables>Static and Constant Variables</a></li><li><a href=#scopes-and-shadowing>Scopes and Shadowing</a></li><li><a href=#memory-management>Memory Management</a></li><li><a href=#the-stack-vs-the-heap>The Stack vs The Heap</a></li><li><a href=#memory-management-in-rust>Memory Management in Rust</a></li><li><a href=#comparison>Comparison</a></li><li><a href=#ownership>Ownership</a></li><li><a href=#move-semantics>Move Semantics</a></li><li><a href=#moves-in-function-calls>Moves in Function Calls</a></li><li><a href=#copying-and-cloning>Copying and Cloning</a></li><li><a href=#borrowing>Borrowing</a></li><li><a href=#shared-and-unique-borrows>Shared and Unique Borrows</a></li><li><a href=#lifetimes>Lifetimes</a></li><li><a href=#structs>Structs</a></li><li><a href=#tuple-structs>Tuple Structs</a></li><li><a href=#field-shorthand-syntax>Field Shorthand Syntax</a></li><li><a href=#enums>Enums</a></li><li><a href=#variant-payloads>Variant Payloads</a></li><li><a href=#methods>Methods</a></li><li><a href=#method-receiver>Method Receiver</a></li><li><a href=#pattern-matching>Pattern Matching</a></li><li><a href=#destructing-structs>Destructing Structs</a></li><li><a href=#match-guards>Match Guards</a></li></ul></li><li><a href=#control-flow>Control Flow</a><ul><li><a href=#block>Block</a></li><li><a href=#if-expressions><code>if</code> expressions</a></li><li><a href=#if-let-expressions><code>if let</code> expressions</a></li><li><a href=#while-expressions><code>while</code> expressions</a></li><li><a href=#for-expressions><code>for</code> expressions</a></li><li><a href=#loop-expresssions><code>loop</code> expresssions</a></li><li><a href=#match-expressions><code>match</code> expressions</a></li><li><a href=#break-and-continue><code>break</code> and <code>continue</code></a></li></ul></li><li><a href=#standard-library>Standard Library</a><ul><li><a href=#option-and-result>Option and Result</a></li><li><a href=#string>String</a></li><li><a href=#vec>Vec</a></li><li><a href=#hashmap>HashMap</a></li><li><a href=#box>Box</a></li><li><a href=#niche-optimization>Niche Optimization</a></li><li><a href=#rc>Rc</a></li><li><a href=#modules>Modules</a></li><li><a href=#visibility>Visibility</a></li><li><a href=#paths>Paths</a></li><li><a href=#filesystem-hierarchy>Filesystem Hierarchy</a></li></ul></li><li><a href=#traits>Traits</a><ul><li><a href=#important-traits>Important Traits</a></li><li><a href=#generics>Generics</a></li><li><a href=#error-handling>Error Handling</a></li><li><a href=#testing>Testing</a></li><li><a href=#unsafe-rust>Unsafe Rust</a></li></ul></li><li><a href=#concurrency>Concurrency</a><ul><li><a href=#threads>Threads</a></li><li><a href=#scoped-threads>Scoped Threads</a></li><li><a href=#channels>Channels</a></li><li><a href=#shared-state>Shared State</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h2 id=공부-자료>공부 자료</h2><ul><li><a href=https://google.github.io/comprehensive-rust/welcome.html>Comprehensive Rust</a></li></ul><h2 id=혼자-정리>혼자 정리</h2><h3 id=hello-world>Hello World!</h3><ul><li>Functions are introduced with <code>fn</code>.</li><li>Blocks are delimited by curly braces like in C and C++.</li><li>The <code>main</code> function is the entry point of the program.</li><li>Rust has hygienic macros, <code>println!</code> is an example of this.</li><li>Rust strings are UTF-8 encoded and can contain any Unicode character.</li></ul><h3 id=small-example>Small Example</h3><h3 id=why-rust>Why Rust?</h3><ul><li>Compile time memory safety.</li><li>Lack of undeinfed runtime behavior.</li><li>Modern language features.</li></ul><h3 id=compile-time-guarantees>Compile Time Guarantees</h3><ul><li>Static memory mangement at compile time:<ul><li>No uninitialized variables.</li><li>No memory leaks (mostly):<ul><li><code>Box::leak</code></li><li><code>std::mem::forget</code></li><li>reference cycle with <code>Rc</code> or <code>Arc</code></li></ul></li><li>No double-frees.</li><li>No use-after-free.</li><li>No <code>NULL</code> pointers.</li><li>No forgotten locked mutexes.</li><li>No data races between threads.</li><li>No iterator invalidation.</li></ul></li></ul><h3 id=runtime-guarantees>Runtime Guarantees</h3><ul><li>No undefined behavior at runtime:<ul><li>Array access is bounds checked.</li><li>Integer overflow is defined.</li></ul></li></ul><h3 id=references>References</h3><ul><li>Rust will auto-derefernece in some cases, in particular when invoking methods (try <code>ref_x.count_ones()</code>).</li></ul><h3 id=dangling-references>Dangling References</h3><h3 id=slices>Slices</h3><ul><li>If the slice starts at index 0, Rust&rsquo;s range syntax allows us to drop the starting index, meaning that <code>&amp;a[0..a.len()]</code> and <code>a[..a.len()]</code> are identical.</li><li>The same is true for the last index, so <code>&amp;a[2..a.len()]</code> and <code>&amp;a[2..]</code> are identical.</li><li>To easily create a slice of the full array, we can therefore use <code>&amp;a[..]</code>.</li><li>Slices always borrow from another object.</li></ul><h3 id=string-vs-str>String vs str</h3><ul><li><code>&amp;str</code> introduces a string slice, which is an immutable reference to UTF-8 encoded string data stored in a block of memory. String literals are stored in the probram&rsquo;s binary.</li><li>Rust&rsquo;s string type is a wrapper around a vector of bytes. As with a <code>Vec&lt;T></code>, it is owned.</li><li>As with many other types <code>String::from()</code> creates a string from a string literal; <code>String::new()</code> creates a new empty string, to which string data can be added using the <code>push()</code> and <code>push_str()</code> methods.</li><li>The <code>format!()</code> macro is a convenient way to generate an owned string from dynacmi values. It accepts the same format specification as <code>println!()</code>.</li><li>You can borrow <code>&amp;str</code> slices from <code>String</code> via <code>&</code> and optionally range selection.</li><li>For C++ programeers: think of <code>&amp;str</code> as <code>const char*</code> from C++, but the one that always points to a valid string in memory. Rust <code>String</code> is a rough equivalent of <code>std::string</code> from C++</li></ul><h3 id=functions>Functions</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  fizzbuzz_to(<span style=color:#ae81ff>20</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>is_divisible_by</span>(lhs: <span style=color:#66d9ef>u32</span>, rhs: <span style=color:#66d9ef>u32</span>) -&gt; <span style=color:#66d9ef>bool</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> rhs <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>false</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  lhs <span style=color:#f92672>%</span> rhs <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>fizzbuzz</span>(n: <span style=color:#66d9ef>u32</span>) -&gt; () {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>match</span> (is_divisible_by(n, <span style=color:#ae81ff>3</span>), is_divisible_by(n, <span style=color:#ae81ff>5</span>)) {
+</span></span><span style=display:flex><span>    (<span style=color:#66d9ef>true</span>, <span style=color:#66d9ef>true</span>) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;fizzbuzz&#34;</span>),
+</span></span><span style=display:flex><span>    (<span style=color:#66d9ef>true</span>, <span style=color:#66d9ef>false</span>) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;fizz&#34;</span>),
+</span></span><span style=display:flex><span>    (<span style=color:#66d9ef>false</span>, <span style=color:#66d9ef>true</span>) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;buzz&#34;</span>),
+</span></span><span style=display:flex><span>    (<span style=color:#66d9ef>false</span>, <span style=color:#66d9ef>false</span>) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{n}</span><span style=color:#e6db74>&#34;</span>),
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>fizzbuzz_to</span>(n: <span style=color:#66d9ef>u32</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> i <span style=color:#66d9ef>in</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>..=</span>n {
+</span></span><span style=display:flex><span>    fizzbuzz(i);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=mtehods>Mtehods</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Rectangel</span> {
+</span></span><span style=display:flex><span>  width: <span style=color:#66d9ef>u32</span>,
+</span></span><span style=display:flex><span>  height: <span style=color:#66d9ef>u32</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>impl</span> Rectangle {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>area</span>(<span style=color:#f92672>&amp;</span>self) -&gt; <span style=color:#66d9ef>u32</span> {
+</span></span><span style=display:flex><span>    self.width <span style=color:#f92672>*</span> self.height
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>inc_width</span>(<span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> self, delta: <span style=color:#66d9ef>u32</span>) {
+</span></span><span style=display:flex><span>    self.width <span style=color:#f92672>+=</span> delta;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> rect <span style=color:#f92672>=</span> Rectangle { width: <span style=color:#ae81ff>10</span>, height: <span style=color:#ae81ff>5</span> };
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;old area: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, rect.area());
+</span></span><span style=display:flex><span>  rect.inc_widtH(<span style=color:#ae81ff>5</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;new area: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, rect.area());
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=function-overloading>Function Overloading</h3><ul><li>Overloading is nott supported:<ul><li>Each function has a single implementation:<ul><li>Always takes a fixed number of parameters.</li><li>Always takes a single set of parameter types.</li></ul></li><li>Default values are not supported:<ul><li>All call sites have thet same number of arguments.</li><li>Macros are sometimes used as an alternative.</li></ul></li></ul></li></ul><h3 id=static-and-constant-variables>Static and Constant Variables</h3><ul><li>Mention that <code>const</code> behaves semantically similar to C++&rsquo;s <code>constexpr</code>.</li><li><code>static</code>, on the other hand, is much mor simiar to a const or mutable global variable in C++.</li><li>It isn&rsquo;t super common that one would need a runtime evaluated constant, but it is helpful and safer than using a static.</li></ul><h3 id=scopes-and-shadowing>Scopes and Shadowing</h3><ul><li>Definition: Shadoing is different from mutation, becauser after shadowing both varible&rsquo;s memory locations exist at the same time. Both are available under the same name, depending where you use it in the code.</li><li>Shadowing looks obscure at first, but is convenient for holding on to values after <code>.unwrap()</code>.</li></ul><h3 id=memory-management>Memory Management</h3><ul><li>Full control and safety via compile time enforcement of correct memory management.</li></ul><h3 id=the-stack-vs-the-heap>The Stack vs The Heap</h3><ul><li>Stack: Continuous area of memory for local variables.:<ul><li>Values have fixed sizes known at compile time.</li><li>Extremely fast: just move a stack pointer.</li><li>Easy to manage: follows function calls.</li><li>Great memory locality.</li></ul></li><li>Heap: Storage of values outside of function calls.:<ul><li>Values have dynamic sizes determined at runtime.</li><li>Slightly slower than the stack: some book-keeping needed.</li><li>No guarantee of memory locality.</li></ul></li></ul><h3 id=memory-management-in-rust>Memory Management in Rust</h3><ul><li><p>Memory management in Rust is a mix:</p><ul><li>Safe and correct like Java, but without a garbage collector.</li><li>Depending on which abstraction (or combination of abstractions) you choose, can be a single unique pointer, reference counted, or atomically reference counted.</li><li>Scope-based like C++, but the compiler enforces full adherence.</li><li>A Rust user can choose the right abstraction for the situation, some even have no cost at runtime like C.</li></ul></li><li><p><code>Box&lt;T></code> : A pointer type that uniquely owns a heap allcation of type <code>T</code>.</p></li><li><p><code>Vec&lt;T></code> : A contiguous growable array type, written as <code>Vec&lt;T></code>, short for vector.</p></li><li><p><code>Rc&lt;T></code> : A single-threaded reference-counting pointer. <code>Rc</code> stands for Reference Counted.</p></li><li><p><code>Arc&lt;T></code> : A thread-safe reference-counting pointer. <code>Arc</code> stands for Atomically Reference Counted.</p></li></ul><h3 id=comparison>Comparison</h3><h4 id=pros-of-different-memory-management-techniques>Pros of Different Memory Management Techniques</h4><ul><li>Manual like C:<ul><li>No runtiem overhead.</li></ul></li><li>Automatic like Java:<ul><li>Fully automatic.</li><li>Safe and correct.</li></ul></li><li>Scope-based like C++:<ul><li>Partially automatic.</li><li>No runtime overhead.</li></ul></li><li>Compiler-enforced scope-based like Rust:<ul><li>Enforced by compiler.</li><li>No runtime overhead.</li><li>Safe and correct.</li></ul></li></ul><h4 id=cons-of-different-memory-mangement-techniques>Cons of Different Memory Mangement Techniques</h4><ul><li>Manual like C:<ul><li>Use-after-free</li><li>Double-frees.</li><li>Memory leaks.</li></ul></li><li>Automatic like Java:<ul><li>Garbage collection pauses.</li><li>Destructor delays.</li></ul></li><li>Scope-based like C++:<ul><li>Complex, opt-in by programmer.</li><li>Potential for use-after-free.</li></ul></li><li>Complier-enforced and scope-based like Rust:<ul><li>Some upfront complexity.</li><li>Can reject valid programs.</li></ul></li></ul><h3 id=ownership>Ownership</h3><ul><li>All variable bindings have a scope where they are valid and it is an error to use a variable outside its scope.</li></ul><h3 id=move-semantics>Move Semantics</h3><ul><li>Mention that this is the opposite of the defaults in C++, which copies by value unless you use <code>std::move</code></li><li>In Rust, you clones are explicit (by using <code>clone</code>)</li></ul><h3 id=moves-in-function-calls>Moves in Function Calls</h3><h3 id=copying-and-cloning>Copying and Cloning</h3><ul><li>Copying and cloning are not the same thing:<ul><li>Copying refers to bitwise copies of memory regions and does not work on arbitrary objects.</li><li>Copying does not allow for custom logic (unlike copy constructors in C++).</li><li>Cloning is a more general operation and also allows for custom behavior by implementing the <code>Clone</code> trait.</li><li>Copying does not work on types that implement the <code>Drop</code> trait.</li></ul></li></ul><h3 id=borrowing>Borrowing</h3><ul><li>Instead of transferring ownership when calling a funciton, you can let a function borrow the value</li></ul><h3 id=shared-and-unique-borrows>Shared and Unique Borrows</h3><ul><li>Rust puts constraints on the ways you can borrow values:<ul><li>You can have one or more <code>&amp;T</code> values at any given time, or</li><li>You can have exactly one <code>&amp;mut T</code> value.</li></ul></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> a: <span style=color:#66d9ef>i32</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> b: <span style=color:#66d9ef>&amp;</span><span style=color:#66d9ef>i32</span> <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>a;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> c: <span style=color:#66d9ef>&amp;</span><span style=color:#a6e22e>mut</span> <span style=color:#66d9ef>i32</span> <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> a;
+</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span>c <span style=color:#f92672>=</span> <span style=color:#ae81ff>20</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;a: </span><span style=color:#e6db74>{a}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;b: </span><span style=color:#e6db74>{b}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=lifetimes>Lifetimes</h3><ul><li>A borrowed value have a lifetime:<ul><li>The lifetime can be elided: <code>add(p1: &amp;Point, p2: &amp;Point) -> Point</code></li><li>Lifetimes can also be explicit: <code>&'a Point, &'document str</code></li><li>Read <code>&'a Point</code> as &ldquo;a borrowed <code>Point</code> which is valid for at least the time
+Lifetimes are always inferred by the compiler: you cannot assign a lifetime yourself.:
+Lifetime annotations create constraints; the compiler verifies that there is a valid solution.</li></ul></li></ul><h3 id=structs>Structs</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  name: String,
+</span></span><span style=display:flex><span>  age: <span style=color:#66d9ef>u8</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> peter <span style=color:#f92672>=</span> Person {
+</span></span><span style=display:flex><span>    name: String::from(<span style=color:#e6db74>&#34;Peter&#34;</span>),
+</span></span><span style=display:flex><span>    age: <span style=color:#ae81ff>27</span>,
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74> is </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> years old&#34;</span>, peter.name, peter.age);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  peter.age <span style=color:#f92672>=</span> <span style=color:#ae81ff>28</span>;
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74> is </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> years old&#34;</span>, peter.name, peter.age);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> jackie <span style=color:#f92672>=</span> Person {
+</span></span><span style=display:flex><span>    name: String::from(<span style=color:#e6db74>&#34;Jackie&#34;</span>),
+</span></span><span style=display:flex><span>    <span style=color:#f92672>..</span>peter
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{}</span><span style=color:#e6db74> is </span><span style=color:#e6db74>{}</span><span style=color:#e6db74> years old&#34;</span>, jackie.name, jackie.age);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=tuple-structs>Tuple Structs</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span>(<span style=color:#66d9ef>i32</span>, <span style=color:#66d9ef>i32</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Newtons</span>(<span style=color:#66d9ef>f64</span>);
+</span></span></code></pre></div><h3 id=field-shorthand-syntax>Field Shorthand Syntax</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  name: String,
+</span></span><span style=display:flex><span>  age: <span style=color:#66d9ef>u8</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>impl</span> Person {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>new</span>(name: String, age: <span style=color:#66d9ef>u8</span>) -&gt; <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>    Person { name, age }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  fn new(name: String, age: u8) -&gt; Self {
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    Self { name, age }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  }
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  */</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> peter <span style=color:#f92672>=</span> Person::new(String::from(<span style=color:#e6db74>&#34;Peter&#34;</span>), <span style=color:#ae81ff>27</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{peter:?}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=enums>Enums</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>generate_random_number</span>() -&gt; <span style=color:#66d9ef>i32</span> {
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>CoinFilp</span> {
+</span></span><span style=display:flex><span>  Heads,
+</span></span><span style=display:flex><span>  Tails,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>flip_coin</span>() -&gt; <span style=color:#a6e22e>CoinFlip</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> random_number <span style=color:#f92672>=</span> generate_random_number();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> random_number <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> CoinFlip::Heads;
+</span></span><span style=display:flex><span>  } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> CoinFlip::Tails;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;You got: </span><span style=color:#e6db74>{:?}</span><span style=color:#e6db74>&#34;</span>, flip_coin());
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=variant-payloads>Variant Payloads</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>WebEvent</span> {
+</span></span><span style=display:flex><span>  PageLoad,
+</span></span><span style=display:flex><span>  KeyPress(<span style=color:#66d9ef>char</span>),
+</span></span><span style=display:flex><span>  Click { x: <span style=color:#66d9ef>i64</span>, y: <span style=color:#66d9ef>i64</span> },
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>inspect</span>(event:<span style=color:#a6e22e>WebEvnet</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>match</span> event {
+</span></span><span style=display:flex><span>    WebEvent::PageLoad <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;page loaded&#34;</span>),
+</span></span><span style=display:flex><span>    WebEvent::KeyPress(c) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;pressed &#39;</span><span style=color:#e6db74>{c}</span><span style=color:#e6db74>&#39;&#34;</span>),
+</span></span><span style=display:flex><span>    WebEvent::Click { x, y } <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;clicked at x=</span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>, y=</span><span style=color:#e6db74>{y}</span><span style=color:#e6db74>&#34;</span>),
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> load <span style=color:#f92672>=</span> WebEvent::PageLoad;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> press <span style=color:#f92672>=</span> WebEvent::KeyPress(<span style=color:#e6db74>&#39;x&#39;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> click <span style=color:#f92672>=</span> WebEvent::Click { x: <span style=color:#ae81ff>20</span>, y: <span style=color:#ae81ff>80</span> };
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  inspect(load);
+</span></span><span style=display:flex><span>  inspect(press);
+</span></span><span style=display:flex><span>  inspect(click);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li><code>std::mem::discriminant()</code></li></ul><h3 id=methods>Methods</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  name: String,
+</span></span><span style=display:flex><span>  age: <span style=color:#66d9ef>u8</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>impl</span> Person {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>say_hello</span>(<span style=color:#f92672>&amp;</span>self) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Hello, my name is </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, self.name);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> peter <span style=color:#f92672>=</span> Person {
+</span></span><span style=display:flex><span>    name: String::from(<span style=color:#e6db74>&#34;Peter&#34;</span>),
+</span></span><span style=display:flex><span>    age: <span style=color:#ae81ff>27</span>,
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>  peter.say_hello();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=method-receiver>Method Receiver</h3><ul><li><code>&amp;self</code>: borrows the object from the caller using a shared and immutable reference.</li><li><code>&amp;mut self</code>: borrows the object from the caller using a unique and mutable reference.</li><li><code>self</code> : takes onwership of the object and moves it away from the caller. The method becomes the owner of the object.</li><li><code>mut self</code>: same as <code>self</code>, but while the method owns the object, it can mutate it too.</li><li>No receiver: this becomes a static method on the struct.</li></ul><h3 id=pattern-matching>Pattern Matching</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> input <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;x&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>match</span> input {
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;q&#39;</span> <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Quitting&#34;</span>),
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;a&#39;</span> <span style=color:#f92672>|</span> <span style=color:#e6db74>&#39;s&#39;</span> <span style=color:#f92672>|</span> <span style=color:#e6db74>&#39;w&#39;</span> <span style=color:#f92672>|</span> <span style=color:#e6db74>&#39;d&#39;</span> <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Moving around&#34;</span>),
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#39;0&#39;</span><span style=color:#f92672>..=</span><span style=color:#e6db74>&#39;9&#39;</span> <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Number input&#34;</span>),
+</span></span><span style=display:flex><span>    _ <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Something else&#34;</span>),
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=destructing-structs>Destructing Structs</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Foo</span> {
+</span></span><span style=display:flex><span>  x: (<span style=color:#66d9ef>u32</span>, <span style=color:#66d9ef>u32</span>),
+</span></span><span style=display:flex><span>  y: <span style=color:#66d9ef>u32</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> foo <span style=color:#f92672>=</span> Foo { x: (<span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>), y: <span style=color:#ae81ff>3</span>};
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>match</span> foo {
+</span></span><span style=display:flex><span>    Foo { x: (<span style=color:#ae81ff>1</span>, b), y } <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;x.0 = 1, b = </span><span style=color:#e6db74>{b}</span><span style=color:#e6db74>, y = </span><span style=color:#e6db74>{y}</span><span style=color:#e6db74>&#34;</span>),
+</span></span><span style=display:flex><span>    Foo { y: <span style=color:#ae81ff>2</span>, x: <span style=color:#a6e22e>i</span> } <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;y = 2, x = </span><span style=color:#e6db74>{i:?}</span><span style=color:#e6db74>&#34;</span>),
+</span></span><span style=display:flex><span>    Foo { y, <span style=color:#f92672>..</span> } <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;y = </span><span style=color:#e6db74>{y}</span><span style=color:#e6db74>, other fields were ignored&#34;</span>),
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=match-guards>Match Guards</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> pair <span style=color:#f92672>=</span> (<span style=color:#ae81ff>2</span>, <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>);
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Tell me about </span><span style=color:#e6db74>{pair:?}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>match</span> pair {
+</span></span><span style=display:flex><span>        (x, y) <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> y     <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;These are twins&#34;</span>),
+</span></span><span style=display:flex><span>        (x, y) <span style=color:#66d9ef>if</span> x <span style=color:#f92672>+</span> y <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Antimatter, kaboom!&#34;</span>),
+</span></span><span style=display:flex><span>        (x, _) <span style=color:#66d9ef>if</span> x <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;The first one is odd&#34;</span>),
+</span></span><span style=display:flex><span>        _                    <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;No correlation...&#34;</span>),
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=control-flow>Control Flow</h2><h3 id=block>Block</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> x <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> y <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;y: </span><span style=color:#e6db74>{y}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> z <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>let</span> w <span style=color:#f92672>=</span> {
+</span></span><span style=display:flex><span>        <span style=color:#ae81ff>3</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>      };
+</span></span><span style=display:flex><span>      println!(<span style=color:#e6db74>&#34;w: </span><span style=color:#e6db74>{w}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>      y <span style=color:#f92672>*</span> w
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;z: </span><span style=color:#e6db74>{z}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    z <span style=color:#f92672>-</span> y
+</span></span><span style=display:flex><span>  };
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;x: </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=if-expressions><code>if</code> expressions</h3><h3 id=if-let-expressions><code>if let</code> expressions</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> arg <span style=color:#f92672>=</span> std::env::args().next();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> Some(value) <span style=color:#f92672>=</span> arg {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Program name: </span><span style=color:#e6db74>{value}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Missing name?&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=while-expressions><code>while</code> expressions</h3><h3 id=for-expressions><code>for</code> expressions</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> v <span style=color:#f92672>=</span> vec![<span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>20</span>, <span style=color:#ae81ff>30</span>];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> x <span style=color:#66d9ef>in</span> v {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;x: </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> i <span style=color:#66d9ef>in</span> (<span style=color:#ae81ff>0</span><span style=color:#f92672>..</span><span style=color:#ae81ff>10</span>).step_by(<span style=color:#ae81ff>2</span>) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;i: </span><span style=color:#e6db74>{i}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=loop-expresssions><code>loop</code> expresssions</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> x <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>loop</span> {
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>=</span> <span style=color:#66d9ef>if</span> x <span style=color:#f92672>%</span> <span style=color:#ae81ff>2</span> <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>      x <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#ae81ff>3</span> <span style=color:#f92672>*</span> x <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    };
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> x <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>break</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;Final x: </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=match-expressions><code>match</code> expressions</h3><h3 id=break-and-continue><code>break</code> and <code>continue</code></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> v <span style=color:#f92672>=</span> vec![<span style=color:#ae81ff>10</span>, <span style=color:#ae81ff>20</span>, <span style=color:#ae81ff>30</span>];
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> iter <span style=color:#f92672>=</span> v.into_iter();
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>&#39;outer</span>: <span style=color:#a6e22e>while</span> <span style=color:#66d9ef>let</span> Some(x) <span style=color:#f92672>=</span> iter.next() {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;x: </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> i <span style=color:#f92672>&lt;</span> x {
+</span></span><span style=display:flex><span>      println!(<span style=color:#e6db74>&#34;x: </span><span style=color:#e6db74>{x}</span><span style=color:#e6db74>, i: </span><span style=color:#e6db74>{i}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>      i <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> i <span style=color:#f92672>==</span> <span style=color:#ae81ff>3</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>break</span> &#39;outer;
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=standard-library>Standard Library</h2><ul><li>Option and Result types: used for optional values an derror handling.</li><li>String: the default string type used for owned data.</li><li>Vec: a standard extensible vector.</li><li>HashMap: a hash map type with a configurable hashing algorithm</li><li>Box: an owned poitner for heap-allocated data</li><li>Rc: a shared reference-counted poitner for heap-allocated data</li></ul><h3 id=option-and-result>Option and Result</h3><h3 id=string>String</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> s1 <span style=color:#f92672>=</span> String::new();
+</span></span><span style=display:flex><span>  s1.push_str(<span style=color:#e6db74>&#34;Hello&#34;</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;s1: len = </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>, capacity = </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, s1.len(), s1.capacity());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> s2 <span style=color:#f92672>=</span> String::with_capacity(s1.len() <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>);
+</span></span><span style=display:flex><span>  s2.push_str(<span style=color:#f92672>&amp;</span>s1);
+</span></span><span style=display:flex><span>  s2.push(<span style=color:#e6db74>&#34;!&#34;</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;s2: len = </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>, capcity = </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, s2.len(), s2.capacity());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> s3 <span style=color:#f92672>=</span> String::from(<span style=color:#e6db74>&#34;🇨🇭&#34;</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;s3: len = </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>, number of chars = </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, s3.len(), s3.chars().count());
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=vec>Vec</h3><h3 id=hashmap>HashMap</h3><h3 id=box>Box</h3><ul><li><code>Box</code> is like <code>std::unique_ptr</code> in C++, except that it&rsquo;s guaranteed to be not null.</li></ul><h3 id=niche-optimization>Niche Optimization</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#75715e>#[drive(Debug)]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>List</span><span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> {
+</span></span><span style=display:flex><span>  Cons(T, Blox<span style=color:#f92672>&lt;</span>List<span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;&gt;</span>),
+</span></span><span style=display:flex><span>  Nil,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>fun main() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> list: <span style=color:#a6e22e>List</span><span style=color:#f92672>&lt;</span><span style=color:#66d9ef>i32</span><span style=color:#f92672>&gt;</span> <span style=color:#f92672>=</span> List::Cons(<span style=color:#ae81ff>1</span>, Box::new(List::Cons(<span style=color:#ae81ff>2</span>, Box::new(List::Nil))));
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{list:?}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=rc>Rc</h3><ul><li>Rc is a refernece-counted shared pointer.</li></ul><h3 id=modules>Modules</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>mod</span> foo {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>do_something</span>() {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;In the foo module&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>mod</span> bar {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>pub</span> <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>do_something</span>() {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;In the bar module&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  foo::do_something();
+</span></span><span style=display:flex><span>  bar::do_something();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=visibility>Visibility</h3><ul><li>Modules are a privacy boundary:<ul><li>Module items are private by default (hides implementation details).</li><li>Parent and sibling items are always visible.</li></ul></li></ul><h3 id=paths>Paths</h3><ul><li>As a relative path:<ul><li><code>foo</code> or <code>self::foo</code> refers to <code>foo</code> in the current module,</li><li><code>super::foo</code> refers to <code>foo</code> in the parent module.</li></ul></li><li>As an absolute path:<ul><li><code>create::foo</code> refers to <code>foo</code> in the root of the current crate,</li><li><code>bar::foo</code> refers to <code>foo</code> in the <code>bar</code> crate.</li></ul></li></ul><h3 id=filesystem-hierarchy>Filesystem Hierarchy</h3><ul><li><code>src/garden.rs</code> (modern Rust 2018 style)</li><li><code>src/garden/mod.rs</code> (older Rust 2015 style)</li></ul><h2 id=traits>Traits</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>trait</span> Greet {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>say_hello</span>(<span style=color:#f92672>&amp;</span>self);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Dog</span> {
+</span></span><span style=display:flex><span>  name: String,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Cat</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>impl</span> Greet <span style=color:#66d9ef>for</span> Dog {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>say_hello</span>(<span style=color:#f92672>&amp;</span>self) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Wuf, my name is </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>!&#34;</span>, self.name);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>impl</span> Greet <span style=color:#66d9ef>for</span> Cat {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>say_hello</span>(<span style=color:#f92672>&amp;</span>self) {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Miau!&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> pets: Vec<span style=color:#f92672>&lt;</span>Box<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>dyn</span> Greet<span style=color:#f92672>&gt;&gt;</span> <span style=color:#f92672>=</span> vec![
+</span></span><span style=display:flex><span>    Box::new(Dog { name: String::from9<span style=color:#e6db74>&#34;Fido&#34;</span>) }),
+</span></span><span style=display:flex><span>    Box::new(Cat),
+</span></span><span style=display:flex><span>  ];
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> pet <span style=color:#66d9ef>in</span> pets {
+</span></span><span style=display:flex><span>    pet.say_hello();
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=important-traits>Important Traits</h3><ul><li><code>Iterator</code> and <code>IntoIterator</code> used in for loops,</li><li><code>From</code> and <code>Into</code> used to convert values,</li><li><code>Read</code> and <code>Write</code> used for IO,</li><li><code>Add</code>, <code>Mul</code>, &mldr; used for operator overloading, and</li><li><code>Drop</code> used for defining destructors.</li><li><code>Default</code> used to construct a default instance of a type.</li></ul><h4 id=iterator><code>Iterator</code></h4><ul><li><code>IntoIterator</code> is the trait that makes for loops work.</li><li>The <code>Iterator</code> trait implements many common functional programming operations over collections (e.g. <code>map</code>, <code>filter</code>, <code>reduce</code>, etc)</li></ul><h4 id=fromiterator><code>FromIterator</code></h4><ul><li><code>Iterator</code> implements <code>fn collect&lt;B>(self) -> B where B: FromIterator&lt;Self::Item>, Self:Sized</code></li></ul><h4 id=from-and-into><code>From</code> and <code>Into</code></h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> s <span style=color:#f92672>=</span> String::from(<span style=color:#e6db74>&#34;hello&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> addr <span style=color:#f92672>=</span> std::net::Ipv4Addr::from([<span style=color:#ae81ff>127</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>]);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> one <span style=color:#f92672>=</span> <span style=color:#66d9ef>i16</span>::from(<span style=color:#66d9ef>true</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> bigger <span style=color:#f92672>=</span> <span style=color:#66d9ef>i32</span>::form(<span style=color:#ae81ff>123</span><span style=color:#66d9ef>i16</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{s}</span><span style=color:#e6db74>, </span><span style=color:#e6db74>{addr}</span><span style=color:#e6db74>, </span><span style=color:#e6db74>{one}</span><span style=color:#e6db74>, </span><span style=color:#e6db74>{bigger}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> s: String <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;hello&#34;</span>.into();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> addr: <span style=color:#a6e22e>std</span>::net::Ipv4Addr <span style=color:#f92672>=</span> [<span style=color:#ae81ff>127</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>1</span>].into();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> one: <span style=color:#66d9ef>i16</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>true</span>.into();
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> bigger: <span style=color:#66d9ef>i32</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>123</span><span style=color:#66d9ef>i16</span>.into();
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{s}</span><span style=color:#e6db74>, </span><span style=color:#e6db74>{addr}</span><span style=color:#e6db74>, </span><span style=color:#e6db74>{one}</span><span style=color:#e6db74>, </span><span style=color:#e6db74>{bigger}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=read-and-write><code>Read</code> and <code>Write</code></h4><h4 id=add-mul-><code>Add</code>, <code>Mul</code>, &mldr;</h4><h4 id=the-drop-trait>The <code>Drop</code> Trait</h4><h4 id=the-default-trait>The <code>Default</code> Trait</h4><h3 id=generics>Generics</h3><h4 id=generic-data-types>Generic Data Types</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#75715e>#[derive(Debug)]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Point</span><span style=color:#f92672>&lt;</span>T<span style=color:#f92672>&gt;</span> {
+</span></span><span style=display:flex><span>  x: <span style=color:#a6e22e>T</span>,
+</span></span><span style=display:flex><span>  y: <span style=color:#a6e22e>T</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> integer <span style=color:#f92672>=</span> Point { x: <span style=color:#ae81ff>5</span>, y: <span style=color:#ae81ff>10</span> };
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> float <span style=color:#f92672>=</span> Point { x: <span style=color:#ae81ff>1.0</span>, y: <span style=color:#ae81ff>4.0</span> };
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{integer:?}</span><span style=color:#e6db74> and </span><span style=color:#e6db74>{float:?}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=generic-method>Generic Method</h4><ul><li><code>impl&lt;T> Point&lt;T> { ... }</code></li><li><code>impl Point&lt;u32> { ... }</code></li></ul><h4 id=trait-bounds>Trait Bounds</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>duplicate</span><span style=color:#f92672>&lt;</span>T: Clone<span style=color:#f92672>&gt;</span>(a: <span style=color:#a6e22e>T</span>) -&gt; (T, T) {
+</span></span><span style=display:flex><span>  (a.clone(), a.clone())
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>add_42_millions</span>(x: <span style=color:#a6e22e>impl</span> Into<span style=color:#f92672>&lt;</span><span style=color:#66d9ef>i32</span><span style=color:#f92672>&gt;</span>) -&gt; <span style=color:#66d9ef>i32</span> {
+</span></span><span style=display:flex><span>  x.into() <span style=color:#f92672>+</span> <span style=color:#ae81ff>42_000_000</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> foo <span style=color:#f92672>=</span> String::from(<span style=color:#e6db74>&#34;foo&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> pair <span style=color:#f92672>=</span> duplicate(foo);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{pair:?}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> many <span style=color:#f92672>=</span> add_42_millions(<span style=color:#ae81ff>42_</span><span style=color:#66d9ef>i8</span>);
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;</span><span style=color:#e6db74>{many}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> many_more <span style=color:#f92672>=</span> add_42_millions(<span style=color:#ae81ff>10_000_000</span>):
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>println</span><span style=color:#f92672>!</span>(<span style=color:#e6db74>&#34;{many_mor}&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=closures>closures</h4><h3 id=error-handling>Error Handling</h3><ul><li>Functions that can have errors list this in their return type.</li><li>There are no exceptions.</li></ul><h4 id=panics>Panics</h4><ul><li>Panics are for unrecoverable and unexpected errors:<ul><li>Panics are symptoms of bugs in the Program.</li></ul></li></ul><h4 id=structured-error-handling-with-result>Structured Error Handling with Result</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>use</span> std::fs::File;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> std::io::Read;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> file <span style=color:#f92672>=</span> File::open(<span style=color:#e6db74>&#34;diary.txt&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>match</span> file {
+</span></span><span style=display:flex><span>    Ok(<span style=color:#66d9ef>mut</span> file) <span style=color:#f92672>=&gt;</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> contents <span style=color:#f92672>=</span> String::new();
+</span></span><span style=display:flex><span>      file.read_to_string(<span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> contents);
+</span></span><span style=display:flex><span>      println!(<span style=color:#e6db74>&#34;Dear diary: </span><span style=color:#e6db74>{contents}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    Err(err) <span style=color:#f92672>=&gt;</span> {
+</span></span><span style=display:flex><span>      println!(<span style=color:#e6db74>&#34;The diary could not be opened: </span><span style=color:#e6db74>{err}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=propagating-erros-with>Propagating Erros with?</h4><ul><li>Deriving Error Enums</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>use</span> std::(fs, io);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> std::io::Read;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> thiserror::Error;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#[derive(Debug, Error)]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>ReadUsernameError</span> {
+</span></span><span style=display:flex><span>  <span style=color:#75715e>#[error(</span><span style=color:#e6db74>&#34;Could not read: {0}&#34;</span><span style=color:#75715e>)]</span>
+</span></span><span style=display:flex><span>  IoError(<span style=color:#75715e>#[from]</span> io::Error),
+</span></span><span style=display:flex><span>  <span style=color:#75715e>#[error(</span><span style=color:#e6db74>&#34;Found no username in {0}&#34;</span><span style=color:#75715e>)]</span>
+</span></span><span style=display:flex><span>  EmptyUsername(String),
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>read_username</span>(path: <span style=color:#66d9ef>&amp;</span><span style=color:#66d9ef>str</span>) -&gt; Result<span style=color:#f92672>&lt;</span>String, ReadUsernameError<span style=color:#f92672>&gt;</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> username <span style=color:#f92672>=</span> String::with_capacity(<span style=color:#ae81ff>100</span>);
+</span></span><span style=display:flex><span>  fs:<span style=color:#a6e22e>File</span>::oepn(path)<span style=color:#f92672>?</span>.read_to_string(<span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> unsername)<span style=color:#f92672>?</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> username.is_empty() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> Err(ReadUsernameError::EmptyUsername(String::from(path)));
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  Ok(username)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#75715e>//fs::write(&#34;config.dat&#34;, &#34;&#34;).unwrap();
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>match</span> read_uername(<span style=color:#e6db74>&#34;config.dat&#34;</span>) {
+</span></span><span style=display:flex><span>    Ok(username) <span style=color:#f92672>=&gt;</span> println!(<span style=color:#e6db74>&#34;Username: </span><span style=color:#e6db74>{username}</span><span style=color:#e6db74>&#34;</span>),
+</span></span><span style=display:flex><span>    Err(err)     <span style=color:#f92672>=&gt;</span> println!(Error: {err}),
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=testing>Testing</h3><ul><li>Unit tests are supported throughout your code.</li><li>Integration stests are supported via the <code>tests/</code> directory.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>first_word</span>(text: <span style=color:#66d9ef>&amp;</span><span style=color:#66d9ef>str</span>) -&gt; <span style=color:#66d9ef>&amp;</span><span style=color:#66d9ef>str</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>match</span> text.find(<span style=color:#e6db74>&#39; &#39;</span>) {
+</span></span><span style=display:flex><span>    Some(idx) <span style=color:#f92672>=&gt;</span> <span style=color:#f92672>&amp;</span>text[<span style=color:#f92672>..</span>idx],
+</span></span><span style=display:flex><span>    None <span style=color:#f92672>=&gt;</span> <span style=color:#f92672>&amp;</span>text,
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#[test]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>test_empty</span>() {
+</span></span><span style=display:flex><span>  assert_eq!(first_word(<span style=color:#e6db74>&#34;&#34;</span>), <span style=color:#e6db74>&#34;&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#[test]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>test_single_word</span>() {
+</span></span><span style=display:flex><span>  assert_eq!(first_wrod(<span style=color:#e6db74>&#34;Hello&#34;</span>), <span style=color:#e6db74>&#34;Hello&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#[test]</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>test_multiple_words</span>() {
+</span></span><span style=display:flex><span>  assert_eq!(first_word(<span style=color:#e6db74>&#34;Hello World&#34;</span>), <span style=color:#e6db74>&#34;Hello&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ul><li>documented test</li><li>integration test</li></ul><h3 id=unsafe-rust>Unsafe Rust</h3><ul><li><p>Safe Rust: memory safe, no undefined behavior possible</p></li><li><p>Unsafe Rust: can trigger undefined behavior if preconditions are violated.</p></li><li><p>Unsafe Rust gives you access to five new capabilities:</p><ul><li>Dereference raw pointers.</li><li>Access or modify mutable static variables</li><li>Access <code>union</code> fields</li><li>Call <code>unsafe</code> functions, including <code>extern</code> functions</li><li>IMplement <code>unsafe</code> traits</li></ul></li></ul><h4 id=unions>Unions</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>union</span> <span style=color:#a6e22e>MyUnion</span> {
+</span></span><span style=display:flex><span>  i: <span style=color:#66d9ef>u8</span>,
+</span></span><span style=display:flex><span>  b: <span style=color:#66d9ef>bool</span>,
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> u <span style=color:#f92672>=</span> MyUnion { i: <span style=color:#ae81ff>42</span> };
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;int: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>unsafe</span> { u.i });
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;bool: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>unsafe</span> { u.b });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=calling-external-code>Calling External Code</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>extern</span> <span style=color:#e6db74>&#34;C&#34;</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>abs</span>(input: <span style=color:#66d9ef>i32</span>) -&gt; <span style=color:#66d9ef>i32</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsafe</span> {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Absolute value of -3 according to C: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, abs(<span style=color:#f92672>-</span><span style=color:#ae81ff>3</span>));
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=concurrency>Concurrency</h2><h3 id=threads>Threads</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>use</span> std::thread;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> std::time::Duration;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> handle <span style=color:#f92672>=</span> thread::spawn(<span style=color:#f92672>||</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> i <span style=color:#66d9ef>in</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>..</span><span style=color:#ae81ff>10</span> {
+</span></span><span style=display:flex><span>      println!(<span style=color:#e6db74>&#34;Count in thread: </span><span style=color:#e6db74>{i}</span><span style=color:#e6db74>!&#34;</span>);
+</span></span><span style=display:flex><span>      thread::sleep(Duration::from_millis(<span style=color:#ae81ff>5</span>));
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> i <span style=color:#66d9ef>in</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>..</span><span style=color:#ae81ff>5</span> {
+</span></span><span style=display:flex><span>    println!(<span style=color:#e6db74>&#34;Main thread: </span><span style=color:#e6db74>{i}</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>    thread::sleep(Duration::from_millis(<span style=color:#ae81ff>5</span>));
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  handle.join();
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=scoped-threads>Scoped Threads</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>use</span> std::thread;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> s <span style=color:#f92672>=</span> String::from(<span style=color:#e6db74>&#34;Hello&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  thread::scope(<span style=color:#f92672>|</span>scope<span style=color:#f92672>|</span> {
+</span></span><span style=display:flex><span>    scope.spawn(<span style=color:#f92672>||</span> {
+</span></span><span style=display:flex><span>      println!(<span style=color:#e6db74>&#34;Length: </span><span style=color:#e6db74>{}</span><span style=color:#e6db74>&#34;</span>, s.len());
+</span></span><span style=display:flex><span>    })
+</span></span><span style=display:flex><span>  });
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=channels>Channels</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=display:flex><span><span style=color:#66d9ef>use</span> std::sync::mpsc;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>use</span> std::thread;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> (tx, rx) <span style=color:#f92672>=</span> mpsc::channel();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  tx.send(<span style=color:#ae81ff>10</span>).unwrap();
+</span></span><span style=display:flex><span>  tx.send(<span style=color:#ae81ff>20</span>).unwrap();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;Received: </span><span style=color:#e6db74>{:?}</span><span style=color:#e6db74>&#34;</span>, rx.recv());
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;Recieved: </span><span style=color:#e6db74>{:?}</span><span style=color:#e6db74>&#34;</span>, rx.recv());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>let</span> tx2 <span style=color:#f92672>=</span> tx.clone();
+</span></span><span style=display:flex><span>  tx2.send(<span style=color:#ae81ff>30</span>).unwrap();
+</span></span><span style=display:flex><span>  println!(<span style=color:#e6db74>&#34;Received: </span><span style=color:#e6db74>{:?}</span><span style=color:#e6db74>&#34;</span>, rx.recv());
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=shared-state>Shared State</h3><ul><li><code>Arc&lt;T></code>, atomic reference counted <code>T</code>: handles sharing between threads and takes care to deallocate <code>T</code> when the last reference is dropped</li><li><code>Mutex&lt;T></code>: ensures mutally exclusive access to the <code>T</code> value.</li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>

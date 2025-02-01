@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Lecture on minuk.dev</title><link>https://minuk.dev/tags/lecture/</link><description>Recent content in Lecture on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sun, 23 Oct 2022 20:24:38 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/lecture/index.xml" rel="self" type="application/rss+xml"/><item><title>lectures/design-pattern</title><link>https://minuk.dev/wiki/lectures/design-pattern/</link><pubDate>Sun, 23 Oct 2022 00:15:47 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/design-pattern/</guid><description>&lt;h2 id="5-factory">5. Factory&lt;/h2>
+&lt;h3 id="factory-patterns">Factory Patterns&lt;/h3>
+&lt;ul>
+&lt;li>Creational patterns:
+&lt;ul>
+&lt;li>Allow to creating new objects without explicitly using the new operator&lt;/li>
+&lt;li>We can instantiate different objects without modifying client code!&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Factory Method:
+&lt;ul>
+&lt;li>Uses inheritance to decide the object to be instantiated&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Abstract Factory:
+&lt;ul>
+&lt;li>Delegates object creation to a factory object&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="factory-method-pattern">Factory Method Pattern&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Purpose:&lt;/p>
+&lt;ul>
+&lt;li>Exposes a method for creating objects, allowing subclasses to constrol the actual creation process.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Use When:&lt;/p>
+&lt;ul>
+&lt;li>A class will not know what classes it will be required to create.&lt;/li>
+&lt;li>Subclasses may specify what objects should be created.&lt;/li>
+&lt;li>Parent classes wish to defer creation to their subclasses.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>Defines an instance for creating an object, but lets subclasses decide which class to instantiate.&lt;/p></description></item><item><title>lectures/algorithm</title><link>https://minuk.dev/wiki/lectures/algorithm/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/algorithm/</guid><description>&lt;ol start="8">
+&lt;li>Basic Sorting algorithm
+The most common uses of sorted sequences are&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>making lookup or search efficient;&lt;/li>
+&lt;li>making merging of sequences efficient&lt;/li>
+&lt;li>enable processing of data in a defined order&lt;/li>
+&lt;/ul>
+&lt;h1 id="sorting-algorithm">Sorting algorithm&lt;/h1>
+&lt;p>The output of any sorting algorithm must satisfy two conditions&lt;/p>
+&lt;ul>
+&lt;li>The output is in non-decreasing order: each element is no smaller than the previous element according to the desired total order&lt;/li>
+&lt;li>The output is a permutation meaning that a reordering, yet retaining all of the original elements of the input.&lt;/li>
+&lt;/ul>
+&lt;h1 id="classification-of-sorting-algorithms">Classification of Sorting Algorithms&lt;/h1>
+&lt;ul>
+&lt;li>Computational Complexity : O(nlogn)&lt;/li>
+&lt;li>Memory usage : O(1), sometimes O(log(n))&lt;/li>
+&lt;li>Recursion&lt;/li>
+&lt;li>Stability&lt;/li>
+&lt;li>Whether or not they are a comparison sort&lt;/li>
+&lt;li>Adaptability&lt;/li>
+&lt;/ul>
+&lt;h1 id="common-sorting-algorithms">Common sorting algorithms&lt;/h1>
+&lt;ul>
+&lt;li>Bubble sort : Exchange two adjacent elements if they are out of order. Repeat until array is sorted.&lt;/li>
+&lt;li>Selection sort : Find the smallest element in the array, and put it in the proper place. Swap it with the value in the first position. Repeat until array is sorted.&lt;/li>
+&lt;li>Insertion sort : Scan successive elements for an out-of-order item, then insert the item in the proper place.&lt;/li>
+&lt;li>Merge sort : Divide the list of elements in two parts, sort the two parts individually and then merge it.&lt;/li>
+&lt;li>Quick sort : Partition the array into two segments. In the first segment, all elements are less than or equal to the pivot value. In the second segment, all elements are greater than or equal to the pivot value. Finally, sort the two segments recursively.&lt;/li>
+&lt;/ul>
+&lt;ol start="9">
+&lt;li>Divide and Conqure&lt;/li>
+&lt;/ol>
+&lt;h1 id="divide-and-conquer-paradigm">Divide and Conquer Paradigm&lt;/h1>
+&lt;h2 id="advantages-of-divide-and-conquer">Advantages of Divide and Conquer&lt;/h2>
+&lt;ul>
+&lt;li>Solving difficult problems&lt;/li>
+&lt;li>Algorithm efficiency
+&lt;ul>
+&lt;li>Karatsuba&amp;rsquo;s fast multiplication method, quick and merge sort, Strassen algorithm for matrix multiplication, fast Fourier transforms.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Parallelism
+&lt;ul>
+&lt;li>multi-processor machines, sub-problems can be executed on different processors.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Memory access
+&lt;ul>
+&lt;li>An algorithm designed to exploit the cache in this way is called cache-oblivious&lt;/li>
+&lt;li>D&amp;amp;C(Divide and Conquer) algorithms can be designed for important algorithms such as sorting, FFTs, matrix multiplication to be optimal cache-oblivious algorithms&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Roundoff control&lt;/li>
+&lt;/ul>
+&lt;h2 id="implementation-issues">Implementation issues&lt;/h2>
+&lt;ul>
+&lt;li>Recursion
+&lt;ul>
+&lt;li>If D&amp;amp;C algorithms are naturally implemented as recursive procedures, the partial sub-problems leading to the one currently being solved are automatically stored in the procedure call stack.&lt;/li>
+&lt;li>A recursive function is a function that calls itself within its definition.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Explicit stack
+&lt;ul>
+&lt;li>If D&amp;amp;C algorithms are implemented by a non-recursive program that stored the partial sub-problems in some explicit data structure, such as a stack, queue, or priority queue.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Stack size
+&lt;ul>
+&lt;li>In recursive implementations of D&amp;amp;C algorithms, one must make sure that there is sufficient memory allocated for the recursion stack, otherwise the execution may fail because of stack overflow.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Choosing the base cases&lt;/li>
+&lt;li>Sharing repeated subproblems&lt;/li>
+&lt;/ul>
+&lt;h2 id="general-method">General Method&lt;/h2>
+&lt;h2 id="divide-and-conquer-strategy">Divide and Conquer Strategy&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>divide the problem instance into two or more smaller instances of the same problem, solve the smaller instances recursively, and assemble the solutions to form a solution of the original instance.&lt;/p></description></item><item><title>lectures/computer architecture</title><link>https://minuk.dev/wiki/lectures/computer-architecture/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/computer-architecture/</guid><description>&lt;ol start="5">
+&lt;li>Large and Fast : Exploiting Memory Hierarchy5.&lt;/li>
+&lt;/ol>
+&lt;h1 id="principle-of-locality">Principle of Locality&lt;/h1>
+&lt;ul>
+&lt;li>Temporal locality&lt;/li>
+&lt;li>Spatial locality&lt;/li>
+&lt;/ul>
+&lt;h1 id="taking-advantage-of-locality">Taking Advantage of Locality&lt;/h1>
+&lt;ul>
+&lt;li>Memory hierarchy
+&lt;ul>
+&lt;li>Store everything on disk (lowest level)&lt;/li>
+&lt;li>Copy recently accessed (and nearby) items from disk to smaller DRAM(e.g. Main Memory)&lt;/li>
+&lt;li>copy more recently accessed (and nearby) items from DRAM to smaller SRAM memory(e.g. Cache memory attached to CPU)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="memory-hierarchy-levels">Memory Hierarchy Levels&lt;/h1>
+&lt;ul>
+&lt;li>A block (aka line) : unit of copying&lt;/li>
+&lt;li>If accessed data is present in upper level
+&lt;ul>
+&lt;li>Hit : access satisfied by upper level
+&lt;ul>
+&lt;li>Hit ratio: hits/accesses&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>If accessed data is absent
+&lt;ul>
+&lt;li>Miss : block copied from lower level
+&lt;ul>
+&lt;li>Time taken : miss penalty&lt;/li>
+&lt;li>Miss ratio : misses/accesses = 1 - hit ratio&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Then accessed data supplied from upper level&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="memory-technology">Memory Technology&lt;/h1>
+&lt;ul>
+&lt;li>Static RAM (SRAM) : 0.5ns - 2.5ns, $2000 - $5000 per GB&lt;/li>
+&lt;li>Dynamic RAM(DRAM) : 50ns - 70ns, $20 - $75 per GB&lt;/li>
+&lt;li>Magnetic disk : 5ms - 20ms, $0.20 - $2 per GB&lt;/li>
+&lt;li>Ideal memory
+&lt;ul>
+&lt;li>Access time of SRAM&lt;/li>
+&lt;li>Capacity and cost/GB of disk&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="sram-technology">SRAM Technology&lt;/h1>
+&lt;ul>
+&lt;li>Data stored using 6~8 transistors in an IC
+&lt;ul>
+&lt;li>fast, but expensive&lt;/li>
+&lt;li>fixed access time to any datum&lt;/li>
+&lt;li>no refresh needed&lt;/li>
+&lt;li>usually for caches, integrated on processor chips&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="dram-technology">DRAM Technology&lt;/h1>
+&lt;ul>
+&lt;li>Data stored as a charge in a capacitor
+&lt;ul>
+&lt;li>Single transistor used to access the charge&lt;/li>
+&lt;li>Must periodically be refreshed
+&lt;ul>
+&lt;li>Read contents and write back&lt;/li>
+&lt;li>Performed on a DRAM &amp;ldquo;row&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Synchronous DRAM (SDRAM)
+&lt;ul>
+&lt;li>DRAM with clocks to improve bandwidth&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Ex&amp;gt; Double data rate (DDR) DRAM
+&lt;ul>
+&lt;li>Transfer on rising and falling clock edges&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="flash-memory">Flash Memory&lt;/h1>
+&lt;ul>
+&lt;li>Non-volatile semiconductor storage ( a type of EEPROM)
+&lt;ul>
+&lt;li>100x - 1000x faster than disk&lt;/li>
+&lt;li>smaller, lower power, more robust&lt;/li>
+&lt;li>But more $/GB (between disk and DRAM)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Types
+&lt;ul>
+&lt;li>NOR flash : bit cell like a NOR gate
+&lt;ul>
+&lt;li>Random read/write access&lt;/li>
+&lt;li>Used for instruction memory in embedded systems&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>NAND flash : bit cell like a NAND gate
+&lt;ul>
+&lt;li>Denser (bits/area), but block-at-a-time access&lt;/li>
+&lt;li>Cheaper per GB&lt;/li>
+&lt;li>Used for USB keys, media storage, &amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Flash bits wears out after 1000&amp;rsquo;s of accesses
+&lt;ul>
+&lt;li>Not suitable for direct RAM or disk replacemenet&lt;/li>
+&lt;li>Wear leveling : remap data to less used blocks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="disk-storage">Disk Storage&lt;/h1>
+&lt;ul>
+&lt;li>Nonvolatile, rotating magnetic storage&lt;/li>
+&lt;/ul>
+&lt;h2 id="disk-sectors-and-access">Disk Sectors and Access&lt;/h2>
+&lt;ul>
+&lt;li>Each sector records : Sector ID, Data(512 bytes, 4096 bytes proposed), Error correcting code (ECC), Synchronization fields and gaps&lt;/li>
+&lt;li>Access to a sector involves : Queuing delay if other accesses are pending, Seek(move the heads), Rotational latency, Data transfer,Controller overhead&lt;/li>
+&lt;/ul>
+&lt;h2 id="disk-access-example">Disk Access Example&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Given : 512B sector, 15000rpm, 4ms average seek time, 100MB/s transfer rate, 0.2ms controller overhead, idle disk&lt;/p></description></item><item><title>lectures/image processing</title><link>https://minuk.dev/wiki/lectures/image-processing/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/image-processing/</guid><description>&lt;p>PCA (Principal Components Analysis)&lt;/p>
+&lt;h1 id="eigenvalues-and-eigenvectors">Eigenvalues and Eigenvectors&lt;/h1>
+&lt;ul>
+&lt;li>The prefix eigen- is adopted from the German word eigen for &amp;ldquo;proper&amp;rdquo;, &amp;ldquo;characteristic&amp;rdquo;&lt;/li>
+&lt;li>Eigenvalues are a special set of scalars associated with a linear system of equations that are sometimes also known as characteristic roots, characteristic values&lt;/li>
+&lt;li>Each eigenvalue is paired with a corresponding so-called eigen vector.&lt;/li>
+&lt;li>Eigenvectors are a special set of vectors associated with a linear system of equations that are sometimes also known as characteristic vectors&lt;/li>
+&lt;li>The Lanczos algorithm is an algorithm for computing the eigenvalues and eigenvectors&lt;/li>
+&lt;li>Eigenvalues and eigenvectors feature prominently in the analysis of transformations&lt;/li>
+&lt;/ul>
+&lt;h2 id="covariance-matrix">Covariance matrix&lt;/h2>
+&lt;ul>
+&lt;li>The covariance matrix consists of the variances of the variables along the main diagonal and the covariance between each pair of variables in the other matrix positions&lt;/li>
+&lt;/ul>
+&lt;h2 id="face-recognition">Face Recognition&lt;/h2>
+&lt;ol>
+&lt;li>
+&lt;p>obtain face images I_1, &amp;hellip; , I_m (training faces) (very important : the face images must be centered and of the same size)&lt;/p></description></item><item><title>학교 수업</title><link>https://minuk.dev/wiki/lectures/</link><pubDate>Tue, 07 Apr 2020 20:37:08 +0900</pubDate><guid>https://minuk.dev/wiki/lectures/</guid><description>&lt;h1 id="학교-수업">학교 수업&lt;/h1>
+&lt;ul>
+&lt;li>[[lectures/algorithm]]&lt;/li>
+&lt;li>[[lectures/computer architecture]]&lt;/li>
+&lt;li>[[lectures/image processing]]&lt;/li>
+&lt;li>[[lectures/human_behavior_and_psychology]]&lt;/li>
+&lt;li>[[lectures/database_system]]&lt;/li>
+&lt;li>[[lectures/wireless]]&lt;/li>
+&lt;li>[[lectures/network_design_and_application]]&lt;/li>
+&lt;li>[[lectures/nonparametric-statistic]]&lt;/li>
+&lt;li>[[lectures/multicore]]&lt;/li>
+&lt;li>[[lectures/regression]]&lt;/li>
+&lt;li>[[lectures/multi-variant-statistical-analysis]]&lt;/li>
+&lt;li>[[lectures/bayesian-statistics]]&lt;/li>
+&lt;li>[[lectures/introduction-to-statistical-learning]]&lt;/li>
+&lt;li>[[lectures/computer-communication]]&lt;/li>
+&lt;li>[[lectures/automata]]&lt;/li>
+&lt;li>[[pdf-test]]&lt;/li>
+&lt;li>[[lectures/machine-learning]]&lt;/li>
+&lt;li>[[lectures/signal_and_system]]&lt;/li>
+&lt;li>[[lectures/compiler]]&lt;/li>
+&lt;li>[[lectures/the-people-of-chung-ang-university-and-korean-society]]&lt;/li>
+&lt;li>[[lectures/information_security_theory]]&lt;/li>
+&lt;li>[[lectures/numerical_analysis]]&lt;/li>
+&lt;li>[[lectures/design-pattern]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

@@ -1,0 +1,139 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>linux-debug/process</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>linux-debug/process</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
+<i class="fa fa-arrow-left"></i>
+[[debug-linux]]</button></div></div></div><div><h2>linux-debug/process</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/linux-debug/process.md><h5>created : Tue, 10 Nov 2020 23:51:56 +0900</h5><h5>modified : Wed, 09 Dec 2020 13:31:33 +0900</h5></a><a href=https://minuk.dev/tags/linux-debug><kbd class=item-tag>linux-debug</kbd></a>
+<a href=https://minuk.dev/tags/process><kbd class=item-tag>process</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><ul><li><a href=#프로세스>프로세스</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h3 id=프로세스>프로세스</h3><ul><li>x64 용으로 컴파일 해서 작업하고 있어서, 다른부분이 있다.</li><li>책 151쪽에서 여러 함수들에 filter를 거는데, 당연히도 안걸린다. 그런데 function 을 걸면 당연히 문제가 된다. 스크립트채로 따라쳐서 실행하지 말고, 한줄한줄 실행하고 동작하는지 확인하면서 작업했다.</li></ul><h4 id=유저-레벨-프로세스-실행-실습>유저 레벨 프로세스 실행 실습</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cat /sys/kernel/debug/tracing/available_filter_functions | grep sys_clone
+</span></span></code></pre></div><ul><li>이렇게 하면 <code>__x64_sys_clone</code> 이 나오는데 이걸 <code>sys_clone</code> 대신 넣어주자.</li><li>그렇게 해서 나온 스크립트는 아래와 같다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>0</span> &gt; /sys/kernel/debug/tracing/tracing_on
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;tracing_off&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>0</span> &gt; /sys/kernel/debug/tracing/events/enable
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;events disabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo __x64_sys_clone do_exit &gt; /sys/kernel/debug/tracing/set_ftrace_filter
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;set_ftrace_filter init&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#66d9ef>function</span> &gt; /sys/kernel/debug/tracing/current_tracer
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;function tracer enabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo __x64_sys_clone do_exit &gt; /sys/kernel/debug/tracing/set_ftrace_filter
+</span></span><span style=display:flex><span>echo _do_fork copy_process* &gt;&gt; /sys/kernel/debug/tracing/set_ftrace_filter
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;set_ftrace_filter enabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/sched/sched_switch/enable
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/sched/sched_wakeup/enable
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/sched/sched_process_fork/enable
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/sched/sched_process_exit/enable
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/events/signal/enable
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sleep <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;event enabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/options/func_stack_trace
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/options/sym-offset
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;function stack trace enabled&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#ae81ff>1</span> &gt; /sys/kernel/debug/tracing/tracing_on
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;tracing_on&#34;</span>
+</span></span></code></pre></div><ul><li>프로세스 생성 단계의 함수 흐름 : 책이랑 살짝 다른데 이건 cpu마다 다를듯?</li></ul><pre tabindex=0><code>copy_process.part.53+0x5/0x1d40
+_do_fork+0xcf/0x3a0
+__x64_sys_clone+0x27/0x30
+do_syscall_64+0x55/0x110
+</code></pre><ul><li>프로세스 종료 단계의 함수 흐름</li></ul><pre tabindex=0><code>do_exit+0x5/0xbd0
+do_group_exit+0x47/0xb0
+get_signal+0xfe/0x7e0
+do_signal+0x37/0x650
+exit_to_usermode_loop+0x9b/0xb0
+do_syscall_64+0x101/0x110
+</code></pre><h5 id=프로세스-실행-흐름>프로세스 실행 흐름</h5><ol><li>프로세스 생성</li><li>raspbian_proc 프로세스 실행</li><li>프로세스 종료</li><li>부모 프로세스에게 시그널 전달</li></ol><h5 id=배운-내용>배운 내용</h5><ul><li>프로세스가 스스로 exit POSIX 시스템 콜을 호출하면 스스로 소멸할 수 있다.</li><li>exit POSIX 시스템 콜에 대한 시스템 콜 핸들러는 sys_exit_group() 함수이다.</li><li>프로세스는 소멸되는 과정에서 부모 프로세스에게 SIGCHLD 시그널을 전달해 자신이 종료될 것이라고 통지한다.</li></ul><h4 id=커널-스레드>커널 스레드</h4><ul><li>커널 스레드는 커널 공간에서만 실행되며, 유저 공간과 상호작용하지 않습니다.</li><li>커널 스레드는 실행, 휴면 등 모든 동작을 커널에서 직접 제어 관리합니다.</li><li>대부분의 커널 스레드는 시스템이 부팅할 때 생성되고 시스템이 종료할 때까지 백그라운드로 실행됩니다.</li></ul><h5 id=커널-스레드-생성-과정>커널 스레드 생성 과정</h5><ol><li>kthreadd 프로세스에서 커널 스레드 생성을 요청</li></ol><ul><li>kthread_create()</li><li>kthread_create_on_node()</li></ul><ol><li>kthreadd 프로세스가 커널 스레드를 생성</li></ol><ul><li>kthreadd()</li><li>create_kthread()</li></ul><h5 id=커널-내부-프로세스의-생성-과정-_do_fork-함수>커널 내부 프로세스의 생성 과정 (_do_fork() 함수)</h5><ul><li><p>위에서 말한 대로 실제로 생성하는 곳은 kthreadd가 호출하는 create_kthread 인데, 이건 결국 _do_fork 를 호출한다.</p></li><li><p>_do_fork 의 호출 과정</p><ol><li>프로세스 생성 : copy_process() 함수를 호출해서 프로세스를 생성</li><li>생성한 프로세스의 실행 요청 : copy_process 함수를 호출해 프로세스를 만든 후, wake_up_new_task 함수를 호출</li></ol></li><li><p>copy_process() 함수를 호출해 프로세스를 생성</p></li><li><p>wake_up_new_task() 함수를 호출해 생성한 프로세스를 깨움</p></li><li><p>생성한 프로세스 PID를 반환</p></li></ul><h5 id=copy_process-함수-분석>copy_process 함수 분석</h5><ul><li>dup_task_struct : task_struct 구조체와 프로세스가 실행될 스택 공간을 할당, 이후 새로운 구조체 주소를 반환<ul><li>책에서는 여기만 나와 있는데, memory 동적할당이 어떻게 되는지 궁금해서 확인해봤다.</li><li>쭉쭉 따라가보면, alloc_task_struct_node -> kmem_cache_alloc_node -> kmem_cache_alloc ->slab_alloc 가 호출되는데, slab이 뭔지 몰라서 찾아봤다.<ul><li>참고 : <a href=https://lascrea.tistory.com/66>https://lascrea.tistory.com/66</a></li><li>slab allocator라고 하며, 일종의 자원 할당자 중 하나로 4KB의 크기를 가진 Page로 데이터를 저장하고 관리할 경우 발생하는 단편화를 최소화 하기 위해 만들어졌다.</li><li>리눅스 커널은 slab을 사용하고 있으며 /proc/meminfo에서 리눅스 커널이 사용하는 cache 크기를 의미한다.</li><li>리눅스 커널에서 커널과 디바이스 드라이버, 파일시스템 등은 영구적이지 않은 데이터(inode, task 구조체, 장치 구조체 등)들을 저장하기 위한 공간이 필요한데 이것이 slab에 관리된다.</li></ul></li></ul></li><li>그리고 기본적인 자원들(메모리, 파일 등)을 복사한다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> <span style=color:#75715e>/* copy all the process information */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>shm_init_task</span>(p);
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>security_task_alloc</span>(p, clone_flags);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_audit;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_semundo</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_security;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_files</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_semundo;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_fs</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_files;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_sighand</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_fs;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_signal</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_sighand;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_mm</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_signal;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_namespaces</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_mm;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_io</span>(clone_flags, p);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>if</span> (retval)
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>goto</span> bad_fork_cleanup_namespaces;
+</span></span><span style=display:flex><span> retval <span style=color:#f92672>=</span> <span style=color:#a6e22e>copy_thread_tls</span>(clone_flags, stack_start, stack_size, p, tls);
+</span></span></code></pre></div><h5 id=wake_up_new_task>wake_up_new_task()</h5><ul><li>프로세스 상태를 TASK_RUNNING으로 변경</li><li>현재 실행 중인 CPU 번호를 thread_info 구조체의 cpu 필드에 저장 (CONFIG_SMP 값이 켜져 있을때)</li><li>런큐에 프로세스를 큐잉</li></ul><h4 id=프로세스의-종료-과정-분석>프로세스의 종료 과정 분석</h4><ul><li><p>프로세스가 죽는 두가지 흐름</p><ul><li>유저 애플리케이션에서 exit() 함수를 호출할 때</li><li>종료 시그널을 전달받을 때</li></ul></li><li><p>이번에는 책 보기 전에 ftrace 결과에 나오는 함수들 다 찾아보자.</p><ul><li><code>kernel/exit.c</code><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#a6e22e>SYSCALL_DEFINE1</span>(exit_group, <span style=color:#66d9ef>int</span>, error_code)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>do_group_exit</span>((error_code <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0xff</span>) <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>8</span>);
+</span></span><span style=display:flex><span>  <span style=color:#75715e>/* NOTREACHED */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li><li><code>kernel/signal.c</code><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>get_signal</span>(<span style=color:#66d9ef>struct</span> ksignal <span style=color:#f92672>*</span>ksig)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#75715e>/* skip */</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/*
+</span></span></span><span style=display:flex><span><span style=color:#75715e>     * Death signals, no core dump.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>     */</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>do_group_exit</span>(ksig<span style=color:#f92672>-&gt;</span>info.si_signo);
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* NOTREACHED */</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>spin_unlock_irq</span>(<span style=color:#f92672>&amp;</span>sighand<span style=color:#f92672>-&gt;</span>siglock);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  ksig<span style=color:#f92672>-&gt;</span>sig <span style=color:#f92672>=</span> signr;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> ksig<span style=color:#f92672>-&gt;</span>sig <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div></li></ul><pre tabindex=0><code>* 이거 이외에도 `fpu.c`, `seccomp.c` 에 있는데, 이건 찾아보니까 fpu 에서 에러가 나서 죽일때랑, [[seccomp]]에서 강제로 죽일때 호출. 일반적으로 죽는 경우는 아니니, 위에 2가지만이 do_group_exit를 호출한다라고 알수 있다.
+</code></pre></li><li><p>do_exit() 함수의 동작 방식 확인</p><ol><li>init 프로세스가 종료하면 강제 커널 패닉 유발 : 보통 부팅 과정에서 발생함</li><li>이미 프로세스가 do_exit() 함수의 실행으로 프로세스가 종료되는 도중 다시 do_exit() 함수가 호출됐는지 점검</li><li>프로세스 리소스(파일 디스크립터, 가상 메모리, 시그널) 등을 해제</li><li>부모 프로세스에게 자신이 종료되고 있다고 알림</li><li>프로세스의 실행 상태를 task_struct 구조체의 state 필드에 TASK_DEAD로 설정</li><li>do_task_dead() 함수에 호출해 스케줄링을 실행, do_task_dead() 함수에서 __schedule() 함수가 호출되어 프로세스 자료구조인 태스크 디스크립터와 스택 메모리를 해제</li></ol></li><li><p>do_task_daed() 함수를 호출하고 난 후의 동작</p><ul><li>__schedule() 함수</li><li>context_switch() 함수</li><li>finish_task_switch() 함수</li></ul></li></ul><h5 id=태스크-디스크립터task_struct-구조체>태스크 디스크립터(task_struct 구조체)</h5><ul><li>프로세스를 식별하는 필드<ul><li>comm : 프로세스 이름</li><li>pid : 프로세스 id</li><li>tgid : task_group id, 만약 thread가 leader 인 경우, tgid == pid</li></ul></li><li>프로세스 상태 저장<ul><li>state: 프로세스 실행 상태<ul><li>TASK_RUNNING : CPU에서 실행 중이거나 런큐에서 대기 상태에 있음</li><li>TASK_INTERRUPTIBLE : 휴면 상태</li><li>TASK_UNINTERRUPTIBLE : 특정 조건에서 깨어나기 위해 휴면 상태로 진입한 상태</li></ul></li><li>flags: 프로세스 세부 동작 상태와 속성 정보<ul><li>PF_IDLE : 자신이 IDLE thread 임을 나타내는 flag</li><li>PF_EXITING : 종료되는 중</li><li>PF_EXITPIDONE : 종료 됨</li><li>PF_WQ_WORKER : 워커 쓰레드</li><li>PF_KTHREAD : 커널 스레드</li></ul></li></ul></li><li>프로세스 간의 관계</li><li>real_parent : 자신을 생성한 부모 프로세스의 태스크 디스크립터 주소를 저장</li><li>parent : 부모 프로세스의 태스크 디스크립터 주소를 담고 있음.</li><li>children : 자식 프로세스 리스트</li><li>sibiling : 형제 프로세스 리스트</li><li>프로세스 실행 시각 정보</li><li>utime : 유저 모드에서 프로세스가 실행한 시각 (account_user_time)</li><li>stime : 커널 모드에서 프로세스가 실행한 시각 (account_system_index_time)</li><li>sched_info.last_arrival : 프로세스가 CPU에서 실행된 시각 (context_switch -> prepare_task_switch -> sched_info_switch -> __sched_info_switch -> sched_info_arrive)</li></ul><h5 id=스레드-정보--thread_info-구조체>스레드 정보 : thread_info 구조체</h5><ul><li>선점 스케줄링 실행 여부</li><li>시그널 전달 여부</li><li>인터럽트 컨텍스트와 Soft IRQ 컨텍스트 상태</li><li>휴면 상태로 진입하기 직전 레지스터 세트를 로딩 및 백업</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>struct</span> thread_info {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>struct</span> task_struct	<span style=color:#f92672>*</span>task;		<span style=color:#75715e>/* main task structure */</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>		flags;		<span style=color:#75715e>/* low level flags */</span>
+</span></span><span style=display:flex><span>  __u32			cpu;		<span style=color:#75715e>/* current CPU */</span>
+</span></span><span style=display:flex><span>  __s32			preempt_count; <span style=color:#75715e>/* 0 =&gt; preemptable, &lt;0 =&gt; BUG */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>mm_segment_t</span>		addr_limit; <span style=color:#75715e>/* thread address space:
+</span></span></span><span style=display:flex><span><span style=color:#75715e>                                 0-0x7FFFFFFF for user-thead
+</span></span></span><span style=display:flex><span><span style=color:#75715e>                                 0-0xFFFFFFFF for kernel-thread
+</span></span></span><span style=display:flex><span><span style=color:#75715e>                               */</span>
+</span></span><span style=display:flex><span>  __u8			supervisor_stack[<span style=color:#ae81ff>0</span>];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/* saved context data */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>           ksp;
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span><span style=color:#75715e>#endif
+</span></span></span></code></pre></div><ul><li>preempt_count 가 바뀌는 조건<ul><li>인터럽트 컨텍스트 실행 시작 및 종료 설정</li><li>Soft IRQ 컨텍스트 실행 시작 및 종료 설정</li><li>프로세스 선점 스케줄링 가능 여부</li></ul></li></ul><h5 id=cpu-필드에-대한-상세-분석>cpu 필드에 대한 상세 분석</h5><ul><li>sm_processor_id()</li><li>set_task_cpu()</li></ul><h5 id=thread_info-구조체-초기화-코드-분석>thread_info 구조체 초기화 코드 분석</h5><ul><li>dup_task_struct()</li><li>setup_thread_stack(tsk, orig);</li><li>alloc_task_struct_node()</li><li>alloc_thread_stack_node()</li></ul><h5 id=프로세스의-태스크-디스크립터에-접근하는-매크로-함수>프로세스의 태스크 디스크립터에 접근하는 매크로 함수</h5><ul><li>current : 현재 구동 중인 프로세스의 태스크 디스크립터 주소</li><li>arch/x86/include/asm/current.h</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> <span style=color:#a6e22e>DECLARE_PER_CPU</span>(<span style=color:#66d9ef>struct</span> task_struct <span style=color:#f92672>*</span>, current_task);
+</span></span><span style=display:flex><span> <span style=color:#66d9ef>static</span> __always_inline <span style=color:#66d9ef>struct</span> task_struct <span style=color:#f92672>*</span><span style=color:#a6e22e>get_current</span>(<span style=color:#66d9ef>void</span>)
+</span></span><span style=display:flex><span> {
+</span></span><span style=display:flex><span>   <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>this_cpu_read_stable</span>(current_task);
+</span></span><span style=display:flex><span> }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>#define current get_current()
+</span></span></span></code></pre></div><ul><li>보면은, cpu 마다 task_struct를 선언하는데, 이 변수 명은 current_task 인데, arch/x86/kernel/process_64.c 에 있는 <code>__switch_to()</code>에서</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span> <span style=color:#a6e22e>this_cpu_write</span>(current_task, next_p);
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>this_cpu_write</span>(cpu_current_top_of_stack, <span style=color:#a6e22e>task_top_of_stack</span>(next_p));
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#75715e>/* Reload sp0. */</span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>update_task_stack</span>(next_p);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span> <span style=color:#a6e22e>switch_to_extra</span>(prev_p, next_p);
+</span></span></code></pre></div><ul><li>이렇게 매번 task가 전환 될때 cpu 별로 따로 넣어준다. 이때마다, update_task_stack를 호출해주면서 stack을 설정한다.</li></ul><h5 id=프로세스-디버깅>프로세스 디버깅</h5><ul><li>사용하는 명령어 : layout asm</li><li>내용 정리<ul><li>리눅스 유틸리티 프로그램을 실행할 때 프로세스는 fork()와 execve() 시스템 콜 함수를 호출한다.</li><li>ftrce의 sched_process_exec 이벤트로 리눅스 유틸리티 프로그램의 파일 위치를 알 수 있다.</li><li>리눅스 유틸리티 프로그램을 종료할 때의 프로세스는 exit() 시스템 콜 함수를 호출한다.</li></ul></li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>

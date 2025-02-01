@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Repository on minuk.dev</title><link>https://minuk.dev/tags/repository/</link><description>Recent content in Repository on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:19:07 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/repository/index.xml" rel="self" type="application/rss+xml"/><item><title>Nexus</title><link>https://minuk.dev/wiki/nexus/</link><pubDate>Tue, 07 Apr 2020 20:21:19 +0900</pubDate><guid>https://minuk.dev/wiki/nexus/</guid><description>&lt;h1 id="docker-설치">docker 설치&lt;/h1>
+&lt;pre>&lt;code>sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository &amp;quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable&amp;quot;
+sudo apt update
+sudo apt install docker-ce -y
+&lt;/code>&lt;/pre>
+&lt;h1 id="nexus-실행">nexus 실행&lt;/h1>
+&lt;pre>&lt;code>sudo docker volume create --name nexus-data
+sudo docker run -d -p 8081:8081 --name nexus -v nexus-data:/nexus-data sonatype/nexus3
+&lt;/code>&lt;/pre>
+&lt;h1 id="nexus-bash-실행">nexus bash 실행&lt;/h1>
+&lt;pre>&lt;code>sudo docker exec -it 7f1dc6675c11 /bin/bash
+&lt;/code>&lt;/pre>
+&lt;h1 id="docker-volume">[[Docker Volume]]&lt;/h1></description></item></channel></rss>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Math on minuk.dev</title><link>https://minuk.dev/tags/math/</link><description>Recent content in Math on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 21 Oct 2020 01:38:01 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/math/index.xml" rel="self" type="application/rss+xml"/><item><title>boxplot</title><link>https://minuk.dev/wiki/boxplot/</link><pubDate>Mon, 06 Jul 2020 20:06:22 +0900</pubDate><guid>https://minuk.dev/wiki/boxplot/</guid><description>&lt;h2 id="잘-나와있는-곳">잘 나와있는 곳&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://boxnwhis.kr/2019/02/19/boxplot.html">https://boxnwhis.kr/2019/02/19/boxplot.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="같이-보면-좋은-자료">같이 보면 좋은 자료&lt;/h2>
+&lt;ul>
+&lt;li>[[quartile]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>사분위수(quartile) 을 시각화하여 쉽게 보는 그래프의 일종&lt;/li>
+&lt;li>얼마나 데이터가 넓게 분포되어있는가를 확인한다.&lt;/li>
+&lt;/ul></description></item><item><title>quartile (사분위수)</title><link>https://minuk.dev/wiki/quartile/</link><pubDate>Mon, 06 Jul 2020 20:03:22 +0900</pubDate><guid>https://minuk.dev/wiki/quartile/</guid><description>&lt;h2 id="요약">요약&lt;/h2>
+&lt;ul>
+&lt;li>quartile : 사분위수, 사분위 값으로 불리며, 통계에서 데이터의 분포를 확인할때 자주 쓰이며, 주로 [[boxplot]] 의 형태로 표현된다.&lt;/li>
+&lt;/ul>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Quart&lt;/th>
+ &lt;th>의미&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>0&lt;/td>
+ &lt;td>최소값&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>1&lt;/td>
+ &lt;td>제 1 사분위수 (25%)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>2&lt;/td>
+ &lt;td>제 2 사분위수 (50% 중간값)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>3&lt;/td>
+ &lt;td>제 3 사분위수 (75%)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>4&lt;/td>
+ &lt;td>최대값&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table></description></item><item><title>statistics</title><link>https://minuk.dev/wiki/statistics/</link><pubDate>Mon, 06 Jul 2020 20:02:25 +0900</pubDate><guid>https://minuk.dev/wiki/statistics/</guid><description>&lt;h2 id="기본-용어">기본 용어&lt;/h2>
+&lt;ul>
+&lt;li>[[quartile]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="용어-정리">용어 정리&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>참고 : &lt;a href="https://blog.naver.com/mykepzzang">https://blog.naver.com/mykepzzang&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>Probability&lt;/code> is the branch of mathematics concerning numerical descriptions of how likely an event is to occur or how likely it is that a proposition is true.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>Sample Space&lt;/code> : the set of all possible outcomes or results of an experimentor random trial. Usually it is denoted using set notation and the possible ordered outcomes are listed as elements in the set.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>Event&lt;/code> : the subset of &lt;code>sample space&lt;/code>&lt;/p></description></item></channel></rss>

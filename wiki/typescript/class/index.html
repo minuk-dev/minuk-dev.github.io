@@ -1,0 +1,281 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Typescript/Class</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>Typescript/Class</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
+<i class="fa fa-arrow-left"></i>
+[[Typescript]]</button></div></div></div><div><h2>Typescript/Class</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/Typescript/Class.md><h5>created : Tue, 07 Apr 2020 20:33:57 +0900</h5><h5>modified : Tue, 15 Mar 2022 02:50:47 +0900</h5></a><a href=https://minuk.dev/tags/typescript><kbd class=item-tag>typescript</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#inheritance>Inheritance</a></li><li><a href=#public-privateand-protected-modifiers><code>public</code>, <code>private</code>and <code>protected</code> modifiers</a><ul><li><a href=#public-by-default>Public by default</a></li><li><a href=#understanding-private>Understanding <code>private</code></a></li><li><a href=#understanding-protected>Understanding <code>protected</code></a></li></ul></li><li><a href=#readonly-modifier>Readonly modifier</a></li><li><a href=#parameter-properties>Parameter properties</a></li><li><a href=#accessors>Accessors</a></li><li><a href=#static-properties>Static Properties</a></li><li><a href=#abstacrt-classes>Abstacrt Classes</a></li></ul><ul><li><a href=#constructor-functions>Constructor functions</a></li><li><a href=#using-a-class-as-an-interface>Using a class as an interface</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=class>Class</h1><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Greeter</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>greeting</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>message</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>greeting</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>message</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>greet() {</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;Hello, &#34;</span> <span style=color:#f92672>+</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>greeting</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>greeter</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Greeter</span>(<span style=color:#e6db74>&#34;world&#34;</span>);
+</span></span></code></pre></div><h2 id=inheritance>Inheritance</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>move</span>(<span style=color:#a6e22e>distanceInMeters</span>: <span style=color:#66d9ef>number</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`Animal moved </span><span style=color:#e6db74>${</span><span style=color:#a6e22e>distanceInMeters</span><span style=color:#e6db74>}</span><span style=color:#e6db74>m.`</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Dog</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>bark() {</span>
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Woof! Woof!&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>dog</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Dog</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dog</span>.<span style=color:#a6e22e>bark</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dog</span>.<span style=color:#a6e22e>move</span>(<span style=color:#ae81ff>10</span>);
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dog</span>.<span style=color:#a6e22e>bark</span>();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>; }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>move</span>(<span style=color:#a6e22e>distanceInMeters</span>: <span style=color:#66d9ef>number</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span><span style=color:#e6db74>}</span><span style=color:#e6db74> moved </span><span style=color:#e6db74>${</span><span style=color:#a6e22e>distanceInMeters</span><span style=color:#e6db74>}</span><span style=color:#e6db74>m.`</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Snake</span> <span style=color:#a6e22e>extneds</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>super</span>(<span style=color:#a6e22e>name</span>); }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>move</span>(<span style=color:#a6e22e>distanceInMeters</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>5</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Slithering...&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>super</span>.<span style=color:#a6e22e>move</span>(<span style=color:#a6e22e>distanceInMeters</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Horse</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>super</span>(<span style=color:#a6e22e>name</span>); }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>move</span>(<span style=color:#a6e22e>distanceInMeters</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>45</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Galloping...&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>super</span>.<span style=color:#a6e22e>move</span>(<span style=color:#a6e22e>distanceInMeters</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>sam</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Snake</span>(<span style=color:#e6db74>&#34;Sammy the Python&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>tom</span>: <span style=color:#66d9ef>Animal</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Horse</span>(<span style=color:#e6db74>&#34;Tommy the Palomino&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>sam</span>.<span style=color:#a6e22e>move</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>tom</span>.<span style=color:#a6e22e>move</span>();
+</span></span></code></pre></div><h2 id=public-privateand-protected-modifiers><code>public</code>, <code>private</code>and <code>protected</code> modifiers</h2><h3 id=public-by-default>Public by default</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span> <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>; }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>move</span> (<span style=color:#a6e22e>distanceInMeters</span>: <span style=color:#66d9ef>number</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>`</span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span><span style=color:#e6db74>}</span><span style=color:#e6db74> moved </span><span style=color:#e6db74>${</span><span style=color:#a6e22e>distanceInMeters</span><span style=color:#e6db74>}</span><span style=color:#e6db74>m.`</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=understanding-private>Understanding <code>private</code></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string_</span> { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>; }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Animal</span>(<span style=color:#e6db74>&#34;Cat&#34;</span>).<span style=color:#a6e22e>name</span>; <span style=color:#75715e>// Error name is private.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>; }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Rhino</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>() { <span style=color:#66d9ef>super</span>(<span style=color:#e6db74>&#34;Rhino&#34;</span>); }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Employee</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>; }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>animal</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Animal</span>(<span style=color:#e6db74>&#34;Goat&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>rhino</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Rhino</span>();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>employee</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Employee</span>(<span style=color:#e6db74>&#34;Bob&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>animal</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>rhino</span>;
+</span></span><span style=display:flex><span><span style=color:#a6e22e>animal</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>employee</span>; <span style=color:#75715e>// Error
+</span></span></span></code></pre></div><h3 id=understanding-protected>Understanding <code>protected</code></h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>protected</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>name</span>; }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Employee</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span> <span style=color:#a6e22e>department</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>department</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>super</span>(<span style=color:#a6e22e>name</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>department</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>department</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>getElevatorPitch() {</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>`Hello, my name is </span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span><span style=color:#e6db74>}</span><span style=color:#e6db74> and I work in </span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>department</span><span style=color:#e6db74>}</span><span style=color:#e6db74>.`</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>howard</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Employee</span>(<span style=color:#e6db74>&#34;Howard&#34;</span>, <span style=color:#e6db74>&#34;Sales&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>howard</span>.<span style=color:#a6e22e>getElevatorPitch</span>());
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>howard</span>.<span style=color:#a6e22e>name</span>); <span style=color:#75715e>// Error
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>protected</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>protected</span> <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string</span>) { <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>; }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Employee</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Person</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span> <span style=color:#a6e22e>department</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>, <span style=color:#a6e22e>department</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>super</span>(<span style=color:#a6e22e>name</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>department</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>department</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>public</span> <span style=color:#a6e22e>getELevatorPitch() {</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>`Hello, my name is </span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span><span style=color:#e6db74>}</span><span style=color:#e6db74> and I work in </span><span style=color:#e6db74>${</span><span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>department</span><span style=color:#e6db74>}</span><span style=color:#e6db74>.`</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>howard</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Employee</span>(<span style=color:#e6db74>&#34;Howard&#34;</span>, <span style=color:#e6db74>&#34;Sales&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>john</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Person</span>(<span style=color:#e6db74>&#34;John&#34;</span>);
+</span></span></code></pre></div><h2 id=readonly-modifier>Readonly modifier</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Octopus</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>readonly</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>readonly</span> <span style=color:#a6e22e>numberOfLegs</span>: <span style=color:#66d9ef>number</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>8</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span> (<span style=color:#a6e22e>theName</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>theName</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>dad</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Octopus</span>(<span style=color:#e6db74>&#34;Man with the 8 strong legs&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#a6e22e>dad</span>.<span style=color:#a6e22e>name</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Man with the 3-piece suit&#34;</span>; <span style=color:#75715e>// Error
+</span></span></span></code></pre></div><h2 id=parameter-properties>Parameter properties</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Octopus</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>readonly</span> <span style=color:#a6e22e>numberOfLegs</span>: <span style=color:#66d9ef>number</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>8</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#66d9ef>readonly</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=accessors>Accessors</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Employee</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>fullName</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>employee</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Employee</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>employee</span>.<span style=color:#a6e22e>fullName</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Bob Smith&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>employee</span>.<span style=color:#a6e22e>fullName</span>) {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>employee</span>.<span style=color:#a6e22e>fullName</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>passcode</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;secret passcode&#34;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Employee</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>private</span> <span style=color:#a6e22e>_fullName</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>get</span> <span style=color:#a6e22e>fullName</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>string</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>_fullName</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>set</span> <span style=color:#a6e22e>fullName</span>(<span style=color:#a6e22e>newName</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>passcode</span> <span style=color:#f92672>&amp;&amp;</span> <span style=color:#a6e22e>passcode</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;secret passcode&#34;</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>_fullName</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>newName</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Error!&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>employee</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Employee</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>employee</span>.<span style=color:#a6e22e>fullName</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Bob Smith&#34;</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>employee</span>.<span style=color:#a6e22e>fullName</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>employee</span>.<span style=color:#a6e22e>fullName</span>);
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=static-properties>Static Properties</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Grid</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>static</span> <span style=color:#a6e22e>origin</span> <span style=color:#f92672>=</span> { <span style=color:#a6e22e>x</span>: <span style=color:#66d9ef>0</span>, <span style=color:#a6e22e>y</span>: <span style=color:#66d9ef>0</span> };
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>calculateDistanceFromOrigin</span>(<span style=color:#a6e22e>point</span><span style=color:#f92672>:</span> { <span style=color:#a6e22e>x</span>: <span style=color:#66d9ef>number</span>; <span style=color:#a6e22e>y</span>: <span style=color:#66d9ef>number</span>; }) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>xDist</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>point</span>.<span style=color:#a6e22e>x</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>Grid</span>.<span style=color:#a6e22e>origin</span>.<span style=color:#a6e22e>x</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>yDist</span> <span style=color:#f92672>=</span> (<span style=color:#a6e22e>point</span>.<span style=color:#a6e22e>y</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>Grid</span>.<span style=color:#a6e22e>origin</span>.<span style=color:#a6e22e>y</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> Math.<span style=color:#a6e22e>sqrt</span>(<span style=color:#a6e22e>xDist</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>xDist</span> <span style=color:#f92672>+</span> <span style=color:#a6e22e>yDist</span> <span style=color:#f92672>*</span> <span style=color:#a6e22e>yDist</span>) <span style=color:#f92672>/</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>scale</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span> (<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>scale</span>: <span style=color:#66d9ef>number</span>) { }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>grid1</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Grid</span>(<span style=color:#ae81ff>1.0</span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>grid2</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Grid</span>(<span style=color:#ae81ff>5.0</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>grid1</span>.<span style=color:#a6e22e>calculateDistanceFromOrigin</span>({<span style=color:#a6e22e>x</span>: <span style=color:#66d9ef>10</span>, <span style=color:#a6e22e>y</span>: <span style=color:#66d9ef>10</span>}));
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>grid2</span>.<span style=color:#a6e22e>calculateDistanceFromOrigin</span>({<span style=color:#a6e22e>x</span>: <span style=color:#66d9ef>10</span>, <span style=color:#a6e22e>y</span>: <span style=color:#66d9ef>10</span>}));
+</span></span></code></pre></div><h2 id=abstacrt-classes>Abstacrt Classes</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Animal</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>abstract</span> <span style=color:#a6e22e>makeSound</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>void</span>;
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>move</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>void</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;roaming the earth...&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>abstract</span> <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Department</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#66d9ef>public</span> <span style=color:#a6e22e>name</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printName</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>void</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Department name: &#34;</span> <span style=color:#f92672>+</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>name</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>abstract</span> <span style=color:#a6e22e>printMeeting</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>void</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>AccountingDepartment</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Department</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>super</span>(<span style=color:#e6db74>&#34;Accounting and Auditing&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>printMeeting</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>void</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;The Accounting Department meets each Monday at 10am.&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>grenerateReports</span>()<span style=color:#f92672>:</span> <span style=color:#66d9ef>void</span> {
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#e6db74>&#34;Generating accounting reports...&#34;</span>);
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>department</span>: <span style=color:#66d9ef>Department</span>;
+</span></span><span style=display:flex><span><span style=color:#a6e22e>department</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Department</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>department</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>AccountingDepartment</span>();
+</span></span></code></pre></div><h1 id=advanced-techinques>Advanced Techinques</h1><h2 id=constructor-functions>Constructor functions</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Greeter</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>greeting</span>: <span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>constructor</span>(<span style=color:#a6e22e>message</span>: <span style=color:#66d9ef>string</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>greeting</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>message</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>greet() {</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;Hello, &#34;</span> <span style=color:#f92672>+</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>greeting</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>greeter</span>: <span style=color:#66d9ef>Greeter</span>;
+</span></span><span style=display:flex><span><span style=color:#a6e22e>gretter</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Greeter</span>(<span style=color:#e6db74>&#34;World&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>greeter</span>.<span style=color:#a6e22e>greet</span>());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Greeter</span> {
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>static</span> <span style=color:#a6e22e>standardGreeting</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Hello, there&#34;</span>;
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>greeting</span>:<span style=color:#66d9ef>string</span>;
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>greet() {</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>greeting</span>) {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;Hello, &#34;</span> <span style=color:#f92672>+</span> <span style=color:#66d9ef>this</span>.<span style=color:#a6e22e>greeting</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>Greeter</span>.<span style=color:#a6e22e>standardGreeting</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>greeter1</span>: <span style=color:#66d9ef>Greeter</span>;
+</span></span><span style=display:flex><span><span style=color:#a6e22e>greeter1</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>Greeter</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>greeter1</span>.<span style=color:#a6e22e>greet</span>());
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>greeterMarker</span>: <span style=color:#66d9ef>typeof</span> <span style=color:#a6e22e>Greeter</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>Greeter</span>;
+</span></span><span style=display:flex><span><span style=color:#a6e22e>greeterMaker</span>.<span style=color:#a6e22e>standardGreeting</span> <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;Hey there!&#34;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>greeter2</span>: <span style=color:#66d9ef>Greeter</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>greeterMaker</span>();
+</span></span><span style=display:flex><span><span style=color:#a6e22e>console</span>.<span style=color:#a6e22e>log</span>(<span style=color:#a6e22e>greeter2</span>.<span style=color:#a6e22e>greet</span>());
+</span></span></code></pre></div><h2 id=using-a-class-as-an-interface>Using a class as an interface</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Point</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>x</span>: <span style=color:#66d9ef>number</span>;
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>y</span>: <span style=color:#66d9ef>number</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>interface</span> <span style=color:#a6e22e>Point3d</span> <span style=color:#66d9ef>extends</span> <span style=color:#a6e22e>Point</span> {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>z</span>: <span style=color:#66d9ef>number</span>;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> <span style=color:#a6e22e>point3d</span>: <span style=color:#66d9ef>Point3d</span> <span style=color:#f92672>=</span> {<span style=color:#a6e22e>x</span>: <span style=color:#66d9ef>1</span>, <span style=color:#a6e22e>y</span>:<span style=color:#66d9ef>2</span>, <span style=color:#a6e22e>z</span>: <span style=color:#66d9ef>3</span>};
+</span></span></code></pre></div></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>

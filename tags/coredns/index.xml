@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Coredns on minuk.dev</title><link>https://minuk.dev/tags/coredns/</link><description>Recent content in Coredns on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 02 Nov 2022 00:19:28 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/coredns/index.xml" rel="self" type="application/rss+xml"/><item><title>learning-coredns</title><link>https://minuk.dev/wiki/coredns/</link><pubDate>Wed, 28 Sep 2022 11:30:48 +0900</pubDate><guid>https://minuk.dev/wiki/coredns/</guid><description>&lt;h2 id="공부-이유">공부 이유&lt;/h2>
+&lt;ul>
+&lt;li>네트워크 부분에서 모호하게 된 영역이여서&lt;/li>
+&lt;li>&lt;a href="https://summerofcode.withgoogle.com/programs/2022/projects/R8SxC38F">google summer code 에 작년 관련 프로젝트가&lt;/a>에 있어서 관심이 가서&lt;/li>
+&lt;li>어짜피 공부해야할 내용인데 책으로 있으면 안할 이유가 없어서&lt;/li>
+&lt;li>kubecon 에서 간략하게 소개해줬는데 흥미가 가서, [[coredns-into-and-deep-dive]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="공부-방법">공부 방법&lt;/h2>
+&lt;ul>
+&lt;li>일단 기본적으로는 책에 있는 내용을 정리하면서 읽기&lt;/li>
+&lt;li>추가적으로 궁금한거 (구현부, 기여할만한지) 등도 추가로 정리하면서 읽기&lt;/li>
+&lt;/ul>
+&lt;h2 id="1장-소개">1장 소개&lt;/h2>
+&lt;ul>
+&lt;li>제약사항:
+&lt;ul>
+&lt;li>완전 재귀를 지원하지 않는다.&lt;/li>
+&lt;li>동적 업데이트를 지원하지 않는다.&lt;/li>
+&lt;li>DNSSEC (Domain Name SYstem Security 확장)을 제한적으로 지원한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="2장-dns-소개">2장 DNS 소개&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>DNS 란?:&lt;/p></description></item><item><title>CoreDNS - Intro and Deep Dive</title><link>https://minuk.dev/wiki/coredns-into-and-deep-dive/</link><pubDate>Thu, 22 Sep 2022 00:53:03 +0900</pubDate><guid>https://minuk.dev/wiki/coredns-into-and-deep-dive/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/rNlSgYZoIYs">원본링크&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-is-coredns">What is CoreDNS?&lt;/h2>
+&lt;ul>
+&lt;li>Flexible DNS server written in GO&lt;/li>
+&lt;li>Focus on service discovery&lt;/li>
+&lt;li>Plugin based architecture, easily extended&lt;/li>
+&lt;li>Support serving via DNS, DNS over TLS, DNS over HTTP/2, DNS over gRPC&lt;/li>
+&lt;li>Support forwarding to upstream via DNS, DNS over TLS, DNS over gRPC&lt;/li>
+&lt;li>Integration with Route53/Google Cloud DNS/Azuer DNS&lt;/li>
+&lt;li>Integrates with Prometheus, Open Tracing, OPA&lt;/li>
+&lt;li>Default DNS server in Kubernetes&lt;/li>
+&lt;li>Basis for node local cache feature in K8s&lt;/li>
+&lt;/ul>
+&lt;h2 id="latest-updates">Latest Updates&lt;/h2>
+&lt;ul>
+&lt;li>1.8.5 - 1.9.2:
+&lt;ul>
+&lt;li>1.9.2. Released May, 2022&lt;/li>
+&lt;li>New plugins: geoip, header:
+&lt;ul>
+&lt;li>geoip reports where the query comes from&lt;/li>
+&lt;li>header allows fiddle with header bits&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Backwards incompatible changes:
+&lt;ul>
+&lt;li>kubernetes: Removed wild card query functionality.&lt;/li>
+&lt;li>route53: Plaintext secret in Corefile deprecated.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Built with golang 1.17.8+ since 1.9.1:
+&lt;ul>
+&lt;li>golang &amp;lt; 1.17.6 security issues&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="security-audit">Security Audit&lt;/h3>
+&lt;ul>
+&lt;li>Completed by Tail of Bits (March 2022)&lt;/li>
+&lt;li>Sponsored by Linux Foundation&lt;/li>
+&lt;li>1 high severity issue (TOB-CDNS-8):
+&lt;ul>
+&lt;li>May lead to cache poisoning attacks&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>1 medium issue (TOB-CDNS-12):
+&lt;ul>
+&lt;li>Mitigation possible withouth coredns update&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>12 low or informational issues.&lt;/li>
+&lt;li>All have been resolved now.&lt;/li>
+&lt;/ul>
+&lt;h2 id="three-ways-to-cusomize-coredns">Three ways to cusomize CoreDNS&lt;/h2>
+&lt;ul>
+&lt;li>Rebuilding with external plugins&lt;/li>
+&lt;li>Using CoreDNS as a library&lt;/li>
+&lt;li>Building your own plugin&lt;/li>
+&lt;/ul>
+&lt;h3 id="rebuilding-with-external-plugins">Rebuilding with External Plugins&lt;/h3>
+&lt;ul>
+&lt;li>You do not need to know Go to do this!&lt;/li>
+&lt;li>&amp;ldquo;External&amp;rdquo;:
+&lt;ul>
+&lt;li>Not built into the standard binaries and Docker images&lt;/li>
+&lt;li>Not supported by core team&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>No dynamic loading of plugins:
+&lt;ul>
+&lt;li>Plugins are built-in at compile time&lt;/li>
+&lt;li>Controlled by plugin.cfg&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Plugin ordering is fixed at compile time&lt;/li>
+&lt;/ul>
+&lt;h3 id="external-plugins">External Plugins&lt;/h3>
+&lt;ul>
+&lt;li>Prerequisites: Docker and a shell:
+&lt;ol>
+&lt;li>Clone CoreDNS&lt;/li>
+&lt;li>Modify plugin.cfg&lt;/li>
+&lt;li>Build CoreDNS&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="coredns-as-a-library">CoreDNS as a Library&lt;/h3>
+&lt;ul>
+&lt;li>Replace the CoreDNS main.go&lt;/li>
+&lt;li>Allows you to:
+&lt;ul>
+&lt;li>Reduced the size and memory footprint of the binary&lt;/li>
+&lt;li>Limit the functionality and CLI flags&lt;/li>
+&lt;li>Do extra setup or initialization&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Used, for example, by Node Local DNS in K8s&lt;/li>
+&lt;/ul>
+&lt;h3 id="example-dnscached">Example: dnscached&lt;/h3>
+&lt;ul>
+&lt;li>Source is in &lt;a href="https://github.com/coredns/learning-coredns">https://github.com/coredns/learning-coredns&lt;/a>&lt;/li>
+&lt;li>Simple caching DNS server&lt;/li>
+&lt;li>Embeds only bind, cache, erros, forward and log plugins&lt;/li>
+&lt;li>CLI args to generate a Corefile internally&lt;/li>
+&lt;/ul>
+&lt;h3 id="writing-a-plugin">Writing a Plugin&lt;/h3>
+&lt;ul>
+&lt;li>Three categories of plugins&lt;/li>
+&lt;li>Best practice: stick to one of these in your plugin&lt;/li>
+&lt;li>Backends:
+&lt;ul>
+&lt;li>Source of data&lt;/li>
+&lt;li>file, forward, hosts, clouddns, template, kubernetes&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Mutators:
+&lt;ul>
+&lt;li>Modify the inbound request, the outbound response, or both&lt;/li>
+&lt;li>acl, cache, rewrite, nsid&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Configurators:
+&lt;ul>
+&lt;li>Modify the internal state or functioning of CoreDNS&lt;/li>
+&lt;li>bind, log, health, ready&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="four-functions">Four functions&lt;/h2>
+&lt;ul>
+&lt;li>Name - literally, just returns the name of the plugin&lt;/li>
+&lt;li>ServeDNS - request handling&lt;/li>
+&lt;li>init - register your plugin with Caddy&lt;/li>
+&lt;li>setup - parse your config&lt;/li>
+&lt;/ul>
+&lt;h3 id="example-there-can-be-only-one">Example: There can be only one!&lt;/h3>
+&lt;ul>
+&lt;li>onlyone plugin from Learning CoreDNS&lt;/li>
+&lt;li>Filters out all but one of specific record types&lt;/li>
+&lt;/ul>
+&lt;h3 id="function-setup">Function: setup&lt;/h3>
+&lt;ul>
+&lt;li>setup.go&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">setup&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">caddy&lt;/span>.&lt;span style="color:#a6e22e">Controller&lt;/span>) &lt;span style="color:#66d9ef">error&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">t&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">:=&lt;/span> &lt;span style="color:#a6e22e">parse&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> &lt;span style="color:#a6e22e">err&lt;/span> &lt;span style="color:#f92672">!=&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">plugin&lt;/span>.&lt;span style="color:#a6e22e">Error&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;onlyone&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">err&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">dnsserver&lt;/span>.&lt;span style="color:#a6e22e">GetConfig&lt;/span>(&lt;span style="color:#a6e22e">c&lt;/span>).&lt;span style="color:#a6e22e">AddPlugin&lt;/span>(&lt;span style="color:#66d9ef">func&lt;/span>(&lt;span style="color:#a6e22e">next&lt;/span> &lt;span style="color:#a6e22e">plugin&lt;/span>.&lt;span style="color:#a6e22e">Handler&lt;/span>) &lt;span style="color:#a6e22e">plugin&lt;/span>.&lt;span style="color:#a6e22e">Handler&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">t&lt;/span>.&lt;span style="color:#a6e22e">Next&lt;/span> = &lt;span style="color:#a6e22e">next&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">t&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="function-servedns">Function: ServeDNS&lt;/h3>
+&lt;h2 id="개인-생각">개인 생각&lt;/h2>
+&lt;ul>
+&lt;li>기본적으로 Google 개발자들이 발표하는게 퀄리티가 좋은듯? 너무 기업에서 &amp;ldquo;우리 최고죠?&amp;rdquo; 이런 느낌으로 홍보 가까운 느낌인데, 구글껀 괜찮은듯, 일단 전체적으로 보편적으로 다들 쓰고 있는걸 말한다.: 구글이 쓰니까 보편적인건가? 뭐든 학습자 입장에서는 쓰지도 않을 Framework, Library 공부하는 것보다는 좋은듯&lt;/li>
+&lt;li>CoreDNS Plugin 을 만드는 방법에 대해서 설명해주고 있다. 마지막에 Learning CoreDNS 책을 소개해주는데 github 에도 있어서 읽어봐야겠다.&lt;/li>
+&lt;/ul></description></item></channel></rss>

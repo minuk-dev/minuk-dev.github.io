@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubespray on minuk.dev</title><link>https://minuk.dev/tags/kubespray/</link><description>Recent content in Kubespray on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 24 Aug 2022 18:56:18 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/kubespray/index.xml" rel="self" type="application/rss+xml"/><item><title>kubespray</title><link>https://minuk.dev/wiki/kubespray/</link><pubDate>Wed, 24 Aug 2022 17:20:22 +0900</pubDate><guid>https://minuk.dev/wiki/kubespray/</guid><description>&lt;h3 id="문서-목적">문서 목적&lt;/h3>
+&lt;ul>
+&lt;li>kubespray 를 하면서 삽질한 내용 기록&lt;/li>
+&lt;/ul>
+&lt;h3 id="참고자료">참고자료&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://www.whatwant.com/entry/Kubespray">kubespray 이용하여 kubenetes 설치하기&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/kubernetes-sigs/kubespray">공식사이트&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="내가-한-일">내가 한 일&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>swap off:&lt;/p>
+&lt;ul>
+&lt;li>각 노드에서 아래 명령어를 실행해준다.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo swapoff -a
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>kubespray 를 clone 해준다.:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>git clone https://github.com/kubernetes-sigs/kubespray.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>controlplane 이 될 곳에서 ansible 설정을 해준다.:&lt;/p>
+&lt;ul>
+&lt;li>그냥 linux 이기만 하면 된다. controlplane이 아니여도 된다.&lt;/li>
+&lt;li>mac 에서 실행하려고 하니 공식문서에 나와있는 ansible version 이 잘 설치가 안되서, 그냥 controlplane 에서 작업했다.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>VENVDIR&lt;span style="color:#f92672">=&lt;/span>kubespray-venv
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>KUBESPRAYDIR&lt;span style="color:#f92672">=&lt;/span>kubespray
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>ANSIBLE_VERSION&lt;span style="color:#f92672">=&lt;/span>2.12
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>virtualenv --python&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>which python3&lt;span style="color:#66d9ef">)&lt;/span> $VENVDIR
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>source $VENVDIR/bin/activate
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>cd $KUBESPRAYDIR
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>pip install -U -r requirements-$ANSIBLE_VERSION.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>test -f requirements-$ANSIBLE_VERSION.yml &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> ansible-galaxy role install -r requirements-$ANSIBLE_VERSION.yml &lt;span style="color:#f92672">&amp;amp;&amp;amp;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> ansible-galaxy collection -r requirements-$ANSIBLE_VERSION.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul></description></item></channel></rss>

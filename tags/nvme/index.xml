@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nvme on minuk.dev</title><link>https://minuk.dev/tags/nvme/</link><description>Recent content in Nvme on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:11:20 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/nvme/index.xml" rel="self" type="application/rss+xml"/><item><title>PRP (Physical Region Page)</title><link>https://minuk.dev/wiki/prp/</link><pubDate>Thu, 18 Jun 2020 20:15:03 +0900</pubDate><guid>https://minuk.dev/wiki/prp/</guid><description>&lt;h2 id="prp">PRP&lt;/h2>
+&lt;ul>
+&lt;li>출처 : &lt;a href="https://m.blog.naver.com/PostView.nhn?blogId=eldkrpdla121&amp;amp;logNo=220536014853&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F">https://m.blog.naver.com/PostView.nhn?blogId=eldkrpdla121&amp;amp;logNo=220536014853&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F&lt;/a>&lt;/li>
+&lt;li>흠.. Pysical Region Page 말 그대로다.&lt;/li>
+&lt;li>혹시 모르니 위의 출처에 있는 말 그대로를 옮겨적자면,
+&lt;ul>
+&lt;li>PRP contains the 64-bit physical memory page address. The lower bits (n:2) of this field indicate the offset within the memory page. N is defined by the memory page size.&lt;/li>
+&lt;li>PRP List contains a list of PRPs with generally no offsets.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>nvme</title><link>https://minuk.dev/wiki/nvme/</link><pubDate>Mon, 15 Jun 2020 20:13:59 +0900</pubDate><guid>https://minuk.dev/wiki/nvme/</guid><description>&lt;h1 id="시작">시작&lt;/h1>
+&lt;ul>
+&lt;li>아무것도 모르고 SSD 에 대해서 아는거라곤, 개발자를 위한 SSD 라는 카카오에서 올린 글(&lt;a href="https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/">https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/&lt;/a>) 와 [[simplessd]] 논문만 보고 무턱대고 시작한 공부&lt;/li>
+&lt;/ul>
+&lt;h2 id="linux-nvme-공부">Linux NVMe 공부&lt;/h2>
+&lt;ul>
+&lt;li>[[workqueue]]&lt;/li>
+&lt;li>[[block layer]]&lt;/li>
+&lt;li>[[IO mapping]]&lt;/li>
+&lt;li>[[blk_mq]]&lt;/li>
+&lt;li>[[IOMMU]]&lt;/li>
+&lt;li>[[SGL]]{Scatter-Gatter List}&lt;/li>
+&lt;/ul>
+&lt;h2 id="nvme-자료구조">nvme 자료구조&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://testkernel.tistory.com/3">https://testkernel.tistory.com/3&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="의문점">의문점&lt;/h2>
+&lt;ul>
+&lt;li>linux/drivers/nvme/host 에 있는 nvme 함수들은 어떻게 호출되는가? -&amp;gt; scsi interface 를 사용해서&lt;/li>
+&lt;li>-&amp;gt; 그러면 어디에 있지? source code를 찾아보고 싶다. -&amp;gt; 일단 request 는 찾았다. block device 에 접근 하려면 (실제로 block device는 아닐수도 있지만 SSD를 일단 Block 으로 사용하고 FTL 로 처리?할테니까)&lt;/li>
+&lt;li>-&amp;gt; 흠? 그런데 찾아보니까 /include/nvme.h 라는 파일이 있는데? 이건 만약 nvme 가 단순히 scsi 로만 처리된다면 굳이 맨 바깥쪽 include 에 있을 필요는 없는거 아닌가? 이건 마친 nvme 가 단독으로 interface를 가지고 있는거 같은데?&lt;/li>
+&lt;/ul>
+&lt;h3 id="중간-결론">중간 결론&lt;/h3>
+&lt;ul>
+&lt;li>interface 마다 module 을 만들어 놓고 어떤 interface 를 사용하는지 KConfig 에 정의 되어있다.
+&lt;ul>
+&lt;li>&lt;code>BLK_DEV_NVME&lt;/code> : block device 로 생각하고 접근&lt;/li>
+&lt;li>&lt;code>NVME_MULTIPATH&lt;/code> : NVMe multipath support&lt;/li>
+&lt;li>&lt;code>NVME_HWMON&lt;/code> : hardware monitoring&lt;/li>
+&lt;li>&lt;code>NVME_FABRICS&lt;/code> : 사용 X&lt;/li>
+&lt;li>&lt;code>NVME_RDMA&lt;/code> : NVM Express over Fabrics RDMA host driver&lt;/li>
+&lt;li>&lt;code>NVME_FC&lt;/code> : NVM Express over Fabrics FC host driver&lt;/li>
+&lt;li>&lt;code>NVME_TCP&lt;/code> : NVM Express over Fabrics TCP host driver&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>일단 나는 block layer를 통하는 path 를 공부하는게 목표 : 이럴 경우 PCI 와 NVMe Core 부분만 보면 된다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="pci-driver-structure-실제로-module-의-interface">PCI driver structure (실제로 module 의 interface)&lt;/h4>
+&lt;ul>
+&lt;li>참고 : PCI driver structure 설명 : &lt;a href="https://wiki.kldp.org/wiki.php/PCI%20Drivers">https://wiki.kldp.org/wiki.php/PCI%20Drivers&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> pci_driver nvme_driver &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.name		&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;nvme&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.id_table	&lt;span style="color:#f92672">=&lt;/span> nvme_id_table,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.probe		&lt;span style="color:#f92672">=&lt;/span> nvme_probe,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.remove		&lt;span style="color:#f92672">=&lt;/span> nvme_remove,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.shutdown	&lt;span style="color:#f92672">=&lt;/span> nvme_shutdown,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_PM_SLEEP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	.driver		&lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.pm	&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>nvme_dev_pm_ops,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	},
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	.sriov_configure &lt;span style="color:#f92672">=&lt;/span> pci_sriov_configure_simple,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.err_handler	&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>nvme_err_handler,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>하나씩 보면 &lt;code>name&lt;/code> 은 driver 이름, &lt;code>id_table&lt;/code> : driver 가 처리하는 id table 의 포인터&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> pci_device_id nvme_id_table[] &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0953&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a53&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a54&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a55&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0xf1a5&lt;/span>),	&lt;span style="color:#75715e">/* Intel 600P/P3100 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_NO_DEEPEST_PS &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_MEDIUM_PRIO_SQ &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_NO_TEMP_THRESH_CHANGE },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* 이하 생략 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>probe&lt;/code> : id 테이블과 매치한 뒤, 아직 다른 드라이버에 의해 처리되지 않은 모든 장치들에 대한 장치 검색 함수의 포인터, 0을 반환하면 driver가 device를 잘인식하고 쓴다는 것(원문은 device가 driver 를 accept 하면 이라고 써져 있는데, 평소 말하듯이 쓰면 이렇게 쓰는게 맞을듯?)&lt;/li>
+&lt;/ul>
+&lt;h4 id="nvme_probe-함수-nvme_driver-의-probe-부분">&lt;code>nvme_probe&lt;/code> 함수 (&lt;code>nvme_driver&lt;/code> 의 &lt;code>probe&lt;/code> 부분)&lt;/h4>
+&lt;h5 id="하는일">하는일&lt;/h5>
+&lt;ol>
+&lt;li>
+&lt;p>NUMA NODE 설정
+1-2. &lt;code>dev_to_node&lt;/code> 를 통해서 [[NUMA]] NODE 를 가져온다. (단, &lt;code>CONFIG_NUMA&lt;/code> 가 선언되어 있지 않으면 아무것도 하지 않는다.)
+1-3. device 에 numa 노드가 설정되지 않았다면, &lt;code>first_memory_node&lt;/code> 를 가져온다.&lt;/p></description></item></channel></rss>

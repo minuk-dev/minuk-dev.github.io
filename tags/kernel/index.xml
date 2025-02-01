@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kernel on minuk.dev</title><link>https://minuk.dev/tags/kernel/</link><description>Recent content in Kernel on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 10 Jul 2021 21:52:27 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/kernel/index.xml" rel="self" type="application/rss+xml"/><item><title>아이엠루트 스터디 자료 정리</title><link>https://minuk.dev/wiki/iamroot19/</link><pubDate>Sat, 10 Jul 2021 19:09:59 +0900</pubDate><guid>https://minuk.dev/wiki/iamroot19/</guid><description>&lt;h2 id="instruction-참고">instruction 참고&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://trace32.com/wiki/index.php/B,_BL,_BX_and_BLX">http://trace32.com/wiki/index.php/B,_BL,_BX_and_BLX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://egloos.zum.com/rousalome/v/9973524">http://egloos.zum.com/rousalome/v/9973524&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://casionwoo.tistory.com/25">https://casionwoo.tistory.com/25&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="heads">head.S&lt;/h2>
+&lt;pre tabindex="0">&lt;code>_head:
+	/*
+	 * DO NOT MODIFY. Image header expected by Linux boot-loaders.
+	 */
+#ifdef CONFIG_EFI
+	/*
+	 * This add instruction has no meaningful effect except that
+	 * its opcode forms the magic &amp;#34;MZ&amp;#34; signature required by UEFI.
+	 */
+	add	x13, x18, #0x16
+	b	primary_entry
+#else
+	b	primary_entry			// branch to kernel start, magic
+	.long	0				// reserved
+#endif
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>add 는 &lt;code>op{cond}{S} Rd, Rn, Operand2&lt;/code>로 &lt;code>add x13, x18, #0x16&lt;/code> 은 &lt;code>x13 = x18 + 0x16&lt;/code> 을 의미한다.&lt;/li>
+&lt;li>하지만 여기서는 의미가 없는 연산이고 ascii로 번역하면 MZ가 되는 내용일 뿐이다.:
+&lt;ul>
+&lt;li>UEFI 를 지원하면 MZ가 적혀있게 된다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>실제로 실행되는 것은 다음 코드부터 동작한다.&lt;/li>
+&lt;li>b 는 branch 를 의미하며, &lt;code>primary_entry&lt;/code> 로 분기하라는 것을 의미한다. x86에서 jump ? 랑 비슷한 느낌인듯&lt;/li>
+&lt;li>간략하게 써보자면
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">goto&lt;/span> primary_entry;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="primary_entry">primary_entry&lt;/h3>
+&lt;pre tabindex="0">&lt;code>SYM_CODE_START(primary_entry)
+	bl	preserve_boot_args
+	bl	el2_setup			// Drop to EL1, w0=cpu_boot_mode
+	adrp	x23, __PHYS_OFFSET
+	and	x23, x23, MIN_KIMG_ALIGN - 1	// KASLR offset, defaults to 0
+	bl	set_cpu_boot_mode_flag
+	bl	__create_page_tables
+	/*
+	 * The following calls CPU setup code, see arch/arm64/mm/proc.S for
+	 * details.
+	 * On return, the CPU will be ready for the MMU to be turned on and
+	 * the TCR will have been set.
+	 */
+	bl	__cpu_setup			// initialise processor
+	b	__primary_switch
+SYM_CODE_END(primary_entry)
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>bl 은 branch with link를 의미, r14 레지스터(링크 레지스터)에 돌아올 주소(pc + 2)를 남김&lt;/p></description></item></channel></rss>

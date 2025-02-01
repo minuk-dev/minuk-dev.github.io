@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Decorator on minuk.dev</title><link>https://minuk.dev/tags/decorator/</link><description>Recent content in Decorator on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Sep 2020 23:21:20 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/decorator/index.xml" rel="self" type="application/rss+xml"/><item><title>Modern C++ Design Pattern/Chatper 9. 데코레이터</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-9--%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0/</link><pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-9--%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0/</guid><description>&lt;h2 id="decorator">Decorator&lt;/h2>
+&lt;ul>
+&lt;li>Dynamic Composition&lt;/li>
+&lt;li>Static Composition&lt;/li>
+&lt;/ul>
+&lt;h3 id="dynamic-decorator">Dynamic Decorator&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">ColoredShape&lt;/span> &lt;span style="color:#f92672">:&lt;/span> Shape
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Shape&lt;span style="color:#f92672">&amp;amp;&lt;/span> shape;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string color;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ColoredShape(Shape&lt;span style="color:#f92672">&amp;amp;&lt;/span> shape, &lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> color)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> shape{shape}, color{color} {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> stinrg &lt;span style="color:#a6e22e">str&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ostringstream oss;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oss &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> shape.str() &lt;span style="color:#f92672">&amp;lt;&lt;/span>, &lt;span style="color:#e6db74">&amp;#34; Has the color &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> color;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> oss.str();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Example Code
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> Circle circle{&lt;span style="color:#ae81ff">0.5f&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ColoredShape redCircle{circle, &lt;span style="color:#e6db74">&amp;#34;red&amp;#34;&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> redCircle.str();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">TransparentShape&lt;/span> &lt;span style="color:#f92672">:&lt;/span> Shape
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Shape&lt;span style="color:#f92672">&amp;amp;&lt;/span> shape;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">uint8_t&lt;/span> transparency;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> TransparentShape(Shape&lt;span style="color:#f92672">&amp;amp;&lt;/span> shape, &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">uint8_t&lt;/span> transparency)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> shape{shape}, transparency{transparency} {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string &lt;span style="color:#a6e22e">str&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ostringstream oss;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oss &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> shape.str() &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34; has &amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#66d9ef">static_cast&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">float&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span>(transparency) &lt;span style="color:#f92672">/&lt;/span> &lt;span style="color:#ae81ff">255.f&lt;/span> &lt;span style="color:#f92672">*&lt;/span> &lt;span style="color:#ae81ff">100.f&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;% transparency&amp;#34;&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> oss.str();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Exmaple Code
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> Squre square{&lt;span style="color:#ae81ff">3&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> TransparentShape demiSquare{square, &lt;span style="color:#ae81ff">85&lt;/span>};
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> demiSqure.str();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">// Composition Exmaple
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> TransparentShape myCircle {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ColoredShape {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Circle{&lt;span style="color:#ae81ff">23&lt;/span>}, &lt;span style="color:#e6db74">&amp;#34;green&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }, &lt;span style="color:#ae81ff">64&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> myCircle.str();
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="static-decorator">Static Decorator&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> T&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">ColoredShape&lt;/span> &lt;span style="color:#f92672">:&lt;/span> T
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">static_assert&lt;/span>(is_base_of&lt;span style="color:#f92672">&amp;lt;&lt;/span>Shape, T&lt;span style="color:#f92672">&amp;gt;::&lt;/span>value,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#e6db74">&amp;#34;Tempalte argument must be a Shape&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string color;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string &lt;span style="color:#a6e22e">str&lt;/span>() &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">override&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ostringstream oss;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> oss &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> T&lt;span style="color:#f92672">::&lt;/span>str() &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34; has the color &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> color;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> oss.str();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">template&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span>...Args&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ColoredShape(&lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> color, Args ...args)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> T(std&lt;span style="color:#f92672">::&lt;/span>forward&lt;span style="color:#f92672">&amp;lt;&lt;/span>Args&lt;span style="color:#f92672">&amp;gt;&lt;/span>(args)...), color{ color } {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="funtional-decorator">Funtional Decorator&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span>&lt;span style="color:#f92672">&amp;gt;&lt;/span> &lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Logger&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> R, &lt;span style="color:#66d9ef">typename&lt;/span>... Args&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Logger&lt;/span>&lt;span style="color:#f92672">&amp;lt;&lt;/span>R(Args...)&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Logger(function&lt;span style="color:#f92672">&amp;lt;&lt;/span>R(Args...)&lt;span style="color:#f92672">&amp;gt;&lt;/span> func, &lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> name)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">:&lt;/span> func{func}, name{name} {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> R &lt;span style="color:#a6e22e">operator&lt;/span>() (Args ...args)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Enter &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> name &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> endl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> R result &lt;span style="color:#f92672">=&lt;/span> func(args...);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> cout &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> &lt;span style="color:#e6db74">&amp;#34;Exiting &amp;#34;&lt;/span> &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> name &lt;span style="color:#f92672">&amp;lt;&amp;lt;&lt;/span> endl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> result;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> function&lt;span style="color:#f92672">&amp;lt;&lt;/span>R(Args ...)&lt;span style="color:#f92672">&amp;gt;&lt;/span> func;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> string name;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">template&lt;/span> &lt;span style="color:#f92672">&amp;lt;&lt;/span>&lt;span style="color:#66d9ef">typename&lt;/span> R, &lt;span style="color:#66d9ef">typename&lt;/span>... Args&lt;span style="color:#f92672">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> make_logger(R (&lt;span style="color:#f92672">*&lt;/span>func)(Args...), &lt;span style="color:#66d9ef">const&lt;/span> string&lt;span style="color:#f92672">&amp;amp;&lt;/span> name)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> Logger&lt;span style="color:#f92672">&amp;lt;&lt;/span>R(Args...)&lt;span style="color:#f92672">&amp;gt;&lt;/span>(
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> function&lt;span style="color:#f92672">&amp;lt;&lt;/span>R(Args...)&lt;span style="color:#f92672">&amp;gt;&lt;/span>(func),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> name);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> logged_add &lt;span style="color:#f92672">=&lt;/span> make_logger(add, &lt;span style="color:#e6db74">&amp;#34;add&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">auto&lt;/span> result &lt;span style="color:#f92672">=&lt;/span> logged_add(&lt;span style="color:#ae81ff">2&lt;/span>, &lt;span style="color:#ae81ff">3&lt;/span>);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="summary">Summary&lt;/h3>
+&lt;ul>
+&lt;li>Dynamic Decorator
+&lt;ul>
+&lt;li>Store decoreated object, compose dynamically in runtime. However, original object member cannot access member variable.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Static Decorator
+&lt;ul>
+&lt;li>Using mixin inheritance, compose in compile time. So, this method cannot compose again in runtime. However, it can access member variable. And using constructor forwarding, completely initialize object.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Functional Decorator
+&lt;ul>
+&lt;li>Can overwrap a code block or other specific function to compose.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

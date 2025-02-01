@@ -1,0 +1,1801 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on minuk.dev</title><link>https://minuk.dev/tags/linux/</link><description>Recent content in Linux on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 03 Sep 2022 05:44:54 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>selinux</title><link>https://minuk.dev/wiki/selinux/</link><pubDate>Sat, 03 Sep 2022 05:23:50 +0900</pubDate><guid>https://minuk.dev/wiki/selinux/</guid><description>&lt;h2 id="공부-계기">공부 계기&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/containerd/nerdctl">nerdctl&lt;/a> 에 최근 기여하게 되면서 issue를 유심히 보게되었는데 &lt;a href="https://github.com/containerd/nerdctl/issues/1336">selinux 관련 주제&lt;/a>로 불타서 대충 개념만 알고 있었는데, 구현레벨에서 이걸 어떻게 하는지를 전혀 모르고 있다는 것을 알게 되었다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개념">개념&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Security Enhanced Linux&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>상태나 생긴 이유나 이런건 다른 곳에도 많이 나와있으므로 스킵&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>구현과 동작 방식:&lt;/p>
+&lt;ul>
+&lt;li>Kernel space 에 Security Policy 와 AVC(Access Vector Cache) 가 있다.&lt;/li>
+&lt;li>이를 통해서 유저레벨에서 뿐만 아니라 추가적으로 관리를 한다.&lt;/li>
+&lt;li>동작하는 코드는 아래 순서로 보면 쉽다.:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L7081">file_ioctl 을 호출할 때 selinux_file_ioctl 훅을 걸도록 설정된 코드&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L3684">ioctl_has_perm 을 호출하며 권한을 체크하는 코드&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L3642">ioctl_has_perm 내부적으로 avc_has_extended_perms, avc_has_perm 등 권한 체크하는 코드&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>결론적으로 말하면 SELinux 를 쓰면 성능이 감소한다는 이야기는 어느정도 사실이다. hook 을 걸어 추가 로직을 동작시키는 방식이니까, 하지만 진짜 그렇게 떨어지나 보기는 조금 어렵다.:
+&lt;ul>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Fedora-23-SELinux-Impact">phoronix-Fedora 23 SELinux Impact&lt;/a> 자료를 보면 유의미하게 떨어진다고 보기 어려운 결과가 나온다. 저정도 성능감소 때문에 서버에서 SELinux 를 못킨다? c, rust 말고는 어플리케이션 금지하는건가? 그게 훨씬 유의미 하지 않나? 이런 생각이 들거 같다.&lt;/li>
+&lt;li>뭐 이것저것 추가적인 권한제어 로직이 있는거니 작업하기 번거롭기는 할 것 같다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>아직 이해하지 못한 부분:&lt;/p></description></item><item><title>DevOps와 SE를 위한 리눅스 커널 이야기</title><link>https://minuk.dev/wiki/devops%EC%99%80-se%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EC%9D%B4%EC%95%BC%EA%B8%B0/</link><pubDate>Mon, 22 Aug 2022 13:49:39 +0900</pubDate><guid>https://minuk.dev/wiki/devops%EC%99%80-se%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EC%9D%B4%EC%95%BC%EA%B8%B0/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>이 책은 실습과 개념, Tip 이 동시에 존재하는 책이다.&lt;/li>
+&lt;li>개념, 실습에 대한 내용은 책을 반드시 참고하자. 실험이 알차다.&lt;/li>
+&lt;li>여기선 Tip 에 해당하는 각 챕터의 요약부분만을 정리해둔다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-시스템-구성-정보-확인하기">1. 시스템 구성 정보 확인하기&lt;/h2>
+&lt;ul>
+&lt;li>demidecode 명령을 통해서 CPU, 메모리, BIOS 등의 정보를 확인할 수 있다.&lt;/li>
+&lt;li>CPU 정보는 &lt;code>/proc/cpuinfo&lt;/code> 파일을 통해서도 확인할 수 있다.&lt;/li>
+&lt;li>free 명령을 통해서 시스템에 설치된 메모리의 전체 크기를 알 수 있다.&lt;/li>
+&lt;li>시스템에 마운트된 블록 디바이스의 정보는 df 명령을 통해 확인할 수 있다.&lt;/li>
+&lt;li>네트워크 카드 정보는 ethtool 명령을 통해서 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -g 옵션으로 네트워크 카드에 설정된 Ring Buffer의 최대 크기와 현재 크기를 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -k 옵션으로 네트워크 카드의 부수적인 기능들을 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -i 옵션으로 네트워크 카드가 사용 중인 커널 드라이버의 정보를 확인할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-top을-통해-살펴보는-프로세스-정보들">2. top을 통해 살펴보는 프로세스 정보들&lt;/h2>
+&lt;ul>
+&lt;li>top 명령으로 현재 시스템의 CPU, Memory, swap의 사용량 및 각 프로세스들의 상태와 메모리 점유 상태를 확인할 수 있다.&lt;/li>
+&lt;li>top 명령의 결과 중 VIRT는 프로세스에게 할당된 가상 메모리 전체의 크기를 가리킨다. RES는 그 중에서도 실제로 메모리에 올려서 사용하고 있는 물리 메모리의 크기, 그리고 SHR은 다른 프로세스와 공유하고 있는 메모리의 크기를 의미한다.&lt;/li>
+&lt;li>커널은 프로세스가 메모리를 요청할 때 그에 맞는 크기를 할당해주지만 해당 영역을 물리 메모리에 바로 할당하지는 않는다. Memory Commit 참고- &lt;code>vm.overcommit_memory&lt;/code> 는 커널의 Memory Commit 동작 방식을 변경할 수 있게 해주는 커널 파라미터이다.&lt;/li>
+&lt;li>top으로 볼 수 있는 프로세스의 상태 중 D는 I/O 대기중인 프로세스, R은 실제 실행 중인 프로세스, S는 sleep 상태의 프로세스를 의미한다. T는 tracing 중인 프로세스, Z는 좀비 상태의 프로세스를 의미한다.&lt;/li>
+&lt;li>프로세스에는 우선순위가 있어 우선순위값이 더 작을 수록 빨리 실행된다. 우선순위는 nice 명령을 통해서 조절될 수 있다.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>개인 생각: nice를 조절해본 경험이 없는데, 조절할일이 많나?&lt;/li>
+&lt;/ul>
+&lt;h2 id="3-load-average와-시스템-부하">3. Load Average와 시스템 부하&lt;/h2>
+&lt;ul>
+&lt;li>Load Average는 실행 중 혹은 실행 대기 중이거나 I/O 작업 등을 위해 대기 큐에 있는 프로세스들의 수를 기반으로 만들어진 값이다.&lt;/li>
+&lt;li>Load Average 자체의 절대적인 높음과 낮음은 없다.&lt;/li>
+&lt;li>커널에도 버그가 있을 수 있으므로 Load Average 값을 절대적으로 신뢰해서는 안된다.&lt;/li>
+&lt;li>vmstat 툴도 시스템 부하를 측정하는데 사용할 수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/sched_debug&lt;/code>는 nr_running과 runnable tasks 항목에서 각 CPU에 할당된 프로세스 수와 프로세스의 PID 등 정보를 확인할수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="4-free-명령이-숨기고-있는-것들">4. free 명령이 숨기고 있는 것들&lt;/h2>
+&lt;ul>
+&lt;li>free 명령으로 볼 수 있는 buffers 는 파일 시스템의 메타 데이터 등을 저장하고 있는 블록 디바이스의 블록을 위한 캐시이다.&lt;/li>
+&lt;li>free 명령으로 볼 수 있는 cached는 I/O 작업의 효율성을 위해 한번 읽은 파일의 내용을 저장하는 데 사용하는 캐시이다.&lt;/li>
+&lt;li>buffers와 cached는 미사용중인 메모리 영역을 시스템의 효율성을 위해서 커널이 사용하고 있는 것이며, 프로세스가 요청하면 이 영역을 해제하여 프로세스에게 전달해 줄수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/meminfo&lt;/code> 에서 보이는 anon 영역은 프로세스에서 사용하는 영역, file 영역은 I/O 를 위한 캐시이다.&lt;/li>
+&lt;li>slab 영역은 커널이 사용하는 캐싱 영역을 의미, dentry cache, inode cache 등 다양한 캐싱 용도로 사용된다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="5-swap-메모리-증설의-포인트">5. swap, 메모리 증설의 포인트&lt;/h2>
+&lt;ul>
+&lt;li>버디시스템&lt;/li>
+&lt;li>swap 을 사용할 경우 성능하락이 생길수 있다.&lt;/li>
+&lt;li>swap 영역을 사용할 때에는 어떤 프로세스에서 swap 영역을 사용하는지 정확하게 알 필요가 있으며 smem 이라는 툴을 이용해 빠르게 확인할 수 있다.&lt;/li>
+&lt;li>&lt;code>vm.swappiness&lt;/code> 파라미터를 통해서 메모리 재할당시, swap을 사용하게 할지 페이지 캐시를 해제하게 할지 비율을 조절할 수 있다.&lt;/li>
+&lt;li>&lt;code>vm.vfs_cache_pressure&lt;/code> 파라메터를 통해 메모리 재할당시, 페이지 캐시를 더 많이 해제할지 vfs 관련 cache를 더 많이 해제할지 비율을 조절할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="6-numa-메모리-관리의-새로운-세계">6. NUMA, 메모리 관리의 새로운 세계&lt;/h2>
+&lt;h3 id="개인-의견">개인 의견&lt;/h3>
+&lt;ul>
+&lt;li>NUMA는 예전에 논문 볼때 봤던건데, 최근 본 kubecon에서도 관련 자료가 있고, 이 책에도 있어 좀 놀랐다. 이게 이렇게나 기본 상식인지 몰랐다.&lt;/li>
+&lt;li>내용 자체는 좋으나 난이도가 있다고 생각해서, 모두 적지는 않는다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약">요약&lt;/h3>
+&lt;ul>
+&lt;li>NUMA : Non-Uniform Memory Access, 하드웨어 설계에 따른 cpu에 따라 특정 메모리에 접근하는 속도가 각기 다르다.&lt;/li>
+&lt;li>numastat, numactl 명령어를 사용해서 NUMA 의 상태, 제어를 할 수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/&amp;lt;pid&amp;gt;/numa_maps&lt;/code> 에 process 별 numa 정보가 확인 가능하다.&lt;/li>
+&lt;li>numad 는 데몬으로 상주하면서 프로세스의 numa 상태를 최적화한다. 하지만 항상 최적화가 좋은건 아니다.&lt;/li>
+&lt;li>&lt;code>vm.zone_reclaim_mode&lt;/code> 는 zone 에서 최대한 재할당해서 메모리를 확보하려고 노력할지, 최대한 다른 zone 을 통해서 메모리를 확보할지를 결정하는 변수이다.&lt;/li>
+&lt;li>numa 정책:
+&lt;ul>
+&lt;li>bind : 특정 노드에서 메모리를 할당받도록 강제한다.&lt;/li>
+&lt;li>preferred : 선호하는 노드를 정하되, 부족하면 다른 곳에서 받는다.&lt;/li>
+&lt;li>interleave : 최대한 여러 노드에서 균등하게 받도록 한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>NUMA 아키텍쳐와 관련된 workload는 요구되는 memory size와 process의 thread 방식에 가장 큰 영향을 받는다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="7-time_wait-소켓이-서비스에-미치는-영향">7. TIME_WAIT 소켓이 서비스에 미치는 영향&lt;/h2>
+&lt;h3 id="개인-의견-1">개인 의견&lt;/h3>
+&lt;ul>
+&lt;li>워낙에 유명한 문제이기도 하고, 운영을 배울때 거의 단골로 나오는 내용이라 정리한다는 느낌으로만 봤다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약-1">요약&lt;/h3>
+&lt;ul>
+&lt;li>TIME_WAIT 소켓은 먼저 연결을 끊는 쪽에서 발생한다.&lt;/li>
+&lt;li>클라이언트 입장에서의 TIME_WAIT 소켓은 tw_reuse 파라미터를 통해 재사용할 수 있기 때문에 로컬 포트 고갈 문제는 발생하지 않는다.&lt;/li>
+&lt;li>불필요한 TCP 3 way handshake가 일어날 수 있기 때문에 가급적, Connection Pool 방식을 적용해 TIME_WAIT 소켓을 줄이도록 한다.&lt;/li>
+&lt;li>서버 입장에서는 TIME_WAIT 소켓은 tw_recycle 파라미터를 통해 빠르게 회수 할 수 있지만, 권장되지는 않는다. 근본적인 문제(connection 이 지나치게 낭비된다거나 등)를 찾아서 해결해야한다.&lt;/li>
+&lt;li>서버 입장에서 keepalive 기능을 켬으로써 불필요한 TCP 3way handshake 를 줄일 수도 있고 TIME_WAIT 소켓도 줄일수 있다. 서비스의 응답 속도 향상이 가능하지만, keepalive 가 가져올수 있는 문제점이 있기에 사용 시 테스트를 반드시 해봐야한다. 자세한건 keepalive 관련 챕터 및 LB 관련 내용 참고&lt;/li>
+&lt;li>TIME_WAIT 소켓은 정상적인 TCP 연결 해제를 위해 반드시 필요하다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="8-tcp-keepalive-를-이용한-세션-유지">8. TCP Keepalive 를 이용한 세션 유지&lt;/h2>
+&lt;ul>
+&lt;li>TCP Keepalive 는 커널레벨에서 종단 간의 세션을 유지시켜주는 기능을 한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_time 는 두 종단 간의 연결이 유지되어 있는지를 keepalive 패킷을 보내는 주기를 설정한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_probes 는 keepalive 패킷에 대한 응답을 받지 못했을 때 추가로 보내는 패킷의 개수를 지정한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_intvl은 keepalive 패킷에 대한 응답을 받지 못해서 재전송 패킷을 보낼 때 필요한 주기를 설정한다.&lt;/li>
+&lt;li>tcp keepalive 설정으로 좀비 커넥션을 관리한다.&lt;/li>
+&lt;li>HTTP keepalive가 설정되어 있다면 tcp keepalive 설정 값과 다르다고 해도 의도한 대로 동작한다. 혼동하지 말자&lt;/li>
+&lt;li>LB 환경에서는 TCP Keepalive 가 설정되어 있지 않다면 LB Idle time 값을 참조해 설정해야 한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="9-tcp-재전송과-타임아웃">9. TCP 재전송과 타임아웃&lt;/h2>
+&lt;ul>
+&lt;li>RTO(Retransmission Timeout)&lt;/li>
+&lt;li>TCP 재전송은 RTO를 기준으로 발생한다.&lt;/li>
+&lt;li>RTO 는 RTT를 기반으로 동적으로 생성된다.&lt;/li>
+&lt;li>관련 파라메터:
+&lt;ul>
+&lt;li>net.ipv4.tcp_syn_retries&lt;/li>
+&lt;li>net.ipv4.tcp_synack_retries&lt;/li>
+&lt;li>net.ipv4.tcp_orphan_retries&lt;/li>
+&lt;li>net.ipv4.tcp_retries1, net.ipv4.tcp_retries2&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>최소한 한번의 재전송은 견딜 수 있도록 connection timeout 은 3s, read tiemout 은 300ms 이상으로 설정하는 것이 좋다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="10-dirty-page가-io에-끼치는-영향">10. dirty page가 I/O에 끼치는 영향&lt;/h2>
+&lt;ul>
+&lt;li>관련 파라메터:
+&lt;ul>
+&lt;li>vm.dirty_ratio&lt;/li>
+&lt;li>vm.dirty_background_ratio&lt;/li>
+&lt;li>vm.dirty_background_bytes&lt;/li>
+&lt;li>vm.dirty_writeback_centisecs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>diry page를 너무 빨리 동기화시키면 flush 커널 스레드가 너무 자주 깨어나게 되며, dirty page를 너무 늦게 동기화시키면 동기화해야할 dirty page가 너무 많아서 vm.dirty_ratio 에 도달할 가능성이 커지게 된다. 워크로드와 시스템 구성에 맞게 적절히 설정해주어야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="11-io-작업이-지나가는-관문-io-스케줄러">11. I/O 작업이 지나가는 관문, I/O 스케줄러&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>/sys/block/&amp;lt;block device&amp;gt;/queue/scheduler&lt;/code> 에서 현재 사용하는 스케줄러, 사용 가능한 스케줄러 정보를 보고, 수정할 수 있다.&lt;/li>
+&lt;li>cfq, deadline, noop I/O scheduler&lt;/li>
+&lt;li>iotop 을 사용해서 I/O 프로세스를 확인 할 수 있다.&lt;/li>
+&lt;li>perf-tools 중에 iosnoop 은 I/O 요청들의 섹터 주소를 볼 수 있기에 순차 접근이 많은지 임의 접근이 많은지에 대한 I//O 워크로드 패턴을 살펴볼 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="12-어플리케이션-성능-측정과-튜닝">12. 어플리케이션 성능 측정과 튜닝&lt;/h2>
+&lt;ul>
+&lt;li>워커 수를 최소한 CPU 코어 수와 같은 수로 설정해서 CPU 리소스를 최대로 사용할수 있도록 구성한다.&lt;/li>
+&lt;li>TIME_WAIT 소켓이 생긴다면 연결을 유지한 상태로 사용해 성능을 향상시킬수 있다.&lt;/li>
+&lt;li>다른 서비스들과 연동할 때 keepalive 옵션과 커넥션 풀 방식을 사용해 성능을 증가 시킬수 있다.&lt;/li>
+&lt;li>시스템 리소스가 부족함이 없을때 응답 속도가 느려질 경우 워커 설정 및 소프트웨어적 설정에 문제가 있는지 확인해야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-정리">개인 정리&lt;/h2>
+&lt;ul>
+&lt;li>개인적으로 알고 있었던 설정들도 있고, 모르고 있던 설정들도 있는데 전반적으로 한곳에 이런걸 모아둬서 정리하는 보람이 있었다.&lt;/li>
+&lt;li>사실 지식으로만 알고 있던 부분들을 실습을 섞어서 수치로 볼수 있게 구성되어 있어 책 자체 퀄리티가 좋다고 생각한다.&lt;/li>
+&lt;li>몇몇 커널 파라메터는 너무 어렵다. 수치를 보면서도 바로바로 해석이 안된다.&lt;/li>
+&lt;/ul></description></item><item><title>아이엠루트 스터디 자료 정리</title><link>https://minuk.dev/wiki/iamroot19/</link><pubDate>Sat, 10 Jul 2021 19:09:59 +0900</pubDate><guid>https://minuk.dev/wiki/iamroot19/</guid><description>&lt;h2 id="instruction-참고">instruction 참고&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://trace32.com/wiki/index.php/B,_BL,_BX_and_BLX">http://trace32.com/wiki/index.php/B,_BL,_BX_and_BLX&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://egloos.zum.com/rousalome/v/9973524">http://egloos.zum.com/rousalome/v/9973524&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://casionwoo.tistory.com/25">https://casionwoo.tistory.com/25&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="heads">head.S&lt;/h2>
+&lt;pre tabindex="0">&lt;code>_head:
+	/*
+	 * DO NOT MODIFY. Image header expected by Linux boot-loaders.
+	 */
+#ifdef CONFIG_EFI
+	/*
+	 * This add instruction has no meaningful effect except that
+	 * its opcode forms the magic &amp;#34;MZ&amp;#34; signature required by UEFI.
+	 */
+	add	x13, x18, #0x16
+	b	primary_entry
+#else
+	b	primary_entry			// branch to kernel start, magic
+	.long	0				// reserved
+#endif
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>add 는 &lt;code>op{cond}{S} Rd, Rn, Operand2&lt;/code>로 &lt;code>add x13, x18, #0x16&lt;/code> 은 &lt;code>x13 = x18 + 0x16&lt;/code> 을 의미한다.&lt;/li>
+&lt;li>하지만 여기서는 의미가 없는 연산이고 ascii로 번역하면 MZ가 되는 내용일 뿐이다.:
+&lt;ul>
+&lt;li>UEFI 를 지원하면 MZ가 적혀있게 된다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>실제로 실행되는 것은 다음 코드부터 동작한다.&lt;/li>
+&lt;li>b 는 branch 를 의미하며, &lt;code>primary_entry&lt;/code> 로 분기하라는 것을 의미한다. x86에서 jump ? 랑 비슷한 느낌인듯&lt;/li>
+&lt;li>간략하게 써보자면
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">goto&lt;/span> primary_entry;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="primary_entry">primary_entry&lt;/h3>
+&lt;pre tabindex="0">&lt;code>SYM_CODE_START(primary_entry)
+	bl	preserve_boot_args
+	bl	el2_setup			// Drop to EL1, w0=cpu_boot_mode
+	adrp	x23, __PHYS_OFFSET
+	and	x23, x23, MIN_KIMG_ALIGN - 1	// KASLR offset, defaults to 0
+	bl	set_cpu_boot_mode_flag
+	bl	__create_page_tables
+	/*
+	 * The following calls CPU setup code, see arch/arm64/mm/proc.S for
+	 * details.
+	 * On return, the CPU will be ready for the MMU to be turned on and
+	 * the TCR will have been set.
+	 */
+	bl	__cpu_setup			// initialise processor
+	b	__primary_switch
+SYM_CODE_END(primary_entry)
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>
+&lt;p>bl 은 branch with link를 의미, r14 레지스터(링크 레지스터)에 돌아올 주소(pc + 2)를 남김&lt;/p></description></item><item><title>리눅스 카카오톡</title><link>https://minuk.dev/wiki/linux_kakaotalk/</link><pubDate>Sun, 21 Feb 2021 20:43:13 +0900</pubDate><guid>https://minuk.dev/wiki/linux_kakaotalk/</guid><description>차라리 내가 만들고 만다</description></item><item><title>Multi-Queue Block IO Queueing (blk-mq)</title><link>https://minuk.dev/wiki/blk-mq/</link><pubDate>Sun, 27 Dec 2020 17:46:35 +0900</pubDate><guid>https://minuk.dev/wiki/blk-mq/</guid><description>&lt;h1 id="multi-queue-block-io-queueing-mechanism">Multi-Queue Block IO Queueing Mechanism&lt;/h1>
+&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;h3 id="background">Background&lt;/h3>
+&lt;ul>
+&lt;li>The standard of storage development moved to Solid State Drives and Non-Volatile Memories from Magnetic hard disks.&lt;/li>
+&lt;li>They do not have random access penalty and can perform high parallel access. Therefore, the bottleneck of computer storage stack moved from the storage device to the operating system.&lt;/li>
+&lt;li>The former design had a signle queue to store block IO requests with a single lock. Instead of this, the blk-mq API spawns multiple queus with individusal entry points local to the CPU, removing the need for a lock.&lt;/li>
+&lt;/ul>
+&lt;h3 id="operation">Operation&lt;/h3>
+&lt;ul>
+&lt;li>When the userspace performs IO to a block device (reading or writing a file, for instance), blk-mq takes action: it will store and manage IO requests to the block device, acting as middleware between the userspace (and a file system, if present) and the block device driver.&lt;/li>
+&lt;li>blk-mq has two group of queues: software staging queus and hardware dispatch queues.&lt;/li>
+&lt;/ul>
+&lt;h3 id="software-staging-queues">Software staging queues&lt;/h3>
+&lt;ul>
+&lt;li>The block IO subsystem adds requests in the software staging queus(represented by &lt;code>struct blk_mq_ctx&lt;/code>) in case that they weren&amp;rsquo;t sent directly to the driver. A request is one or more BIOs. They arrived at the block layer though the data structure struct bio. The block layer will tehn build a new structure from it, the struct request that will be used to communicate with the device driver. Each queue has its own lock and the number of queues is defined by a per-CPU or per-node basis.&lt;/li>
+&lt;li>The statging queue can be used to merge requests for adjacent sectors.&lt;/li>
+&lt;/ul>
+&lt;h3 id="io-schedulers">IO Schedulers&lt;/h3>
+&lt;ul>
+&lt;li>There are several schedulers implemented by the block layer, each one following a heruistic to improve the IO performance. They are &lt;strong>pluggable&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="hardware-dispatch-queues">Hardware dispatch queues&lt;/h3>
+&lt;ul>
+&lt;li>The hardware queue (represented by &lt;code>struct blk_mq_hw_ctx&lt;/code>) is a struct used by device drivers to map the device sumission queues (or device DMA ring buffer), and are the last step of the block layer submission code before the low level device driver taking ownership of the request.&lt;/li>
+&lt;/ul>
+&lt;h1 id="source-code">Source Code&lt;/h1>
+&lt;h2 id="open-path-based-f2fs">Open Path (Based F2FS)&lt;/h2>
+&lt;ul>
+&lt;li>dentry_open()
+&lt;ul>
+&lt;li>vfs_open()
+&lt;ul>
+&lt;li>do_dentry_open()
+&lt;ul>
+&lt;li>file-&amp;gt;f_op-&amp;gt;open() -&amp;gt; f2fs_file_open()
+&lt;ul>
+&lt;li>dquot_file_open()
+&lt;ul>
+&lt;li>generic_file_open()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="read-path-based-f2fs">Read Path (Based F2FS)&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>ksys_read()&lt;/p></description></item><item><title>linux-study</title><link>https://minuk.dev/wiki/linux-study/</link><pubDate>Sun, 27 Dec 2020 17:45:36 +0900</pubDate><guid>https://minuk.dev/wiki/linux-study/</guid><description>&lt;ul>
+&lt;li>[[blk-mq]]&lt;/li>
+&lt;li>[[debug-linux]]&lt;/li>
+&lt;li>[[iamroot19]]&lt;/li>
+&lt;/ul></description></item><item><title>linux-debug/scheduling</title><link>https://minuk.dev/wiki/linux-debug/scheduling/</link><pubDate>Wed, 09 Dec 2020 13:30:45 +0900</pubDate><guid>https://minuk.dev/wiki/linux-debug/scheduling/</guid><description>&lt;h2 id="주요-키워드">주요 키워드&lt;/h2>
+&lt;ul>
+&lt;li>scheduling : 실행 대기 중인 프로세스 중에서 우선순위가 가장 높은 프로세스를 선택해 CPU에서 실행시킴
+&lt;ul>
+&lt;li>Preemptive Scheduling : 강제로 CPU에서 실행 중인 프로세스를 비우고 새로운 프로세스 실행&lt;/li>
+&lt;li>Non-Preemptive Scheduling : 프로세스가 자발적으로 스케줄링 요청&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>context-switching : cpu에서 실행 중인 프로세스의 레지스터 세트를 비우고 새로운 프로세스 레지스터 세트를 채우는 동작, 아키텍쳐마다 구현 방식이 다름&lt;/li>
+&lt;li>scheduling policy : 스케쥴링 시 어떤 방식과 규칙으로 다음에 실행할 프로세스를 선택할지 결정&lt;/li>
+&lt;li>scheduler class : 5가지 커널 스케쥴러 세부동작을 모듈화한 자료구조 이자 인터페이스, 프로세스는 스케쥴러 클레스를 우선순위에 따라 선택할 수 있음&lt;/li>
+&lt;li>run queue : 실행 대기 중인 프로세스를 관리하는 자료구조, percpu 타입 변수&lt;/li>
+&lt;li>proirity : 유저 공간에서 설정한 nice와 커널 우선순위가 존재&lt;/li>
+&lt;/ul>
+&lt;h3 id="선점-스케쥴링과-비선점-스케쥴링-비교">선점 스케쥴링과 비선점 스케쥴링 비교&lt;/h3>
+&lt;ul>
+&lt;li>Preemptive Scheduling
+&lt;ul>
+&lt;li>실행 중인 프로세스를 강제로 CPU에서 실행 중지&lt;/li>
+&lt;li>새로운 프로세스가 CPU에서 실행&lt;/li>
+&lt;li>선점 스케쥴링 시작점
+&lt;ul>
+&lt;li>인터럽트 핸들러를 처리하고 난 후 인터럽트가 발생하기 전에 코드로 되돌아가기 직전&lt;/li>
+&lt;li>시스템 콜의 핸들러 함수를 처리하고 난 후 유저 공간으로 복귀하기 직전&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>비선점 스케쥴링
+&lt;ul>
+&lt;li>프로세스가 자발적으로 스케줄링 요청&lt;/li>
+&lt;li>비선점 스케줄링 시작점
+&lt;ul>
+&lt;li>입출력(I/O) 동작을 시작할 때&lt;/li>
+&lt;li>뮤텍스를 획득하지 못하고 휴먼 상태에 진입할 때&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="스케줄링-정책">스케줄링 정책&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define SCHED_NORMAL 0
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define SCHED_FIFO 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define SCHED_RR 2
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define SCHED_BATCH 3
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define SCHED_IDLE 5
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#define SCHED_DEADLINE 6
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="스케줄러-클래스">스케줄러 클래스&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>stop 스케줄러&lt;/p></description></item><item><title>linux input-method 삽질</title><link>https://minuk.dev/wiki/input-method/</link><pubDate>Tue, 10 Nov 2020 22:30:38 +0900</pubDate><guid>https://minuk.dev/wiki/input-method/</guid><description>그래도 fcitx 쓴다.</description></item><item><title>seccomp</title><link>https://minuk.dev/wiki/seccomp/</link><pubDate>Sun, 13 Sep 2020 19:37:24 +0900</pubDate><guid>https://minuk.dev/wiki/seccomp/</guid><description>&lt;h2 id="seccomp-secure-computing-mode">seccomp (secure computing mode)&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>참고 : &lt;a href="https://ko.wikipedia.org/wiki/Seccomp">https://ko.wikipedia.org/wiki/Seccomp&lt;/a>, &lt;a href="https://ssup2.github.io/theory_analysis/Linux_seccomp/">https://ssup2.github.io/theory_analysis/Linux_seccomp/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>system call filtering 기법&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>strict 와 filter 모드가 존재&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>strict 모드에서는 일부 시스템 콜만 허용(read, write, exit, sigreturn), 이외에 호출하면 SIGKILL 이 발생해서 죽음.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>filter 모드에서는 각 system call 별로 수행 동작을 설정 가능.&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>디버깅을 통해 배우는 리눅스 커널의 구조와 원리</title><link>https://minuk.dev/wiki/debug-linux/</link><pubDate>Tue, 08 Sep 2020 22:14:21 +0900</pubDate><guid>https://minuk.dev/wiki/debug-linux/</guid><description>&lt;h2 id="간략-소개">간략 소개&lt;/h2>
+&lt;ul>
+&lt;li>디버깅을 통해 배우는 리눅스 커널의 구조와 원리를 읽으면서 공부하는 내용 정리&lt;/li>
+&lt;/ul>
+&lt;h2 id="설치">설치&lt;/h2>
+&lt;ul>
+&lt;li>작업하고 있는 곳의 환경상, 라즈베리파이를 직접적으로 사용하기 어려워 qemu로 가상화하기로 했다.&lt;/li>
+&lt;li>오로지 ssh로 붙어서 서버에서만 작업가능해야 한다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="참고한-곳">참고한 곳&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://woodz.tistory.com/72">https://woodz.tistory.com/72&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://mystrlight.tistory.com/90">https://mystrlight.tistory.com/90&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://procdiaru.tistory.com/78">https://procdiaru.tistory.com/78&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://nautiluslee.blogspot.com/2019/01/debootstrap.html">https://nautiluslee.blogspot.com/2019/01/debootstrap.html&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://tistory.0wn.kr/368">https://tistory.0wn.kr/368&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="이미지-다운로드-및-소스코드-다운로드">이미지 다운로드 및 소스코드 다운로드&lt;/h3>
+&lt;h4 id="qemu-설치뇌피셜">qemu 설치(뇌피셜)&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt install qemu qemu-system-x86
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>아마도 이렇게 하면 될것이다, 사실 qemu는 pintos 공부하면서 이미 설치를 다 해놔서&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;h4 id="리눅스-커널-소스코드-다운로드">리눅스 커널 소스코드 다운로드&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>wget https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.19.143.tar.xz
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="kernel-build">kernel build&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>make defconfig
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>make menuconfig
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>맨 마지막에 menuconfig 할때는 최하단 kernel hacking 에서 KGDB 체크한다. 나머진 참고한곳에 있는 3번째 칭크를 보고 했는데 정확히는 모르겠다.&lt;/li>
+&lt;li>이렇게 하고 나서, deboostrap 을 설치해야한다는데, 4번을 참고했다.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>sudo apt install debootstrap
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h4 id="이미지-굽기">이미지 굽기&lt;/h4>
+&lt;ul>
+&lt;li>5번 참고해서 create image 실행해주자.
+해서 create-image.sh 실행해주자&lt;/li>
+&lt;/ul>
+&lt;h4 id="고생한-부분">고생한 부분&lt;/h4>
+&lt;ul>
+&lt;li>KASLR 을 해제했다고 생각해서 한참동안을 왜 에러가 나오지? 하고 있었다. 주의하자 무조건 해제해줘야한다. 안그러면 디버그 포인트를 지나간다.&lt;/li>
+&lt;li>아 근데 왜 안되냐 ㅠ 안되서 다시 처음부터 해보고 있다.&lt;/li>
+&lt;li>아 드디어 찾았다. kvm 옵션 끄니까 되네&lt;/li>
+&lt;li>감격스러워서 스크린샷도 찍었다.&lt;/li>
+&lt;li>&lt;img src="https://minuk.dev/wiki/images/debug_kernel-1.png" alt="debug-linux">&lt;/li>
+&lt;/ul>
+&lt;h4 id="qemu-실행-스크립트">qemu 실행 스크립트&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>qemu-system-x86_64 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -kernel ./linux-4.19.143/arch/x86_64/boot/bzImage &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -append &lt;span style="color:#e6db74">&amp;#34;console=ttyS0 root=/dev/sda rw debug nokaslr&amp;#34;&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -hda buster.img &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -net user,hostfwd&lt;span style="color:#f92672">=&lt;/span>tcp::10021-:22 &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -net nic &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -nographic &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -m 2G &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -smp &lt;span style="color:#ae81ff">2&lt;/span> &lt;span style="color:#ae81ff">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#ae81ff">&lt;/span> -s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>rw 옵션을 줘야지 안에서 실행 가능하다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="vim-설정">vim 설정&lt;/h3>
+&lt;ul>
+&lt;li>&lt;/li>
+&lt;/ul>
+&lt;h2 id="책-따라하기">책 따라하기&lt;/h2>
+&lt;h3 id="커널-디버깅과-코드-학습">커널 디버깅과 코드 학습&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>처음에 ftrace를 소개하는데, 잘 작동이 안된다. 이것도 config를 잘못한거였다. menuconfig -&amp;gt; kernel hacking -&amp;gt; tracer 에서 설정해주고 다시 빌드하자.&lt;/p></description></item><item><title>vfs - file</title><link>https://minuk.dev/wiki/file/</link><pubDate>Fri, 03 Jul 2020 20:49:21 +0900</pubDate><guid>https://minuk.dev/wiki/file/</guid><description>&lt;h2 id="heading">&lt;/h2>
+&lt;h2 id="코드">코드&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> file {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">union&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#66d9ef">struct&lt;/span> llist_node	fu_llist;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		&lt;span style="color:#66d9ef">struct&lt;/span> rcu_head 	fu_rcuhead;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	} f_u;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> path		f_path;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> inode		&lt;span style="color:#f92672">*&lt;/span>f_inode;	&lt;span style="color:#75715e">/* cached value */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> file_operations	&lt;span style="color:#f92672">*&lt;/span>f_op;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#75715e">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">	 * Protects f_ep_links, f_flags.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">	 * Must not be taken from IRQ context.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">	 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">spinlock_t&lt;/span>		f_lock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">enum&lt;/span> rw_hint		f_write_hint;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">atomic_long_t&lt;/span>		f_count;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span> 		f_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">fmode_t&lt;/span>			f_mode;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> mutex		f_pos_lock;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">loff_t&lt;/span>			f_pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> fown_struct	f_owner;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> cred	&lt;span style="color:#f92672">*&lt;/span>f_cred;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> file_ra_state	f_ra;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u64			f_version;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_SECURITY
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>f_security;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#75715e">/* needed for tty driver, and maybe others */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>private_data;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_EPOLL
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#75715e">/* Used by fs/eventpoll.c to link all the hooks to this file */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> list_head	f_ep_links;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> list_head	f_tfile_llink;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif &lt;/span>&lt;span style="color:#75715e">/* #ifdef CONFIG_EPOLL */&lt;/span>&lt;span style="color:#75715e">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	&lt;span style="color:#66d9ef">struct&lt;/span> address_space	&lt;span style="color:#f92672">*&lt;/span>f_mapping;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">errseq_t&lt;/span>		f_wb_err;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">errseq_t&lt;/span>		f_sb_err; &lt;span style="color:#75715e">/* for syncfs */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} __randomize_layout
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">__attribute__&lt;/span>((&lt;span style="color:#a6e22e">aligned&lt;/span>(&lt;span style="color:#ae81ff">4&lt;/span>)));	&lt;span style="color:#75715e">/* lest something weird decides that 2 is OK */&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>kiocb</title><link>https://minuk.dev/wiki/kiocb/</link><pubDate>Fri, 03 Jul 2020 20:30:47 +0900</pubDate><guid>https://minuk.dev/wiki/kiocb/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>동기/비동기 IO 함수에게 완료할때 실행할 콜백함수를 전달하기 위한 구조체?&lt;/li>
+&lt;/ul>
+&lt;h2 id="매개변수-설명">매개변수 설명&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>ki_filp&lt;/code> : 해당 파일&lt;/li>
+&lt;li>&lt;code>ki_complete&lt;/code> : 상태가 완료가 될때 실행되는 콜백함수&lt;/li>
+&lt;li>나머진 아직 모르겠네 알게되면 추가로 정리함
+&lt;ul>
+&lt;li>&lt;code>private&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_flags&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_hint&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_ioprio&lt;/code>&lt;/li>
+&lt;li>&lt;code>ki_cookie&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="코드">코드&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> kiocb {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">struct&lt;/span> file		&lt;span style="color:#f92672">*&lt;/span>ki_filp;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#75715e">/* The &amp;#39;ki_filp&amp;#39; pointer is shared in a union for aio */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	randomized_struct_fields_start
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">loff_t&lt;/span>			ki_pos;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span> (&lt;span style="color:#f92672">*&lt;/span>ki_complete)(&lt;span style="color:#66d9ef">struct&lt;/span> kiocb &lt;span style="color:#f92672">*&lt;/span>iocb, &lt;span style="color:#66d9ef">long&lt;/span> ret, &lt;span style="color:#66d9ef">long&lt;/span> ret2);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">void&lt;/span>			&lt;span style="color:#f92672">*&lt;/span>private;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">int&lt;/span>			ki_flags;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u16			ki_hint;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	u16			ki_ioprio; &lt;span style="color:#75715e">/* See linux/ioprio.h */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	&lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>		ki_cookie; &lt;span style="color:#75715e">/* for -&amp;gt;iopoll */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	randomized_struct_fields_end
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>VFS-Virtual File System</title><link>https://minuk.dev/wiki/vfs/</link><pubDate>Fri, 03 Jul 2020 20:30:09 +0900</pubDate><guid>https://minuk.dev/wiki/vfs/</guid><description>&lt;h2 id="용어">용어&lt;/h2>
+&lt;ul>
+&lt;li>[[file]]&lt;/li>
+&lt;li>[[kiocb]]&lt;/li>
+&lt;/ul></description></item><item><title>linux</title><link>https://minuk.dev/wiki/linux/</link><pubDate>Fri, 03 Jul 2020 20:29:46 +0900</pubDate><guid>https://minuk.dev/wiki/linux/</guid><description>&lt;h2 id="공부">공부&lt;/h2>
+&lt;ul>
+&lt;li>[[VFS]]&lt;/li>
+&lt;li>[[input-method]]&lt;/li>
+&lt;li>[[linux-study]]&lt;/li>
+&lt;li>[[blk-mq]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="참고-사이트">참고 사이트&lt;/h2>
+&lt;h3 id="참고사이트-모음">참고사이트 모음&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="http://jake.dothome.co.kr/ref/">http://jake.dothome.co.kr/ref/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="자주-볼곳">자주 볼곳&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="http://jake.dothome.co.kr/">http://jake.dothome.co.kr/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://harryp.tistory.com/category/Computer/Linux?page=2">https://harryp.tistory.com/category/Computer/Linux?page=2&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>delayed work</title><link>https://minuk.dev/wiki/delayed_work/</link><pubDate>Sun, 21 Jun 2020 19:42:23 +0900</pubDate><guid>https://minuk.dev/wiki/delayed_work/</guid><description>&lt;h2 id="참조-사이트">참조 사이트&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="http://egloos.zum.com/rousalome/v/9990982">http://egloos.zum.com/rousalome/v/9990982&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="delayed-work">delayed work&lt;/h2>
+&lt;ul>
+&lt;li>일정 시간 뒤에 지연시켜서 워크를 실행하는 방법&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용방법">사용방법&lt;/h2>
+&lt;ul>
+&lt;li>출처 : &lt;a href="http://egloos.zum.com/rousalome/v/9982311">http://egloos.zum.com/rousalome/v/9982311&lt;/a>&lt;/li>
+&lt;li>&lt;code>INIT_DELAYED_WORKWORK()&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">INIT_DELAYED_WORK&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>work, handler);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue_delayed_work&lt;/span>(workqueue, &lt;span style="color:#f92672">&amp;amp;&lt;/span>work, delayed_time);
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="같이보기-좋은-자료">같이보기 좋은 자료&lt;/h2>
+&lt;ul>
+&lt;li>[[workqueue]]&lt;/li>
+&lt;/ul></description></item><item><title>blk_mq</title><link>https://minuk.dev/wiki/blk_mq/</link><pubDate>Fri, 19 Jun 2020 20:23:19 +0900</pubDate><guid>https://minuk.dev/wiki/blk_mq/</guid><description>&lt;p>##blk_mq : Linux Block IO: Introducing Multi-queue SSD Access on Multi-core Systems&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.thomas-krenn.com/en/wiki/Linux_Multi-Queue_Block_IO_Queueing_Mechanism_(blk-mq)_Details">https://www.thomas-krenn.com/en/wiki/Linux_Multi-Queue_Block_IO_Queueing_Mechanism_(blk-mq)_Details&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>PRP (Physical Region Page)</title><link>https://minuk.dev/wiki/prp/</link><pubDate>Thu, 18 Jun 2020 20:15:03 +0900</pubDate><guid>https://minuk.dev/wiki/prp/</guid><description>&lt;h2 id="prp">PRP&lt;/h2>
+&lt;ul>
+&lt;li>출처 : &lt;a href="https://m.blog.naver.com/PostView.nhn?blogId=eldkrpdla121&amp;amp;logNo=220536014853&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F">https://m.blog.naver.com/PostView.nhn?blogId=eldkrpdla121&amp;amp;logNo=220536014853&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F&lt;/a>&lt;/li>
+&lt;li>흠.. Pysical Region Page 말 그대로다.&lt;/li>
+&lt;li>혹시 모르니 위의 출처에 있는 말 그대로를 옮겨적자면,
+&lt;ul>
+&lt;li>PRP contains the 64-bit physical memory page address. The lower bits (n:2) of this field indicate the offset within the memory page. N is defined by the memory page size.&lt;/li>
+&lt;li>PRP List contains a list of PRPs with generally no offsets.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>workqueue</title><link>https://minuk.dev/wiki/workqueue/</link><pubDate>Mon, 15 Jun 2020 20:14:50 +0900</pubDate><guid>https://minuk.dev/wiki/workqueue/</guid><description>&lt;h2 id="참조-사이트">참조 사이트&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://m.blog.naver.com/PostView.nhn?blogId=leojesus&amp;amp;logNo=80172478497&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F">https://m.blog.naver.com/PostView.nhn?blogId=leojesus&amp;amp;logNo=80172478497&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F&lt;/a>&lt;/li>
+&lt;li>workqueue 사용법 : &lt;a href="https://selfish-developer.com/entry/workqueue-%EC%82%AC%EC%9A%A9%EB%B2%95">https://selfish-developer.com/entry/workqueue-%EC%82%AC%EC%9A%A9%EB%B2%95&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="workqueue">workqueue&lt;/h2>
+&lt;ul>
+&lt;li>지연처리를 하기 위해서 사용하는 자료구조 (다른 걸로는 SOFTIRQ, TASKLET 이 있음)&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용방법">사용방법&lt;/h2>
+&lt;ul>
+&lt;li>출처 1: &lt;a href="http://egloos.zum.com/rousalome/v/9982311">http://egloos.zum.com/rousalome/v/9982311&lt;/a>&lt;/li>
+&lt;li>출처 2: &lt;a href="http://egloos.zum.com/rousalome/v/9982570">http://egloos.zum.com/rousalome/v/9982570&lt;/a>&lt;/li>
+&lt;li>&lt;code>INIT_WORK()&lt;/code> 나 &lt;code>DECLARE_WORK()&lt;/code>를 사용해서 초기화
+&lt;ul>
+&lt;li>&lt;code>INIT_WORK()&lt;/code> : 커널이 실제로 &lt;code>INIT_WORK()&lt;/code> 함수를 실행할때 워크를 초기화&lt;/li>
+&lt;li>&lt;code>DELCARE_WORK()&lt;/code> : 커널이 컴파일 될때 세부정보가 포함된 전역 변수 생성&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">INIT_WORK&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>work, handler);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">schedule_work&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>work); &lt;span style="color:#75715e">/* enqueue work into system queue */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue_work&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>workqueue, &lt;span style="color:#f92672">&amp;amp;&lt;/span>work) &lt;span style="color:#75715e">/* enqueue work */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue_work_on&lt;/span>(cpu, &lt;span style="color:#f92672">&amp;amp;&lt;/span>workqueue, &lt;span style="color:#f92672">&amp;amp;&lt;/span>work) &lt;span style="color:#75715e">/* enqueue work with exception handling */&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="같이보기-좋은-자료">같이보기 좋은 자료&lt;/h2>
+&lt;ul>
+&lt;li>[[delayed_work]]&lt;/li>
+&lt;/ul></description></item><item><title>nvme</title><link>https://minuk.dev/wiki/nvme/</link><pubDate>Mon, 15 Jun 2020 20:13:59 +0900</pubDate><guid>https://minuk.dev/wiki/nvme/</guid><description>&lt;h1 id="시작">시작&lt;/h1>
+&lt;ul>
+&lt;li>아무것도 모르고 SSD 에 대해서 아는거라곤, 개발자를 위한 SSD 라는 카카오에서 올린 글(&lt;a href="https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/">https://tech.kakao.com/2016/07/13/coding-for-ssd-part-1/&lt;/a>) 와 [[simplessd]] 논문만 보고 무턱대고 시작한 공부&lt;/li>
+&lt;/ul>
+&lt;h2 id="linux-nvme-공부">Linux NVMe 공부&lt;/h2>
+&lt;ul>
+&lt;li>[[workqueue]]&lt;/li>
+&lt;li>[[block layer]]&lt;/li>
+&lt;li>[[IO mapping]]&lt;/li>
+&lt;li>[[blk_mq]]&lt;/li>
+&lt;li>[[IOMMU]]&lt;/li>
+&lt;li>[[SGL]]{Scatter-Gatter List}&lt;/li>
+&lt;/ul>
+&lt;h2 id="nvme-자료구조">nvme 자료구조&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://testkernel.tistory.com/3">https://testkernel.tistory.com/3&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="의문점">의문점&lt;/h2>
+&lt;ul>
+&lt;li>linux/drivers/nvme/host 에 있는 nvme 함수들은 어떻게 호출되는가? -&amp;gt; scsi interface 를 사용해서&lt;/li>
+&lt;li>-&amp;gt; 그러면 어디에 있지? source code를 찾아보고 싶다. -&amp;gt; 일단 request 는 찾았다. block device 에 접근 하려면 (실제로 block device는 아닐수도 있지만 SSD를 일단 Block 으로 사용하고 FTL 로 처리?할테니까)&lt;/li>
+&lt;li>-&amp;gt; 흠? 그런데 찾아보니까 /include/nvme.h 라는 파일이 있는데? 이건 만약 nvme 가 단순히 scsi 로만 처리된다면 굳이 맨 바깥쪽 include 에 있을 필요는 없는거 아닌가? 이건 마친 nvme 가 단독으로 interface를 가지고 있는거 같은데?&lt;/li>
+&lt;/ul>
+&lt;h3 id="중간-결론">중간 결론&lt;/h3>
+&lt;ul>
+&lt;li>interface 마다 module 을 만들어 놓고 어떤 interface 를 사용하는지 KConfig 에 정의 되어있다.
+&lt;ul>
+&lt;li>&lt;code>BLK_DEV_NVME&lt;/code> : block device 로 생각하고 접근&lt;/li>
+&lt;li>&lt;code>NVME_MULTIPATH&lt;/code> : NVMe multipath support&lt;/li>
+&lt;li>&lt;code>NVME_HWMON&lt;/code> : hardware monitoring&lt;/li>
+&lt;li>&lt;code>NVME_FABRICS&lt;/code> : 사용 X&lt;/li>
+&lt;li>&lt;code>NVME_RDMA&lt;/code> : NVM Express over Fabrics RDMA host driver&lt;/li>
+&lt;li>&lt;code>NVME_FC&lt;/code> : NVM Express over Fabrics FC host driver&lt;/li>
+&lt;li>&lt;code>NVME_TCP&lt;/code> : NVM Express over Fabrics TCP host driver&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>일단 나는 block layer를 통하는 path 를 공부하는게 목표 : 이럴 경우 PCI 와 NVMe Core 부분만 보면 된다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="pci-driver-structure-실제로-module-의-interface">PCI driver structure (실제로 module 의 interface)&lt;/h4>
+&lt;ul>
+&lt;li>참고 : PCI driver structure 설명 : &lt;a href="https://wiki.kldp.org/wiki.php/PCI%20Drivers">https://wiki.kldp.org/wiki.php/PCI%20Drivers&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> pci_driver nvme_driver &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.name		&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;nvme&amp;#34;&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.id_table	&lt;span style="color:#f92672">=&lt;/span> nvme_id_table,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.probe		&lt;span style="color:#f92672">=&lt;/span> nvme_probe,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.remove		&lt;span style="color:#f92672">=&lt;/span> nvme_remove,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.shutdown	&lt;span style="color:#f92672">=&lt;/span> nvme_shutdown,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#ifdef CONFIG_PM_SLEEP
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	.driver		&lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.pm	&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>nvme_dev_pm_ops,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	},
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#endif
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>	.sriov_configure &lt;span style="color:#f92672">=&lt;/span> pci_sriov_configure_simple,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	.err_handler	&lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>nvme_err_handler,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>하나씩 보면 &lt;code>name&lt;/code> 은 driver 이름, &lt;code>id_table&lt;/code> : driver 가 처리하는 id table 의 포인터&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">static&lt;/span> &lt;span style="color:#66d9ef">const&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> pci_device_id nvme_id_table[] &lt;span style="color:#f92672">=&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0953&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a53&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a54&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0x0a55&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_STRIPE_SIZE &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_DEALLOCATE_ZEROES, },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>	{ &lt;span style="color:#a6e22e">PCI_VDEVICE&lt;/span>(INTEL, &lt;span style="color:#ae81ff">0xf1a5&lt;/span>),	&lt;span style="color:#75715e">/* Intel 600P/P3100 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>		.driver_data &lt;span style="color:#f92672">=&lt;/span> NVME_QUIRK_NO_DEEPEST_PS &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_MEDIUM_PRIO_SQ &lt;span style="color:#f92672">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>				NVME_QUIRK_NO_TEMP_THRESH_CHANGE },
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* 이하 생략 */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>&lt;code>probe&lt;/code> : id 테이블과 매치한 뒤, 아직 다른 드라이버에 의해 처리되지 않은 모든 장치들에 대한 장치 검색 함수의 포인터, 0을 반환하면 driver가 device를 잘인식하고 쓴다는 것(원문은 device가 driver 를 accept 하면 이라고 써져 있는데, 평소 말하듯이 쓰면 이렇게 쓰는게 맞을듯?)&lt;/li>
+&lt;/ul>
+&lt;h4 id="nvme_probe-함수-nvme_driver-의-probe-부분">&lt;code>nvme_probe&lt;/code> 함수 (&lt;code>nvme_driver&lt;/code> 의 &lt;code>probe&lt;/code> 부분)&lt;/h4>
+&lt;h5 id="하는일">하는일&lt;/h5>
+&lt;ol>
+&lt;li>
+&lt;p>NUMA NODE 설정
+1-2. &lt;code>dev_to_node&lt;/code> 를 통해서 [[NUMA]] NODE 를 가져온다. (단, &lt;code>CONFIG_NUMA&lt;/code> 가 선언되어 있지 않으면 아무것도 하지 않는다.)
+1-3. device 에 numa 노드가 설정되지 않았다면, &lt;code>first_memory_node&lt;/code> 를 가져온다.&lt;/p></description></item><item><title>memory cache 비우기 (linux command)</title><link>https://minuk.dev/wiki/memory-cache-clean/</link><pubDate>Tue, 02 Jun 2020 20:39:40 +0900</pubDate><guid>https://minuk.dev/wiki/memory-cache-clean/</guid><description/></item><item><title>journal(journaling)</title><link>https://minuk.dev/wiki/journal/</link><pubDate>Thu, 30 Apr 2020 20:21:25 +0900</pubDate><guid>https://minuk.dev/wiki/journal/</guid><description>&lt;h2 id="설명">설명&lt;/h2>
+&lt;ul>
+&lt;li>파일을 기록하기 전, 안정성을 위해 복사본을 기록한 뒤 기록하는 방법&lt;/li>
+&lt;/ul>
+&lt;h2 id="ext3의-journaling의-3가지-단계">ext3의 journaling의 3가지 단계&lt;/h2>
+&lt;ul>
+&lt;li>Journal : 가장 낮은 위험모드로 파일 시스템에 commit 하기 전에 데이터와 메타데이터를 저널에 모두 기록한다. 이렇게 하면 그 파일 시스템 뿐만 아니라 모든 쓰여지는 파일의 일관성이 보장되지만 성능이 크게 저하될수 있다&lt;/li>
+&lt;li>Ordered : 대부분의 Linux 배포판에서 기본 설정으로써, journal에 metadata를 쓰지만, 파일시스템에는 데이터를 직접 commit한다.
+&lt;ol>
+&lt;li>metadata가 journal에 commit 된다&lt;/li>
+&lt;li>data가 FS에 기록된 다음에야 journal에 있는 연결된 metadata가 file에 쓰여지게 된다.&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>이로인해 가능한 연산 : 불안전한 쓰기를 삭제가능 : 충돌이 날때 쓰여지는 파일은 손상될 수 있지만, 이외의 파일과 파일 시스템은 안전하다&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Writeback : ordered에서 순서보장 내용이 빠진것. : 파일 시스템 자체는 안전하지만 기록 중 또는 장애 전후로 기록된 파일은 불안정할 수 있다.&lt;/li>
+&lt;/ul></description></item><item><title>group descriptor table</title><link>https://minuk.dev/wiki/group-descriptor-table/</link><pubDate>Thu, 30 Apr 2020 20:17:00 +0900</pubDate><guid>https://minuk.dev/wiki/group-descriptor-table/</guid><description>&lt;h2 id="설명">설명&lt;/h2>
+&lt;ul>
+&lt;li>슈퍼블록 바로 다음에 위치하며, 파일 시스템의 블록 그룹들에 대한 정보를 가지고 있다.&lt;/li>
+&lt;li>Group Descriptor의 크기는 32bytes로, 블록 크기가 1KB이라면 하나의 블록에 총 32개의 Group Descriptor가 기록될수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="포함하는-주요-정보">포함하는 주요 정보&lt;/h2>
+&lt;ul>
+&lt;li>Block Bitmap의 블록 번호, Inode Bitmap의 블록 번호, 첫번째 Inode Table Block의 블록번호, 그룹안에 있는 빈블록 수, 그룹 안에 있는 inode 수, 그룹 안에 있는 빈 디렉토리 수 등이다.&lt;/li>
+&lt;/ul></description></item><item><title>inode</title><link>https://minuk.dev/wiki/inode/</link><pubDate>Thu, 30 Apr 2020 20:08:55 +0900</pubDate><guid>https://minuk.dev/wiki/inode/</guid><description>&lt;h2 id="설명">설명&lt;/h2>
+&lt;ul>
+&lt;li>Unix에서 사용하는 전통적 파일 시스템에서 사용하는 자료 구조&lt;/li>
+&lt;li>정규파일, 디렉토리 등 파일시스템에 대한 정보를 가지고 있다.&lt;/li>
+&lt;li>일반적으로 inode에 포함된 정보&lt;/li>
+&lt;/ul>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>비트&lt;/th>
+ &lt;th>내용&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>12-15&lt;/td>
+ &lt;td>파일 형식(일반, 디렉터리, 문자 또는 블록 특별, 선입선출 파이프)&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>9-11&lt;/td>
+ &lt;td>실행 플레그&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>8&lt;/td>
+ &lt;td>소유자 읽기 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>7&lt;/td>
+ &lt;td>소유자 쓰기 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>6&lt;/td>
+ &lt;td>소유자 실행 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>5&lt;/td>
+ &lt;td>그룹 읽기 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>4&lt;/td>
+ &lt;td>그룹 쓰기 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>3&lt;/td>
+ &lt;td>그룹 실행 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>2&lt;/td>
+ &lt;td>다른 사용자 읽기 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>1&lt;/td>
+ &lt;td>다른 사용자 쓰기 권한&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>0&lt;/td>
+ &lt;td>다른 사용자 실행 권한&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;ul>
+&lt;li>링크 수 : 이 아이노드에 대한 디렉터리 참조수&lt;/li>
+&lt;li>소유자 아이디&lt;/li>
+&lt;li>그룹 아이디&lt;/li>
+&lt;li>파일 크기&lt;/li>
+&lt;li>파일 주소 (주소 정보 39바이트)&lt;/li>
+&lt;li>마지막 접근 시각&lt;/li>
+&lt;li>마지막 수정 시각&lt;/li>
+&lt;li>아이노드 수정 시각&lt;/li>
+&lt;/ul></description></item><item><title>Superblock</title><link>https://minuk.dev/wiki/superblock/</link><pubDate>Thu, 30 Apr 2020 20:07:08 +0900</pubDate><guid>https://minuk.dev/wiki/superblock/</guid><description>&lt;h2 id="설명">설명&lt;/h2>
+&lt;ul>
+&lt;li>파일시스템을 대표하는 블록, 파일시스템의 주요 설정이 들어가있다.&lt;/li>
+&lt;li>주로 블록의 크기(1KB인지 4KB인지&amp;hellip;), 총 블록의 개수, 블록 그룹의 개수, [[inode]]의 개수, 그룹당 block의 개수&lt;/li>
+&lt;/ul></description></item><item><title>The new ext4 filesystem: current status and future plans</title><link>https://minuk.dev/wiki/ext4/</link><pubDate>Thu, 30 Apr 2020 19:42:16 +0900</pubDate><guid>https://minuk.dev/wiki/ext4/</guid><description>&lt;h2 id="abstract">Abstract&lt;/h2>
+&lt;ul>
+&lt;li>주요 키워드 : scalability, performance, reliability, stability&lt;/li>
+&lt;li>2007 년 논문임을 가만하고 읽으면 좋다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-introduction">1. Introduction&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>ext3&lt;/code>의 장점 : 안정성(stable), 엄격성(robust)&lt;/li>
+&lt;li>&lt;code>ext3&lt;/code>의 단점 : 큰 규모에 한계 (큰 파일과 많은 파일)&lt;/li>
+&lt;/ul>
+&lt;h3 id="단점-극복에-관한-기존-방안">단점 극복에 관한 기존 방안&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>ext3&lt;/code>는 최대 16TB 만 지원가능&lt;/li>
+&lt;li>이미 기업에선 한계점이 보임 (디스크 최대 용량은 매년 2배가 되고 있음)&lt;/li>
+&lt;li>물론, &lt;code>larger filesystem capacity&lt;/code>와 &lt;code>extents mapping&lt;/code>을 담고 있는 패치를 2006년 선보였으나, 이 패치는 결국 disk의 형식을 변경하고 호환성을 버릴수 밖에 없었다.&lt;/li>
+&lt;li>따라서 여기선 ext3를 버리고 ext4로 새로 분기 했다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="주요-목표">주요 목표&lt;/h3>
+&lt;ul>
+&lt;li>scalability (확장성), performance (성능), reliability (신뢰성) 을 모두 고려한 주소 방식을 제시하는 것이 목표&lt;/li>
+&lt;li>기존의 문제가 해결된 &lt;code>XFS&lt;/code> 기반이나, 혹은 아예 새로운 기반에서 시작하지 않는 이유 =&amp;gt; 호환성 문제 : ext3에서 ext4로 넘어오기 편하게 하기 위해서.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="2-scalability-enhancements">2. Scalability enhancements&lt;/h2>
+&lt;h3 id="21-large-filesystem-파일-시스템의-최대-용량">2.1 Large filesystem (파일 시스템의 최대 용량)&lt;/h3>
+&lt;ul>
+&lt;li>ext3에선 32-bit block number 를 사용 =&amp;gt; ext4에서 48-bit block number 사용으로 전환 (용량 2의 16승 증가 =&amp;gt; 16,384배 증가)&lt;/li>
+&lt;li>각 block 별 크기는 4KB가 기본이고 이를 계산해보면 2^(48+12) = 2^60 bytes = 1EB&lt;/li>
+&lt;li>이에 따른 Metadata(
+[[superblock]],
+[[group descriptor table]]{group descriptor},
+[[journal]]) 또한 변화해야한다.
+&lt;ul>
+&lt;li>따라서 새로운 32-bit fields 를 block group descriptor structure에 추가함.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>주소 체계의 변화로 인해, journaling block layer(JBD) 또한 48bit를 지원하도록 수정해야한다. 따라서 JDB2로 분기했고, 아직(이 논문을 낼 당시) 32-bit와 64-bit filesystem이 모두 호환이 되는 JDB를 만들지는 못했다.&lt;/li>
+&lt;li>질문점 : 왜 굳이 64가 아닌 48bit를 선택하였는가? 간략하게 설명하면 48 bit 만 사용해도 단순 계산으로 119년이 소모되고, 그 사이에 충분히 논의가 가능하다. 또한 실험을 통해 성능 체크를 해보았을때 64bit는 너무 많다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="211-future-work">2.1.1 Future work&lt;/h3>
+&lt;ul>
+&lt;li>현재 (논문을 쓸 당시) 해결 못한 이슈로는 block groups의 수가 여전히 제한되어 있기 때문에 128MB(2^27 bytes) [[block group]] size를 그룹별로 나눠가지면, 최대 2^27/64 = 2^21 의 블록 groups 밖에 만들지 못한다.&lt;/li>
+&lt;li>해결책으로 metablock group feture (META_BG) 를 사용해서 추가적으로 Block Group을 만들수 있게 하면 된다. 이럴 경우 block groups의 최대 개수는 2^32 가 되므로 1EB를 충분히 지원할수 있다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="22-extents">2.2 Extents&lt;/h3>
+&lt;ul>
+&lt;li>ext3에서 사용하던 indirect block mapping은 logical block 과 disk block 이 동일하다. 물론 크기가 작은 파일에 대해서는 효율적이지만 큰파일에 대해서는 그리 효율적이지 않다.&lt;/li>
+&lt;li>따라서 ext4_extent structure를 제시하여 length 를 지정할수 있게 한다.&lt;/li>
+&lt;li>이때 호환성을 생각해서 ext4_extent_header를 제시한다.
+&lt;ul>
+&lt;li>eh_entries (몇개의 속성들이 있는지), eh_max (최대 몇개의 속성을 넣을수 있는지), eh_depth (tree의 depth, 0이면 datablock), eh_generation (tree의 세대, 종류를 나타내려고 만듬)&lt;/li>
+&lt;li>추가적으로 magic number&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>tree 구조로 파일을 쌓을 꺼기 때문에 ext4_extent_idx 라는 구조를 만들어
+&lt;ul>
+&lt;li>ei_block(해당하는 block), ei_leaf, ei_leaf_hi, ef_unused 를 제시한다.&lt;/li>
+&lt;li>자세한 구조는 논문의 Figure2. Ext4 extent tree layout 을 참조하면 도움이 된다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="221-future-work">2.2.1 Future work&lt;/h3>
+&lt;ul>
+&lt;li>사실 extents 자체가 작은 파일들, 매우 단편화된 파일들에서는 효율적이지는 않음.&lt;/li>
+&lt;li>그래서 호환성을 생각하면서 ext4_extent_header를 제시해놓았으니 이를 바꿔가면서 이런 파일들을 처리하는 것을 제시해야함.&lt;/li>
+&lt;li>속성을 4개 이상 추가하길 원하면 extent tail(inode number랑 inode generation을 포함해서)을 만든 다음 뒤에다가 붙이는 식으로 만들면 됨.&lt;/li>
+&lt;/ul>
+&lt;h3 id="23-large-files">2.3 Large files&lt;/h3>
+&lt;ul>
+&lt;li>Linux에서 inode 특성상 ext4에선 2TB만 가능하게 설정되게 되는데 (filesystem 에서 1 block의 크기는 4KB이더라도 disk sector의 크기가 512 Bytes라서, ext4 에서 사용하는 변수의 크기가 32bit임을 감안하면 2^32 * 512 bytes = 2^41 = 2TB, 근데 여기 부분에서 filesystem 1 block 의 크기가 아니라 왜 sector의 크기를 곱하는지 이해가 안됨.)&lt;/li>
+&lt;li>따라서 HUGE_FILE flag를 도입 (EXT4_HUGE_FILE_FL), flag 값을 확인하여 처리&lt;/li>
+&lt;/ul>
+&lt;h3 id="24-large-number-of-files">2.4 Large number of files&lt;/h3>
+&lt;ul>
+&lt;li>이론적으로 수백억개가 가능하겠지만 inode table의 통계적 수치분석 결과 다 못사용하고 있음.&lt;/li>
+&lt;li>inode의 최대개수를 제한(fix)하고 사용해도 괜찮다는 결론이 나옴 (무한히 생성가능하도록 만들 필요가 없음)&lt;/li>
+&lt;li>따라서 아래 3가지 관점을 가지고 접근했는데
+&lt;ul>
+&lt;li>Performance : inode만 보고 바로 block에 접근 가능해야함. (빠르게)&lt;/li>
+&lt;li>Robustness : filesystem이 고장나도 e2fsck 가 흩어져 있는 inode table blocks을 찾을수 있어아함.&lt;/li>
+&lt;li>Compatibility : 64 bit inode 가 32bit 시스템에서 overflow 되더라도 잘 작동해야함.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>미정리 : 그림 참조&lt;/li>
+&lt;/ul>
+&lt;h3 id="25-directory-scalability">2.5 Directory scalability&lt;/h3>
+&lt;ul>
+&lt;li>무한 sub directory 기능을 지원하도록 설정해야함.&lt;/li>
+&lt;li>많은 수의 entries를 가진 큰 디렉토리도 지원해야하기 때문에 HTree(32bit hashing을 응용해서 BTree를 변형, 그림 참조)&lt;/li>
+&lt;/ul>
+&lt;h3 id="251-future-work">2.5.1 Future work&lt;/h3>
+&lt;ul>
+&lt;li>HTree 의 최대 높이가 제한되어 있는데 (2로), 이를 풀어야함.&lt;/li>
+&lt;li>디렉토리 내부의 파일 리스트가 파일 이름을 기반으로 정렬되어 있기 때문에, readdir(디렉토리 내부 파일 리스트 출력) 실제론 디스크에서 랜덤 엑세스하는 것과 동일해진다. 따라서 hash 순서로 돌도록 조정해주어야 한다.&lt;/li>
+&lt;li>이를 해결하기 위해서 생각한 방법중 하나는, directory entry(inode 를 reference 하고 있는 데이터)가 아니라, inode 자체를 directory에다 넣는 방법을 생각해보았는데, 이러면 readdir 과정에서 inode를 찾느라고 디스크를 계속 읽을 필요 없이, 이미 memory에 올라온 데이터를 읽으면 된다.&lt;/li>
+&lt;li>위에서 말한 방법이면 dynamic inode allocation도 가능해지는데 directory가 inode 의 container 개념이 되게 된다.&lt;/li>
+&lt;li>hard linked file 같은 경우 여러개의 directory에 동시에 생성되면 되고, inode 자체적으로 link count를 조정하게 할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="26-large-inode-and-fast-extended-attributes">2.6 Large inode and fast extended attributes&lt;/h3>
+&lt;ul>
+&lt;li>ext3에서는 inode size가 다양하게 되는걸 지원했다.&lt;/li>
+&lt;li>ext4에서는 일정 이상 커지면 고정된 128 bytes를 추가하도록 했다. 이렇게 하면, e2fsck가 많은 코드를 짤 필요가 없어진다.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="3-block-allocation-enhancements">3. Block allocation enhancements&lt;/h2>
+&lt;ul>
+&lt;li>현대 파일시스템 모두의 목표인 향상된 처리량(increased filesystem throughput)에 대해서 이야기한다.&lt;/li>
+&lt;li>단편화(fragmentation), 추가된 metadata들이 일으키는 오버헤드에 대해서 논하고, ext4에 추가된 기능이 얼마나 장점이 많고 block allocation을 잘해서 단편화를 줄이는지 이야기한다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="31-persistent-preallocation">3.1 Persistent preallocation&lt;/h3>
+&lt;ul>
+&lt;li>재시작되도 영구적으로 유지되는 사전 할당을 한다.&lt;/li>
+&lt;li>사전 할당은 최대한 파일이 연속적으로 할당 되는데 도움이 되고, 사전할당된 영역에 쓰기가 가능하도록 보장해준다. (파일 영역이 커진다고 해서 추가적으로 할당할 일이 없어 단편화 문제를 논하는 듯)&lt;/li>
+&lt;li>대부분의 프로그램은 연속적으로 파일을 쓰기때문에 충분하다고 생각하지만, database같이 랜덤한 부분에 쓰는 프로그램들도 고려해주어야함&lt;/li>
+&lt;li>ext4_extent 에서 초기화되어있는지 여부에 대한 플레그도 만들어 놨으니 잘 사용할수 있음.&lt;/li>
+&lt;li>직접적으로 이 기능을 쓰고 싶으면 posix_fallocate API에 기능을 mapping 해놓았으니 쓰면됨.&lt;/li>
+&lt;/ul>
+&lt;h3 id="32-delayed-and-multiple-block-allocation">3.2 Delayed and multiple block allocation&lt;/h3>
+&lt;h3 id="33-online-defragmentation">3.3 Online defragmentation&lt;/h3>
+&lt;h2 id="4-reliability-enhancements">4. Reliability enhancements&lt;/h2>
+&lt;h3 id="41-unused-inode-count-and-fast-e2fsck">4.1 Unused inode count and fast e2fsck&lt;/h3>
+&lt;h3 id="42-checksumming">4.2 Checksumming&lt;/h3>
+&lt;h2 id="5-other-new-features">5. Other new features&lt;/h2>
+&lt;h2 id="6-migration-tool">6. Migration tool&lt;/h2>
+&lt;h3 id="61-upgrading-from-ext3-to-ext4">6.1 Upgrading from ext3 to ext4&lt;/h3>
+&lt;h3 id="62-downgrading-from-ext4-to-ext3">6.2 Downgrading from ext4 to ext3&lt;/h3>
+&lt;h2 id="7-performance-evaluation">7. Performance evaluation&lt;/h2>
+&lt;h3 id="71-ffsb-comparison">7.1 FFSB comparison&lt;/h3>
+&lt;h3 id="72-postmark-comparison">7.2 Postmark comparison&lt;/h3>
+&lt;h3 id="73-iozone-comparison">7.3 IOzone comparison&lt;/h3>
+&lt;h2 id="8-conclusion">8. Conclusion&lt;/h2></description></item><item><title>glob</title><link>https://minuk.dev/wiki/glob/</link><pubDate>Mon, 13 Apr 2020 22:06:38 +0900</pubDate><guid>https://minuk.dev/wiki/glob/</guid><description>&lt;h2 id="glob">glob&lt;/h2>
+&lt;h3 id="wikipedia">Wikipedia&lt;/h3>
+&lt;p>In computer programming, glob patterns specify sets of filenames with wildcard characters. For example, the Unix Bash shell command mv *.txt textfiles/ moves (mv) all files with names ending in .txt from the current directory to the directory textfiles. Here, * is a wildcard standing for &amp;ldquo;any string of characters&amp;rdquo; and *.txt is a glob pattern. The other common wildcard is the question mark (?), which stands for one character. In addition to matching filenames, globs are also used widely for matching arbitrary strings (wildcard matching). In this capacity a common interface is fnmatch.&lt;/p></description></item><item><title>tee (Linux Command)</title><link>https://minuk.dev/wiki/tee/</link><pubDate>Sun, 12 Apr 2020 20:29:35 +0900</pubDate><guid>https://minuk.dev/wiki/tee/</guid><description>&lt;h2 id="사용-용도">사용 용도&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>stdin&lt;/code>을 &lt;code>stdout&lt;/code> 과 파일로 모두 보내고 싶을때&lt;/li>
+&lt;/ul></description></item><item><title>rm (Linux Command)</title><link>https://minuk.dev/wiki/rm/</link><pubDate>Sun, 12 Apr 2020 20:22:32 +0900</pubDate><guid>https://minuk.dev/wiki/rm/</guid><description>&lt;h2 id="자주-사용하는-거-모음">자주 사용하는 거 모음&lt;/h2>
+&lt;h3 id="특정-파일-제외하고-지우기">특정 파일 제외하고 지우기&lt;/h3>
+&lt;ul>
+&lt;li>단일&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ rm -v !&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>다중&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>$ rm -v !&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename1&amp;#34;&lt;/span> | &lt;span style="color:#e6db74">&amp;#34;filename2&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>만약 zsh을 쓰고 있다면&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-zsh" data-lang="zsh">&lt;span style="display:flex;">&lt;span>$ setopt extendedglob
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>$ rm ^&lt;span style="color:#f92672">(&lt;/span>&lt;span style="color:#e6db74">&amp;#34;filename1&amp;#34;&lt;/span> | &lt;span style="color:#e6db74">&amp;#34;filename2&amp;#34;&lt;/span>&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="delete-files-using-extended-pattern-matching-operators">Delete Files Using Extended Pattern Matching Operators&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>*(pattern-list)&lt;/code> : matches zero or more occurrences of the specified patterns&lt;/li>
+&lt;li>&lt;code>?(pattern-list)&lt;/code> : matches zero or one occurence of the specified patterns&lt;/li>
+&lt;li>&lt;code>+(pattern-list)&lt;/code> : matches one or more occurrences of the spcified patterns&lt;/li>
+&lt;li>&lt;code>@(pattern-list)&lt;/code> : matches one of the spcified patterns&lt;/li>
+&lt;li>&lt;code>!(pattern-list)&lt;/code> : matches anytthing except one of the given patterns&lt;/li>
+&lt;li>자세한건 [[glob]] 참고&lt;/li>
+&lt;/ul></description></item><item><title>Understanding Linux Kernel</title><link>https://minuk.dev/wiki/understanding-linux-kernel/</link><pubDate>Tue, 07 Apr 2020 20:48:28 +0900</pubDate><guid>https://minuk.dev/wiki/understanding-linux-kernel/</guid><description>&lt;h1 id="1-introduction">1. Introduction&lt;/h1>
+&lt;ul>
+&lt;li>Linux pros
+&lt;ul>
+&lt;li>Monolithic kernel&lt;/li>
+&lt;li>Compiled and statically linked traditional Unix kernels&lt;/li>
+&lt;li>Kernel threading&lt;/li>
+&lt;li>Multithreaded application support - lightweight processes(LWP)&lt;/li>
+&lt;li>Preemptive kernel&lt;/li>
+&lt;li>Multiprocessor support - symmetric multiprocessing(SMP)&lt;/li>
+&lt;li>Filesystem&lt;/li>
+&lt;li>STREAMS&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="basic-operating-system-concepts">Basic Operating System Concepts&lt;/h2>
+&lt;ul>
+&lt;li>Interact with the hardware components, servicing all low-level programmable elements included in the hardware platform.&lt;/li>
+&lt;li>Provide an execution environment to the applications that run on the computer system (the so-called user programs)&lt;/li>
+&lt;/ul>
+&lt;h2 id="multiuser-systems">Multiuser Systems&lt;/h2>
+&lt;ul>
+&lt;li>An authentication mechanism for verifying the user&amp;rsquo;s identity&lt;/li>
+&lt;li>A protection mechanism against buggy user programs that could block other applications running in the system&lt;/li>
+&lt;li>A protection mechanism against malicious user programs that could interfere with or spy on the activity of others users&lt;/li>
+&lt;li>An accounting mechanism that limits the amount of resource units assigned to each user&lt;/li>
+&lt;/ul>
+&lt;h2 id="users-and-groups">Users and Groups&lt;/h2>
+&lt;ul>
+&lt;li>User ID(UID), Group ID(GID)&lt;/li>
+&lt;li>superuser&lt;/li>
+&lt;/ul>
+&lt;h2 id="processes">Processes&lt;/h2>
+&lt;ul>
+&lt;li>Process : An instance of a program in execution or execution context&lt;/li>
+&lt;li>Multi Processing operating system with preemptable processes.&lt;/li>
+&lt;li>process/kernel model - Whenever a process makes a system call, the hardware changes the privilege mode from User ode to Kernel Mode.&lt;/li>
+&lt;/ul>
+&lt;h2 id="kernel-architecture">Kernel Architecture&lt;/h2>
+&lt;ul>
+&lt;li>Kernels are &lt;code>monolithic&lt;/code>: each kernel layer is integrated into the whole kernel program and runs in Kernel Mode on behalf of the current process.&lt;/li>
+&lt;li>cf.) &lt;code>microkernel&lt;/code> operating systems demand a very small set of functions from the kernel, generally including a few synchronization primitives, a simple scheduler, and an interprocess communication mechanism.&lt;/li>
+&lt;li>The main advantages of using modules include:
+&lt;ul>
+&lt;li>A modularized approach&lt;/li>
+&lt;li>Platform independence&lt;/li>
+&lt;li>Frugal main memory usage&lt;/li>
+&lt;li>No performance penalty&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="an-overview-of-the-unix-filesystem">An Overview of the Unix Filesystem&lt;/h2>
+&lt;h3 id="files">Files&lt;/h3>
+&lt;ul>
+&lt;li>All the nodes of the tree, except the leaves, denote directory names.&lt;/li>
+&lt;/ul>
+&lt;h3 id="hard-and-soft-links">Hard and Soft Links&lt;/h3>
+&lt;ul>
+&lt;li>Hard links have two limitations:
+&lt;ul>
+&lt;li>It is not possible to create hard links for directories. Doing so might transform the directory tree into a graph with cycles, thus making it impossible to locate a file according to its name.&lt;/li>
+&lt;li>Links can be created only among files included in the same filesystem. This is a serious limitation, because modern Unix systems may include several filesystems located on different disk and/or partitions, and users may be unaware of the physical divisions between them.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="file-types">File Types&lt;/h3>
+&lt;ul>
+&lt;li>Unix files may have one of the following types:
+&lt;ul>
+&lt;li>Regular file&lt;/li>
+&lt;li>Directory&lt;/li>
+&lt;li>SYmbolic link&lt;/li>
+&lt;li>Block-oriented device file&lt;/li>
+&lt;li>Character-oriented device file&lt;/li>
+&lt;li>Pipe and named pipe (also called FIFO)&lt;/li>
+&lt;li>Socket&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="file-descriptor-and-inode">File Descriptor and Inode&lt;/h3>
+&lt;ul>
+&lt;li>All information needed by the filesystem to handle a file is included in a data structure called an &lt;code>inode&lt;/code>.&lt;/li>
+&lt;li>Unix system must always provide at least the following attributes, which are specified in the POSIX standard:
+&lt;ul>
+&lt;li>File type&lt;/li>
+&lt;li>Number of hard links associated with the file&lt;/li>
+&lt;li>File length in bytes&lt;/li>
+&lt;li>Device ID(i.e., an identifier of the device containing the file)&lt;/li>
+&lt;li>Inode number that identifies the file within the filesystem&lt;/li>
+&lt;li>UID of the file owner&lt;/li>
+&lt;li>User group ID of the file&lt;/li>
+&lt;li>Several timestamps that specify the inode status change time, the last access time, and the last modify time&lt;/li>
+&lt;li>Access rights and file mode&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="access-rights-and-file-mode">Access Rights and File Mode&lt;/h3>
+&lt;ul>
+&lt;li>User types
+&lt;ul>
+&lt;li>The user who is the owner of the file&lt;/li>
+&lt;li>The users who belong to the same group as the file, not including the owner&lt;/li>
+&lt;li>All remaining users (others)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Access rights : read, write and executed
+&lt;ul>
+&lt;li>Additional flags : suid, sgid, sticky&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="file-handling-system-calls">File-Handling System Calls&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>Opening a file&lt;/p></description></item><item><title>Tool configuration</title><link>https://minuk.dev/wiki/tool-configuration/</link><pubDate>Tue, 07 Apr 2020 20:36:45 +0900</pubDate><guid>https://minuk.dev/wiki/tool-configuration/</guid><description>&lt;h1 id="--neovim">- Neovim&lt;/h1>
+&lt;pre>&lt;code>- `.vimrc`
+
+ &amp;quot; vim-bootstrap 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Vim-PLug core
+ &amp;quot;*****************************************************************************
+ let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
+ 
+ let g:vim_bootstrap_langs = &amp;quot;c,html,javascript,python&amp;quot;
+ let g:vim_bootstrap_editor = &amp;quot;nvim&amp;quot;				&amp;quot; nvim or vim
+ 
+ if !filereadable(vimplug_exists)
+ if !executable(&amp;quot;curl&amp;quot;)
+ echoerr &amp;quot;You have to install curl or first install vim-plug yourself!&amp;quot;
+ execute &amp;quot;q!&amp;quot;
+ endif
+ echo &amp;quot;Installing Vim-Plug...&amp;quot;
+ echo &amp;quot;&amp;quot;
+ silent exec &amp;quot;!\curl -fLo &amp;quot; . vimplug_exists . &amp;quot; --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim&amp;quot;
+ let g:not_finish_vimplug = &amp;quot;yes&amp;quot;
+ 
+ autocmd VimEnter * PlugInstall
+ endif
+ 
+ &amp;quot; Required:
+ call plug#begin(expand('~/.config/nvim/plugged'))
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Plug install packages
+ &amp;quot;*****************************************************************************
+ if has('nvim')
+ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+ Plug 'wokalski/autocomplete-flow'
+ Plug 'zchee/deoplete-clang' 
+ else
+ Plug 'Shougo/deoplete.nvim'
+ Plug 'roxma/nvim-yarp'
+ Plug 'roxma/vim-hug-neovim-rpc'
+ endif
+ let g:deoplete#enable_at_startup = 1
+ 
+ Plug 'vimwiki/vimwiki'
+ Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+ &amp;quot;let g:vimwiki_list = [{'path': '~/workspace/vimwiki'}]
+ Plug 'scrooloose/nerdtree'
+ Plug 'jistr/vim-nerdtree-tabs'
+ Plug 'Xuyuanp/nerdtree-git-plugin'
+ Plug 'qpkorr/vim-bufkill'
+ Plug 'tpope/vim-commentary'
+ Plug 'tpope/vim-fugitive'
+ Plug 'vim-airline/vim-airline'
+ Plug 'vim-airline/vim-airline-themes'
+ Plug 'airblade/vim-gitgutter'
+ Plug 'vim-scripts/grep.vim'
+ Plug 'vim-scripts/CSApprox'
+ Plug 'Raimondi/delimitMate'
+ Plug 'majutsushi/tagbar'
+ Plug 'w0rp/ale'
+ Plug 'Yggdroot/indentLine'
+ Plug 'avelino/vim-bootstrap-updater'
+ Plug 'sheerun/vim-polyglot'
+ Plug 'tpope/vim-rhubarb' &amp;quot; required by fugitive to :Gbrowse
+ Plug 'easymotion/vim-easymotion'
+ 
+ if isdirectory('/usr/local/opt/fzf')
+ Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+ else
+ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+ Plug 'junegunn/fzf.vim'
+ endif
+ let g:make = 'gmake'
+ if exists('make')
+ let g:make = 'make'
+ endif
+ Plug 'Shougo/vimproc.vim', {'do': g:make}
+ 
+ &amp;quot;&amp;quot; Vim-Session
+ Plug 'xolox/vim-misc'
+ Plug 'xolox/vim-session'
+ 
+ &amp;quot;&amp;quot; Snippets
+ Plug 'SirVer/ultisnips'
+ Plug 'honza/vim-snippets'
+ 
+ &amp;quot;&amp;quot; Color
+ Plug 'dracula/vim', { 'as': 'dracula' }
+ &amp;quot;Plug 'dracula/dracula-theme'
+ &amp;quot;Plug 'tomasr/molokai'
+ &amp;quot;let g:gruvbox_italic=1 
+ &amp;quot;Plug 'morhetz/gruvbox'
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Custom bundles
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot; c
+ Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
+ Plug 'ludwig/split-manpage.vim'
+ 
+ 
+ &amp;quot; html
+ &amp;quot;&amp;quot; HTML Bundle
+ Plug 'hail2u/vim-css3-syntax'
+ Plug 'gorodinskiy/vim-coloresque'
+ Plug 'tpope/vim-haml'
+ Plug 'mattn/emmet-vim'
+ 
+ 
+ &amp;quot; javascript
+ &amp;quot;&amp;quot; Javascript Bundle
+ Plug 'jelera/vim-javascript-syntax'
+ 
+ 
+ &amp;quot; python
+ &amp;quot;&amp;quot; Python Bundle
+ Plug 'davidhalter/jedi-vim'
+ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot;&amp;quot; Include user's extra bundle
+ if filereadable(expand(&amp;quot;~/.config/nvim/local_bundles.vim&amp;quot;))
+ source ~/.config/nvim/local_bundles.vim
+ endif
+ 
+ call plug#end()
+ 
+ &amp;quot; Required:
+ filetype plugin indent on
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Basic Setup
+ &amp;quot;*****************************************************************************&amp;quot;
+ &amp;quot;&amp;quot; Encoding
+ set encoding=utf-8
+ set fileencoding=utf-8
+ set fileencodings=utf-8
+ 
+ 
+ &amp;quot;&amp;quot; Fix backspace indent
+ set backspace=indent,eol,start
+ 
+ &amp;quot;&amp;quot; Tabs. May be overridden by autocmd rules
+ set tabstop=2
+ set softtabstop=0
+ set shiftwidth=2
+ set expandtab
+ 
+ &amp;quot;&amp;quot; Map leader to ,
+ let mapleader=','
+ 
+ &amp;quot;&amp;quot; Enable hidden buffers
+ set hidden
+ 
+ &amp;quot;&amp;quot; Searching
+ set hlsearch
+ set incsearch
+ set ignorecase
+ set smartcase
+ 
+ set fileformats=unix,dos,mac
+ 
+ if exists('$SHELL')
+ set shell=$SHELL
+ else
+ set shell=/bin/sh
+ endif
+ 
+ &amp;quot; session management
+ let g:session_directory = &amp;quot;~/.config/nvim/session&amp;quot;
+ let g:session_autoload = &amp;quot;no&amp;quot;
+ let g:session_autosave = &amp;quot;no&amp;quot;
+ let g:session_command_aliases = 1
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Visual Settings
+ &amp;quot;*****************************************************************************
+ syntax on
+ set ruler
+ set number
+ 
+ let no_buffers_menu=1
+ silent! colorscheme molokai
+ 
+ set mousemodel=popup
+ set t_Co=256
+ set guioptions=egmrti
+ set gfn=Monospace\ 10
+ 
+ if has(&amp;quot;gui_running&amp;quot;)
+ if has(&amp;quot;gui_mac&amp;quot;) || has(&amp;quot;gui_macvim&amp;quot;)
+ set guifont=Menlo:h12
+ set transparency=7
+ endif
+ else
+ let g:CSApprox_loaded = 1
+ 
+ &amp;quot; IndentLine
+ let g:indentLine_enabled = 1
+ let g:indentLine_concealcursor = 0
+ let g:indentLine_char = '┆'
+ let g:indentLine_faster = 1
+ 
+ 
+ endif
+ 
+ 
+ 
+ &amp;quot;&amp;quot; Disable the blinking cursor.
+ set gcr=a:blinkon0
+ set scrolloff=3
+ 
+ &amp;quot;&amp;quot; Status bar
+ set laststatus=2
+ 
+ &amp;quot;&amp;quot; Use modeline overrides
+ set modeline
+ set modelines=10
+ 
+ set title
+ set titleold=&amp;quot;Terminal&amp;quot;
+ set titlestring=%F
+ 
+ set statusline=%F%m%r%h%w%=(%{&amp;amp;ff}/%Y)\ (line\ %l\/%L,\ col\ %c)\
+ 
+ &amp;quot; Search mappings: These will make it so that going to the next one in a
+ &amp;quot; search will center on the line it's found in.
+ nnoremap n nzzzv
+ nnoremap N Nzzzv
+ 
+ if exists(&amp;quot;*fugitive#statusline&amp;quot;)
+ set statusline+=%{fugitive#statusline()}
+ endif
+ 
+ &amp;quot; vim-airline
+ let g:airline_theme = 'dracula'
+ let g:airline#extensions#branch#enabled = 1
+ let g:airline#extensions#ale#enabled = 1
+ let g:airline#extensions#tabline#enabled = 1
+ let g:airline#extensions#tagbar#enabled = 1
+ let g:airline_skip_empty_sections = 1
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Abbreviations
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; no one is really happy until you have this shortcuts
+ cnoreabbrev W! w!
+ cnoreabbrev Q! q!
+ cnoreabbrev Qall! qall!
+ cnoreabbrev Wq wq
+ cnoreabbrev Wa wa
+ cnoreabbrev wQ wq
+ cnoreabbrev WQ wq
+ cnoreabbrev W w
+ cnoreabbrev Q q
+ cnoreabbrev Qall qall
+ 
+ &amp;quot;&amp;quot; NERDTree configuration
+ let g:NERDTreeChDirMode=2
+ let g:NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$', '\.db$', '\.sqlite$', '__pycache__']
+ let g:NERDTreeSortOrder=['^__\.py$', '\/$', '*', '\.swp$', '\.bak$', '\~$']
+ let g:NERDTreeShowBookmarks=1
+ let g:nerdtree_tabs_focus_on_files=1
+ let g:NERDTreeMapOpenInTabSilent = '&amp;lt;RightMouse&amp;gt;'
+ let g:NERDTreeWinSize = 30
+ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc,*.db,*.sqlite
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;F2&amp;gt; :NERDTreeFind&amp;lt;CR&amp;gt;
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;F3&amp;gt; :NERDTreeToggle&amp;lt;CR&amp;gt;
+ 
+ &amp;quot; grep.vim
+ let Grep_Default_Options = '-IR'
+ let Grep_Skip_Files = '*.log *.db'
+ let Grep_Skip_Dirs = '.git node_modules'
+ 
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Commands
+ &amp;quot;*****************************************************************************
+ &amp;quot; remove trailing whitespaces
+ command! FixWhitespace :%s/\s\+$//e
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Functions
+ &amp;quot;*****************************************************************************
+ if !exists('*s:setupWrapping')
+ function s:setupWrapping()
+ set wrap
+ set wm=2
+ set textwidth=79
+ endfunction
+ endif
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Autocmd Rules
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; The PC is fast enough, do syntax highlight syncing from start unless 200 lines
+ augroup vimrc-sync-fromstart
+ autocmd!
+ autocmd BufEnter * :syntax sync maxlines=200
+ augroup END
+ 
+ &amp;quot;&amp;quot; Remember cursor position
+ augroup vimrc-remember-cursor-position
+ autocmd!
+ autocmd BufReadPost * if line(&amp;quot;'\&amp;quot;&amp;quot;) &amp;gt; 1 &amp;amp;&amp;amp; line(&amp;quot;'\&amp;quot;&amp;quot;) &amp;lt;= line(&amp;quot;$&amp;quot;) | exe &amp;quot;normal! g`\&amp;quot;&amp;quot; | endif
+ augroup END
+ 
+ &amp;quot;&amp;quot; txt
+ augroup vimrc-wrapping
+ autocmd!
+ autocmd BufRead,BufNewFile *.txt call s:setupWrapping()
+ augroup END
+ 
+ &amp;quot;&amp;quot; make/cmake
+ augroup vimrc-make-cmake
+ autocmd!
+ autocmd FileType make setlocal noexpandtab
+ autocmd BufNewFile,BufRead CMakeLists.txt setlocal filetype=cmake
+ augroup END
+ 
+ set autoread
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Mappings
+ &amp;quot;*****************************************************************************
+ 
+ 
+ &amp;quot;&amp;quot; Tabs
+ nnoremap &amp;lt;Tab&amp;gt; gt
+ nnoremap &amp;lt;S-Tab&amp;gt; gT
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;S-t&amp;gt; :tabnew&amp;lt;CR&amp;gt;
+ 
+ 
+ &amp;quot;&amp;quot; fzf.vim
+ set wildmode=list:longest,list:full
+ set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+ let $FZF_DEFAULT_COMMAND = &amp;quot;find * -path '*/\.*' -prune -o -path 'node_modules/**' -prune -o -path 'target/**' -prune -o -path 'dist/**' -prune -o -type f -print -o -type l -print 2&amp;gt; /dev/null&amp;quot;
+ 
+ &amp;quot; The Silver Searcher
+ if executable('ag')
+ let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g &amp;quot;&amp;quot;'
+ set grepprg=ag\ --nogroup\ --nocolor
+ endif
+ 
+ &amp;quot; ripgrep
+ if executable('rg')
+ let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob &amp;quot;!.git/*&amp;quot;'
+ set grepprg=rg\ --vimgrep
+ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --hidden --follow --glob &amp;quot;!.git/*&amp;quot; --color &amp;quot;always&amp;quot; '.shellescape(&amp;lt;q-args&amp;gt;).'| tr -d &amp;quot;\017&amp;quot;', 1, &amp;lt;bang&amp;gt;0)
+ endif
+ 
+ cnoremap &amp;lt;C-P&amp;gt; &amp;lt;C-R&amp;gt;=expand(&amp;quot;%:p:h&amp;quot;) . &amp;quot;/&amp;quot; &amp;lt;CR&amp;gt;
+ 
+ &amp;quot; snippets
+ let g:UltiSnipsExpandTrigger=&amp;quot;&amp;lt;tab&amp;gt;&amp;quot;
+ let g:UltiSnipsJumpForwardTrigger=&amp;quot;&amp;lt;tab&amp;gt;&amp;quot;
+ let g:UltiSnipsJumpBackwardTrigger=&amp;quot;&amp;lt;c-b&amp;gt;&amp;quot;
+ let g:UltiSnipsEditSplit=&amp;quot;vertical&amp;quot;
+ 
+ &amp;quot; ale
+ let g:ale_linters = {'javascript' : ['eslint']}
+ 
+ &amp;quot; Tagbar
+ nmap &amp;lt;silent&amp;gt; &amp;lt;F4&amp;gt; :TagbarToggle&amp;lt;CR&amp;gt;
+ let g:tagbar_autofocus = 1
+ 
+ &amp;quot; Disable visualbell
+ set noerrorbells visualbell t_vb=
+ if has('autocmd')
+ autocmd GUIEnter * set visualbell t_vb=
+ endif
+ 
+ &amp;quot;&amp;quot; Copy/Paste/Cut
+ if has('unnamedplus')
+ set clipboard=unnamed,unnamedplus
+ endif
+ 
+ noremap YY &amp;quot;+y&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;p &amp;quot;+gP&amp;lt;CR&amp;gt;
+ noremap XX &amp;quot;+x&amp;lt;CR&amp;gt;
+ 
+ if has('macunix')
+ &amp;quot; pbcopy for OSX copy/paste
+ vmap &amp;lt;C-x&amp;gt; :!pbcopy&amp;lt;CR&amp;gt;
+ vmap &amp;lt;C-c&amp;gt; :w !pbcopy&amp;lt;CR&amp;gt;&amp;lt;CR&amp;gt;
+ endif
+ 
+ 
+ 
+ &amp;quot;&amp;quot; Switching windows
+ noremap &amp;lt;C-j&amp;gt; &amp;lt;C-w&amp;gt;j
+ noremap &amp;lt;C-k&amp;gt; &amp;lt;C-w&amp;gt;k
+ noremap &amp;lt;C-l&amp;gt; &amp;lt;C-w&amp;gt;l
+ noremap &amp;lt;C-h&amp;gt; &amp;lt;C-w&amp;gt;h
+ 
+ &amp;quot;&amp;quot; Vmap for maintain Visual Mode after shifting &amp;gt; and &amp;lt;
+ vmap &amp;lt; &amp;lt;gv
+ vmap &amp;gt; &amp;gt;gv
+ 
+ &amp;quot;&amp;quot; Move visual block
+ vnoremap J :m '&amp;gt;+1&amp;lt;CR&amp;gt;gv=gv
+ vnoremap K :m '&amp;lt;-2&amp;lt;CR&amp;gt;gv=gv
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Custom configs
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot; c
+ autocmd FileType c setlocal tabstop=2 shiftwidth=2 expandtab 
+ autocmd FileType c let g:loaded_nvimgdb = 1
+ autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab 
+ autocmd FileType cpp let g:loaded_nvimgdb = 1
+ 
+ 
+ &amp;quot; html
+ &amp;quot; for html files, 2 spaces
+ autocmd Filetype html setlocal ts=2 sw=2 expandtab
+ 
+ 
+ &amp;quot; javascript
+ let g:javascript_enable_domhtmlcss = 1
+ 
+ &amp;quot; vim-javascript
+ augroup vimrc-javascript
+ autocmd!
+ autocmd FileType javascript setl tabstop=2|setl shiftwidth=2|setl expandtab softtabstop=2
+ augroup END
+ 
+ 
+ &amp;quot; python
+ &amp;quot; vim-python
+ augroup vimrc-python
+ autocmd!
+ autocmd FileType python setlocal expandtab shiftwidth=2 tabstop=4 colorcolumn=79
+ \ formatoptions+=croq softtabstop=2
+ \ cinwords=if,elif,else,for,while,try,except,finally,def,class,with
+ augroup END
+ 
+ &amp;quot; jedi-vim
+ let g:jedi#popup_on_dot = 0
+ let g:jedi#goto_assignments_command = &amp;quot;&amp;lt;leader&amp;gt;g&amp;quot;
+ let g:jedi#goto_definitions_command = &amp;quot;&amp;lt;leader&amp;gt;d&amp;quot;
+ let g:jedi#documentation_command = &amp;quot;K&amp;quot;
+ let g:jedi#usages_command = &amp;quot;&amp;lt;leader&amp;gt;n&amp;quot;
+ let g:jedi#rename_command = &amp;quot;&amp;lt;leader&amp;gt;r&amp;quot;
+ let g:jedi#show_call_signatures = &amp;quot;0&amp;quot;
+ let g:jedi#completions_command = &amp;quot;&amp;lt;C-Space&amp;gt;&amp;quot;
+ let g:jedi#smart_auto_mappings = 0
+ 
+ &amp;quot; ale
+ :call extend(g:ale_linters, {
+ \'python': ['flake8'], })
+ 
+ &amp;quot; vim-airline
+ let g:airline#extensions#virtualenv#enabled = 1
+ 
+ &amp;quot; Syntax highlight
+ &amp;quot; Default highlight is better than polyglot
+ let g:polyglot_disabled = ['python']
+ let python_highlight_all = 1
+ 
+ 
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot;&amp;quot; Include user's local vim config
+ if filereadable(expand(&amp;quot;~/.config/nvim/local_init.vim&amp;quot;))
+ source ~/.config/nvim/local_init.vim
+ endif
+ 
+ &amp;quot;*****************************************************************************
+ &amp;quot;&amp;quot; Convenience variables
+ &amp;quot;*****************************************************************************
+ 
+ &amp;quot; vim-airline
+ if !exists('g:airline_symbols')
+ let g:airline_symbols = {}
+ endif
+ 
+ if !exists('g:airline_powerline_fonts')
+ let g:airline#extensions#tabline#left_sep = ' '
+ let g:airline#extensions#tabline#left_alt_sep = '|'
+ let g:airline_left_sep = '▶'
+ let g:airline_left_alt_sep = '»'
+ let g:airline_right_sep = '◀'
+ let g:airline_right_alt_sep = '«'
+ let g:airline#extensions#branch#prefix = '⤴' &amp;quot;➔, ➥, ⎇
+ let g:airline#extensions#readonly#symbol = '⊘'
+ let g:airline#extensions#linecolumn#prefix = '¶'
+ let g:airline#extensions#paste#symbol = 'ρ'
+ let g:airline_symbols.linenr = '␊'
+ let g:airline_symbols.branch = '⎇'
+ let g:airline_symbols.paste = 'ρ'
+ let g:airline_symbols.paste = 'Þ'
+ let g:airline_symbols.paste = '∥'
+ let g:airline_symbols.whitespace = 'Ξ'
+ else
+ let g:airline#extensions#tabline#left_sep = ''
+ let g:airline#extensions#tabline#left_alt_sep = ''
+ 
+ &amp;quot; powerline symbols
+ let g:airline_left_sep = ''
+ let g:airline_left_alt_sep = ''
+ let g:airline_right_sep = ''
+ let g:airline_right_alt_sep = ''
+ let g:airline_symbols.branch = ''
+ let g:airline_symbols.readonly = ''
+ let g:airline_symbols.linenr = ''
+ endif
+ 
+ let g:deoplete#sources#clang#libclang_path='/usr/lib/llvm-6.0/lib/libclang.so'
+ &amp;quot; grep.vim
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;f :Rgrep&amp;lt;CR&amp;gt;
+ &amp;quot; terminal emulation
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;sh :terminal&amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Open current line on GitHub
+ nnoremap &amp;lt;Leader&amp;gt;o :.Gbrowse&amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Clean search (highlight)
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;&amp;lt;space&amp;gt; :noh&amp;lt;cr&amp;gt;
+ &amp;quot;&amp;quot; Buffer nav
+ noremap &amp;lt;leader&amp;gt;z :bp&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;q :bp&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;x :bn&amp;lt;CR&amp;gt;
+ noremap &amp;lt;leader&amp;gt;w :bn&amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Close buffer
+ noremap &amp;lt;leader&amp;gt;c :bd&amp;lt;CR&amp;gt;
+ 
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;b :Buffers&amp;lt;CR&amp;gt;
+ nnoremap &amp;lt;silent&amp;gt; &amp;lt;leader&amp;gt;e :FZF -m&amp;lt;CR&amp;gt;
+ &amp;quot;Recovery commands from history through FZF
+ nmap &amp;lt;leader&amp;gt;y :History:&amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Set working directory
+ nnoremap &amp;lt;leader&amp;gt;. :lcd %:p:h&amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Opens an edit command with the path of the currently edited file filled in
+ noremap &amp;lt;Leader&amp;gt;e :e &amp;lt;C-R&amp;gt;=expand(&amp;quot;%:p:h&amp;quot;) . &amp;quot;/&amp;quot; &amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Opens a tab edit command with the path of the currently edited file filled
+ noremap &amp;lt;Leader&amp;gt;te :tabe &amp;lt;C-R&amp;gt;=expand(&amp;quot;%:p:h&amp;quot;) . &amp;quot;/&amp;quot; &amp;lt;CR&amp;gt;
+ &amp;quot;&amp;quot; Split
+ noremap &amp;lt;Leader&amp;gt;h :&amp;lt;C-u&amp;gt;split&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;v :&amp;lt;C-u&amp;gt;vsplit&amp;lt;CR&amp;gt;
+ 
+ &amp;quot;&amp;quot; Git
+ noremap &amp;lt;Leader&amp;gt;ga :Gwrite&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gc :Gcommit&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gsh :Gpush&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gll :Gpull&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gs :Gstatus&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gb :Gblame&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gd :Gvdiff&amp;lt;CR&amp;gt;
+ noremap &amp;lt;Leader&amp;gt;gr :Gremove&amp;lt;CR&amp;gt;
+ 
+ &amp;quot; session management
+ nnoremap &amp;lt;leader&amp;gt;so :OpenSession&amp;lt;Space&amp;gt;
+ nnoremap &amp;lt;leader&amp;gt;ss :SaveSession&amp;lt;Space&amp;gt;
+ nnoremap &amp;lt;leader&amp;gt;sd :DeleteSession&amp;lt;CR&amp;gt;
+ nnoremap &amp;lt;leader&amp;gt;sc :CloseSession&amp;lt;CR&amp;gt;
+ color dracula
+ 
+ 
+ if filereadable(expand(&amp;quot;.local.vim&amp;quot;))
+ source .local.vim
+ endif
+ 
+ set undofile
+ set undodir=/home/lmu/.config/nvim/.vimundo
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>
+&lt;p>zsh&lt;/p></description></item><item><title>SSH Server Configuration</title><link>https://minuk.dev/wiki/ssh-server/</link><pubDate>Tue, 07 Apr 2020 20:36:17 +0900</pubDate><guid>https://minuk.dev/wiki/ssh-server/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>Installation&lt;/p>
+&lt;p>sudo apt install openssh-server&lt;/p>
+&lt;p>sudo vim /etc/ssh/sshd_config&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>generate key&lt;/p>
+&lt;p>ssh-keygen -R {id}@{host}&lt;/p>
+&lt;p>PermitRootLogin prohibit-password&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Firewall (방화벽) Configuration</title><link>https://minuk.dev/wiki/firewall/</link><pubDate>Tue, 07 Apr 2020 20:36:02 +0900</pubDate><guid>https://minuk.dev/wiki/firewall/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>iptables&lt;/p>
+&lt;p>#iptables -nL&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="save-firewall-configuration">save firewall configuration&lt;/h2>
+&lt;pre>&lt;code>#iptalbes-save &amp;gt; save_data.rules
+&lt;/code>&lt;/pre>
+&lt;h2 id="config-firwall">config firwall&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>아이피 111.222.111.222에 대해서 destination port 가 22이면 ACCEPT 하여라.&lt;/p>
+&lt;p>#iptables -A INPUT -s 111.222.111.222/32 -p tcp -m state &amp;ndash;state NEW -m tcp &amp;ndash;dport 22 -j ACCEPT-&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="save-configuration-persistent">save configuration persistent&lt;/h2>
+&lt;pre>&lt;code>#apt install iptables-persistent
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>
+&lt;p>rule directory : &lt;code>/etc/iptables/rules.v4&lt;/code>&lt;/p>
+&lt;p>#iptables-save &amp;gt; /etc/iptables/rules.v4&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>ftp server command</title><link>https://minuk.dev/wiki/ftp/</link><pubDate>Tue, 07 Apr 2020 20:35:51 +0900</pubDate><guid>https://minuk.dev/wiki/ftp/</guid><description>&lt;ul>
+&lt;li>use vsftpd(Very Secure FTP Server Daemon)&lt;/li>
+&lt;/ul>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;pre>&lt;code># apt install vsftpd
+&lt;/code>&lt;/pre>
+&lt;h2 id="check-vsftpd-status">check vsftpd status&lt;/h2>
+&lt;pre>&lt;code># service vsftpd status
+&lt;/code>&lt;/pre>
+&lt;h2 id="check-network-port">check network port&lt;/h2>
+&lt;pre>&lt;code># netstat -natp | grep ftp
+&lt;/code>&lt;/pre>
+&lt;h2 id="configuration-vsftpd">Configuration vsftpd&lt;/h2>
+&lt;pre>&lt;code># vi /etc/vsftpd.conf
+
+#/etc/vsftpd.conf
+listen=YES
+listen_ipv6=NO
+anonymous_enable=NO
+port_enable=NO
+pasv_enable=YES
+local_enable=YES
+write_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+ftpd_banner=Welcom to My FTP Server!
+ssl_enable=YES
+rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+rsa_private_key=/etc/ssl/private/ssl-cert-snakeoil.key
+listen_port=21
+pasv_min_port=60020
+pasv_max_port=60030
+#utf8_filesystem=YES
+#local_umask=022
+&lt;/code>&lt;/pre></description></item><item><title>linux user command</title><link>https://minuk.dev/wiki/user/</link><pubDate>Tue, 07 Apr 2020 20:35:41 +0900</pubDate><guid>https://minuk.dev/wiki/user/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>check username&lt;/p>
+&lt;p>cat /etc/passwd | grep {username}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>create user &amp;amp; select default shell&lt;/p>
+&lt;p>useradd {username} -m -s /bin/bash&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>password&lt;/p>
+&lt;p>echo {password} | passwd &amp;ndash;stdin {username}&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>home directory&lt;/p>
+&lt;p>mkhomedir_helper {username}&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>Brightness (화면 밝기 조절) command</title><link>https://minuk.dev/wiki/brightness/</link><pubDate>Tue, 07 Apr 2020 20:35:31 +0900</pubDate><guid>https://minuk.dev/wiki/brightness/</guid><description>&lt;h1 id="echo-5000--sudo-tee-sysclassbacklightintel_backlightbrightness">&lt;code>echo 5000 | sudo tee /sys/class/backlight/intel_backlight/brightness&lt;/code>&lt;/h1></description></item><item><title>Wifi commands</title><link>https://minuk.dev/wiki/wifi-command-line/</link><pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate><guid>https://minuk.dev/wiki/wifi-command-line/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>Wifi Adapter 찾기&lt;/p>
+&lt;p>iw dev&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter status&lt;/p>
+&lt;p>ip link show wlp2s0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter Start&lt;/p>
+&lt;p>ip link set wlp2s0 up&lt;/p>
+&lt;h1 id="when-operation-fail-because-of-rfkill">When Operation fail because of rfkill&lt;/h1>
+&lt;h1 id="rfkill-list">$rfkill list&lt;/h1>
+&lt;h1 id="sudo-rfkill-unblock-wifi">$sudo rfkill unblock wifi&lt;/h1>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Adapter interface check&lt;/p>
+&lt;p>iw wlp2s0 link&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Scan&lt;/p>
+&lt;p>iw wlp2s0 scan&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Public Wifi Connect&lt;/p>
+&lt;p>sudo iw dev wlp2s0 connect iptime&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>WPA/WPA2 Wifi Connect&lt;/p>
+&lt;p>$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.conf
+${password}&lt;/p>
+&lt;p>$ sudo wpa_supplicant -B -i wlp2s0 -c wpa_supplicant.conf&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>dhcp&lt;/p></description></item><item><title>Wifi commands</title><link>https://minuk.dev/wiki/wifi/</link><pubDate>Tue, 07 Apr 2020 20:35:07 +0900</pubDate><guid>https://minuk.dev/wiki/wifi/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>Wifi Adapter 찾기&lt;/p>
+&lt;p>iw dev&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter status&lt;/p>
+&lt;p>ip link show wlp2s0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Adapter Start&lt;/p>
+&lt;p>ip link set wlp2s0 up&lt;/p>
+&lt;h1 id="when-operation-fail-because-of-rfkill">When Operation fail because of rfkill&lt;/h1>
+&lt;h1 id="rfkill-list">$rfkill list&lt;/h1>
+&lt;h1 id="sudo-rfkill-unblock-wifi">$sudo rfkill unblock wifi&lt;/h1>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Adapter interface check&lt;/p>
+&lt;p>iw wlp2s0 link&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Wifi Scan&lt;/p>
+&lt;p>iw wlp2s0 scan&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Public Wifi Connect&lt;/p>
+&lt;p>sudo iw dev wlp2s0 connect iptime&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>WPA/WPA2 Wifi Connect&lt;/p>
+&lt;p>$ sudo wpa_passphrase ${SSID} &amp;gt; wpa_supplicant.conf
+${password}&lt;/p>
+&lt;p>$ sudo wpa_supplicant -B -i wlp2s0 -c wpa_supplicant.conf&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>dhcp&lt;/p></description></item><item><title>Linux Command 모음</title><link>https://minuk.dev/wiki/linux-command/</link><pubDate>Tue, 07 Apr 2020 20:34:57 +0900</pubDate><guid>https://minuk.dev/wiki/linux-command/</guid><description>&lt;h1 id="command-line">command line&lt;/h1>
+&lt;ul>
+&lt;li>[[wifi]]&lt;/li>
+&lt;li>[[brightness]]&lt;/li>
+&lt;li>[[rm]]&lt;/li>
+&lt;li>[[tee]]&lt;/li>
+&lt;li>[[glob]]&lt;/li>
+&lt;li>[[free]]&lt;/li>
+&lt;li>[[cache]]&lt;/li>
+&lt;li>[[ffmpeg]]&lt;/li>
+&lt;/ul>
+&lt;h1 id="server">Server&lt;/h1>
+&lt;ul>
+&lt;li>[[simple-file]]&lt;/li>
+&lt;li>[[user]]&lt;/li>
+&lt;li>[[ftp]]&lt;/li>
+&lt;li>[[firewall]]&lt;/li>
+&lt;li>[[ssh server]]&lt;/li>
+&lt;li>[[ssh]]&lt;/li>
+&lt;li>[[mongo]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

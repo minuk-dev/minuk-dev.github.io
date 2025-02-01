@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Blk-Mq on minuk.dev</title><link>https://minuk.dev/tags/blk-mq/</link><description>Recent content in Blk-Mq on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 12 Jan 2021 20:42:47 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/blk-mq/index.xml" rel="self" type="application/rss+xml"/><item><title>Multi-Queue Block IO Queueing (blk-mq)</title><link>https://minuk.dev/wiki/blk-mq/</link><pubDate>Sun, 27 Dec 2020 17:46:35 +0900</pubDate><guid>https://minuk.dev/wiki/blk-mq/</guid><description>&lt;h1 id="multi-queue-block-io-queueing-mechanism">Multi-Queue Block IO Queueing Mechanism&lt;/h1>
+&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;h3 id="background">Background&lt;/h3>
+&lt;ul>
+&lt;li>The standard of storage development moved to Solid State Drives and Non-Volatile Memories from Magnetic hard disks.&lt;/li>
+&lt;li>They do not have random access penalty and can perform high parallel access. Therefore, the bottleneck of computer storage stack moved from the storage device to the operating system.&lt;/li>
+&lt;li>The former design had a signle queue to store block IO requests with a single lock. Instead of this, the blk-mq API spawns multiple queus with individusal entry points local to the CPU, removing the need for a lock.&lt;/li>
+&lt;/ul>
+&lt;h3 id="operation">Operation&lt;/h3>
+&lt;ul>
+&lt;li>When the userspace performs IO to a block device (reading or writing a file, for instance), blk-mq takes action: it will store and manage IO requests to the block device, acting as middleware between the userspace (and a file system, if present) and the block device driver.&lt;/li>
+&lt;li>blk-mq has two group of queues: software staging queus and hardware dispatch queues.&lt;/li>
+&lt;/ul>
+&lt;h3 id="software-staging-queues">Software staging queues&lt;/h3>
+&lt;ul>
+&lt;li>The block IO subsystem adds requests in the software staging queus(represented by &lt;code>struct blk_mq_ctx&lt;/code>) in case that they weren&amp;rsquo;t sent directly to the driver. A request is one or more BIOs. They arrived at the block layer though the data structure struct bio. The block layer will tehn build a new structure from it, the struct request that will be used to communicate with the device driver. Each queue has its own lock and the number of queues is defined by a per-CPU or per-node basis.&lt;/li>
+&lt;li>The statging queue can be used to merge requests for adjacent sectors.&lt;/li>
+&lt;/ul>
+&lt;h3 id="io-schedulers">IO Schedulers&lt;/h3>
+&lt;ul>
+&lt;li>There are several schedulers implemented by the block layer, each one following a heruistic to improve the IO performance. They are &lt;strong>pluggable&lt;/strong>.&lt;/li>
+&lt;/ul>
+&lt;h3 id="hardware-dispatch-queues">Hardware dispatch queues&lt;/h3>
+&lt;ul>
+&lt;li>The hardware queue (represented by &lt;code>struct blk_mq_hw_ctx&lt;/code>) is a struct used by device drivers to map the device sumission queues (or device DMA ring buffer), and are the last step of the block layer submission code before the low level device driver taking ownership of the request.&lt;/li>
+&lt;/ul>
+&lt;h1 id="source-code">Source Code&lt;/h1>
+&lt;h2 id="open-path-based-f2fs">Open Path (Based F2FS)&lt;/h2>
+&lt;ul>
+&lt;li>dentry_open()
+&lt;ul>
+&lt;li>vfs_open()
+&lt;ul>
+&lt;li>do_dentry_open()
+&lt;ul>
+&lt;li>file-&amp;gt;f_op-&amp;gt;open() -&amp;gt; f2fs_file_open()
+&lt;ul>
+&lt;li>dquot_file_open()
+&lt;ul>
+&lt;li>generic_file_open()&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="read-path-based-f2fs">Read Path (Based F2FS)&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>ksys_read()&lt;/p></description></item></channel></rss>

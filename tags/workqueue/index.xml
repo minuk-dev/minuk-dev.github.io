@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Workqueue on minuk.dev</title><link>https://minuk.dev/tags/workqueue/</link><description>Recent content in Workqueue on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 09 Dec 2020 13:31:24 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/workqueue/index.xml" rel="self" type="application/rss+xml"/><item><title>linux-debug/workqueue</title><link>https://minuk.dev/wiki/linux-debug/workqueue/</link><pubDate>Tue, 10 Nov 2020 23:56:55 +0900</pubDate><guid>https://minuk.dev/wiki/linux-debug/workqueue/</guid><description>디버깅을 통해 배우는 리눅스 커널의 구조와 원리</description></item><item><title>workqueue</title><link>https://minuk.dev/wiki/workqueue/</link><pubDate>Mon, 15 Jun 2020 20:14:50 +0900</pubDate><guid>https://minuk.dev/wiki/workqueue/</guid><description>&lt;h2 id="참조-사이트">참조 사이트&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://m.blog.naver.com/PostView.nhn?blogId=leojesus&amp;amp;logNo=80172478497&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F">https://m.blog.naver.com/PostView.nhn?blogId=leojesus&amp;amp;logNo=80172478497&amp;amp;proxyReferer=https:%2F%2Fwww.google.com%2F&lt;/a>&lt;/li>
+&lt;li>workqueue 사용법 : &lt;a href="https://selfish-developer.com/entry/workqueue-%EC%82%AC%EC%9A%A9%EB%B2%95">https://selfish-developer.com/entry/workqueue-%EC%82%AC%EC%9A%A9%EB%B2%95&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="workqueue">workqueue&lt;/h2>
+&lt;ul>
+&lt;li>지연처리를 하기 위해서 사용하는 자료구조 (다른 걸로는 SOFTIRQ, TASKLET 이 있음)&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용방법">사용방법&lt;/h2>
+&lt;ul>
+&lt;li>출처 1: &lt;a href="http://egloos.zum.com/rousalome/v/9982311">http://egloos.zum.com/rousalome/v/9982311&lt;/a>&lt;/li>
+&lt;li>출처 2: &lt;a href="http://egloos.zum.com/rousalome/v/9982570">http://egloos.zum.com/rousalome/v/9982570&lt;/a>&lt;/li>
+&lt;li>&lt;code>INIT_WORK()&lt;/code> 나 &lt;code>DECLARE_WORK()&lt;/code>를 사용해서 초기화
+&lt;ul>
+&lt;li>&lt;code>INIT_WORK()&lt;/code> : 커널이 실제로 &lt;code>INIT_WORK()&lt;/code> 함수를 실행할때 워크를 초기화&lt;/li>
+&lt;li>&lt;code>DELCARE_WORK()&lt;/code> : 커널이 컴파일 될때 세부정보가 포함된 전역 변수 생성&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">INIT_WORK&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>work, handler);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">schedule_work&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>work); &lt;span style="color:#75715e">/* enqueue work into system queue */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue_work&lt;/span>(&lt;span style="color:#f92672">&amp;amp;&lt;/span>workqueue, &lt;span style="color:#f92672">&amp;amp;&lt;/span>work) &lt;span style="color:#75715e">/* enqueue work */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">queue_work_on&lt;/span>(cpu, &lt;span style="color:#f92672">&amp;amp;&lt;/span>workqueue, &lt;span style="color:#f92672">&amp;amp;&lt;/span>work) &lt;span style="color:#75715e">/* enqueue work with exception handling */&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="같이보기-좋은-자료">같이보기 좋은 자료&lt;/h2>
+&lt;ul>
+&lt;li>[[delayed_work]]&lt;/li>
+&lt;/ul></description></item></channel></rss>

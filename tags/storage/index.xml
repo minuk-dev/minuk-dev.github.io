@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Storage on minuk.dev</title><link>https://minuk.dev/tags/storage/</link><description>Recent content in Storage on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Mar 2022 03:37:34 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/storage/index.xml" rel="self" type="application/rss+xml"/><item><title>RAID(Redundant Array of Independent Disks)</title><link>https://minuk.dev/wiki/raid/</link><pubDate>Sun, 23 Aug 2020 20:50:40 +0900</pubDate><guid>https://minuk.dev/wiki/raid/</guid><description>&lt;h2 id="종류">종류&lt;/h2>
+&lt;ul>
+&lt;li>RAID 0 : stripping&lt;/li>
+&lt;li>RAID 1 : mirroring&lt;/li>
+&lt;li>RAID 5 : stripping + mirroring + parity (at least 3 disks)&lt;/li>
+&lt;li>RAID 6 : stripping + mirroring + parity (at least 4 disks)&lt;/li>
+&lt;li>RAID 0 + 1 : mirroring after stripping&lt;/li>
+&lt;li>RAID 10 (1 + 0) : stripping after mirroring&lt;/li>
+&lt;/ul>
+&lt;h2 id="benchmark">Benchmark&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>SSD 에서의 밴치마크 : &lt;a href="https://www.phoronix.com/scan.php?page=article&amp;amp;item=linux55-ssd-raid&amp;amp;num=1">https://www.phoronix.com/scan.php?page=article&amp;amp;item=linux55-ssd-raid&amp;amp;num=1&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>RAID 5 기준으로 작성 다른 RAID 같은 경우 위 링크 참조&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;/th>
+ &lt;th>Btrfs&lt;/th>
+ &lt;th>EXT4&lt;/th>
+ &lt;th>F2FS&lt;/th>
+ &lt;th>XFS&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>Application Start-up Time v3.4.0 (Only Sequential Reads - Xterm)&lt;/td>
+ &lt;td>8.69&lt;/td>
+ &lt;td>0.20&lt;/td>
+ &lt;td>5.51&lt;/td>
+ &lt;td>8.76&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Application Start-up Time v3.4.0 (Sequential Reads + Writes - Xterm)&lt;/td>
+ &lt;td>3.68&lt;/td>
+ &lt;td>2.64&lt;/td>
+ &lt;td>1.62&lt;/td>
+ &lt;td>1.85&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Application Start-up Time v3.4.0 (Only Sequential Reads - GNOME Terminal)&lt;/td>
+ &lt;td>22.70&lt;/td>
+ &lt;td>30.39&lt;/td>
+ &lt;td>15.26&lt;/td>
+ &lt;td>39.19&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Application Start-up Time v3.4.0 (Only Sequential Reads - LibreOffice Writer)&lt;/td>
+ &lt;td>14.34&lt;/td>
+ &lt;td>22.94&lt;/td>
+ &lt;td>10.28&lt;/td>
+ &lt;td>28.06&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Application Start-up Time v3.4.0 (Sequential Reads + Writes - GNOME Terminal)&lt;/td>
+ &lt;td>10.68&lt;/td>
+ &lt;td>7.19&lt;/td>
+ &lt;td>4.77&lt;/td>
+ &lt;td>8.63&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Application Start-up Time v3.4.0 (Sequential Reads + Writes - LivreOffice Writer)&lt;/td>
+ &lt;td>6.93&lt;/td>
+ &lt;td>6.06&lt;/td>
+ &lt;td>2.91&lt;/td>
+ &lt;td>6.33&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>SQLite v3.30.1 (Threads / Copies : 1)&lt;/td>
+ &lt;td>83.30&lt;/td>
+ &lt;td>40.36&lt;/td>
+ &lt;td>46.17&lt;/td>
+ &lt;td>46.38&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>SQLite v3.30.1 (Threads / Copies : 8)&lt;/td>
+ &lt;td>227.68&lt;/td>
+ &lt;td>308.02&lt;/td>
+ &lt;td>412.05&lt;/td>
+ &lt;td>221.80&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Flexible IO Tester v3.16 (Random Write)&lt;/td>
+ &lt;td>115K&lt;/td>
+ &lt;td>93K&lt;/td>
+ &lt;td>85K&lt;/td>
+ &lt;td>122K&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;/li>
+&lt;li>
+&lt;p>대충 이정도만 정리 나머진 직접 링크 가서 확인&lt;/p></description></item><item><title>Storage</title><link>https://minuk.dev/wiki/storage/</link><pubDate>Sun, 23 Aug 2020 20:47:33 +0900</pubDate><guid>https://minuk.dev/wiki/storage/</guid><description>&lt;ul>
+&lt;li>문서 양이 많아져서 분리할 필요가 있어짐에 따라 분리&lt;/li>
+&lt;/ul>
+&lt;h2 id="하위-분류">하위 분류&lt;/h2>
+&lt;ul>
+&lt;li>[[SSD]]&lt;/li>
+&lt;li>[[database]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="관련-논문들">관련 논문들&lt;/h2>
+&lt;ul>
+&lt;li>[[simplessd]]&lt;/li>
+&lt;li>[[Endurable_Transient_Inconsistency_in_Byte_Addressable_Persistent_B+-Tree]]&lt;/li>
+&lt;li>[[LFS]]&lt;/li>
+&lt;li>[[ext4]]{The new ext4 filesystem: current status and future plans}&lt;/li>
+&lt;li>[[F2FS]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="용어">용어&lt;/h2>
+&lt;ul>
+&lt;li>[[cache]]&lt;/li>
+&lt;li>[[RAID]]&lt;/li>
+&lt;li>[[fuse]]&lt;/li>
+&lt;li>[[blk-mq]]&lt;/li>
+&lt;/ul></description></item><item><title>blk_mq</title><link>https://minuk.dev/wiki/blk_mq/</link><pubDate>Fri, 19 Jun 2020 20:23:19 +0900</pubDate><guid>https://minuk.dev/wiki/blk_mq/</guid><description>&lt;p>##blk_mq : Linux Block IO: Introducing Multi-queue SSD Access on Multi-core Systems&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.thomas-krenn.com/en/wiki/Linux_Multi-Queue_Block_IO_Queueing_Mechanism_(blk-mq)_Details">https://www.thomas-krenn.com/en/wiki/Linux_Multi-Queue_Block_IO_Queueing_Mechanism_(blk-mq)_Details&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

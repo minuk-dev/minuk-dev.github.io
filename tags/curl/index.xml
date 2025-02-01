@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Curl on minuk.dev</title><link>https://minuk.dev/tags/curl/</link><description>Recent content in Curl on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 02 Sep 2022 21:59:14 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/curl/index.xml" rel="self" type="application/rss+xml"/><item><title>curl</title><link>https://minuk.dev/wiki/curl/</link><pubDate>Fri, 02 Sep 2022 21:47:51 +0900</pubDate><guid>https://minuk.dev/wiki/curl/</guid><description>&lt;h2 id="참고자료">참고자료&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://www.lesstif.com/software-architect/curl-http-get-post-rest-api-14745703.html">https://www.lesstif.com/software-architect/curl-http-get-post-rest-api-14745703.html&lt;/a>&lt;/li>
+&lt;li>간단한것만 기술, 더 자세한건 참고자료에서 확인&lt;/li>
+&lt;/ul>
+&lt;h2 id="파일-다운">파일 다운&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -o &amp;lt;filename&amp;gt; &amp;lt;url&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -O &amp;lt;url&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="for-rest-api">For REST API&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>-L&lt;/code> : follow redirect, &lt;code>-v&lt;/code> : verbose, &lt;code>-H&lt;/code> : Header&lt;/li>
+&lt;/ul>
+&lt;h3 id="basic">Basic&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -L &amp;lt;url&amp;gt; | jq .
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="with-auth">With Auth&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -v -L -H &lt;span style="color:#e6db74">&amp;#39;Authorization: Bearer &amp;lt;token&amp;gt;&amp;#39;&lt;/span> &amp;lt;url&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="change-method">Change method&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -v -L -X POST &amp;lt;url&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="file">File&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -T &amp;lt;filename&amp;gt; &amp;lt;url&amp;gt; &lt;span style="color:#75715e"># method 랑 조합해서 사용할것&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="form">Form&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>curl -d &lt;span style="color:#e6db74">&amp;#34;foo=bar&amp;amp;x=y&amp;#34;&lt;/span> &amp;lt;url&amp;gt; &lt;span style="color:#75715e"># 자동으로 POST 로 처리&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Web on minuk.dev</title><link>https://minuk.dev/tags/web/</link><description>Recent content in Web on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Fri, 27 Aug 2021 15:25:43 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/web/index.xml" rel="self" type="application/rss+xml"/><item><title>contextmenu</title><link>https://minuk.dev/wiki/contextmenu/</link><pubDate>Thu, 22 Oct 2020 03:41:33 +0900</pubDate><guid>https://minuk.dev/wiki/contextmenu/</guid><description>contextmenu is deprecated.</description></item><item><title>Load Balance</title><link>https://minuk.dev/wiki/load-balance/</link><pubDate>Mon, 13 Jul 2020 20:06:55 +0900</pubDate><guid>https://minuk.dev/wiki/load-balance/</guid><description>&lt;h2 id="기본-개념">기본 개념&lt;/h2>
+&lt;ul>
+&lt;li>한 대의 서버로 여러 Client의 요청을 처리할 수 없고, Client에겐 단일 point 로 보이고 싶을때 사용하는 방법&lt;/li>
+&lt;li>Client가 Load Balancer (이하 LB) 에게 Request를 보내게 하고, LB는 일정한 알고리즘에 따라 Web Application Server(이하 WAS)에게 나눠주는 방법&lt;/li>
+&lt;li>상황에 따라 L4, L7 이 필요하다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="궁금점">궁금점&lt;/h2>
+&lt;h3 id="was는-client를-어떻게-식별identification하나">WAS는 Client를 어떻게 식별(Identification)하나?&lt;/h3>
+&lt;ul>
+&lt;li>당연하게도 cookie 로 식별(Identification)할 수 있다. 하지만 cookie 없이 IP는 식별 불가능한가? 라는 생각이 든다.&lt;/li>
+&lt;li>이를 위한 표준으로 &lt;code>Forwarded&lt;/code> 라는 값이 있고, 여기에 Proxy Ip들을 넣어주면 된다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="was는-client를-어떻게-인증authentication-하나">WAS는 Client를 어떻게 인증(Authentication) 하나?&lt;/h3>
+&lt;ul>
+&lt;li>별도의 인증서버를 두는 방법, JWT 같은 변조 불가능한 Token을 사용하는 방법이 있다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="이런-구조에서-파일-업로드와-같은-기능은-어떻게-되는가">이런 구조에서 파일 업로드와 같은 기능은 어떻게 되는가?&lt;/h3>
+&lt;ul>
+&lt;li>별도의 NAS를 사용하는 방법, DB에 저장하는 방법 등이 있다.&lt;/li>
+&lt;/ul></description></item><item><title>json web token(jwt)</title><link>https://minuk.dev/wiki/jwt/</link><pubDate>Sat, 20 Jun 2020 01:14:03 +0900</pubDate><guid>https://minuk.dev/wiki/jwt/</guid><description>&lt;h2 id="간단-설명">간단 설명&lt;/h2>
+&lt;ul>
+&lt;li>잘된 설명 주소 : &lt;a href="https://velopert.com/2389">https://velopert.com/2389&lt;/a>&lt;/li>
+&lt;li>예전 (고등학교 시절)에 봤던 김포프의 유튜브 : &lt;a href="https://www.youtube.com/watch?v=MUUqogMpGiA">https://www.youtube.com/watch?v=MUUqogMpGiA&lt;/a>&lt;/li>
+&lt;li>사실 설명을 굳이 하는 것보다 내가 jwt를 배웠던 링크만 정리하는게 맞을 것 같아서 이렇게 정리함.&lt;/li>
+&lt;/ul></description></item><item><title>cloudatcost</title><link>https://minuk.dev/wiki/cloudatcost/</link><pubDate>Tue, 07 Apr 2020 22:55:20 +0900</pubDate><guid>https://minuk.dev/wiki/cloudatcost/</guid><description>&lt;h1 id="cloudatcost">CloudatCost&lt;/h1>
+&lt;h2 id="panel-주소">panel 주소&lt;/h2>
+&lt;pre>&lt;code>https://panel.cloudatcost.com/index.php#
+&lt;/code>&lt;/pre>
+&lt;h2 id="idpw">ID/PW&lt;/h2>
+&lt;pre>&lt;code>아이디는 네이버 메일, 패스워드는 네이버 메일에서 cloudatcost 검색하면 최근에 reset한 메일이 있다.
+panel 은 패스워드가 다르다 맨마지막쯔음에 저장되어 있다.
+&lt;/code>&lt;/pre></description></item><item><title>web</title><link>https://minuk.dev/wiki/web/</link><pubDate>Tue, 07 Apr 2020 22:52:05 +0900</pubDate><guid>https://minuk.dev/wiki/web/</guid><description>&lt;h2 id="tool">Tool&lt;/h2>
+&lt;ul>
+&lt;li>[[nginx]]&lt;/li>
+&lt;li>[[cloudatcost]]&lt;/li>
+&lt;li>[[gandi.net]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="projects">Projects&lt;/h2>
+&lt;ul>
+&lt;li>[[my-page]]&lt;/li>
+&lt;/ul>
+&lt;h2 id="basics">Basics&lt;/h2>
+&lt;ul>
+&lt;li>[[Load-Balance]]&lt;/li>
+&lt;li>[[NAS]]&lt;/li>
+&lt;li>[[contextmenu]]&lt;/li>
+&lt;/ul></description></item><item><title>nginx</title><link>https://minuk.dev/wiki/nginx/</link><pubDate>Tue, 07 Apr 2020 22:51:14 +0900</pubDate><guid>https://minuk.dev/wiki/nginx/</guid><description>&lt;h1 id="nginx-관련">Nginx 관련&lt;/h1>
+&lt;h2 id="lmumakerdark98dev-설정">lmu.makerdark98.dev 설정&lt;/h2>
+&lt;pre tabindex="0">&lt;code>server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name _;
+}
+
+map $http_upgrade $connection_upgrade {
+	default upgrade;
+	&amp;#39;&amp;#39; close;
+}
+
+charset utf-8;
+
+server {
+	charset utf-8;
+	server_name lmu.makerdark98.dev; # managed by Certbot
+	rewrite ^/rstudio$ $scheme://$http_host/rstudio/ permanent;
+	rewrite ^/api$ $scheme://$http_host/api/ permanent;
+
+	location / {
+		proxy_pass http://localhost:3000;
+		proxy_redirect http://localhost:3000/ $scheme://$http_host/;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_read_timeout 20d;
+	}
+
+	location /api/ {
+		rewrite ^/api/(.*)$ /$1 break;
+		proxy_pass http://localhost:9999;
+		proxy_redirect http://localhost:9999/ $scheme://$http_host/api;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_read_timeout 20d;
+	}
+	location /rstudio/ {
+		rewrite ^/rstudio/(.*)$ /$1 break;
+		client_max_body_size 50M;
+		proxy_pass http://localhost:8787;
+		proxy_redirect http://localhost:8787/ $scheme://$http_host/rstudio/;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_read_timeout 20d;
+	}
+
+	location /jupyter/ {
+		rewrite ^/(.*)$ /$1 break;
+		client_max_body_size 50M;
+		proxy_pass http://localhost:8888;
+		proxy_redirect http://localhost:8888 $scheme://$http_host/;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		# websocket headers
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection $connection_upgrade;
+		proxy_set_header X-Scheme $scheme;
+		proxy_buffering off;
+	}
+
+	listen [::]:443 ssl ipv6only=on; # managed by Certbot
+		listen 443 ssl; # managed by Certbot
+		ssl_certificate /etc/letsencrypt/live/lmu.makerdark98.dev/fullchain.pem; # managed by Certbot
+		ssl_certificate_key /etc/letsencrypt/live/lmu.makerdark98.dev/privkey.pem; # managed by Certbot
+		include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+	if ($host = lmu.makerdark98.dev) {
+		return 301 https://$host$request_uri;
+	} # managed by Certbot
+
+
+	listen 80 ;
+	listen [::]:80 ;
+	server_name lmu.makerdark98.dev;
+	return 404; # managed by Certbot
+
+
+}
+&lt;/code>&lt;/pre>&lt;h2 id="nginx-log위치">Nginx log위치&lt;/h2>
+&lt;pre>&lt;code>/var/log/nginx/access.log
+/var/log/nginx/error.log
+&lt;/code>&lt;/pre></description></item></channel></rss>

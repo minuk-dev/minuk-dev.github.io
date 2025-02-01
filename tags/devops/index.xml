@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Devops on minuk.dev</title><link>https://minuk.dev/tags/devops/</link><description>Recent content in Devops on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Mon, 04 Sep 2023 01:05:34 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>grafanacon</title><link>https://minuk.dev/wiki/grafanacon/</link><pubDate>Mon, 06 Mar 2023 02:26:29 +0900</pubDate><guid>https://minuk.dev/wiki/grafanacon/</guid><description>&lt;h2 id="links">Links&lt;/h2>
+&lt;ul>
+&lt;li>grafanacon2022 : &lt;a href="https://grafana.com/about/events/grafanacon/2022/">https://grafana.com/about/events/grafanacon/2022/&lt;/a>&lt;/li>
+&lt;li>youtube playlists : &lt;a href="https://www.youtube.com/playlist?list=PLDGkOdUX1Ujr0fY5Fv4bT8i0MURQArPwI">https://www.youtube.com/playlist?list=PLDGkOdUX1Ujr0fY5Fv4bT8i0MURQArPwI&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="notes">Notes&lt;/h2>
+&lt;ul>
+&lt;li>[[beyond-tracing-what-do-we-do-with-all-this-data]]&lt;/li>
+&lt;/ul></description></item><item><title>overlayfs</title><link>https://minuk.dev/wiki/overlayfs/</link><pubDate>Wed, 26 Oct 2022 23:22:33 +0900</pubDate><guid>https://minuk.dev/wiki/overlayfs/</guid><description>&lt;h1 id="참고자료">참고자료&lt;/h1>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.naver.com/alice_k106/221530340759">https://blog.naver.com/alice_k106/221530340759&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://lwn.net/Articles/718062/">https://lwn.net/Articles/718062/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://lwn.net/Articles/636943/">https://lwn.net/Articles/636943/&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://lwn.net/Articles/755889/">https://lwn.net/Articles/755889/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-해석">개인 해석&lt;/h2>
+&lt;ul>
+&lt;li>일단 기본적으로 커널에서 제공해줘야하는 기능이다. 컨테이너를 만들때 이미지의 불변인 부분과 수정된 부분을 분리해야하는데 이를 구현하기 위해 널리 사용된다.&lt;/li>
+&lt;li>커널에서 구현방식은 꾸준히 변화하는것 같은데, lwn 자료를 보면 2018년 이전에는 vfs 를 hack하는 방식으로 구현했었고, 이후에는 일종의 파일시스템으로 취급해서 실제 사용하는 파일시스템 위에 overlayfs 를 덧씌우는 방식으로 구현한다.&lt;/li>
+&lt;li>이런 구현방식은 현재도 유지되고 있는것으로 보인다. &lt;a href="https://elixir.bootlin.com/linux/v6.0.4/source/fs/overlayfs">overlayfs 커널코드 bootlin&lt;/a>:
+&lt;ul>
+&lt;li>구현 내용를 보면 위쪽 레이어와 아래쪽 레이어를 오가는 함수가 존재하며, 조회를 할때 이러한 레이어를 겹쳐서 반환해주는 방식으로 동작하는 것 같다.:
+&lt;ul>
+&lt;li>궁금점 : 성능 이슈는 없나? 어떠한 파일이 존재하지 않는지를 언제나 모든 레이어를 조회해야한다거나, 파일이 통채로 바뀌었음에도 불구하고 모든 레이어에서 겹치느라 추가적인 메모리를 사용하지는 않나?&lt;/li>
+&lt;li>아직 코드를 다 읽지는 못했지만, 2018년에 별도의 파일시스템으로 분리된 것만 봐도 아직 최적화할 부분이 많을 것 같다.&lt;/li>
+&lt;li>컨테이너가 그냥 프로세스임에도 불구하고 성능이 하락하기는 하는데, 이런 포인트들이 조금씩 깍아 먹는것 같다.:
+&lt;ul>
+&lt;li>개인 생각은 그냥 프로세스니 VM이랑 성능 비교를 하는게 아니라 베어메탈이랑 비교해야한다고 생각한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>실제로 코드에 TODO가 드문드문 보인다.&lt;/li>
+&lt;li>성능에 대한 생각은 overlayfs 개발자도 고민하고 있는게 눈에 보이는게 dentry랑 cache 관련 코드가 밟힌다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>selinux</title><link>https://minuk.dev/wiki/selinux/</link><pubDate>Sat, 03 Sep 2022 05:23:50 +0900</pubDate><guid>https://minuk.dev/wiki/selinux/</guid><description>&lt;h2 id="공부-계기">공부 계기&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/containerd/nerdctl">nerdctl&lt;/a> 에 최근 기여하게 되면서 issue를 유심히 보게되었는데 &lt;a href="https://github.com/containerd/nerdctl/issues/1336">selinux 관련 주제&lt;/a>로 불타서 대충 개념만 알고 있었는데, 구현레벨에서 이걸 어떻게 하는지를 전혀 모르고 있다는 것을 알게 되었다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개념">개념&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Security Enhanced Linux&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>상태나 생긴 이유나 이런건 다른 곳에도 많이 나와있으므로 스킵&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>구현과 동작 방식:&lt;/p>
+&lt;ul>
+&lt;li>Kernel space 에 Security Policy 와 AVC(Access Vector Cache) 가 있다.&lt;/li>
+&lt;li>이를 통해서 유저레벨에서 뿐만 아니라 추가적으로 관리를 한다.&lt;/li>
+&lt;li>동작하는 코드는 아래 순서로 보면 쉽다.:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L7081">file_ioctl 을 호출할 때 selinux_file_ioctl 훅을 걸도록 설정된 코드&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L3684">ioctl_has_perm 을 호출하며 권한을 체크하는 코드&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/selinux/hooks.c#L3642">ioctl_has_perm 내부적으로 avc_has_extended_perms, avc_has_perm 등 권한 체크하는 코드&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>결론적으로 말하면 SELinux 를 쓰면 성능이 감소한다는 이야기는 어느정도 사실이다. hook 을 걸어 추가 로직을 동작시키는 방식이니까, 하지만 진짜 그렇게 떨어지나 보기는 조금 어렵다.:
+&lt;ul>
+&lt;li>&lt;a href="https://www.phoronix.com/news/Fedora-23-SELinux-Impact">phoronix-Fedora 23 SELinux Impact&lt;/a> 자료를 보면 유의미하게 떨어진다고 보기 어려운 결과가 나온다. 저정도 성능감소 때문에 서버에서 SELinux 를 못킨다? c, rust 말고는 어플리케이션 금지하는건가? 그게 훨씬 유의미 하지 않나? 이런 생각이 들거 같다.&lt;/li>
+&lt;li>뭐 이것저것 추가적인 권한제어 로직이 있는거니 작업하기 번거롭기는 할 것 같다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>아직 이해하지 못한 부분:&lt;/p></description></item><item><title>DevOps와 SE를 위한 리눅스 커널 이야기</title><link>https://minuk.dev/wiki/devops%EC%99%80-se%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EC%9D%B4%EC%95%BC%EA%B8%B0/</link><pubDate>Mon, 22 Aug 2022 13:49:39 +0900</pubDate><guid>https://minuk.dev/wiki/devops%EC%99%80-se%EB%A5%BC-%EC%9C%84%ED%95%9C-%EB%A6%AC%EB%88%85%EC%8A%A4-%EC%BB%A4%EB%84%90-%EC%9D%B4%EC%95%BC%EA%B8%B0/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>이 책은 실습과 개념, Tip 이 동시에 존재하는 책이다.&lt;/li>
+&lt;li>개념, 실습에 대한 내용은 책을 반드시 참고하자. 실험이 알차다.&lt;/li>
+&lt;li>여기선 Tip 에 해당하는 각 챕터의 요약부분만을 정리해둔다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="1-시스템-구성-정보-확인하기">1. 시스템 구성 정보 확인하기&lt;/h2>
+&lt;ul>
+&lt;li>demidecode 명령을 통해서 CPU, 메모리, BIOS 등의 정보를 확인할 수 있다.&lt;/li>
+&lt;li>CPU 정보는 &lt;code>/proc/cpuinfo&lt;/code> 파일을 통해서도 확인할 수 있다.&lt;/li>
+&lt;li>free 명령을 통해서 시스템에 설치된 메모리의 전체 크기를 알 수 있다.&lt;/li>
+&lt;li>시스템에 마운트된 블록 디바이스의 정보는 df 명령을 통해 확인할 수 있다.&lt;/li>
+&lt;li>네트워크 카드 정보는 ethtool 명령을 통해서 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -g 옵션으로 네트워크 카드에 설정된 Ring Buffer의 최대 크기와 현재 크기를 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -k 옵션으로 네트워크 카드의 부수적인 기능들을 확인할 수 있다.&lt;/li>
+&lt;li>ethtool 명령 중 -i 옵션으로 네트워크 카드가 사용 중인 커널 드라이버의 정보를 확인할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="2-top을-통해-살펴보는-프로세스-정보들">2. top을 통해 살펴보는 프로세스 정보들&lt;/h2>
+&lt;ul>
+&lt;li>top 명령으로 현재 시스템의 CPU, Memory, swap의 사용량 및 각 프로세스들의 상태와 메모리 점유 상태를 확인할 수 있다.&lt;/li>
+&lt;li>top 명령의 결과 중 VIRT는 프로세스에게 할당된 가상 메모리 전체의 크기를 가리킨다. RES는 그 중에서도 실제로 메모리에 올려서 사용하고 있는 물리 메모리의 크기, 그리고 SHR은 다른 프로세스와 공유하고 있는 메모리의 크기를 의미한다.&lt;/li>
+&lt;li>커널은 프로세스가 메모리를 요청할 때 그에 맞는 크기를 할당해주지만 해당 영역을 물리 메모리에 바로 할당하지는 않는다. Memory Commit 참고- &lt;code>vm.overcommit_memory&lt;/code> 는 커널의 Memory Commit 동작 방식을 변경할 수 있게 해주는 커널 파라미터이다.&lt;/li>
+&lt;li>top으로 볼 수 있는 프로세스의 상태 중 D는 I/O 대기중인 프로세스, R은 실제 실행 중인 프로세스, S는 sleep 상태의 프로세스를 의미한다. T는 tracing 중인 프로세스, Z는 좀비 상태의 프로세스를 의미한다.&lt;/li>
+&lt;li>프로세스에는 우선순위가 있어 우선순위값이 더 작을 수록 빨리 실행된다. 우선순위는 nice 명령을 통해서 조절될 수 있다.&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>개인 생각: nice를 조절해본 경험이 없는데, 조절할일이 많나?&lt;/li>
+&lt;/ul>
+&lt;h2 id="3-load-average와-시스템-부하">3. Load Average와 시스템 부하&lt;/h2>
+&lt;ul>
+&lt;li>Load Average는 실행 중 혹은 실행 대기 중이거나 I/O 작업 등을 위해 대기 큐에 있는 프로세스들의 수를 기반으로 만들어진 값이다.&lt;/li>
+&lt;li>Load Average 자체의 절대적인 높음과 낮음은 없다.&lt;/li>
+&lt;li>커널에도 버그가 있을 수 있으므로 Load Average 값을 절대적으로 신뢰해서는 안된다.&lt;/li>
+&lt;li>vmstat 툴도 시스템 부하를 측정하는데 사용할 수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/sched_debug&lt;/code>는 nr_running과 runnable tasks 항목에서 각 CPU에 할당된 프로세스 수와 프로세스의 PID 등 정보를 확인할수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="4-free-명령이-숨기고-있는-것들">4. free 명령이 숨기고 있는 것들&lt;/h2>
+&lt;ul>
+&lt;li>free 명령으로 볼 수 있는 buffers 는 파일 시스템의 메타 데이터 등을 저장하고 있는 블록 디바이스의 블록을 위한 캐시이다.&lt;/li>
+&lt;li>free 명령으로 볼 수 있는 cached는 I/O 작업의 효율성을 위해 한번 읽은 파일의 내용을 저장하는 데 사용하는 캐시이다.&lt;/li>
+&lt;li>buffers와 cached는 미사용중인 메모리 영역을 시스템의 효율성을 위해서 커널이 사용하고 있는 것이며, 프로세스가 요청하면 이 영역을 해제하여 프로세스에게 전달해 줄수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/meminfo&lt;/code> 에서 보이는 anon 영역은 프로세스에서 사용하는 영역, file 영역은 I/O 를 위한 캐시이다.&lt;/li>
+&lt;li>slab 영역은 커널이 사용하는 캐싱 영역을 의미, dentry cache, inode cache 등 다양한 캐싱 용도로 사용된다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="5-swap-메모리-증설의-포인트">5. swap, 메모리 증설의 포인트&lt;/h2>
+&lt;ul>
+&lt;li>버디시스템&lt;/li>
+&lt;li>swap 을 사용할 경우 성능하락이 생길수 있다.&lt;/li>
+&lt;li>swap 영역을 사용할 때에는 어떤 프로세스에서 swap 영역을 사용하는지 정확하게 알 필요가 있으며 smem 이라는 툴을 이용해 빠르게 확인할 수 있다.&lt;/li>
+&lt;li>&lt;code>vm.swappiness&lt;/code> 파라미터를 통해서 메모리 재할당시, swap을 사용하게 할지 페이지 캐시를 해제하게 할지 비율을 조절할 수 있다.&lt;/li>
+&lt;li>&lt;code>vm.vfs_cache_pressure&lt;/code> 파라메터를 통해 메모리 재할당시, 페이지 캐시를 더 많이 해제할지 vfs 관련 cache를 더 많이 해제할지 비율을 조절할 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="6-numa-메모리-관리의-새로운-세계">6. NUMA, 메모리 관리의 새로운 세계&lt;/h2>
+&lt;h3 id="개인-의견">개인 의견&lt;/h3>
+&lt;ul>
+&lt;li>NUMA는 예전에 논문 볼때 봤던건데, 최근 본 kubecon에서도 관련 자료가 있고, 이 책에도 있어 좀 놀랐다. 이게 이렇게나 기본 상식인지 몰랐다.&lt;/li>
+&lt;li>내용 자체는 좋으나 난이도가 있다고 생각해서, 모두 적지는 않는다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약">요약&lt;/h3>
+&lt;ul>
+&lt;li>NUMA : Non-Uniform Memory Access, 하드웨어 설계에 따른 cpu에 따라 특정 메모리에 접근하는 속도가 각기 다르다.&lt;/li>
+&lt;li>numastat, numactl 명령어를 사용해서 NUMA 의 상태, 제어를 할 수 있다.&lt;/li>
+&lt;li>&lt;code>/proc/&amp;lt;pid&amp;gt;/numa_maps&lt;/code> 에 process 별 numa 정보가 확인 가능하다.&lt;/li>
+&lt;li>numad 는 데몬으로 상주하면서 프로세스의 numa 상태를 최적화한다. 하지만 항상 최적화가 좋은건 아니다.&lt;/li>
+&lt;li>&lt;code>vm.zone_reclaim_mode&lt;/code> 는 zone 에서 최대한 재할당해서 메모리를 확보하려고 노력할지, 최대한 다른 zone 을 통해서 메모리를 확보할지를 결정하는 변수이다.&lt;/li>
+&lt;li>numa 정책:
+&lt;ul>
+&lt;li>bind : 특정 노드에서 메모리를 할당받도록 강제한다.&lt;/li>
+&lt;li>preferred : 선호하는 노드를 정하되, 부족하면 다른 곳에서 받는다.&lt;/li>
+&lt;li>interleave : 최대한 여러 노드에서 균등하게 받도록 한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>NUMA 아키텍쳐와 관련된 workload는 요구되는 memory size와 process의 thread 방식에 가장 큰 영향을 받는다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="7-time_wait-소켓이-서비스에-미치는-영향">7. TIME_WAIT 소켓이 서비스에 미치는 영향&lt;/h2>
+&lt;h3 id="개인-의견-1">개인 의견&lt;/h3>
+&lt;ul>
+&lt;li>워낙에 유명한 문제이기도 하고, 운영을 배울때 거의 단골로 나오는 내용이라 정리한다는 느낌으로만 봤다.&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약-1">요약&lt;/h3>
+&lt;ul>
+&lt;li>TIME_WAIT 소켓은 먼저 연결을 끊는 쪽에서 발생한다.&lt;/li>
+&lt;li>클라이언트 입장에서의 TIME_WAIT 소켓은 tw_reuse 파라미터를 통해 재사용할 수 있기 때문에 로컬 포트 고갈 문제는 발생하지 않는다.&lt;/li>
+&lt;li>불필요한 TCP 3 way handshake가 일어날 수 있기 때문에 가급적, Connection Pool 방식을 적용해 TIME_WAIT 소켓을 줄이도록 한다.&lt;/li>
+&lt;li>서버 입장에서는 TIME_WAIT 소켓은 tw_recycle 파라미터를 통해 빠르게 회수 할 수 있지만, 권장되지는 않는다. 근본적인 문제(connection 이 지나치게 낭비된다거나 등)를 찾아서 해결해야한다.&lt;/li>
+&lt;li>서버 입장에서 keepalive 기능을 켬으로써 불필요한 TCP 3way handshake 를 줄일 수도 있고 TIME_WAIT 소켓도 줄일수 있다. 서비스의 응답 속도 향상이 가능하지만, keepalive 가 가져올수 있는 문제점이 있기에 사용 시 테스트를 반드시 해봐야한다. 자세한건 keepalive 관련 챕터 및 LB 관련 내용 참고&lt;/li>
+&lt;li>TIME_WAIT 소켓은 정상적인 TCP 연결 해제를 위해 반드시 필요하다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="8-tcp-keepalive-를-이용한-세션-유지">8. TCP Keepalive 를 이용한 세션 유지&lt;/h2>
+&lt;ul>
+&lt;li>TCP Keepalive 는 커널레벨에서 종단 간의 세션을 유지시켜주는 기능을 한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_time 는 두 종단 간의 연결이 유지되어 있는지를 keepalive 패킷을 보내는 주기를 설정한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_probes 는 keepalive 패킷에 대한 응답을 받지 못했을 때 추가로 보내는 패킷의 개수를 지정한다.&lt;/li>
+&lt;li>net.ipv4.tcp_keepalive_intvl은 keepalive 패킷에 대한 응답을 받지 못해서 재전송 패킷을 보낼 때 필요한 주기를 설정한다.&lt;/li>
+&lt;li>tcp keepalive 설정으로 좀비 커넥션을 관리한다.&lt;/li>
+&lt;li>HTTP keepalive가 설정되어 있다면 tcp keepalive 설정 값과 다르다고 해도 의도한 대로 동작한다. 혼동하지 말자&lt;/li>
+&lt;li>LB 환경에서는 TCP Keepalive 가 설정되어 있지 않다면 LB Idle time 값을 참조해 설정해야 한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="9-tcp-재전송과-타임아웃">9. TCP 재전송과 타임아웃&lt;/h2>
+&lt;ul>
+&lt;li>RTO(Retransmission Timeout)&lt;/li>
+&lt;li>TCP 재전송은 RTO를 기준으로 발생한다.&lt;/li>
+&lt;li>RTO 는 RTT를 기반으로 동적으로 생성된다.&lt;/li>
+&lt;li>관련 파라메터:
+&lt;ul>
+&lt;li>net.ipv4.tcp_syn_retries&lt;/li>
+&lt;li>net.ipv4.tcp_synack_retries&lt;/li>
+&lt;li>net.ipv4.tcp_orphan_retries&lt;/li>
+&lt;li>net.ipv4.tcp_retries1, net.ipv4.tcp_retries2&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>최소한 한번의 재전송은 견딜 수 있도록 connection timeout 은 3s, read tiemout 은 300ms 이상으로 설정하는 것이 좋다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="10-dirty-page가-io에-끼치는-영향">10. dirty page가 I/O에 끼치는 영향&lt;/h2>
+&lt;ul>
+&lt;li>관련 파라메터:
+&lt;ul>
+&lt;li>vm.dirty_ratio&lt;/li>
+&lt;li>vm.dirty_background_ratio&lt;/li>
+&lt;li>vm.dirty_background_bytes&lt;/li>
+&lt;li>vm.dirty_writeback_centisecs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>diry page를 너무 빨리 동기화시키면 flush 커널 스레드가 너무 자주 깨어나게 되며, dirty page를 너무 늦게 동기화시키면 동기화해야할 dirty page가 너무 많아서 vm.dirty_ratio 에 도달할 가능성이 커지게 된다. 워크로드와 시스템 구성에 맞게 적절히 설정해주어야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="11-io-작업이-지나가는-관문-io-스케줄러">11. I/O 작업이 지나가는 관문, I/O 스케줄러&lt;/h2>
+&lt;ul>
+&lt;li>&lt;code>/sys/block/&amp;lt;block device&amp;gt;/queue/scheduler&lt;/code> 에서 현재 사용하는 스케줄러, 사용 가능한 스케줄러 정보를 보고, 수정할 수 있다.&lt;/li>
+&lt;li>cfq, deadline, noop I/O scheduler&lt;/li>
+&lt;li>iotop 을 사용해서 I/O 프로세스를 확인 할 수 있다.&lt;/li>
+&lt;li>perf-tools 중에 iosnoop 은 I/O 요청들의 섹터 주소를 볼 수 있기에 순차 접근이 많은지 임의 접근이 많은지에 대한 I//O 워크로드 패턴을 살펴볼 수 있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="12-어플리케이션-성능-측정과-튜닝">12. 어플리케이션 성능 측정과 튜닝&lt;/h2>
+&lt;ul>
+&lt;li>워커 수를 최소한 CPU 코어 수와 같은 수로 설정해서 CPU 리소스를 최대로 사용할수 있도록 구성한다.&lt;/li>
+&lt;li>TIME_WAIT 소켓이 생긴다면 연결을 유지한 상태로 사용해 성능을 향상시킬수 있다.&lt;/li>
+&lt;li>다른 서비스들과 연동할 때 keepalive 옵션과 커넥션 풀 방식을 사용해 성능을 증가 시킬수 있다.&lt;/li>
+&lt;li>시스템 리소스가 부족함이 없을때 응답 속도가 느려질 경우 워커 설정 및 소프트웨어적 설정에 문제가 있는지 확인해야한다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개인-정리">개인 정리&lt;/h2>
+&lt;ul>
+&lt;li>개인적으로 알고 있었던 설정들도 있고, 모르고 있던 설정들도 있는데 전반적으로 한곳에 이런걸 모아둬서 정리하는 보람이 있었다.&lt;/li>
+&lt;li>사실 지식으로만 알고 있던 부분들을 실습을 섞어서 수치로 볼수 있게 구성되어 있어 책 자체 퀄리티가 좋다고 생각한다.&lt;/li>
+&lt;li>몇몇 커널 파라메터는 너무 어렵다. 수치를 보면서도 바로바로 해석이 안된다.&lt;/li>
+&lt;/ul></description></item><item><title>12요소 어플리케이션</title><link>https://minuk.dev/wiki/twelve-factor-app/</link><pubDate>Thu, 18 Aug 2022 15:07:21 +0900</pubDate><guid>https://minuk.dev/wiki/twelve-factor-app/</guid><description>&lt;h2 id="공부-계기">공부 계기&lt;/h2>
+&lt;ul>
+&lt;li>[[kubernetes-patterns]] 의 11장에서 언급되어있다.&lt;/li>
+&lt;li>참고자료 : &lt;a href="https://assu10.github.io/dev/2020/12/27/12factor-app/">클라우드에서의 운영 - 12요소 애플리케이션&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="구성요소">구성요소&lt;/h2>
+&lt;ol>
+&lt;li>Codebase : 각 마이크로서비스는 각자 코드베이스를 가지고 있고, 공유되지 않는다.&lt;/li>
+&lt;li>Dependencies : 의존성을 명시적으로 관리하여야 한다.&lt;/li>
+&lt;li>Config : 환경설정은 코드와 분리된다.&lt;/li>
+&lt;li>Backing services : backing services 는 URL로 접근 가능해야한다.&lt;/li>
+&lt;li>Build, release, run : 이 3단계가 명확히 분리되어야 한다.&lt;/li>
+&lt;li>Processes : 무상태, 비공유 프로세스여야 한다. 만약 상태가 필요하면 backing services에서 처리한다.&lt;/li>
+&lt;li>Port binding : 서비스 자체로 port binding 이 가능해야한다. (tomcat 같은게 내장되어야한다.)&lt;/li>
+&lt;li>Concurrency : 복제를 통한 확장이 가능해야한다.&lt;/li>
+&lt;li>Disposability : 시작과 종료는 최대한 빨리 그리고 gracefully shutdown 이 되어야한다.&lt;/li>
+&lt;li>Dev/prod parity : 운영을 개발에서 재연가능해야한다.&lt;/li>
+&lt;li>Logs : I/O가 병목이 될수 있으므로 바깥쪽으로 빼야한다. (기타 이유들도 있으니 참고자료 확인)&lt;/li>
+&lt;li>Admin processes : 관리자를 위해 태스크를 지원해야한다.&lt;/li>
+&lt;/ol></description></item><item><title>Horizontal Pod AutoScaler</title><link>https://minuk.dev/wiki/horizontalpodautoscaler/</link><pubDate>Thu, 11 Aug 2022 13:36:02 +0900</pubDate><guid>https://minuk.dev/wiki/horizontalpodautoscaler/</guid><description>&lt;h2 id="공부하게된-이유">공부하게된 이유&lt;/h2>
+&lt;ul>
+&lt;li>면접때 autoscaling 에 대한 질문이 나왔는데 한번도 k8s 에서 auto scaling 을 해본적이 없었다.&lt;/li>
+&lt;li>모든 auto scaling 에 대한 답이 horizontal pod autoscaling 인 건 아니긴 하지만, 면접에서 요구한 건 이 지식이였다.&lt;/li>
+&lt;li>&lt;a href="https://kubernetes.io/ko/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/">공식 문서&lt;/a>를 따라하면서 한번 공부해보자.&lt;/li>
+&lt;/ul>
+&lt;h2 id="개념">개념&lt;/h2>
+&lt;ul>
+&lt;li>메트릭을 관찰해서 Deployment 의 scale을 변화시켜주는 구조.&lt;/li>
+&lt;li>명령을 실행하는 시점에서 최대, 최소의 scale 을 입력해준다.&lt;/li>
+&lt;li>추가적으로 메트릭을 임의로 정의해서 조절시킬수 있다.&lt;/li>
+&lt;li>공식 문서에 나와있는 기본 예제는 CPU 사용량을 기준으로 하고 있으며, 다양한 resource 에 대해서 기본적으로 지원한다.&lt;/li>
+&lt;/ul></description></item><item><title>What If… Kube-Apiserver Could be Extended Via WebAssembly?</title><link>https://minuk.dev/wiki/what-if-kube-apiserver-could-be-extended-via-webassembly/</link><pubDate>Thu, 11 Aug 2022 01:58:52 +0900</pubDate><guid>https://minuk.dev/wiki/what-if-kube-apiserver-could-be-extended-via-webassembly/</guid><description>&lt;p>&lt;a href="https://www.youtube.com/watch?v=4CKcMZySUbc&amp;amp;list=PLj6h78yzYM2MCEgkd8zH0vJWF7jdQ-GRR&amp;amp;index=2">출처&lt;/a>&lt;/p>
+&lt;h2 id="what-is-web-assembly">What is Web Assembly?&lt;/h2>
+&lt;ul>
+&lt;li>Polyglot
+&lt;ul>
+&lt;li>Many langugages can be compiled to Wasm(Web assembly)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Small
+&lt;ul>
+&lt;li>Like Container&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Portable
+&lt;ul>
+&lt;li>Can run on any architecture and any OS&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Secure
+&lt;ul>
+&lt;li>In sandbox&lt;/li>
+&lt;li>Memory safety&lt;/li>
+&lt;li>Control-flow integrity&lt;/li>
+&lt;li>Runtime isolation&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="webassembly-outside-of-the-browser">WebAssembly Outside of the Browser&lt;/h2>
+&lt;ul>
+&lt;li>A new way to build and distribute applications&lt;/li>
+&lt;li>Implement plugin systems&lt;/li>
+&lt;/ul>
+&lt;h2 id="kubernetes-control-plan-extensibility">Kubernetes Control Plan Extensibility&lt;/h2>
+&lt;ul>
+&lt;li>Authentication and Autorization&lt;/li>
+&lt;li>Scheduler&lt;/li>
+&lt;li>Dynamic Admission Controllers&lt;/li>
+&lt;/ul>
+&lt;h3 id="dynamic-admission-controller">Dynamic Admission Controller&lt;/h3>
+&lt;ul>
+&lt;li>Authentication, Authorization&lt;/li>
+&lt;li>Mutating admission&lt;/li>
+&lt;li>Schema Validation&lt;/li>
+&lt;li>Validating admission&lt;/li>
+&lt;/ul>
+&lt;h2 id="introducting-kubewarden">Introducting Kubewarden&lt;/h2>
+&lt;ul>
+&lt;li>A policy engine for Kubernetes&lt;/li>
+&lt;li>Its mission is to simplify the adoption of Policy As Code.&lt;/li>
+&lt;/ul>
+&lt;h3 id="kubewarden-policies">Kubewarden Policies&lt;/h3>
+&lt;ul>
+&lt;li>Written using:
+&lt;ul>
+&lt;li>Rust, Go, AssemblyScript, Swift&lt;/li>
+&lt;li>Rego&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Compiled to WebAssembly&lt;/li>
+&lt;li>Distributed using container registries&lt;/li>
+&lt;li>Signed and verified using Sigstore&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-idea">The Idea&lt;/h3>
+&lt;ul>
+&lt;li>Define admission rules using WebAssembly modules&lt;/li>
+&lt;li>Extend the API server to make use of WebAssembly-based rules&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-do-we-gain">What do we gain?&lt;/h2>
+&lt;h3 id="remove-uncertainty">Remove Uncertainty&lt;/h3>
+&lt;ul>
+&lt;li>Webhooks rely on the network&lt;/li>
+&lt;li>The network introduces many types of failures&lt;/li>
+&lt;li>The network increase attack surface&lt;/li>
+&lt;/ul>
+&lt;h3 id="limit-resource-usage">Limit Resource Usage&lt;/h3>
+&lt;ul>
+&lt;li>A set of Kubernetes Cusom Resource Definitions&lt;/li>
+&lt;li>&lt;del>The Webhook server&lt;/del>&lt;/li>
+&lt;li>&lt;del>The Controller that reconciles the Custom Resources&lt;/del>&lt;/li>
+&lt;/ul>
+&lt;p>→ Great for Edge environments!&lt;/p></description></item><item><title>The Future Of Reproducible Research - Powered by Kubeflow</title><link>https://minuk.dev/wiki/the-future-of-reproducible-research-powered-by-kubeflow/</link><pubDate>Sat, 06 Aug 2022 00:54:31 +0900</pubDate><guid>https://minuk.dev/wiki/the-future-of-reproducible-research-powered-by-kubeflow/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/JiqY5lWbFVE">출처&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;h3 id="articles-about-why-reproducible-research-is-important">Articles About Why Reproducible Research is Important&lt;/h3>
+&lt;h3 id="the-replication-crisis-what-is-it">The Replication Crisis: What Is It?&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphrase:
+&lt;ul>
+&lt;li>Many scientific studies are difficult or impossible to reproduce.&lt;/li>
+&lt;li>Most prevalent in psychology and medicine, but also serious in other natural and social sciences.&lt;/li>
+&lt;li>Term coined in eary 2010s, gave rise to meta-science discipline.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis--causes">The Replication Crisis : Causes&lt;/h3>
+&lt;ul>
+&lt;li>Wikipiedia Article Paraphrase:
+&lt;ul>
+&lt;li>C ommodification of Science&lt;/li>
+&lt;li>Publish or Perish Culture in Academia&lt;/li>
+&lt;li>Fraud and otherwise “Questionable” Research Practices&lt;/li>
+&lt;li>Statistical Issues&lt;/li>
+&lt;li>Base Rate Hypotheses Accuracy&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis-consequences">The Replication Crisis: Consequences&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphrase:
+&lt;ul>
+&lt;li>Political repercussions&lt;/li>
+&lt;li>Public awareness and perceptions&lt;/li>
+&lt;li>Response in Academia&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-replication-crisis-potential-remedies">The Replication Crisis: Potential Remedies&lt;/h3>
+&lt;ul>
+&lt;li>Wikipedia Article Paraphase:
+&lt;ul>
+&lt;li>Reforms in publishing&lt;/li>
+&lt;li>Statistical Reform&lt;/li>
+&lt;li>Replication Efforts&lt;/li>
+&lt;li>Changes to scientific approach&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="my-experience-trying-to-reproduce-research">My Experience Trying to Reproduce Research&lt;/h3>
+&lt;ul>
+&lt;li>Grad Student/ Academic Papers&lt;/li>
+&lt;li>Working on someone else’s old junk code&lt;/li>
+&lt;li>Working on my own old junk code&lt;/li>
+&lt;/ul>
+&lt;h2 id="what-we-did">What we did&lt;/h2>
+&lt;h3 id="tower-of-babel-making-apache-spark-k8s-and-kubeflow-play-nice">Tower of Babel: Making Apache Spark, K8s, and Kubeflow Play Nice&lt;/h3>
+&lt;h3 id="10-minute-quick-overview-of-kf4covid">10 Minute Quick Overview of KF4COVID&lt;/h3>
+&lt;ul>
+&lt;li>Early days of pandemic - everyone was scared, no solutions were out of bounds.&lt;/li>
+&lt;li>Various ERs turned to CT scans and ultrasounds to detect ‘ground glass occlusions’ a hallmark of covid (technique has been used in ERs in the past for rapid pneumonia detection).&lt;/li>
+&lt;li>CT Scans deliver high dose of radition&lt;/li>
+&lt;li>Low Dose CT Scans deliver, low dose of radiation, but produce ‘noisy’ images.&lt;/li>
+&lt;li>We used K8s, Apache Spark, Apache Mahout &amp;amp; Kubeflow to denoise CT Scans&lt;/li>
+&lt;/ul>
+&lt;h3 id="rapid-testing-needed--desperately">Rapid Testing Needed -Desperately&lt;/h3>
+&lt;ul>
+&lt;li>Mental Time Machine - to March 2020.
+&lt;ul>
+&lt;li>No one understands Coronavirus - but hospitals are being overrune and people are dying.&lt;/li>
+&lt;li>Slow Tests&lt;/li>
+&lt;li>Rapid test “issues”&lt;/li>
+&lt;li>No answer was ‘out of bounds’&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-pipeline-overview">The Pipeline: Overview&lt;/h3>
+&lt;ul>
+&lt;li>S3 Buckets of images (can be easily swapped out to other image repo)&lt;/li>
+&lt;li>PyDiCOM to turn CT scan into numerical matrix, write matrix to disk&lt;/li>
+&lt;li>Load matrix in apache spark (~500 MB each) then wrap RDD into Mahout DRM&lt;/li>
+&lt;li>DS-SVD on Mahout DRM (why couldn’t do this in Numpy?)&lt;/li>
+&lt;li>DS-SVD results in two matrices- one of basis vectors, one of weights per image - to “de noise” you only use first X% of basis vectors. These get output and can be easily rastered using a laptop.&lt;/li>
+&lt;/ul>
+&lt;h2 id="call-to-action--how-you-can-do-the-same">Call to action / How you can do the same&lt;/h2>
+&lt;ul>
+&lt;li>Assume they won’t be using your laptop.&lt;/li>
+&lt;/ul>
+&lt;h3 id="use-kubeflow">Use Kubeflow&lt;/h3>
+&lt;p>Assuming someone will want to replicate your work, and that they won’t have access to your machine, Kubeflow provides a nice framework for reproducing results.&lt;/p></description></item><item><title>This is The Way- A Crash Course on the Intricacies of Managing CPUs in K8s</title><link>https://minuk.dev/wiki/this-is-the-way-a-crash-course-on-intricacies-of-managing-cpus/</link><pubDate>Fri, 05 Aug 2022 02:07:46 +0900</pubDate><guid>https://minuk.dev/wiki/this-is-the-way-a-crash-course-on-intricacies-of-managing-cpus/</guid><description>&lt;ul>
+&lt;li>&lt;a href="https://youtu.be/IFEJD1YOpXo">원본 링크&lt;/a>&lt;/li>
+&lt;li>Scope : We will cover CPU Management requirements Only, but also reference other projects.&lt;/li>
+&lt;/ul>
+&lt;h2 id="simple-systems">Simple Systems&lt;/h2>
+&lt;ul>
+&lt;li>Nodes
+&lt;ul>
+&lt;li>Single NIC&lt;/li>
+&lt;li>Single Socket CPU&lt;/li>
+&lt;li>Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Kubelet was designed for simple at first&lt;/li>
+&lt;li>Early Kubelet&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># &amp;lt; Kubernetes v1.8 - before 2017&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">apiVersion&lt;/span>: &lt;span style="color:#ae81ff">v1&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">kind&lt;/span>: &lt;span style="color:#ae81ff">Pod&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">metadata&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">frontend&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">spec&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">containers&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> - &lt;span style="color:#f92672">name&lt;/span>: &lt;span style="color:#ae81ff">app&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">image&lt;/span>: &lt;span style="color:#ae81ff">my-company.example/myapp&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">resources&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">requests&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">memory&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;64Mi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cpu&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;250m&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">limits&lt;/span>:
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">memory&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;128Mi&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#f92672">cpu&lt;/span>: &lt;span style="color:#e6db74">&amp;#34;500m&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>Resources supported:
+&lt;ul>
+&lt;li>CPU&lt;/li>
+&lt;li>Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Reuqests: Ask for resources for your container&lt;/li>
+&lt;li>Limits: limit the amount of resources consumed by the container&lt;/li>
+&lt;li>Resource Mangement in Kubelet
+&lt;ul>
+&lt;li>Kubernetes v1.8-v.11 (2017-2018)&lt;/li>
+&lt;li>Pre-allocated hugepage support as native resources (Alpha support v1.8, graduated to Beta in v.11)&lt;/li>
+&lt;li>CPU Manager support to enable container level CPU affinity support (Alpha support v1.8, graduated to Beta in v.11)&lt;/li>
+&lt;li>Device Plugin Support to enable a consistent and portable solution for users to consume hardware devices across k8s clusters(Alpha support in v1.8, graduated to Beta in v.10)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="high-performance-uses-cases">High Performance Uses Cases&lt;/h2>
+&lt;ul>
+&lt;li>Performance Sensitive Workloads&lt;/li>
+&lt;li>High Performance, AI/ML Clusters
+&lt;ul>
+&lt;li>Multiple CPU Socket&lt;/li>
+&lt;li>Multiple NIC&lt;/li>
+&lt;li>Multiple Numa&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager---pinned-cores">CPU Manager - Pinned Cores&lt;/h3>
+&lt;ul>
+&lt;li>Cpu Manager with static policy allocates CPUs exclusively for a container if
+&lt;ul>
+&lt;li>pod QoS is Guaranteed&lt;/li>
+&lt;li>has a positive integer CPU request&lt;/li>
+&lt;li>does not change CPU assignments for exclusively pinned guaranteed containers after the main container process start&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager-policies">CPU Manager Policies&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>--cpu-manager-policy&lt;/code> kubelet flag used to specify the policy&lt;/li>
+&lt;li>None:
+&lt;ul>
+&lt;li>Default&lt;/li>
+&lt;li>Provides no affinity beyond what the OS scheduler does automatically&lt;/li>
+&lt;li>Can handle partial CPUs&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Static:
+&lt;ul>
+&lt;li>allows containers access to exclusive CPUs on the node&lt;/li>
+&lt;li>does not change CPU assignments for exclusively pinned guaranteed containers after the main container process starts&lt;/li>
+&lt;li>Only uses whole CPUs, so increases perceived CPU utilization&lt;/li>
+&lt;li>Only by container, not by pod&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="cpu-manager-policy-options">CPU Manager Policy Options&lt;/h3>
+&lt;ul>
+&lt;li>Introduced in v1.22, Beta in v1.23&lt;/li>
+&lt;li>&lt;code>--cpu-manager-policy-options&lt;/code> : kubelet flag used to specify the policy option&lt;/li>
+&lt;li>full-pcpus-only:
+&lt;ul>
+&lt;li>Beta option, visible by default&lt;/li>
+&lt;li>the static policy will always allocate full physical cores, so guarantee same NUMA zone.&lt;/li>
+&lt;li>Fails with SMTAlignmentError for partial core allocation&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>distribute-cpus-acorss-numa:
+&lt;ul>
+&lt;li>alpha, hidden by default&lt;/li>
+&lt;li>the static policy will evenly distribute CPUs across NUMA nodes&lt;/li>
+&lt;li>Still per container&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="numa-zones-not-for-the-weak-of-heart">NUMA Zones: Not for the weak of heart&lt;/h2>
+&lt;ul>
+&lt;li>If CPU and Memory are located in different NUMA zones, …&lt;/li>
+&lt;/ul>
+&lt;h3 id="along-comes-topology-management">Along Comes Topology Management&lt;/h3>
+&lt;ul>
+&lt;li>Kubernetes v1.8 (2019 onwards)&lt;/li>
+&lt;li>Topology Manger to coordinate resource assignment to avoid cross NUMA assignments (alpha support v1.16, graduated to beta in v1.18)&lt;/li>
+&lt;li>Memory Manager for guarnteed memory (and hugepages) allocation to pods (alpha support v1.21, graduated to beta in v1.22))&lt;/li>
+&lt;li>Known Issue: Scheduler is not NUMA aware and pod can fail with TopologyAffinityError if kubelet is unable to align all the resources based on the Topology Manager policy.&lt;/li>
+&lt;/ul>
+&lt;h3 id="going-with-the-topology-flow">Going with the Topology Flow&lt;/h3>
+&lt;p>kubelet - Admit()&lt;/p></description></item><item><title>kubernetes-graceful-shutdown</title><link>https://minuk.dev/wiki/kubernetes-graceful-shutdown/</link><pubDate>Thu, 04 Aug 2022 17:25:09 +0900</pubDate><guid>https://minuk.dev/wiki/kubernetes-graceful-shutdown/</guid><description>글을 보고 궁금한걸 코드로 정리한 문서</description></item><item><title>dockerfile</title><link>https://minuk.dev/wiki/dockerfile/</link><pubDate>Thu, 04 Aug 2022 13:57:13 +0900</pubDate><guid>https://minuk.dev/wiki/dockerfile/</guid><description>dockerfile 만들때마다 까먹어서 만들어두는 cheatsheet</description></item><item><title>containerd Project Update and Deep Dive</title><link>https://minuk.dev/wiki/containerd-proejct-update-and-deep-dive/</link><pubDate>Thu, 04 Aug 2022 00:23:24 +0900</pubDate><guid>https://minuk.dev/wiki/containerd-proejct-update-and-deep-dive/</guid><description>kubecon 2022 eu</description></item><item><title>gRPC For Microservices Service-mesh and Observability</title><link>https://minuk.dev/wiki/grpc-for-microservices/</link><pubDate>Tue, 02 Aug 2022 23:00:08 +0900</pubDate><guid>https://minuk.dev/wiki/grpc-for-microservices/</guid><description>kubecon north america 2022 발표 중 자료 정리</description></item><item><title>kubecon</title><link>https://minuk.dev/wiki/kubecon/</link><pubDate>Tue, 02 Aug 2022 22:58:55 +0900</pubDate><guid>https://minuk.dev/wiki/kubecon/</guid><description>kubecon 동영상 정리</description></item><item><title>CRI(Container Runtime Interface)</title><link>https://minuk.dev/wiki/cri/</link><pubDate>Mon, 01 Aug 2022 17:08:45 +0900</pubDate><guid>https://minuk.dev/wiki/cri/</guid><description>CRI 관련 자료 모음</description></item><item><title>vagrant</title><link>https://minuk.dev/wiki/vagrant/</link><pubDate>Mon, 01 Aug 2022 17:05:59 +0900</pubDate><guid>https://minuk.dev/wiki/vagrant/</guid><description>vagrant</description></item><item><title>jsonpath</title><link>https://minuk.dev/wiki/jsonpath/</link><pubDate>Mon, 01 Aug 2022 16:12:23 +0900</pubDate><guid>https://minuk.dev/wiki/jsonpath/</guid><description>jsonpath 에서 자주 쓰는거</description></item><item><title>systemctl 중요한것만 정리</title><link>https://minuk.dev/wiki/systemctl/</link><pubDate>Sun, 31 Jul 2022 22:20:31 +0900</pubDate><guid>https://minuk.dev/wiki/systemctl/</guid><description>&lt;h2 id="간략-설명">간략 설명&lt;/h2>
+&lt;ul>
+&lt;li>systemd 를 제어하기 위한 명령어&lt;/li>
+&lt;/ul>
+&lt;h2 id="사용하는-것들">사용하는 것들&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>systemctl start &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl status &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl kill &amp;lt;servicename&amp;gt; &lt;span style="color:#f92672">[&lt;/span>--signal&lt;span style="color:#f92672">=&lt;/span>SIGABRT&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl status &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl stop &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl is-active &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl reload &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>systemctl restart &amp;lt;servicename&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>journalctl -u &amp;lt;servicename&amp;gt; &lt;span style="color:#f92672">[&lt;/span>-o json&lt;span style="color:#f92672">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>linux init 요약</title><link>https://minuk.dev/wiki/init/</link><pubDate>Sun, 31 Jul 2022 22:13:30 +0900</pubDate><guid>https://minuk.dev/wiki/init/</guid><description>&lt;ul>
+&lt;li>참고 : &lt;a href="https://steady-snail.tistory.com/272">https://steady-snail.tistory.com/272&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#75715e">### BEGIN INIT INFO&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Provides: startup.sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Required-Start: $reboot&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Required-Stop: $reboot&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Default-Start: 2 3 4 5&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Default-Stop: 0 1 6&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Short-Description: Server init script&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">### END INIT INFO&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">case&lt;/span> &lt;span style="color:#e6db74">&amp;#34;&lt;/span>$1&lt;span style="color:#e6db74">&amp;#34;&lt;/span> in
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> start&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># run as a specific user&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sudo -u &amp;lt;username&amp;gt; /foo/bar
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e"># TODO Something..&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ;;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> *&lt;span style="color:#f92672">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> echo &lt;span style="color:#e6db74">&amp;#34;Usage: &lt;/span>$0&lt;span style="color:#e6db74"> (start)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> ;;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">esac&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>exit &lt;span style="color:#ae81ff">0&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>chmod &lt;span style="color:#ae81ff">755&lt;/span> startup.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>update-rc.d startup.sh defaults
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-bash" data-lang="bash">&lt;span style="display:flex;">&lt;span>update-rc.d -f startup.sh remove
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>cgroup</title><link>https://minuk.dev/wiki/cgroups/</link><pubDate>Sat, 02 Jul 2022 04:20:55 +0900</pubDate><guid>https://minuk.dev/wiki/cgroups/</guid><description>&lt;ul>
+&lt;li>관련된 커널 커밋은 아직 찾지 못했다.&lt;/li>
+&lt;li>하지만 kernel/cgroup 으로 별도로 분리되어 존재한다는 점. &lt;a href="https://elixir.bootlin.com/linux/latest/source/kernel/cgroup/freezer.c#L14">cgroup을 정지하기 위한 별도의 함수가 존재한다는 점&lt;/a>, &lt;a href="https://elixir.bootlin.com/linux/latest/source/kernel/exit.c#L736">이 함수가 불리는 시점이 do_exit 이라는 점&lt;/a> 을 통해서 코드로 이를 알수 있다.&lt;/li>
+&lt;/ul></description></item><item><title>namespaces</title><link>https://minuk.dev/wiki/namespaces/</link><pubDate>Sat, 02 Jul 2022 03:42:51 +0900</pubDate><guid>https://minuk.dev/wiki/namespaces/</guid><description>&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="https://elixir.bootlin.com/linux/latest/source/kernel/nsproxy.c">namespace 구현과 관련된 nsproxy code&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://elixir.bootlin.com/linux/latest/source/include/linux/nsproxy.h#L31">namespace 구현과 관련된 nsproxy 자료구조&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> nsproxy {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">atomic_t&lt;/span> count;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> uts_namespace &lt;span style="color:#f92672">*&lt;/span>uts_ns;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> ipc_namespace &lt;span style="color:#f92672">*&lt;/span>ipc_ns;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> mnt_namespace &lt;span style="color:#f92672">*&lt;/span>mnt_ns;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> pid_namespace &lt;span style="color:#f92672">*&lt;/span>pid_ns_for_children;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> net 	 &lt;span style="color:#f92672">*&lt;/span>net_ns;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> time_namespace &lt;span style="color:#f92672">*&lt;/span>time_ns;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> time_namespace &lt;span style="color:#f92672">*&lt;/span>time_ns_for_children;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> cgroup_namespace &lt;span style="color:#f92672">*&lt;/span>cgroup_ns;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>uts : unix time-sharing&lt;/li>
+&lt;li>ipc : inter-process communication&lt;/li>
+&lt;li>mnt : mount&lt;/li>
+&lt;li>pid : process id&lt;/li>
+&lt;li>net : network&lt;/li>
+&lt;li>time : system clock(monotonic &amp;amp; boottime)&lt;/li>
+&lt;li>cgroup : control groups&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://elixir.bootlin.com/linux/latest/source/include/linux/sched.h#L1083">task_struct 에 존재하는 nsproxy 코드&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> task_struct {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* skip */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> nsproxy &lt;span style="color:#f92672">*&lt;/span>nsproxy;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#75715e">/* skip */&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>};
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>어떻게 동작하는지 러프하게 따라가기:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/kernel/sys.c#L1354">sethostname 호출&lt;/a>:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/kernel/capability.c#L384">ns_capable 호출&lt;/a>:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/kernel/capability.c#L365">ns_capable_common 호출&lt;/a>:
+&lt;ul>
+&lt;li>잡다한 보안 호출:
+&lt;ul>
+&lt;li>&lt;a href="https://elixir.bootlin.com/linux/latest/source/security/commoncap.c#L51">cap_capable 호출&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>위의 코드와 다른 코드들 몇가지를 트래킹하면서 깨달은 점. namespace 를 system call을 거의 호출하자마자 검사하고 분기하며, 이미 많은 커널 코드들에 녹아들어 있다.:
+&lt;ul>
+&lt;li>엄청 아래 레벨에서만 레이어화 되어있을줄 알았는데 그건 아니다. 초창기에 들어올때나 그랬고 성능상의 문제나 구현상의 문제로 점점 녹아든걸로 생각한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>결론 : namespace는 kernel code 전반에 있어서 녹아들어 있으며 (task_struct 와 같은 자료구조에 nsproxy 가 있는 점등이 근거), 성능이 떨어지지 않기 위해서 많은 노력이 이미 들어가 있는 거 같음.&lt;/li>
+&lt;li>추가적으로 알수 있었던 점 : cgroup과 namespace가 구분되어 있는 이유가 궁금하였는데 namespace의 구현은 이미 kernel code 전반에 걸쳐서 있어 자원 제어와 관련된 부분(예시: 독점)을 코딩하는 레이어를 만들기는 어려웠을 것 같음. 이는 cgroup의 구현을 조금 더 보아야하나, namespace에서 cgroup을 별도로 가르키고 있다는 점, 별도의 자료구조를 추가적으로 통한다는 점에서 하드웨어 자원을 관리하기 위한 함수구조가 있을 것으로 추정&lt;/li>
+&lt;/ul></description></item><item><title>LXC</title><link>https://minuk.dev/wiki/lxc/</link><pubDate>Sat, 02 Jul 2022 03:27:34 +0900</pubDate><guid>https://minuk.dev/wiki/lxc/</guid><description>&lt;h3 id="lxc-란">LXC 란&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/lxc/lxc">원문&lt;/a>&lt;/li>
+&lt;li>2008년부터 개발 시작&lt;/li>
+&lt;li>분리된 커널을 돌리고 모든 하드웨어를 시뮬레이팅하는 것을 오버헤드 없이 하는 것을 목표로 함.&lt;/li>
+&lt;li>Unprivileged containers 는 어떠한 권한 없이 돌아가는 컨테이너를 의미.:
+&lt;ul>
+&lt;li>UID와 GID를 격리&lt;/li>
+&lt;li>이를 위해서 서로 다른 범위를 사용. host의 100000번 이후를 0으로 내부적으로 매핑&lt;/li>
+&lt;li>이러한 것들은 몇가지 제약을 가져왔고 아래 3가지 setuid code를 이용해 이를 극복:
+&lt;ul>
+&lt;li>lxc-user-nic&lt;/li>
+&lt;li>newuidmap&lt;/li>
+&lt;li>newgidmap&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>일반적으로 LXC의 목표는 커널상의 모든 보안 기능을 사용 가능하게 하는데에 있음. 이를 통해서 LXC는 그들의 요구에 따라 복잡하게 튜닝할수 있게 함.&lt;/li>
+&lt;li>LXC는 모든 권한 없이도 잘 돌아가지만 일반적으로 몇가지 유용한 것들은 꽤나 제한적임. 대표적인 2가지 문제는 Network와 Usernamespaces 임.:
+&lt;ul>
+&lt;li>Network : host의 network namespace는 격리 수준을 낮추고 attack vector를 증가시킴. host와 container가 똑같은 network namespace를 사용한다는 것은 sysfs mount가 거부될수 있음을 의미함.&lt;/li>
+&lt;li>user namespaces는 보안 증가에는 효율적이지만 privileged helper에 의하지 않고 unprivileged 유저가 container에 그들의 uid를 매핑하는 게 허락되있음. POSIX 시스템에서는 65536 UIDs와 GIDs 로도 모든 기능을 사용 가능한게 보장되어 있음.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="lxc가-namespace와-cgroup-을-어떻게-사용하는가">lxc가 namespace와 cgroup 을 어떻게 사용하는가:&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/lxc/lxc/blob/a5e32dabc641ab5e8a04b3359bb2c61895684b77/src/lxc/start.c#L860">lxc_init 함수를 통해 lxc를 초기화 할때 cgroup_init을 호출한다.&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/lxc/lxc/blob/97592484fa8f16fb354322b4b6c727450868a8f9/src/lxc/namespace.c#L38">lxc 는 권한 문제에서 자유로우면서도 안전하게 동작시키기 위해 lxc_namespace_t 를 추가로 선언해서 관리한다.&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h3 id="docker는-lxc를-사용하는가">Docker는 LXC를 사용하는가?&lt;/h3>
+&lt;ul>
+&lt;li>&lt;a href="https://hwan-shell.tistory.com/116">docker와 container 차이 설명글&lt;/a>&lt;/li>
+&lt;li>위 글에 따르면, libcontainer를 별도로 사용한다.&lt;/li>
+&lt;li>궁금점 : 그러면 lxc는 아무도 사용안하나?
+&lt;ul>
+&lt;li>나는 지금 메인은 도커와 containerd 라고 생각하는데 containerd 도 &lt;a href="https://github.com/containerd/cgroups">cgroup을 사용하기 위한 별도의 구현체&lt;/a> 가 있는 것으로 보아, 의존성 없이 kernel의 cgroup과 namespace을 직접 사용하는 것 같다.&lt;/li>
+&lt;li>lxc는 &lt;a href="https://ubuntu.com/server/docs/containers-lxd">ubuntu lxd&lt;/a> 쪽에서만 자료가 좀 나온다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>devops</title><link>https://minuk.dev/wiki/devops/</link><pubDate>Sat, 02 Jul 2022 03:26:27 +0900</pubDate><guid>https://minuk.dev/wiki/devops/</guid><description>devops 공부 자료</description></item></channel></rss>

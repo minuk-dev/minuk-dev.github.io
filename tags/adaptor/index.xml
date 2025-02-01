@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Adaptor on minuk.dev</title><link>https://minuk.dev/tags/adaptor/</link><description>Recent content in Adaptor on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 26 Sep 2020 23:19:03 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/adaptor/index.xml" rel="self" type="application/rss+xml"/><item><title>Modern C++ Design Pattern/Chatper 6. 어댑터</title><link>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-6--%EC%96%B4%EB%8C%91%ED%84%B0/</link><pubDate>Tue, 07 Apr 2020 20:44:17 +0900</pubDate><guid>https://minuk.dev/wiki/modern-c++-design-pattern/chapter-6--%EC%96%B4%EB%8C%91%ED%84%B0/</guid><description>&lt;h2 id="adapter-pattern">Adapter Pattern&lt;/h2>
+&lt;ul>
+&lt;li>We use a example case, drawiing geometric shape.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Point&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> x, y;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">Line&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Point start, end;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">VectorObject&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> std&lt;span style="color:#f92672">::&lt;/span>vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Line&lt;span style="color:#f92672">&amp;gt;::&lt;/span>iterator begin() &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> std&lt;span style="color:#f92672">::&lt;/span>vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Line&lt;span style="color:#f92672">&amp;gt;::&lt;/span>iterator end() &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">VectorRectangle&lt;/span> &lt;span style="color:#f92672">:&lt;/span> VectorObject
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> VectorRectangle(&lt;span style="color:#66d9ef">int&lt;/span> x, &lt;span style="color:#66d9ef">int&lt;/span> y, &lt;span style="color:#66d9ef">int&lt;/span> width, &lt;span style="color:#66d9ef">int&lt;/span> height)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lines.emplace_back(Line{ Point{x, y}, Point{x &lt;span style="color:#f92672">+&lt;/span> width, y} });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lines.emplace_back(Line{ Point{x &lt;span style="color:#f92672">+&lt;/span> width, y}, Point {x &lt;span style="color:#f92672">+&lt;/span> width, y &lt;span style="color:#f92672">+&lt;/span> height} });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lines.emplace_back(Line{ Point{x,y}, Point{x, y &lt;span style="color:#f92672">+&lt;/span> height} });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> lines.emplace_back(Line{ Point{ x, y &lt;span style="color:#f92672">+&lt;/span> height }, Point {x &lt;span style="color:#f92672">+&lt;/span> width, y &lt;span style="color:#f92672">+&lt;/span> height} });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> std&lt;span style="color:#f92672">::&lt;/span>vecotr&lt;span style="color:#f92672">&amp;lt;&lt;/span>Line&lt;span style="color:#f92672">&amp;gt;::&lt;/span>iterator begin() &lt;span style="color:#66d9ef">override&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> lines.begin();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> std&lt;span style="color:#f92672">::&lt;/span>vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Line&lt;span style="color:#f92672">&amp;gt;::&lt;/span>iterator end() &lt;span style="color:#66d9ef">override&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> lines.end();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> std&lt;span style="color:#f92672">::&lt;/span>vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Line&lt;span style="color:#f92672">&amp;gt;&lt;/span> lines;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">DrawPoints&lt;/span>(CPaintDC&lt;span style="color:#f92672">&amp;amp;&lt;/span> dc,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> std&lt;span style="color:#f92672">::&lt;/span>vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Point&lt;span style="color:#f92672">&amp;gt;::&lt;/span>iterator start,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> std&lt;span style="color:#f92672">::&lt;/span>vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Point&lt;span style="color:#f92672">&amp;gt;::&lt;/span>iterator end)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">auto&lt;/span> i &lt;span style="color:#f92672">=&lt;/span> start; i &lt;span style="color:#f92672">!=&lt;/span> end; &lt;span style="color:#f92672">++&lt;/span>i)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dc.SetPixel(i&lt;span style="color:#f92672">-&amp;gt;&lt;/span>x, i&lt;span style="color:#f92672">-&amp;gt;&lt;/span>y , &lt;span style="color:#ae81ff">0&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="adapter">Adapter&lt;/h2>
+&lt;ul>
+&lt;li>Let&amp;rsquo;s draw a few rectangles.&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-cpp" data-lang="cpp">&lt;span style="display:flex;">&lt;span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>shared_ptr&lt;span style="color:#f92672">&amp;lt;&lt;/span>VectorObject&lt;span style="color:#f92672">&amp;gt;&amp;gt;&lt;/span> vectorObjects{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> make_shared&lt;span style="color:#f92672">&amp;lt;&lt;/span>VectorRectangle&lt;span style="color:#f92672">&amp;gt;&lt;/span>(&lt;span style="color:#ae81ff">10&lt;/span>, &lt;span style="color:#ae81ff">10&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>, &lt;span style="color:#ae81ff">100&lt;/span>),
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> make_shared&lt;span style="color:#f92672">&amp;lt;&lt;/span>VectorRectangle&lt;span style="color:#f92672">&amp;gt;&lt;/span>(&lt;span style="color:#ae81ff">30&lt;/span>, &lt;span style="color:#ae81ff">30&lt;/span>, &lt;span style="color:#ae81ff">60&lt;/span>, &lt;span style="color:#ae81ff">60&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">LineToPointAdapter&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">typedef&lt;/span> vector&lt;span style="color:#f92672">&amp;lt;&lt;/span>Point&lt;span style="color:#f92672">&amp;gt;&lt;/span> Points;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LineToPointAdapter(Line&lt;span style="color:#f92672">&amp;amp;&lt;/span> line);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> Points&lt;span style="color:#f92672">::&lt;/span>iterator begin() { &lt;span style="color:#66d9ef">return&lt;/span> points.begin(); }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">virtual&lt;/span> Points&lt;span style="color:#f92672">::&lt;/span>iterator end() { &lt;span style="color:#66d9ef">return&lt;/span> points.end(); }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">private&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Points points;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LineToPointAdapter&lt;span style="color:#f92672">::&lt;/span>LineToPointAdapter(Line&lt;span style="color:#f92672">&amp;amp;&lt;/span> line)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> left &lt;span style="color:#f92672">=&lt;/span> min(line.start.x, line.end.x);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> right &lt;span style="color:#f92672">=&lt;/span> max(line.start.x, line.end.x);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> top &lt;span style="color:#f92672">=&lt;/span> min(line.start.y, line.end.y);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> bottom &lt;span style="color:#f92672">=&lt;/span> max(line.start.y, line.end.y);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> dx &lt;span style="color:#f92672">=&lt;/span> right &lt;span style="color:#f92672">-&lt;/span> left;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> dy &lt;span style="color:#f92672">=&lt;/span> line.end.y &lt;span style="color:#f92672">-&lt;/span> line.start.y;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">if&lt;/span> (dx &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> y &lt;span style="color:#f92672">=&lt;/span> top; y &lt;span style="color:#f92672">&amp;lt;=&lt;/span> bottom; &lt;span style="color:#f92672">++&lt;/span>y)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> points.emplace_back(Point{ left, y });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">else&lt;/span> &lt;span style="color:#a6e22e">if&lt;/span> (dy &lt;span style="color:#f92672">==&lt;/span> &lt;span style="color:#ae81ff">0&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">int&lt;/span> x &lt;span style="color:#f92672">=&lt;/span> left; x &lt;span style="color:#f92672">&amp;lt;=&lt;/span> right; &lt;span style="color:#f92672">++&lt;/span>x)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> points.emplace_back(Point{ x, top });
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">auto&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span> obj : vectorObjects)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">for&lt;/span> (&lt;span style="color:#66d9ef">auto&lt;/span>&lt;span style="color:#f92672">&amp;amp;&lt;/span> line : &lt;span style="color:#f92672">*&lt;/span>obj)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> LineToPointAdapter lpo{ line };
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> DrawPoints(dc, lpo.begin(), lpo.end());
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="temporary-adapter">Temporary Adapter&lt;/h2>
+&lt;ul>
+&lt;li>How about above method is called in every display update despite no change?
+&lt;ul>
+&lt;li>
+&lt;p>One of the solutions is to use cache.&lt;/p></description></item></channel></rss>

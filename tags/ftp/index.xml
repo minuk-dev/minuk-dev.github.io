@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ftp on minuk.dev</title><link>https://minuk.dev/tags/ftp/</link><description>Recent content in Ftp on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2020 15:15:06 +0900</lastBuildDate><atom:link href="https://minuk.dev/tags/ftp/index.xml" rel="self" type="application/rss+xml"/><item><title>ftp server command</title><link>https://minuk.dev/wiki/ftp/</link><pubDate>Tue, 07 Apr 2020 20:35:51 +0900</pubDate><guid>https://minuk.dev/wiki/ftp/</guid><description>&lt;ul>
+&lt;li>use vsftpd(Very Secure FTP Server Daemon)&lt;/li>
+&lt;/ul>
+&lt;h2 id="installation">Installation&lt;/h2>
+&lt;pre>&lt;code># apt install vsftpd
+&lt;/code>&lt;/pre>
+&lt;h2 id="check-vsftpd-status">check vsftpd status&lt;/h2>
+&lt;pre>&lt;code># service vsftpd status
+&lt;/code>&lt;/pre>
+&lt;h2 id="check-network-port">check network port&lt;/h2>
+&lt;pre>&lt;code># netstat -natp | grep ftp
+&lt;/code>&lt;/pre>
+&lt;h2 id="configuration-vsftpd">Configuration vsftpd&lt;/h2>
+&lt;pre>&lt;code># vi /etc/vsftpd.conf
+
+#/etc/vsftpd.conf
+listen=YES
+listen_ipv6=NO
+anonymous_enable=NO
+port_enable=NO
+pasv_enable=YES
+local_enable=YES
+write_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+chroot_local_user=YES
+allow_writeable_chroot=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+ftpd_banner=Welcom to My FTP Server!
+ssl_enable=YES
+rsa_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+rsa_private_key=/etc/ssl/private/ssl-cert-snakeoil.key
+listen_port=21
+pasv_min_port=60020
+pasv_max_port=60030
+#utf8_filesystem=YES
+#local_umask=022
+&lt;/code>&lt;/pre></description></item></channel></rss>

@@ -1,0 +1,929 @@
+<!doctype html><html lang=ko-kr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>verilog (베릴로그)</title><style>html body{font-family:raleway,sans-serif;background-color:#fff}:root{--accent:#00a3d2;--border-width:5px}</style><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Raleway"><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css integrity=sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN crossorigin=anonymous><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/copy-btn.css><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js></script><script src=/js/copy-btn.js></script><script src=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js integrity=sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa crossorigin=anonymous></script><script>$(document).on("click",function(){$(".collapse").collapse("hide")})</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-98056974-1"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-98056974-1")</script><script type=text/javascript async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><meta name=google-site-verification content="g_3tJyj-KkW-_wKx7Ij5GimHV1nKPZXetCz8ydbBAfA"></head><body><nav class="navbar navbar-default navbar-fixed-top"><div class=container><div class=navbar-header><a class="navbar-brand visible-xs" href=#>verilog (베릴로그)</a>
+<button class=navbar-toggle data-target=.navbar-collapse data-toggle=collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><a href=/wiki/><button class="btn btn-link"><i class="fa fa-arrow-left"></i>&nbsp;Front Page</button></a></div></div><div><h2>verilog (베릴로그)</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/verilog.md><h5>created : Thu, 25 Jun 2020 20:46:51 +0900</h5><h5>modified : Wed, 01 Jul 2020 20:53:18 +0900</h5></a><a href=https://minuk.dev/tags/verilog><kbd class=item-tag>verilog</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#출처>출처</a></li><li><a href=#기본-문법>기본 문법</a><ul><li><a href=#hello-world>Hello World</a></li><li><a href=#d-flip-flop-code>D flip-flop Code</a></li><li><a href=#data-type-english>Data Type (English)</a></li><li><a href=#data-type-한국어>Data Type (한국어)</a></li><li><a href=#opertators>Opertators</a></li><li><a href=#control-statements>Control Statements</a></li><li><a href=#if-else>If-else</a></li><li><a href=#case>Case</a></li><li><a href=#while>while</a></li><li><a href=#for-loop>For loop</a></li><li><a href=#repeat>Repeat</a></li><li><a href=#initial-blocks>Initial Blocks</a></li><li><a href=#always-blocks>Always Blocks</a></li><li><a href=#assign-statement>Assign Statement</a></li><li><a href=#task-and-function>Task and Function</a></li><li><a href=#task-benches>Task Benches</a></li><li><a href=#counter-design>Counter Design</a></li><li><a href=#comments>Comments</a></li><li><a href=#numbers-in-verilog>Numbers in Verilog</a></li><li><a href=#modules>Modules</a></li><li><a href=#gate-primitives>Gate Primitives</a></li><li><a href=#transmission-gate-primitives>Transmission Gate Primitives</a></li><li><a href=#switch-primitives>Switch Primitives</a></li><li><a href=#logic-values-and-signal-strengths>Logic Values and signal Strengths</a></li><li><a href=#verilog-strength-levels>Verilog Strength Levels</a></li><li><a href=#user-defined-primitives>User Defined Primitives</a></li><li><a href=#system-task-and-function>System Task and Function</a></li></ul></li><li><a href=#실습>실습</a></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><h1 id=개요>개요</h1><ul><li>opennvm가 verilog가 짜져있어서 읽을수 있을 수준까지 공부하는게 목표</li></ul><h2 id=출처>출처</h2><ul><li>기본 문법 : <a href="https://blog.naver.com/PostView.nhn?blogId=kyj0833&amp;logNo=221490972642&amp;from=search&amp;redirect=Log&amp;widgetTypeCall=true&amp;directAccess=false">https://blog.naver.com/PostView.nhn?blogId=kyj0833&amp;logNo=221490972642&amp;from=search&amp;redirect=Log&amp;widgetTypeCall=true&amp;directAccess=false</a></li><li>리눅스에서 verilog 사용하기 : <a href=https://www.sapphosound.com/archives/1894>https://www.sapphosound.com/archives/1894</a></li><li><a href=http://www.asic-world.com/verilog/intro1.html#Design_Styles>http://www.asic-world.com/verilog/intro1.html#Design_Styles</a></li></ul><h2 id=기본-문법>기본 문법</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> module_name(port_list);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>port, <span style=color:#66d9ef>reg</span>, <span style=color:#66d9ef>wire</span>, <span style=color:#66d9ef>parameter</span> declaration
+</span></span><span style=display:flex><span>submodule instance
+</span></span><span style=display:flex><span><span style=color:#66d9ef>primitive</span> gate
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span>, <span style=color:#66d9ef>initial</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>assign</span>,
+</span></span><span style=display:flex><span>funciton, <span style=color:#66d9ef>task</span> declaration
+</span></span><span style=display:flex><span><span style=color:#66d9ef>function</span>, <span style=color:#66d9ef>task</span> definition
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=hello-world>Hello World</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> main;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>initial</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    $display(<span style=color:#e6db74>&#34;Hello World&#34;</span>);
+</span></span><span style=display:flex><span>    $finish;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=d-flip-flop-code>D flip-flop Code</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> d_ff (d, clk, q, q_bar);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> d, clk;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> q, q_bar;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> d, clk;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> q, q_bar;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clk)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> d;
+</span></span><span style=display:flex><span>  q_bar <span style=color:#f92672>&lt;=</span> <span style=color:#f92672>!</span>d;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=data-type-english>Data Type (English)</h3><ul><li>Hardware does have two kinds of drivers.</li><li>A driver is a data type which can drive a load. Basically, in a physical circuit, a driver would be anything that electrons can move through/into.<ul><li>Driver that can store a value (example: flip-flop).</li><li>Driver that can not store value, but connects two points (example: wire).</li></ul></li><li>The first type of driver is called a reg in Verilog (short for &ldquo;register&rdquo;). The Second data type is called a wire (for&mldr; well, &ldquo;wire&rdquo;). You can refer to tidbits section to understand it better.</li></ul><h3 id=data-type-한국어>Data Type (한국어)</h3><ul><li>하드웨어는 2가지 종류의 드라이버가 있으며, 기본적으로 물리적인 회로이며, 드라이버는 전자가 들어오거나 나갈수 있는 무엇이든 될 수 있다.<ul><li>드라이버는 값을 저장할 수 있다. (예를 들어 플립플롯) -> reg(register의 준말)</li><li>드라이버는 값을 저장하지 못하는 대신, 두 지점을 연결 시킬수 있다. (예를 들어 wire) -> wire</li></ul></li></ul><h3 id=opertators>Opertators</h3><table><thead><tr><th>Operator Type</th><th>Operator Symbol</th><th>Operation Performed</th></tr></thead><tbody><tr><td>Arithmetic</td><td><code>*</code></td><td>Multiply</td></tr><tr><td></td><td><code>/</code></td><td>Division</td></tr><tr><td></td><td><code>+</code></td><td>Add</td></tr><tr><td></td><td><code>-</code></td><td>Subtract</td></tr><tr><td></td><td><code>%</code></td><td>Modulus</td></tr><tr><td></td><td><code>+</code></td><td>Unary plus</td></tr><tr><td></td><td><code>-</code></td><td>Unary minus</td></tr><tr><td>Logical</td><td><code>!</code></td><td>Logical negation</td></tr><tr><td></td><td><code>&&</code></td><td>Logical and</td></tr><tr><td></td><td>`</td><td></td></tr><tr><td></td><td><code>></code></td><td>Greater than</td></tr><tr><td></td><td><code>&lt;</code></td><td>Less than</td></tr><tr><td></td><td><code>>=</code></td><td>Greater than or equal</td></tr><tr><td></td><td><code>&lt;=</code></td><td>Less than or equal</td></tr><tr><td>Equality</td><td><code>==</code></td><td>Equality</td></tr><tr><td></td><td><code>!=</code></td><td>inequality</td></tr><tr><td>Reduction</td><td><code>~</code></td><td>Bitwize negation</td></tr><tr><td></td><td><code>~&</code></td><td>nand</td></tr><tr><td></td><td>`</td><td>`</td></tr><tr><td></td><td>`~</td><td>`</td></tr><tr><td></td><td><code>^</code></td><td>xor</td></tr><tr><td></td><td><code>^~</code></td><td>xnor</td></tr><tr><td></td><td><code>~^</code></td><td>xnor</td></tr><tr><td>Shift</td><td><code>>></code></td><td>Right shift</td></tr><tr><td></td><td><code>&lt;&lt;</code></td><td>Left shift</td></tr><tr><td>Concatenation</td><td><code>{}</code></td><td>Concatenation</td></tr><tr><td>Conditional</td><td><code>?</code></td><td>conditional</td></tr></tbody></table><h3 id=control-statements>Control Statements</h3><h3 id=if-else>If-else</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#75715e>// begin and end act like curly braces in C/C++.
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (enable <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  data <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;         <span style=color:#75715e>// Decimal assigned
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  address <span style=color:#f92672>=</span> <span style=color:#ae81ff>16&#39;hDEAD</span>; <span style=color:#75715e>// Hexadecimal
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  wr_enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>; <span style=color:#75715e>// Binary
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  data <span style=color:#f92672>=</span> <span style=color:#ae81ff>32</span><span style=color:#ae81ff>&#39;b0</span>;
+</span></span><span style=display:flex><span>  wr_enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b0</span>;
+</span></span><span style=display:flex><span>  address <span style=color:#f92672>=</span> address <span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><h3 id=case>Case</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>case</span>(address)
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>0</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;It is 11:40PM&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;I am feeling sleepy&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>2</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;Let me skip this tutorial&#34;</span>);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>default</span><span style=color:#f92672>:</span> $display (<span style=color:#e6db74>&#34;Need to complete&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endcase</span>
+</span></span></code></pre></div><h3 id=while>while</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>while</span> (free_time) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $display (<span style=color:#e6db74>&#34;Continue with webpage development&#34;</span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><h4 id=counter-example>Counter example</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> counter (clk, rst, enable, count);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> clk, rst, enabl;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] count;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] count;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clk <span style=color:#66d9ef>or</span> <span style=color:#66d9ef>posedge</span> rst)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> (rst) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  count <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span><span style=color:#f92672>:</span> COUNT
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>while</span> (enable) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    count <span style=color:#f92672>&lt;=</span> count <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>disable</span> COUNT;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=for-loop>For loop</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>15</span>; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $display (<span style=color:#e6db74>&#34;Current value of i is %d&#34;</span>, i);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><h3 id=repeat>Repeat</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>repeat</span> (<span style=color:#ae81ff>16</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $display (<span style=color:#e6db74>&#34;Current value of i is %d&#34;</span>, i);
+</span></span><span style=display:flex><span>  i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><h3 id=initial-blocks>Initial Blocks</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  clk <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  req_0 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  req_1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><h3 id=always-blocks>Always Blocks</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (a <span style=color:#66d9ef>or</span> b <span style=color:#66d9ef>or</span> sel)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  y <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (sel <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    y <span style=color:#f92672>=</span> a;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    y <span style=color:#f92672>=</span> b;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><ul><li>?? 이건 근데 mux랑 똑같은거 아닌가? mux 만들어 놓고, initial block 에서 wire 연결 해두면 안되는 건가?</li><li>always block의 쓰임을 잘 모르겠네, 어떻게 되는 거지?</li><li>=> 주변에 있는 다른 분께 물어보니 같은 동작을 하는건 맞고, 실제 기판으로 나오는게 똑같으면 어떻게 코딩하든 상관 없다고 하심.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>always</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> clk <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>clk;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><h3 id=assign-statement>Assign Statement</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>assign</span> out <span style=color:#f92672>=</span> (enable) <span style=color:#f92672>?</span> data <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>&#39;bz;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>assign</span> out <span style=color:#f92672>=</span> data;
+</span></span></code></pre></div><h3 id=task-and-function>Task and Function</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>function</span> parity;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] data;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>integer</span> i;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  parity <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>32</span>; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    parity <span style=color:#f92672>=</span> parity <span style=color:#f92672>^</span> data[i];
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endfunction</span>
+</span></span></code></pre></div><ul><li>흠&mldr; for을 도는건 delay 없이 도는 거니 위에 내용은 실제로 컴파일 되면 data의 모든 bit를 한번에 xor하는 결과가 나오는건가?</li><li>그래서 한번 만들고 compile 해봤다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> parity (d, p);
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>output</span> <span style=color:#66d9ef>reg</span> p;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] d;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>function</span> parity;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] data;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>integer</span> i;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>      parity <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>32</span>; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>        parity <span style=color:#f92672>=</span> parity <span style=color:#f92672>^</span> data[i];
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>endfunction</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>always</span> @ (d)
+</span></span><span style=display:flex><span>    p <span style=color:#f92672>=</span> parity(d);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><ul><li>아래는 컴파일 된걸 연 결과다</li></ul><pre tabindex=0><code>#! /usr/bin/vvp
+:ivl_version &#34;10.1 (stable)&#34;;
+:ivl_delay_selection &#34;TYPICAL&#34;;
+:vpi_time_precision + 0;
+:vpi_module &#34;system&#34;;
+:vpi_module &#34;vhdl_sys&#34;;
+:vpi_module &#34;v2005_math&#34;;
+:vpi_module &#34;va_math&#34;;
+S_0x56211aafb800 .scope module, &#34;parity&#34; &#34;parity&#34; 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 32 &#34;d&#34;
+    .port_info 1 /OUTPUT 1 &#34;p&#34;
+o0x7f15420240a8 .functor BUFZ 32, C4&lt;zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz&gt;; HiZ drive
+v0x56211ab1be30_0 .net &#34;d&#34;, 31 0, o0x7f15420240a8;  0 drivers
+v0x56211ab1bf30_0 .var &#34;p&#34;, 0 0;
+E_0x56211aac3cc0 .event edge, v0x56211ab1be30_0;
+S_0x56211aafb9c0 .scope function, &#34;parity&#34; &#34;parity&#34; 2 5, 2 5 0, S_0x56211aafb800;
+ .timescale 0 0;
+v0x56211aafbbb0_0 .var &#34;data&#34;, 31 0;
+v0x56211ab1bcb0_0 .var/i &#34;i&#34;, 31 0;
+v0x56211ab1bd90_0 .var &#34;parity&#34;, 0 0;
+TD_parity.parity ;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v0x56211ab1bd90_0, 0, 1;
+    %pushi/vec4 0, 0, 32;
+    %store/vec4 v0x56211ab1bcb0_0, 0, 32;
+T_0.0 ;
+    %load/vec4 v0x56211ab1bcb0_0;
+    %cmpi/s 32, 0, 32;
+    %jmp/0xz T_0.1, 5;
+    %load/vec4 v0x56211ab1bd90_0;
+    %load/vec4 v0x56211aafbbb0_0;
+    %load/vec4 v0x56211ab1bcb0_0;
+    %part/s 1;
+    %xor;
+    %store/vec4 v0x56211ab1bd90_0, 0, 1;
+    %load/vec4 v0x56211ab1bcb0_0;
+    %addi 1, 0, 32;
+    %store/vec4 v0x56211ab1bcb0_0, 0, 32;
+    %jmp T_0.0;
+T_0.1 ;
+    %end;
+    .scope S_0x56211aafb800;
+T_1 ;
+    %wait E_0x56211aac3cc0;
+    %load/vec4 v0x56211ab1be30_0;
+    %store/vec4 v0x56211aafbbb0_0, 0, 32;
+    %fork TD_parity.parity, S_0x56211aafb9c0;
+    %join;
+    %load/vec4  v0x56211ab1bd90_0;
+    %store/vec4 v0x56211ab1bf30_0, 0, 1;
+    %jmp T_1;
+    .thread T_1, $push;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    &#34;N/A&#34;;
+    &#34;&lt;interactive&gt;&#34;;
+    &#34;parity.v&#34;;
+</code></pre><ul><li>읽어보면, 실제로 loop돌고 jump 하는 것처럼 보인다.</li><li>생각해보면 그럴수 밖에 없는 것 같기도 하고, 만약 1번에 끝내길 바랬으면 다르게 짜야지 싶기도 해서</li></ul><h3 id=task-benches>Task Benches</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> arbiter (
+</span></span><span style=display:flex><span>clock,
+</span></span><span style=display:flex><span>reset,
+</span></span><span style=display:flex><span>req_0,
+</span></span><span style=display:flex><span>req_1,
+</span></span><span style=display:flex><span>gnt_0,
+</span></span><span style=display:flex><span>gnt_1
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> clock, reset, req_0, req_1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> gnt_0, gnt_1;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> gnt_0, gnt_1;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clock <span style=color:#66d9ef>or</span> <span style=color:#66d9ef>posedge</span> reset)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> (reset) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  gnt_0 <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  gnt_1 <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (req_0) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  gnt_0 <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  gnt_1 <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (req_1) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  gnt_0 <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  gnt_1 <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Testbench Code Goes here
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>module</span> arbiter_tb;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> clock, reset, req0, req1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> gnt0, gnt1;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $monitor (<span style=color:#e6db74>&#34;req0=%b,req1=%b,gnt0=%b,gnt1=%b&#34;</span>, req0, req1, gnt0, gnt1);
+</span></span><span style=display:flex><span>  clock <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  req0 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  req1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>15</span> reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> req0 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> req0 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> req1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> req1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> {req0, req1} <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span><span style=color:#ae81ff>&#39;b11</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> {req0, req1} <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span><span style=color:#ae81ff>&#39;b00</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> clock <span style=color:#f92672>=</span> <span style=color:#f92672>!</span>clock;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>arbiter U0 (
+</span></span><span style=display:flex><span>.clock (clock),
+</span></span><span style=display:flex><span>.reset (reset),
+</span></span><span style=display:flex><span>.req_0 (req0),
+</span></span><span style=display:flex><span>.req_1 (req1),
+</span></span><span style=display:flex><span>.gnt_0 (gnt0),
+</span></span><span style=display:flex><span>.gnt_1 (gnt1)
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><ul><li>처음에 initial block 에서 monitor로 변수 값 바뀔때 tracking 해주고, req0 = 0, req1 = 0 이 설정 되고, gnt는 설정이 안되서 0, 0, x, x 가 나오고 나머지는 다 delay 걸려서 실행 안되고 있고, arbiter 호출해준다.</li><li>5 delays 뒤에 reset 이 1 이 되면서 gnt_0, gnt_1 이 되면서 0, 0, 0, 0 이 출력</li><li>10 delays 뒤에 req0 가 1이 되면서, 1, 0, 0, 0</li><li>그러면서 1, 0, 1, 0</li><li>그 뒤 req0 이 0 되면서 0, 0, 1 , 0</li><li>req1 이 1 이 되면서 0, 1, 1, 0</li><li>그 직후 0, 1, 0, 1</li><li>0, 0, 0, 1</li><li>1, 1, 0, 1</li><li>1, 1, 1, 0</li><li>0, 0, 1, 0</li><li>순으으로 나오게 된다.</li><li>처음에는 reset 이 0 으로 바뀌는걸 못봐서 한참 삽질했다.</li></ul><h3 id=counter-design>Counter Design</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#75715e>//-----
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// Function : This is a 4 bit up-counter with
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// Synchronous active high reset and
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// with active high enable signal
+</span></span></span><span style=display:flex><span><span style=color:#75715e>//-----
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>module</span> first_counter (
+</span></span><span style=display:flex><span>clock,
+</span></span><span style=display:flex><span>reset,
+</span></span><span style=display:flex><span>enable,
+</span></span><span style=display:flex><span>counter_out
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> clock;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> reset;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> enable;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] counter_out;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> clock;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> reset;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> enable;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] counter_out;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clock)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>begin</span><span style=color:#f92672>:</span> COUNTER <span style=color:#75715e>// Block Name
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>  <span style=color:#66d9ef>if</span> (reset <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    counter_out <span style=color:#f92672>&lt;=</span> # <span style=color:#ae81ff>4</span><span style=color:#ae81ff>&#39;b0000</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (enable <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    counter_out <span style=color:#f92672>&lt;=</span> #<span style=color:#ae81ff>1</span> counter_out <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>`include</span> <span style=color:#e6db74>&#34;first_counter.v&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> first_counter_tb();
+</span></span><span style=display:flex><span><span style=color:#75715e>// Declare inputs as regs and outputs as wires
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>reg</span> clock, reset, enable;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] counter_out;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Initialize all variables
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $display (<span style=color:#e6db74>&#34;time</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74> clk reset enable counter&#34;</span>);
+</span></span><span style=display:flex><span>  $monitor (<span style=color:#e6db74>&#34;%g</span><span style=color:#ae81ff>\t</span><span style=color:#e6db74> %b %b %b %b&#34;</span>);
+</span></span><span style=display:flex><span>    $time, clock, reset, enable, counter_out;
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  clock <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>100</span> enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> clock <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>clock;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>first_counter U_counter (
+</span></span><span style=display:flex><span>clock,
+</span></span><span style=display:flex><span>reset,
+</span></span><span style=display:flex><span>enable,
+</span></span><span style=display:flex><span>counter_out
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>endmoudle
+</span></span></code></pre></div><ul><li>다른 module 을 부를때 `include 라는 문법을 쓰는걸 알게 되었다.</li><li>나머진 예전에 배운 논리회로랑 똑같아서 스킵</li></ul><h3 id=comments>Comments</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#75715e>/* This is a
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  Multi line comment
+</span></span></span><span style=display:flex><span><span style=color:#75715e>  example */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> addbit (
+</span></span><span style=display:flex><span>a,
+</span></span><span style=display:flex><span>b,
+</span></span><span style=display:flex><span>ci,
+</span></span><span style=display:flex><span>sum,
+</span></span><span style=display:flex><span>co);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> b;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> sum;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> co;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> b;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> sum;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> co;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=numbers-in-verilog>Numbers in Verilog</h3><h4 id=integer-number>Integer Number</h4><ul><li>Syntax : &rsquo;;</li></ul><table><thead><tr><th>Integer</th><th>Stored as</th></tr></thead><tbody><tr><td>1</td><td>00000000000000000000000000000001</td></tr><tr><td>8&rsquo;hAA</td><td>10101010</td></tr><tr><td>6&rsquo;b10_0011</td><td>100011</td></tr><tr><td>&lsquo;hF</td><td>00000000000000000000000000001111</td></tr></tbody></table><h4 id=real-numbers>Real Numbers</h4><ul><li>Syntax : ., E</li></ul><h3 id=modules>Modules</h3><h4 id=ports>Ports</h4><ul><li>Syntax</li></ul><pre tabindex=0><code>input [range_val:range_var] list_of_identifier;
+output [range_val:range_var] list_of_identifier;
+inout [range_val:range_var] list_of_identifier;
+</code></pre><ul><li>Examples</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>input</span> clk;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>15</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] data_in;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> [<span style=color:#f92672>&amp;</span>;<span style=color:#ae81ff>0</span>] count;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>inout</span> data_bi;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> addbit(
+</span></span><span style=display:flex><span>a,
+</span></span><span style=display:flex><span>b,
+</span></span><span style=display:flex><span>ci, sum,
+</span></span><span style=display:flex><span>co
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> b;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> sum;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> co;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> b;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> sum;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> co;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>assign</span> {co, sum} <span style=color:#f92672>=</span> a <span style=color:#f92672>+</span> b <span style=color:#f92672>+</span> ci;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h5 id=modules-connected-by-port-order-implicit>Modules connected by port order (implicit)</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> adder_implicit (
+</span></span><span style=display:flex><span>result,
+</span></span><span style=display:flex><span>carry,
+</span></span><span style=display:flex><span>r1,
+</span></span><span style=display:flex><span>r2,
+</span></span><span style=display:flex><span>ci
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> ci;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span>ouput carry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> crarry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c3;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u0 (
+</span></span><span style=display:flex><span>r1[<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>r2[<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>ci ,
+</span></span><span style=display:flex><span>result[<span style=color:#ae81ff>0</span>],
+</span></span><span style=display:flex><span>c1
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u1 (
+</span></span><span style=display:flex><span>r1[<span style=color:#ae81ff>1</span>] ,
+</span></span><span style=display:flex><span>r2[<span style=color:#ae81ff>1</span>] ,
+</span></span><span style=display:flex><span>c1,
+</span></span><span style=display:flex><span>result[<span style=color:#ae81ff>1</span>],
+</span></span><span style=display:flex><span>c2
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u2 (
+</span></span><span style=display:flex><span>r1[<span style=color:#ae81ff>2</span>] ,
+</span></span><span style=display:flex><span>r2[<span style=color:#ae81ff>2</span>], 
+</span></span><span style=display:flex><span>c2,
+</span></span><span style=display:flex><span>result[<span style=color:#ae81ff>2</span>],
+</span></span><span style=display:flex><span>c3
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u3(
+</span></span><span style=display:flex><span>r1[<span style=color:#ae81ff>3</span>],
+</span></span><span style=display:flex><span>r2[<span style=color:#ae81ff>3</span>],
+</span></span><span style=display:flex><span>c3,
+</span></span><span style=display:flex><span>result[<span style=color:#ae81ff>3</span>],
+</span></span><span style=display:flex><span>carry
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h5 id=modules-connected-by-name>Modules connected by name</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> adder_explicit (
+</span></span><span style=display:flex><span>result,
+</span></span><span style=display:flex><span>carry,
+</span></span><span style=display:flex><span>r1,
+</span></span><span style=display:flex><span>r2,
+</span></span><span style=display:flex><span>ci
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> ci;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ouput [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span>ouput carry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> carry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c3;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u0 (
+</span></span><span style=display:flex><span>.a (r1[<span style=color:#ae81ff>0</span>]),
+</span></span><span style=display:flex><span>.b (r2[<span style=color:#ae81ff>0</span>]),
+</span></span><span style=display:flex><span>.ci (ci),
+</span></span><span style=display:flex><span>.sum (result[<span style=color:#ae81ff>0</span>]),
+</span></span><span style=display:flex><span>.sum (result[<span style=color:#ae81ff>0</span>]),
+</span></span><span style=display:flex><span>co (c1)
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u1 (
+</span></span><span style=display:flex><span>.a (r1[<span style=color:#ae81ff>1</span>]),
+</span></span><span style=display:flex><span>.b (r2[<span style=color:#ae81ff>1</span>]),
+</span></span><span style=display:flex><span>.ci (c1),
+</span></span><span style=display:flex><span>.sum (result[<span style=color:#ae81ff>1</span>]),
+</span></span><span style=display:flex><span>.co (c2)
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u2 (
+</span></span><span style=display:flex><span>.a (r1[<span style=color:#ae81ff>2</span>]),
+</span></span><span style=display:flex><span>.b (r2[<span style=color:#ae81ff>2</span>]),
+</span></span><span style=display:flex><span>.ci (c2),
+</span></span><span style=display:flex><span>.sum (result[<span style=color:#ae81ff>2</span>]),
+</span></span><span style=display:flex><span>.co (<span style=color:#ae81ff>3</span>)
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u3 (
+</span></span><span style=display:flex><span>.a (r1[<span style=color:#ae81ff>3</span>]),
+</span></span><span style=display:flex><span>.b (r2[<span style=color:#ae81ff>3</span>]),
+</span></span><span style=display:flex><span>.ci (c3),
+</span></span><span style=display:flex><span>.sum (result[<span style=color:#ae81ff>3</span>]),
+</span></span><span style=display:flex><span>.co (carry)
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h5 id=instantiating-a-module>Instantiating a module</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> parity (
+</span></span><span style=display:flex><span>a,
+</span></span><span style=display:flex><span>b,
+</span></span><span style=display:flex><span>c,
+</span></span><span style=display:flex><span>d,
+</span></span><span style=display:flex><span>y
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> b;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> c;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> d;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ouput y;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> b;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> d;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> y;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> out_0;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> out_1;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>xor</span> u0 (out_0, a, b);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>xor</span> u1 (out_1, c, d);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>xor</span> u2 (y, out_0, out_1);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h4 id=port-connection-rules>Port Connection Rules</h4><ul><li>Inputs : internally must always be of type net, externally the inputs can be connected to a variable of type reg or net.</li><li>Outputs : internally can be of type net or reg, externally the outputs must be connected to a variable of type net.</li><li>Inouts : internally or externally must always be type net, can only be connected to a variable net type.</li><li>Width matching : it is legal to connect internal and external ports of different sizes. But beware, synthesis tools could report problems.</li><li>Unconnected ports : unconnected ports are allowed by using a &ldquo;,&rdquo;.</li><li>The net data types are used to connect structure.</li><li>A net data type is required if a signal can be driven a structural connection.</li></ul><h5 id=example---implicit-unconnected-port>Example - Implicit Unconnected Port</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> implicit();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> clk, d, rst, pre;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> q;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>dff u0 (q,, clk, d, rst, pre);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>module</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> dff (q, q_bar, clk, d, rst, pre);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> clk, d, rst, pre;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> q, q_bar;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> q;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>assign</span> a_bar <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>q;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clk)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#ae81ff>9</span>rst <span style=color:#f92672>==</span><span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) gegin
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (pre <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> being
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> d;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h5 id=example---explicit-unconnected-port>Example - Explicit Unconnected Port</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> explicit();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> clk, d, rst, pre;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> q;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>dff u0 (
+</span></span><span style=display:flex><span>.q (q),
+</span></span><span style=display:flex><span>.d (d),
+</span></span><span style=display:flex><span>.clk (clk),
+</span></span><span style=display:flex><span>.q_bar (),
+</span></span><span style=display:flex><span>.rst (rst),
+</span></span><span style=display:flex><span>.pre (pre)
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> dff (q, q_bar, clk, d, rst, pre);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> clk, d, rst, pe;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> q, q<span style=color:#f92672>-</span>bar;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> q;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>assign</span> q_bar <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>q;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clk)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> (rst <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span> (pre <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span><span style=color:#ae81ff>&#39;b1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span> <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  q <span style=color:#f92672>&lt;=</span> d;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h4 id=hierarchical-identifiers>Hierarchical Identifiers</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>`include</span> <span style=color:#e6db74>&#34;addbit.v&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> adder_hier (
+</span></span><span style=display:flex><span>result,
+</span></span><span style=display:flex><span>carry,
+</span></span><span style=display:flex><span>r1,
+</span></span><span style=display:flex><span>r2,
+</span></span><span style=display:flex><span>ci
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> ci;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> carry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> carry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> c3;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>addbit u0 (r1[<span style=color:#ae81ff>0</span>], r2[<span style=color:#ae81ff>0</span>],ci,result[<span style=color:#ae81ff>0</span>],c1);
+</span></span><span style=display:flex><span>addbit u1 (r1[<span style=color:#ae81ff>1</span>], r2[<span style=color:#ae81ff>1</span>],c1,result[<span style=color:#ae81ff>1</span>],c2);
+</span></span><span style=display:flex><span>addbit u2 (r1[<span style=color:#ae81ff>2</span>], r2[<span style=color:#ae81ff>2</span>],c2,result[<span style=color:#ae81ff>2</span>],c3);
+</span></span><span style=display:flex><span>addbit u3 (r1[<span style=color:#ae81ff>3</span>], r2[<span style=color:#ae81ff>3</span>],c3,result[<span style=color:#ae81ff>3</span>],carry);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> tb();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] r1, r2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> ci;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>3</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] result;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> carry;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  r1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  r2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  ci <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> r1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> r2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> ci <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> $display(<span style=color:#e6db74>&#34;+-----------------+&#34;</span>);
+</span></span><span style=display:flex><span>  $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>adder_hier U (result, carry, r1, r2, ci);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $display(<span style=color:#e6db74>&#34;+---------------+&#34;</span>);
+</span></span><span style=display:flex><span>  $display(<span style=color:#e6db74>&#34;|r1|r2|ci|u0.sum|u1.sum|u2.sum|u3.sum|&#34;</span>);
+</span></span><span style=display:flex><span>  $display(<span style=color:#e6db74>&#34;+---------------+&#34;</span>);
+</span></span><span style=display:flex><span>  $monitoer(<span style=color:#e6db74>&#34;|%h|%h|%h|%h|h|%h|%h|&#34;</span>,
+</span></span><span style=display:flex><span>    r1, r2, ci, tb.U.u0.sum, tb.U.u1.sum, tb.U.u2.sum, tb.U.u3.sum);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h4 id=data-types>Data Types</h4><ul><li>Verilog Language has two primary data types:<ul><li>Nets - Present structural connections between components.</li><li>Registers - represent variables used to store data.</li></ul></li><li>Every signal has a data type associated with it:<ul><li>Explicitly declared with a declaration in your Verilog code.</li><li>Implicitly declared with no declaration when used to connect structural building blocks in your code. Implicit declaration is always a net type &ldquo;wire&rdquo; and is one bit wide.</li></ul></li></ul><h5 id=types-of-nets>Types of Nets</h5><table><thead><tr><th>Net Data Type</th><th>Functionality</th><th>간략 번역</th></tr></thead><tbody><tr><td>wire, tri</td><td>Interconnecting wire - nospecial resolution function</td><td>상호 연결</td></tr><tr><td>wor, trior</td><td>Wired outputs Or together (models ECL)</td><td>연결된 것들끼리 or한 값</td></tr><tr><td>wand, triand</td><td>Wired outputs And together (models open-collector)</td><td>연결된 것들끼리 and 한 값</td></tr><tr><td>tri0, tri1</td><td>Net pulls-down or pulls-up when not driven</td><td>tri와 동일한데, z 일때 0이거나 1</td></tr><tr><td>supply0, supply1</td><td>Net has a constant logic 0 or logic 1 (supply strenth)</td><td>상수 ground, vdd</td></tr><tr><td>trireg</td><td>Retains last value, when driven by z(tristate).</td><td>z일때 예전 값을 기억</td></tr></tbody></table><h5 id=example---wor>Example - wor</h5><pre tabindex=0><code class=language-verillog data-lang=verillog>module test_wor();
+wor a;
+reg b, c;
+assign a = b;
+assign a = c;
+
+initial begin
+  $monitor(&#34;%g a = %b b = %b c = %b&#34;, $time, a, b, c);
+  #1 b = 0;
+  #1 c = 0;
+  #1 b = 1;
+  #1 b = 0;
+  #1 c = 1;
+  #1 b = 1;
+  #1 b = 0;
+  #1 $finish;
+end
+
+endmoudle
+</code></pre><h5 id=example---tri>Example - tri</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> test_tri();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>tri</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> b, c;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>assign</span> a <span style=color:#f92672>=</span> (b) <span style=color:#f92672>?</span> c <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>&#39;bz;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $monitor(<span style=color:#e6db74>&#34;%g a = %b b = %b c= %b&#34;</span>, $time, a, b, c);
+</span></span><span style=display:flex><span>  b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  c <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> c <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h5 id=example---trireg>Example - trireg</h5><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> test_trireg();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>trireg</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> b, c;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>assign</span> a <span style=color:#f92672>=</span> (b) <span style=color:#f92672>?</span> c <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>&#39;bz;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $monitor(<span style=color:#e6db74>&#34;%g a = %b b = %b c= %b&#34;</span>, $time, a, b, c);
+</span></span><span style=display:flex><span>  b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  c <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> c <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h4 id=register-data-types>Register Data Types</h4><ul><li>Registers store the last value assigned to them until another assignment statement changes their value. (새로운 할당 전까지 그 값이 변하지 않고 저장한다.)</li><li>Registers represent data storage constructs. (register는 data구성을 표현한다?)</li><li>You can create regs arrays called memories. (memories 라고도 불리는 regs array를 만들수도 있다.)</li><li>register data types are used as variables in procedural blocks. (register의 data type은 procedural block들 에서 변수로써 쓰인다.)</li><li>A register data type is required if a signal is assigned a value within a procedural block (procedural block에서 변수의 값을 할당하려면 register의 data type이 필요하다.)</li><li>Procedural blocks begin with keyword initial and always. (Procedural block 은 initial 과 always 키워드로 시작한다.)</li></ul><table><thead><tr><th>Data types</th><th>Functionality</th></tr></thead><tbody><tr><td>reg</td><td>Unsigned variable</td></tr><tr><td>integer</td><td>Signed variable - 32 bits</td></tr><tr><td>time</td><td>Unsigned integer - 64 bits</td></tr><tr><td>real</td><td>Double precision floating point variable</td></tr></tbody></table><h4 id=strings>Strings</h4><table><thead><tr><th>Character</th><th>Description</th></tr></thead><tbody><tr><td>\n</td><td>New line character</td></tr><tr><td>\t</td><td>Tab character</td></tr><tr><td>\</td><td>Backslash () character</td></tr><tr><td>"</td><td>Double quote (") Character</td></tr><tr><td>\ddd</td><td>A character specified in 1-3 octal digits (0 &lt;= d &lt;= 7)</td></tr><tr><td>%%</td><td>Percent (%) character</td></tr></tbody></table><h3 id=gate-primitives>Gate Primitives</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> gates();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> out0;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> out1;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> out2;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> in1, in2, in3, in4;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>not</span> U1(out0, in1);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>and</span> U2(out1, in1, in2, in3, in4);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>xor</span> U3(out2, in1, in2, in3);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $monitor(<span style=color:#e6db74>&#34;in1 = %b in2= %b in3=%b out0=%b out1=%b out2=%b&#34;</span>,
+</span></span><span style=display:flex><span>    in1, in2, in3, in4, out0, out1, out2);
+</span></span><span style=display:flex><span>  in1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  in2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  in3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  in4 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> in1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> in2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> in3 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> in4 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=transmission-gate-primitives>Transmission Gate Primitives</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> transmission_gates();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> data_enable_low, in;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> data_bus, out1, out2;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>bufif0</span> u1(data_bus, in, data_enable_low);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>buf</span> U2(out1, in);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>not</span> U3(out2, in);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $monitor(
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;@%g in = %b data_enable_low=%b out1=%b out2=%b data_bus=%b&#34;</span>,
+</span></span><span style=display:flex><span>    $time, in, data_enable_low, out1, out2, data_bus);
+</span></span><span style=display:flex><span>  data_enable_low <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  in <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>4</span> data_enable_low <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>8</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> #<span style=color:#ae81ff>2</span> in <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>in;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=switch-primitives>Switch Primitives</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>module</span> switch_primitives();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> net1, net2, net3;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> n4, net5, net6;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>tranif0</span> my_gate1 (net1, net2, net3);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>rtranif1</span> my_gate2 (net4, net5, net6);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h3 id=logic-values-and-signal-strengths>Logic Values and signal Strengths</h3><table><thead><tr><th>Logic Value</th><th>Description</th></tr></thead><tbody><tr><td>0</td><td>zero, low, false</td></tr><tr><td>1</td><td>one, high, true</td></tr><tr><td>z or Z</td><td>high impedance, floating</td></tr><tr><td>x or X</td><td>unknown, uninitialized, contention</td></tr></tbody></table><h3 id=verilog-strength-levels>Verilog Strength Levels</h3><table><thead><tr><th>Strengtth Level</th><th>Specification Keyword</th></tr></thead><tbody><tr><td>7 Supply Drive</td><td>supply0 supply1</td></tr><tr><td>6 Strong Pull</td><td>strong0 strong1</td></tr><tr><td>5 Pull Drive</td><td>pull0 pull1</td></tr><tr><td>4 Large Capacitance</td><td>large</td></tr><tr><td>3 Weak Drive</td><td>weak0 weak1</td></tr><tr><td>2 Medium Capacitance</td><td>medium</td></tr><tr><td>1 Small Capacitance</td><td>small</td></tr><tr><td>0 Hi Impedance</td><td>highz0 highz1</td></tr></tbody></table><h3 id=user-defined-primitives>User Defined Primitives</h3><h4 id=syntax>Syntax</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>primitive</span> udp_syntax (
+</span></span><span style=display:flex><span>a,
+</span></span><span style=display:flex><span>b,
+</span></span><span style=display:flex><span>c,
+</span></span><span style=display:flex><span>d
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> b,c,d;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endprimitive</span>
+</span></span></code></pre></div><h4 id=udp-ports-rules>UDP ports rules</h4><ul><li>An UDP can contain only one output and up to 10 inputs.</li><li>Output port should be the first port followed by one or more input ports.</li><li>All UDP ports are scalar, i.e. Vector ports are not allowed.</li><li>UDPs can not have bidirectional ports.</li><li>The output terminal of a sequetial UDP requires an additional declaration as type reg.</li><li>It is illegal to declare a reg for the output terminal of a combinational UDP</li></ul><h4 id=body>Body</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>primitive</span> udp_body (
+</span></span><span style=display:flex><span>a,
+</span></span><span style=display:flex><span>b,
+</span></span><span style=display:flex><span>c
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ouput a;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> b, c;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// A = B | C;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>table</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>?</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>1</span> <span style=color:#f92672>?</span> <span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>0</span> <span style=color:#f92672>:</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endtable</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endprimitive</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#66d9ef>`include</span> <span style=color:#e6db74>&#34;udp_body.v&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> udp_body_tb();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> b,c;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> a;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>udp_body udp (a, b, c);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  $monitor(<span style=color:#e6db74>&#34; B = %b C = %b A = %b&#34;</span>, b, c, a);
+</span></span><span style=display:flex><span>  b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  c <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> c <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>&#39;bx;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> c <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> c <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>&#39;bx;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> b <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>1</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><h4 id=symbols>Symbols</h4><table><thead><tr><th>Symbol</th><th>interpretation</th><th>Explanation</th></tr></thead><tbody><tr><td>?</td><td>0 or 1 or X</td><td>? means the variable can be 0 or 1 or x</td></tr><tr><td>b</td><td>0 or 1</td><td>Same as ?, but x is not included</td></tr><tr><td>f</td><td>(10)</td><td>Falling edge on an input</td></tr><tr><td>r</td><td>(01)</td><td>Rising edge on an input</td></tr><tr><td>p</td><td>(01) or (0x) or (x1) or (1z0 or (z1))</td><td>Rising edge including x and z</td></tr><tr><td>n</td><td>(10) or (1x) or (x0) or (0z) or (z0)</td><td>Falling edge including x and z</td></tr><tr><td>*</td><td>(??)</td><td>All transitions</td></tr><tr><td>-</td><td>No change</td><td>No Change</td></tr></tbody></table><h3 id=system-task-and-function>System Task and Function</h3><ul><li><code>$display("format_string", par_1, par_2, ...);</code></li><li><code>$strobe("format_string", par_1, par2, ...);</code></li><li><code>$monitor("format_string", par_1, par_2, ...);</code></li><li><code>$displayb (as above but defaults to binary..);</code></li><li><code>$strobeh (as above but defaults to hex..);</code></li><li><code>$monitoro (as above but defaults to octal..);</code></li></ul><hr><ul><li><code>$time</code>, <code>$stime</code>, <code>$realtime</code> : the current simulation time as a 64-bit integer, a 32-bit integer, and a real number</li><li><code>$reset</code>, <code>$stop</code>, <code>$finish</code> : <code>$reset</code> resets the simulation back to time 0; <code>$stop</code> halts the simulator and puts it in interactive mode where the user can enter commands; <code>$finish</code> exits the simulator back to the operating system.</li><li><code>$scope</code>, <code>$showscope</code> : <code>$scope(hierarchy_name)</code> sets the current hierarchical scope to hierarchy_name. <code>$showscopes(n)</code> lists all modules, tasks and block names in (and below, if n is set to 1) the current scope.</li><li><code>$random</code> generates a random integer every tie it is called. If the sequence is to be repeatable, teh first time one invokes random giving it a numerical argument (a seed). Otherwise the seed is derived from the computer clock.</li></ul><hr><ul><li><code>$dumpfile</code>, <code>$dumpvar</code>, <code>$dumpon</code>, <code>$dumpoff</code>, <code>$dumpall</code></li><li><code>$dumpfile("filename.vcd")</code></li><li><code>$dumpvar</code> : dumps all variables in the design.</li><li><code>$dumpvar(1, top)</code> : dumps all the varaibles in module top and below, but not modules instantiated in top.</li><li><code>$dumpvar(2, top)</code> : dumps all the variables in module top and 1 level below.</li><li><code>$dumpvar(n, top)</code> : dumps all the variables in module top and n-1 levels below.</li><li><code>$dumpvar(0, top)</code> : dumps all the variables in module top and all level below.</li><li><code>$dumpon</code> : initiates the dump.</li><li><code>$dumpoff</code> : stop dumping.</li></ul><hr><ul><li><code>$fopen</code>, <code>$fdisplay</code>, <code>$fstrobe</code>, <code>$fmonitor</code> and <code>$fwrite</code></li><li><code>$fopen</code> opens an output file and gives the open file a handle for use by the other commands.</li><li><code>$fclose</code> : closes the file and lests other programs access it.</li><li><code>$fdisplay</code> and <code>$fwrite</code> write formatted data to a file whenever they are executed. They are the same except <code>$fdisplay</code> inserts a new line after every execution and <code>$write</code> does not.</li><li><code>$disrobe</code> also writes to file when executed, but its waits until all other operations in the time step are complete before writing. Thus initial <code>#1 a = 1; b= 0; $fstrobe(hand1, a,b); b=1;</code> will write write 1 1 for a and b.</li><li><code>$fmonitor</code> writes to a file whenever any of tis arguments changes.</li><li><code>handle1 = $fopen("filenam1.suffix")</code></li><li><code>handle2=$fopen("filename2.suffix")</code></li><li><code>$fstrobe(handle1, format, variable list)</code></li><li><code>$fdisplay(handle2, format, variable list)</code></li><li><code>$fwrite(handle2, format, variable list)</code></li></ul><h2 id=실습>실습</h2><ul><li>단순히 문법만 배우니까 먼가 언어를 배우는 느낌이 안나서 코딩해보기로 했다.</li><li>해보니까 새롭게 알게 된게 있어서 해보길 잘했다고 생각한다.</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#75715e>/* heap.v */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> heap (
+</span></span><span style=display:flex><span>  d,
+</span></span><span style=display:flex><span>  is_insert,
+</span></span><span style=display:flex><span>  ret,
+</span></span><span style=display:flex><span>  enable,
+</span></span><span style=display:flex><span>  clock,
+</span></span><span style=display:flex><span>  reset
+</span></span><span style=display:flex><span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>parameter</span> MAX_SIZE <span style=color:#f92672>=</span> <span style=color:#ae81ff>128</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> <span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] d;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> <span style=color:#66d9ef>wire</span> is_insert;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> <span style=color:#66d9ef>wire</span> enable;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> <span style=color:#66d9ef>wire</span> clock;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>input</span> <span style=color:#66d9ef>wire</span> reset;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>output</span> <span style=color:#66d9ef>reg</span> <span style=color:#66d9ef>signed</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] ret;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>integer</span> node[MAX_SIZE <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>];
+</span></span><span style=display:flex><span><span style=color:#66d9ef>integer</span> count;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>integer</span> tmp1, tmp2, tmp3;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>integer</span> i;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> MAX_SIZE; i <span style=color:#f92672>=</span> i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    node[i] <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>  $display(<span style=color:#e6db74>&#34;time | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 &#34;</span>);
+</span></span><span style=display:flex><span>  $monitor(<span style=color:#e6db74>&#34;%g | %d | %d | %d | %d | %d | %d | %d | %d&#34;</span>,
+</span></span><span style=display:flex><span>      $time, node[<span style=color:#ae81ff>1</span>], node[<span style=color:#ae81ff>2</span>], node[<span style=color:#ae81ff>3</span>], node[<span style=color:#ae81ff>4</span>], node[<span style=color:#ae81ff>5</span>], node[<span style=color:#ae81ff>6</span>], node[<span style=color:#ae81ff>7</span>], node[<span style=color:#ae81ff>8</span>]);
+</span></span><span style=display:flex><span>  count <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> @ (<span style=color:#66d9ef>posedge</span> clock)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>if</span> (enable) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* insert */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (is_insert) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>      count <span style=color:#f92672>=</span> count <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      node[count] <span style=color:#f92672>=</span> d;
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      tmp1 <span style=color:#f92672>=</span> count;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>while</span> (tmp1 <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&amp;&amp;</span> node[tmp1 <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>] <span style=color:#f92672>&lt;</span> node[tmp1]) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>        tmp2 <span style=color:#f92672>=</span> node [tmp1<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>];
+</span></span><span style=display:flex><span>        node [tmp1<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>] <span style=color:#f92672>=</span> node[tmp1];
+</span></span><span style=display:flex><span>        node [tmp1] <span style=color:#f92672>=</span> tmp2;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        tmp1 <span style=color:#f92672>=</span> tmp1 <span style=color:#f92672>/</span> <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* pop */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>      ret <span style=color:#f92672>=</span> node[<span style=color:#ae81ff>1</span>];
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      node[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> node[count];
+</span></span><span style=display:flex><span>      node[count] <span style=color:#f92672>=</span> node[<span style=color:#ae81ff>1</span>];
+</span></span><span style=display:flex><span>      count <span style=color:#f92672>=</span> count <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      tmp1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      tmp2 <span style=color:#f92672>=</span> tmp1 <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>if</span> (tmp2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;=</span> count) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>      tmp2 <span style=color:#f92672>=</span> (node[tmp2] <span style=color:#f92672>&gt;</span> node[tmp2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>]) <span style=color:#f92672>?</span> tmp2 <span style=color:#f92672>:</span> tmp2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>while</span> (tmp2 <span style=color:#f92672>&lt;=</span> count <span style=color:#f92672>&amp;&amp;</span> node[tmp1] <span style=color:#f92672>&lt;</span> node[tmp2]) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>        tmp3 <span style=color:#f92672>=</span> node[tmp1];
+</span></span><span style=display:flex><span>        node[tmp1] <span style=color:#f92672>=</span> node[tmp2];
+</span></span><span style=display:flex><span>        node[tmp2] <span style=color:#f92672>=</span> tmp3;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        tmp1 <span style=color:#f92672>=</span> tmp2;
+</span></span><span style=display:flex><span>        tmp2 <span style=color:#f92672>=</span> tmp2 <span style=color:#f92672>*</span> <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (tmp2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;=</span> count) <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>          tmp2 <span style=color:#f92672>=</span> (node[tmp2] <span style=color:#f92672>&gt;</span> node[tmp2 <span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>]) <span style=color:#f92672>?</span> tmp2 <span style=color:#f92672>:</span> tmp2 <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>      <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      node[count <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* to display */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>  <span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-verilog data-lang=verilog><span style=display:flex><span><span style=color:#75715e>/* test.v */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>`include</span> <span style=color:#e6db74>&#34;heap.v&#34;</span> <span style=color:#75715e>// to fix syntax highlight`
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>module</span> heap_test();
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>reg</span> clock, reset, enable, is_insert;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>integer</span> data;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>wire</span> [<span style=color:#ae81ff>31</span><span style=color:#f92672>:</span><span style=color:#ae81ff>0</span>] ret;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>initial</span> <span style=color:#66d9ef>begin</span>
+</span></span><span style=display:flex><span>  clock <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  reset <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  enable <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  is_insert <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>  data <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> data <span style=color:#f92672>=</span> <span style=color:#ae81ff>5</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> data <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> data <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>10</span> is_insert <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> $finish;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>always</span> <span style=color:#66d9ef>begin</span> 
+</span></span><span style=display:flex><span>  #<span style=color:#ae81ff>5</span> clock <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>clock;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>end</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>heap U(data, is_insert, ret, enable, clock, reset);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>endmodule</span>
+</span></span></code></pre></div><ul><li>여기서 배운건 assign 할때 async하게 도는 것과 sync 하게 만드는 것 2개가 있다는 것을 알게 되었다. 일단 heap을 짤때 sync하게 짯는데 async 하게 짤수 있는 부분이 있는지 알아봐야겠다.</li><li><a href=http://aboutmadlife.blogspot.com/2015/01/verilog-blocking-non-blocking.html>http://aboutmadlife.blogspot.com/2015/01/verilog-blocking-non-blocking.html</a></li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>
