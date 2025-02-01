@@ -193,13 +193,11 @@
               "title": "Outline of ceph login 을 oauth 로 할수 있게 하기"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "7e13f139063007fb",
@@ -290,13 +288,14 @@
   "active": "85917b1b8af65989",
   "lastOpenFiles": [
     "content/wiki/go.md",
-    "github.com/gorilla/websocket.md",
     "content/wiki/go-websocket.md",
+    "content/wiki/drawings/Drawing 2025-02-01 19.06.24.excalidraw.md",
+    "content/wiki/Book reviews.md",
+    "content/wiki/_index.md",
+    "github.com/gorilla/websocket.md",
     "github.com/gorilla",
     "github.com",
     "content/wiki/study-note.md",
-    "content/wiki/_index.md",
-    "content/wiki/Book reviews.md",
     "content/wiki/daily/2025-01-31.md",
     "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md",
     "layouts/partials/header.html~",
@@ -334,7 +333,6 @@
     "content/wiki/test2.md",
     "content/wiki/test-2.md",
     "content/wiki/index.md",
-    "content/wiki/daily/2025-01-05.md",
-    "content/wiki/autoconf.md"
+    "content/wiki/daily/2025-01-05.md"
   ]
 }

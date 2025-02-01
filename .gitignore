@@ -13,3 +13,4 @@ public/**
 # Macos
 **/.DS_Store
 
+.obsidian/plugins/recent-files-obsidian/data.json
