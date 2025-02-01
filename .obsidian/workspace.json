@@ -301,6 +301,7 @@
   },
   "active": "ec1bda9846d537a6",
   "lastOpenFiles": [
+    "layouts/wiki/single.html~",
     "public/wiki/index.xml",
     "public/index.xml",
     "public/tags/typescript/index.xml",
@@ -311,7 +312,6 @@
     "public/tags/사지방/index.xml",
     "public/tags/주석/index.xml",
     "public/tags/workqueue/index.xml",
-    "public/tags/설대회/index.xml",
     "public/wiki/images/simplessd.png",
     "public/wiki/images/simple-file-1.png",
     "public/wiki/images/nvme.jpg",

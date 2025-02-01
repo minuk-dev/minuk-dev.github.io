@@ -4,7 +4,13 @@
         {{ partial "head-open" . }}
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ .Title }}</title>
+        <title>
+            {{ if .Title }}
+              {{ .Title }}
+            {{ else }}
+              {{ .File.BaseFileName | humanize }}
+            {{ end }}
+        </title>
         {{ if .Site.Params.favicon }}
             <link rel="icon" href="{{ .Site.Params.favicon | absURL }}">
         {{ end }}
@@ -37,7 +43,13 @@
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">{{ .Title }}</a>
+                    <a class="navbar-brand visible-xs" href="#">
+                      {{ if .Title }}
+                        {{ .Title }}
+                      {{ else }}
+                        {{ .File.BaseFileName | humanize }}
+                      {{ end }}
+                  </a>
                     <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>

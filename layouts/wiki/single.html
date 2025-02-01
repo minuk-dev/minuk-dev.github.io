@@ -3,7 +3,13 @@
 <main>
     {{ partial "wikinavigator" . }}
     <div>
-        <h2>{{ .Title }}</h2>
+        <h2>
+          {{ if .Title }}
+            {{ .Title }}
+          {{ else }}
+            {{ .File.BaseFileName | humanize }}
+          {{ end }}
+        </h2>
         {{ partial "created" . }}
         {{ partial "tags" . }}
     </div>
