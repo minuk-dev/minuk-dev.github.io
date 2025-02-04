@@ -2,12 +2,12 @@
 layout: wikilist
 title: Front Page
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2025-02-01 20:09:58 +0900
+lastmod: 2025-02-05 05:29:28 +0900
 ---
 - [[ipad]]
 - [[제텔카스텐]]
 - [[jekyll 기반 wiki 에서 hugo 로 넘어가기]]
-
+- [[frontend]]
 - [[macos-initialization]]
 ## 즐겨찾기
 - [[observability-engineering-kr]]
