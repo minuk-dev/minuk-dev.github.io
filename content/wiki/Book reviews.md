@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2025-02-01 19:07:25 +0900
+lastmod: 2025-02-12 02:26:35 +0900
 tags:
   - book
 parent: 
@@ -29,6 +29,7 @@ parent:
 - [[site-reliability-engineering]]
 - [[시계열 예측과 분석]]
 - [[Enterprise-Integration-Patterns]]
+- [[Effective kotlin]]
 
 ### 정리 보류한거
 - [[keras-book]]
