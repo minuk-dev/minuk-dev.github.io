@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2025-02-12 02:26:35 +0900
+lastmod: 2025-02-20 21:38:24 +0900
 tags:
   - book
 parent: 
@@ -30,6 +30,8 @@ parent:
 - [[시계열 예측과 분석]]
 - [[Enterprise-Integration-Patterns]]
 - [[Effective kotlin]]
+- [[Real Mongo DB]]
+- [[IT 엔지니어를 위한 네트워크 입문]]
 
 ### 정리 보류한거
 - [[keras-book]]
