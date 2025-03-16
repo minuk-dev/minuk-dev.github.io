@@ -1,12 +1,13 @@
 ---
-layout  : wiki
-title   : devops
-summary : devops 공부 자료
-date    : 2022-07-02 03:26:27 +0900
-lastmod : 2023-03-06 02:26:29 +0900
-tags    : [devops]
-draft   : false
-parent  :
+layout: wiki
+title: devops
+summary: devops 공부 자료
+date: 2022-07-02 03:26:27 +0900
+lastmod: 2025-03-09 14:06:58 +0900
+tags:
+  - devops
+draft: false
+parent: 
 ---
 
 - [[LXC]]
@@ -32,3 +33,4 @@ parent  :
 - [[overlayfs]]
 - [[loki]]
 - [[grafanacon]]
+- [[network]]

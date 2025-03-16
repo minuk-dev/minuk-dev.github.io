@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2025-02-20 21:38:24 +0900
+lastmod: 2025-03-11 01:02:27 +0900
 tags:
   - book
 parent: 
@@ -24,14 +24,15 @@ parent:
 - [[Learning OpenTelemetry]]
 - [[observability-engineering-kr]]
 - [[무엇이 1등 팀을 만드는가?]]
+- [[Effective kotlin]]
 ### 정리 하는 중
 - [[software-engineering-at-google]]
 - [[site-reliability-engineering]]
 - [[시계열 예측과 분석]]
 - [[Enterprise-Integration-Patterns]]
-- [[Effective kotlin]]
 - [[Real Mongo DB]]
 - [[IT 엔지니어를 위한 네트워크 입문]]
+- [[리눅스 커널 네트워킹]]
 
 ### 정리 보류한거
 - [[keras-book]]
