@@ -1,4 +1,103 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>minuk.dev</title><link>https://minuk.dev/</link><description>Recent content on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 11 Mar 2025 01:02:27 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>frontend</title><link>https://minuk.dev/wiki/frontend/</link><pubDate>Wed, 05 Feb 2025 05:29:20 +0900</pubDate><guid>https://minuk.dev/wiki/frontend/</guid><description>&lt;h2 id="테스트-관련">테스트 관련&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>minuk.dev</title><link>https://minuk.dev/</link><description>Recent content on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 01 Apr 2025 02:24:54 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>nvim</title><link>https://minuk.dev/wiki/nvim/</link><pubDate>Tue, 01 Apr 2025 01:07:45 +0900</pubDate><guid>https://minuk.dev/wiki/nvim/</guid><description>&lt;h2 id="시작하면서">시작하면서&amp;hellip;&lt;/h2>
+&lt;ul>
+&lt;li>예전에 vim 설정할때는 뭔가 재밌었는데, 요즘은 조금 피로한거 같다.&lt;/li>
+&lt;li>lua 도 많이 알아야하고, lsp 설정도 해야하고, dap 설정도 해야하고&amp;hellip;&lt;/li>
+&lt;li>그리고 plugin 들도 종류가 뭐 그리 많은지&amp;hellip;&lt;/li>
+&lt;li>그리고 이 글을 쓰는 주 목적인 neovim 0.11.0 버전으로 업그레이드 되면서 뭐그리 deprecated 된게 많은지 참내&amp;hellip;&lt;/li>
+&lt;li>솔직히 요즘 vim 커뮤니티 돌아가는 꼴을 보면 왜 다들 도망가는지 알거 같다.&lt;/li>
+&lt;li>나만의 Editor? IDE? 솔직히 잘 모르겠다. 예전에는 tagbar, nerdtree 정도가 거의 표준에 과도기때 ALE, coc 정도일때가 제일 좋았던거 같다. 해봤자 easymotion 정도?&lt;/li>
+&lt;li>요즘은 알아야할 plugin 도 너무 많고, 설정도 너무 많고&amp;hellip; 뭔가 적당히가 없는 느낌이다.&lt;/li>
+&lt;li>나는 개인적으로는 이런거에 피로해서 &lt;a href="https://vim-bootstrap.com">vim-bootstrap&lt;/a> 을 이용했었는데, 요즘은 이것도 영 신통치가 않다.
+&lt;ul>
+&lt;li>Plug 보다 Lazy 가 조금더 좋은 설정방법인데 이걸 지원하지도 않고,&lt;/li>
+&lt;li>아직도 airline 같은거 쓰고, 등등&lt;/li>
+&lt;li>고전적인게 좋다고는 하지만 너무 업데이트가 안되는 느낌이다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>다른거 코딩하다가, 갑자기 이걸하니까 조금 화나긴 한다&amp;hellip;.&lt;/li>
+&lt;/ul>
+&lt;h2 id="목표">목표&lt;/h2>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> Plugin 관리 쉽게 하기 : Lazy&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> FZF 설정하기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> rg 설정하기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> telescope 설정하기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> go 지원 잘되기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> dap 공부하고 적용하기&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> tagbar 같은거 잘 지원하기&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="step-1-core-랑-plugin-디렉토리-분리">Step 1. core 랑 plugin 디렉토리 분리&lt;/h2>
+&lt;pre tabindex="0">&lt;code>~/.config/nvim/init.lua
+~/.config/nvim/lua/minukdev/core.lua
+~/.config/nvim/lua/minukdev/lazy.lua
+~/.config/nvim/lua/minukdev/plugins
+~/.config/nvim/lua/minukdev/plugins/lsp
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>&lt;code>init.lua&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code>require(&amp;#34;minukdev.core&amp;#34;)
+require(&amp;#34;minukdev.lazy&amp;#34;)
+&lt;/code>&lt;/pre>&lt;ul>
+&lt;li>&lt;code>core.lua&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-lua" data-lang="lua">&lt;span style="display:flex;">&lt;span>vim.cmd(&lt;span style="color:#e6db74">&amp;#34;let g:netrw_liststyle = 3&amp;#34;&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">local&lt;/span> opt &lt;span style="color:#f92672">=&lt;/span> vim.opt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- opt.statuscolumn = &amp;#34;%s %l %r&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- vim.api.nvim_set_hl(0, &amp;#34;LineNr&amp;#34;, { fg = &amp;#34;white&amp;#34; })&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.relativenumber &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.number &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.autoread &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- tabs &amp;amp; indentation&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.tabstop &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.shiftwidth &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.expandtab &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.autoindent &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.wrap &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- search settings&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.ignorecase &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.smartcase &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.cursorline &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.termguicolors &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.background &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;dark&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.signcolumn &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;yes&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- backspace&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.backspace &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;indent,eol,start&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- clipboard&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.clipboard:append(&lt;span style="color:#e6db74">&amp;#34;unnamedplus&amp;#34;&lt;/span>) &lt;span style="color:#75715e">-- use system clipboard&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- slip windows&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.splitright &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.splitbelow &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">-- undo&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>opt.undofile &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#66d9ef">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>vim.opt.undodir &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#e6db74">&amp;#34;/Users/min-uklee/.config/nvim/.undo/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;hr>
+&lt;h2 id="중단">중단&lt;/h2>
+&lt;ul>
+&lt;li>그냥 nvim 을 놓아주기로 했다.&lt;/li>
+&lt;li>terminal 로 개발하는건 굉장히 오래되었고, 아직도 nvim 을 쓰는게 익숙하지만, 이제는 놓아줄때가 된거 같다.&lt;/li>
+&lt;li>vscode 에도 수많은 플러그인이 존재하고, lsp 지원 dap 지원 등등도 다 가능하다&lt;/li>
+&lt;li>이제는 터미널 명렁어중 쓰는건
+&lt;ul>
+&lt;li>tmux, tig, k9s 정도만 남은거 같다&amp;hellip;&lt;/li>
+&lt;li>tig 도 뭔가 자연스럽게 out 될거 같다. k9s 는 그래도 kubectl 을 사용하면서 자연스럽게 계속 터미널에서 쓸거 같지만 확실하지 않다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>점점 터미널로 개발하는게 고집이라고 생각되는 시기가 오는거 같다.&lt;/li>
+&lt;li>vim keybinding 을 지원하는 도구들은 이미 충분히 많고, vim 은 날이 갈수록 방향을 잃어가는거 같다.&lt;/li>
+&lt;/ul></description></item><item><title>frontend</title><link>https://minuk.dev/wiki/frontend/</link><pubDate>Wed, 05 Feb 2025 05:29:20 +0900</pubDate><guid>https://minuk.dev/wiki/frontend/</guid><description>&lt;h2 id="테스트-관련">테스트 관련&lt;/h2>
 &lt;h3 id="snapshot-test">Snapshot test&lt;/h3>
 &lt;ul>
 &lt;li>&lt;a href="https://velog.io/@k7120792/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%8A%A4%EB%83%85%EC%83%B7-%ED%85%8C%EC%8A%A4%ED%8C%85%EC%9D%98-%EB%8B%A8%EC%A0%90%EB%93%A4-o8jypesqnr">https://velog.io/@k7120792/%EB%B2%88%EC%97%AD-%EB%A6%AC%EC%95%A1%ED%8A%B8-%EC%8A%A4%EB%83%85%EC%83%B7-%ED%85%8C%EC%8A%A4%ED%8C%85%EC%9D%98-%EB%8B%A8%EC%A0%90%EB%93%A4-o8jypesqnr&lt;/a>
