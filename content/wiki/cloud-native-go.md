@@ -1,11 +1,12 @@
 ---
-layout  : wiki
-title   : Cloud Native Go
-date    : 2022-11-02 00:20:40 +0900
-lastmod : 2023-03-05 19:41:57 +0900
-tags    : [go]
-draft   : false
-parent  : Book reviews
+layout: wiki
+title: Cloud Native Go
+date: 2022-11-02 00:20:40 +0900
+lastmod: 2025-03-23 17:42:52 +0900
+tags:
+  - go
+draft: false
+parent: Book reviews
 ---
 
 #### 누가 이 책을 읽어야하는가

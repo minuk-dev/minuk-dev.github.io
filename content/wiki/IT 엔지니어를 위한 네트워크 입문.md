@@ -2,7 +2,7 @@
 layout: wiki
 title: IT 엔지니어를 위한 네트워크 입문
 date: 2025-02-20 21:38:16 +0900
-lastmod: 2025-03-16 16:59:22 +0900
+lastmod: 2025-03-23 17:42:52 +0900
 tags: 
 draft: true
 parent: 

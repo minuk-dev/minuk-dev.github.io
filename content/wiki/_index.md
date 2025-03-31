@@ -2,7 +2,7 @@
 layout: wikilist
 title: Front Page
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2025-03-08 23:08:12 +0900
+lastmod: 2025-04-01 01:07:53 +0900
 ---
 - [[제텔카스텐]]
 - [[opampcommander]]
@@ -10,6 +10,7 @@ lastmod: 2025-03-08 23:08:12 +0900
 ## 즐겨찾기
 - [[devops]]
 - [[kubernetes]]
+- [[nvim]]
 
 ### Study
 - [[lectures]]
