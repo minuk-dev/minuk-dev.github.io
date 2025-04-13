@@ -2,7 +2,7 @@
 layout: wiki
 title: opampcommander
 date: 2025-02-14 02:49:15 +0900
-lastmod: 2025-03-24 00:03:48 +0900
+lastmod: 2025-04-04 00:01:00 +0900
 tags: 
 draft: true
 parent: 
@@ -63,3 +63,8 @@ fommatter 구현까지 완료
 		- 처음부터 Command 를 interface 화 시켜서 구현하려고 하니 너무 막막한 감이 있다.
 		- Factory 함수를 golang 에서 잘 만들수 있으면 좋을텐데... 아직도 Factory 패턴은 어떤게 좋은지 모르겠다.
 - 일단은, domain 을 먼저 정의하고, outport, inport 순서로 뻗어나가면 될거 같다.
+
+---
+## 2025-04-01
+- 와 하나도 기억이 안난다.
+

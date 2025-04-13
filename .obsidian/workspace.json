@@ -8,33 +8,73 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d0be66aa6465073e",
+            "id": "7507f602e1106806",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/_index.md",
+                "file": "content/wiki/study-note.md",
                 "mode": "source",
                 "source": false
               },
-              "pinned": true,
               "icon": "lucide-file",
-              "title": "_index"
+              "title": "study-note"
             }
           },
           {
-            "id": "5de4c7406493c0f4",
+            "id": "d8f70d662451e4d2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/go.md",
+                "file": "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "go"
+              "title": "Mastering-OpenTelemetry-And-Observability"
+            }
+          },
+          {
+            "id": "e17e6a7d98bc7c22",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/Book reviews.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Book reviews"
+            }
+          },
+          {
+            "id": "a5e397310415d76f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/IT 엔지니어를 위한 네트워크 입문.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "IT 엔지니어를 위한 네트워크 입문"
+            }
+          },
+          {
+            "id": "7438a4290ae89df5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/opampcommander.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "opampcommander"
             }
           },
           {
@@ -52,21 +92,21 @@
             }
           },
           {
-            "id": "02fb5f1c0d3fb0a3",
+            "id": "3596adeb6ae233d4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/nvim.md",
+                "file": "content/wiki/IT 엔지니어를 위한 네트워크 입문.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "nvim"
+              "title": "IT 엔지니어를 위한 네트워크 입문"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -235,19 +275,27 @@
       "terminal:Open terminal": false
     }
   },
-  "active": "02fb5f1c0d3fb0a3",
+  "active": "d8f70d662451e4d2",
   "lastOpenFiles": [
-    "content/wiki/nvim.md",
-    "content/wiki/_index.md",
-    "content/wiki/go.md",
-    "content/wiki/opampcommander.md",
-    "content/wiki/study-note.md",
-    "content/wiki/lectures.md",
     "content/wiki/IT 엔지니어를 위한 네트워크 입문.md",
+    "content/wiki/study-note.md",
+    "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
+    "content/wiki/_index.md",
+    "content/wiki/kafka.md",
+    "content/wiki/armeria.md",
+    "content/wiki/assembly.md",
+    "content/wiki/statistics.md",
+    "content/wiki/Book reviews.md",
+    "assets/Pasted image 20250410025815.png",
+    "assets/Pasted image 20250410024044.png",
+    "content/wiki/opampcommander.md",
+    "content/wiki/http-go.md",
+    "content/wiki/go.md",
     "content/wiki/리눅스 커널 네트워킹.md",
+    "content/wiki/nvim.md",
+    "content/wiki/lectures.md",
     "content/wiki/cloud-native-go.md",
     "content/wiki/daily/2025-03-15.md",
-    "content/wiki/Book reviews.md",
     "content/wiki/network.md",
     "content/wiki/Effective kotlin.md",
     "content/wiki/2025-일본여행.md",
@@ -258,9 +306,6 @@
     "content/wiki/frontend.md",
     "content/wiki/daily/2025-02-14.md",
     "assets/Pasted image 20250227002824.png",
-    "content/wiki/daily/2025-02-15.md",
-    "content/wiki/daily/2025-02-02.md",
-    "content/wiki/무엇이 1등 팀을 만드는가?.md",
     "layouts/wiki/single.html~",
     "public/wiki/index.xml",
     "public/index.xml",
@@ -278,11 +323,6 @@
     "public/wiki/images/mysql_architecture.png",
     "public/wiki/images/linux-kakao-5.jpg",
     "public/wiki/images/linux-kakao-4.png",
-    "public/wiki/images/linux-kakao-3.jpg",
-    "public/wiki/images/linux-kakao-2.png",
-    "content/wiki/daily/2025-02-01.md",
-    "content/wiki/go-websocket.md",
-    "themes/minimal/exampleSite/content/project/project4.md",
     "Untitled.canvas"
   ]
 }

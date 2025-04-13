@@ -2,7 +2,7 @@
 layout: wiki
 title: IT 엔지니어를 위한 네트워크 입문
 date: 2025-02-20 21:38:16 +0900
-lastmod: 2025-03-23 17:42:52 +0900
+lastmod: 2025-04-14 01:52:21 +0900
 tags: 
 draft: true
 parent: 
@@ -252,3 +252,232 @@ parent:
 - EGP: AS 간 통신에 사용하는 라우팅 프로토콜
 - 디스턴스 벡터: 인접한 라우터에서 경로 정보를 습득하는 라우팅 프로토콜
 - 링크 스테이트: 라우터에 연결된 링크 상태를 서로 교환하고 각 네트워크 맵을 그리는 라우팅 프로토콜
+
+
+## 6장 로드 밸런서/방화벽: 4계층 장비(세션 장비)
+### 6.1. 4계층 장비의 특징
+- 세션 테이블
+- Symmetric 경로 요구
+- 정보 변경
+
+### 6.2. 로드 밸런스
+- L4 로드 밸런싱
+- L7 로드 밸런싱
+
+#### 6.2.1. L4 스위치
+#### 6.2.2. ADC
+- Application Delivery Controller
+- ADC 는 4계층에서 애플리케이션 계층까지 로드 밸런싱 기능을 제공하고, Failover, Redirection 등을 함꺠한다.
+- 추가적으로 Caching, Compression, 콘텐츠 변환 및 재작성, 인코딩 변환 등 애플리케이션 프로토콜 최적화 기능이 있는 경우도 있다.
+
+#### 6.2.3. L4 스위치 vs ADC
+
+### 6.3. 방화벽
+
+### 6.4. 4계층 장비를 통과할 떄의 유의점 (세션 관리)
+
+#### 6.4.1. 세션 테이블 유지, 세션 정보 동기화
+##### 6.4.1.1. 세션 장비 운영자 입장
+- 세션 만료 시간 증가
+- 세션 시간을 둔 채로 중간 패킷을 수용할 수 있도록 방화벽 설정
+- 세션 장비에서 세션 타임아웃 시 양 단말에 세션 종료 통보
+
+#### 6.4.2. 비대칭 경로 문제
+
+#### 6.4.3. 하나의 통신에 두 개 이상의 세션이 사용될 때의 고려사항
+
+
+## 7장 통신을 도와주는 네트워크 주요 기술
+### 7.1. NAT/PAT
+- NAT: Network Address Translation
+- NAPT (Network Address Port Translation, RFC2663)
+- PAT (Port Address Translation)
+
+#### 7.1.1. NAT/PAT의 용도와 필요성
+- IPv4 주소 고갈문제
+- 보안 강화
+- IP 주소 체계가 같은 두 개의 네트워크 간 통신을 가능하게 해준다.
+- 불필요한 설정 변경을 줄일수 있다.
+
+#### 7.1.2. NAT 동작 방식
+
+#### 7.1.3 PAT 동작 방식
+
+#### 7.1.4. SNAT와 DNAT
+- SNAT(Source NAT) : 출발지 주소를 변경하는 NAT
+- DNAT(Destination NAT) : 도착지 주소를 변경하는 NAT
+- ref. https://blog.naver.com/alice_k106/221305928714
+- DNAT: PREROUTING
+- SNAT: POSTROUTING
+
+#### 7.1.5. 동적 NAT와 정적 NAT
+
+### 7.2. DNS
+### 7.2.1 DNS 소개
+### 7.2.2. DNS 구조와 명명 규칙
+- e.g. www.naver.com
+- Third-Level Domain: www
+- Second-Level Domain: naver
+- Top-Level Domain (TLD): com
+- root: . 은 보통 생략
+
+#### 7.2.2.1. 루트 도메인
+a.root-server.net ~ m.root-servers.net
+
+#### 7.2.2.2. Top-Level Domain (TLD)
+- Generic (gTLD)
+	- com, edu, gov, int, mil, net, org
+- country-code (ccTLD)
+	- kr
+- sponsored(sTLD)
+	- 특정 목적을 위한 도메인
+	- aero, asia, edu, museum 등
+- infrastructure
+	- .arpa: 인터넷 안정성을 유지하기 위함
+- generic-restricted(grTLD)
+	- 특정 기준을 충족하는 사람이나 단체가 사용할수 있는 도메인
+	- .blz, .name, .pro
+- test(tTLD)
+	- 테스트 목적, .test
+
+### 7.2.3. DNS 동작 방식
+
+- hosts 파일
+- DNS local cache
+- DNS 서버 쿼리
+- 재귀적 쿼리(Recursive Query) vs 반복적 쿼리 (Iterative Query)
+
+### 7.2.4. 마스터와 슬레이브
+- 엑티브-스탠바이
+- 엑티브-엑티브
+
+### 7.2.5. DNS 주요 레코드
+- A: 도메인 주소를 IPv4 로 매핑
+- AAAA: 도메인 주소를 IPv6 로 매핑
+- CNAME: 도메인 주소에 대한 별칭
+	- ![[Pasted image 20250410024044.png]]
+- SOA: 본 영역에 대한 권한
+- NS: 본 영역에 대한 네임 서버
+- MX: 도메인에 대한 메일 서버 정보
+- PTR: IP 주소를 도메인에 매핑 (역방향)
+- TXT: 도메인에 대한 일반 텍스트
+
+### 7.2.6. DNS에서 알아두면 좋은 내용
+#### 7.2.6.1. 도메인 위임(DNS Delegation)
+
+- CDN이나 GSLB를 사용하는게 제일 일반적
+
+#### 7.2.6.2. TTL
+- 윈도우: 1시간
+- 리눅스: 3시간
+
+#### 7.2.6.3. 화이트 도메인
+- 대량으로 이메일을 발송할 경우 스팸메일로 차단된다.
+- KISA에 화이트 도메인을 등록해야한다
+
+#### 7.2.6.4 한글 도메인
+- 퓨니코드로 드록한 이후 이걸 DNS 에 도메인을 생성해야한다
+- 퓨니코드: 클라이언트 단에서 퓨니코드로 변환되어서 전송된다. (xn--으로 시작하는 문자열)
+- RFC 3492 에 정의되어 있다.
+
+### 7.2.7 DNS 설정 (windows)
+### 7.2.8 DNS 설정 (Linux)
+- bind 패키지 사용
+
+### 7.2.9 호스트 파일 설정
+
+### 7.3. GSLB
+### 7.3.1. GSLB 동작 방식
+
+### 7.3.2. GSLB 구성방식
+- 도메인 자체를 GSLB로 사용
+- 도메인 내의 특정 레코드만 GSLB를 사용
+
+### 7.3.3. GSLB 분산 방식
+- 서비스 제공의 가능 여부를 체크해 트래픽 분산
+- 지리적으로 멀리 떨어진 다른 데이터 센터에 트래픽 분산
+- 지역적으로 가까운 서비스에 접속해 더 빠른 서비스 제공이 가능하도록 분산
+
+
+## 7.4. DHCP
+### 7.4.1 DHCP 프로토콜
+- BOOTP(Bootstrap Protocol)을 기반으로 한다.
+
+### 7.4.2. DHCP 동작 방식
+1. DHCP Discover: DHCP 서버를 찾기 위한 브로드캐스트
+2. DHCP Offer : DHCP 서버가 DHCP서버 정보를 클라이언트로 전송
+3. DHCP Request :  DHCP 서버로부터 제안 받은 주소를 브로드캐스트로 전송
+4. DHCP Acknowledgement: DHCP 클라이언트로부터 IP 주소를 사용하겠다는 요청을 받으면 DHCP Request를 잘 받았다는 신호로 응답 전송
+
+- 위 과정중에 왜 3번 과정 DHCP Request 는 Dest MAC 이 Broadcast 인가를 고민...
+	- ![[Pasted image 20250410025815.png]]
+	- https://blog.naver.com/jga0674/221004234317
+	- DHCP 서버가 여러개일수 있는데, 어떤게 선택되었는지를 전파하기 위해서 브로드캐스트여야한다
+	- 
+
+
+### 7.4.4. DHCP 릴레이
+
+# 8장 서버 네트워크 기본
+## 8.1. 서버의 네트워크 설정 및 확인
+
+#### 8.1.1. 리눅스 서버 네트워크
+- centos: `/etc/sysconfig/network-scripts`
+- ubuntu: `/etc/network/interfaces`
+
+## 8.2. 서버의 라우팅 테이블
+### 8.2.1. 서버의 라우팅 테이블
+- Destination : 목적지
+- Genmask : 서브넷
+- Gateway : 게이트웨이
+- Iface : 인터페이스
+- Metric : 우선순위
+- 
+
+### 8.2.2. 리눅스 서버의 라우팅 확인 및 관리
+```
+ip route
+```
+
+```
+route add { -host | -net } Target[/prefix] [gw Gw] [metric M] [[dev] If]
+```
+
+```
+route del { -host | -net } Target[/prefix] [gw Gw] [metric M] [[dev] If]
+```
+
+
+#### 8.2.1.1 CentOS 의 영구적 라우팅 설정
+```
+/etc/sysconfig/network-scripts/route-장치명
+```
+
+#### 8.2.2.2. Ubuntu의 영구적 라우팅 설정
+`
+`/etc/network/interfaces`
+
+```
+up route add [ -net | -host] <host/net>/<mask> gw <host/IP> dev <Interface>
+```
+
+## 8.3. 네트워크 확인을 위한 명령어
+### 8.3.1. ping (Packet InterNet Grouper)
+- 살짝 명령어 먼저 만들고 나중에 끼워 맞춘거 같은데...
+
+### 8.3.3. traceroute(리눅스)
+
+### 8.3.4. tcptraceroute
+
+### 8.3.5. netstat (network statistics)
+- ss, ip route, ip -s link, ip maddr
+
+### 8.3.6. ss(socket statistics)
+
+### 8.3.7 nslookup(name server lookup)
+
+### 8.3.8. telnet(tele network)
+
+### 8.3.9. ipconfig
+
+### 8.3.10. tcpdump

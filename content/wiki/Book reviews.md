@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2025-03-11 01:02:27 +0900
+lastmod: 2025-04-12 22:55:39 +0900
 tags:
   - book
 parent: 
@@ -33,6 +33,7 @@ parent:
 - [[Real Mongo DB]]
 - [[IT 엔지니어를 위한 네트워크 입문]]
 - [[리눅스 커널 네트워킹]]
+- [[Mastering-OpenTelemetry-And-Observability]]
 
 ### 정리 보류한거
 - [[keras-book]]
