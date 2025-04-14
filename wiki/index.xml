@@ -1,4 +1,256 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Front Page on minuk.dev</title><link>https://minuk.dev/wiki/</link><description>Recent content in Front Page on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 12 Apr 2025 22:55:39 +0900</lastBuildDate><atom:link href="https://minuk.dev/wiki/index.xml" rel="self" type="application/rss+xml"/><item><title>nvim</title><link>https://minuk.dev/wiki/nvim/</link><pubDate>Tue, 01 Apr 2025 01:07:45 +0900</pubDate><guid>https://minuk.dev/wiki/nvim/</guid><description>&lt;h2 id="시작하면서">시작하면서&amp;hellip;&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Front Page on minuk.dev</title><link>https://minuk.dev/wiki/</link><description>Recent content in Front Page on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Tue, 15 Apr 2025 01:19:00 +0900</lastBuildDate><atom:link href="https://minuk.dev/wiki/index.xml" rel="self" type="application/rss+xml"/><item><title>Mastering-OpenTelemetry-And-Observability</title><link>https://minuk.dev/wiki/mastering-opentelemetry-and-observability/</link><pubDate>Sat, 12 Apr 2025 22:55:34 +0900</pubDate><guid>https://minuk.dev/wiki/mastering-opentelemetry-and-observability/</guid><description>&lt;h1 id="mastring-opentelemetry-and-obserability">Mastring OpenTelemetry And Obserability&lt;/h1>
+&lt;ul>
+&lt;li>Enhancing Application and Infrastructure Performance and Avoiding Outages&lt;/li>
+&lt;li>Terms:
+&lt;ul>
+&lt;li>Backend: The data access layer of an application, which often includes processing and persistence of data.&lt;/li>
+&lt;li>Framework: A structure on which other things are built.
+&lt;ul>
+&lt;li>OTel is a telemetry framework that can be extended to support various use cases.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Frontend: The presentation layer of an application, which is often a user interface of user-facing way to interact with an application.&lt;/li>
+&lt;li>Instrumentation: Software added to an application to generate telemetry data. Various forms of instrumentation are available, including automatic, which is injected at runtime, manual, which is added with the existing code, and programmatic, which is a particular form of manual instrumenation where specific libraries or frameworks have already been instrumented.&lt;/li>
+&lt;li>Platform: An environment in which software is executed. An observability or monitoring platform typically consists of one or more backend and frontend components.&lt;/li>
+&lt;li>Telemetry: Data used to determine the health, performance, and usage of applications.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="chapter-1-what-is-observability">Chapter 1. What Is Observability?&lt;/h2>
+&lt;h3 id="definition">Definition&lt;/h3>
+&lt;ul>
+&lt;li>Observability is a system property that defines the degree to which the system can generate actionable insights. It allows users to understand a system&amp;rsquo;s state from these external outputs and take (corrective) action.
+&lt;ul>
+&lt;li>ref. &lt;a href="https://glossary.cncf.io/observability/">https://glossary.cncf.io/observability/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>The goal of observability should be where a system&amp;rsquo;s state can be fully understood from its external output without the need to ship code.&lt;/li>
+&lt;li>Observability is not just about collecting data but about collecting meaningful data.&lt;/li>
+&lt;li>A system is truly observable when you can troubleshoot without prior knowledge of the system.&lt;/li>
+&lt;/ul>
+&lt;h3 id="cloud-native-era">Cloud Native Era&lt;/h3>
+&lt;h3 id="monitoring-compared-to-observability">Monitoring Compared to Observability&lt;/h3>
+&lt;ul>
+&lt;li>The data collection needs to be added before issues happen; otherwise, you cannot proactively determine nor quickly resolve the problems as the arise.&lt;/li>
+&lt;/ul>
+&lt;h4 id="types-of-monitoring">Types of Monitoring&lt;/h4>
+&lt;ul>
+&lt;li>White box monitoring&lt;/li>
+&lt;li>Blackbox-monitoring&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;ul>
+&lt;li>Due to the difficulty in troubleshooting mircroservice-based architectures, a popular meme was shared throughout the community:
+&lt;ul>
+&lt;li>We replaced our monolith with micro services so that every outage could be more like a murder mystery.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="metadata">Metadata&lt;/h3>
+&lt;h4 id="dimensionality">Dimensionality&lt;/h4>
+&lt;ul>
+&lt;li>Dimensionality refres to the number of unique keys&lt;/li>
+&lt;/ul>
+&lt;h4 id="cardinality">Cardinality&lt;/h4>
+&lt;ul>
+&lt;li>Cardinality refres to the number of unique values for a given key within a set.&lt;/li>
+&lt;/ul>
+&lt;h4 id="semantice-conventions">Semantice Conventions&lt;/h4>
+&lt;ul>
+&lt;li>semconvs are standardized dimensions, or keys, for metadata and ensure consistency in how data is recorded, labeled, and interpreted across different systems and services.&lt;/li>
+&lt;/ul>
+&lt;h4 id="data-sensitivity">Data Sensitivity&lt;/h4>
+&lt;ul>
+&lt;li>Metadata can contain sensitive information.&lt;/li>
+&lt;/ul>
+&lt;h4 id="signals">Signals&lt;/h4>
+&lt;ul>
+&lt;li>MELT: metrics, events, logs, and traces&lt;/li>
+&lt;/ul>
+&lt;h4 id="metrics">Metrics&lt;/h4>
+&lt;ul>
+&lt;li>RED: requests, error, and duration&lt;/li>
+&lt;li>USE: Utilization, saturation, and erros&lt;/li>
+&lt;li>Four golden signals: latency, traffic, errors, saturation&lt;/li>
+&lt;/ul>
+&lt;h4 id="logs">Logs&lt;/h4>
+&lt;ul>
+&lt;li>Structured&lt;/li>
+&lt;li>Unstructured&lt;/li>
+&lt;/ul>
+&lt;h4 id="traces">Traces&lt;/h4>
+&lt;ul>
+&lt;li>A trace is a recording of a time-based transaction or end-to-end request with metadata&lt;/li>
+&lt;li>Head-based&lt;/li>
+&lt;li>Tail based&lt;/li>
+&lt;/ul>
+&lt;h4 id="other-signals">Other Signals&lt;/h4>
+&lt;ul>
+&lt;li>Baggage: metadata passed between spans that must be explicitly added to signals.&lt;/li>
+&lt;li>Sessions: used in Real User Monitoring (RUM) to analyze user experience (UX)&lt;/li>
+&lt;li>Profiles&lt;/li>
+&lt;/ul>
+&lt;h3 id="collecting-signals">Collecting Signals&lt;/h3>
+&lt;ul>
+&lt;li>Metrics emit small payloads at very frequent intervals. As a result, performance is critical. Metrics are usually not collected nor sent anywhere by default. While it is easy to add metrics and many frameworks exist, most metrics do not contain context or correlation information.&lt;/li>
+&lt;li>Logs can contain richer information than metrics but, as a result, have larger payloads, and parsing requires proper formatting. Logs are usually written to a destination like a disk or a remote solution. While frameworks exist to add logs to applications, developers add most logging manually. Likce metrics, most logs do not contain context or correlation.&lt;/li>
+&lt;li>Traces are similar to logs. While they are easier to parse, it requires assembling an entire trace to realize the full potential. Traces require passing a context (typically a header) between request. In addition, adding trace instrumentation is often significantly more challenging than metrics or logs. Trace payloads are as big, if not bigger, than logs and are frequently sampled.&lt;/li>
+&lt;/ul>
+&lt;h4 id="instrumentation">Instrumentation&lt;/h4>
+&lt;ul>
+&lt;li>Manual, Automatic, Via an instrumentation library&lt;/li>
+&lt;/ul>
+&lt;h3 id="push-versus-pull-collection">Push Versus Pull Collection&lt;/h3>
+&lt;ul>
+&lt;li>Cloud native workloads, pull is most common for metrics&lt;/li>
+&lt;/ul>
+&lt;h3 id="data-collection">Data Collection&lt;/h3>
+&lt;ul>
+&lt;li>Simplicity, Efficiency, Middle ground, Consistency&lt;/li>
+&lt;/ul>
+&lt;h3 id="sampling-signals">Sampling Signals&lt;/h3>
+&lt;ul>
+&lt;li>Filtering&lt;/li>
+&lt;li>Sampling&lt;/li>
+&lt;/ul>
+&lt;h3 id="observability">Observability&lt;/h3>
+&lt;ul>
+&lt;li>Scalability&lt;/li>
+&lt;li>Reliability&lt;/li>
+&lt;li>User experience&lt;/li>
+&lt;li>Ease of use&lt;/li>
+&lt;li>Performance&lt;/li>
+&lt;li>Security&lt;/li>
+&lt;li>Cost&lt;/li>
+&lt;li>Lock-in&lt;/li>
+&lt;/ul>
+&lt;h3 id="application-performance-monitoring">Application Performance Monitoring&lt;/h3>
+&lt;h4 id="the-bottom-line">The Bottom Line&lt;/h4>
+&lt;ul>
+&lt;li>Differentiate between monitoring and observability
+&lt;ul>
+&lt;li>What is the difference between a &amp;ldquo;Known known&amp;rdquo; and &amp;ldquo;unknown unknown&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Explain the importance of metadata
+&lt;ul>
+&lt;li>What are the differences between dimensionality, cardinality, and semantic conventions?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Identify the differences between telemetry signals.
+&lt;ul>
+&lt;li>Why are there at least three separate ways to collect telemetry data from applications?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Distinguish between instrumentation and data collection.
+&lt;ul>
+&lt;li>Given instrumentation, why is data collection necessary?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Analyze the requirements for choosing an observability platform
+&lt;ul>
+&lt;li>How are observability platforms different from APM?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="chapter-2-introducing-opentelemetry">Chapter 2. Introducing OpenTelemetry&lt;/h2>
+&lt;h3 id="background">Background&lt;/h3>
+&lt;h4 id="observability-pain-points">Observability Pain Points&lt;/h4>
+&lt;ul>
+&lt;li>Inconsistent features&lt;/li>
+&lt;li>vendor lock-in&lt;/li>
+&lt;li>Supportability and security concerns&lt;/li>
+&lt;li>Duplication among vendors&lt;/li>
+&lt;li>Lack of standardization, including context and correlation across signals and semantic conventions (semconvs)&lt;/li>
+&lt;/ul>
+&lt;h4 id="the-rise-of-open-source-software">The Rise of Open Source Software&lt;/h4>
+&lt;h4 id="specification">Specification&lt;/h4>
+&lt;ul>
+&lt;li>Data specification: Used to define implementation guidance, data models, semconvs, and protocols&lt;/li>
+&lt;li>API Specification: Used to define the instrumentation interface standard for applications&lt;/li>
+&lt;li>SDK Specification: Used to define the standard for processing and exporting signals provided by the API specification&lt;/li>
+&lt;li>Versioning and Stabability: SUed to define versioning scheme and support gurantees&lt;/li>
+&lt;/ul>
+&lt;h4 id="data-collection-1">Data Collection&lt;/h4>
+&lt;ul>
+&lt;li>The OTel Collector is a significant component and primary data collection mechanism in the Otel Project.&lt;/li>
+&lt;li>Otel collector supports:
+&lt;ul>
+&lt;li>A robust and extensible architecture to receive, process, and export traces, metrics, and logs&lt;/li>
+&lt;li>A variety of form factors, including agent and edge processing as well as push and pull collection mechanism&lt;/li>
+&lt;li>A variety of integrations, including Prometheus, Fluent Bit, Apache Arrow, and eBPF, to name a few&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="instrumentation-1">Instrumentation&lt;/h3>
+&lt;ul>
+&lt;li>Supports:
+&lt;ul>
+&lt;li>A robust and extensive architecture to generate, process, and export signals&lt;/li>
+&lt;li>A single instrumentation solution for more than ten languages that supports traces, metrics, and logs.&lt;/li>
+&lt;li>Manual and automatic instrumentation&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="opentelemetry-concepts">OpenTelemetry Concepts&lt;/h3>
+&lt;h4 id="distributions">Distributions&lt;/h4>
+&lt;h4 id="pipelines">Pipelines&lt;/h4>
+&lt;ul>
+&lt;li>Instrumentation: Providers, Generators, Processors, Exporters&lt;/li>
+&lt;li>Collector: Receivers or Connectors, Processors, Exporters or Connectors&lt;/li>
+&lt;/ul>
+&lt;h4 id="resources">Resources&lt;/h4>
+&lt;ul>
+&lt;li>Cloud Provider: In develpment&lt;/li>
+&lt;li>Compute Unit: In development&lt;/li>
+&lt;li>Compute Instance: In develpment&lt;/li>
+&lt;li>Environment: In develpment&lt;/li>
+&lt;li>Service: Mixed (service.name and service.version stable)&lt;/li>
+&lt;li>Telemetry: Mixed (telemetry.sdk.* stable)&lt;/li>
+&lt;/ul>
+&lt;h4 id="registry">Registry&lt;/h4>
+&lt;ul>
+&lt;li>Automatic instrumentation for specific frameworks and languages&lt;/li>
+&lt;li>Instrumentation and Collector components, including generators, receivers, processors, exporters, and extensions. Vendoer components are listed here as well as components for other open source projects.&lt;/li>
+&lt;li>OTel components for instrumentation languages not hostsed by OTel, including Crystal, Dart, Haskell, Kotlin, Ocamel, Perl, and Scalar.&lt;/li>
+&lt;/ul>
+&lt;h4 id="roadmap">Roadmap&lt;/h4>
+&lt;ul>
+&lt;li>1 traces, 2 metrics, 3 logs&lt;/li>
+&lt;li>No plans for creating a major version of OpenTelemetry (API) past v1.0&lt;/li>
+&lt;/ul>
+&lt;h3 id="the-bottom-line-1">The Bottom Line&lt;/h3>
+&lt;ul>
+&lt;li>Recognize observability problems and the need for open standards.:
+&lt;ul>
+&lt;li>What is an open stardard and why does it matter?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Explain the history and goals of the OpenTelemetry project:
+&lt;ul>
+&lt;li>What does the OTel project provides, and what does it intentionally not provide?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Identify the OpenTelemetry components and project status:
+&lt;ul>
+&lt;li>Is OTel generally available (GA) and production-ready?
+&lt;ul>
+&lt;li>&lt;a href="https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/ga-roadmap.md">https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/ga-roadmap.md&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://opentelemetry.io/community/roadmap/">https://opentelemetry.io/community/roadmap/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="chapter-3-getting-started-with-the-astronomy-shop">Chapter 3. Getting Started with the Astronomy Shop&lt;/h2>
+&lt;h2 id="chapter-4-understanding-the-opentelemetry-specification">Chapter 4. Understanding the OpenTelemetry Specification&lt;/h2>
+&lt;h3 id="api-specification">API Specification&lt;/h3>
+&lt;h3 id="api-definition">API Definition&lt;/h3>
+&lt;h4 id="api-context">API Context&lt;/h4>
+&lt;h4 id="api-signals">API Signals&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>Traces support TracerProvider, Tracer, and Span&lt;/p></description></item><item><title>nvim</title><link>https://minuk.dev/wiki/nvim/</link><pubDate>Tue, 01 Apr 2025 01:07:45 +0900</pubDate><guid>https://minuk.dev/wiki/nvim/</guid><description>&lt;h2 id="시작하면서">시작하면서&amp;hellip;&lt;/h2>
 &lt;ul>
 &lt;li>예전에 vim 설정할때는 뭔가 재밌었는데, 요즘은 조금 피로한거 같다.&lt;/li>
 &lt;li>lua 도 많이 알아야하고, lsp 설정도 해야하고, dap 설정도 해야하고&amp;hellip;&lt;/li>
