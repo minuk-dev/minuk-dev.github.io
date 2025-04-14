@@ -2,10 +2,10 @@
 layout: wiki
 title: Mastering-OpenTelemetry-And-Observability
 date: 2025-04-12 22:55:34 +0900
-lastmod: 2025-04-14 02:17:55 +0900
+lastmod: 2025-04-15 01:19:00 +0900
 tags: 
-draft: true
-parent: 
+draft: false
+parent:
 ---
 # Mastring OpenTelemetry And Obserability
 - Enhancing Application and Infrastructure Performance and Avoiding Outages
@@ -278,3 +278,138 @@ parent:
 	- Fully OTel compliant: Given the Collector exists in the OTel project, it fully supports all OTel concepts, including signals, resources, and schemas.
 
 ### Deployment Modes
+
+#### Agent Mode
+- Stand-alone instance
+	- Unavailable:
+		- During an upgrade
+		- During a restart
+		- Improperly sized
+		- Improperly configured
+#### Gateway Mode
+- Scenarios:
+	- You want to collect data from specific APIs, like the k8s API, or scrape a Prometheus server configured for federation
+	- You want to leverage tail-based sampling.
+	- You want to receive data from applications that do not support sending to an agent.
+	- Your network configuration prevents agents from accessing the Internet and you leverage a cloud-based observability platform.
+	- Your security team requires that API tokens be managed central and/or separated from agents.
+
+| Flow                                                          | Pros                                                                                                                                                                                                                                                                                                                          | Cons                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Instrumentation to observability platform                     | - Quickest time to value; simplicity.<br>- Lowest latency.                                                                                                                                                                                                                                                                    | - Less data processing flexibility and requires language-specific components, such as resource detection and configuration.<br>- Operational complexity as each language and possibly each application needs to be independently configured.<br>- Added resource requirements to handle processing, and buffer and retry logic.<br>- Decentralized security controls. |
+| Instrumentation to agent to observability platform            | - Quick time to value, especially given that instrumentation sends data to a local OTLP destination by default.<br>- Separates telemetry generation from transmission, reducing application load.<br>Enhanced data processing capabilities and dynamic configuration without redploying applications.                         | - Agent is a single point of failure and must be sized and monitored properly.                                                                                                                                                                                                                                                                                        |
+| Instrumentation to gateway to observability platform          | - If a gateway cluster separates telemetry generation from transmission without a single point of failure.<br>- Supports advanced data processing capabilities, including metric aggregation and tail-based sampling.<br>- Useful in certain environments, such as serverless, where an agent deployment may not be possible. | - Cannot offload all application processing capabilities, including resource detection.<br>- Requires thought when configuring pull-based receivers to ensure proper load balancing and no data duplication.<br>- May introduce unacceptable latency, impacting applications.                                                                                         |
+| Instrumentation to agent to gateway to observability platform | - The pros of agent and gateway mode. Supports the most use cases and requirements while providing the most data flexibility and portability.                                                                                                                                                                                 | - Complex configuration and highest management costs.                                                                                                                                                                                                                                                                                                                 |
+
+#### Sizing
+- Running complex regular expressions via configured processors against a large volume of data may result in an excessive amount of CPU being consumed. Optimizing the configuration to be more efficient or load balancing the data across a larger pool of smaller Collectors could help offset this issue.
+- Significant spikes in traffic, custom buffer and retry configurations, and the tail-based sampling processor may result in excessive amounts of memory being consumed, leading to the Collector restarting. Testing failure scenarios to understand Collector behavior and validating Collector configuration is vital.
+- Excessive logging or configuring the storage extension may consume all disk space. Monitoring and alerting against disk space can help mitigate this issue.
+
+#### Components
+- Receivers
+- Processors
+- Exporters
+- Connectors
+- Extensions
+
+### Configuration
+- GOGC: default 100
+- GOMEMLIMIT: no default
+- Ballast extensions: deprecated. removed recommended
+
+- Important:
+	- The components available depend on the Collector distribution being rune.
+	- Every component has a GItHub README that details status, supported signals, defaults, and configuration options.
+	- Within service::pipeline, one ore more receivers and exporters and zero or more processors or connectors msut be defined per signal.
+	- Not everything defined outside of the service section needs to be used in the service::pipelines section.
+	- The components specified in a `service::pipelines::<signal>` must support the signal type.
+	- More than one configuration can be passed to the Collector in which case configurations are merged.
+	- You can use something defined outside of the service section in multiple service::pipelines.
+	- The order in which `service::pipelines::<signal>::processors` are defined determines the order in which processors are executed.
+	- The same component and the same `service::pipelines::<signal>` can be defined multiple times by adding a forward slash followed by one more characters like `<component>[/<name>]`.
+- otelbin
+	- https://www.otelbin.io/
+- Processors:
+	- Memory limiter: highly recommended
+-
+
+| Category                                      | Examples                                                                                              |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Metadata processing                           | - k8sattributesprocessor<br>- resourceprocessor                                                       |
+| Filtering, routing, and sampling              | - filterprocessor<br>- routingprocessor (fyi. deprecated router connector)<br>- tailsamplingprocessor |
+| Enriching                                     | - k8sattributeprocessor<br>- resourcedetection                                                        |
+| Generating (primarily metrics)                | - metricsgenerationprocessor<br>- spanmetricsprocessor                                                |
+| Grouping (helpful in batching and processing) | - groupbyattrprocessor<br>- groupbytraceprocessor (valid for tail-based sampling)                     |
+| Transforming (primarily metrics)              | - cumulativetodeltaprocessor<br>- deltatorateprocessor<br>- schemaprocessor                           |
+- Order
+	1. Memory limiter
+	2. Any filtering or sampling
+	3. Any processor relying on sending source from context (e.g. k8s attritubes)
+	4. batch
+	5. Any other processor, including CRUD metadata
+
+### Extensions
+
+| Category                                                               | Examples                                                                                |
+| ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Authentication - Used by receivers and exporters                       | - basicauthextension<br>- bearertokenauthextension<br>- oidcauthextension<br>           |
+| Health and Troubleshooting                                             | - healthcheckextension<br>- pprofextension<br>- remotetapextension<br>- zpagesextension |
+| Observers - Used by receivers to discover and collect data dynamically | - dockerobserver<br>- hostobserver<br>- k8sobserver                                     |
+| Persistence - Via a database or filesystem                             | - storage/dbstorage<br>- storage/filestorage                                            |
+
+### Connectors
+- Exceptions: Generating metrics or logs from span exceptions
+- Failover: Allows for health-based routing between trace, metric, and log pipelines, depending on the health of target downstream exporters
+- Service graph: Building a map representing the interrelationships between various services in a system
+
+### Observing
+- Metrics
+- Health check extension
+- zPages extension
+#### Relevant Metrics
+- Dropped data:
+	- otelcol_processor_dropped_spans
+	- otelcol_processor_dropped_metric_points
+	- otelcol_processor_dropped_log_records
+- Queue length:
+	- otelcol_exporter_queue_capacity
+	- otelcol_exporter_queue_size
+- Enqueue failed:
+	- otelcol_exporter_enqueue_failed_spans
+	- otelcol_exporter_enqueue_failed_metric_points
+	- otelcol_exporter_enqueue_failed_log_records
+  - Recevier refused:
+	  - otelcol_receiver_refused_spans
+	  - otelcol_receiver_refused_metric_points
+	  - otelcol_receiver_refused_log_records
+- Exporter send faield:
+	- otelcol_exporter_send_failed_spans
+	- otelcol_exporter_send_failed_metric_points
+	- otelcol_exporter_send_failed_log_records
+- CPU cors against a known rate:
+	- otelcol_receiver_accepted_spans
+	- otelcol_receiver_accpeted_metric_points
+	- otelcol_receiver_accpted_log_records
+
+### Troubleshooting
+#### Out of Memory crashes
+- Reasons:
+	- A misconfiguration
+		- GOGC, GOMEMLIMIT
+	- An improperly sized Collector
+	- Using an alpha component
+#### Data Not Being Received or Exported
+- Debug exporter
+- zPages extension
+
+#### Performance Issues
+- Memory -> Go envrionment variables, memory limiter
+- CPU:
+	- alpha component which is not optizmied yet.
+	- memory related: zPages
+- pprof extension
+
+## Beyond the Basics
+### Distributions
+- Core, Contrib, K8s
