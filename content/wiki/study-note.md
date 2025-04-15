@@ -3,20 +3,26 @@ layout: wiki
 title: study-note
 summary: 공부한거 모아두기
 date: 2022-03-31 11:14:42 +0900
-lastmod: 2025-04-16 02:09:32 +0900
+lastmod: 2025-04-16 02:48:58 +0900
 tags:
   - study
 draft: false
 ---
 
+### Book Review
+- [[Book reviews]]
+## 잡다한거
+- [[rbac]]
+- [[others]]
+
+---
+## Archived
 - [[software-engineering]]
 - [[linux]]
-- [[others]]
 - [[soma]]
 - [[Storage]]
 - [[msk]]
 - [[kafka]]
-- [[tikz]]
 - [[면접준비]]
 - [[kubernetes]]
 - [[observability]]
@@ -42,8 +48,6 @@ draft: false
 ### Mathematics
 - [[statistics]]
 
-### Book Review
-- [[Book reviews]]
 
 ### Algorithm
 - [[algorithm]]
@@ -53,4 +57,3 @@ draft: false
 
 ### Others
 - [[topcit]]
-- [[latina]]

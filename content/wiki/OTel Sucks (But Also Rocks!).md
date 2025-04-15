@@ -2,7 +2,7 @@
 layout: wiki
 title: OTel Sucks (But Also Rocks!)
 date: 2025-04-16 02:09:44 +0900
-lastmod: 2025-04-16 02:41:50 +0900
+lastmod: 2025-04-16 02:43:45 +0900
 tags: 
 draft: false
 parent: 

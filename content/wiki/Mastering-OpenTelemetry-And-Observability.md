@@ -2,10 +2,10 @@
 layout: wiki
 title: Mastering-OpenTelemetry-And-Observability
 date: 2025-04-12 22:55:34 +0900
-lastmod: 2025-04-15 01:19:00 +0900
+lastmod: 2025-04-16 02:45:25 +0900
 tags: 
 draft: false
-parent:
+parent: 
 ---
 # Mastring OpenTelemetry And Obserability
 - Enhancing Application and Infrastructure Performance and Avoiding Outages
@@ -413,3 +413,7 @@ parent:
 ## Beyond the Basics
 ### Distributions
 - Core, Contrib, K8s
+- Beyond the provided distributions, you may want to create your own.
+	- Remove unused or unneeded components to reduce the security surface of the Collector, including the required dependencies
+	- Extend the Collector with additional capabilities
+	- Create custom packaging beyond what OTel provides
