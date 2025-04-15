@@ -3,7 +3,7 @@ layout: wiki
 title: go
 summary: go 언어 관련
 date: 2022-08-02 15:52:30 +0900
-lastmod: 2025-04-07 03:22:03 +0900
+lastmod: 2025-04-16 00:35:53 +0900
 tags:
   - go
 draft: false

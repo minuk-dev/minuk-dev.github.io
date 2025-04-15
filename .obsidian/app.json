@@ -1,8 +1,9 @@
 {
   "vimMode": false,
   "mobileToolbarCommands": [
-    "obsidian-excalidraw-plugin:excalidraw-insert-transclusion",
-    "obsidian-excalidraw-plugin:excalidraw-autocreate-newtab",
+    "editor:indent-list",
+    "editor:unindent-list",
+    "editor:toggle-checklist-status",
     "editor:insert-wikilink",
     "editor:insert-embed",
     "editor:insert-tag",
@@ -17,9 +18,6 @@
     "editor:insert-link",
     "editor:toggle-bullet-list",
     "editor:toggle-numbered-list",
-    "editor:toggle-checklist-status",
-    "editor:indent-list",
-    "editor:unindent-list",
     "editor:undo",
     "editor:redo",
     "editor:configure-toolbar"

@@ -52,7 +52,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -193,8 +193,9 @@
       "obsidian-kanban:새 보드 만들기": false
     }
   },
-  "active": "4cac0d3f568f9b17",
+  "active": "8b95025339328a08",
   "lastOpenFiles": [
+    "content/wiki/go.md",
     "content/wiki/study-note.md",
     "content/wiki/_index.md",
     "content/wiki/daily/2025-02-01.md",
@@ -239,7 +240,6 @@
     "content/wiki/daily/2025-01-12.md",
     "_wiki/index.md",
     "_wiki/daily/2025-01-05.md",
-    "archetypes/default.md",
-    "content/wiki/lectures/Bayesian/week2.md"
+    "archetypes/default.md"
   ]
 }
