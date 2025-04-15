@@ -1,4 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>minuk.dev</title><link>https://minuk.dev/</link><description>Recent content on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 16 Apr 2025 02:41:50 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>OTel Sucks (But Also Rocks!)</title><link>https://minuk.dev/wiki/otel-sucks-but-also-rocks/</link><pubDate>Wed, 16 Apr 2025 02:09:44 +0900</pubDate><guid>https://minuk.dev/wiki/otel-sucks-but-also-rocks/</guid><description>&lt;p>Original Article: &lt;a href="https://opentelemetry.io/blog/2025/otel-rocks/">https://opentelemetry.io/blog/2025/otel-rocks/&lt;/a>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>minuk.dev</title><link>https://minuk.dev/</link><description>Recent content on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Wed, 16 Apr 2025 02:55:14 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>rbac</title><link>https://minuk.dev/wiki/rbac/</link><pubDate>Wed, 16 Apr 2025 02:48:49 +0900</pubDate><guid>https://minuk.dev/wiki/rbac/</guid><description>&lt;h2 id="rbac">RBAC&lt;/h2>
+&lt;ul>
+&lt;li>Role Based Access Control&lt;/li>
+&lt;li>더 자세한 정의는 다른 사이트에 잘나와있다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="구현체">구현체&lt;/h2>
+&lt;ul>
+&lt;li>golang 으로 인증 쪽에 관심이 있어서 좀 찾아보니까, &lt;a href="https://github.com/casbin/casbin">casbin&lt;/a> 이라는 게 있다.
+&lt;ul>
+&lt;li>스타도 충분히 많고 (적는거 기준 18.5k)&lt;/li>
+&lt;li>문서화도 잘되어 있는것으로 보인다.&lt;/li>
+&lt;li>그리고 java 도 있어서 맨날 java 개발자들이 잘 못쓸까봐 걱정하는걸 안해도 된다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>PERM 메타 모델이라는 걸 사용한다. (Policy, Effect, Request, Matchers)&lt;/li>
+&lt;/ul>
+&lt;pre tabindex="0">&lt;code># Request definition
+[request_definition]
+r = sub, obj, act
+
+# Policy definition
+[policy_definition]
+p = sub, obj, act
+
+# Policy effect
+[policy_effect]
+e = some(where (p.eft == allow))
+
+# Matchers
+[matchers]
+m = r.sub == p.sub &amp;amp;&amp;amp; r.obj == p.obj &amp;amp;&amp;amp; r.act == p.act
+&lt;/code>&lt;/pre>&lt;p>뭔가 미묘하게 toml 문법과 비슷해보여서 기분나쁘긴 한데, 일단 직관적이긴 한거 같다.&lt;/p></description></item><item><title>OTel Sucks (But Also Rocks!)</title><link>https://minuk.dev/wiki/otel-sucks-but-also-rocks/</link><pubDate>Wed, 16 Apr 2025 02:09:44 +0900</pubDate><guid>https://minuk.dev/wiki/otel-sucks-but-also-rocks/</guid><description>&lt;p>Original Article: &lt;a href="https://opentelemetry.io/blog/2025/otel-rocks/">https://opentelemetry.io/blog/2025/otel-rocks/&lt;/a>
 구글 번역과 함께 번역하였습니다.&lt;/p>
 &lt;hr>
 &lt;p>OpenTelemetry (Otel) 은 vendor 중립성과 포괄적인 data collection 을 약속하며, Observability 의 미래로서 종종 선전됩니다. 하지만 OTel 을 매일 쓰는 사람들의 현실은 어떨까요? 몇몇 엔지니어들과 SRE들과 필터링되지 않은 Otel에 대한 생각을 들어보았습니다. 그 결과는? OTel을 사용하면서 느꼈던 좋은 점, 나쁜 점, 그리고 때로는 답답한 점에 대한 솔직한 대화입니다.
