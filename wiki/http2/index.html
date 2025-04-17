@@ -4,8 +4,8 @@
 <span class=icon-bar></span>
 <span class=icon-bar></span></button></div><div class="collapse navbar-collapse"><ul class="nav navbar-nav"><li><a href=/>Home</a></li><li><a href=/wiki/>Wiki</a></li><li><a href=/posts/>Posts</a></li><li><a href=/about/>About</a></li></ul></div></div></nav><main><div class=navigator style=display:flex><div style=display:flex><div class=parent-doc style=flex:none><button class="btn btn-link" onclick='(function(e){e.querySelector("a").click()})(this)'>
 <i class="fa fa-arrow-left"></i>
-[[devops]]</button></div></div></div><div><h2>http2 탐구</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/http2.md><h5>created : Wed, 03 Aug 2022 15:42:58 +0900</h5><h5>modified : Wed, 03 Aug 2022 15:44:45 +0900</h5></a><a href=https://minuk.dev/tags/http><kbd class=item-tag>http</kbd></a>
-<a href=https://minuk.dev/tags/http2><kbd class=item-tag>http2</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#rfc-7540-과-go-코드-뜯어보기>RFC 7540 과 go 코드 뜯어보기</a><ul><li><a href=#http-버전별-분기>HTTP 버전별 분기</a></li><li><a href=#http2-multiplexed-stream>HTTP2 Multiplexed stream</a></li><li><a href=#stream-prioritization>Stream Prioritization</a></li><li><a href=#server-push>Server Push</a></li><li><a href=#header-compression>Header Compression</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><ul><li>동기 : gRPC 에서 bidirection을 지원하는데 이게 http2 에서 이미 지원하고 있어서 라는 사실을 알게 되었다. http2 에 대해 너무 모르고 있었던 것 같아서 정리한다.</li></ul><hr><ul><li>특징 알아보기<ul><li><a href=https://www.popit.kr/%EB%82%98%EB%A7%8C-%EB%AA%A8%EB%A5%B4%EA%B3%A0-%EC%9E%88%EB%8D%98-http2/>출처 - 나만 모르고 있던 http2</a></li><li>HTTP/1.1 의 문제점<ul><li>HOL(Head Of Line) Blocking</li><li>반복적인 3-way Handshake 로 인한 RTT 증가</li><li>언제나 Cookie를 보내면서 무거운 Header 구조</li></ul></li><li>Multiplexed Streams</li><li>Stream Prioritization</li><li>Server Push</li><li>Header Compression</li></ul></li></ul><hr><h2 id=rfc-7540-과-go-코드-뜯어보기>RFC 7540 과 go 코드 뜯어보기</h2><ul><li>특징이 나와있는 사이트들은 정말 많지만, 코드 레벨로 말하는 곳은 얼마 없다.</li><li>RFC 문서와 구현 코드를 비교하면서 정리하자.</li><li>golang 에서는 아직 standard library인 net/http 는 http 1.1 만을 지원하는 것 같다. http2 는 <a href=http://golang.org/x/net/http2>golang.org/x/net/http2</a> 를 사용해야한다.</li></ul><h3 id=http-버전별-분기>HTTP 버전별 분기</h3><pre tabindex=0><code>3.1.  HTTP/2 Version Identification
+[[devops]]</button></div></div></div><div><h2>http2 탐구</h2><a href=https://github.com/minuk-dev/minuk-dev.github.io/blame/master/content/wiki/http2.md><h5>created : Wed, 03 Aug 2022 15:42:58 +0900</h5><h5>modified : Thu, 17 Apr 2025 20:37:07 +0900</h5></a><a href=https://minuk.dev/tags/http><kbd class=item-tag>http</kbd></a>
+<a href=https://minuk.dev/tags/http2><kbd class=item-tag>http2</kbd></a></div><aside class=navbar id=nav-toc style=text-align:left><nav id=TableOfContents><ul><li><a href=#rfc-7540-과-go-코드-뜯어보기>RFC 7540 과 go 코드 뜯어보기</a><ul><li><a href=#http-버전별-분기>HTTP 버전별 분기</a></li><li><a href=#http2-multiplexed-stream>HTTP2 Multiplexed stream</a></li><li><a href=#stream-prioritization>Stream Prioritization</a></li><li><a href=#server-push>Server Push</a></li><li><a href=#header-compression>Header Compression</a></li><li><a href=#graceful-shutdown>Graceful shutdown</a></li></ul></li></ul></nav></aside><div align=start class=content data-spy=scroll data-offset=20 data-target=#nav-toc style=position:relative><ul><li>동기 : gRPC 에서 bidirection을 지원하는데 이게 http2 에서 이미 지원하고 있어서 라는 사실을 알게 되었다. http2 에 대해 너무 모르고 있었던 것 같아서 정리한다.</li></ul><hr><ul><li>특징 알아보기<ul><li><a href=https://www.popit.kr/%EB%82%98%EB%A7%8C-%EB%AA%A8%EB%A5%B4%EA%B3%A0-%EC%9E%88%EB%8D%98-http2/>출처 - 나만 모르고 있던 http2</a></li><li>HTTP/1.1 의 문제점<ul><li>HOL(Head Of Line) Blocking</li><li>반복적인 3-way Handshake 로 인한 RTT 증가</li><li>언제나 Cookie를 보내면서 무거운 Header 구조</li></ul></li><li>Multiplexed Streams</li><li>Stream Prioritization</li><li>Server Push</li><li>Header Compression</li><li>graceful shutdown</li></ul></li></ul><hr><h2 id=rfc-7540-과-go-코드-뜯어보기>RFC 7540 과 go 코드 뜯어보기</h2><ul><li>특징이 나와있는 사이트들은 정말 많지만, 코드 레벨로 말하는 곳은 얼마 없다.</li><li>RFC 문서와 구현 코드를 비교하면서 정리하자.</li><li>golang 에서는 아직 standard library인 net/http 는 http 1.1 만을 지원하는 것 같다. http2 는 <a href=http://golang.org/x/net/http2>golang.org/x/net/http2</a> 를 사용해야한다.</li></ul><h3 id=http-버전별-분기>HTTP 버전별 분기</h3><pre tabindex=0><code>3.1.  HTTP/2 Version Identification
 
    The protocol defined in this document has two identifiers.
 
@@ -166,4 +166,32 @@
 </span></span><span style=display:flex><span>	}
 </span></span><span style=display:flex><span>  <span style=color:#66d9ef>return</span> <span style=color:#a6e22e>f</span>, <span style=color:#66d9ef>nil</span>
 </span></span><span style=display:flex><span>}
-</span></span></code></pre></div><ul><li>어떻게 compression 할지는 추가적으로 정의가 되어있고, 여기서는 그냥 이를 사용만 한다.</li><li>위 코드를 보면 framer 에 Decoder 로 hpack 을 넣어주는 것을 볼 수있다.</li><li>이를 사용해서 frame을 읽는다.</li><li>쓰기 부분은 추가적으로 찾지는 않았지만 sc.hpackEncoder 를 통해서 할 것 이라고 추정할 수 있다.</li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>
+</span></span></code></pre></div><ul><li>어떻게 compression 할지는 추가적으로 정의가 되어있고, 여기서는 그냥 이를 사용만 한다.</li><li>위 코드를 보면 framer 에 Decoder 로 hpack 을 넣어주는 것을 볼 수있다.</li><li>이를 사용해서 frame을 읽는다.</li><li>쓰기 부분은 추가적으로 찾지는 않았지만 sc.hpackEncoder 를 통해서 할 것 이라고 추정할 수 있다.</li></ul><h3 id=graceful-shutdown>Graceful shutdown</h3><ul><li><a href="https://datatracker.ietf.org/doc/html/rfc7540?ref=pangyoalto.com#section-6.8">6.8 GOAWAY</a></li></ul><pre tabindex=0><code>6.8.  GOAWAY
+
+   The GOAWAY frame (type=0x7) is used to initiate shutdown of a
+   connection or to signal serious error conditions.  GOAWAY allows an
+   endpoint to gracefully stop accepting new streams while still
+   finishing processing of previously established streams.  This enables
+   administrative actions, like server maintenance.
+
+   There is an inherent race condition between an endpoint starting new
+   streams and the remote sending a GOAWAY frame.  To deal with this
+   case, the GOAWAY contains the stream identifier of the last peer-
+   initiated stream that was or might be processed on the sending
+   endpoint in this connection.  For instance, if the server sends a
+   GOAWAY frame, the identified stream is the highest-numbered stream
+   initiated by the client.
+
+   Once sent, the sender will ignore frames sent on streams initiated by
+   the receiver if the stream has an identifier higher than the included
+   last stream identifier.  Receivers of a GOAWAY frame MUST NOT open
+   additional streams on the connection, although a new connection can
+   be established for new streams.
+
+   If the receiver of the GOAWAY has sent data on streams with a higher
+   stream identifier than what is indicated in the GOAWAY frame, those
+   streams are not or will not be processed.  The receiver of the GOAWAY
+   frame can treat the streams as though they had never been created at
+   all, thereby allowing those streams to be retried later on a new
+   connection.
+</code></pre><ul><li>Graceful shutdown 을 위해서 connection 이 끝났다고 통보하기 위해서 http2 는 goaway 를 보내야한다.</li></ul></div><script src=/js/wikilink.js></script><div><script src=https://utteranc.es/client.js repo=minuk-dev/minuk-dev.github.io issue-term=pathname theme=github-dark crossorigin=anonymous async></script></div></main><footer class=footer><div class=footer-left></div><div class=footer-right><ul class=social><li><a href=/about>About</a></li><li><a href=https://github.com/minuk-dev>Github</a></li></ul></div></footer>
