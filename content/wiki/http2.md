@@ -1,12 +1,14 @@
 ---
-layout  : wiki
-title   : http2 탐구
-summary : RFC 문서와 golang 라이브러리를 뜯어보며 http2 탐구
-date    : 2022-08-03 15:42:58 +0900
-lastmod : 2022-08-03 15:44:45 +0900
-tags    : [http, http2]
-draft   : false
-parent  : devops
+layout: wiki
+title: http2 탐구
+summary: RFC 문서와 golang 라이브러리를 뜯어보며 http2 탐구
+date: 2022-08-03 15:42:58 +0900
+lastmod: 2025-04-17 20:37:07 +0900
+tags:
+  - http
+  - http2
+draft: false
+parent: devops
 ---
 
 - 동기 : gRPC 에서 bidirection을 지원하는데 이게 http2 에서 이미 지원하고 있어서 라는 사실을 알게 되었다. http2 에 대해 너무 모르고 있었던 것 같아서 정리한다.
@@ -23,6 +25,7 @@ parent  : devops
   - Stream Prioritization
   - Server Push
   - Header Compression
+  - graceful shutdown
 
 ---
 
@@ -281,3 +284,39 @@ func (fr *Framer) ReadFrame() (Frame, error) {
 - 위 코드를 보면 framer 에 Decoder 로 hpack 을 넣어주는 것을 볼 수있다.
 - 이를 사용해서 frame을 읽는다.
 - 쓰기 부분은 추가적으로 찾지는 않았지만 sc.hpackEncoder 를 통해서 할 것 이라고 추정할 수 있다.
+
+### Graceful shutdown
+- [6.8 GOAWAY](https://datatracker.ietf.org/doc/html/rfc7540?ref=pangyoalto.com#section-6.8)
+
+```
+6.8.  GOAWAY
+
+   The GOAWAY frame (type=0x7) is used to initiate shutdown of a
+   connection or to signal serious error conditions.  GOAWAY allows an
+   endpoint to gracefully stop accepting new streams while still
+   finishing processing of previously established streams.  This enables
+   administrative actions, like server maintenance.
+
+   There is an inherent race condition between an endpoint starting new
+   streams and the remote sending a GOAWAY frame.  To deal with this
+   case, the GOAWAY contains the stream identifier of the last peer-
+   initiated stream that was or might be processed on the sending
+   endpoint in this connection.  For instance, if the server sends a
+   GOAWAY frame, the identified stream is the highest-numbered stream
+   initiated by the client.
+
+   Once sent, the sender will ignore frames sent on streams initiated by
+   the receiver if the stream has an identifier higher than the included
+   last stream identifier.  Receivers of a GOAWAY frame MUST NOT open
+   additional streams on the connection, although a new connection can
+   be established for new streams.
+
+   If the receiver of the GOAWAY has sent data on streams with a higher
+   stream identifier than what is indicated in the GOAWAY frame, those
+   streams are not or will not be processed.  The receiver of the GOAWAY
+   frame can treat the streams as though they had never been created at
+   all, thereby allowing those streams to be retried later on a new
+   connection.
+```
+
+- Graceful shutdown 을 위해서 connection 이 끝났다고 통보하기 위해서 http2 는 goaway 를 보내야한다.

@@ -2,12 +2,12 @@
 layout: wiki
 title: Mastering-OpenTelemetry-And-Observability
 date: 2025-04-12 22:55:34 +0900
-lastmod: 2025-04-16 02:45:25 +0900
+lastmod: 2025-04-18 02:26:47 +0900
 tags: 
 draft: false
 parent: 
 ---
-# Mastring OpenTelemetry And Obserability
+# Mastring OpenTelemetry And Observability
 - Enhancing Application and Infrastructure Performance and Avoiding Outages
 - Terms:
 	- Backend: The data access layer of an application, which often includes processing and persistence of data.
@@ -417,3 +417,123 @@ parent:
 	- Remove unused or unneeded components to reduce the security surface of the Collector, including the required dependencies
 	- Extend the Collector with additional capabilities
 	- Create custom packaging beyond what OTel provides
+- Securing
+	- Configuration
+		- SHOULD only enable the minimum required components. As covered earlier, everything enabled is a potential attack vector.
+		- SHOULD ensure sensitive configuration information is stored securely.
+	- Permissions
+		- SHOULD NOT run Collector as root/admin user. If the Collector is compromised and run as root/admin, then other systems may be at risk of being compromised.
+		- MAY require privileged access for some components. Care should be taken in these circumstances.
+	- Receivers/exporters
+		- SHOULD use encryption and authentication.
+		- SHOULD limit exposure of servers to authorized users.
+		- MAY pose a security risk if configuration parameters are modified improperly.
+	- Processors
+		- SHOULD configure obfuscation/scrubbing of sensitive metadata. Security can also be of the telemetry data being processed.
+		- SHOULD configure recommended processors. The recommended processor can help mitigate security concerns such as a distributed denial-of-service (DDos) attack.
+	- Extensions
+		- SHOULD NOT expose sensitive health or telemetry data. Any information made available could be used to compromise the system.
+- Management
+	- OpAMP:
+		- Remote configuration
+		- Status reporting
+		- Collector telemetry reporting
+		- Management of downloadable Collector-specific packages
+		- Secure auto-updating capabilities
+		- Connection credentials management
+
+### The Bottom Line
+- Distinguish between agent and gateway mode.
+	- What is the difference between agent and gateway mode?
+- Identify Collector components.
+	- When getting started, what are the most essential components to configure?
+- Configure and run the Collector.
+	- How are Collector components configured?
+- Size, secure, observe, and troubleshoot the Collector
+	- Which components can be used to observe and troubleshoot the Collector?
+
+## Chapter 6. Leveraging OpenTelemetry Instrumentation
+- Get started:
+	- Download the required dependencies.
+	- Update the configuration
+		- Automatic instrumentation: set env variables or runtime parameters
+		- Manual instrumentation: add code interfaces
+	- Update the runtime parameters and start the application.
+- Caution:
+	- Setting the `service.name` is critical and highly recommended, otherwise it will be hard to understand what service was impacted when anlyzing data.
+	- Updating the exporter settings may be necessary.
+	- Changing at least the OTLP endpoint address will be necessary for most containerized environments.
+
+- Auto Instrumentation
+- Manual Instrumentation
+- Programmatic Instrumentation
+- Mixing Automatic and Manual Trace Instrumentation
+
+### Distributions
+
+### The Bottom Line
+- Instrument an application in various ways.
+	- What is the difference between the automatic, manual, programmatic, and mixed methods of instrumentation?
+- Add production-ready instrumentation.
+	- After the basics of generating telemetry data that is exported to the console, what are some additional capabilities you should add in preparation for production?
+- Enrich instrumentation with metadata.
+	- What are some ways you can enrich telemetry data with metadata?
+
+## Chapter 7. Adopting OpenTelemetry
+### The Basics
+- Data portability and sovereignty, with a goal of gaining deeper insights into application availability and performance.
+- Reduced complexity, with a goal of ensuring compliance with industry standards.
+- Improved observability, with a goal of reducing mean time to detection (MTTD) and mean time to recovery (MTTR).
+
+### Why OTel and Why Now?
+- de facto standard
+- support various programming languages and frameworks.
+- reducing vendor lock-in
+
+- Consistency:
+	- Semantic conventions
+	- Processors and telemetry pipelines
+	- Context and correlation, which help end users reduce MTTR by enabling problem isolation and root cause analysis
+
+- gRPC vs HTTP:
+	- Instrumentation leveraged
+	- Protocols leveraged: For example, if gRPC is not used anywhere in your environment, you may not be comfortable using it.
+	- The amount of data expected: For environments generating a large amount of telemetry data, gRPC might perform better, but to date, there are no accurate benchmarks in OTel to confirm this. Most instrumentation libraries now default to HTTP/protobuf, but the question remains: what is the best option for the Collection.
+	- The number of dependencies: gRPC usually has many more dependencies than HTTP. The net result is that gRPC and its dependencies may need to be upgraded more often to address vulnerabilities, and the package size is often larger.
+	- The HTTP version used: gRPC uses HTTP 2.0 whereas HTTP defaults to 2.0 and can fallback to 1.1 if needed. It can also be explictly configured only to use 1.1, though this not recommended.
+
+### Instrumentation
+- Extensive performance tests to understand the impacts on the application, including resource utilization and startup time.
+- Configuration validation to ensure that items such as context propagation and tagging are correctly set. Also, note that changes in the data received may result in the need to create or update charts and alerts to ensure that they work correctly.
+- Metadata enrichment to help provide observability and ensure parity with any previous instrumentation. Not that enrichment may also be possible from the Collector instead of or in addition to the instrumentation.
+- Keep in mind when configuring OTel instrumentation:
+	- The exporter endpoint may need to be updated, especially for containerized environments or when the Collector is not deployed in agent mode.
+	- The service name should be set to distinguish applications from one another. This is necessary to understand the behavior, health, and performance of different services.
+	- You should determine how you want additional resource information to be added. Options include instrumentation, Collector, or both, and implementation depends on requirements. Leveraging Collector instances running in agent mode is the recommended default option.
+	- You should consider abstracting configuration and instrumentation where it makes sense.
+### Production Readiness
+- Performance, Reliability, Security
+
+### Maturity Framework
+- Level 1((Initial Implementation):
+	- Deployment of the Colelctor and basic configuration to start collecting and forwarding data to an observability platform
+	- Installation of OTel SDKs in select applications
+- Level 2 (Basic Instrumentation)
+	- Identifying and instrumenting critical services and application components using OTel SDKs
+	- Utilizing OTel APIs to generate custom telemetry data specific your application's needs
+	- Ensuring that essential signals are being collected through an environment
+- Level 3 (Advanced Instrumentation)
+	- Full-stack instrumentation, including external dependencies and third-party services
+	- Signals enriches with contextual metadata such as service names, environment tags, and user identifiers (IDs)
+	- Enhanced use of OTel APIs to capture fine-grained telemetry data for detailed analysis
+- Level 4 (Integrated Observability)
+	- Complete integration with existing monitoring and observability tools
+	- Centralized dashboards that aggregate and visualize telemetry data from multiple sources for unified visibility
+	- Advanced querying and visualization techniques to gain deeper insights into system performance and health
+- Level 5 (Proactive Observability)
+	- Predictive analytics and machine learning (ML) for anomaly detection and potential issue forecasting
+	- Incident response with automated remediation workflows to address incidents and performance bottlenecks in real time
+	- Continuous improvement through feedback loops and performance tuning
+
+### Brownfield Deployment
+#### Data Collection

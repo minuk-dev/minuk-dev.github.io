@@ -3,7 +3,7 @@ layout: wiki
 title: study-note
 summary: 공부한거 모아두기
 date: 2022-03-31 11:14:42 +0900
-lastmod: 2025-04-16 02:48:58 +0900
+lastmod: 2025-04-17 20:29:29 +0900
 tags:
   - study
 draft: false
@@ -14,6 +14,7 @@ draft: false
 ## 잡다한거
 - [[rbac]]
 - [[others]]
+- [[http2]]
 
 ---
 ## Archived
