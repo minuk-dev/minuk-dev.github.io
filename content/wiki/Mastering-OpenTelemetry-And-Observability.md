@@ -2,7 +2,7 @@
 layout: wiki
 title: Mastering-OpenTelemetry-And-Observability
 date: 2025-04-12 22:55:34 +0900
-lastmod: 2025-04-18 02:26:47 +0900
+lastmod: 2025-04-21 01:01:38 +0900
 tags: 
 draft: false
 parent: 
@@ -537,3 +537,407 @@ parent:
 
 ### Brownfield Deployment
 #### Data Collection
+- In addition, several considerations must be taken into account, including:
+	- Resource usage and constraints
+	- Port conflicts
+	- Network configuration
+	- Effects of migration
+
+#### Instrumentation
+- When adopting OTel in a brownfield deployment, you should be aware of the following:
+	- Replacing manual instrumentation is not required for any instrumentation formats supported by the Collector but may be considered to reduce the number of technologies used and maintained in an environment. Other reasons to consider switching to OTel instrumentation include it being the most adopted open standard and that it can handle multiple signals with the same SDK. At the very least, proprietary instrumentation should be removed over time. One way to approach this is to ensure every new service introduced into the environment leverages the new instrumentation standard.
+	- While automatic instrumentation is most commonly used to generate trace data, in OTel, it supports more, including OTel SDK configuration and possibly other signals. Even if automatic instrumentation is not used in the environment, it should be considered in brownfield deployments. 
+	- The same context propagation mechanism must be used when replacing trace instrumentation, regardless of whether it is via automatic or manual instrumentation.
+
+#### Dashboards and Alerts
+- Send the new name and make it a platform problem
+- Send the original name and wait for the migration to complete before cutting over
+
+### Greenfield Deployment
+#### Data Collection
+- GOGC, GOMEMLIMIT environment variables for the Collectir is highly recommended.
+#### Instrumentation
+- With instrumentation, it is common for people to want to start by instrumenting metrics. The reasons why people often start with metrics is severalfold, including:
+	- Developers are often more comfortable troubleshooting with metrics.
+	- Service owners care more about their services than those they are dependent on or that depend on them.
+	- Tracing requires context propagation, meaning services must be instrumented end-to-end to provide value. Instrumenting all services in a transaction can take time, depending on the number of services, the types of languages and frameworks used, and the teams involved.
+
+### Other Considerations
+#### Administration and Maintenance
+- Collector - SRE
+- Automatic instrumentation - SRE
+- Manual instrumentation - Developer
+
+#### Environments
+- Development, staging, and production
+- Kubernetes
+- Functions-as-a-service (FaaS)
+- Internet of Things (IoT)
+- Air-gapped
+
+#### Semantic Conventions
+
+#### The Future
+- Profiling to provide code-level telemetry data helpful in investigating performance issues in an application.
+- Client instrumentation, which is required to support Real User Monitoring (RUM)
+- eBPF telemetry for observability.
+
+### The Bottom Line
+- Prepare to adopt OpenTelemetry:
+	- Preparation will ensure that your OTel adopton is strategic, well-supported, and aligned with organizational goals. What are some reasons why you might want to adopt OTel?
+- Approach adopting OpenTelemetry in brownfield deployments.:
+	- What are the recommended steps to adopt OTel in a brownfield deployment?
+- Approach adopting OpenTelemetry in greenfield deployments.:
+	- What are the recommended steps to adopt OTel in a greenfield deployment?
+
+## Chapter 8 The Power of Context and Correlation
+### Background
+- Context is "the interrelated conditions in which something exists or occurs." For the tracing signal, a span contains a trace ID and associated metadata. This additional information on the span would be an example of context.
+- Correlation is "a phenomenon that accompanies another phenomenon, is usually parallel to it, and is related in some way to it" A single HTTP request, which would be represented by a metric, being associated with a transaction or trace ID would be an example of correlation.
+
+### Context
+- Database semantic conventions are in development and include the ability to define context, including:
+	- `db.name` : A name for the database being accessed. Required and similar to `service.name` used for applications.
+	- `db.operation` : What operation was executed, such as `SELECT`. Required unless `db.statement` is specified.
+	- `db.statement` : The entire command executed. Note that this may contain sensitive information. In addition, unless normalized, indexing this value would result in high cardinality.
+	- `db.system` : The type of database called, such as `CASSANDRA`, `REDIS`, or `SQL`; required.
+	- `db.user` : The user who executed the command.
+
+#### OTel Context
+- OTel context is essentially key-value pairs, or metadata, used to propagate information across the lifecycle of a request.
+- Baggage is a specific type of OTel context that is desinged to be shared within and propagated across service boundaries.
+
+#### Trace Context
+- Golden signals or RED metrics: At a minimum, requests, error, and duration information can be extracted from traces.
+- Metrics: Beyond golden signals or RED metrics, additional metrics may also be available that are library specific or developer added.
+- Logs: Typically in the form of span events, but log correlation can also bring traces and logs together.
+- Metadata: While additional signal information may be valuable, especially if it can be extracted from a trace, metadata is one of the most important pieces of context.
+
+#### Challenges
+- Metrics and logs have been around for a long time, are easier to add, and are more commonly used to monitor environments.
+- Tracing is more challenging to add than metrics and logs. Adding the appropriate metrics, logs, and metadata is nontrivial, even if context can be passed.
+- Most tracing platforms cannot fully leverage metrics and logs attached to spans. Problems here include dimensionality and cardinality of the data.
+- Traces are often heavily sampled, meaning metrics and logs must be appropriately handled at sample time to provide proper observability.
+- Additional context and correlation, including business, user, and application logic is needed and may only be available form other signals.
+
+### Resource Context
+- End users
+- Applications or services
+- Orchestration or platform
+- Infrastructure
+
+
+### Logic Context
+- Business logic: organization ID and environment
+- User logic: customerID and geolocation
+- Application logic: version number and feature flag stutas
+
+### Correlation
+- In addition to context, it is critical to be able to correlate telemetry data to achieve observability
+
+#### Time Correlation
+- One fundamental way to correlate information is by viewing different data sources together and visual correlating on the dimension of time.
+- Time-based correlation's limitation:
+	- Missing data: it is difficult to determine whether all data is being collected and visualized.
+	- Noise: Variable amounts of error and latency are possible even in healthy environments. Quickly distinguishing between noise and signal can decrease MTTR.
+	- Assumptions: Multiple investigations are often needed to test hypotheses and learn more about the system's behavior.
+
+#### Context Correlation
+- A significant improvement to time correlation is context correlation. Context correlation is when metadata is used to perform problem isolation.
+
+#### Trace Correlation
+#### Metric Correlation
+
+
+### The Bottom Line
+- Differentiate between context and correlation:
+	- Understanding the distinction between context and correlation is fundamental to observing systems and leveraging OTel effectively. What is the difference between context and correlation?
+- Identify the types of context and the value each provides.:
+	- In OTel, context is available through concepts including attributes, resources, and baggage. What is the difference between these concepts?
+- Explain the value proposition of correlation.:
+	- Correlation transforms disparate telemetry data into a coherent narrative, empowering teams to make informed decisions and maintain robust, high-performing steams. What are some examples of correlation?
+
+## Chapter 9 Choosing an Observability Platform
+### Primary Considerations
+- Functional requirements, or what you need the system to support, including signal, anomaly detection, data retention, real-time analysis, historical data analysis, machine learning (ML) and artificial intelligence (AI) capabilities
+- Non-functional requirements, or how you need a system to perform, including cost, scalability, performance, reliability, security, compliance, usability, documentation, and support.
+
+---
+- Requirements:
+	- Data residency
+	- Heterogeneous versus unified observability
+	- Security and compliance, including for regulated industries and government agencies
+
+
+| Requirements                                  | Examples                          | Priority |
+| --------------------------------------------- | --------------------------------- | -------- |
+| Data collection for specific environments     | K8s, OpenShift, Cloud Foundry     | P0       |
+| Platform integration to speicifc applications | ServiceNow, Slack, PagerDuty      | P0       |
+| Platform compliance                           | SOC 2 Type II, PCI, FedRaAMP      | P0       |
+| Important platform capabilities               | SLIs/SLOs, Session replay (RUM)   | P1       |
+| Nice to have platform capabilities            | Auto-discovery, buyilt-in content | P2       |
+### Platform Capabilities
+- OTel suuport
+- Integrations
+- Ease of setup, migration, and use
+- Troubleshooting ease
+- Scalability and performance
+- Support and community
+- Security and compliance
+- Cost and licensing model
+- Platform differentiating features
+
+#### Marketing Versus Reality
+- Startup companies claiming to support massive scale.
+- Enterprise companies claming to support new generation trends or solutions
+- Any companies offering significant cost savings for similar capabilities.
+
+
+| Scenario                                                                   | Goals                                                                                       |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Monitor the performance of a distributed application under heavy load      | Instrument and collect data from applications, and identify performance and latency issues. |
+| Response to and dignose an incident affecting application availability.    | Receive alerts, troubleshoot with real-time dashboards, and determine the root cause.       |
+| Plan and execute scaling operations based on observed workload patterns.   | Monitor resource utilization and set automatic-scaling policies.                            |
+| Validate the performance and stability of a new application release.       | Correlate deployment events with other signals, monitor KPIs, and use anomaly detection.    |
+| Monitor and maintain service levels defined by SLOs for critical services. | Define SLIs, alert against SLOs, and anlyze historical data.                                |
+#### Price, Cost, and value
+- Integrations
+- Where the processing occurs.
+- Network egress
+
+- Price Models:
+	- Ingestion or usage
+	- Host or service
+	- User or set
+	- Feature or query
+
+### Observability Fragmentation
+
+### Primary Factors
+#### Build, Buy, or Manage
+
+| Approach    | Pros                      | Cons                                            |
+| ----------- | ------------------------- | ----------------------------------------------- |
+| Build       | Flexibility and choice    | Distraction from the business value proposition |
+| Buy         | Reduced OpEx              | Vendor lock-in and increased CapEx overtime     |
+| Manage      | Infrastructure CapEx only | Increased CapEx and OpEx over time              |
+| Combination | Flexibility and choice    | Multiple systems to manage; inconsistency       |
+
+#### Licensing, Operations, and Deployment
+
+| Decision   | Options                    | Notes                                                                       |
+| ---------- | -------------------------- | --------------------------------------------------------------------------- |
+| Licensing  | Open source or proprietary | Capabilities are usually more important than the licensing model.           |
+| Operations | Self or vendor-managed     | Open source vendor-managed may not be the same as open source self-managed. |
+| Deployment | On-premises or SaaS        | Most vendor-managed observability platforms are SaaS-based today.           |
+
+- Some OTel decision factors that may influence the observability platform selected
+
+| Factor               | Notes                                                             |
+| -------------------- | ----------------------------------------------------------------- |
+| OTLP ingestion       | In additiona to yes, is it the default setting - and if not, why? |
+| Distribution         | If one is offered, does it contain proprietary components?        |
+| API and SDK          | What versions and features are supported?                         |
+| Instrumentation      | Which languages are supported?                                    |
+| Collector            | Which components are supported?                                   |
+| Semantic conventions | Does the platform support semantic conventiosn?                   |
+| General support      | If vendor-managed, is OTel support provided?                      |
+| Contributions        | What commitment, influence, and ability to support is provided?   |
+
+#### Stakeholders and Company Culture
+
+| Stakeholder   | Example                  | Influenced by                |
+| ------------- | ------------------------ | ---------------------------- |
+| Buyer         | CTO or VP of Engineering | Legal, Finance, and Security |
+| Administrator | SRE Team                 | Development Team             |
+| User          | Development Team         | SRE Team                     |
+
+### Implementation Basics
+- Day 0: Establishing Observability: The initial phase of setting up observability practices and tools within a software system.:
+	- Choosing and setting up observability tools such as instrumentation frameworks, data collectors, and observability platforms.
+	- Instrumenting the application code to emit relevant signals (usually one at first)
+	- Configuring dashboards, alerts, and other monitoring settings based on initial requirements and expectations
+	- Providing training to the team on how to use observability tools effectively
+- Day 1: Initial Monitoring and Analysis: Focuses on the initial implementation and use of observability data to monitor and analyze one ore more environments.:
+	- Monitoring key signals to ensure that the system is performing as expected
+	- Using observability data to diagnose issues and understand system behavior during normal operations
+	- Establishing baseline metrics and performance indicators to measure against future changes
+	- Gathering feedback from initial observations to refine monitoring configurations and improve understanding of the system's behavior
+- Day 2: Continuous Improvement and Optimization Involves the ongoing enhancement and optimization of observability practices to better understand and manage the software system.:
+	- Implementing automation for monitoring setup, alerting, and response
+	- Performing deeper analysis using aggregated metrics anomaly detection, and correlation across different observability data sources
+	- Scaling observability solutions to handle larger volumes of data and more comples systems
+	- Integrating observability into the development lifecycle (DevOps practices) to ensure continuous feedback and improvement
+
+#### Administration
+
+#### Usage
+- Training and onboarding for team members.
+- Establishing and maintaining best practices and governance processes
+- Monitoring the observability platform.
+- Minimizing disruption to operation during a transition to a new observability platform.
+- Measuring and monitoring adoption and migration progress.
+- Continuously identifying areas for optimization and improvement to provide and improve observability.
+
+
+### Maturity Framework
+- Level 1: Basic Monitoring:
+	- Basic system metrics collection (CPU, memory, disk)
+	- Basic monitoring capabilities, including initial dashboards, with manual telemetry review
+	- Simple alerting for critical system metrics and failures
+- Level 2: Enhance Monitoring
+	- Application-level metrics and log collection, including the initial usage of a methodology, such as requests, errors, and duration (RED) or golden signals.
+	- Automated alerting and notifications based on predefined thresholds
+	- Basic aggregation, filtering and search capabilities
+- Level 3: Proactive Observability:
+	- Compprehensive metrics collection (infrastructure and applications)
+	- Centralized logging with advanced search and analysis
+	- Distributed tracing for understanding request flows
+	- Dashboards and visualization for real-time insights and correlation across signals
+- Level 4: Predictive Observability:
+	- ML Models for anomaly detection
+	- Predictive analytics for identifying potential failures
+	- Automated remediation and response using tools like runbook automation
+	- Use of AI/ML to dynamically adjust monitoring and alerting thresholds
+	- Fully integrating observability practices with continuous integration and continuous delivery (CI/CD) pipelines
+
+### The Bottom Line
+- Distinguish between observability platform capabilities.
+	- What are some of the primary differences among observability platforms?
+- Decide which observability platform is right for you.
+	- What are some of the key considerations and decision factors that need to be decided to choose the right observability platform?
+- Get a quick return on your observability platform investment:
+	- How can you get a quick return on your observability platform investment?
+
+
+## Chapter 10 Observability Antipatterns and Pitfalls
+### Telemetry Data Missteps
+- Data antipatterns:
+	- Incomplete instrumentation and blind spots
+	- Over-instrumentation, or Big Bang instrumentation
+	- Ignoring sampling or sampling bias
+	- Inconsistent naming conventions
+- Data pitfalls:
+	- High-cardinality data
+	- Lack of data validation
+	- Misconfigured aggregation
+	- Failure to evolve
+
+#### Mixing Instrumentation Libraries Scenario
+- Standardization
+- Migration plan
+- Compatibility layers
+
+#### Automatic Instrumentation Scenario
+- Manual instrumentation
+- Code reviews and testing
+- Continuous improvement
+
+### Custom Instrumentation Scenario
+- Custom instrumentation frameworks
+- Community contributions
+- Vendor collaboration
+
+#### Component Configuration Scenario
+-  Configuration management
+- Validation and testing
+- Monitoring and alerting
+
+#### Performance Overhead Scenario
+- Performance profiling
+- Fine-tuning parameters
+- Scalability testing
+
+#### Resource Allocation Scenario
+- Capacity planning
+- Resource scaling
+- Monitoring and alerting
+
+#### Security Considerations Scenario
+- Redaction
+- Data encryption
+- Access controls
+- Audit logging
+
+### Monitoring and Maintenance Scenario
+- Dashboard and alerts
+- Health checks
+- Regular maintenance
+
+
+### Observability Platform Missteps
+- Anti patterns:
+	- Vendor lock-in
+	- Non-OTel-native
+	- Poor integration support
+	- Underestimating scalability requirements
+	- Tool sprawl
+	- Alert storms
+	- Static dashboards
+	- Ignoring latency
+	- Ignoring latency
+	- Ignoring context
+- Observability platform pitfalls:
+	- Complex deployment
+	- Data silos
+	- Inadequate security measures
+	- Insufficient customization options
+	- High total cost of ownership
+	- Alert fatigue
+	- Failure to monitor key business metrics
+- How to solve?:
+	- Understanding present and predicting future observability requirements
+	- Defining and maintaining observability processes and best practices
+	- Following the "keep it simple, stupid" (KISS) principle
+
+#### Vendor Lock-in Scenario
+- Standardize data formats
+- Prioritize automation
+- Evaluate alternatives
+
+### Fragmented Tooling Scenario
+- Centralize data sources
+- Standardize tooling
+- Invest in integration
+
+#### Tool Fatigue Scenario
+- Streamline alerting
+- Customize dashboards
+- Invet in integration
+
+#### Inadequate Scalability Scenario
+- Self-managed solutions
+- Software-as-a-service
+- Performance testing
+
+#### Data Overload Scenario
+- Sampling strategies
+- Filtering techniques
+- Data retention policies
+
+### Company Culture Implications
+- Antipatterns:
+	- Silos and lack of collaboration
+	- Lack of ownership and accountability
+	- Short-term thinking
+- Pitfalls:
+	- Underestimating the importance of observability culture
+	- Misalignment of incentives
+	- Complexity of distributed systems
+	- Lack of training and education
+	- Lack of continuous improvement
+
+#### Lack of Leadership Support Scenario
+- Educate leadership
+- Quantify impact
+- Engage stakeholders
+
+#### Resistance to Change Scenario
+- Communicate benefits
+- Provide training and support
+- Address concerns
+
+#### Collaboration and Alignment Scenario
+- Establish cross-functional teams
+- Define shared goals and objectives
+- Align incentives and recognition
