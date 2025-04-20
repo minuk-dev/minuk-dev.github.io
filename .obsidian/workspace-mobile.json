@@ -57,12 +57,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/daily/2025-04-19.md",
+                "file": "content/wiki/daily/2025-04-21.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-04-19"
+              "title": "2025-04-21"
             }
           }
         ],
@@ -207,10 +207,11 @@
       "obsidian-kanban:새 보드 만들기": false
     }
   },
-  "active": "890252883618c72e",
+  "active": "842c2d84e080b2a9",
   "lastOpenFiles": [
-    "content/wiki/2025-일본여행.md",
     "content/wiki/daily/2025-04-19.md",
+    "content/wiki/daily/2025-04-21.md",
+    "content/wiki/2025-일본여행.md",
     "content/wiki/daily/2025-04-18.md",
     "content/wiki/rbac.md",
     "content/wiki/study-note.md",
@@ -236,7 +237,6 @@
     "content/wiki/daily/2025-01-13.md",
     "content/wiki/jekyll 기반 wiki 에서 hugo 로 넘어가기.md",
     "content/wiki/quicksaved",
-    "content/wiki/daily/2025-01-05.md",
     "assets/bayesian/week3.pdf",
     "assets/bayesian/week2.pdf",
     "assets/bayesian/week1.pdf",
