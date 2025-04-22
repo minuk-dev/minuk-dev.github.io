@@ -33,18 +33,16 @@
       {
         "id": "dc3f81b75c875229",
         "type": "tabs",
+        "dimension": 30.335968379446644,
         "children": [
           {
-            "id": "990852b1999aca88",
+            "id": "307fbe1cdb0f6205",
             "type": "leaf",
             "state": {
-              "type": "file-explorer",
-              "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
-              },
-              "icon": "lucide-folder-closed",
-              "title": "Files"
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           },
           {
@@ -65,16 +63,6 @@
             }
           },
           {
-            "id": "307fbe1cdb0f6205",
-            "type": "leaf",
-            "state": {
-              "type": "bookmarks",
-              "state": {},
-              "icon": "lucide-bookmark",
-              "title": "Bookmarks"
-            }
-          },
-          {
             "id": "f2174af9eaa21e4b",
             "type": "leaf",
             "state": {
@@ -83,17 +71,22 @@
               "icon": "lucide-file",
               "title": "Plugin no longer active"
             }
-          },
+          }
+        ]
+      },
+      {
+        "id": "dfed1ad2274e58fd",
+        "type": "tabs",
+        "dimension": 69.66403162055336,
+        "children": [
           {
-            "id": "c6e5e702d068c595",
+            "id": "cf41d88e0147f607",
             "type": "leaf",
             "state": {
-              "type": "outline",
-              "state": {
-                "file": "content/wiki/ceph login 을 oauth 로 할수 있게 하기.md"
-              },
-              "icon": "lucide-list",
-              "title": "Outline of ceph login 을 oauth 로 할수 있게 하기"
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
             }
           }
         ]
@@ -111,6 +104,21 @@
         "id": "712a8722089960bf",
         "type": "tabs",
         "children": [
+          {
+            "id": "c6e5e702d068c595",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Mastering-OpenTelemetry-And-Observability"
+            }
+          },
           {
             "id": "6e3b992b1c7e3f73",
             "type": "leaf",
@@ -151,24 +159,29 @@
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
-                "useHierarchy": true
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-tags",
               "title": "Tags"
             }
           },
           {
-            "id": "cf41d88e0147f607",
+            "id": "990852b1999aca88",
             "type": "leaf",
             "state": {
-              "type": "calendar",
-              "state": {},
-              "icon": "calendar-with-checkmark",
-              "title": "Calendar"
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -191,13 +204,16 @@
   },
   "active": "0a5f30f0e9ca93af",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-04-18.md",
     "content/wiki/Book reviews.md",
     "content/wiki/_index.md",
+    "content/wiki/daily/2025-04-21.md",
+    "content/wiki/drawings/Drawing 2025-04-21 06.38.33.excalidraw.md",
+    "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
+    "content/wiki/daily/2025-04-19.md",
+    "content/wiki/daily/2025-04-18.md",
     "content/wiki/회고/3월.md",
     "content/wiki/http2.md",
     "content/wiki/study-note.md",
-    "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
     "content/wiki/daily/2025-04-17.md",
     "content/wiki/rbac.md",
     "content/wiki/others.md",
@@ -214,9 +230,6 @@
     "content/wiki/observability.md",
     "content/wiki/go.md",
     "content/wiki/daily/2025-04-16.md",
-    "content/wiki/kafka.md",
-    "content/wiki/armeria.md",
-    "content/wiki/assembly.md",
     "assets/Pasted image 20250410025815.png",
     "assets/Pasted image 20250410024044.png",
     "assets/Pasted image 20250227002824.png",

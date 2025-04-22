@@ -8,7 +8,13 @@
     {
       "type": "group",
       "ctime": 1736702041582,
-      "items": [],
+      "items": [
+        {
+          "type": "file",
+          "ctime": 1745341105341,
+          "path": "content/wiki/Mastering-OpenTelemetry-And-Observability.md"
+        }
+      ],
       "title": "책"
     },
     {
