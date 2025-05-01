@@ -57,12 +57,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/daily/2025-04-27.md",
+                "file": "content/wiki/daily/2025-05-01.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-04-27"
+              "title": "2025-05-01"
             }
           }
         ],
@@ -207,10 +207,11 @@
       "obsidian-kanban:새 보드 만들기": false
     }
   },
-  "active": "842c2d84e080b2a9",
+  "active": "890252883618c72e",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-04-21.md",
     "content/wiki/daily/2025-04-27.md",
+    "content/wiki/daily/2025-05-01.md",
+    "content/wiki/daily/2025-04-21.md",
     "content/wiki/daily/2025-04-19.md",
     "content/wiki/2025-일본여행.md",
     "content/wiki/daily/2025-04-18.md",
@@ -235,7 +236,6 @@
     "assets/Pasted image 20250122013131.png",
     "content/wiki/Kanban.md",
     "content/wiki/daily/2025-01-21.md",
-    "content/wiki/daily/2025-01-13.md",
     "content/wiki/quicksaved",
     "assets/bayesian/week3.pdf",
     "assets/bayesian/week2.pdf",
