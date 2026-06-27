@@ -1,17 +1,18 @@
 ---
-layout  : wiki
-title   : others
-summary : 어디에 넣어야할지 모르겠는 잡스러운 지식글들
-date    : 2020-10-01 23:55:41 +0900
-lastmod : 2022-01-31 22:56:00 +0900
-tags    :
-draft   : false
-parent  :
+layout: wiki
+title: others
+summary: 어디에 넣어야할지 모르겠는 잡스러운 지식글들
+date: 2020-10-01 23:55:41 +0900
+lastmod: 2026-06-27 16:21:02 +0900
+tags:
+draft: false
+parent:
 ---
 
 - [[Kubernetes Community Day Korea]]
 ## 잡다한거
  * [[5 articles per week]]
+- [[계룡 개발 모임]]
 
 ## coarse-grained vs fine-grained
  * 참고 : http://egloos.zum.com/kwon37xi/v/1419790

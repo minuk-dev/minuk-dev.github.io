@@ -1,7 +1,7 @@
 {
   "cssTheme": "Minimal",
   "showRibbon": false,
-  "theme": "moonstone",
+  "theme": "obsidian",
   "enabledCssSnippets": [
     "MCL Multi Column",
     "MCL Wide Views"

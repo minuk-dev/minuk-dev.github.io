@@ -2,7 +2,7 @@
 layout: wikilist
 title: Front Page
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2026-06-27 16:04:17 +0900
+lastmod: 2026-06-27 16:20:54 +0900
 ---
 ## 즐겨찾기
 - [[observability]]
@@ -13,9 +13,7 @@ lastmod: 2026-06-27 16:04:17 +0900
 ### Study
 - [[lectures]]
 - [[study-note]]
-- [[계룡 개발 모임]]
 - [[Others]]
-- [[frontend]]
 
 ### Tool
 - [[tool]]
