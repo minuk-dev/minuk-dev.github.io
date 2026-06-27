@@ -1,4 +1,117 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>minuk.dev</title><link>https://minuk.dev/</link><description>Recent content on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2026 16:04:50 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>2025-04-19</title><link>https://minuk.dev/wiki/daily/2025-04-19/</link><pubDate>Sat, 19 Apr 2025 13:30:19 +0900</pubDate><guid>https://minuk.dev/wiki/daily/2025-04-19/</guid><description>&lt;p>Feedly 를 사용해서 기술 블로그들을 등록하고 정보를 받아보고 있는데 오늘 victoria metrics 블로그를 추가했는데 단순히 특정 기술이 아니라 열린 주제를 다루는거 같다
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>minuk.dev</title><link>https://minuk.dev/</link><description>Recent content on minuk.dev</description><generator>Hugo</generator><language>ko-kr</language><lastBuildDate>Sat, 27 Jun 2026 16:38:34 +0900</lastBuildDate><atom:link href="https://minuk.dev/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://minuk.dev/wiki/lgtm/</link><pubDate>Sat, 27 Jun 2026 16:36:33 +0900</pubDate><guid>https://minuk.dev/wiki/lgtm/</guid><description>&lt;ul>
+&lt;li>한글판: 좋아보여&lt;/li>
+&lt;/ul>
+&lt;h1 id="part-1-코드-리뷰의-기초-지식">Part 1. 코드 리뷰의 기초 지식&lt;/h1>
+&lt;h2 id="chapter-1--코드-리뷰의-중요성">Chapter 1. 코드 리뷰의 중요성&lt;/h2>
+&lt;ul>
+&lt;li>다음 질문
+&lt;ul>
+&lt;li>현재 우리의 코드 리뷰 프로세스는 유용한가?&lt;/li>
+&lt;li>우리의 코드 리뷰가 너무 오래 걸리는 것은 아닌가?&lt;/li>
+&lt;li>누군가 혼자서 리뷰의 짐을 떠안고 있는 것은 아닌가?&lt;/li>
+&lt;li>유달리 복잡하고 힘든 코드 리뷰 후에도 여전히 서로를 좋아하는가?&lt;/li>
+&lt;li>제안이나 건설적인 비판을 작성하는 방법에 대해 알고 있는가?&lt;/li>
+&lt;li>피드백을 효과적으로 처리하는 방법을 알고 있는가?&lt;/li>
+&lt;li>우리의 코드 리뷰 프로세스가 목적대로 진행되고 있는가?&lt;/li>
+&lt;li>목적에 대해 모두의 의견이 일치하는가?&lt;/li>
+&lt;li>자동화의 이점을 잘 활용하고 있는가?&lt;/li>
+&lt;li>코드 리뷰 프로세스에서 각자의 역할과 기대사항을 잘 알고 있는가?&lt;/li>
+&lt;li>코드 리뷰가 소프트웨어 개발 프로세스에 가져오는 가치를 모두 이해하고 있는가?&lt;/li>
+&lt;li>코드 리뷰가 중요한 이유를 설명하고 비지니스 가치와도 연결할 수 있는가?&lt;/li>
+&lt;li>팀의 리뷰 프로세스를 좋아한다고 자신 있게 말할 수 있는가?&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="11-대상-독자">1.1. 대상 독자&lt;/h3>
+&lt;ul>
+&lt;li>소프트웨어 개발에 막 입문한 개발자&lt;/li>
+&lt;li>소프트웨어 개발팀에 속해 있으면서 코드 리뷰의 중요성을 알고 있고, 팀의 프로세스를 만드는 데 도움이 필요한 개발자&lt;/li>
+&lt;li>팀의 코드 리뷰 프로세스를 개선할 수 있다고 생각하는 개발자&lt;/li>
+&lt;li>어려운 리뷰에 도움이 필요한 개발자&lt;/li>
+&lt;li>코드 리뷰 피드백 작성에 어려움을 겪는 개발자&lt;/li>
+&lt;li>혼자 대부분의 리뷰를 담당하는 것이 힘든 시니어나 리드 개발자&lt;/li>
+&lt;li>팀의 코드 리뷰 태도를 개선하고자 하는 기술 리드 또는 리드 개발자&lt;/li>
+&lt;li>긴 코드 리뷰 주기에 지친 기술 리드 또는 엔지니어링 매니저&lt;/li>
+&lt;li>코드 리뷰 중시 문화를 만들고자 하는 테크 리드 또는 엔지니어링 매니저&lt;/li>
+&lt;/ul>
+&lt;h3 id="12-책의-구조">1.2. 책의 구조&lt;/h3>
+&lt;h3 id="13-코드-리뷰가-필요하다">1.3. 코드 리뷰가 필요하다&lt;/h3>
+&lt;h4 id="131-더-나은-어플리케이션">1.3.1. 더 나은 어플리케이션&lt;/h4>
+&lt;h4 id="132-팀의-이해-수준-향상">1.3.2. 팀의 이해 수준 향상&lt;/h4>
+&lt;h3 id="14-팀-설득하기">1.4. 팀 설득하기&lt;/h3>
+&lt;ul>
+&lt;li>코드 리뷰의 목표는 무엇인가?&lt;/li>
+&lt;li>변경사항에 대해 누가 알아야 하는가?&lt;/li>
+&lt;li>PR을 리뷰할 사람은 어떻게 결정하는가?&lt;/li>
+&lt;li>리뷰어에게 얼마나 시간을 주어야 하는가?&lt;/li>
+&lt;li>최소 몇 명의 리뷰어가 필요한가?&lt;/li>
+&lt;li>핫픽스를 배포할 때는 어떻게 해야하는가?&lt;/li>
+&lt;/ul>
+&lt;h3 id="15-코드-리뷰-개선하기">1.5. 코드 리뷰 개선하기&lt;/h3>
+&lt;ul>
+&lt;li>고려사항
+&lt;ul>
+&lt;li>내구성과 가치를 높이는 코드 작성은 팀의 핵심 목표여야한다.&lt;/li>
+&lt;li>코드는 사람이 작성한다는 것을 기억해야 한다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="요약">요약&lt;/h3>
+&lt;ul>
+&lt;li>코드 리뷰는 개발자가 서로의 코드가 합의된 표준을 통과하는지 검토하는 프로세스다. 검토는 간단하게 이루어질 수도 있고, 공식 회의나 PR을 통해서 이루어질 수도 있다.&lt;/li>
+&lt;li>코드 리뷴는 소프트웨어 개발에서 예외사항이 아닌 표준이 되어야 한다. 코드 리뷰는 명확하고, 읽기 쉬우며, 유지 관리가 쉬운 코드를 통해 더 나은 어플리케이션을 만들고, 지식 전달, 정보 공유, 기록 저장 메커니즘을 통해 팀의 코드베이스와 서로에 대한 이해를 높이기 때문이다.&lt;/li>
+&lt;li>훌륭한 코드 리뷰는 응집력 있는 팀을 기반으로 구축된다. 응집력 있는 팀이란 모든 구성원이 존중받고, 가치를 인정받으며, 동등한 일원으로 대우받는 팀이다.&lt;/li>
+&lt;/ul>
+&lt;h2 id="chapter-2-코드-리뷰-분석하기">Chapter 2. 코드 리뷰 분석하기&lt;/h2>
+&lt;h3 id="21-코드-리뷰-시스템">2.1. 코드 리뷰 시스템&lt;/h3>
+&lt;ul>
+&lt;li>사람 주도 시스템&lt;/li>
+&lt;li>도구 기반 시스템&lt;/li>
+&lt;/ul>
+&lt;h4 id="231-사람-주도">2.3.1. 사람 주도&lt;/h4>
+&lt;ul>
+&lt;li>동기식 회의, 토론, 대면 리뷰 프로세스 등&lt;/li>
+&lt;li>지식 전달과 공유 및 멘토링 목표를 이루는데 큰 도움이 될수 있다.&lt;/li>
+&lt;li>팀을 구축하는 시스템에 대한 인식과 친밀도를 높일수 있다.&lt;/li>
+&lt;li>동기적 특성으로 인해 공식 문서화 및 기록은 팀의 노력이 매우 중요해진다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="212-도구-기반">2.1.2. 도구 기반&lt;/h4>
+&lt;ul>
+&lt;li>완전 도구 중심의 코드 리뷰 시스템은 대규모 또는 분산된 팀에 특히 효과적이다.&lt;/li>
+&lt;li>단점
+&lt;ul>
+&lt;li>검토 시간이 지연되거나 길어진다.&lt;/li>
+&lt;li>잘못된 도구를 선택하여서 도구의 특이점에 적응하느라 불필요한 마찰을 일으킬수 있다.&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="213-혼합형">2.1.3. 혼합형&lt;/h4>
+&lt;h3 id="22-코드-리뷰는-어떻게-작동할까">2.2. 코드 리뷰는 어떻게 작동할까?&lt;/h3>
+&lt;h4 id="221-현재의-코드-리뷰-워크플로">2.2.1. 현재의 코드 리뷰 워크플로&lt;/h4>
+&lt;ul>
+&lt;li>코드 리뷰의 네가지 요소
+&lt;ul>
+&lt;li>새로운 코드나 변경된 코드&lt;/li>
+&lt;li>한명 이상의 리뷰어&lt;/li>
+&lt;li>리뷰 메커니즘&lt;/li>
+&lt;li>승인 조건&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="222-우리의-코드-리뷰-pr-워크플로">2.2.2. 우리의 코드 리뷰 (PR 워크플로)&lt;/h4>
+&lt;h3 id="23-훌륭한-pr의-요소">2.3. 훌륭한 PR의 요소&lt;/h3>
+&lt;h4 id="231-제목-what">2.3.1. 제목: &amp;lsquo;what&amp;rsquo;&lt;/h4>
+&lt;ul>
+&lt;li>feat, fix, docs, chore, breaking&lt;/li>
+&lt;li>PR의 &amp;lsquo;무엇&amp;rsquo;을 최대한 명확하고, 간결하게 설명한다.&lt;/li>
+&lt;li>제목이 의도치 않게 잘리는 것을 방지하기 위해 적절한 길이로 유지한다.&lt;/li>
+&lt;li>카테고리 접두어를 사용하면 몇 글자만으로도 많은 세부 정보와 맥락을 나타낼 수 있다.&lt;/li>
+&lt;li>제목은 리뷰어가 PR의 맥락을 이해하고 제대로 준비할 수 있도록 도와준다. 리뷰어는 작성자를 도울 수 있도록 명확하고 명료한 제목을 작성하도록 노력해야 한다.&lt;/li>
+&lt;/ul>
+&lt;h4 id="232-디스크립션-why">2.3.2. 디스크립션: &amp;lsquo;why&amp;rsquo;&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>feat&lt;/p></description></item><item><title>2025-04-19</title><link>https://minuk.dev/wiki/daily/2025-04-19/</link><pubDate>Sat, 19 Apr 2025 13:30:19 +0900</pubDate><guid>https://minuk.dev/wiki/daily/2025-04-19/</guid><description>&lt;p>Feedly 를 사용해서 기술 블로그들을 등록하고 정보를 받아보고 있는데 오늘 victoria metrics 블로그를 추가했는데 단순히 특정 기술이 아니라 열린 주제를 다루는거 같다
 몇개 읽었는데 내가 모르는게 너무 많고 좀 공부를 제대로 해야겠다는걸 느꼇다&lt;/p></description></item><item><title>2025-04-18</title><link>https://minuk.dev/wiki/daily/2025-04-18/</link><pubDate>Fri, 18 Apr 2025 00:03:32 +0900</pubDate><guid>https://minuk.dev/wiki/daily/2025-04-18/</guid><description>&lt;p>갓생살기는 생각보다 힘든거 같다
 핸드폰을 쓸데없이 들게된다
 할게 없다는걸 아는데도 보게된달까?
