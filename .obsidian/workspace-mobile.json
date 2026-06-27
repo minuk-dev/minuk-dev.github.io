@@ -8,65 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "cb6a4e21f843a9e6",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/wiki/_index.md",
-                "mode": "source",
-                "source": false
-              },
-              "pinned": true,
-              "icon": "lucide-file",
-              "title": "_index"
-            }
-          },
-          {
-            "id": "8b95025339328a08",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/wiki/daily/2025-04-16.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2025-04-16"
-            }
-          },
-          {
-            "id": "4cac0d3f568f9b17",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content/wiki/go.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "go"
-            }
-          },
-          {
             "id": "842c2d84e080b2a9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/daily/2025-06-07.md",
+                "file": "z_slip/아이패드 배터리.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-06-07"
+              "title": "아이패드 배터리"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -127,6 +82,20 @@
           "icon": "lucide-bookmark",
           "title": "Bookmarks"
         }
+      },
+      {
+        "id": "3eca0d68a2ebc6a7",
+        "type": "leaf",
+        "state": {
+          "type": "all-properties",
+          "state": {
+            "sortOrder": "frequency",
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-archive",
+          "title": "모든 속성"
+        }
       }
     ],
     "currentTab": 0
@@ -141,7 +110,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "content/wiki/daily/2025-01-22.md",
+            "file": "daily/2025-06-07.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -181,7 +150,17 @@
         }
       },
       {
-        "id": "c4b1da6b8c0828df",
+        "id": "9ebd7a469596b993",
+        "type": "leaf",
+        "state": {
+          "type": "planner-timeline",
+          "state": {},
+          "icon": "calendar-with-checkmark",
+          "title": "Timeline"
+        }
+      },
+      {
+        "id": "143a583555f9ad3e",
         "type": "leaf",
         "state": {
           "type": "calendar",
@@ -191,69 +170,76 @@
         }
       }
     ],
-    "currentTab": 0
+    "currentTab": 4
   },
   "left-ribbon": {
     "hiddenItems": {
+      "zk-prefixer:새 고유 노트 생성": false,
+      "workspaces:작업 공간 레이아웃 관리": false,
       "switcher:빠른 전환기 열기": false,
       "daily-notes:오늘의 일일 노트 열기": false,
-      "terminal:Open terminal": false,
-      "obsidian-excalidraw-plugin:Create new drawing": false,
-      "templater-obsidian:Templater": false,
       "graph:그래프 뷰 열기": false,
       "canvas:새 캔버스 만들기": false,
       "templates:템플릿 삽입": false,
       "command-palette:명령어 팔레트 열기": false,
-      "obsidian-kanban:새 보드 만들기": false
+      "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "obsidian-day-planner:Open Timeline": false,
+      "obsidian-day-planner:Open Multi-Day View": false,
+      "obsidian-livesync:Show Log": false,
+      "obsidian-livesync:Replicate": false,
+      "obsidian-livesync:P2P Replicator": false,
+      "obsidian-livesync:Show Customization sync": false
     }
   },
   "active": "842c2d84e080b2a9",
   "lastOpenFiles": [
-    "content/wiki/daily/2025-05-02.md",
-    "content/wiki/daily/2025-06-07.md",
-    "content/wiki/daily/2025-05-01.md",
-    "content/wiki/daily/2025-04-27.md",
-    "content/wiki/daily/2025-04-21.md",
-    "content/wiki/daily/2025-04-19.md",
-    "content/wiki/2025-일본여행.md",
-    "content/wiki/daily/2025-04-18.md",
-    "content/wiki/rbac.md",
-    "content/wiki/study-note.md",
-    "content/wiki/_index.md",
-    "content/wiki/daily/2025-04-16.md",
-    "content/wiki/observability.md",
-    "content/wiki/OTel Sucks (But Also Rocks!).md",
-    "content/wiki/go.md",
-    "content/wiki/daily/2025-02-01.md",
-    "content/wiki/daily/2025-03-15.md",
-    "content/wiki/daily/2025-02-15.md",
-    "content/wiki/daily/2025-02-02.md",
-    "content/wiki/무엇이 1등 팀을 만드는가?.md",
-    "content/wiki/Book reviews.md",
-    "content/wiki/daily/2025-01-31.md",
-    "content/wiki/drawings/Drawing 2025-02-01 19.06.24.excalidraw.md",
-    "content/wiki/go-websocket.md",
-    "content/wiki/daily/2025-01-22.md",
-    "content/wiki/기본.md",
+    "001 daily/2025-07-07.md",
+    "001 daily/2025-07-06.md",
+    "001 daily/2025-07-05.md",
+    "z_slip/아이패드 배터리.md",
+    "001 daily/2025-07-03.md",
+    "001 daily/2025-07-02.md",
+    "z_assets/voucher_HH2524542296_20250627205647.pdf",
+    "001 daily/2025-07-01.md",
+    "001 daily/2025-06-28.md",
+    "z_assets/voucher_HH2524530052_20250627205606.pdf",
+    "001 daily/2025-06-27.md",
+    "004 study/book/wip/시계열 예측과 분석.md",
+    "004 study/book/wip",
+    "004 study/book/observability-engineering-kr.md",
+    "004 study/book/observability-engineering.md",
+    "004 study/book/무엇이 1등 팀을 만드는가?.md",
+    "004 study/book/IT 엔지니어를 위한 네트워크 입문.md",
+    "004 study/book/devops와-se를-위한-리눅스-커널-이야기.md",
+    "004 study/book/Effective Debugging.md",
+    "004 study/book/effective-java.md",
+    "004 study/book/Effective kotlin.md",
+    "004 study/assembly.md",
+    "004 study/blk-mq.md",
+    "004 study/teamnote.md",
+    "004 study/teamnote-go.md",
+    "004 study/algorithm.md",
+    "004 study/go-http.md",
+    "z_assets/Pasted image 20250623143105.png",
+    "z_assets/Pasted image 20250623142546.png",
+    "001 daily/2025-06-24.md",
+    "002 weekly/2025-06 4번째주.md",
+    "content/wiki/drawings",
+    "content/wiki",
+    "content",
+    "무제",
+    "z_assets/Pasted image 20250616101331.png",
+    "z_assets/Pasted image 20250616101312.png",
+    "z_assets/Pasted image 20250615190606.png",
+    "005 work/1on1",
+    "005 work/imoninst scrum",
+    "z_assets/Pasted image 20250609161122.png",
+    "z_assets/Pasted image 20250609160659.png",
+    "z_assets",
     "assets/Pasted image 20250122013131.png",
-    "content/wiki/quicksaved",
-    "assets/bayesian/week3.pdf",
-    "assets/bayesian/week2.pdf",
-    "assets/bayesian/week1.pdf",
-    "assets/bayesian/week2.Rmd",
-    "assets/bayesian/week1.Rmd",
-    "assets/bayesian/week3.ipynb",
-    "assets/bayesian",
-    "assets",
     "static/images/favicon/ms-icon-70x70.png",
-    "static/images/favicon/favicon-32x32.png",
-    "static/images/favicon/apple-icon-120x120.png",
-    "static/images/favicon/apple-icon-72x72.png",
-    "static/images/favicon/android-icon-144x144.png",
-    "static/images/favicon/browserconfig.xml",
-    "static/images/favicon/apple-icon-60x60.png",
-    "static/images/favicon/apple-icon-76x76.png",
-    "static/images/favicon/android-icon-48x48.png",
-    "static/images/favicon/favicon-96x96.png"
+    "static/images/favicon/favicon-32x32.png"
   ]
 }

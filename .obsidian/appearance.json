@@ -1,3 +1,9 @@
 {
-  "cssTheme": "AnuPpuccin"
+  "cssTheme": "Minimal",
+  "showRibbon": false,
+  "theme": "moonstone",
+  "enabledCssSnippets": [
+    "MCL Multi Column",
+    "MCL Wide Views"
+  ]
 }

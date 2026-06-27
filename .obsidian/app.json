@@ -1,5 +1,5 @@
 {
-  "vimMode": false,
+  "vimMode": true,
   "mobileToolbarCommands": [
     "editor:indent-list",
     "editor:unindent-list",
@@ -22,9 +22,19 @@
     "editor:redo",
     "editor:configure-toolbar"
   ],
-  "mobilePullAction": "obsidian-excalidraw-plugin:excalidraw-autocreate-newtab",
+  "mobilePullAction": "daily-notes",
   "trashOption": "local",
   "newFileLocation": "folder",
-  "newFileFolderPath": "content/wiki",
-  "attachmentFolderPath": "assets"
+  "newFileFolderPath": "z_slip",
+  "attachmentFolderPath": "z_assets",
+  "promptDelete": false,
+  "alwaysUpdateLinks": true,
+  "openBehavior": "daily",
+  "readableLineLength": true,
+  "pdfExportSettings": {
+    "pageSize": "Letter",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  }
 }

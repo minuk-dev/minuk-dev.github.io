@@ -7,21 +7,26 @@
     },
     {
       "type": "group",
-      "ctime": 1736702041582,
+      "ctime": 1749263033966,
       "items": [
         {
           "type": "file",
-          "ctime": 1745341105341,
-          "path": "content/wiki/Mastering-OpenTelemetry-And-Observability.md"
+          "ctime": 1749263028505,
+          "path": "004 study/book/쿠버네티스 창시자에게 배우는 모범 사례.md"
         }
       ],
-      "title": "책"
+      "title": "정리중"
     },
     {
       "type": "group",
-      "ctime": 1736702058367,
+      "ctime": 1761009309590,
       "items": [],
-      "title": "슬립노트"
+      "title": "작업중"
+    },
+    {
+      "type": "file",
+      "ctime": 1770916470982,
+      "path": "005 work/confluence.md"
     }
   ]
 }

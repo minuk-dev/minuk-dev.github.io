@@ -1,0 +1,8 @@
+{
+  "letters": "sadfjklewcmpgh",
+  "jumpToAnywhereRegex": "\\b\\w{3,}\\b",
+  "lightspeedCaseSensitive": true,
+  "jumpToLinkIfOneLinkOnly": true,
+  "lightspeedJumpToStartOfWord": true,
+  "lightspeedCharacterCount": 2
+}

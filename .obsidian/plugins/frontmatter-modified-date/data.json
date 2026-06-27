@@ -1,17 +1,1 @@
-{
-  "frontmatterProperty": "lastmod",
-  "createdDateProperty": "date",
-  "momentFormat": "YYYY-MM-DD HH:mm:ss ZZ",
-  "storeHistoryLog": false,
-  "historyNewestFirst": false,
-  "historyMaxItems": 0,
-  "excludedFolders": [
-    "archetypes"
-  ],
-  "useKeyupEvents": false,
-  "onlyUpdateExisting": false,
-  "timeout": 10,
-  "excludeField": "exclude_modified_update",
-  "appendField": "append_modified_update",
-  "appendMaximumFrequency": "day"
-}
+{"frontmatterProperty":"lastmod","createdDateProperty":"date","momentFormat":"YYYY-MM-DD HH:mm:ss ZZ","storeHistoryLog":false,"historyNewestFirst":false,"historyMaxItems":0,"excludedFolders":["_template"],"useKeyupEvents":false,"onlyUpdateExisting":false,"timeout":10,"excludeField":"exclude_modified_update","appendField":"append_modified_update","appendMaximumFrequency":"day"}

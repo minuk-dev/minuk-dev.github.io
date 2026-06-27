@@ -2,12 +2,10 @@
 layout: wikilist
 title: Front Page
 date: 2020-04-05T12:31:29+09:00
-lastmod: 2025-04-17 08:34:42 +0900
+lastmod: 2026-06-27 16:04:17 +0900
 ---
-- [[제텔카스텐]]
-- [[opampcommander]]
-- [[2025-일본여행]]
 ## 즐겨찾기
+- [[observability]]
 - [[devops]]
 - [[kubernetes]]
 - [[Book reviews]]

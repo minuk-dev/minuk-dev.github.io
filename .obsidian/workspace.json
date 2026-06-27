@@ -1,24 +1,24 @@
 {
   "main": {
-    "id": "852320b9e227d2f4",
+    "id": "5324373015726ba8",
     "type": "split",
     "children": [
       {
-        "id": "bdbc4548403a0d84",
+        "id": "2a3a100d74d83ae5",
         "type": "tabs",
         "children": [
           {
-            "id": "0a5f30f0e9ca93af",
+            "id": "2be92313e269b6a1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
+                "file": "content/wiki/_index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Mastering-OpenTelemetry-And-Observability"
+              "title": "_index"
             }
           }
         ]
@@ -27,31 +27,33 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "6ba53f8243493699",
+    "id": "886631beb2420813",
     "type": "split",
     "children": [
       {
-        "id": "dc3f81b75c875229",
+        "id": "545fb4e433790f9d",
         "type": "tabs",
-        "dimension": 30.335968379446644,
         "children": [
           {
-            "id": "307fbe1cdb0f6205",
+            "id": "f15bb0e092e0e9b5",
             "type": "leaf",
             "state": {
-              "type": "bookmarks",
-              "state": {},
-              "icon": "lucide-bookmark",
-              "title": "Bookmarks"
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
             }
           },
           {
-            "id": "2df2a09fdb218cf2",
+            "id": "02f3c69ae772f3a2",
             "type": "leaf",
             "state": {
               "type": "search",
               "state": {
-                "query": "index",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -63,69 +65,36 @@
             }
           },
           {
-            "id": "f2174af9eaa21e4b",
+            "id": "f523c4ce19ae791f",
             "type": "leaf",
             "state": {
-              "type": "recent-files",
+              "type": "bookmarks",
               "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
-            }
-          }
-        ]
-      },
-      {
-        "id": "dfed1ad2274e58fd",
-        "type": "tabs",
-        "dimension": 69.66403162055336,
-        "children": [
-          {
-            "id": "cf41d88e0147f607",
-            "type": "leaf",
-            "state": {
-              "type": "calendar",
-              "state": {},
-              "icon": "calendar-with-checkmark",
-              "title": "Calendar"
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 311.5
   },
   "right": {
-    "id": "7e13f139063007fb",
+    "id": "d303cd68acdc4f91",
     "type": "split",
     "children": [
       {
-        "id": "712a8722089960bf",
+        "id": "1b33dfe6eb9ed5c5",
         "type": "tabs",
         "children": [
           {
-            "id": "c6e5e702d068c595",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "Outline of Mastering-OpenTelemetry-And-Observability"
-            }
-          },
-          {
-            "id": "6e3b992b1c7e3f73",
+            "id": "dd8a4120bf4ce796",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "content/wiki/daily/2025-01-22.md",
+                "file": "004 study/book/쿠버네티스 창시자에게 배우는 모범 사례.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -135,25 +104,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 2025-01-22"
+              "title": "Backlinks for 쿠버네티스 창시자에게 배우는 모범 사례"
             }
           },
           {
-            "id": "7baec496763d35fe",
+            "id": "641b24851bf60dab",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Enterprise-Integration-Patterns.md",
+                "file": "001 daily/2025-07-14.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Enterprise-Integration-Patterns"
+              "title": "Outgoing links from 2025-07-14"
             }
           },
           {
-            "id": "4723059b66f70eb4",
+            "id": "994c26d8c70e4ec4",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -168,16 +137,54 @@
             }
           },
           {
-            "id": "990852b1999aca88",
+            "id": "1c9bb364647cb81b",
             "type": "leaf",
             "state": {
-              "type": "file-explorer",
+              "type": "all-properties",
               "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
               },
-              "icon": "lucide-folder-closed",
-              "title": "Files"
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "b6ef202b390fffc5",
+            "type": "leaf",
+            "state": {
+              "type": "calendar",
+              "state": {},
+              "icon": "calendar-with-checkmark",
+              "title": "Calendar"
+            }
+          },
+          {
+            "id": "4e7ac177b2c10027",
+            "type": "leaf",
+            "state": {
+              "type": "footnotes",
+              "state": {
+                "file": "001 daily/2025-11-10.md"
+              },
+              "icon": "lucide-file-signature",
+              "title": "Footnotes"
+            }
+          },
+          {
+            "id": "14f57fd4c5e1fe1b",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "001 daily/2025-11-10.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 2025-11-10"
             }
           }
         ],
@@ -185,71 +192,78 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 308.5
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-excalidraw-plugin:Create new drawing": false,
-      "obsidian-kanban:Create new board": false,
+      "audio-recorder:Start/stop recording": false,
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
+      "zk-prefixer:Create new unique note": false,
+      "workspaces:Manage workspace layouts": false,
       "templater-obsidian:Templater": false,
-      "terminal:Open terminal": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "omnisearch:Omnisearch": false,
+      "obsidian-full-calendar:Open Full Calendar": false,
+      "obsidian-kanban:Create new board": false,
+      "notebook-navigator:Notebook Navigator": false,
+      "periodic-notes:Open today": false,
+      "obsidian-git:Open Git source control": false,
+      "homepage:Open homepage": false
     }
   },
-  "active": "0a5f30f0e9ca93af",
+  "active": "2be92313e269b6a1",
   "lastOpenFiles": [
-    "content/wiki/Book reviews.md",
-    "content/wiki/_index.md",
-    "content/wiki/daily/2025-04-21.md",
-    "content/wiki/drawings/Drawing 2025-04-21 06.38.33.excalidraw.md",
-    "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
-    "content/wiki/daily/2025-04-19.md",
-    "content/wiki/daily/2025-04-18.md",
-    "content/wiki/회고/3월.md",
-    "content/wiki/http2.md",
-    "content/wiki/study-note.md",
-    "content/wiki/daily/2025-04-17.md",
-    "content/wiki/rbac.md",
-    "content/wiki/others.md",
-    "content/wiki/comment.md",
-    "content/wiki/software-engineering.md",
-    "content/wiki/algorithm.md",
-    "content/wiki/lectures.md",
-    "content/wiki/topcit.md",
-    "content/wiki/latina.md",
-    "content/wiki/devops.md",
-    "content/wiki/opampcommander.md",
-    "content/wiki/IT 엔지니어를 위한 네트워크 입문.md",
-    "content/wiki/OTel Sucks (But Also Rocks!).md",
     "content/wiki/observability.md",
-    "content/wiki/go.md",
-    "content/wiki/daily/2025-04-16.md",
-    "assets/Pasted image 20250410025815.png",
-    "assets/Pasted image 20250410024044.png",
-    "assets/Pasted image 20250227002824.png",
-    "layouts/wiki/single.html~",
-    "public/wiki/index.xml",
-    "public/index.xml",
-    "public/tags/typescript/index.xml",
-    "public/tags/회고/index.xml",
-    "public/tags/verilog/index.xml",
-    "public/tags/제텔카스텐/index.xml",
-    "public/tags/추석대회/index.xml",
-    "public/tags/사지방/index.xml",
-    "public/tags/주석/index.xml",
-    "public/wiki/images/simplessd.png",
-    "public/wiki/images/simple-file-1.png",
-    "public/wiki/images/nvme.jpg",
-    "public/wiki/images/new_year.png",
-    "public/wiki/images/mysql_architecture.png",
-    "public/wiki/images/linux-kakao-5.jpg",
-    "public/wiki/images/linux-kakao-4.png",
-    "Untitled.canvas"
+    "content/wiki/_index.md",
+    "content/wiki/제텔카스텐.md",
+    "content/wiki/frontend.md",
+    "001 daily/2026-06-26.md",
+    "z_slip/LGTM.md",
+    "005 work/imon-core-2/2026-06-25 72223c58.md",
+    "005 work/imon-core-2",
+    "005 work/imon-core/2026-06-24 7192ebfe.md",
+    "005 work/null-msg-debug/2026-06-15 061d42df.md",
+    "005 work/null-msg-debug",
+    "005 work/imon-opentelemetry-collector/2026-06-25 52b85b24.md",
+    "005 work/imon-core-3/2026-06-24 85948224.md",
+    "005 work/imon-k8s/2026-06-24 2dcce4c1.md",
+    "005 work/imon-viz/2026-06-24 959c296c.md",
+    "005 work/imon-opentelemetry-collector/2026-06-23 cd58774f.md",
+    "005 work/imon-core-3",
+    "005 work/imon-opentelemetry-collector-2/2026-06-23 4d82be2f.md",
+    "005 work/imon-core/2026-06-24 d3484b71.md",
+    "005 work/imon-core/2026-06-23 67e2ea34.md",
+    "005 work/imon-opentelemetry-collector/2026-06-24 d1082b0f.md",
+    "001 daily/2026-06-24.md",
+    "005 work/my-home/2026-06-18 902240dd.md",
+    "005 work/kanban-items/Handlebar 버그 fix.md",
+    "005 work/imon-opentelemetry-collector/2026-06-23 0a3ff640.md",
+    "005 work/imon-core/2026-06-22 a4329e29.md",
+    "001 daily/2026-06-23.md",
+    "005 work/imon-query-language-api/2026-06-22 916db0cf.md",
+    "005 work/imon-k8s/2026-06-22 7cd54c3b.md",
+    "005 work/imon-query-language-api",
+    "z_assets/Pasted image 20260622093826.png",
+    "z_assets/Pasted image 20260622093814.png",
+    "005 work/my-home",
+    "005 work/imon-pulse-detector",
+    "005 work/imon-opentelemetry-collector-2",
+    "Projects",
+    "005 work/minuk-skills",
+    "008 projects/deltatocumulativeprocessor",
+    "z_assets/Pasted image 20260609121232.png",
+    "z_assets/Pasted image 20260605161027.png",
+    "z_assets/Pasted image 20260310040448.png",
+    "z_assets/Pasted image 20260310035925.png",
+    "z_assets/Pasted image 20260307235010.png",
+    "z_assets/Pasted image 20260305230852.png",
+    "z_assets/Pasted image 20260226193518.png",
+    "z_assets/Pasted image 20260226192819.png"
   ]
 }

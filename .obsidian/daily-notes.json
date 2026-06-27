@@ -1,5 +1,5 @@
 {
-  "folder": "content/wiki/daily",
+  "folder": "001 daily",
   "format": "YYYY-MM-DD",
-  "autorun": true
+  "template": "_template/daily"
 }
