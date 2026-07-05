@@ -13,12 +13,32 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content/wiki/LGTM.md",
+                "file": "content/wiki/Who-Watches-the-Watchers.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "LGTM"
+              "title": "Who-Watches-the-Watchers"
+            }
+          }
+        ]
+      },
+      {
+        "id": "27115267ae8f1ae7",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ab85f26361d9ca9d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content/wiki/Who-Watches-the-Watchers.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Who-Watches-the-Watchers"
             }
           }
         ]
@@ -78,7 +98,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 311.5
+    "width": 311.5,
+    "collapsed": true
   },
   "right": {
     "id": "d303cd68acdc4f91",
@@ -94,7 +115,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "004 study/book/쿠버네티스 창시자에게 배우는 모범 사례.md",
+                "file": "content/wiki/Who-Watches-the-Watchers.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +125,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 쿠버네티스 창시자에게 배우는 모범 사례"
+              "title": "Backlinks for Who-Watches-the-Watchers"
             }
           },
           {
@@ -113,12 +134,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "001 daily/2025-07-14.md",
+                "file": "content/wiki/Who-Watches-the-Watchers.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 2025-07-14"
+              "title": "Outgoing links from Who-Watches-the-Watchers"
             }
           },
           {
@@ -166,7 +187,7 @@
             "state": {
               "type": "footnotes",
               "state": {
-                "file": "001 daily/2025-11-10.md"
+                "file": "content/wiki/Who-Watches-the-Watchers.md"
               },
               "icon": "lucide-file-signature",
               "title": "Footnotes"
@@ -178,13 +199,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "001 daily/2025-11-10.md",
+                "file": "content/wiki/Who-Watches-the-Watchers.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2025-11-10"
+              "title": "Outline of Who-Watches-the-Watchers"
             }
           }
         ],
@@ -192,7 +213,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 308.5
+    "width": 308.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -217,16 +239,21 @@
       "homepage:Open homepage": false
     }
   },
-  "active": "a51ff3d0c214f5d9",
+  "active": "ab85f26361d9ca9d",
   "lastOpenFiles": [
-    "README.md",
-    "content/wiki/LGTM.md",
-    "content/wiki/Book reviews.md",
+    "content/wiki/study-note.md",
+    "content/wiki/hash.md",
+    "content/wiki/Who-Watches-the-Watchers.md",
     "content/wiki/_index.md",
+    "content/wiki/lectures/database_system.md",
+    "content/wiki/go.md",
+    "content/wiki/observability.md",
+    "content/wiki/LGTM.md",
+    "README.md",
+    "content/wiki/Book reviews.md",
     "archetypes/default.md",
     "content/wiki/쿠버네티스 창시자에게 배우는 모범 사례.md",
     "content/wiki/observability-engineering-kr.md",
-    "content/wiki/observability.md",
     "content/wiki/Mastering-OpenTelemetry-And-Observability.md",
     "content/wiki/Understanding Linux Kernel.md",
     "content/wiki/리눅스 커널 네트워킹.md",
@@ -240,11 +267,6 @@
     "content/wiki/Effective kotlin.md",
     "content/wiki/무엇이 1등 팀을 만드는가?.md",
     "content/wiki/software-engineering-at-google.md",
-    "content/wiki/Learning OpenTelemetry.md",
-    "content/wiki/observability-engineering.md",
-    "content/wiki/cloud-native-go.md",
-    "content/wiki/coredns.md",
-    "content/wiki/kubernetes-patterns.md",
     "005 work/imon-core-2",
     "005 work/null-msg-debug",
     "005 work/imon-core-3",

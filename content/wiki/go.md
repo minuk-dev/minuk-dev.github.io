@@ -3,13 +3,18 @@ layout: wiki
 title: go
 summary: go 언어 관련
 date: 2022-08-02 15:52:30 +0900
-lastmod: 2025-04-16 00:35:53 +0900
+lastmod: 2026-07-05 14:37:14 +0900
 tags:
   - go
 draft: false
 parent: study-note
 ---
+## library
+- github.com/bboreham/go-loser:
+	- segment tree 와 유사하게 구성된 트리.
+	- prometheus 인덱스에서 사용하는것을 확인
 
+## Book
 - [[cloud-native-go]]
 
 ## Convention 관련 자료
