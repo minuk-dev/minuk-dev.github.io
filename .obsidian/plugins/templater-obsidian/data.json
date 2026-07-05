@@ -1,6 +1,6 @@
 {
   "command_timeout": 5,
-  "templates_folder": "layouts/wiki",
+  "templates_folder": "archetypes",
   "templates_pairs": [
     [
       "",
@@ -27,7 +27,7 @@
     ""
   ],
   "startup_templates": [
-    "layouts/wiki/default.md"
+    "archetypes/default.md"
   ],
   "intellisense_render": 1
 }

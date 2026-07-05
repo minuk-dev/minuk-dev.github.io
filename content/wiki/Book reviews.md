@@ -3,7 +3,7 @@ layout: wiki
 title: Book Review
 summary: 본책들 정리
 date: 2020-04-07 20:43:34 +0900
-lastmod: 2026-06-27 16:38:34 +0900
+lastmod: 2026-06-27 16:47:22 +0900
 tags:
   - book
 parent:
@@ -20,6 +20,7 @@ parent:
 - [[IT 엔지니어를 위한 네트워크 입문]]
 - [[리눅스 커널 네트워킹]]
 - [[Mastering-OpenTelemetry-And-Observability]]
+- [[쿠버네티스 창시자에게 배우는 모범 사례]]
 
 ## 2024
 - [[Learning OpenTelemetry]]
